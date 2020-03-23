@@ -1,6 +1,6 @@
 # wildbook-frontend
 
-The new frontend for [Wildbook](https://github.com/WildbookOrg/Wildbook).
+The new frontend for [Wildbook](https://github.com/WildbookOrg/Wildbook). This project is not in production yet, but it is under active development.
 
 ## Contributions 
 
