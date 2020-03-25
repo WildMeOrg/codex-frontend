@@ -1,11 +1,11 @@
 {
-  "ENCOUNTERS": "Encounters",
-  "HELP_AND_FEEDBACK": "Help & Feedback",
-  "INDIVIDUALS": "Individuals",
-  "ORGANIZATIONS": "Organizations",
-  "SUBMIT_ENCOUNTERS": "Submit Encounters",
-  "DOCS": "Documentation",
-  "SETTINGS": "Settings",
-  "ADMINISTRATION": "Administration",
-  "USERS": "Users"
+    "ADMINISTRATION": "Administration",
+    "DOCS": "Documentation",
+    "ENCOUNTERS": "Encounters",
+    "HELP_AND_FEEDBACK": "Help & Feedback",
+    "INDIVIDUALS": "Individuals",
+    "ORGANIZATIONS": "Organizations",
+    "SETTINGS": "Settings",
+    "SUBMIT_ENCOUNTERS": "Submit Encounters",
+    "USERS": "Users"
 }
