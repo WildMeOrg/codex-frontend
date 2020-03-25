@@ -1,7 +1,6 @@
 {
-  "extends": ["airbnb", "prettier"],
+  "extends": ["airbnb"],
   "parser": "babel-eslint",
-  "plugins": ["prettier"],
   "settings": {
     "import/resolver": {
       "node": {},

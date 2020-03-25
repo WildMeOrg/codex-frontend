@@ -1,6 +1,11 @@
-import { TOGGLE_SIDE_PANEL, TOGGLE_AUTHENTICATED } from './actions';
+import {
+  TOGGLE_SIDE_PANEL,
+  TOGGLE_AUTHENTICATED,
+  SET_LOCALE,
+} from './actions';
 
 const initialState = {
+  locale: 'en-us',
   authenticated: false,
   sidePanelOpen: false,
 };
@@ -17,6 +22,11 @@ export function appReducer(state = initialState, action) {
       return {
         ...state,
         authenticated: !state.authenticated,
+      };
+    case SET_LOCALE:
+      return {
+        ...state,
+        locale: action.data,
       };
     default:
       return state;

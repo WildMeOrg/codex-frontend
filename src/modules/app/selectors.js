@@ -5,3 +5,4 @@ export const selectAuthenticated = state =>
   get(state, 'app.authenticated', false);
 export const selectSidePanelOpen = state =>
   get(state, 'app.sidePanelOpen', false);
+export const selectLocale = state => get(state, 'app.locale');
