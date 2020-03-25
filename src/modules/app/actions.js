@@ -11,6 +11,6 @@ export const toggleAuthenticated = () => ({
 });
 
 export const setLocale = locale => ({
-  type: TOGGLE_SIDE_PANEL,
+  type: SET_LOCALE,
   data: locale,
 });

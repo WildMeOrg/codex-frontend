@@ -7,7 +7,13 @@ import { IntlProvider } from 'react-intl';
 import { useSelector } from 'react-redux';
 import AppHeader from './components/AppHeader';
 import { selectLocale } from './modules/app/selectors';
-import messagesEn from './constants/translations/en.json';
+import messagesEn from '../locale/en.json';
+import messagesEs from '../locale/es.json';
+
+const messageMap = {
+  en: messagesEn,
+  es: messagesEs,
+};
 
 export default function App() {
   const theme = createMuiTheme({
@@ -28,7 +34,11 @@ export default function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <IntlProvider locale={locale} messages={messagesEn}>
+      <IntlProvider
+        locale={locale}
+        defaultLocale="en"
+        messages={messageMap[locale]}
+      >
         <main
           style={{
             display: 'flex',

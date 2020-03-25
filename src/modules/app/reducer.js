@@ -5,7 +5,7 @@ import {
 } from './actions';
 
 const initialState = {
-  locale: 'en-us',
+  locale: 'en',
   authenticated: false,
   sidePanelOpen: false,
 };

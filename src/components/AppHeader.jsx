@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import clsx from 'clsx';
 import { Link } from 'react-router-dom';
+import { FormattedMessage } from 'react-intl';
+import { useDispatch } from 'react-redux';
+
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Drawer from '@material-ui/core/Drawer';
@@ -12,6 +15,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
+import Button from '@material-ui/core/Button';
 import Avatar from '@material-ui/core/Avatar';
 import Badge from '@material-ui/core/Badge';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -25,6 +29,8 @@ import GroupIcon from '@material-ui/icons/Group';
 import SubjectIcon from '@material-ui/icons/Subject';
 import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 import SettingsIcon from '@material-ui/icons/Settings';
+
+import { setLocale } from '../modules/app/actions';
 
 const useStyles = makeStyles(theme => ({
   toolbar: {
@@ -58,6 +64,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function AppHeader() {
   const classes = useStyles();
+  const dispatch = useDispatch();
 
   const [drawerOpen, setDrawerOpen] = useState(false);
 
@@ -95,7 +102,7 @@ export default function AppHeader() {
                   to="/submit-data"
                   style={{ textDecoration: 'none', color: 'unset' }}
                 >
-                  Submit Data
+                  <FormattedMessage id="SUBMIT_ENCOUNTERS" />
                 </Link>
               </ListItemText>
             </ListItem>
@@ -104,25 +111,42 @@ export default function AppHeader() {
               <ListItemIcon>
                 <PhotoCameraIcon />
               </ListItemIcon>
-              <ListItemText>Encounters</ListItemText>
+              <ListItemText>
+                <FormattedMessage
+                  id="ENCOUNTERS"
+                  defaultMessage="Encounters"
+                />
+              </ListItemText>
             </ListItem>
             <ListItem>
               <ListItemIcon>
                 <AndroidIcon />
               </ListItemIcon>
-              <ListItemText>Individuals</ListItemText>
+              <ListItemText>
+                <FormattedMessage
+                  id="INDIVIDUALS"
+                  defaultMessage="Individuals"
+                />
+              </ListItemText>
             </ListItem>
             <ListItem>
               <ListItemIcon>
                 <PersonIcon />
               </ListItemIcon>
-              <ListItemText>Users</ListItemText>
+              <ListItemText>
+                <FormattedMessage id="USERS" defaultMessage="Users" />
+              </ListItemText>
             </ListItem>
             <ListItem>
               <ListItemIcon>
                 <GroupIcon />
               </ListItemIcon>
-              <ListItemText>Organizations</ListItemText>
+              <ListItemText>
+                <FormattedMessage
+                  id="ORGANIZATIONS"
+                  defaultMessage="Organizations"
+                />
+              </ListItemText>
             </ListItem>
             <Divider style={{ marginTop: 12, marginBottom: 12 }} />
             <ListItem>
@@ -134,7 +158,10 @@ export default function AppHeader() {
                   href="https://community.wildbook.org/"
                   style={{ textDecoration: 'none', color: 'unset' }}
                 >
-                  Help & Feedback
+                  <FormattedMessage
+                    id="HELP_AND_FEEDBACK"
+                    defaultMessage="Help & Feedback"
+                  />
                 </a>
               </ListItemText>
             </ListItem>
@@ -147,7 +174,10 @@ export default function AppHeader() {
                   href="http://wiki.wildbook.org/"
                   style={{ textDecoration: 'none', color: 'unset' }}
                 >
-                  Documentation
+                  <FormattedMessage
+                    id="DOCS"
+                    defaultMessage="Documentation"
+                  />
                 </a>
               </ListItemText>
             </ListItem>
@@ -155,13 +185,23 @@ export default function AppHeader() {
               <ListItemIcon>
                 <SettingsIcon />
               </ListItemIcon>
-              <ListItemText>Settings</ListItemText>
+              <ListItemText>
+                <FormattedMessage
+                  id="SETTINGS"
+                  defaultMessage="Settings"
+                />
+              </ListItemText>
             </ListItem>
             <ListItem>
               <ListItemIcon>
                 <AdminSettingsIcon />
               </ListItemIcon>
-              <ListItemText>Administration</ListItemText>
+              <ListItemText>
+                <FormattedMessage
+                  id="ADMINISTRATION"
+                  defaultMessage="Administration"
+                />
+              </ListItemText>
             </ListItem>
           </List>
         </div>
@@ -190,6 +230,18 @@ export default function AppHeader() {
             Wildbook
           </Link>
         </Typography>
+        <Button
+          style={{ color: 'white', textTransform: 'unset' }}
+          onClick={() => dispatch(setLocale('en'))}
+        >
+          English
+        </Button>
+        <Button
+          style={{ color: 'white', textTransform: 'unset' }}
+          onClick={() => dispatch(setLocale('es'))}
+        >
+          Español
+        </Button>
         <IconButton color="inherit">
           <Badge badgeContent={3} color="secondary">
             <NotificationsIcon />
