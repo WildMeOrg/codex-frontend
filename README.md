@@ -16,3 +16,7 @@ npm install
 npm start 
 ```
 
+## Thanks
+
+Thanks to [Lokalise](https://lokalise.com/) for providing translation management services!
+
