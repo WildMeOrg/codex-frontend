@@ -1,0 +1,52 @@
+{
+  "extends": ["airbnb", "prettier"],
+  "parser": "babel-eslint",
+  "plugins": ["prettier"],
+  "settings": {
+    "import/resolver": {
+      "node": {},
+      "webpack": {
+        "config": "config/webpack/webpack.common.js"
+      }
+    }
+  },
+  "env": {
+    "browser": true
+  },
+  "rules": {
+    "semi": 2,
+    "react/prop-types": 0,
+    "react/jsx-filename-extension": 0,
+    "react/destructuring-assignment": 0,
+    "react/forbid-prop-types": 0,
+    "react/jsx-wrap-multilines": 0,
+    "import/prefer-default-export": 0,
+    "no-underscore-dangle": 0,
+    "camelcase": 0,
+    "react/prefer-stateless-function": 0,
+    "import/no-extraneous-dependencies": [
+      "error",
+      {
+        "devDependencies": true,
+        "optionalDependencies": false,
+        "peerDependencies": false
+      }
+    ],
+    "no-param-reassign": [
+      "error",
+      {
+        "props": true,
+        "ignorePropertyModificationsFor": [
+          "draftState",
+          "draftDevice"
+        ]
+      }
+    ]
+  },
+  "globals": {
+    "__DEV__": true,
+    "__config__": true,
+    "__MAPBOX_KEY__": true,
+    "__CLOUD__": true
+  }
+}

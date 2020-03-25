@@ -1,0 +1,22 @@
+@font-face {
+  font-family: 'Antonio';
+  font-style: normal;
+  font-weight: 100;
+  src: local('Antonio Light'),
+    url('./Antonio-Light.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Antonio';
+  font-style: normal;
+  font-weight: 300;
+  src: local('Antonio'),
+    url('./Antonio-Regular.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Antonio';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Antonio Bold'),
+    url('./Antonio-Bold.woff2') format('woff2');
+}
