@@ -7,5 +7,12 @@
     "ORGANIZATIONS": "Organizations",
     "SETTINGS": "Settings",
     "SUBMIT_ENCOUNTERS": "Submit Encounters",
-    "USERS": "Users"
+    "USERS": "Users",
+    "EDIT_PROFILE": "Edit profile",
+    "ENCOUNTERS_WITH": "Encounters with {name}",
+    "STATUS": "Status",
+    "SEX": "Sex",
+    "AGE": "Age",
+    "CONFIRM": "Confirm",
+    "CANCEL": "Cancel"
 }

@@ -60,7 +60,7 @@ export default function App() {
               <Route path="/individuals/:id">
                 <Individual />
               </Route>
-              <Route path="/">
+              <Route path="/" exact>
                 <div />
               </Route>
               <Route>

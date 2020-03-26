@@ -4,14 +4,22 @@ export const selectIndividuals = state => ({
   teddy: {
     name: 'Teddy',
     profile: defaultProfile,
-    fields: {
-      age: 69,
-      sex: 'Female',
-    },
-    customFields: {
-      status: 'Mother of 4',
-      mate: 'Unknown',
-    },
+    species: 'bear',
+    editable: true,
+    fields: [
+      {
+        name: 'age',
+        value: 55,
+      },
+      {
+        name: 'sex',
+        value: 'Unknown',
+      },
+      {
+        name: 'status',
+        value: 'Alive',
+      },
+    ],
     data: {
       followedBy: [
         { id: 'jsmith42', name: 'Joe Smith' },
