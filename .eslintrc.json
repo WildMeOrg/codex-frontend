@@ -22,6 +22,7 @@
     "import/prefer-default-export": 0,
     "no-underscore-dangle": 0,
     "camelcase": 0,
+    "space-before-function-paren": 0,
     "react/prefer-stateless-function": 0,
     "import/no-extraneous-dependencies": [
       "error",
@@ -45,7 +46,6 @@
   "globals": {
     "__DEV__": true,
     "__config__": true,
-    "__MAPBOX_KEY__": true,
     "__CLOUD__": true
   }
 }

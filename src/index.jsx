@@ -1,5 +1,4 @@
 import React from 'react';
-import { BrowserRouter, Route } from 'react-router-dom';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { hot } from 'react-hot-loader/root';
@@ -19,9 +18,7 @@ const Main = hot(() => (
   <>
     {/* <GlobalStyles /> */}
     <Provider store={store}>
-      <BrowserRouter basename="/">
-        <Route path="/:tab?/:subTab?" component={App} />
-      </BrowserRouter>
+      <App />
     </Provider>
   </>
 ));
