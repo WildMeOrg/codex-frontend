@@ -7,7 +7,7 @@ import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import EditProfile from './EditProfile';
 
-export default function({
+export default function EntityHeader({
   imgSrc,
   name,
   fieldValues,
