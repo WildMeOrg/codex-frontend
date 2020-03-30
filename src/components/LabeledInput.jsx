@@ -36,7 +36,9 @@ export default function LabeledInput({
           value={value}
         >
           {schema.values.map(option => (
-            <MenuItem value={option} key={option}>{option}</MenuItem>
+            <MenuItem value={option} key={option}>
+              {option}
+            </MenuItem>
           ))}
         </Select>
       </Core>

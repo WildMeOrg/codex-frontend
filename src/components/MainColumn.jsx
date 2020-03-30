@@ -6,6 +6,7 @@ export default function({ children }) {
       style={{
         maxWidth: 851,
         marginTop: 64,
+        marginBottom: 200,
         width: '100%',
         position: 'relative',
       }}
