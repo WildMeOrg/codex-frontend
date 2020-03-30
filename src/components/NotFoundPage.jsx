@@ -1,6 +1,8 @@
 import React from 'react';
+import { FormattedMessage } from 'react-intl';
 import Typography from '@material-ui/core/Typography';
 import savanna from '../assets/savanna.jpeg';
+import Link from './Link';
 
 export default function NotFoundPage({ title, subtitle, details }) {
   return (
@@ -32,12 +34,14 @@ export default function NotFoundPage({ title, subtitle, details }) {
       </div>
       <div style={{ position: 'absolute', bottom: 12, left: 12 }}>
         <Typography>
-          Photo by
-          <a href="https://unsplash.com/@davidclode">David Clode</a>
-          on
-          <a href="https://unsplash.com/photos/92MgFhlWD-8">
+          <FormattedMessage id="PHOTO_BY" />
+          <Link href="https://unsplash.com/@davidclode">
+            David Clode
+          </Link>
+          <FormattedMessage id="ON" />
+          <Link href="https://unsplash.com/photos/92MgFhlWD-8">
             Unsplash
-          </a>
+          </Link>
         </Typography>
       </div>
     </div>

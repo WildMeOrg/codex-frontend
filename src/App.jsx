@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux';
 import AppHeader from './components/AppHeader';
 import { selectLocale } from './modules/app/selectors';
 import Individual from './pages/individual/Individual';
+import User from './pages/user/User';
 import FourOhFour from './pages/fourohfour/FourOhFour';
 import messagesEn from '../locale/en.json';
 import messagesEs from '../locale/es.json';
@@ -59,6 +60,9 @@ export default function App() {
             <Switch>
               <Route path="/individuals/:id">
                 <Individual />
+              </Route>
+              <Route path="/users/:id">
+                <User />
               </Route>
               <Route path="/" exact>
                 <div />

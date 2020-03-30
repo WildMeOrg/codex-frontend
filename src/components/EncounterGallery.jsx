@@ -15,7 +15,7 @@ export default function EncounterGallery({ title, encounters }) {
       </Typography>
       <Grid container spacing={3}>
         {encounters.map(encounter => (
-          <Grid item>
+          <Grid item key={encounter.id}>
             <EncounterCard encounter={encounter} />
           </Grid>
         ))}

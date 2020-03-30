@@ -3,8 +3,6 @@ import { FormattedMessage } from 'react-intl';
 import { format } from 'date-fns';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
-import CardActions from '@material-ui/core/CardActions';
-import Button from '@material-ui/core/Button';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
@@ -45,7 +43,7 @@ export default function EncounterCard({ encounter }) {
                   marginTop: 10,
                 }}
               >
-                Ready for Identification Review
+                <FormattedMessage id="READY_FOR_REVIEW" />
               </Typography>
             </div>
           )}
@@ -63,7 +61,7 @@ export default function EncounterCard({ encounter }) {
               >
                 <FormattedMessage
                   id="PHOTO_COUNT"
-                  values={{ photoCount: parseInt(photoCount) }}
+                  values={{ photoCount: parseInt(photoCount, 10) }}
                 />
               </Typography>
             </Grid>
@@ -75,22 +73,17 @@ export default function EncounterCard({ encounter }) {
               >
                 <FormattedMessage
                   id="MATCH_COUNT"
-                  values={{ matchCount: parseInt(matchCount) }}
+                  values={{ matchCount: parseInt(matchCount, 10) }}
                 />
               </Typography>
             </Grid>
             <Typography variant="subtitle2">
               <FormattedMessage id="SUBMITTED_BY" />
-              <Link>{user}</Link>
+              <Link href="https://www.google.com/">{user}</Link>
             </Typography>
           </Grid>
         </CardContent>
       </CardActionArea>
-      {/* <CardActions>
-                <Button size="small" color="primary">
-                  Share
-                </Button>
-              </CardActions> */}
     </Card>
   );
 }
