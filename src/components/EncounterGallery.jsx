@@ -3,7 +3,11 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import EncounterCard from './EncounterCard';
 
-export default function EncounterGallery({ title, encounters }) {
+export default function EncounterGallery({
+  title,
+  encounters,
+  hideSubmitted,
+}) {
   return (
     <div style={{ marginLeft: 12 }}>
       <Typography
@@ -16,7 +20,7 @@ export default function EncounterGallery({ title, encounters }) {
       <Grid container spacing={3}>
         {encounters.map(encounter => (
           <Grid item key={encounter.id}>
-            <EncounterCard encounter={encounter} />
+            <EncounterCard encounter={encounter} hideSubmitted={hideSubmitted} />
           </Grid>
         ))}
       </Grid>

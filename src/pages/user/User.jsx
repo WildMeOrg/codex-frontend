@@ -23,6 +23,13 @@ export default function User() {
       />
     );
 
+  const galleryTitle = user.editable
+    ? 'YOUR_ENCOUNTERS'
+    : 'USERS_ENCOUNTERS';
+  const translationValues = user.editable
+    ? undefined
+    : { name: user.name };
+
   return (
     <MainColumn>
       <EntityHeader
@@ -35,11 +42,12 @@ export default function User() {
       <EncounterGallery
         title={
           <FormattedMessage
-            id="ENCOUNTERS_WITH"
-            values={{ name: user.name }}
+            id={galleryTitle}
+            values={translationValues}
           />
         }
         encounters={user.encounters}
+        hideSubmitted
       />
     </MainColumn>
   );

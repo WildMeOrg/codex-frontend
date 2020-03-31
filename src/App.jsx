@@ -9,8 +9,10 @@ import { useSelector } from 'react-redux';
 import AppHeader from './components/AppHeader';
 import { selectLocale } from './modules/app/selectors';
 import Individual from './pages/individual/Individual';
+import Org from './pages/org/Org';
 import User from './pages/user/User';
 import FourOhFour from './pages/fourohfour/FourOhFour';
+import materialTheme from './styles/materialTheme';
 import messagesEn from '../locale/en.json';
 import messagesEs from '../locale/es.json';
 
@@ -20,20 +22,7 @@ const messageMap = {
 };
 
 export default function App() {
-  const theme = createMuiTheme({
-    palette: {
-      primary: {
-        main: '#070500',
-      },
-      secondary: {
-        main: '#8B38DD',
-      },
-      paper: {
-        main: '#eeeeee',
-      },
-    },
-  });
-
+  const theme = createMuiTheme(materialTheme);
   const locale = useSelector(selectLocale);
 
   return (
@@ -63,6 +52,9 @@ export default function App() {
               </Route>
               <Route path="/users/:id">
                 <User />
+              </Route>
+              <Route path="/orgs/:id">
+                <Org />
               </Route>
               <Route path="/" exact>
                 <div />

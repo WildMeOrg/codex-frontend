@@ -1,22 +1,31 @@
 @font-face {
-  font-family: 'Antonio';
-  font-style: normal;
-  font-weight: 100;
-  src: local('Antonio Light'),
-    url('./Antonio-Light.woff2') format('woff2');
-}
-@font-face {
-  font-family: 'Antonio';
+  font-family: 'Avenir Next';
   font-style: normal;
   font-weight: 300;
-  src: local('Antonio'),
-    url('./Antonio-Regular.woff2') format('woff2');
+  src: local('Avenir Next'),
+    url('./AvenirNext-Regular.woff2') format('woff2');
 }
 
 @font-face {
-  font-family: 'Antonio';
+  font-family: 'Avenir Next';
   font-style: normal;
-  font-weight: 700;
-  src: local('Antonio Bold'),
-    url('./Antonio-Bold.woff2') format('woff2');
+  font-weight: 400;
+  src: local('Avenir Next'),
+    url('./AvenirNext-DemiBold.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Avenir Next Condensed';
+  font-style: normal;
+  font-weight: 300;
+  src: local('Avenir Next Condensed'),
+    url('./AvenirNextCondensed-Regular.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Avenir Next Condensed';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Avenir Next Condensed'),
+    url('./AvenirNextCondensed-DemiBold.woff2') format('woff2');
 }

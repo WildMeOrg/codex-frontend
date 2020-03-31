@@ -9,7 +9,7 @@ import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Link from './Link';
 
-export default function EncounterCard({ encounter }) {
+export default function EncounterCard({ encounter, hideSubmitted }) {
   const {
     user,
     profile,
@@ -77,10 +77,12 @@ export default function EncounterCard({ encounter }) {
                 />
               </Typography>
             </Grid>
-            <Typography variant="subtitle2">
-              <FormattedMessage id="SUBMITTED_BY" />
-              <Link href="https://www.google.com/">{user}</Link>
-            </Typography>
+            {!hideSubmitted && (
+              <Typography variant="subtitle2">
+                <FormattedMessage id="SUBMITTED_BY" />
+                <Link href="https://www.google.com/">{user}</Link>
+              </Typography>
+            )}
           </Grid>
         </CardContent>
       </CardActionArea>

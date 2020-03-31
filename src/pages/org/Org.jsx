@@ -6,43 +6,35 @@ import EntityHeader from '../../components/EntityHeader';
 import MainColumn from '../../components/MainColumn';
 import NotFoundPage from '../../components/NotFoundPage';
 import EncounterGallery from '../../components/EncounterGallery';
-import { selectIndividuals } from '../../modules/individuals/selectors';
-import { selectSpeciesFields } from '../../modules/site/selectors';
+import { selectOrgs } from '../../modules/orgs/selectors';
+import orgSchema from '../../constants/orgSchema';
 
 export default function Org() {
   const { id } = useParams();
 
   // fetch data for Id...
-  const individuals = useSelector(selectIndividuals);
-  const speciesFields = useSelector(selectSpeciesFields);
+  const orgs = useSelector(selectOrgs);
 
-  const individual = individuals[id];
-  if (!individual)
+  const org = orgs[id];
+  if (!org)
     return (
       <NotFoundPage
         subtitle={<FormattedMessage id="ORG_NOT_FOUND" />}
       />
     );
 
-  const fieldSchema = speciesFields[individual.species];
-
   return (
     <MainColumn>
       <EntityHeader
-        name={individual.name}
-        imgSrc={individual.profile}
-        fieldValues={individual.fields}
-        fieldSchema={fieldSchema}
-        editable={individual.editable}
+        name={org.name}
+        imgSrc={org.profile}
+        fieldValues={org.fields}
+        fieldSchema={orgSchema}
+        editable={org.editable}
       />
       <EncounterGallery
-        title={
-          <FormattedMessage
-            id="ENCOUNTERS_WITH"
-            values={{ name: individual.name }}
-          />
-        }
-        encounters={individual.encounters}
+        title={<FormattedMessage id="AFFILIATED_ENCOUNTERS" />}
+        encounters={org.encounters}
       />
     </MainColumn>
   );

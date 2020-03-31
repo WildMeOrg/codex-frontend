@@ -27,3 +27,9 @@ export const selectSpeciesFields = state => ({
     },
   ],
 });
+
+export const selectSiteName = state => 'Flukebook';
+
+export const selectSiteSettings = state => ({
+  name: 'Flukebook',
+});

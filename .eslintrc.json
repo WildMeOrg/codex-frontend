@@ -23,6 +23,7 @@
     "no-underscore-dangle": 0,
     "camelcase": 0,
     "space-before-function-paren": 0,
+    "implicit-arrow-linebreak": 0,
     "nonblock-statement-body-position": 0,
     "react/prefer-stateless-function": 0,
     "curly": 0,
