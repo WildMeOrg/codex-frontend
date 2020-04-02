@@ -6,6 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import EditProfile from './EditProfile';
+import BigAvatar from './BigAvatar';
 
 export default function EntityHeader({
   imgSrc,
@@ -20,16 +21,10 @@ export default function EntityHeader({
     <>
       <Grid container style={{ margin: '24px 0' }}>
         <Grid item>
-          <img
-            src={imgSrc}
-            alt={`Profile for ${name}`}
-            style={{
-              width: 150,
-              height: 150,
-              borderRadius: 100,
-              marginLeft: 12,
-              border: '1px solid #ccc',
-            }}
+          <BigAvatar
+            imgSrc={imgSrc}
+            editable={editable}
+            name={name}
           />
         </Grid>
         <Grid item style={{ marginLeft: 28 }}>
@@ -57,10 +52,12 @@ export default function EntityHeader({
                 key={fieldData.name}
                 style={{ display: 'flex', marginTop: 4 }}
               >
-                <Typography>{`${intl.formatMessage({
-                  id: fieldData.name.toUpperCase(),
-                  defaultMessage: capitalize(fieldData.name),
-                })}:`}</Typography>
+                <Typography>
+                  {`${intl.formatMessage({
+                    id: fieldData.name.toUpperCase(),
+                    defaultMessage: capitalize(fieldData.name),
+                  })}:`}
+                </Typography>
                 <Typography style={{ marginLeft: 4 }}>
                   {fieldData.value}
                 </Typography>

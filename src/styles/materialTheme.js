@@ -1,4 +1,4 @@
-const avenirNext = [
+export const avenirNext = [
   'Avenir Next',
   '-apple-system',
   'BlinkMacSystemFont',
@@ -12,7 +12,7 @@ const avenirNext = [
   '"Segoe UI Symbol"',
 ].join(',');
 
-const avenirNextCondensed = [
+export const avenirNextCondensed = [
   'Avenir Next Condensed',
   'Avenir Next',
   '-apple-system',

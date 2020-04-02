@@ -11,14 +11,21 @@ import {
   transloaditTemplateId,
 } from '../constants/apiKeys';
 
-export default function PhotoUploader({ title, onComplete }) {
+export default function PhotoUploader({
+  title,
+  onComplete,
+  maxFiles,
+}) {
   const intl = useIntl();
   const [uppy, setUppy] = useState(null);
 
   useEffect(() => {
     const uppyInstance = Uppy({
       meta: { type: 'test' },
-      restrictions: { maxNumberOfFiles: 10 },
+      restrictions: {
+        maxNumberOfFiles: maxFiles || 10,
+        allowedFileTypes: ['.jpg', '.jpeg', '.png'],
+      },
       autoProceed: true,
     });
 
@@ -84,8 +91,7 @@ export default function PhotoUploader({ title, onComplete }) {
                   id: 'UPPY_UPLOADING_ONE_FILE',
                 }),
                 1: intl.formatMessage({
-                  id:
-                    'UPPY_UPLOADING_MULTIPLE_FILES',
+                  id: 'UPPY_UPLOADING_MULTIPLE_FILES',
                 }),
               },
               processingXFiles: {
