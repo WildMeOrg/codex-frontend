@@ -16,6 +16,8 @@ npm install
 npm start 
 ```
 
+To successfully run the project, you will need to recreate one file that is gitignored for security reasons, `/src/constants/apiKeys.js`. Follow the instructions in the template located at `/src/constants/apiKeysTemplate.js`.
+
 ## Thanks
 
 Thanks to [Lokalise](https://lokalise.com/) for providing translation management services!

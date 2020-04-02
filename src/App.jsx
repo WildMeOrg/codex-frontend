@@ -11,6 +11,7 @@ import { selectLocale } from './modules/app/selectors';
 import Individual from './pages/individual/Individual';
 import Org from './pages/org/Org';
 import User from './pages/user/User';
+import ReportEncounters from './pages/report/ReportEncounters';
 import FourOhFour from './pages/fourohfour/FourOhFour';
 import materialTheme from './styles/materialTheme';
 import messagesEn from '../locale/en.json';
@@ -55,6 +56,9 @@ export default function App() {
               </Route>
               <Route path="/orgs/:id">
                 <Org />
+              </Route>
+              <Route path="/report">
+                <ReportEncounters />
               </Route>
               <Route path="/" exact>
                 <div />
