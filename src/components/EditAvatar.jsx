@@ -6,18 +6,27 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import ReactCrop from 'react-image-crop';
 import PhotoUploader from './PhotoUploader';
+import 'react-image-crop/dist/ReactCrop.css';
 
 export default function EditAvatar({ visible, onClose }) {
   const [choosingPhoto, setChoosingPhoto] = useState(true);
   const [imageSrc, setImageSrc] = useState(null);
+  const [crop, setCrop] = useState({
+    unit: '%',
+    width: 300,
+    aspect: 1,
+  });
 
   return (
     <Dialog open={visible} onClose={onClose}>
       <DialogTitle onClose={onClose}>
         <FormattedMessage
-          id="CHOOSE_PHOTO"
-          defaultMessage="Choose photo"
+          id={choosingPhoto ? 'CHOOSE_PHOTO' : 'CROP_PHOTO'}
+          defaultMessage={
+            choosingPhoto ? 'Choose photo' : 'Crop photo'
+          }
         />
       </DialogTitle>
       <DialogContent>
@@ -32,10 +41,12 @@ export default function EditAvatar({ visible, onClose }) {
           />
         )}
         {!choosingPhoto && (
-          <img
+          <ReactCrop
             src={imageSrc}
-            style={{ width: 300 }}
-            alt="Uploaded pixels"
+            crop={crop}
+            imageStyle={{ width: 300 }}
+            onChange={c => setCrop(c)}
+            circularCrop
           />
         )}
       </DialogContent>
@@ -61,7 +72,10 @@ export default function EditAvatar({ visible, onClose }) {
               onClick={() => setChoosingPhoto(true)}
               color="primary"
             >
-              <FormattedMessage id="BACK" defaultMessage="Back" />
+              <FormattedMessage
+                id="CHANGE_PHOTO"
+                defaultMessage="Change photo"
+              />
             </Button>
             <Button
               onClick={() => {

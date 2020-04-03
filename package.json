@@ -109,6 +109,7 @@
     "clsx": "^1.1.0",
     "date-fns": "^2.11.1",
     "query-string": "^6.9.0",
+    "react-image-crop": "^8.6.1",
     "react-intl": "^4.2.2"
   },
   "husky": {

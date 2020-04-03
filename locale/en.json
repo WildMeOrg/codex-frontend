@@ -21,6 +21,7 @@
     "LOCATION": "Location",
     "WEBSITE": "Website",
     "CHOOSE_PHOTO": "Choose photo",
+    "CROP_PHOTO": "Crop photo",
     "UPLOAD_PHOTOS": "Upload photographs",
     "404_DETAILS": "The page you are looking for may have been removed or may be temporarily unavailable.",
     "ENCOUNTERS_WITH": "Encounters with {name}",
