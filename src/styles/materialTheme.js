@@ -52,7 +52,6 @@ export default {
     },
     body2: {
       fontWeight: 300,
-      fontStyle: 'italic',
     },
   },
   overrides: {

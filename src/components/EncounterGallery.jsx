@@ -1,20 +1,12 @@
 import React, { useState } from 'react';
 import { format } from 'date-fns';
+import MUIDataTable from 'mui-datatables';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import ViewModule from '@material-ui/icons/ViewModule';
 import ViewList from '@material-ui/icons/ViewList';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import TablePagination from '@material-ui/core/TablePagination';
-import TableFooter from '@material-ui/core/TableFooter';
 import EncounterCard from './EncounterCard';
-import TablePaginationActions from './TablePaginationActions';
 import Link from './Link';
 
 export default function EncounterGallery({
@@ -65,51 +57,46 @@ export default function EncounterGallery({
         </Grid>
       )}
       {tableView && (
-        <TableContainer>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Date</TableCell>
-                <TableCell>Individual</TableCell>
-                <TableCell>Photographs</TableCell>
-                <TableCell>Submitter</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {encounters.map(encounter => (
-                <TableRow>
-                  <TableCell>
-                    {format(encounter.submissionDate, 'M/dd/yy')}
-                  </TableCell>
-                  <TableCell>
-                    <Link href="https://www.google.com/">
-                      {encounter.individualId}
-                    </Link>
-                  </TableCell>
-                  <TableCell>{encounter.photoCount}</TableCell>
-                  <TableCell>
-                    <Link href="https://www.google.com/">
-                      {encounter.user}
-                    </Link>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-            {encounters.length > 20 && (
-              <TableFooter>
-                <TableRow>
-                  <TablePagination
-                    ActionsComponent={TablePaginationActions}
-                    rowsPerPageOptions={[20]}
-                    count={encounters.length}
-                    page={0}
-                    rowsPerPage={20}
-                  />
-                </TableRow>
-              </TableFooter>
-            )}
-          </Table>
-        </TableContainer>
+        <MUIDataTable
+          columns={[
+            {
+              name: 'submissionDate',
+              label: 'Date',
+              options: {
+                customBodyRender: value => format(value, 'M/dd/yy'),
+              },
+            },
+            {
+              name: 'individualId',
+              label: 'Individual',
+              options: {
+                customBodyRender: value => (
+                  <Link href="https://www.google.com/">{value}</Link>
+                ),
+              },
+            },
+            {
+              name: 'photoCount',
+              label: 'Photographs',
+            },
+            {
+              name: 'user',
+              label: 'Submitter',
+              options: {
+                customBodyRender: value => (
+                  <Link href="https://www.google.com/">{value}</Link>
+                ),
+              },
+            },
+          ]}
+          data={encounters}
+          options={{
+            elevation: 0,
+            pagination: false,
+            print: false,
+            selectableRows: 'none',
+          }}
+        />
       )}
     </div>
   );
