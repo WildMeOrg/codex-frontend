@@ -10,9 +10,11 @@ import NotFoundPage from '../../components/NotFoundPage';
 import EncounterGallery from '../../components/EncounterGallery';
 import { selectOrgs } from '../../modules/orgs/selectors';
 import orgSchema from '../../constants/orgSchema';
+import useDocumentTitle from '../../hooks/useDocumentTitle';
 
 export default function Org() {
   const { id } = useParams();
+  useDocumentTitle(id);
 
   // fetch data for Id...
   const orgs = useSelector(selectOrgs);

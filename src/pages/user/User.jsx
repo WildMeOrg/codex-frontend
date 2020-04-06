@@ -2,15 +2,18 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
+import { capitalize } from 'lodash-es';
 import EntityHeader from '../../components/EntityHeader';
 import MainColumn from '../../components/MainColumn';
 import NotFoundPage from '../../components/NotFoundPage';
 import EncounterGallery from '../../components/EncounterGallery';
 import { selectUsers } from '../../modules/users/selectors';
 import userSchema from '../../constants/userSchema';
+import useDocumentTitle from '../../hooks/useDocumentTitle';
 
 export default function User() {
   const { id } = useParams();
+  useDocumentTitle(capitalize(id));
 
   // fetch data for Id...
   const users = useSelector(selectUsers);

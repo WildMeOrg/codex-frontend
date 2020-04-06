@@ -7,6 +7,8 @@ import MainColumn from '../../components/MainColumn';
 import NotFoundPage from '../../components/NotFoundPage';
 import EncounterGallery from '../../components/EncounterGallery';
 import { selectIndividuals } from '../../modules/individuals/selectors';
+import { selectSpeciesFields } from '../../modules/site/selectors';
+import useDocumentTitle from '../../hooks/useDocumentTitle';
 
 export default function Encounter() {
   const { id } = useParams();
@@ -14,6 +16,7 @@ export default function Encounter() {
   // fetch data for Id...
   const individuals = useSelector(selectIndividuals);
   const speciesFields = useSelector(selectSpeciesFields);
+  useDocumentTitle(`Encounter ${id}`);
 
   const individual = individuals[id];
   if (!individual)
