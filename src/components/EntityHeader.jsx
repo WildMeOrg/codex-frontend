@@ -11,15 +11,20 @@ import BigAvatar from './BigAvatar';
 export default function EntityHeader({
   imgSrc,
   name,
+  hideFields = [],
   fieldValues,
   fieldSchema,
   editable,
+  children,
 }) {
   const intl = useIntl();
   const [editingProfile, setEditingProfile] = useState(false);
   return (
     <>
-      <Grid container style={{ margin: '24px 0' }}>
+      <Grid
+        container
+        style={{ margin: '24px 0', flexWrap: 'nowrap' }}
+      >
         <Grid item>
           <BigAvatar
             imgSrc={imgSrc}
@@ -28,13 +33,13 @@ export default function EntityHeader({
           />
         </Grid>
         <Grid item style={{ marginLeft: 28 }}>
-          <div style={{ display: 'flex' }}>
+          <div style={{ display: 'flex', alignItems: 'flex-start' }}>
             <Typography variant="h4" component="h4">
               {name}
             </Typography>
             {editable && (
               <Button
-                style={{ marginLeft: 16 }}
+                style={{ marginLeft: 16, flexShrink: 0 }}
                 variant="outlined"
                 size="small"
                 onClick={() => setEditingProfile(!editingProfile)}
@@ -46,23 +51,29 @@ export default function EntityHeader({
               </Button>
             )}
           </div>
+          <div style={{ marginLeft: 4, marginTop: 4 }}>
+            {children}
+          </div>
           <div style={{ marginLeft: 4 }}>
-            {fieldValues.map(fieldData => (
-              <div
-                key={fieldData.name}
-                style={{ display: 'flex', marginTop: 4 }}
-              >
-                <Typography>
-                  {`${intl.formatMessage({
-                    id: fieldData.name.toUpperCase(),
-                    defaultMessage: capitalize(fieldData.name),
-                  })}:`}
-                </Typography>
-                <Typography style={{ marginLeft: 4 }}>
-                  {fieldData.value}
-                </Typography>
-              </div>
-            ))}
+            {fieldValues.map(fieldData => {
+              if (hideFields.includes(fieldData.name)) return null;
+              return (
+                <div
+                  key={fieldData.name}
+                  style={{ display: 'flex', marginTop: 4 }}
+                >
+                  <Typography>
+                    {`${intl.formatMessage({
+                      id: fieldData.name.toUpperCase(),
+                      defaultMessage: capitalize(fieldData.name),
+                    })}:`}
+                  </Typography>
+                  <Typography style={{ marginLeft: 4 }}>
+                    {fieldData.value}
+                  </Typography>
+                </div>
+              );
+            })}
           </div>
         </Grid>
       </Grid>

@@ -31,6 +31,7 @@ export const selectIndividuals = state => ({
     encounters: [
       {
         id: 'lkfjaoiwejflkajasd',
+        individualId: 'WB-133',
         profile: defaultProfile,
         user: 'Joe Smith',
         userId: 'lajfoiwejoiefjaasdf',
@@ -41,6 +42,7 @@ export const selectIndividuals = state => ({
       },
       {
         id: 'csljlkdjafljsdlfjs',
+        individualId: 'WB-106',
         profile: defaultProfile,
         user: 'Betty Spinoza',
         userId: 'lajfoiwejoiefjaasdf',
@@ -51,6 +53,7 @@ export const selectIndividuals = state => ({
       },
       {
         id: 'lekfjwljefoiajlfew',
+        individualId: 'WB-101',
         profile: defaultProfile,
         user: 'Joe Spinoza',
         userId: 'lajfoiwejoiefjaasdf',
@@ -61,6 +64,7 @@ export const selectIndividuals = state => ({
       },
       {
         id: 'lekfjwljefoiajlfew',
+        individualId: 'WB-142',
         profile: defaultProfile,
         user: 'Betty Smith',
         userId: 'lajfoiwejoiefjaasdf',

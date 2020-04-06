@@ -18,6 +18,14 @@ export const selectUsers = state => ({
         name: 'website',
         value: 'https://id.sito.org/uwi/',
       },
+      {
+        name: 'email',
+        value: 'alice@gmail.com',
+      },
+      {
+        name: 'forum_id',
+        value: 'awint404',
+      },
     ],
     data: {
       followedBy: [
@@ -38,6 +46,7 @@ export const selectUsers = state => ({
     encounters: [
       {
         id: 'lkfjaoiwejflkajasd',
+        individualId: 'WB-102',
         profile: defaultProfile,
         user: 'Joe Smith',
         userId: 'lajfoiwejoiefjaasdf',
@@ -48,6 +57,7 @@ export const selectUsers = state => ({
       },
       {
         id: 'csljlkdjafljsdlfjs',
+        individualId: 'WB-105',
         profile: defaultProfile,
         user: 'Betty Spinoza',
         userId: 'lajfoiwejoiefjaasdf',
@@ -58,6 +68,7 @@ export const selectUsers = state => ({
       },
       {
         id: 'lekfjwljefoiajlfew',
+        individualId: 'WB-107',
         profile: defaultProfile,
         user: 'Joe Spinoza',
         userId: 'lajfoiwejoiefjaasdf',
@@ -68,6 +79,7 @@ export const selectUsers = state => ({
       },
       {
         id: 'lekfjwljefoiajlfew',
+        individualId: 'WB-105',
         profile: defaultProfile,
         user: 'Betty Smith',
         userId: 'lajfoiwejoiefjaasdf',
@@ -95,6 +107,14 @@ export const selectUsers = state => ({
         name: 'website',
         value: 'https://id.sito.org/uwi/',
       },
+      {
+        name: 'email',
+        value: 'bob@gmail.com',
+      },
+      {
+        name: 'forum_id',
+        value: 'boboooo',
+      },
     ],
     data: {
       followedBy: [
@@ -108,6 +128,7 @@ export const selectUsers = state => ({
     encounters: [
       {
         id: 'lkfjaoiwejflkajasd',
+        individualId: 'WB-109',
         profile: defaultProfile,
         user: 'Joe Smith',
         userId: 'lajfoiwejoiefjaasdf',
@@ -118,6 +139,7 @@ export const selectUsers = state => ({
       },
       {
         id: 'csljlkdjafljsdlfjs',
+        individualId: 'WB-152',
         profile: defaultProfile,
         user: 'Betty Spinoza',
         userId: 'lajfoiwejoiefjaasdf',
@@ -128,6 +150,7 @@ export const selectUsers = state => ({
       },
       {
         id: 'lekfjwljefoiajlfew',
+        individualId: 'WB-117',
         profile: defaultProfile,
         user: 'Joe Spinoza',
         userId: 'lajfoiwejoiefjaasdf',
@@ -138,6 +161,7 @@ export const selectUsers = state => ({
       },
       {
         id: 'lekfjwljefoiajlfew',
+        individualId: 'WB-120',
         profile: defaultProfile,
         user: 'Betty Smith',
         userId: 'lajfoiwejoiefjaasdf',

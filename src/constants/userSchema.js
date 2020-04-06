@@ -17,6 +17,18 @@ const userSchema = [
     defaultValue: '',
     type: 'string',
   },
+  {
+    name: 'email',
+    translationId: 'EMAIL_ADDRESS',
+    defaultValue: '',
+    type: 'string',
+  },
+  {
+    name: 'forum_id',
+    translationId: 'FORUM_USERNAME',
+    defaultValue: '',
+    type: 'string',
+  },
 ];
 
 export default userSchema;

@@ -44,5 +44,22 @@ export default {
     h2: {
       fontFamily: avenirNextCondensed,
     },
+    h5: {
+      fontFamily: avenirNextCondensed,
+    },
+    body1: {
+      fontWeight: 300,
+    },
+    body2: {
+      fontWeight: 300,
+      fontStyle: 'italic',
+    },
+  },
+  overrides: {
+    MuiTableCell: {
+      root: {
+        fontStyle: 'unset',
+      },
+    },
   },
 };

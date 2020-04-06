@@ -14,7 +14,6 @@ export default function EncounterCard({ encounter, hideSubmitted }) {
     user,
     profile,
     photoCount,
-    matchCount,
     submissionDate,
     status,
   } = encounter;
@@ -49,8 +48,8 @@ export default function EncounterCard({ encounter, hideSubmitted }) {
           )}
         </CardMedia>
         <CardContent>
-          <Typography>
-            {format(submissionDate, 'MMMM dd, yyyy')}
+          <Typography variant="subtitle2">
+            {encounter.individualId}
           </Typography>
           <Grid container alignItems="center" justify="space-between">
             <Grid item>
@@ -71,14 +70,11 @@ export default function EncounterCard({ encounter, hideSubmitted }) {
                 color="textSecondary"
                 component="p"
               >
-                <FormattedMessage
-                  id="MATCH_COUNT"
-                  values={{ matchCount: parseInt(matchCount, 10) }}
-                />
+                {format(submissionDate, 'M/dd/yy')}
               </Typography>
             </Grid>
             {!hideSubmitted && (
-              <Typography variant="subtitle2">
+              <Typography variant="caption">
                 <FormattedMessage id="SUBMITTED_BY" />
                 <Link href="https://www.google.com/">{user}</Link>
               </Typography>
