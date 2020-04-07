@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import clsx from 'clsx';
 import { Link } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -15,7 +15,6 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
-import Button from '@material-ui/core/Button';
 import Avatar from '@material-ui/core/Avatar';
 import Badge from '@material-ui/core/Badge';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -29,8 +28,6 @@ import GroupIcon from '@material-ui/icons/Group';
 import SubjectIcon from '@material-ui/icons/Subject';
 import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 import SettingsIcon from '@material-ui/icons/Settings';
-
-import { setLocale } from '../modules/app/actions';
 import { selectLogos } from '../modules/site/selectors';
 
 const useStyles = makeStyles(theme => ({
@@ -65,7 +62,6 @@ const useStyles = makeStyles(theme => ({
 
 export default function AppHeader() {
   const classes = useStyles();
-  const dispatch = useDispatch();
 
   const logos = useSelector(selectLogos);
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -181,7 +177,7 @@ export default function AppHeader() {
                   style={{ textDecoration: 'none', color: 'unset' }}
                 >
                   <FormattedMessage
-                    id="DOCS"
+                    id="DOCUMENTATION"
                     defaultMessage="Documentation"
                   />
                 </a>
@@ -232,23 +228,11 @@ export default function AppHeader() {
           <Link to="/" style={{ display: 'flex' }}>
             <img
               src={logos.white}
-              style={{ height: 36 }}
+              style={{ height: 30 }}
               alt="Site logo"
             />
           </Link>
         </Typography>
-        <Button
-          style={{ color: 'white', textTransform: 'unset' }}
-          onClick={() => dispatch(setLocale('en'))}
-        >
-          English
-        </Button>
-        <Button
-          style={{ color: 'white', textTransform: 'unset' }}
-          onClick={() => dispatch(setLocale('es'))}
-        >
-          Español
-        </Button>
         <IconButton color="inherit">
           <Badge badgeContent={3} color="secondary">
             <NotificationsIcon />

@@ -7,6 +7,7 @@ import {
 import { IntlProvider } from 'react-intl';
 import { useSelector } from 'react-redux';
 import AppHeader from './components/AppHeader';
+import Footer from './components/Footer';
 import { selectLocale } from './modules/app/selectors';
 import Individual from './pages/individual/Individual';
 import Org from './pages/org/Org';
@@ -36,14 +37,12 @@ export default function App() {
         <BrowserRouter basename="/">
           <main
             style={{
-              display: 'flex',
               height: '100%',
               width: '100%',
-              color: 'black',
               justifyContent: 'center',
               alignItems: 'center',
               overflow: 'hidden',
-              fontFamily: 'Franklin Gothic Medium',
+              minHeight: '100vh',
             }}
           >
             <AppHeader />
@@ -68,6 +67,7 @@ export default function App() {
               </Route>
             </Switch>
           </main>
+          <Footer />
         </BrowserRouter>
       </IntlProvider>
     </ThemeProvider>
