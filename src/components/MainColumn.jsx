@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function({ children }) {
+export default function({ children, style, ...rest }) {
   return (
     <div
       style={{
@@ -9,7 +9,9 @@ export default function({ children }) {
         marginBottom: 200,
         width: '100%',
         position: 'relative',
+        ...style,
       }}
+      {...rest}
     >
       {children}
     </div>

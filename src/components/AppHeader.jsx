@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import clsx from 'clsx';
 import { Link } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -31,6 +31,7 @@ import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 import SettingsIcon from '@material-ui/icons/Settings';
 
 import { setLocale } from '../modules/app/actions';
+import { selectLogos } from '../modules/site/selectors';
 
 const useStyles = makeStyles(theme => ({
   toolbar: {
@@ -66,6 +67,7 @@ export default function AppHeader() {
   const classes = useStyles();
   const dispatch = useDispatch();
 
+  const logos = useSelector(selectLogos);
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   return (
@@ -89,7 +91,11 @@ export default function AppHeader() {
                 to="/"
                 style={{ textDecoration: 'none', color: 'unset' }}
               >
-                Wildbook
+                <img
+                  src={logos.black}
+                  style={{ height: 40 }}
+                  alt="Site logo"
+                />
               </Link>
             </Typography>
             <Divider style={{ marginTop: 12, marginBottom: 12 }} />
@@ -99,10 +105,10 @@ export default function AppHeader() {
               </ListItemIcon>
               <ListItemText>
                 <Link
-                  to="/submit-data"
+                  to="/report"
                   style={{ textDecoration: 'none', color: 'unset' }}
                 >
-                  <FormattedMessage id="SUBMIT_ENCOUNTERS" />
+                  <FormattedMessage id="REPORT_ENCOUNTERS" />
                 </Link>
               </ListItemText>
             </ListItem>
@@ -223,11 +229,12 @@ export default function AppHeader() {
           noWrap
           style={{ fontSize: 20, flexGrow: 1 }}
         >
-          <Link
-            to="/"
-            style={{ textDecoration: 'none', color: 'unset' }}
-          >
-            Wildbook
+          <Link to="/" style={{ display: 'flex' }}>
+            <img
+              src={logos.white}
+              style={{ height: 36 }}
+              alt="Site logo"
+            />
           </Link>
         </Typography>
         <Button

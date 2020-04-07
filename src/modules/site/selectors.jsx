@@ -1,3 +1,6 @@
+import logoForBlackBackground from '../../assets/logo-for-black-bg.png';
+import logoForWhiteBackground from '../../assets/logo-for-white-bg.png';
+
 export const selectSpeciesFields = state => ({
   bear: [
     {
@@ -32,4 +35,9 @@ export const selectSiteName = state => 'Flukebook';
 
 export const selectSiteSettings = state => ({
   name: 'Flukebook',
+});
+
+export const selectLogos = state => ({
+  white: logoForWhiteBackground,
+  black: logoForBlackBackground,
 });

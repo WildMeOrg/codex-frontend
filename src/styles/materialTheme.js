@@ -44,6 +44,9 @@ export default {
     h2: {
       fontFamily: avenirNextCondensed,
     },
+    h3: {
+      fontFamily: avenirNextCondensed,
+    },
     h5: {
       fontFamily: avenirNextCondensed,
     },
@@ -51,6 +54,9 @@ export default {
       fontWeight: 300,
     },
     body2: {
+      fontWeight: 300,
+    },
+    caption: {
       fontWeight: 300,
     },
   },
