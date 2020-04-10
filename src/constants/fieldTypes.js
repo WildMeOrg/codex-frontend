@@ -9,7 +9,7 @@ const fieldTypes = {
   daterange: 'daterange', // [date, date]
   select: 'select', // string
   multiselect: 'multiselect', // array of strings
-  comparator: 'comparator', // { comparator: enum (eq, lt, gt, lte, gte), value: float }
+  comparator: 'comparator', // { comparator: one of ["LT", "LTE", "GT", "GTE", "EQ"], value: float }
   boolean: 'boolean',
 };
 

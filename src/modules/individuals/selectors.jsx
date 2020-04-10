@@ -152,7 +152,6 @@ export const selectIndividualSearchSchema = state => {
   const categories = selectIndividualSearchCategories(state);
 
   return [
-    ...individualSearchSchema,
     {
       name: 'species',
       labelId: 'SPECIES',
@@ -164,8 +163,9 @@ export const selectIndividualSearchSchema = state => {
         'Kogia Sima',
         'Unknown',
       ],
-      defaultValue: null,
+      defaultValue: '',
     },
+    ...individualSearchSchema,
     {
       name: 'hasBiologicalSamples',
       label: 'Has biological samples',

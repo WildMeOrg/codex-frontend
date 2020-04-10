@@ -60,7 +60,7 @@ export default [
     category: individualSearchCategories.attributes.name,
     fieldType: fieldTypes.select,
     choices: ['male', 'female', 'non-binary', 'unknown'],
-    defaultValue: null,
+    defaultValue: '',
   },
   {
     name: 'status',
@@ -69,7 +69,7 @@ export default [
     category: individualSearchCategories.attributes.name,
     fieldType: fieldTypes.select,
     choices: ['Alive', 'Dead', 'Unknown'],
-    defaultValue: null,
+    defaultValue: '',
   },
   {
     name: 'name_contains',
@@ -85,7 +85,7 @@ export default [
     descriptionId: 'HAS_MEDIA_DESCRIPTION',
     category: individualSearchCategories.attributes.name,
     fieldType: fieldTypes.boolean,
-    defaultValue: '',
+    defaultValue: null,
   },
   {
     name: 'max_years_between_sightings',
@@ -93,6 +93,6 @@ export default [
     descriptionId: 'MAX_YEARS_BETWEEN_SIGHTINGS_DESCRIPTION',
     category: individualSearchCategories.attributes.name,
     fieldType: fieldTypes.comparator,
-    defaultValue: null,
+    defaultValue: { comparator: '', value: '' },
   },
 ];

@@ -19,7 +19,7 @@ export default function FilterPanel({
   return (
     <div>
       <Typography variant="h5" style={{ margin: '16px 0 16px 16px' }}>
-        Filters
+        <FormattedMessage id="FILTERS" />
       </Typography>
       {categoryList.map(category => {
         const filtersInCategory = filters.filter(
@@ -27,7 +27,7 @@ export default function FilterPanel({
         );
 
         return (
-          <ExpansionPanel>
+          <ExpansionPanel key={category.name}>
             <ExpansionPanelSummary
               expandIcon={<ExpandMoreIcon />}
               aria-controls={`${category.name}-filter-panel-content`}
@@ -47,10 +47,14 @@ export default function FilterPanel({
               >
                 {filtersInCategory.map(filter => (
                   <LabeledInput
+                    key={`${category.name} - ${filter.name}`}
                     schema={filter}
                     value={formValues[filter.name]}
                     onChange={value => {
-                      setFormValues({ ...formValues, [filter.name]: value });
+                      setFormValues({
+                        ...formValues,
+                        [filter.name]: value,
+                      });
                     }}
                     width={232}
                   />
