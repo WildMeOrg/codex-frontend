@@ -6,37 +6,40 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Link from '../../components/Link';
 
-export default function ResultsTable({ individuals }) {
+export default function ResultsTable({ encounters }) {
   return (
     <div style={{ marginLeft: 16, width: '80%' }}>
       <MUIDataTable
-        title={`${individuals.length} matching individuals`}
+        title={`${encounters.length} matching encounters`}
         columns={[
           {
-            name: 'lastSeen',
-            label: 'Last Seen',
+            name: 'encounterDate',
+            label: 'Encounter Date',
             options: {
               customBodyRender: value => format(value, 'M/dd/yy'),
             },
           },
           {
-            name: 'id',
+            name: 'submissionDate',
+            label: 'Submission Date',
+            options: {
+              customBodyRender: value => format(value, 'M/dd/yy'),
+            },
+          },
+          {
+            name: 'individualId',
             label: 'Individual',
           },
           {
-            name: 'alias',
-            label: 'Alias',
+            name: 'user',
+            label: 'Submitted By',
           },
           {
-            name: 'encounterCount',
-            label: 'Encounters',
-          },
-          {
-            name: 'locationsSighted',
-            label: 'Locations Sighted',
+            name: 'photoCount',
+            label: 'Photographs',
           },
         ]}
-        data={individuals}
+        data={encounters}
         options={{
           elevation: 0,
           pagination: false,
@@ -47,15 +50,15 @@ export default function ResultsTable({ individuals }) {
           expandableRows: true,
           expandableRowsOnClick: true,
           renderExpandableRow: (_, { dataIndex }) => {
-            const expandedIndividual = individuals[dataIndex];
+            const expandedEncounter = encounters[dataIndex];
 
             return (
               <tr>
                 <td colSpan={999}>
                   <div style={{ display: 'flex' }}>
                     <img
-                      src={expandedIndividual.profile}
-                      alt="Expanded individual"
+                      src={expandedEncounter.profile}
+                      alt="Expanded encounter"
                       style={{
                         width: 200,
                         height: 160,
@@ -64,7 +67,7 @@ export default function ResultsTable({ individuals }) {
                     />
                     <div style={{ padding: '20px 0' }}>
                       <Typography variant="subtitle1">
-                        Recent Activity
+                        Encounter details
                       </Typography>
                       <Typography>
                         Encounter with <Link>Tanya</Link> on{' '}
@@ -87,7 +90,7 @@ export default function ResultsTable({ individuals }) {
                         color="secondary"
                         style={{ marginTop: 16 }}
                       >
-                        View Profile
+                        View Encounter
                       </Button>
                     </div>
                   </div>

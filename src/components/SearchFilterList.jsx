@@ -24,11 +24,17 @@ export default function SearchFilterList({
 
   return (
     <div style={{ margin: '16px 0 0 16px' }}>
-      <Typography variant="subtitle2"><FormattedMessage id="ACTIVE_FILTERS" /></Typography>
-      {activeFilters.length === 0 && <Typography variant="caption"><FormattedMessage id="NO_ACTIVE_FILTERS" /></Typography>}
+      <Typography variant="subtitle2">
+        <FormattedMessage id="ACTIVE_FILTERS" />
+      </Typography>
+      {activeFilters.length === 0 && (
+        <Typography variant="caption">
+          <FormattedMessage id="NO_ACTIVE_FILTERS" />
+        </Typography>
+      )}
       <Grid container spacing={1}>
         {activeFilters.map(field => (
-          <Grid item>
+          <Grid item key={field.name}>
             <Chip
               label={getLabel(field)}
               onDelete={() =>
