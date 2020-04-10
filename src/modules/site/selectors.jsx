@@ -5,16 +5,16 @@ export const selectSpeciesFields = state => ({
   bear: [
     {
       name: 'age',
-      translationId: 'AGE',
+      labelId: 'AGE',
       defaultValue: null,
-      type: 'number',
+      type: 'integer',
     },
     {
       name: 'sex',
-      translationId: 'SEX',
+      labelId: 'SEX',
       defaultValue: 'Unknown',
-      type: 'enum',
-      values: [
+      type: 'select',
+      choices: [
         'Unknown',
         'Male',
         'Female',
@@ -24,7 +24,7 @@ export const selectSpeciesFields = state => ({
     },
     {
       name: 'status',
-      translationId: 'STATUS',
+      labelId: 'STATUS',
       defaultValue: '',
       type: 'string',
     },

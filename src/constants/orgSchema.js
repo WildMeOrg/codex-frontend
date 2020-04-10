@@ -1,15 +1,15 @@
 const orgSchema = [
   {
     name: 'description',
-    translationId: 'DESCRIPTION',
+    labelId: 'DESCRIPTION',
     defaultValue: '',
-    type: 'longstring',
+    fieldType: 'longstring',
   },
   {
     name: 'website',
-    translationId: 'WEBSITE',
+    labelId: 'WEBSITE',
     defaultValue: '',
-    type: 'string',
+    fieldType: 'string',
   },
 ];
 

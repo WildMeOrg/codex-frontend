@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
+import Divider from '@material-ui/core/Divider';
 import TwitterIcon from '@material-ui/icons/Twitter';
 import FacebookIcon from '@material-ui/icons/Facebook';
 import { setLocale } from '../modules/app/actions';
@@ -16,7 +17,7 @@ export default function Footer() {
 
   return (
     <div style={{ width: '100%', paddingBottom: 16 }}>
-      <hr />
+      <Divider />
       <div
         style={{
           display: 'flex',
@@ -67,7 +68,7 @@ export default function Footer() {
         </Typography>
       </div>
       <div style={{ width: '80%', margin: '0 auto' }}>
-        <hr />
+        <Divider />
         <div
           style={{
             display: 'flex',

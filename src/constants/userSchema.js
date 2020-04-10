@@ -1,33 +1,33 @@
 const userSchema = [
   {
     name: 'affiliation',
-    translationId: 'AFFILIATION',
+    labelId: 'AFFILIATION',
     defaultValue: '',
-    type: 'string',
+    fieldType: 'string',
   },
   {
     name: 'location',
-    translationId: 'LOCATION',
+    labelId: 'LOCATION',
     defaultValue: '',
-    type: 'string',
+    fieldType: 'string',
   },
   {
     name: 'website',
-    translationId: 'WEBSITE',
+    labelId: 'WEBSITE',
     defaultValue: '',
-    type: 'string',
+    fieldType: 'string',
   },
   {
     name: 'email',
-    translationId: 'EMAIL_ADDRESS',
+    labelId: 'EMAIL_ADDRESS',
     defaultValue: '',
-    type: 'string',
+    fieldType: 'string',
   },
   {
     name: 'forum_id',
-    translationId: 'FORUM_USERNAME',
+    labelId: 'FORUM_USERNAME',
     defaultValue: '',
-    type: 'string',
+    fieldType: 'string',
   },
 ];
 

@@ -14,6 +14,7 @@ import Org from './pages/org/Org';
 import User from './pages/user/User';
 import ReportEncounters from './pages/report/ReportEncounters';
 import FourOhFour from './pages/fourohfour/FourOhFour';
+import SearchIndividuals from './pages/individual/SearchIndividuals';
 import materialTheme from './styles/materialTheme';
 import messagesEn from '../locale/en.json';
 import messagesEs from '../locale/es.json';
@@ -49,6 +50,9 @@ export default function App() {
             <Switch>
               <Route path="/individuals/:id">
                 <Individual />
+              </Route>
+              <Route path="/individuals">
+                <SearchIndividuals />
               </Route>
               <Route path="/users/:id">
                 <User />

@@ -23,7 +23,7 @@ export default function EntityHeader({
     <>
       <Grid
         container
-        style={{ margin: '24px 0', flexWrap: 'nowrap' }}
+        style={{ padding: '24px 0', flexWrap: 'nowrap' }}
       >
         <Grid item>
           <BigAvatar
