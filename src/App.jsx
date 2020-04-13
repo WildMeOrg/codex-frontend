@@ -11,7 +11,9 @@ import Footer from './components/Footer';
 import { selectLocale } from './modules/app/selectors';
 import Individual from './pages/individual/Individual';
 import Org from './pages/org/Org';
+import Orgs from './pages/org/Orgs';
 import User from './pages/user/User';
+import Users from './pages/user/Users';
 import ReportEncounters from './pages/report/ReportEncounters';
 import FourOhFour from './pages/fourohfour/FourOhFour';
 import SearchIndividuals from './pages/individual/SearchIndividuals';
@@ -61,8 +63,14 @@ export default function App() {
               <Route path="/users/:id">
                 <User />
               </Route>
+              <Route path="/users">
+                <Users />
+              </Route>
               <Route path="/orgs/:id">
                 <Org />
+              </Route>
+              <Route path="/orgs">
+                <Orgs />
               </Route>
               <Route path="/report">
                 <ReportEncounters />

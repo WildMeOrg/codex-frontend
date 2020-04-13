@@ -46,6 +46,7 @@ export default function Org() {
         fieldSchema={orgSchema}
         editable={org.editable}
         hideFields={['description']}
+        square
       >
         <Typography variant="body2">
           {get(description, '0.value')}

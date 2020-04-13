@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import clsx from 'clsx';
-import { Link } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
 import { useSelector } from 'react-redux';
 
@@ -29,6 +28,7 @@ import SubjectIcon from '@material-ui/icons/Subject';
 import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 import SettingsIcon from '@material-ui/icons/Settings';
 import { selectLogos } from '../modules/site/selectors';
+import Link from './Link';
 
 const useStyles = makeStyles(theme => ({
   toolbar: {
@@ -83,10 +83,7 @@ export default function AppHeader() {
                 marginLeft: 16,
               }}
             >
-              <Link
-                to="/"
-                style={{ textDecoration: 'none', color: 'unset' }}
-              >
+              <Link noUnderline href="/">
                 <img
                   src={logos.black}
                   style={{ height: 40 }}
@@ -100,10 +97,7 @@ export default function AppHeader() {
                 <AddToPhotosIcon />
               </ListItemIcon>
               <ListItemText>
-                <Link
-                  to="/report"
-                  style={{ textDecoration: 'none', color: 'unset' }}
-                >
+                <Link noUnderline href="/report">
                   <FormattedMessage id="REPORT_ENCOUNTERS" />
                 </Link>
               </ListItemText>
@@ -114,10 +108,12 @@ export default function AppHeader() {
                 <PhotoCameraIcon />
               </ListItemIcon>
               <ListItemText>
-                <FormattedMessage
-                  id="ENCOUNTERS"
-                  defaultMessage="Encounters"
-                />
+                <Link href="/encounters" noUnderline>
+                  <FormattedMessage
+                    id="ENCOUNTERS"
+                    defaultMessage="Encounters"
+                  />
+                </Link>
               </ListItemText>
             </ListItem>
             <ListItem>
@@ -125,10 +121,12 @@ export default function AppHeader() {
                 <AndroidIcon />
               </ListItemIcon>
               <ListItemText>
-                <FormattedMessage
-                  id="INDIVIDUALS"
-                  defaultMessage="Individuals"
-                />
+                <Link href="/individuals" noUnderline>
+                  <FormattedMessage
+                    id="INDIVIDUALS"
+                    defaultMessage="Individuals"
+                  />
+                </Link>
               </ListItemText>
             </ListItem>
             <ListItem>
@@ -136,7 +134,12 @@ export default function AppHeader() {
                 <PersonIcon />
               </ListItemIcon>
               <ListItemText>
-                <FormattedMessage id="USERS" defaultMessage="Users" />
+                <Link href="/users" noUnderline>
+                  <FormattedMessage
+                    id="USERS"
+                    defaultMessage="Users"
+                  />
+                </Link>
               </ListItemText>
             </ListItem>
             <ListItem>
@@ -144,10 +147,12 @@ export default function AppHeader() {
                 <GroupIcon />
               </ListItemIcon>
               <ListItemText>
-                <FormattedMessage
-                  id="ORGANIZATIONS"
-                  defaultMessage="Organizations"
-                />
+                <Link href="/orgs" noUnderline>
+                  <FormattedMessage
+                    id="ORGANIZATIONS"
+                    defaultMessage="Organizations"
+                  />
+                </Link>
               </ListItemText>
             </ListItem>
             <Divider style={{ marginTop: 12, marginBottom: 12 }} />
@@ -156,15 +161,16 @@ export default function AppHeader() {
                 <HelpOutlineIcon />
               </ListItemIcon>
               <ListItemText>
-                <a
+                <Link
                   href="https://community.wildbook.org/"
-                  style={{ textDecoration: 'none', color: 'unset' }}
+                  noUnderline
+                  external
                 >
                   <FormattedMessage
                     id="HELP_AND_FEEDBACK"
                     defaultMessage="Help & Feedback"
                   />
-                </a>
+                </Link>
               </ListItemText>
             </ListItem>
             <ListItem>
@@ -172,15 +178,16 @@ export default function AppHeader() {
                 <SubjectIcon />
               </ListItemIcon>
               <ListItemText>
-                <a
+                <Link
                   href="http://wiki.wildbook.org/"
-                  style={{ textDecoration: 'none', color: 'unset' }}
+                  noUnderline
+                  external
                 >
                   <FormattedMessage
                     id="DOCUMENTATION"
                     defaultMessage="Documentation"
                   />
-                </a>
+                </Link>
               </ListItemText>
             </ListItem>
             <ListItem>
@@ -225,7 +232,7 @@ export default function AppHeader() {
           noWrap
           style={{ fontSize: 20, flexGrow: 1 }}
         >
-          <Link to="/" style={{ display: 'flex' }}>
+          <Link href="/" noUnderline style={{ display: 'flex' }}>
             <img
               src={logos.white}
               style={{ height: 30 }}

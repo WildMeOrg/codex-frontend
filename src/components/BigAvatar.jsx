@@ -3,7 +3,12 @@ import { FormattedMessage } from 'react-intl';
 import SvgText from './SvgText';
 import EditAvatar from './EditAvatar';
 
-export default function BigAvatar({ imgSrc, name, editable }) {
+export default function BigAvatar({
+  imgSrc,
+  name,
+  editable,
+  square = false,
+}) {
   const [avatarHovered, setAvatarHovered] = useState(false);
   const [editingAvatar, setEditingAvatar] = useState(false);
 
@@ -20,6 +25,7 @@ export default function BigAvatar({ imgSrc, name, editable }) {
     >
       <EditAvatar
         visible={editingAvatar}
+        square={square}
         onClose={() => setEditingAvatar(false)}
       />
       <img
@@ -28,7 +34,7 @@ export default function BigAvatar({ imgSrc, name, editable }) {
         style={{
           width: 150,
           height: 150,
-          borderRadius: '50%',
+          borderRadius: square ? 'unset' : '50%',
           border: '1px solid #ccc',
         }}
       />
@@ -51,14 +57,25 @@ export default function BigAvatar({ imgSrc, name, editable }) {
               <rect x={0} y={75} width={150} height={75} />
             </clipPath>
           </defs>
-          <ellipse
-            cx={75}
-            cy={75}
-            rx={75}
-            ry={75}
-            fill="rgba(0, 0, 0, 0.5)"
-            clipPath="url(#cut-off-top)"
-          />
+          {square ? (
+            <rect
+              x={0}
+              y={75}
+              width={150}
+              height={60}
+              fill="rgba(0, 0, 0, 0.5)"
+              clipPath="url(#cut-off-top)"
+            />
+          ) : (
+            <ellipse
+              cx={75}
+              cy={75}
+              rx={75}
+              ry={75}
+              fill="rgba(0, 0, 0, 0.5)"
+              clipPath="url(#cut-off-top)"
+            />
+          )}
           <SvgText x={75} y={110} fill="white">
             <FormattedMessage id="CHANGE_PHOTO" />
           </SvgText>

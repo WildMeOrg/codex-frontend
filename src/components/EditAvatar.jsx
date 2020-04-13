@@ -10,7 +10,7 @@ import ReactCrop from 'react-image-crop';
 import PhotoUploader from './PhotoUploader';
 import 'react-image-crop/dist/ReactCrop.css';
 
-export default function EditAvatar({ visible, onClose }) {
+export default function EditAvatar({ visible, onClose, square }) {
   const [choosingPhoto, setChoosingPhoto] = useState(true);
   const [imageSrc, setImageSrc] = useState(null);
   const [crop, setCrop] = useState({
@@ -46,7 +46,7 @@ export default function EditAvatar({ visible, onClose }) {
             crop={crop}
             imageStyle={{ width: 300 }}
             onChange={c => setCrop(c)}
-            circularCrop
+            circularCrop={!square}
           />
         )}
       </DialogContent>

@@ -16,6 +16,7 @@ export default function EntityHeader({
   fieldSchema,
   editable,
   children,
+  square = false,
 }) {
   const intl = useIntl();
   const [editingProfile, setEditingProfile] = useState(false);
@@ -30,6 +31,7 @@ export default function EntityHeader({
             imgSrc={imgSrc}
             editable={editable}
             name={name}
+            square={square}
           />
         </Grid>
         <Grid item style={{ marginLeft: 28 }}>

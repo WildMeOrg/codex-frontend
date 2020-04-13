@@ -3,6 +3,7 @@ import defaultProfile from '../../assets/defaultProfile.jpg';
 export const selectUsers = state => ({
   alice: {
     name: 'Alice Winterland',
+    id: 'alice',
     profile: defaultProfile,
     editable: false,
     fields: [
@@ -92,6 +93,7 @@ export const selectUsers = state => ({
   },
   bob: {
     name: 'Bob Dakota',
+    id: 'bob',
     profile: defaultProfile,
     editable: true,
     fields: [

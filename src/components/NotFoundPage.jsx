@@ -17,14 +17,17 @@ export default function NotFoundPage({ title, subtitle, details }) {
     >
       <div
         style={{
-          marginTop: 80,
+          marginTop: 64,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
           textAlign: 'center',
         }}
       >
-        <Typography variant="h1" style={{ fontSize: 120 }}>
+        <Typography
+          variant="h1"
+          style={{ fontSize: 120, marginTop: 40 }}
+        >
           {title}
         </Typography>
         <Typography variant="h4">{subtitle}</Typography>

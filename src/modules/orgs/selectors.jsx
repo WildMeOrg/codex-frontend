@@ -3,6 +3,7 @@ import defaultProfile from '../../assets/defaultProfile.jpg';
 export const selectOrgs = state => ({
   noaa: {
     name: 'National Oceanic and Atmospheric Organization',
+    id: 'noaa',
     editable: true,
     profile: defaultProfile,
     fields: [
