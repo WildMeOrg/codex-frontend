@@ -65,7 +65,7 @@ export default [
   {
     name: 'status',
     labelId: 'STATUS',
-    descriptionId: 'STATUS_DESCRIPTION',
+    descriptionId: 'STATUS_INDIVIDUALS_DESCRIPTION',
     category: individualSearchCategories.attributes.name,
     fieldType: fieldTypes.select,
     choices: ['Alive', 'Dead', 'Unknown'],
@@ -82,7 +82,7 @@ export default [
   {
     name: 'has_media',
     labelId: 'HAS_MEDIA',
-    descriptionId: 'HAS_MEDIA_DESCRIPTION',
+    descriptionId: 'HAS_MEDIA_INDIVIDUALS_DESCRIPTION',
     category: individualSearchCategories.attributes.name,
     fieldType: fieldTypes.boolean,
     defaultValue: null,

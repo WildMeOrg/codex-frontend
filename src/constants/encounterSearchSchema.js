@@ -49,7 +49,7 @@ export default [
   {
     name: 'status',
     labelId: 'STATUS',
-    descriptionId: 'STATUS_DESCRIPTION',
+    descriptionId: 'STATUS_ENCOUNTERS_DESCRIPTION',
     category: encounterSearchCategories.attributes.name,
     fieldType: fieldTypes.select,
     choices: ['Alive', 'Dead', 'Unknown'],
@@ -66,7 +66,7 @@ export default [
   {
     name: 'has_media',
     labelId: 'HAS_MEDIA',
-    descriptionId: 'HAS_MEDIA_DESCRIPTION',
+    descriptionId: 'HAS_MEDIA_ENCOUNTERS_DESCRIPTION',
     category: encounterSearchCategories.attributes.name,
     fieldType: fieldTypes.boolean,
     defaultValue: null,

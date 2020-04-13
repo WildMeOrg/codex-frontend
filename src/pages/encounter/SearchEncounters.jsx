@@ -76,9 +76,7 @@ export default function SearchEncounters() {
           setFormValues={setFormValues}
           schema={schema}
         />
-        <ResultsTable
-          encounters={useSelector(selectSearchResults)}
-        />
+        <ResultsTable encounters={useSelector(selectSearchResults)} />
       </div>
     </div>
   );

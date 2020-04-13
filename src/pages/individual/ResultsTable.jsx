@@ -10,7 +10,6 @@ export default function ResultsTable({ individuals }) {
   return (
     <div style={{ marginLeft: 16, width: '80%' }}>
       <MUIDataTable
-        title={`${individuals.length} matching individuals`}
         columns={[
           {
             name: 'lastSeen',
@@ -67,20 +66,24 @@ export default function ResultsTable({ individuals }) {
                         Recent Activity
                       </Typography>
                       <Typography>
-                        Encounter with <Link>Tanya</Link> on{' '}
-                        <Link>4/12/2019</Link>
+                        Encounter with{' '}
+                        <Link href="google.com">Tanya</Link> on{' '}
+                        <Link href="google.com">4/12/2019</Link>
                       </Typography>
                       <Typography>
-                        Encounter with <Link>Drew</Link> on{' '}
-                        <Link>4/6/2019</Link>
+                        Encounter with{' '}
+                        <Link href="google.com">Drew</Link> on{' '}
+                        <Link href="google.com">4/6/2019</Link>
                       </Typography>
                       <Typography>
-                        Encounter with <Link>Colin</Link> on{' '}
-                        <Link>4/2/2019</Link>
+                        Encounter with{' '}
+                        <Link href="google.com">Colin</Link> on{' '}
+                        <Link href="google.com">4/2/2019</Link>
                       </Typography>
                       <Typography>
-                        Encounter with <Link>Jasonx</Link> on{' '}
-                        <Link>3/16/2019</Link>
+                        Encounter with{' '}
+                        <Link href="google.com">Jasonx</Link> on{' '}
+                        <Link href="google.com">3/16/2019</Link>
                       </Typography>
                       <Button
                         variant="outlined"

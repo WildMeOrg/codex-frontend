@@ -152,7 +152,11 @@ export default function LabeledInput({
         <Typography variant="subtitle2" style={{ marginTop: 16 }}>
           {getLabel(schema)}
         </Typography>
-        <Typography variant="caption" style={{ marginTop: 4 }}>
+        <Typography
+          variant="caption"
+          color="textSecondary"
+          style={{ marginTop: 4 }}
+        >
           {getDescription(schema)}
         </Typography>
         <KeyboardDatePicker

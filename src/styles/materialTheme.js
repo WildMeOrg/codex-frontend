@@ -59,6 +59,9 @@ export default {
     caption: {
       fontWeight: 300,
     },
+    subtitle1: {
+      fontSize: '1.1em',
+    },
   },
   overrides: {
     MuiTableCell: {

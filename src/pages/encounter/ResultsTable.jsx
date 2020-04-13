@@ -4,13 +4,11 @@ import { format } from 'date-fns';
 import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import Link from '../../components/Link';
 
 export default function ResultsTable({ encounters }) {
   return (
     <div style={{ marginLeft: 16, width: '80%' }}>
       <MUIDataTable
-        title={`${encounters.length} matching encounters`}
         columns={[
           {
             name: 'encounterDate',
@@ -70,21 +68,9 @@ export default function ResultsTable({ encounters }) {
                         Encounter details
                       </Typography>
                       <Typography>
-                        Encounter with <Link>Tanya</Link> on{' '}
-                        <Link>4/12/2019</Link>
+                        Species: Megaptera novaeangliae
                       </Typography>
-                      <Typography>
-                        Encounter with <Link>Drew</Link> on{' '}
-                        <Link>4/6/2019</Link>
-                      </Typography>
-                      <Typography>
-                        Encounter with <Link>Colin</Link> on{' '}
-                        <Link>4/2/2019</Link>
-                      </Typography>
-                      <Typography>
-                        Encounter with <Link>Jasonx</Link> on{' '}
-                        <Link>3/16/2019</Link>
-                      </Typography>
+                      <Typography>Region: South Sahara</Typography>
                       <Button
                         variant="outlined"
                         color="secondary"

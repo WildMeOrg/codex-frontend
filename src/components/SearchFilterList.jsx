@@ -24,11 +24,11 @@ export default function SearchFilterList({
 
   return (
     <div style={{ margin: '16px 0 0 16px' }}>
-      <Typography variant="subtitle2">
+      <Typography variant="subtitle1">
         <FormattedMessage id="ACTIVE_FILTERS" />
       </Typography>
       {activeFilters.length === 0 && (
-        <Typography variant="caption">
+        <Typography>
           <FormattedMessage id="NO_ACTIVE_FILTERS" />
         </Typography>
       )}
@@ -37,6 +37,7 @@ export default function SearchFilterList({
           <Grid item key={field.name}>
             <Chip
               label={getLabel(field)}
+              style={{ marginTop: 4 }}
               onDelete={() =>
                 setFormValues({
                   ...formValues,
