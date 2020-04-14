@@ -26,7 +26,7 @@ export default function EntityHeader({
         container
         style={{ padding: '24px 0', flexWrap: 'nowrap' }}
       >
-        <Grid item>
+        <Grid style={{ marginLeft: 12 }} item>
           <BigAvatar
             imgSrc={imgSrc}
             editable={editable}

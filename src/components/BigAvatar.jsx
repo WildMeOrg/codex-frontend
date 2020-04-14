@@ -18,7 +18,6 @@ export default function BigAvatar({
         width: 150,
         height: 150,
         position: 'relative',
-        marginLeft: 12,
         borderRadius: '50%',
         cursor: editable ? 'pointer' : 'unset',
       }}

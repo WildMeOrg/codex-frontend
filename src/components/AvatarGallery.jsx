@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { useIntl, FormattedMessage } from 'react-intl';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Input from '@material-ui/core/Input';
@@ -14,6 +14,7 @@ export default function AvatarGallery({
   getHref,
   square = false,
 }) {
+    const intl = useIntl();
   const [filter, setFilter] = useState('');
 
   const filteredEntities = entities.filter(org =>
@@ -23,7 +24,8 @@ export default function AvatarGallery({
   return (
     <>
       <Input
-        style={{ margin: '16px 0 20px 16px', width: 300 }}
+        style={{ margin: '16px 0 20px 16px', width: 260 }}
+        placeholder={intl.formatMessage({ id: 'SEARCH' })}
         value={filter}
         onChange={e => setFilter(e.target.value)}
         startAdornment={
@@ -40,7 +42,7 @@ export default function AvatarGallery({
           />
         </Typography>
       )}
-      <Grid container spacing={3}>
+      <Grid container spacing={6} justify="center">
         {filteredEntities.map((entity, i) => {
           return (
             <Grid
