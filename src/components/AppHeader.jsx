@@ -83,7 +83,11 @@ export default function AppHeader() {
                 marginLeft: 16,
               }}
             >
-              <Link noUnderline href="/">
+              <Link
+                noUnderline
+                href="/"
+                onClick={() => setDrawerOpen(false)}
+              >
                 <img
                   src={logos.black}
                   style={{ height: 40 }}
@@ -97,7 +101,11 @@ export default function AppHeader() {
                 <AddToPhotosIcon />
               </ListItemIcon>
               <ListItemText>
-                <Link noUnderline href="/report">
+                <Link
+                  noUnderline
+                  href="/report"
+                  onClick={() => setDrawerOpen(false)}
+                >
                   <FormattedMessage id="REPORT_ENCOUNTERS" />
                 </Link>
               </ListItemText>
@@ -108,7 +116,11 @@ export default function AppHeader() {
                 <PhotoCameraIcon />
               </ListItemIcon>
               <ListItemText>
-                <Link href="/encounters" noUnderline>
+                <Link
+                  href="/encounters"
+                  noUnderline
+                  onClick={() => setDrawerOpen(false)}
+                >
                   <FormattedMessage
                     id="ENCOUNTERS"
                     defaultMessage="Encounters"
@@ -121,7 +133,11 @@ export default function AppHeader() {
                 <AndroidIcon />
               </ListItemIcon>
               <ListItemText>
-                <Link href="/individuals" noUnderline>
+                <Link
+                  href="/individuals"
+                  noUnderline
+                  onClick={() => setDrawerOpen(false)}
+                >
                   <FormattedMessage
                     id="INDIVIDUALS"
                     defaultMessage="Individuals"
@@ -134,7 +150,11 @@ export default function AppHeader() {
                 <PersonIcon />
               </ListItemIcon>
               <ListItemText>
-                <Link href="/users" noUnderline>
+                <Link
+                  href="/users"
+                  noUnderline
+                  onClick={() => setDrawerOpen(false)}
+                >
                   <FormattedMessage
                     id="USERS"
                     defaultMessage="Users"
@@ -147,7 +167,11 @@ export default function AppHeader() {
                 <GroupIcon />
               </ListItemIcon>
               <ListItemText>
-                <Link href="/orgs" noUnderline>
+                <Link
+                  href="/orgs"
+                  noUnderline
+                  onClick={() => setDrawerOpen(false)}
+                >
                   <FormattedMessage
                     id="ORGANIZATIONS"
                     defaultMessage="Organizations"
@@ -232,7 +256,12 @@ export default function AppHeader() {
           noWrap
           style={{ fontSize: 20, flexGrow: 1 }}
         >
-          <Link href="/" noUnderline style={{ display: 'flex' }}>
+          <Link
+            href="/"
+            noUnderline
+            style={{ display: 'flex' }}
+            onClick={() => setDrawerOpen(false)}
+          >
             <img
               src={logos.white}
               style={{ height: 30 }}

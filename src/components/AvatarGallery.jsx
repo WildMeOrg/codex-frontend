@@ -14,7 +14,7 @@ export default function AvatarGallery({
   getHref,
   square = false,
 }) {
-    const intl = useIntl();
+  const intl = useIntl();
   const [filter, setFilter] = useState('');
 
   const filteredEntities = entities.filter(org =>

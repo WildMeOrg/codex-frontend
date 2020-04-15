@@ -3,13 +3,15 @@ import { useSelector } from 'react-redux';
 import { useIntl } from 'react-intl';
 import { get } from 'lodash-es';
 import Typography from '@material-ui/core/Typography';
+import AnnotationEditor from '../../components/AnnotationEditor';
 import AvatarGallery from '../../components/AvatarGallery';
 import MainColumn from '../../components/MainColumn';
 import { selectUsers } from '../../modules/users/selectors';
 import { selectSiteName } from '../../modules/site/selectors';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
+import testo from '../../assets/defaultProfile.jpg';
 
-export default function User() {
+export default function Users() {
   const intl = useIntl();
   const siteName = useSelector(selectSiteName);
   const pageTitle = intl.formatMessage(
@@ -46,6 +48,7 @@ export default function User() {
       >
         {pageTitle}
       </Typography>
+      <AnnotationEditor imgSrc={testo} />
       <AvatarGallery
         entities={fakeUsers}
         getHref={entity => `/users/${entity.id}`}
