@@ -3,6 +3,7 @@ import { FormattedMessage } from 'react-intl';
 import { useSelector } from 'react-redux';
 import Hidden from '@material-ui/core/Hidden';
 import Drawer from '@material-ui/core/Drawer';
+import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import FilterPanel from '../../components/FilterPanel';
 import SearchFilterList from '../../components/SearchFilterList';
@@ -29,6 +30,7 @@ export default function SearchEncounters() {
   const categories = useSelector(selectEncounterSearchCategories);
   const schema = useSelector(selectEncounterSearchSchema);
 
+  const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
   const [formValues, setFormValues] = useState(
     schema.reduce((memo, filter) => {
       memo[filter.name] = filter.defaultValue;
@@ -40,10 +42,11 @@ export default function SearchEncounters() {
     <div style={{ display: 'flex' }}>
       <Hidden smUp>
         <Drawer
-          open
-          style={{ zIndex: 0 }}
+          open={mobileDrawerOpen}
+          style={{ zIndex: 300 }}
           variant="temporary"
           PaperProps={paperProps}
+          onClose={() => setMobileDrawerOpen(false)}
         >
           <FilterPanel
             categories={categories}
@@ -76,6 +79,9 @@ export default function SearchEncounters() {
           setFormValues={setFormValues}
           schema={schema}
         />
+        <Hidden smUp>
+          <Button style={{ margin: 16 }} variant="outlined" onClick={() => setMobileDrawerOpen(true)}><FormattedMessage id="SHOW_FILTERS" /></Button>
+        </Hidden>
         <ResultsTable encounters={useSelector(selectSearchResults)} />
       </div>
     </div>

@@ -75,6 +75,7 @@
     "ON": " on ",
     "STATUS": "Status",
     "FILTERS": "Filters",
+    "SHOW_FILTERS": "Show filters",
     "SEARCH": "Search",
     "FILTER_NO_MATCHES": "No matches for the filter \"{filter}\".",
     "EXPLORE_INDIVIDUALS": "Explore Individuals",

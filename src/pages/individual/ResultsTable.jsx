@@ -45,6 +45,7 @@ export default function ResultsTable({ individuals }) {
           selectableRows: 'none',
           expandableRows: true,
           expandableRowsOnClick: true,
+          responsive: 'scrollMaxHeight',
           renderExpandableRow: (_, { dataIndex }) => {
             const expandedIndividual = individuals[dataIndex];
 

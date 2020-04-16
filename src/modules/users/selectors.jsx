@@ -118,6 +118,22 @@ export const selectUsers = state => ({
         value: 'boboooo',
       },
     ],
+    settings: {
+      pendingReports: [
+        {
+          mode: 'standard',
+          uploads: ['abc.org'],
+          species: 'dolphinicus gravitus',
+          dataGroups: [
+            {
+              date: Date.now(),
+              location: 'Mexico',
+              associatedUploads: ['abc.org'],
+            },
+          ],
+        },
+      ],
+    },
     data: {
       followedBy: [
         { id: 'jsmith42', name: 'Joe Smith' },
