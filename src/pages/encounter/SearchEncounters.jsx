@@ -80,7 +80,13 @@ export default function SearchEncounters() {
           schema={schema}
         />
         <Hidden smUp>
-          <Button style={{ margin: 16 }} variant="outlined" onClick={() => setMobileDrawerOpen(true)}><FormattedMessage id="SHOW_FILTERS" /></Button>
+          <Button
+            style={{ margin: 16 }}
+            variant="outlined"
+            onClick={() => setMobileDrawerOpen(true)}
+          >
+            <FormattedMessage id="SHOW_FILTERS" />
+          </Button>
         </Hidden>
         <ResultsTable encounters={useSelector(selectSearchResults)} />
       </div>

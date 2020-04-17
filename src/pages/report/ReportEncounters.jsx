@@ -11,12 +11,15 @@ import MainColumn from '../../components/MainColumn';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import StandardReport from './StandardReport';
 import BulkReport from './BulkReport';
-import NoPhotoReport from './NoPhotoReport';
+import UploadManager from './UploadManager';
 
 export default function ReportEncounters() {
   useDocumentTitle('Report Encounters');
-  const [mode, setMode] = useState(null);
+  const [mode, setMode] = useState('');
+  const [files, setFiles] = useState([]);
   const [reporting, setReporting] = useState(false);
+
+  const noImages = mode !== '' && files.length === 0;
 
   return (
     <MainColumn style={{ display: 'flex', justifyContent: 'center' }}>
@@ -24,7 +27,7 @@ export default function ReportEncounters() {
         container
         direction="column"
         spacing={2}
-        style={{ width: 400, marginTop: 20 }}
+        style={{ marginTop: 20 }}
       >
         {!reporting && (
           <>
@@ -43,48 +46,60 @@ export default function ReportEncounters() {
                   <FormControlLabel
                     value="standard"
                     control={<Radio />}
-                    onClick={e => setMode(e.target.value)}
-                    label={<FormattedMessage id="STANDARD_REPORT" />}
+                    onClick={e => {
+                      if (e.target.value) setMode(e.target.value);
+                    }}
+                    label={<FormattedMessage id="ONE_SIGHTING" />}
                   />
                   <Typography variant="caption">
-                    <FormattedMessage id="STANDARD_REPORT_DESCRIPTION" />
-                  </Typography>
-                  <FormControlLabel
-                    value="nophoto"
-                    control={<Radio />}
-                    onClick={e => setMode(e.target.value)}
-                    label={<FormattedMessage id="NO_PHOTOGRAPHS" />}
-                  />
-                  <Typography variant="caption">
-                    <FormattedMessage id="NO_PHOTOGRAPHS_DESCRIPTION" />
+                    <FormattedMessage id="ONE_SIGHTING_DESCRIPTION" />
                   </Typography>
                   <FormControlLabel
                     value="bulk"
                     control={<Radio />}
-                    onClick={e => setMode(e.target.value)}
-                    label={<FormattedMessage id="BULK_UPLOAD" />}
+                    onClick={e => {
+                      if (e.target.value) setMode(e.target.value);
+                    }}
+                    label={
+                      <FormattedMessage id="MULTIPLE_SIGHTINGS" />
+                    }
                   />
                   <Typography variant="caption">
-                    <FormattedMessage id="BULK_UPLOAD_DESCRIPTION" />
+                    <FormattedMessage id="MULTIPLE_SIGHTINGS_DESCRIPTION" />
                   </Typography>
                 </RadioGroup>
               </FormControl>
             </Grid>
 
+            {mode !== '' && (
+              <Grid item>
+                <UploadManager
+                  files={files}
+                  setFiles={setFiles}
+                />
+              </Grid>
+            )}
+
             <Grid item>
               <Button
                 variant="contained"
-                color="secondary"
+                color={noImages ? 'default' : 'secondary'}
                 disabled={!mode}
                 onClick={() => setReporting(true)}
+                style={{ marginTop: 16 }}
               >
-                <FormattedMessage id="CONTINUE" />
+                <FormattedMessage
+                  id={
+                    noImages
+                      ? 'CONTINUE_WITHOUT_PHOTOGRAPHS'
+                      : 'CONTINUE'
+                  }
+                />
               </Button>
             </Grid>
           </>
         )}
         {reporting && mode === 'standard' && <StandardReport />}
-        {reporting && mode === 'nophoto' && <NoPhotoReport />}
         {reporting && mode === 'bulk' && <BulkReport />}
       </Grid>
     </MainColumn>

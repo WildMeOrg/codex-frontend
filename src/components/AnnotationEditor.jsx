@@ -7,7 +7,8 @@ export default function AnnotationEditor({ id, imgSrc, onChange }) {
   const theme = useTheme();
 
   if (div && div.current) {
-    new BboxAnnotator(imgSrc, { // eslint-disable-line no-new
+    new BboxAnnotator(imgSrc, {
+      // eslint-disable-line no-new
       prefix: `${id}-`,
       mode: 'rectangle',
       modes: 'rectangle',
