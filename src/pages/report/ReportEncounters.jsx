@@ -16,7 +16,13 @@ import UploadManager from './UploadManager';
 export default function ReportEncounters() {
   useDocumentTitle('Report Encounters');
   const [mode, setMode] = useState('');
-  const [files, setFiles] = useState([]);
+  const [files, setFiles] = useState([
+    {
+      filePath:
+        'https://api2-czelad.transloadit.com/resumable/files/d3b7b7cef600fd94128dc0e6beda028d+hMVZopsm2dirp4AJUzqzPtykP7tx4kf_HixCBziQzMjcleeuEZDBxd5A6uqjmQ8qzblu_64qig0Qx_kKNjcboCx9fUIi92yXk3c1pilFJSBQOx2qsLo_9lSoqBk0cJUx',
+      croppedImage: null,
+    },
+  ]);
   const [reporting, setReporting] = useState(false);
 
   const noImages = mode !== '' && files.length === 0;
@@ -33,7 +39,7 @@ export default function ReportEncounters() {
           <>
             <Grid item>
               <Typography variant="h3" component="h3">
-                <FormattedMessage id="REPORT_ENCOUNTERS" />
+                <FormattedMessage id="REPORT_SIGHTINGS" />
               </Typography>
             </Grid>
             <Grid item>
@@ -73,10 +79,7 @@ export default function ReportEncounters() {
 
             {mode !== '' && (
               <Grid item>
-                <UploadManager
-                  files={files}
-                  setFiles={setFiles}
-                />
+                <UploadManager files={files} setFiles={setFiles} />
               </Grid>
             )}
 

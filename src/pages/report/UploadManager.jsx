@@ -23,7 +23,7 @@ export default function UploadManager({ files, setFiles }) {
   const [uppy, setUppy] = useState(null);
   const [cropper, setCropper] = useState({
     open: false,
-    imageSrc: null,
+    imgSrc: null,
   });
 
   /* Resolves closure / useEffect issue */
@@ -57,8 +57,11 @@ export default function UploadManager({ files, setFiles }) {
 
     uppyInstance.on('complete', uppyState => {
       const uploadObjects = get(uppyState, 'successful', []);
-      const newFiles = uploadObjects.map(upload => get(upload, 'response.uploadURL', null));
-      const newFileList = [...fileRef.current, ...newFiles].filter(x => x);
+      const newFiles = uploadObjects.map(upload => ({
+        filePath: get(upload, 'response.uploadURL', null),
+        croppedImage: null,
+      }));
+      const newFileList = [...fileRef.current, ...newFiles];
 
       setFiles(newFileList);
     });
@@ -72,8 +75,20 @@ export default function UploadManager({ files, setFiles }) {
     <div>
       {cropper.open && (
         <Cropper
-          imageSrc={cropper.imageSrc}
-          onClose={() => setCropper({ open: false, imageSrc: null })}
+          imgSrc={cropper.imgSrc}
+          onClose={() => setCropper({ open: false, imgSrc: null })}
+          setCrop={croppedImage => {
+            const currentFile = files.find(
+              f => f.filePath === cropper.imgSrc,
+            );
+            const otherFiles = files.filter(
+              f => f.filePath !== cropper.imgSrc,
+            );
+            setFiles([
+              ...otherFiles,
+              { ...currentFile, croppedImage },
+            ]);
+          }}
         />
       )}
       {uppy && (
@@ -103,11 +118,11 @@ export default function UploadManager({ files, setFiles }) {
         {files.map((file, i) => (
           <Grid
             item
-            key={file}
+            key={file.filePath}
             style={{ display: 'flex', flexDirection: 'column' }}
           >
             <img
-              src={file}
+              src={file.croppedImage || file.filePath}
               width={200}
               alt={`Uploaded media #${i + 1}`}
             />
@@ -119,7 +134,7 @@ export default function UploadManager({ files, setFiles }) {
                 onClick={() => {
                   setCropper({
                     open: true,
-                    imageSrc: file,
+                    imgSrc: file.filePath,
                   });
                 }}
               >
@@ -129,7 +144,7 @@ export default function UploadManager({ files, setFiles }) {
                 variant="outlined"
                 onClick={() => {
                   const newFileList = files.filter(
-                    f => f !== file,
+                    f => f.filePath !== file.filePath,
                   );
                   setFiles(newFileList);
                 }}

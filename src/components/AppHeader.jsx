@@ -106,7 +106,7 @@ export default function AppHeader() {
                   href="/report"
                   onClick={() => setDrawerOpen(false)}
                 >
-                  <FormattedMessage id="REPORT_ENCOUNTERS" />
+                  <FormattedMessage id="REPORT_SIGHTINGS" />
                 </Link>
               </ListItemText>
             </ListItem>
