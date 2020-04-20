@@ -111,6 +111,50 @@ export default function UploadManager({ files, setFiles }) {
             uppy={uppy}
             hideAfterFinish={false}
             showProgressDetails
+            locale={{
+              strings: {
+                uploading: intl.formatMessage({
+                  id: 'UPPY_UPLOADING',
+                }),
+                complete: intl.formatMessage({ id: 'UPPY_COMPLETE' }),
+                uploadFailed: intl.formatMessage({
+                  id: 'UPPY_UPLOAD_FAILED',
+                }),
+                paused: intl.formatMessage({ id: 'UPPY_PAUSED' }),
+                retry: intl.formatMessage({ id: 'UPPY_RETRY' }),
+                cancel: intl.formatMessage({ id: 'UPPY_CANCEL' }),
+                filesUploadedOfTotal: {
+                  0: intl.formatMessage({
+                    id: 'UPPY_ONE_FILE_PROGRESS',
+                  }),
+                  1: intl.formatMessage({
+                    id: 'UPPY_MULTIPLE_FILES_PROGRESS',
+                  }),
+                },
+                dataUploadedOfTotal: intl.formatMessage({
+                  id: 'UPPY_DATA_UPLOADED',
+                }),
+                xTimeLeft: intl.formatMessage({
+                  id: 'UPPY_TIME_LEFT',
+                }),
+                uploadXFiles: {
+                  0: intl.formatMessage({
+                    id: 'UPPY_UPLOAD_ONE_FILE',
+                  }),
+                  1: intl.formatMessage({
+                    id: 'UPPY_UPLOAD_MULTIPLE_FILES',
+                  }),
+                },
+                uploadXNewFiles: {
+                  0: intl.formatMessage({
+                    id: 'UPPY_PLUS_UPLOAD_ONE_FILE',
+                  }),
+                  1: intl.formatMessage({
+                    id: 'UPPY_PLUS_UPLOAD_MULTIPLE_FILES',
+                  }),
+                },
+              },
+            }}
           />
         </div>
       )}

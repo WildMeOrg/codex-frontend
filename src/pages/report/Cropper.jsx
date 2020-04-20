@@ -35,11 +35,11 @@ export default function Cropper({ imgSrc, onClose, setCrop }) {
       },
       callbacks: {
         onchange: e => {
-          const theta = get(e, '0.angles.theta', null);
-          const percentLeft = get(e, '0.percent.left', null);
-          const percentTop = get(e, '0.percent.top', null);
-          const percentWidth = get(e, '0.percent.width', null);
-          const percentHeight = get(e, '0.percent.height', null);
+          const theta = get(e, '0.angles.theta');
+          const percentLeft = get(e, '0.percent.left');
+          const percentTop = get(e, '0.percent.top');
+          const percentWidth = get(e, '0.percent.width');
+          const percentHeight = get(e, '0.percent.height');
           setRect({
             theta,
             percentLeft,
@@ -66,7 +66,7 @@ export default function Cropper({ imgSrc, onClose, setCrop }) {
     });
   }, []);
 
-  function doIt(canvas) {
+  function saveCrop(canvas) {
     if (canvas) {
       const context = canvas.getContext('2d');
       const imageObject = new Image();
@@ -119,14 +119,6 @@ export default function Cropper({ imgSrc, onClose, setCrop }) {
     }
   }
 
-  // const canvasRef = useCallback(doIt, [
-  //   rect.theta,
-  //   rect.percentWidth,
-  //   rect.percentHeight,
-  //   rect.percentTop,
-  //   rect.percentLeft,
-  // ]);
-
   return (
     <Dialog open onClose={onClose}>
       <DialogTitle onClose={onClose}>
@@ -136,7 +128,7 @@ export default function Cropper({ imgSrc, onClose, setCrop }) {
         <div style={{ width: 400, padding: '0 40px' }}>
           <div
             id="cropper-bbox-annotator-container"
-            style={{ width: '100%', zIndex: 999999 }}
+            style={{ width: '100%', zIndex: 999 }}
             ref={divRef}
           />
         </div>
@@ -144,7 +136,9 @@ export default function Cropper({ imgSrc, onClose, setCrop }) {
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose}>Cancel</Button>
-        <Button onClick={() => doIt(canvasRef.current)}>Save</Button>
+        <Button onClick={() => saveCrop(canvasRef.current)}>
+          Save
+        </Button>
       </DialogActions>
     </Dialog>
   );

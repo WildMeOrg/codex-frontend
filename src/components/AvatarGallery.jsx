@@ -59,7 +59,7 @@ export default function AvatarGallery({
                 name={entity.name}
                 square={square}
               />
-              <Link href={getHref(entity)}>
+              <Link noUnderline href={getHref(entity)}>
                 <Typography
                   variant="h6"
                   noWrap

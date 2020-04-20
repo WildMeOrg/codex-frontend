@@ -35,12 +35,17 @@ export default function Footer() {
           <FormattedMessage id="END_OF_SENTENCE" />
         </Typography>
         <Typography style={{ marginTop: 16 }}>
-          <Link href="contact" style={{ marginRight: dotSpacing }}>
+          <Link
+            style={{ marginRight: dotSpacing }}
+            href="http://wiki.wildbook.org/contact-us"
+            external
+          >
             <FormattedMessage id="CONTACT" />
           </Link>
           {' • '}
           <Link
-            href="legal"
+            href="http://wiki.wildbook.org/legal"
+            external
             style={{
               marginRight: dotSpacing,
               marginLeft: dotSpacing,
@@ -51,6 +56,7 @@ export default function Footer() {
           {' • '}
           <Link
             href="http://wiki.wildbook.org/"
+            external
             style={{
               marginRight: dotSpacing,
               marginLeft: dotSpacing,
@@ -61,6 +67,7 @@ export default function Footer() {
           {' • '}
           <Link
             href="https://community.wildbook.org/"
+            external
             style={{ marginLeft: dotSpacing }}
           >
             <FormattedMessage id="COMMUNITY" />

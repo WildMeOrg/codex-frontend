@@ -2,7 +2,7 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
-import { capitalize } from 'lodash-es';
+import { capitalize, toLower } from 'lodash-es';
 import EntityHeader from '../../components/EntityHeader';
 import MainColumn from '../../components/MainColumn';
 import NotFoundPage from '../../components/NotFoundPage';
@@ -19,7 +19,7 @@ export default function Individual() {
   const speciesFields = useSelector(selectSpeciesFields);
   useDocumentTitle(capitalize(id));
 
-  const individual = individuals[id];
+  const individual = individuals[toLower(id)];
   if (!individual)
     return (
       <NotFoundPage

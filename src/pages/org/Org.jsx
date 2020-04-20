@@ -2,7 +2,7 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
-import { get, filter } from 'lodash-es';
+import { get, filter, toLower } from 'lodash-es';
 import Typography from '@material-ui/core/Typography';
 import EntityHeader from '../../components/EntityHeader';
 import MainColumn from '../../components/MainColumn';
@@ -19,7 +19,7 @@ export default function Org() {
   // fetch data for Id...
   const orgs = useSelector(selectOrgs);
 
-  const org = orgs[id];
+  const org = orgs[toLower(id)];
   if (!org)
     return (
       <NotFoundPage

@@ -2,8 +2,8 @@ import React from 'react';
 import MUIDataTable from 'mui-datatables';
 import { format } from 'date-fns';
 import Divider from '@material-ui/core/Divider';
-import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import ButtonLink from '../../components/ButtonLink';
 
 export default function ResultsTable({ encounters }) {
   return (
@@ -71,13 +71,14 @@ export default function ResultsTable({ encounters }) {
                         Species: Megaptera novaeangliae
                       </Typography>
                       <Typography>Region: South Sahara</Typography>
-                      <Button
+                      <ButtonLink
                         variant="outlined"
                         color="secondary"
                         style={{ marginTop: 16 }}
+                        href={`/encounters/${expandedEncounter.id}`}
                       >
                         View Encounter
-                      </Button>
+                      </ButtonLink>
                     </div>
                   </div>
                   <Divider />

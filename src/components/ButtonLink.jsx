@@ -1,24 +1,24 @@
 import React from 'react';
+import Button from '@material-ui/core/Button';
+import Link from './Link';
 
 export default function ButtonLink({
   children,
-  onClick,
-  style,
+  href,
+  external = false,
+  linkProps,
   ...rest
 }) {
   return (
-    <button
-      onClick={onClick}
-      type="button"
-      style={{
-        textDecoration: 'underline',
-        border: 'unset',
-        background: 'unset',
-        ...style,
-      }}
-      {...rest}
-    >
-      {children}
-    </button>
+    <Button {...rest}>
+      <Link
+        noUnderline
+        href={href}
+        external={external}
+        {...linkProps}
+      >
+        {children}
+      </Link>
+    </Button>
   );
 }

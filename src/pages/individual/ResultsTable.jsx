@@ -2,9 +2,9 @@ import React from 'react';
 import MUIDataTable from 'mui-datatables';
 import { format } from 'date-fns';
 import Divider from '@material-ui/core/Divider';
-import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Link from '../../components/Link';
+import ButtonLink from '../../components/ButtonLink';
 
 export default function ResultsTable({ individuals }) {
   return (
@@ -86,13 +86,14 @@ export default function ResultsTable({ individuals }) {
                         <Link href="google.com">Jasonx</Link> on{' '}
                         <Link href="google.com">3/16/2019</Link>
                       </Typography>
-                      <Button
+                      <ButtonLink
                         variant="outlined"
                         color="secondary"
                         style={{ marginTop: 16 }}
+                        href={`/individuals/${expandedIndividual.id}`}
                       >
                         View Profile
-                      </Button>
+                      </ButtonLink>
                     </div>
                   </div>
                   <Divider />

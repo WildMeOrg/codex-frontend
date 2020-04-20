@@ -2,7 +2,7 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
-import { capitalize } from 'lodash-es';
+import { capitalize, toLower } from 'lodash-es';
 import EntityHeader from '../../components/EntityHeader';
 import MainColumn from '../../components/MainColumn';
 import NotFoundPage from '../../components/NotFoundPage';
@@ -18,7 +18,7 @@ export default function User() {
   // fetch data for Id...
   const users = useSelector(selectUsers);
 
-  const user = users[id];
+  const user = users[toLower(id)];
   if (!user)
     return (
       <NotFoundPage

@@ -78,9 +78,7 @@ export default function AppHeader() {
               noWrap
               style={{
                 fontSize: 20,
-                marginTop: 10,
-                marginBottom: 20,
-                marginLeft: 16,
+                margin: 20,
               }}
             >
               <Link
