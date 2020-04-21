@@ -6,6 +6,7 @@ const fieldTypes = {
   float: 'float',
   integer: 'integer',
   latlong: 'latlong', // [float, float]
+  date: 'date',
   daterange: 'daterange', // [date, date]
   select: 'select', // string
   multiselect: 'multiselect', // array of strings

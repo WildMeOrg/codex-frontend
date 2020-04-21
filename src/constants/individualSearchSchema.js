@@ -31,7 +31,7 @@ export default [
     defaultValue: [null, null],
   },
   {
-    name: 'birthDateRane',
+    name: 'birthDateRange',
     labelId: 'BIRTH_DATE_RANGE',
     descriptionId: 'BIRTH_DATE_RANGE_DESCRIPTION',
     category: individualSearchCategories.time.name,

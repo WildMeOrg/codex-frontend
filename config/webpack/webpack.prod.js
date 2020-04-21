@@ -8,7 +8,7 @@ const common = require('./webpack.common.js');
 // const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const rootDir = resolve(__dirname, '../../');
-const dist = path.resolve(rootDir, 'public');
+const dist = path.resolve(rootDir, 'dist');
 
 module.exports = merge(common, {
   mode: 'production',

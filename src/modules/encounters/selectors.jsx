@@ -2,6 +2,9 @@ import defaultProfile from '../../assets/defaultProfile.jpg';
 import encounterSearchSchema, {
   encounterSearchCategories,
 } from '../../constants/encounterSearchSchema';
+import encounterSchema, {
+  encounterCategories,
+} from '../../constants/encounterSchema';
 import fieldTypes from '../../constants/fieldTypes';
 
 export const selectEncounters = state => [
@@ -75,5 +78,30 @@ export const selectEncounterSearchSchema = state => {
       defaultValue: '',
     },
     ...encounterSearchSchema,
+  ];
+};
+
+export const selectEncounterCategories = state => ({
+  ...encounterCategories,
+});
+
+export const selectEncounterSchema = state => {
+  const categories = selectEncounterCategories(state);
+
+  return [
+    {
+      name: 'species',
+      labelId: 'SPECIES',
+      category: categories.general.name,
+      fieldType: fieldTypes.select,
+      choices: [
+        'Delphinidae',
+        'Grampus Griseus',
+        'Kogia Sima',
+        'Unknown',
+      ],
+      defaultValue: '',
+    },
+    ...encounterSchema,
   ];
 };

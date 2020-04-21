@@ -146,6 +146,37 @@ export default function LabeledInput({
     );
   }
 
+  if (schema.fieldType === 'date') {
+    return (
+      <MuiPickersUtilsProvider utils={DateFnsUtils}>
+        <Typography variant="subtitle2" style={{ marginTop: 16 }}>
+          {getLabel(schema)}
+        </Typography>
+        <Typography
+          variant="caption"
+          color="textSecondary"
+          style={{ marginTop: 4 }}
+        >
+          {getDescription(schema)}
+        </Typography>
+        <KeyboardDatePicker
+          disableToolbar
+          variant="inline"
+          format="MM/dd/yyyy"
+          margin="normal"
+          id={`${getLabel(schema)}-end-date`}
+          label={<FormattedMessage id="END_DATE" />}
+          value={value}
+          onChange={onChange}
+          style={{ margin: 0 }}
+          KeyboardButtonProps={{
+            'aria-label': `Change ${getLabel(schema)} end date`,
+          }}
+        />
+      </MuiPickersUtilsProvider>
+    );
+  }
+
   if (schema.fieldType === 'daterange') {
     return (
       <MuiPickersUtilsProvider utils={DateFnsUtils}>

@@ -9,7 +9,7 @@
     "format": "./node_modules/.bin/prettier --write \"src/**/*.{js,jsx}\"",
     "test": "echo \"Error: no test specified\" && exit 1",
     "clean": "rm -rf dist",
-    "build": "yarn clean && NODE_ENV=production webpack --config ./config/webpack/webpack.prod.js"
+    "build": "npm run clean && NODE_ENV=production webpack --config ./config/webpack/webpack.prod.js"
   },
   "repository": {
     "type": "git",
