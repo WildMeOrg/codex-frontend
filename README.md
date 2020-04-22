@@ -11,12 +11,15 @@ Developer contributions are very much appreciated =). This app is written with R
 We are also looking for help from designers and 3D modelers! Please send an email to ben@wildme.org if you are interested.
 
 ## Development 
+
+To successfully run the project, you will need to recreate one file that is gitignored for security reasons, `/src/constants/apiKeys.js`. Follow the instructions in the template located at `/src/constants/apiKeysTemplate.js`. After that, just run
+
 ```js
 npm install 
 npm start 
 ```
 
-To successfully run the project, you will need to recreate one file that is gitignored for security reasons, `/src/constants/apiKeys.js`. Follow the instructions in the template located at `/src/constants/apiKeysTemplate.js`.
+The development environment is mostly used on OSX but should work on Windows as well. Use Powershell or edit the `npm start:win32` command to set `NODE_ENV` using the appropriate syntax for your preferred shell.
 
 ## Thanks
 
