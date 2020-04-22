@@ -5,6 +5,8 @@ import { values } from 'lodash-es';
 import { useTheme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
 import Hidden from '@material-ui/core/Hidden';
 import Grid from '@material-ui/core/Grid';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
@@ -16,11 +18,15 @@ import {
   selectEncounterCategories,
 } from '../../modules/encounters/selectors';
 import LabeledInput from '../../components/LabeledInput';
+import InlineButton from '../../components/InlineButton';
+import TermsAndConditionsDialog from './TermsAndConditionsDialog';
 
 export default function StandardReport() {
   const theme = useTheme();
   const categories = useSelector(selectEncounterCategories);
   const schema = useSelector(selectEncounterSchema);
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
   const categoryList = values(categories);
 
   const [formValues, setFormValues] = useState(
@@ -32,6 +38,10 @@ export default function StandardReport() {
 
   return (
     <Grid container direction="column">
+      <TermsAndConditionsDialog
+        visible={dialogOpen}
+        onClose={() => setDialogOpen(false)}
+      />
       <Grid item>
         {categoryList.map(category => {
           const inputsInCategory = schema.filter(
@@ -90,12 +100,12 @@ export default function StandardReport() {
                           }}
                         >
                           <FormattedMessage id={filter.labelId} />
+                          {filter.required && ' *'}
                         </Typography>
                       </Hidden>
                       <LabeledInput
                         key={`${category.name} - ${filter.name}`}
                         schema={filter}
-                        required={filter.required}
                         value={formValues[filter.name]}
                         onChange={value => {
                           setFormValues({
@@ -112,6 +122,25 @@ export default function StandardReport() {
             </ExpansionPanel>
           );
         })}
+      </Grid>
+      <Grid item>
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={acceptedTerms}
+              onChange={() => setAcceptedTerms(!acceptedTerms)}
+            />
+          }
+          label={
+            <span>
+              <FormattedMessage id="TERMS_CHECKBOX_1" />
+              <InlineButton onClick={() => setDialogOpen(true)}>
+                <FormattedMessage id="TERMS_CHECKBOX_2" />
+              </InlineButton>
+              <FormattedMessage id="END_OF_SENTENCE" />
+            </span>
+          }
+        />
       </Grid>
       <Grid item style={{ marginTop: 40 }}>
         <Button>Continue</Button>
