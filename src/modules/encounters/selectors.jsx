@@ -100,6 +100,7 @@ export const selectEncounterSchema = state => {
         'Kogia Sima',
         'Unknown',
       ],
+      required: true,
       defaultValue: '',
     },
     ...encounterSchema,

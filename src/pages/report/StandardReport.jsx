@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useSelector } from 'react-redux';
 import { values } from 'lodash-es';
+import { useTheme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import Hidden from '@material-ui/core/Hidden';
 import Grid from '@material-ui/core/Grid';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
@@ -16,6 +18,7 @@ import {
 import LabeledInput from '../../components/LabeledInput';
 
 export default function StandardReport() {
+  const theme = useTheme();
   const categories = useSelector(selectEncounterCategories);
   const schema = useSelector(selectEncounterSchema);
   const categoryList = values(categories);
@@ -29,7 +32,7 @@ export default function StandardReport() {
 
   return (
     <Grid container direction="column">
-      <Grid item style={{ maxWidth: 330 }}>
+      <Grid item>
         {categoryList.map(category => {
           const inputsInCategory = schema.filter(
             f => f.category === category.name,
@@ -39,6 +42,14 @@ export default function StandardReport() {
             <ExpansionPanel
               key={category.name}
               defaultExpanded={category.name === 'general'}
+              style={{
+                border: `1px solid ${theme.palette.grey[500]}`,
+                boxShadow: 'none',
+                margin: '16px 0',
+                maxWidth: 600,
+                width: '90%',
+              }}
+              square
             >
               <ExpansionPanelSummary
                 expandIcon={<ExpandMoreIcon />}
@@ -47,7 +58,7 @@ export default function StandardReport() {
                 }-filter-panel-content`}
                 id={`${category.name}-filter-panel-header`}
               >
-                <Typography>
+                <Typography variant="subtitle1">
                   {category.labelId ? (
                     <FormattedMessage id={category.labelId} />
                   ) : (
@@ -63,17 +74,38 @@ export default function StandardReport() {
                   }}
                 >
                   {inputsInCategory.map(filter => (
-                    <LabeledInput
-                      key={`${category.name} - ${filter.name}`}
-                      schema={filter}
-                      value={formValues[filter.name]}
-                      onChange={value => {
-                        setFormValues({
-                          ...formValues,
-                          [filter.name]: value,
-                        });
+                    <div
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        marginBottom: 12,
                       }}
-                    />
+                    >
+                      <Hidden xsDown>
+                        <Typography
+                          style={{
+                            margin: '8px 16px 0 0',
+                            width: 180,
+                            textAlign: 'right',
+                          }}
+                        >
+                          <FormattedMessage id={filter.labelId} />
+                        </Typography>
+                      </Hidden>
+                      <LabeledInput
+                        key={`${category.name} - ${filter.name}`}
+                        schema={filter}
+                        required={filter.required}
+                        value={formValues[filter.name]}
+                        onChange={value => {
+                          setFormValues({
+                            ...formValues,
+                            [filter.name]: value,
+                          });
+                        }}
+                        width={220}
+                      />
+                    </div>
                   ))}
                 </div>
               </ExpansionPanelDetails>

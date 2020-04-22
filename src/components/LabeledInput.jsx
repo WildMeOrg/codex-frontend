@@ -158,9 +158,9 @@ export default function LabeledInput({
           label={getLabel(schema)}
           value={value}
           onChange={onChange}
-          style={{ margin: 0 }}
+          style={{ margin: 0, width }}
           KeyboardButtonProps={{
-            'aria-label': `Change ${getLabel(schema)} end date`,
+            'aria-label': `${getLabel(schema)} input`,
           }}
         />
         <Typography

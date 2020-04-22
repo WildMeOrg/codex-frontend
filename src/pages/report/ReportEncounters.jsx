@@ -15,9 +15,9 @@ import UploadManager from './UploadManager';
 
 export default function ReportEncounters() {
   useDocumentTitle('Report Encounters');
-  const [mode, setMode] = useState('');
+  const [mode, setMode] = useState('standard'); // ''
   const [files, setFiles] = useState([]);
-  const [reporting, setReporting] = useState(false);
+  const [reporting, setReporting] = useState(true); // false
 
   const noImages = mode !== '' && files.length === 0;
 
@@ -27,7 +27,7 @@ export default function ReportEncounters() {
         container
         direction="column"
         spacing={2}
-        style={{ marginTop: 20 }}
+        style={{ padding: '20px 16px' }}
       >
         <Grid item>
           <Typography variant="h3" component="h3">
