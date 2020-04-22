@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { useSelector } from 'react-redux';
 import { values } from 'lodash-es';
 import { useTheme } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Hidden from '@material-ui/core/Hidden';
@@ -13,20 +13,26 @@ import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import BackIcon from '@material-ui/icons/KeyboardBackspace';
 import {
   selectEncounterSchema,
   selectEncounterCategories,
 } from '../../modules/encounters/selectors';
 import LabeledInput from '../../components/LabeledInput';
+import AsyncButton from '../../components/AsyncButton';
 import InlineButton from '../../components/InlineButton';
 import TermsAndConditionsDialog from './TermsAndConditionsDialog';
 
-export default function StandardReport() {
+export default function StandardReport({ onBack }) {
   const theme = useTheme();
+  const intl = useIntl();
   const categories = useSelector(selectEncounterCategories);
   const schema = useSelector(selectEncounterSchema);
   const [acceptedTerms, setAcceptedTerms] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [incompleteFields, setIncompleteFields] = useState([]);
+  const [termsError, setTermsError] = useState(false);
   const categoryList = values(categories);
 
   const [formValues, setFormValues] = useState(
@@ -42,6 +48,16 @@ export default function StandardReport() {
         visible={dialogOpen}
         onClose={() => setDialogOpen(false)}
       />
+      <Grid item>
+        <Button
+          onClick={onBack}
+          style={{ marginTop: 8 }}
+          size="small"
+          startIcon={<BackIcon />}
+        >
+          <FormattedMessage id="BACK_TO_PHOTOS" />
+        </Button>
+      </Grid>
       <Grid item>
         {categoryList.map(category => {
           const inputsInCategory = schema.filter(
@@ -85,6 +101,7 @@ export default function StandardReport() {
                 >
                   {inputsInCategory.map(filter => (
                     <div
+                      key={`${category.name} - ${filter.name}`}
                       style={{
                         display: 'flex',
                         alignItems: 'center',
@@ -104,7 +121,6 @@ export default function StandardReport() {
                         </Typography>
                       </Hidden>
                       <LabeledInput
-                        key={`${category.name} - ${filter.name}`}
                         schema={filter}
                         value={formValues[filter.name]}
                         onChange={value => {
@@ -142,8 +158,62 @@ export default function StandardReport() {
           }
         />
       </Grid>
-      <Grid item style={{ marginTop: 40 }}>
-        <Button>Continue</Button>
+      <Grid
+        item
+        style={{
+          marginTop: 40,
+          display: 'flex',
+          flexDirection: 'column',
+        }}
+      >
+        <AsyncButton
+          onClick={() => {
+            // check that required fields are complete
+            const nextIncompleteFields = schema.filter(
+              field =>
+                field.required &&
+                field.defaultValue === formValues[field.name],
+            );
+            setIncompleteFields(nextIncompleteFields);
+
+            // check that terms and conditions were accepted
+            setTermsError(!acceptedTerms);
+
+            if (nextIncompleteFields.length === 0 && acceptedTerms) {
+              console.log('Time to report the sighting');
+              setLoading(true);
+              setTimeout(() => {
+                console.log('Sighting submitted');
+                setLoading(false);
+              }, 150000);
+            }
+          }}
+          style={{ width: 200 }}
+          loading={loading}
+          variant="contained"
+          color="secondary"
+        >
+          <FormattedMessage id="REPORT_SIGHTING" />
+        </AsyncButton>
+      </Grid>
+      <Grid style={{ marginTop: 12 }} item>
+        {termsError && (
+          <Typography color="error">
+            <FormattedMessage id="TERMS_ERROR" />
+          </Typography>
+        )}
+        {incompleteFields.map(incompleteField => (
+          <Typography key={incompleteField.name} color="error">
+            <FormattedMessage
+              id="INCOMPLETE_FIELD"
+              values={{
+                fieldName: intl.formatMessage({
+                  id: incompleteField.labelId,
+                }),
+              }}
+            />
+          </Typography>
+        ))}
       </Grid>
     </Grid>
   );

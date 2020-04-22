@@ -15,11 +15,13 @@ import UploadManager from './UploadManager';
 
 export default function ReportEncounters() {
   useDocumentTitle('Report Encounters');
-  const [mode, setMode] = useState('standard'); // ''
+  const [mode, setMode] = useState('');
   const [files, setFiles] = useState([]);
-  const [reporting, setReporting] = useState(true); // false
+  const [reporting, setReporting] = useState(false);
 
   const noImages = mode !== '' && files.length === 0;
+
+  const onBack = () => setReporting(false);
 
   return (
     <MainColumn style={{ display: 'flex', justifyContent: 'center' }}>
@@ -96,8 +98,12 @@ export default function ReportEncounters() {
             </Grid>
           </>
         )}
-        {reporting && mode === 'standard' && <StandardReport />}
-        {reporting && mode === 'bulk' && <BulkReport />}
+        {reporting && mode === 'standard' && (
+          <StandardReport onBack={onBack} />
+        )}
+        {reporting && mode === 'bulk' && (
+          <BulkReport onBack={onBack} />
+        )}
       </Grid>
     </MainColumn>
   );

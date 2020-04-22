@@ -33,7 +33,7 @@ export default {
       main: '#070500',
     },
     secondary: {
-      main: '#8B38DD',
+      main: '#7816d8',
     },
     paper: {
       main: '#eeeeee',

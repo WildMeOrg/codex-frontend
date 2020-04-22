@@ -16,12 +16,18 @@ export default function EditAvatar({ visible, onClose }) {
     <Dialog open={visible} onClose={onClose}>
       <DialogTitle onClose={onClose}>
         <FormattedMessage id="TERMS_AND_CONDITIONS" />
-        <IconButton style={{ position: 'absolute', top: 8, right: 16 }} aria-label="close" onClick={onClose}>
+        <IconButton
+          style={{ position: 'absolute', top: 8, right: 16 }}
+          aria-label="close"
+          onClick={onClose}
+        >
           <CloseIcon />
         </IconButton>
       </DialogTitle>
       <DialogContent style={{ marginBottom: 24 }}>
-        <Typography style={{ whiteSpace: 'pre-line', maxHeight: 400 }}>
+        <Typography
+          style={{ whiteSpace: 'pre-line', maxHeight: 400 }}
+        >
           {termsAndConditions}
         </Typography>
       </DialogContent>
