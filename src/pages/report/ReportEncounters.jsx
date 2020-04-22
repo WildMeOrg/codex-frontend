@@ -16,13 +16,7 @@ import UploadManager from './UploadManager';
 export default function ReportEncounters() {
   useDocumentTitle('Report Encounters');
   const [mode, setMode] = useState('');
-  const [files, setFiles] = useState([
-    {
-      filePath:
-        'https://api2-czelad.transloadit.com/resumable/files/d3b7b7cef600fd94128dc0e6beda028d+hMVZopsm2dirp4AJUzqzPtykP7tx4kf_HixCBziQzMjcleeuEZDBxd5A6uqjmQ8qzblu_64qig0Qx_kKNjcboCx9fUIi92yXk3c1pilFJSBQOx2qsLo_9lSoqBk0cJUx',
-      croppedImage: null,
-    },
-  ]);
+  const [files, setFiles] = useState([]);
   const [reporting, setReporting] = useState(false);
 
   const noImages = mode !== '' && files.length === 0;
@@ -35,13 +29,13 @@ export default function ReportEncounters() {
         spacing={2}
         style={{ marginTop: 20 }}
       >
+        <Grid item>
+          <Typography variant="h3" component="h3">
+            <FormattedMessage id="REPORT_SIGHTINGS" />
+          </Typography>
+        </Grid>
         {!reporting && (
           <>
-            <Grid item>
-              <Typography variant="h3" component="h3">
-                <FormattedMessage id="REPORT_SIGHTINGS" />
-              </Typography>
-            </Grid>
             <Grid item>
               <FormControl component="fieldset">
                 <RadioGroup

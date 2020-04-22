@@ -77,10 +77,6 @@ module.exports = {
     ],
   },
   resolve: {
-    modules: [
-      path.resolve(rootDir, 'node_modules'),
-      path.resolve(rootDir, 'src'),
-    ],
     extensions: [
       '.wasm',
       '.mjs',

@@ -29,14 +29,17 @@ export default function StandardReport() {
 
   return (
     <Grid container direction="column">
-      <Grid item>
+      <Grid item style={{ maxWidth: 330 }}>
         {categoryList.map(category => {
           const inputsInCategory = schema.filter(
             f => f.category === category.name,
           );
 
           return (
-            <ExpansionPanel key={category.name}>
+            <ExpansionPanel
+              key={category.name}
+              defaultExpanded={category.name === 'general'}
+            >
               <ExpansionPanelSummary
                 expandIcon={<ExpandMoreIcon />}
                 aria-controls={`${
@@ -70,7 +73,6 @@ export default function StandardReport() {
                           [filter.name]: value,
                         });
                       }}
-                      width={232}
                     />
                   ))}
                 </div>
@@ -79,7 +81,7 @@ export default function StandardReport() {
           );
         })}
       </Grid>
-      <Grid item>
+      <Grid item style={{ marginTop: 40 }}>
         <Button>Continue</Button>
       </Grid>
     </Grid>
