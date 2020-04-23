@@ -14,6 +14,7 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
+import FileInput from './inputs/FileInput';
 
 function Core({ children, required, width, style = {} }) {
   return (
@@ -49,6 +50,12 @@ export default function LabeledInput({
 
   if (schema.fieldType === 'latlong')
     return <div>Maps coming soon...</div>;
+
+  if (schema.fieldType === 'file') {
+    return (
+      <FileInput schema={schema} value={value} onChange={onChange} />
+    );
+  }
 
   if (schema.fieldType === 'comparator') {
     return (

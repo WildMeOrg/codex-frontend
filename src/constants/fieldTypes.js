@@ -5,6 +5,7 @@ const fieldTypes = {
   longstring: 'longstring',
   float: 'float',
   integer: 'integer',
+  file: 'file',
   latlong: 'latlong', // [float, float]
   date: 'date',
   daterange: 'daterange', // [date, date]
