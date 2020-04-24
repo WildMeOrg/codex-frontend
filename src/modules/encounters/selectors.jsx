@@ -109,7 +109,6 @@ export const selectEncounterSchema = state => {
       labelId: 'ADDITIONAL_MEDIA',
       category: categories.general.name,
       fieldType: fieldTypes.file,
-      allowedFileTypes: ['.csv'],
       defaultValue: null,
     },
   ];

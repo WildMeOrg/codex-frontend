@@ -2,14 +2,12 @@ import React, { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useSelector } from 'react-redux';
 import { values } from 'lodash-es';
-import { useTheme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Hidden from '@material-ui/core/Hidden';
 import Grid from '@material-ui/core/Grid';
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
@@ -21,10 +19,10 @@ import {
 import LabeledInput from '../../components/LabeledInput';
 import AsyncButton from '../../components/AsyncButton';
 import InlineButton from '../../components/InlineButton';
+import BigExpansionPanel from '../../components/BigExpansionPanel';
 import TermsAndConditionsDialog from './TermsAndConditionsDialog';
 
 export default function StandardReport({ onBack }) {
-  const theme = useTheme();
   const intl = useIntl();
   const categories = useSelector(selectEncounterCategories);
   const schema = useSelector(selectEncounterSchema);
@@ -36,8 +34,8 @@ export default function StandardReport({ onBack }) {
   const categoryList = values(categories);
 
   const [formValues, setFormValues] = useState(
-    schema.reduce((memo, filter) => {
-      memo[filter.name] = filter.defaultValue;
+    schema.reduce((memo, field) => {
+      memo[field.name] = field.defaultValue;
       return memo;
     }, {}),
   );
@@ -65,17 +63,9 @@ export default function StandardReport({ onBack }) {
           );
 
           return (
-            <ExpansionPanel
+            <BigExpansionPanel
               key={category.name}
               defaultExpanded={category.name === 'general'}
-              style={{
-                border: `1px solid ${theme.palette.grey[500]}`,
-                boxShadow: 'none',
-                margin: '16px 0',
-                maxWidth: 600,
-                width: '90%',
-              }}
-              square
             >
               <ExpansionPanelSummary
                 expandIcon={<ExpandMoreIcon />}
@@ -135,7 +125,7 @@ export default function StandardReport({ onBack }) {
                   ))}
                 </div>
               </ExpansionPanelDetails>
-            </ExpansionPanel>
+            </BigExpansionPanel>
           );
         })}
       </Grid>

@@ -33,6 +33,7 @@ export default function LabeledInput({
   value,
   onChange,
   width,
+  ...rest
 }) {
   const intl = useIntl();
 
@@ -53,7 +54,12 @@ export default function LabeledInput({
 
   if (schema.fieldType === 'file') {
     return (
-      <FileInput schema={schema} value={value} onChange={onChange} />
+      <FileInput
+        schema={schema}
+        value={value}
+        onChange={onChange}
+        {...rest}
+      />
     );
   }
 

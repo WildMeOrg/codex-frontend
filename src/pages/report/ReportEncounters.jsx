@@ -15,9 +15,9 @@ import UploadManager from './UploadManager';
 
 export default function ReportEncounters() {
   useDocumentTitle('Report Encounters');
-  const [mode, setMode] = useState('');
+  const [mode, setMode] = useState('bulk');
   const [files, setFiles] = useState([]);
-  const [reporting, setReporting] = useState(false);
+  const [reporting, setReporting] = useState(true);
 
   const noImages = mode !== '' && files.length === 0;
 

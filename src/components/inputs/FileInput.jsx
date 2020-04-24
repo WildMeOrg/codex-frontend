@@ -16,7 +16,12 @@ import {
   transloaditService,
 } from '../../constants/apiKeys';
 
-export default function FileInput({ schema, value, onChange }) {
+export default function FileInput({
+  schema,
+  value,
+  onChange,
+  ...rest
+}) {
   const intl = useIntl();
   const [uppy, setUppy] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
@@ -57,7 +62,9 @@ export default function FileInput({ schema, value, onChange }) {
     return () => uppyInstance.close();
   }, []);
 
-  const allowedFileTypeString = schema.allowedFileTypes ? schema.allowedFileTypes.join(', ') : null;
+  const allowedFileTypeString = schema.allowedFileTypes
+    ? schema.allowedFileTypes.join(', ')
+    : null;
 
   return (
     <div>
@@ -66,6 +73,7 @@ export default function FileInput({ schema, value, onChange }) {
           size="small"
           variant="outlined"
           onClick={() => setModalOpen(true)}
+          {...rest}
         >
           <FormattedMessage id="UPLOAD_A_FILE" />
         </Button>
@@ -87,7 +95,14 @@ export default function FileInput({ schema, value, onChange }) {
       {uppy && (
         <DashboardModal
           uppy={uppy}
-          note={allowedFileTypeString ? intl.formatMessage({ id: 'FILETYPES_NOTE' }, { allowedFileTypes: allowedFileTypeString }) : null}
+          note={
+            allowedFileTypeString
+              ? intl.formatMessage(
+                  { id: 'FILETYPES_NOTE' },
+                  { allowedFileTypes: allowedFileTypeString },
+                )
+              : null
+          }
           closeAfterFinish
           closeModalOnClickOutside
           showProgressDetails

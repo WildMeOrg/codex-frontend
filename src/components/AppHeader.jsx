@@ -19,9 +19,7 @@ import Badge from '@material-ui/core/Badge';
 import MenuIcon from '@material-ui/icons/Menu';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import AddToPhotosIcon from '@material-ui/icons/AddToPhotos';
-import AndroidIcon from '@material-ui/icons/Android';
-import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
-import AdminSettingsIcon from '@material-ui/icons/PermDataSetting';
+import AdminSettingsIcon from '@material-ui/icons/Lock';
 import PersonIcon from '@material-ui/icons/Person';
 import GroupIcon from '@material-ui/icons/Group';
 import SubjectIcon from '@material-ui/icons/Subject';
@@ -29,6 +27,8 @@ import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 import SettingsIcon from '@material-ui/icons/Settings';
 import { selectLogos } from '../modules/site/selectors';
 import Link from './Link';
+import IndividualIcon from './icons/IndividualIcon';
+import EncounterIcon from './icons/EncounterIcon';
 
 const useStyles = makeStyles(theme => ({
   toolbar: {
@@ -111,7 +111,7 @@ export default function AppHeader() {
             <Divider style={{ marginTop: 12, marginBottom: 12 }} />
             <ListItem>
               <ListItemIcon>
-                <PhotoCameraIcon />
+                <EncounterIcon />
               </ListItemIcon>
               <ListItemText>
                 <Link
@@ -128,7 +128,7 @@ export default function AppHeader() {
             </ListItem>
             <ListItem>
               <ListItemIcon>
-                <AndroidIcon />
+                <IndividualIcon />
               </ListItemIcon>
               <ListItemText>
                 <Link
