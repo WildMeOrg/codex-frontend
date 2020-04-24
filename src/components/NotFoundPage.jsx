@@ -38,11 +38,14 @@ export default function NotFoundPage({ title, subtitle, details }) {
       <div style={{ position: 'absolute', bottom: 12, left: 12 }}>
         <Typography>
           <FormattedMessage id="PHOTO_BY" />
-          <Link href="https://unsplash.com/@davidclode">
+          <Link external href="https://unsplash.com/@davidclode">
             David Clode
           </Link>
           <FormattedMessage id="ON" />
-          <Link href="https://unsplash.com/photos/92MgFhlWD-8">
+          <Link
+            external
+            href="https://unsplash.com/photos/92MgFhlWD-8"
+          >
             Unsplash
           </Link>
         </Typography>

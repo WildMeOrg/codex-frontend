@@ -2,6 +2,7 @@ const { resolve } = require('path');
 const webpack = require('webpack');
 const config = require('config');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 const path = require('path');
 const fs = require('fs');
 
@@ -137,6 +138,16 @@ module.exports = {
       filename: '[name].css',
       chunkFilename: '[id].css',
     }),
+    new CopyPlugin([
+      {
+        from: resolve(rootDir, 'src/houston/404.html'),
+        to: '404.html',
+      },
+      {
+        from: resolve(rootDir, 'src/houston/ocean.jpeg'),
+        to: 'ocean.jpeg',
+      },
+    ]),
   ],
   node: {
     fs: 'empty',
