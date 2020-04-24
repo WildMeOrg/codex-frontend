@@ -24,11 +24,12 @@ import PersonIcon from '@material-ui/icons/Person';
 import GroupIcon from '@material-ui/icons/Group';
 import SubjectIcon from '@material-ui/icons/Subject';
 import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
+import EncounterIcon from '@material-ui/icons/PhotoCamera';
+
 import SettingsIcon from '@material-ui/icons/Settings';
 import { selectLogos } from '../modules/site/selectors';
 import Link from './Link';
 import IndividualIcon from './icons/IndividualIcon';
-import EncounterIcon from './icons/EncounterIcon';
 
 const useStyles = makeStyles(theme => ({
   toolbar: {
