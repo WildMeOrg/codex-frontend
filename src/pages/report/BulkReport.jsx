@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useSelector } from 'react-redux';
+import { get } from 'lodash-es';
+import Papa from 'papaparse';
 
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
@@ -21,12 +23,13 @@ import LabeledInput from '../../components/LabeledInput';
 import BigExpansionPanel from '../../components/BigExpansionPanel';
 import TermsAndConditionsDialog from './TermsAndConditionsDialog';
 
-export default function BulkReport({ onBack }) {
+export default function BulkReport({ onBack, files }) {
   const schema = useSelector(selectEncounterSchema);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [termsError, setTermsError] = useState(false);
   const [acceptedTerms, setAcceptedTerms] = useState(false);
+  const [dataSheet, setDataSheet] = useState(null);
 
   const [fields, setFields] = useState(
     schema.reduce((memo, field) => {
@@ -34,6 +37,23 @@ export default function BulkReport({ onBack }) {
       return memo;
     }, {}),
   );
+
+  const enabledFields = Object.keys(fields).filter(
+    fieldKey => fields[fieldKey],
+  );
+
+  const templateContents = files.map(file => {
+    const row = { filename: get(file, 'fileName') };
+    enabledFields.forEach(fieldKey => {
+      if (fields[fieldKey]) row[fieldKey] = '';
+    });
+    return row;
+  });
+
+  const templateString =
+    files.length > 0
+      ? Papa.unparse(templateContents, { header: true })
+      : enabledFields.join(',');
 
   return (
     <Grid container direction="column">
@@ -59,14 +79,14 @@ export default function BulkReport({ onBack }) {
             id="generate-template-panel-header"
           >
             <Typography variant="subtitle1">
-              1. Choose fields
+              <FormattedMessage id="CHOOSE_FIELDS" />
             </Typography>
           </ExpansionPanelSummary>
           <ExpansionPanelDetails
             style={{ display: 'flex', flexDirection: 'column' }}
           >
             <Typography>
-              Select the fields for which you will be reporting data.
+              <FormattedMessage id="CHOOSE_FIELDS_DESCRIPTION" />
             </Typography>
             <FormControl component="fieldset">
               <FormGroup>
@@ -76,6 +96,7 @@ export default function BulkReport({ onBack }) {
                   );
                   return (
                     <FormControlLabel
+                      key={fieldKey}
                       control={
                         <Checkbox
                           color="primary"
@@ -107,24 +128,29 @@ export default function BulkReport({ onBack }) {
             id="generate-template-panel-header"
           >
             <Typography variant="subtitle1">
-              2. Generate template
+              <FormattedMessage id="GENERATE_TEMPLATE_LABEL" />
             </Typography>
           </ExpansionPanelSummary>
           <ExpansionPanelDetails
             style={{ display: 'flex', flexDirection: 'column' }}
           >
             <Typography>
-              Generate a template based on the files you uploaded and
-              the fields you selected. Please do not generate the
-              template until these steps are complete!
+              <FormattedMessage id="GENERATE_TEMPLATE_DESCRIPTION_1" />
             </Typography>
             <Typography style={{ margin: '12px 0' }}>
-              Create your data sheet by filling out the template with
-              your data. If you do not have a value for something,
-              please leave the cell blank. Values like &quot;N/A&quot;
-              will be rejected.
+              <FormattedMessage id="GENERATE_TEMPLATE_DESCRIPTION_2" />
             </Typography>
-            <Button variant="outlined">Generate template</Button>
+            <Button variant="outlined">
+              <a
+                style={{ textDecoration: 'unset', color: 'unset' }}
+                href={`data:text/plain;charset=utf-8,${encodeURIComponent(
+                  templateString,
+                )}`}
+                download="template.csv"
+              >
+                <FormattedMessage id="GENERATE_TEMPLATE" />
+              </a>
+            </Button>
           </ExpansionPanelDetails>
         </BigExpansionPanel>
         <BigExpansionPanel>
@@ -134,14 +160,14 @@ export default function BulkReport({ onBack }) {
             id="generate-template-panel-header"
           >
             <Typography variant="subtitle1">
-              3. Upload data sheet
+              <FormattedMessage id="UPLOAD_DATA_SHEET" />
             </Typography>
           </ExpansionPanelSummary>
           <ExpansionPanelDetails
             style={{ display: 'flex', flexDirection: 'column' }}
           >
             <Typography style={{ marginBottom: 12 }}>
-              Upload your completed data sheet as a CSV file.
+              <FormattedMessage id="UPLOAD_DATA_SHEET_DESCRIPTION" />
             </Typography>
             <LabeledInput
               required
@@ -151,6 +177,20 @@ export default function BulkReport({ onBack }) {
                 fieldType: 'file',
                 allowedFileTypes: ['.csv'],
                 defaultValue: null,
+              }}
+              value={dataSheet}
+              onChange={uppyFile => {
+                setDataSheet(uppyFile);
+                const fileUrl = get(uppyFile, 'response.uploadURL');
+                if (fileUrl) {
+                  Papa.parse(fileUrl, {
+                    header: true,
+                    download: true,
+                    complete: testo => {
+                      console.log(testo);
+                    },
+                  });
+                }
               }}
               size="medium"
               style={{ width: '100% ' }}

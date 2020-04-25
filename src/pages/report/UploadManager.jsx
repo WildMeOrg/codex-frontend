@@ -58,7 +58,8 @@ export default function UploadManager({ files, setFiles }) {
     uppyInstance.on('complete', uppyState => {
       const uploadObjects = get(uppyState, 'successful', []);
       const newFiles = uploadObjects.map(upload => ({
-        filePath: get(upload, 'response.uploadURL', null),
+        filePath: get(upload, 'response.uploadURL'),
+        fileName: get(upload, 'name'),
         croppedImage: null,
       }));
       const newFileList = [...fileRef.current, ...newFiles];

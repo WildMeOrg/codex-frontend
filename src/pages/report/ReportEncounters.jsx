@@ -15,9 +15,9 @@ import UploadManager from './UploadManager';
 
 export default function ReportEncounters() {
   useDocumentTitle('Report Encounters');
-  const [mode, setMode] = useState('bulk');
+  const [mode, setMode] = useState('');
   const [files, setFiles] = useState([]);
-  const [reporting, setReporting] = useState(true);
+  const [reporting, setReporting] = useState(false);
 
   const noImages = mode !== '' && files.length === 0;
 
@@ -102,7 +102,7 @@ export default function ReportEncounters() {
           <StandardReport onBack={onBack} />
         )}
         {reporting && mode === 'bulk' && (
-          <BulkReport onBack={onBack} />
+          <BulkReport onBack={onBack} files={files} />
         )}
       </Grid>
     </MainColumn>
