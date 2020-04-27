@@ -39,6 +39,7 @@ export default function Individual() {
         editable={individual.editable}
       />
       <EncounterGallery
+        hideIndividual
         title={
           <FormattedMessage
             id="ENCOUNTERS_WITH"

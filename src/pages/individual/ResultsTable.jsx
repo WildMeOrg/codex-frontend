@@ -12,6 +12,15 @@ export default function ResultsTable({ individuals }) {
       <MUIDataTable
         columns={[
           {
+            name: 'id',
+            label: 'Individual',
+            options: {
+              customBodyRender: value => (
+                <Link href={`/individuals/${value}`}>{value}</Link>
+              ),
+            },
+          },
+          {
             name: 'lastSeen',
             label: 'Last Seen',
             options: {
@@ -19,12 +28,12 @@ export default function ResultsTable({ individuals }) {
             },
           },
           {
-            name: 'id',
-            label: 'Individual',
-          },
-          {
             name: 'alias',
             label: 'Alias',
+          },
+          {
+            name: 'species',
+            label: 'Species',
           },
           {
             name: 'encounterCount',

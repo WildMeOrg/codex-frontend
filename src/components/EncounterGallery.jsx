@@ -13,6 +13,7 @@ export default function EncounterGallery({
   title,
   encounters,
   hideSubmitted,
+  hideIndividual,
 }) {
   const [tableView, setTableView] = useState(true);
 
@@ -60,10 +61,12 @@ export default function EncounterGallery({
         <MUIDataTable
           columns={[
             {
-              name: 'submissionDate',
-              label: 'Date',
+              name: 'id',
+              label: 'Encounter ID',
               options: {
-                customBodyRender: value => format(value, 'M/dd/yy'),
+                customBodyRender: value => (
+                  <Link href={`/encounters/${value}`}>{value}</Link>
+                ),
               },
             },
             {
@@ -71,8 +74,16 @@ export default function EncounterGallery({
               label: 'Individual',
               options: {
                 customBodyRender: value => (
-                  <Link href="https://www.google.com/">{value}</Link>
+                  <Link href={`/individuals/${value}`}>{value}</Link>
                 ),
+                display: hideIndividual ? 'false' : 'true',
+              },
+            },
+            {
+              name: 'submissionDate',
+              label: 'Date',
+              options: {
+                customBodyRender: value => format(value, 'M/dd/yy'),
               },
             },
             {
@@ -84,8 +95,9 @@ export default function EncounterGallery({
               label: 'Submitter',
               options: {
                 customBodyRender: value => (
-                  <Link href="https://www.google.com/">{value}</Link>
+                  <Link href={`/users/${value}`}>{value}</Link>
                 ),
+                display: hideSubmitted ? 'false' : 'true',
               },
             },
           ]}

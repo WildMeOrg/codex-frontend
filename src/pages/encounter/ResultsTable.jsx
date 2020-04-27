@@ -4,12 +4,31 @@ import { format } from 'date-fns';
 import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
 import ButtonLink from '../../components/ButtonLink';
+import Link from '../../components/Link';
 
 export default function ResultsTable({ encounters }) {
   return (
     <div style={{ marginLeft: 16, width: '80%' }}>
       <MUIDataTable
         columns={[
+          {
+            name: 'id',
+            label: 'Encounter ID',
+            options: {
+              customBodyRender: value => (
+                <Link href={`/encounters/${value}`}>{value}</Link>
+              ),
+            },
+          },
+          {
+            name: 'individualId',
+            label: 'Individual',
+            options: {
+              customBodyRender: value => (
+                <Link href={`/individuals/${value}`}>{value}</Link>
+              ),
+            },
+          },
           {
             name: 'encounterDate',
             label: 'Encounter Date',
@@ -23,10 +42,6 @@ export default function ResultsTable({ encounters }) {
             options: {
               customBodyRender: value => format(value, 'M/dd/yy'),
             },
-          },
-          {
-            name: 'individualId',
-            label: 'Individual',
           },
           {
             name: 'user',

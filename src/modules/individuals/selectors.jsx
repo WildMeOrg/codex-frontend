@@ -85,6 +85,7 @@ export const selectSearchResults = state => [
   {
     id: 'Teddy',
     alias: 'Teddy',
+    species: 'Grampus Griseus',
     encounterCount: 7,
     locationsSighted: 3,
     lastSeen: Date.now(),
@@ -93,6 +94,7 @@ export const selectSearchResults = state => [
   {
     id: 'WB-104',
     alias: 'Zeeb',
+    species: 'Grampus Griseus',
     encounterCount: 5,
     locationsSighted: 2,
     lastSeen: Date.now(),
@@ -101,6 +103,7 @@ export const selectSearchResults = state => [
   {
     id: 'WB-132',
     alias: 'Dobbles',
+    species: 'Grampus Griseus',
     encounterCount: 22,
     locationsSighted: 13,
     lastSeen: Date.now(),
@@ -109,6 +112,7 @@ export const selectSearchResults = state => [
   {
     id: 'WB-420',
     alias: 'Bollod',
+    species: 'Kogia Sima',
     encounterCount: 47,
     locationsSighted: 3,
     lastSeen: Date.now(),
@@ -117,6 +121,7 @@ export const selectSearchResults = state => [
   {
     id: 'WB-88',
     alias: 'Norgub',
+    species: 'Kogia Sima',
     encounterCount: 20,
     locationsSighted: 1,
     lastSeen: Date.now(),
@@ -125,6 +130,7 @@ export const selectSearchResults = state => [
   {
     id: 'WB-61',
     alias: 'Friggles',
+    species: 'Kogia Sima',
     encounterCount: 42,
     locationsSighted: 4,
     lastSeen: Date.now(),
@@ -133,6 +139,7 @@ export const selectSearchResults = state => [
   {
     id: 'WB-42',
     alias: 'Jeff',
+    species: 'Grampus Griseus',
     encounterCount: 88,
     locationsSighted: 1,
     lastSeen: Date.now(),

@@ -76,7 +76,7 @@ export default function EncounterCard({ encounter, hideSubmitted }) {
             {!hideSubmitted && (
               <Typography variant="caption">
                 <FormattedMessage id="SUBMITTED_BY" />
-                <Link href="https://www.google.com/">{user}</Link>
+                <Link href={`/users/${user}`}>{user}</Link>
               </Typography>
             )}
           </Grid>

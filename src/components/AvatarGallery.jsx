@@ -21,6 +21,7 @@ export default function AvatarGallery({
     org.name.toLowerCase().includes(filter.toLowerCase()),
   );
 
+
   return (
     <>
       <Input
@@ -43,23 +44,23 @@ export default function AvatarGallery({
         </Typography>
       )}
       <Grid container spacing={6} justify="center">
-        {filteredEntities.map((entity, i) => {
+        {filteredEntities.map((entity) => {
           return (
-            <Grid
-              key={i}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                flexDirection: 'column',
-              }}
-              item
-            >
-              <BigAvatar
-                imgSrc={entity.profile}
-                name={entity.name}
-                square={square}
-              />
-              <Link noUnderline href={getHref(entity)}>
+            <Grid key={entity.id} item>
+              <Link
+                noUnderline
+                href={getHref(entity)}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  flexDirection: 'column',
+                }}
+              >
+                <BigAvatar
+                  imgSrc={entity.profile}
+                  name={entity.name}
+                  square={square}
+                />
                 <Typography
                   variant="h6"
                   noWrap
@@ -72,8 +73,8 @@ export default function AvatarGallery({
                 >
                   {entity.name}
                 </Typography>
+                {renderDetails(entity)}
               </Link>
-              {renderDetails(entity)}
             </Grid>
           );
         })}
