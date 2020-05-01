@@ -10,6 +10,7 @@ import AppHeader from './components/AppHeader';
 import Footer from './components/Footer';
 import { selectLocale } from './modules/app/selectors';
 import Individual from './pages/individual/Individual';
+import Encounter from './pages/encounter/Encounter';
 import Org from './pages/org/Org';
 import Orgs from './pages/org/Orgs';
 import User from './pages/user/User';
@@ -56,6 +57,9 @@ export default function App() {
               </Route>
               <Route path="/individuals">
                 <SearchIndividuals />
+              </Route>
+              <Route path="/encounters/:id">
+                <Encounter />
               </Route>
               <Route path="/encounters">
                 <SearchEncounters />

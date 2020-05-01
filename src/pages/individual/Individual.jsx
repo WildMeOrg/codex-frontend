@@ -15,8 +15,7 @@ import useDocumentTitle from '../../hooks/useDocumentTitle';
 export default function Individual() {
   const { id } = useParams();
 
-  const testo = useIndividuals([id]);
-  console.log('individual.jsx', testo);
+  const [results, error] = useIndividuals([id]);
 
   // fetch data for Id...
   const individuals = useSelector(selectIndividuals);

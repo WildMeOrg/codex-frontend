@@ -14,7 +14,10 @@ export default function FeetMetersInput({
   ...rest
 }) {
   const intl = useIntl();
-  const choices = [intl.formatMessage({ id: 'FEET' }), intl.formatMessage({ id: 'METERS' })];
+  const choices = [
+    intl.formatMessage({ id: 'FEET' }),
+    intl.formatMessage({ id: 'METERS' }),
+  ];
 
   const [unit, setUnit] = useState('meters');
 
@@ -36,7 +39,8 @@ export default function FeetMetersInput({
         onChange={e => {
           onChange(e.target.value);
           const typedValue = e.target.value;
-          const newValue = unit === 'feet' ? typedValue * 0.3048 : typedValue;
+          const newValue =
+            unit === 'feet' ? typedValue * 0.3048 : typedValue;
           onChange(newValue);
           setDisplayValue(round(typedValue, 2));
         }}

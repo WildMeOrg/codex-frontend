@@ -1,8 +1,10 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { get } from 'lodash-es';
 
 export default function useIndividuals(ids) {
-  const individuals = {};
+  const [individuals, setIndividuals] = useState({});
+  const [error, setError] = useState(null);
 
   useEffect(
     () => {
@@ -15,23 +17,24 @@ export default function useIndividuals(ids) {
           ids.forEach(async id => {
             try {
               const result = await axios({
-                headers: {
-                  // Accept: 'application/json',
-                  // 'Content-Type': 'application/json',
-                  // Cache: 'no-cache',
-                },
-                data: {},
                 withCredentials: true,
-                url: `https://nextgen.dev-wildbook.org/api/org.ecocean.MarkedIndividual?individualID==%${id}%27`,
+                url: `https://nextgen.dev-wildbook.org/api/org.ecocean.MarkedIndividual?individualID==%27${id}%27`,
               });
-              individuals[id] = result;
-            } catch (error) {
-              console.log(error);
+
+              const data = get(result, 'data.0');
+
+              individuals[id] = data;
+              setIndividuals({ ...individuals });
+            } catch (requestError) {
+              console.error('Error requesting individual');
+              console.error(requestError);
+              setError(`Error requesting individual ${id}`);
             }
           });
-        } catch (error) {
-          console.log('Login error');
-          console.log(error);
+        } catch (authError) {
+          console.error('Login error');
+          console.error(authError);
+          setError('Error authenticating to API');
         }
       };
 
@@ -40,5 +43,5 @@ export default function useIndividuals(ids) {
     [ids.join(',')],
   );
 
-  return individuals;
+  return [individuals, error];
 }

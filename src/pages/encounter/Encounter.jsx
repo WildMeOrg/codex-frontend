@@ -3,50 +3,94 @@ import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { toLower } from 'lodash-es';
+import Typography from '@material-ui/core/Typography';
 import EntityHeader from '../../components/EntityHeader';
 import MainColumn from '../../components/MainColumn';
 import NotFoundPage from '../../components/NotFoundPage';
-import EncounterGallery from '../../components/EncounterGallery';
-import { selectIndividuals } from '../../modules/individuals/selectors';
-import { selectSpeciesFields } from '../../modules/site/selectors';
+import Link from '../../components/Link';
+import {
+  selectEncounters,
+  selectEncounterSchema,
+} from '../../modules/encounters/selectors';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
+import Status from './Status';
 
 export default function Encounter() {
   const { id } = useParams();
 
   // fetch data for Id...
-  const individuals = useSelector(selectIndividuals);
-  const speciesFields = useSelector(selectSpeciesFields);
+  const encounters = useSelector(selectEncounters);
+  const schema = useSelector(selectEncounterSchema);
   useDocumentTitle(`Encounter ${id}`);
 
-  const individual = individuals[toLower(id)];
-  if (!individual)
+  const encounter = encounters.find(e => e.id === toLower(id));
+  console.log('here', encounters, encounter);
+
+  if (!encounter)
     return (
       <NotFoundPage
         subtitle={<FormattedMessage id="ENCOUNTER_NOT_FOUND" />}
       />
     );
 
-  const fieldSchema = speciesFields[individual.species];
+  const encounterFields = [
+    {
+      name: 'species',
+      value: 'Grampus Griseus',
+    },
+    {
+      name: 'sightingDate',
+      value: new Date(),
+    },
+    {
+      name: 'encounterContext',
+      value: 'Research effort',
+    },
+  ];
 
   return (
     <MainColumn>
       <EntityHeader
-        name={individual.name}
-        imgSrc={individual.profile}
-        fieldValues={individual.fields}
-        fieldSchema={fieldSchema}
-        editable={individual.editable}
-      />
-      <EncounterGallery
-        title={
-          <FormattedMessage
-            id="ENCOUNTERS_WITH"
-            values={{ name: individual.name }}
-          />
-        }
-        encounters={individual.encounters}
-      />
+        name={encounter.id}
+        imgSrc={encounter.profile}
+        fieldValues={[]}
+        fieldSchema={schema}
+        editable
+      >
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            marginTop: 4,
+          }}
+        >
+          <Typography>
+            <FormattedMessage
+              id="ENTITY_HEADER_SPECIES"
+              values={{ species: encounter.species }}
+            />
+          </Typography>
+          <Typography>
+            <FormattedMessage
+              id="ENTITY_HEADER_REGION"
+              values={{ region: encounter.region }}
+            />
+          </Typography>
+          <Typography>
+            <FormattedMessage
+              id="ENTITY_HEADER_CONTEXT"
+              values={{ context: encounter.context }}
+            />
+          </Typography>
+          <Typography>
+            <FormattedMessage id="ENTITY_HEADER_SUBMITTER" />
+            <Link href={`/users/${encounter.userId}`}>
+              {encounter.user}
+            </Link>
+          </Typography>
+        </div>
+      </EntityHeader>
+      <Status />
     </MainColumn>
   );
 }
