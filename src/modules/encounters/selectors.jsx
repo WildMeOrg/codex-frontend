@@ -111,5 +111,12 @@ export const selectEncounterSchema = state => {
       fieldType: fieldTypes.file,
       defaultValue: null,
     },
+    {
+      name: 'diveDepth',
+      labelId: 'DIVE_DEPTH',
+      category: encounterCategories.encounterDetails.name,
+      fieldType: fieldTypes.feetmeters,
+      defaultValue: '',
+    },
   ];
 };

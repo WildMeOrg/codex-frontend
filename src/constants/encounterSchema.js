@@ -4,14 +4,17 @@ export const encounterCategories = {
   general: {
     name: 'general',
     labelId: 'GENERAL',
+    individualFields: false,
   },
   encounterDetails: {
     name: 'encounterDetails',
     labelId: 'ENCOUNTER_DETAILS',
+    individualFields: false,
   },
   animal: {
     name: 'animal',
     labelId: 'ANIMAL_INFORMATION',
+    individualFields: true,
   },
 };
 

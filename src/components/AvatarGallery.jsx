@@ -21,7 +21,6 @@ export default function AvatarGallery({
     org.name.toLowerCase().includes(filter.toLowerCase()),
   );
 
-
   return (
     <>
       <Input
@@ -44,7 +43,7 @@ export default function AvatarGallery({
         </Typography>
       )}
       <Grid container spacing={6} justify="center">
-        {filteredEntities.map((entity) => {
+        {filteredEntities.map(entity => {
           return (
             <Grid key={entity.id} item>
               <Link

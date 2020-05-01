@@ -4,6 +4,7 @@ const fieldTypes = {
   string: 'string',
   longstring: 'longstring',
   float: 'float',
+  feetmeters: 'feetmeters', // float represents meters, but GUI supports feet
   integer: 'integer',
   file: 'file',
   latlong: 'latlong', // [float, float]

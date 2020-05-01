@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useSelector } from 'react-redux';
-import { values } from 'lodash-es';
+import { some, values } from 'lodash-es';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -22,7 +22,7 @@ import InlineButton from '../../components/InlineButton';
 import BigExpansionPanel from '../../components/BigExpansionPanel';
 import TermsAndConditionsDialog from './TermsAndConditionsDialog';
 
-export default function StandardReport({ onBack }) {
+export default function StandardReport({ variant, onBack }) {
   const intl = useIntl();
   const categories = useSelector(selectEncounterCategories);
   const schema = useSelector(selectEncounterSchema);
@@ -61,6 +61,13 @@ export default function StandardReport({ onBack }) {
           const inputsInCategory = schema.filter(
             f => f.category === category.name,
           );
+          const requiredCategory = some(
+            inputsInCategory,
+            input => input.required,
+          );
+
+          if (variant === 'multiple' && category.individualFields)
+            return null;
 
           return (
             <BigExpansionPanel
@@ -80,6 +87,7 @@ export default function StandardReport({ onBack }) {
                   ) : (
                     category.label
                   )}
+                  {requiredCategory && ' *'}
                 </Typography>
               </ExpansionPanelSummary>
               <ExpansionPanelDetails>

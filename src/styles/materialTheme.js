@@ -69,5 +69,10 @@ export default {
         fontStyle: 'unset',
       },
     },
+    MuiButton: {
+      label: {
+        letterSpacing: '0.1em',
+      },
+    },
   },
 };

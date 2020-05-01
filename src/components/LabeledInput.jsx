@@ -15,6 +15,7 @@ import {
   KeyboardDatePicker,
 } from '@material-ui/pickers';
 import FileInput from './inputs/FileInput';
+import FeetMetersInput from './inputs/FeetMetersInput';
 
 function Core({ children, required, width, style = {} }) {
   return (
@@ -233,6 +234,19 @@ export default function LabeledInput({
           }}
         />
       </MuiPickersUtilsProvider>
+    );
+  }
+
+  if (schema.fieldType === 'feetmeters') {
+    return (
+      <Core schema={schema} required={required} width={width}>
+        <FeetMetersInput
+          schema={schema}
+          value={value}
+          onChange={onChange}
+          {...rest}
+        />
+      </Core>
     );
   }
 

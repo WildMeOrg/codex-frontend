@@ -13,7 +13,7 @@ import StandardReport from './StandardReport';
 import BulkReport from './BulkReport';
 import UploadManager from './UploadManager';
 
-export default function ReportEncounters() {
+export default function ReportSightings() {
   useDocumentTitle('Report Encounters');
   const [mode, setMode] = useState('');
   const [files, setFiles] = useState([]);
@@ -46,15 +46,30 @@ export default function ReportEncounters() {
                   value={mode}
                 >
                   <FormControlLabel
-                    value="standard"
+                    value="one"
                     control={<Radio />}
                     onClick={e => {
                       if (e.target.value) setMode(e.target.value);
                     }}
-                    label={<FormattedMessage id="ONE_SIGHTING" />}
+                    label={
+                      <FormattedMessage id="ONE_SIGHTING_ONE_INDIVIDUAL" />
+                    }
                   />
                   <Typography variant="caption">
-                    <FormattedMessage id="ONE_SIGHTING_DESCRIPTION" />
+                    <FormattedMessage id="ONE_SIGHTING_ONE_INDIVIDUAL_DESCRIPTION" />
+                  </Typography>
+                  <FormControlLabel
+                    value="multiple"
+                    control={<Radio />}
+                    onClick={e => {
+                      if (e.target.value) setMode(e.target.value);
+                    }}
+                    label={
+                      <FormattedMessage id="ONE_SIGHTING_MULTIPLE_INDIVIDUALS" />
+                    }
+                  />
+                  <Typography variant="caption">
+                    <FormattedMessage id="ONE_SIGHTING_MULTIPLE_INDIVIDUALS_DESCRIPTION" />
                   </Typography>
                   <FormControlLabel
                     value="bulk"
@@ -98,8 +113,8 @@ export default function ReportEncounters() {
             </Grid>
           </>
         )}
-        {reporting && mode === 'standard' && (
-          <StandardReport onBack={onBack} />
+        {reporting && ['one', 'multiple'].includes(mode) && (
+          <StandardReport onBack={onBack} variant={mode} />
         )}
         {reporting && mode === 'bulk' && (
           <BulkReport onBack={onBack} files={files} />

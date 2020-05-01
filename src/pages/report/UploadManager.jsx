@@ -1,12 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useIntl, FormattedMessage } from 'react-intl';
+import { useIntl } from 'react-intl';
 import { get } from 'lodash-es';
 import Uppy from '@uppy/core';
 import Transloadit from '@uppy/transloadit';
 import DragDrop from '@uppy/react/lib/DragDrop';
 import StatusBar from '@uppy/react/lib/StatusBar';
+import IconButton from '@material-ui/core/IconButton';
 import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button';
+import CloseIcon from '@material-ui/icons/Cancel';
 import {
   transloaditKey,
   transloaditTemplateId,
@@ -164,40 +165,45 @@ export default function UploadManager({ files, setFiles }) {
           <Grid
             item
             key={file.filePath}
-            style={{ display: 'flex', flexDirection: 'column' }}
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              position: 'relative',
+            }}
           >
             <img
               src={file.croppedImage || file.filePath}
               width={200}
               alt={`Uploaded media #${i + 1}`}
             />
-            <div style={{ marginTop: 12 }}>
-              <Button
-                variant="outlined"
-                color="primary"
-                style={{ marginRight: 12 }}
-                onClick={() => {
-                  setCropper({
-                    open: true,
-                    imgSrc: file.filePath,
-                  });
-                }}
-              >
-                <FormattedMessage id="CROP" />
-              </Button>
-              <Button
-                variant="outlined"
-                onClick={() => {
-                  const newFileList = files.filter(
-                    f => f.filePath !== file.filePath,
-                  );
-                  setFiles(newFileList);
-                }}
-                style={{ color: 'red' }}
-              >
-                <FormattedMessage id="REMOVE" />
-              </Button>
-            </div>
+            <svg
+              style={{
+                position: 'absolute',
+                top: -4,
+                right: -4,
+                zIndex: 1001,
+              }}
+              width={24}
+              height={24}
+            >
+              <circle cx={12} cy={12} r={13} fill="white" />
+            </svg>
+            <IconButton
+              style={{
+                position: 'absolute',
+                top: -16,
+                right: -16,
+                zIndex: 1001,
+              }}
+              onClick={() => {
+                const newFileList = files.filter(
+                  f => f.filePath !== file.filePath,
+                );
+                setFiles(newFileList);
+              }}
+            >
+              <CloseIcon />
+            </IconButton>
           </Grid>
         ))}
       </Grid>

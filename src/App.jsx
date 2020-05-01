@@ -14,7 +14,7 @@ import Org from './pages/org/Org';
 import Orgs from './pages/org/Orgs';
 import User from './pages/user/User';
 import Users from './pages/user/Users';
-import ReportEncounters from './pages/report/ReportEncounters';
+import ReportSightings from './pages/report/ReportSightings';
 import FourOhFour from './pages/fourohfour/FourOhFour';
 import SearchIndividuals from './pages/individual/SearchIndividuals';
 import SearchEncounters from './pages/encounter/SearchEncounters';
@@ -73,7 +73,7 @@ export default function App() {
                 <Orgs />
               </Route>
               <Route path="/report">
-                <ReportEncounters />
+                <ReportSightings />
               </Route>
               <Route path="/" exact>
                 <div />
