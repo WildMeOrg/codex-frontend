@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { toLower } from 'lodash-es';
 import Typography from '@material-ui/core/Typography';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
 import EntityHeader from '../../components/EntityHeader';
 import MainColumn from '../../components/MainColumn';
 import NotFoundPage from '../../components/NotFoundPage';
@@ -22,6 +24,8 @@ export default function Encounter() {
   const encounters = useSelector(selectEncounters);
   const schema = useSelector(selectEncounterSchema);
   useDocumentTitle(`Encounter ${id}`);
+
+  const [activeTab, setActiveTab] = useState('individuals');
 
   const encounter = encounters.find(e => e.id === toLower(id));
   console.log('here', encounters, encounter);
@@ -91,6 +95,16 @@ export default function Encounter() {
         </div>
       </EntityHeader>
       <Status />
+      <Tabs
+        value={activeTab}
+        onChange={(_, newValue) => {
+          setActiveTab(newValue);
+        }}
+      >
+        <Tab label={<FormattedMessage id="INDIVIDUALS" />} value="individuals" />
+        <Tab label={<FormattedMessage id="ANNOTATIONS" />} value="annotations" />
+        <Tab label={<FormattedMessage id="PHOTOGRAPHS" />} value="photographs" />
+      </Tabs>
     </MainColumn>
   );
 }

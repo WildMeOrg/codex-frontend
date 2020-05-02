@@ -132,6 +132,8 @@
     "NO_ACTIVE_FILTERS": "No active filters. Create a filter to get started.",
     "CONFIRM": "Confirm",
     "SAVE": "Save",
+    "ANNOTATIONS": "Annotations",
+    "PHOTOGRAPHS": "Photographs",
     "CROP": "Crop",
     "REMOVE": "Remove",
     "ENCOUNTER_STATUS": "Encounter status",

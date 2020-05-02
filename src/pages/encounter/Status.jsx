@@ -77,8 +77,8 @@ export default function Status({ onMatch, onMarkComplete }) {
           spacing={1}
           style={{ width: '50%', marginLeft: 4 }}
         >
-          {photos.map(photo => (
-            <Grid item>
+          {photos.map((photo, i) => (
+            <Grid item key={i}>
               <Tooltip
                 title={`img215.jpg - ${
                   photo ? 'Complete' : '14th in detection queue'
