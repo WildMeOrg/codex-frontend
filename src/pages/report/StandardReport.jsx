@@ -16,6 +16,7 @@ import {
   selectEncounterSchema,
   selectEncounterCategories,
 } from '../../modules/encounters/selectors';
+import { selectSiteName } from '../../modules/site/selectors';
 import LabeledInput from '../../components/LabeledInput';
 import AsyncButton from '../../components/AsyncButton';
 import InlineButton from '../../components/InlineButton';
@@ -26,7 +27,9 @@ export default function StandardReport({ variant, onBack }) {
   const intl = useIntl();
   const categories = useSelector(selectEncounterCategories);
   const schema = useSelector(selectEncounterSchema);
+  const siteName = useSelector(selectSiteName);
   const [acceptedTerms, setAcceptedTerms] = useState(false);
+  const [acceptEmails, setAcceptEmails] = useState(false);
   const [loading, setLoading] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [incompleteFields, setIncompleteFields] = useState([]);
@@ -97,45 +100,63 @@ export default function StandardReport({ variant, onBack }) {
                     flexDirection: 'column',
                   }}
                 >
-                  {inputsInCategory.map(filter => (
-                    <div
-                      key={`${category.name} - ${filter.name}`}
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        marginBottom: 12,
-                      }}
-                    >
-                      <Hidden xsDown>
-                        <Typography
-                          style={{
-                            margin: '8px 16px 0 0',
-                            width: 180,
-                            textAlign: 'right',
-                          }}
-                        >
-                          <FormattedMessage id={filter.labelId} />
-                          {filter.required && ' *'}
-                        </Typography>
-                      </Hidden>
-                      <LabeledInput
-                        schema={filter}
-                        value={formValues[filter.name]}
-                        onChange={value => {
-                          setFormValues({
-                            ...formValues,
-                            [filter.name]: value,
-                          });
+                  {inputsInCategory.map(input => {
+                    return (
+                      <div
+                        key={`${category.name} - ${input.name}`}
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          marginBottom: 12,
                         }}
-                        width={220}
-                      />
-                    </div>
-                  ))}
+                      >
+                        <Hidden xsDown>
+                          <Typography
+                            style={{
+                              margin: '8px 16px 0 0',
+                              width: 180,
+                              textAlign: 'right',
+                            }}
+                          >
+                            <FormattedMessage id={input.labelId} />
+                            {input.required && ' *'}
+                          </Typography>
+                        </Hidden>
+                        <LabeledInput
+                          schema={input}
+                          value={formValues[input.name]}
+                          onChange={value => {
+                            setFormValues({
+                              ...formValues,
+                              [input.name]: value,
+                            });
+                          }}
+                          width={220}
+                        />
+                      </div>
+                    );
+                  })}
                 </div>
               </ExpansionPanelDetails>
             </BigExpansionPanel>
           );
         })}
+      </Grid>
+      <Grid item>
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={acceptEmails}
+              onChange={() => setAcceptEmails(!acceptEmails)}
+            />
+          }
+          label={
+            <FormattedMessage
+              id="ONE_SIGHTING_EMAIL_CONSENT"
+              values={{ siteName }}
+            />
+          }
+        />
       </Grid>
       <Grid item>
         <FormControlLabel

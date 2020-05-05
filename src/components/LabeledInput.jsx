@@ -16,6 +16,7 @@ import {
 } from '@material-ui/pickers';
 import FileInput from './inputs/FileInput';
 import FeetMetersInput from './inputs/FeetMetersInput';
+import IndividualInput from './inputs/IndividualInput';
 
 function Core({ children, required, width, style = {} }) {
   return (
@@ -56,6 +57,17 @@ export default function LabeledInput({
   if (schema.fieldType === 'file') {
     return (
       <FileInput
+        schema={schema}
+        value={value}
+        onChange={onChange}
+        {...rest}
+      />
+    );
+  }
+
+  if (schema.fieldType === 'individual') {
+    return (
+      <IndividualInput
         schema={schema}
         value={value}
         onChange={onChange}

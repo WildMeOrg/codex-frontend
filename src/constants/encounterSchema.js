@@ -76,6 +76,14 @@ export default [
     defaultValue: '',
   },
   {
+    name: 'autoMatch',
+    labelId: 'AUTO_MATCH',
+    descriptionId: 'AUTO_MATCH_DESCRIPTION',
+    category: encounterCategories.animal.name,
+    fieldType: fieldTypes.individual,
+    defaultValue: null,
+  },
+  {
     name: 'photographer',
     labelId: 'PHOTOGRAPHER',
     descriptionId: 'PHOTOGRAPHER_DESCRIPTION',

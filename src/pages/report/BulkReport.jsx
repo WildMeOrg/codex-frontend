@@ -21,14 +21,17 @@ import AsyncButton from '../../components/AsyncButton';
 import InlineButton from '../../components/InlineButton';
 import LabeledInput from '../../components/LabeledInput';
 import BigExpansionPanel from '../../components/BigExpansionPanel';
+import { selectSiteName } from '../../modules/site/selectors';
 import TermsAndConditionsDialog from './TermsAndConditionsDialog';
 
 export default function BulkReport({ onBack, files }) {
   const schema = useSelector(selectEncounterSchema);
+  const siteName = useSelector(selectSiteName);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [termsError, setTermsError] = useState(false);
   const [acceptedTerms, setAcceptedTerms] = useState(false);
+  const [acceptEmails, setAcceptEmails] = useState(false);
   const [dataSheet, setDataSheet] = useState(null);
 
   const [fields, setFields] = useState(
@@ -197,6 +200,22 @@ export default function BulkReport({ onBack, files }) {
             />
           </ExpansionPanelDetails>
         </BigExpansionPanel>
+      </Grid>
+      <Grid item>
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={acceptEmails}
+              onChange={() => setAcceptEmails(!acceptEmails)}
+            />
+          }
+          label={
+            <FormattedMessage
+              id="BULK_SIGHTING_EMAIL_CONSENT"
+              values={{ siteName }}
+            />
+          }
+        />
       </Grid>
       <Grid item>
         <FormControlLabel

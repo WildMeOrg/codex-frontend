@@ -101,9 +101,18 @@ export default function Encounter() {
           setActiveTab(newValue);
         }}
       >
-        <Tab label={<FormattedMessage id="INDIVIDUALS" />} value="individuals" />
-        <Tab label={<FormattedMessage id="ANNOTATIONS" />} value="annotations" />
-        <Tab label={<FormattedMessage id="PHOTOGRAPHS" />} value="photographs" />
+        <Tab
+          label={<FormattedMessage id="INDIVIDUALS" />}
+          value="individuals"
+        />
+        <Tab
+          label={<FormattedMessage id="ANNOTATIONS" />}
+          value="annotations"
+        />
+        <Tab
+          label={<FormattedMessage id="PHOTOGRAPHS" />}
+          value="photographs"
+        />
       </Tabs>
     </MainColumn>
   );
