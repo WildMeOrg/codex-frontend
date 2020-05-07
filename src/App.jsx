@@ -10,7 +10,7 @@ import AppHeader from './components/AppHeader';
 import Footer from './components/Footer';
 import { selectLocale } from './modules/app/selectors';
 import Individual from './pages/individual/Individual';
-import Encounter from './pages/encounter/Encounter';
+import Sighting from './pages/sighting/Sighting';
 import Org from './pages/org/Org';
 import Orgs from './pages/org/Orgs';
 import User from './pages/user/User';
@@ -18,7 +18,7 @@ import Users from './pages/user/Users';
 import ReportSightings from './pages/report/ReportSightings';
 import FourOhFour from './pages/fourohfour/FourOhFour';
 import SearchIndividuals from './pages/individual/SearchIndividuals';
-import SearchEncounters from './pages/encounter/SearchEncounters';
+import SearchSightings from './pages/sighting/SearchSightings';
 import materialTheme from './styles/materialTheme';
 import messagesEn from '../locale/en.json';
 import messagesEs from '../locale/es.json';
@@ -58,11 +58,11 @@ export default function App() {
               <Route path="/individuals">
                 <SearchIndividuals />
               </Route>
-              <Route path="/encounters/:id">
-                <Encounter />
+              <Route path="/sightings/:id">
+                <Sighting />
               </Route>
-              <Route path="/encounters">
-                <SearchEncounters />
+              <Route path="/sightings">
+                <SearchSightings />
               </Route>
               <Route path="/users/:id">
                 <User />

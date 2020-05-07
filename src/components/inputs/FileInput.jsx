@@ -72,6 +72,7 @@ export default function FileInput({
         <Button
           size="small"
           variant="outlined"
+          style={{ marginTop: 16 }}
           onClick={() => setModalOpen(true)}
           {...rest}
         >

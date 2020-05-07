@@ -9,9 +9,9 @@ import FilterPanel from '../../components/FilterPanel';
 import SearchFilterList from '../../components/SearchFilterList';
 import {
   selectSearchResults,
-  selectEncounterSearchCategories,
-  selectEncounterSearchSchema,
-} from '../../modules/encounters/selectors';
+  selectSightingSearchCategories,
+  selectSightingSearchSchema,
+} from '../../modules/sightings/selectors';
 import ResultsTable from './ResultsTable';
 
 const drawerWidth = 280;
@@ -27,8 +27,8 @@ const paperProps = {
 };
 
 export default function SearchEncounters() {
-  const categories = useSelector(selectEncounterSearchCategories);
-  const schema = useSelector(selectEncounterSearchSchema);
+  const categories = useSelector(selectSightingSearchCategories);
+  const schema = useSelector(selectSightingSearchSchema);
 
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
   const [formValues, setFormValues] = useState(
@@ -72,7 +72,7 @@ export default function SearchEncounters() {
           component="h3"
           style={{ margin: '16px 0 16px 16px' }}
         >
-          <FormattedMessage id="EXPLORE_ENCOUNTERS" />
+          <FormattedMessage id="EXPLORE_SIGHTINGS" />
         </Typography>
         <SearchFilterList
           formValues={formValues}
@@ -88,7 +88,7 @@ export default function SearchEncounters() {
             <FormattedMessage id="SHOW_FILTERS" />
           </Button>
         </Hidden>
-        <ResultsTable encounters={useSelector(selectSearchResults)} />
+        <ResultsTable sightings={useSelector(selectSearchResults)} />
       </div>
     </div>
   );

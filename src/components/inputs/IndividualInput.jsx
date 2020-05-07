@@ -41,6 +41,7 @@ export default function IndividualInput({
         <Button
           size="small"
           variant="outlined"
+          style={{ marginTop: 16 }}
           onClick={() => setModalOpen(true)}
           {...rest}
         >
@@ -60,9 +61,11 @@ export default function IndividualInput({
           </IconButton>
         </div>
       )}
-      <FormHelperText style={{ maxWidth: 220 }}>
-        <FormattedMessage id={schema.descriptionId} />
-      </FormHelperText>
+      {schema && schema.descriptionId && (
+        <FormHelperText style={{ maxWidth: 220 }}>
+          <FormattedMessage id={schema.descriptionId} />
+        </FormHelperText>
+      )}
       <Dialog open={modalOpen} onClose={onClose}>
         <DialogTitle onClose={onClose}>
           <FormattedMessage id="SELECT_INDIVIDUAL" />

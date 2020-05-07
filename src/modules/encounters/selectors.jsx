@@ -130,5 +130,35 @@ export const selectEncounterSchema = state => {
       fieldType: fieldTypes.feetmeters,
       defaultValue: '',
     },
+    {
+      name: 'relationships',
+      labelId: 'RELATIONSHIPS',
+      descriptionId: 'RELATIONSHIPS_DESCRIPTION',
+      category: encounterCategories.animal.name,
+      fieldType: fieldTypes.relationships,
+      choices: [
+        {
+          type: 'mother',
+          labelId: 'MOTHER_OF',
+        },
+        {
+          type: 'father',
+          labelId: 'FATHER_OF',
+        },
+        {
+          type: 'calf',
+          labelId: 'CALF_OF',
+        },
+        {
+          type: 'family',
+          labelId: 'IN_A_FAMILY_WITH',
+        },
+        {
+          type: 'group',
+          labelId: 'IN_A_GROUP_WITH',
+        },
+      ],
+      defaultValue: [],
+    },
   ];
 };

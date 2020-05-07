@@ -106,14 +106,14 @@ export default function StandardReport({ variant, onBack }) {
                         key={`${category.name} - ${input.name}`}
                         style={{
                           display: 'flex',
-                          alignItems: 'center',
                           marginBottom: 12,
                         }}
                       >
                         <Hidden xsDown>
                           <Typography
                             style={{
-                              margin: '8px 16px 0 0',
+                              marginRight: 16,
+                              marginTop: 20,
                               width: 180,
                               textAlign: 'right',
                             }}

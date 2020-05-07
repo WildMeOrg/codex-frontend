@@ -6,7 +6,6 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import TextField from '@material-ui/core/TextField';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
-import InputLabel from '@material-ui/core/InputLabel';
 import Switch from '@material-ui/core/Switch';
 import Typography from '@material-ui/core/Typography';
 import DateFnsUtils from '@date-io/date-fns';
@@ -17,6 +16,8 @@ import {
 import FileInput from './inputs/FileInput';
 import FeetMetersInput from './inputs/FeetMetersInput';
 import IndividualInput from './inputs/IndividualInput';
+import RelationshipsInput from './inputs/RelationshipsInput';
+import SelectInput from './inputs/SelectInput';
 
 function Core({ children, required, width, style = {} }) {
   return (
@@ -68,6 +69,17 @@ export default function LabeledInput({
   if (schema.fieldType === 'individual') {
     return (
       <IndividualInput
+        schema={schema}
+        value={value}
+        onChange={onChange}
+        {...rest}
+      />
+    );
+  }
+
+  if (schema.fieldType === 'relationships') {
+    return (
+      <RelationshipsInput
         schema={schema}
         value={value}
         onChange={onChange}
@@ -151,23 +163,14 @@ export default function LabeledInput({
   if (['select', 'multiselect'].includes(schema.fieldType)) {
     return (
       <Core schema={schema} required={required} width={width}>
-        <InputLabel>{getLabel(schema)}</InputLabel>
-        <Select
-          labelId={`${schema.name}-selector-label`}
-          id={`${schema.name}-selector`}
-          onChange={e => {
-            onChange(e.target.value);
-          }}
+        <SelectInput
+          schema={schema}
+          required={required}
           value={value}
-          multiple={schema.fieldType === 'multiselect'}
-        >
-          {schema.choices.map(option => (
-            <MenuItem value={option} key={option}>
-              {option}
-            </MenuItem>
-          ))}
-        </Select>
-        <FormHelperText>{getDescription(schema)}</FormHelperText>
+          onChange={onChange}
+          width={width}
+          {...rest}
+        />
       </Core>
     );
   }

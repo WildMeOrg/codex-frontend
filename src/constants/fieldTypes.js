@@ -6,6 +6,7 @@ const fieldTypes = {
   float: 'float',
   feetmeters: 'feetmeters', // float represents meters, but GUI supports feet
   individual: 'individual', // string (individual ID)
+  relationships: 'relationships', // { targetIndividualId: string, direction: enum, type: enum, id: int }
   integer: 'integer',
   file: 'file',
   latlong: 'latlong', // [float, float]

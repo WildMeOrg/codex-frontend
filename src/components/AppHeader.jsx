@@ -24,7 +24,7 @@ import PersonIcon from '@material-ui/icons/Person';
 import GroupIcon from '@material-ui/icons/Group';
 import SubjectIcon from '@material-ui/icons/Subject';
 import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
-import EncounterIcon from '@material-ui/icons/PhotoCamera';
+import SightingIcon from '@material-ui/icons/PhotoCamera';
 
 import SettingsIcon from '@material-ui/icons/Settings';
 import { selectLogos } from '../modules/site/selectors';
@@ -112,18 +112,15 @@ export default function AppHeader() {
             <Divider style={{ marginTop: 12, marginBottom: 12 }} />
             <ListItem>
               <ListItemIcon>
-                <EncounterIcon />
+                <SightingIcon />
               </ListItemIcon>
               <ListItemText>
                 <Link
-                  href="/encounters"
+                  href="/sightings"
                   noUnderline
                   onClick={() => setDrawerOpen(false)}
                 >
-                  <FormattedMessage
-                    id="ENCOUNTERS"
-                    defaultMessage="Encounters"
-                  />
+                  <FormattedMessage id="SIGHTINGS" />
                 </Link>
               </ListItemText>
             </ListItem>

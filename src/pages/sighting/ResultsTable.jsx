@@ -1,4 +1,6 @@
 import React from 'react';
+import { useIntl, FormattedMessage } from 'react-intl';
+import { get } from 'lodash-es';
 import MUIDataTable from 'mui-datatables';
 import { format } from 'date-fns';
 import Divider from '@material-ui/core/Divider';
@@ -6,53 +8,85 @@ import Typography from '@material-ui/core/Typography';
 import ButtonLink from '../../components/ButtonLink';
 import Link from '../../components/Link';
 
-export default function ResultsTable({ encounters }) {
+export default function ResultsTable({ sightings }) {
+  const intl = useIntl();
+
+  const tableData = sightings.map(sighting => {
+    const photoCount = sighting.encounters.reduce((memo, e) => {
+      memo += e.images.length;
+      return memo;
+    }, 0);
+
+    const individuals = sighting.encounters.reduce((memo, e) => {
+      const individual = get(e, 'individual.id', null);
+      return individual ? [...memo, individual] : null;
+    }, []);
+
+    return {
+      ...sighting,
+      photoCount,
+      individuals,
+    };
+  });
+
   return (
     <div style={{ marginLeft: 16, width: '80%' }}>
       <MUIDataTable
         columns={[
           {
             name: 'id',
-            label: 'Encounter ID',
+            label: intl.formatMessage({ id: 'SIGHTING_ID' }),
             options: {
               customBodyRender: value => (
-                <Link href={`/encounters/${value}`}>{value}</Link>
+                <Link href={`/sightings/${value}`}>{value}</Link>
               ),
             },
           },
           {
-            name: 'individualId',
-            label: 'Individual',
+            name: 'individuals',
+            label: intl.formatMessage({ id: 'INDIVIDUALS' }),
             options: {
-              customBodyRender: value => (
-                <Link href={`/individuals/${value}`}>{value}</Link>
+              customBodyRender: individuals => (
+                <span>
+                  {individuals.map((id, i) => (
+                    <span key={id}>
+                      {(i !== 0) && ', '}
+                      <Link href={`/individuals/${id}`}>{id}</Link>
+                    </span>
+                  ))}
+                </span>
               ),
             },
           },
           {
-            name: 'encounterDate',
-            label: 'Encounter Date',
+            name: 'sightingDate',
+            label: intl.formatMessage({ id: 'SIGHTING_DATE' }),
             options: {
               customBodyRender: value => format(value, 'M/dd/yy'),
             },
           },
           {
             name: 'submissionDate',
-            label: 'Submission Date',
+            label: intl.formatMessage({ id: 'SUBMISSION_DATE' }),
             options: {
               customBodyRender: value => format(value, 'M/dd/yy'),
             },
           },
           {
-            name: 'user',
-            label: 'Submitted By',
+            name: 'submitter',
+            label: intl.formatMessage({ id: 'SUBMITTED_BY' }),
+            options: {
+              customBodyRender: value => (
+                <Link href={`/users/${value}`}>{value}</Link>
+              ),
+            },
           },
           {
             name: 'photoCount',
-            label: 'Photographs',
+            label: intl.formatMessage({ id: 'PHOTOGRAPHS' }),
           },
         ]}
-        data={encounters}
+        data={tableData}
         options={{
           elevation: 0,
           pagination: false,
@@ -63,7 +97,7 @@ export default function ResultsTable({ encounters }) {
           expandableRows: true,
           expandableRowsOnClick: true,
           renderExpandableRow: (_, { dataIndex }) => {
-            const expandedEncounter = encounters[dataIndex];
+            const expandedEncounter = sightings[dataIndex];
 
             return (
               <tr>
@@ -71,7 +105,7 @@ export default function ResultsTable({ encounters }) {
                   <div style={{ display: 'flex' }}>
                     <img
                       src={expandedEncounter.profile}
-                      alt="Expanded encounter"
+                      alt="Expanded sighting"
                       style={{
                         width: 200,
                         height: 160,
@@ -80,7 +114,7 @@ export default function ResultsTable({ encounters }) {
                     />
                     <div style={{ padding: '20px 0' }}>
                       <Typography variant="subtitle1">
-                        Encounter details
+                        <FormattedMessage id="SIGHTING_DETAILS" />
                       </Typography>
                       <Typography>
                         Species: Megaptera novaeangliae
@@ -90,9 +124,9 @@ export default function ResultsTable({ encounters }) {
                         variant="outlined"
                         color="secondary"
                         style={{ marginTop: 16 }}
-                        href={`/encounters/${expandedEncounter.id}`}
+                        href={`/sightings/${expandedEncounter.id}`}
                       >
-                        View Encounter
+                        <FormattedMessage id="VIEW_SIGHTING" />
                       </ButtonLink>
                     </div>
                   </div>
