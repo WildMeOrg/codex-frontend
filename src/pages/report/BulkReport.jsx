@@ -16,7 +16,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import BackIcon from '@material-ui/icons/KeyboardBackspace';
 
-import { selectEncounterSchema } from '../../modules/encounters/selectors';
+import { selectSightingSchema } from '../../modules/sightings/selectors';
 import AsyncButton from '../../components/AsyncButton';
 import InlineButton from '../../components/InlineButton';
 import LabeledInput from '../../components/LabeledInput';
@@ -25,7 +25,7 @@ import { selectSiteName } from '../../modules/site/selectors';
 import TermsAndConditionsDialog from './TermsAndConditionsDialog';
 
 export default function BulkReport({ onBack, files }) {
-  const schema = useSelector(selectEncounterSchema);
+  const schema = useSelector(selectSightingSchema);
   const siteName = useSelector(selectSiteName);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [loading, setLoading] = useState(false);

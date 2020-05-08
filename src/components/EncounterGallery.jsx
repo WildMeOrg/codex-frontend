@@ -62,10 +62,10 @@ export default function EncounterGallery({
           columns={[
             {
               name: 'id',
-              label: 'Encounter ID',
+              label: 'Sighting ID',
               options: {
                 customBodyRender: value => (
-                  <Link href={`/encounters/${value}`}>{value}</Link>
+                  <Link href={`/sightings/${value}`}>{value}</Link>
                 ),
               },
             },

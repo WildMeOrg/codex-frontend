@@ -9,20 +9,21 @@ import sightingSchema, {
 } from '../../constants/sightingSchema';
 import fieldTypes from '../../constants/fieldTypes';
 
-export const selectSightings = state => ([
+export const selectSightings = state => [
   {
     id: 'S-101',
     taxonomy: 'Grampus Griseus',
     submitter: 'bob',
     context: 'Research Effort',
     region: 'Indonesian Ocean',
+    profile: defaultProfile,
     submissionDate: Date.now(),
     sightingDate: Date.now(),
     encounters: [
       {
         id: 'MK-4246',
         individual: {
-          id: 'WB-143',
+          id: 'Teddy',
           profile: defaultProfile,
           names: [
             {
@@ -53,6 +54,7 @@ export const selectSightings = state => ([
             metadata: {
               width: 400,
               height: 632,
+              filename: 'limburg.jpeg',
               contentType: 'image/jpeg',
             },
           },
@@ -64,6 +66,7 @@ export const selectSightings = state => ([
             metadata: {
               width: 400,
               height: 632,
+              filename: 'domo.jpeg',
               contentType: 'image/jpeg',
             },
           },
@@ -75,6 +78,7 @@ export const selectSightings = state => ([
             metadata: {
               width: 400,
               height: 632,
+              filename: 'glorbus.jpeg',
               contentType: 'image/jpeg',
             },
           },
@@ -87,6 +91,7 @@ export const selectSightings = state => ([
             metadata: {
               width: 400,
               height: 632,
+              filename: 'jobus.jpeg',
               contentType: 'image/jpeg',
             },
           },
@@ -118,6 +123,7 @@ export const selectSightings = state => ([
     context: 'Research Effort',
     submitter: 'bob',
     region: 'Indonesian Ocean',
+    profile: defaultProfile,
     submissionDate: Date.now(),
     sightingDate: Date.now(),
     encounters: [
@@ -214,7 +220,7 @@ export const selectSightings = state => ([
       },
     ],
   },
-]);
+];
 
 export const selectSearchResults = state => selectSightings(state);
 
@@ -242,7 +248,6 @@ export const selectSightingSearchSchema = state => {
     ...sightingSearchSchema,
   ];
 };
-
 
 export const selectSightingCategories = state => ({
   ...sightingCategories,
@@ -277,7 +282,7 @@ export const selectSightingSchema = state => {
     {
       name: 'diveDepth',
       labelId: 'DIVE_DEPTH',
-      category: categories.encounterDetails.name,
+      category: categories.sightingDetails.name,
       fieldType: fieldTypes.feetmeters,
       defaultValue: '',
     },

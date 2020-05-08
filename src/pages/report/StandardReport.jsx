@@ -13,9 +13,9 @@ import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import BackIcon from '@material-ui/icons/KeyboardBackspace';
 import {
-  selectEncounterSchema,
-  selectEncounterCategories,
-} from '../../modules/encounters/selectors';
+  selectSightingSchema,
+  selectSightingCategories,
+} from '../../modules/sightings/selectors';
 import { selectSiteName } from '../../modules/site/selectors';
 import LabeledInput from '../../components/LabeledInput';
 import AsyncButton from '../../components/AsyncButton';
@@ -25,8 +25,8 @@ import TermsAndConditionsDialog from './TermsAndConditionsDialog';
 
 export default function StandardReport({ variant, onBack }) {
   const intl = useIntl();
-  const categories = useSelector(selectEncounterCategories);
-  const schema = useSelector(selectEncounterSchema);
+  const categories = useSelector(selectSightingCategories);
+  const schema = useSelector(selectSightingSchema);
   const siteName = useSelector(selectSiteName);
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [acceptEmails, setAcceptEmails] = useState(false);

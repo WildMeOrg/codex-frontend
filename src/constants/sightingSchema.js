@@ -6,9 +6,9 @@ export const sightingCategories = {
     labelId: 'GENERAL',
     individualFields: false,
   },
-  encounterDetails: {
-    name: 'encounterDetails',
-    labelId: 'ENCOUNTER_DETAILS',
+  sightingDetails: {
+    name: 'sightingDetails',
+    labelId: 'SIGHTING_DETAILS',
     individualFields: false,
   },
   animal: {
@@ -30,8 +30,8 @@ export default [
     defaultValue: null,
   },
   {
-    name: 'encounterContext',
-    labelId: 'ENCOUNTER_CONTEXT',
+    name: 'sightingContext',
+    labelId: 'SIGHTING_CONTEXT',
     category: sightingCategories.general.name,
     fieldType: fieldTypes.select,
     required: true,
@@ -69,7 +69,7 @@ export default [
   {
     name: 'status',
     labelId: 'STATUS',
-    descriptionId: 'STATUS_ENCOUNTERS_DESCRIPTION',
+    descriptionId: 'STATUS_SIGHTING_DESCRIPTION',
     category: sightingCategories.animal.name,
     fieldType: fieldTypes.select,
     choices: ['Alive', 'Dead', 'Unknown'],
@@ -87,14 +87,14 @@ export default [
     name: 'photographer',
     labelId: 'PHOTOGRAPHER',
     descriptionId: 'PHOTOGRAPHER_DESCRIPTION',
-    category: sightingCategories.encounterDetails.name,
+    category: sightingCategories.sightingDetails.name,
     fieldType: fieldTypes.string,
     defaultValue: '',
   },
   {
     name: 'photographerEmail',
     labelId: 'PHOTOGRAPHER_EMAIL',
-    category: sightingCategories.encounterDetails.name,
+    category: sightingCategories.sightingDetails.name,
     fieldType: fieldTypes.string,
     defaultValue: '',
   },

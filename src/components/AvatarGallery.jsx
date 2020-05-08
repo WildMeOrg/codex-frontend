@@ -12,28 +12,34 @@ export default function AvatarGallery({
   entities,
   renderDetails,
   getHref,
+  avatarSize = 150,
+  titleKey = 'name',
+  filterKey = 'name',
+  justify = 'center',
   square = false,
 }) {
   const intl = useIntl();
   const [filter, setFilter] = useState('');
 
-  const filteredEntities = entities.filter(org =>
-    org.name.toLowerCase().includes(filter.toLowerCase()),
+  const filteredEntities = entities.filter(entity =>
+    entity[filterKey].toLowerCase().includes(filter.toLowerCase()),
   );
 
   return (
     <>
-      <Input
-        style={{ margin: '16px 0 20px 16px', width: 260 }}
-        placeholder={intl.formatMessage({ id: 'SEARCH' })}
-        value={filter}
-        onChange={e => setFilter(e.target.value)}
-        startAdornment={
-          <InputAdornment position="start">
-            <SearchIcon />
-          </InputAdornment>
-        }
-      />
+      {entities.length > 6 && (
+        <Input
+          style={{ margin: '16px 0 20px 16px', width: 260 }}
+          placeholder={intl.formatMessage({ id: 'SEARCH' })}
+          value={filter}
+          onChange={e => setFilter(e.target.value)}
+          startAdornment={
+            <InputAdornment position="start">
+              <SearchIcon />
+            </InputAdornment>
+          }
+        />
+      )}
       {filteredEntities.length === 0 && (
         <Typography style={{ marginLeft: 16 }}>
           <FormattedMessage
@@ -42,41 +48,40 @@ export default function AvatarGallery({
           />
         </Typography>
       )}
-      <Grid container spacing={6} justify="center">
-        {filteredEntities.map(entity => {
-          return (
-            <Grid key={entity.id} item>
-              <Link
-                noUnderline
-                href={getHref(entity)}
+      <Grid container spacing={6} justify={justify}>
+        {filteredEntities.map(entity => (
+          <Grid key={entity.id} item>
+            <Link
+              noUnderline
+              href={getHref(entity)}
+              style={{
+                display: 'flex',
+                alignItems: justify,
+                flexDirection: 'column',
+              }}
+            >
+              <BigAvatar
+                imgSrc={entity.profile}
+                name={entity[titleKey]}
+                square={square}
+                size={avatarSize}
+              />
+              <Typography
+                variant="h6"
+                noWrap
                 style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  flexDirection: 'column',
+                  marginTop: 12,
+                  lineHeight: 1,
+                  maxWidth: 250,
                 }}
+                title={entity[titleKey]}
               >
-                <BigAvatar
-                  imgSrc={entity.profile}
-                  name={entity.name}
-                  square={square}
-                />
-                <Typography
-                  variant="h6"
-                  noWrap
-                  style={{
-                    marginTop: 12,
-                    lineHeight: 1,
-                    maxWidth: 250,
-                  }}
-                  title={entity.name}
-                >
-                  {entity.name}
-                </Typography>
-                {renderDetails(entity)}
-              </Link>
-            </Grid>
-          );
-        })}
+                {entity[titleKey]}
+              </Typography>
+              {renderDetails(entity)}
+            </Link>
+          </Grid>
+        ))}
       </Grid>
     </>
   );

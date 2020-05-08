@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
@@ -11,33 +11,37 @@ import MainColumn from '../../components/MainColumn';
 import NotFoundPage from '../../components/NotFoundPage';
 import Link from '../../components/Link';
 import {
-  selectEncounters,
-  selectEncounterSchema,
-} from '../../modules/encounters/selectors';
+  selectSightings,
+  selectSightingSchema,
+} from '../../modules/sightings/selectors';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import Status from './Status';
+import AnnotationsGallery from './AnnotationsGallery';
+import IndividualsGallery from './IndividualsGallery';
+import PhotoGallery from './PhotoGallery';
 
 export default function Encounter() {
   const { id } = useParams();
 
   // fetch data for Id...
-  const encounters = useSelector(selectEncounters);
-  const schema = useSelector(selectEncounterSchema);
-  useDocumentTitle(`Encounter ${id}`);
+  const sightings = useSelector(selectSightings);
+  const schema = useSelector(selectSightingSchema);
+  useDocumentTitle(`Sighting ${id}`);
 
-  const [activeTab, setActiveTab] = useState('individuals');
+  const activeTab = window.location.hash || '#individuals';
 
-  const encounter = encounters.find(e => e.id === toLower(id));
-  console.log('here', encounters, encounter);
+  const sighting = sightings.find(e => toLower(e.id) === toLower(id));
 
-  if (!encounter)
+  if (!sighting)
     return (
       <NotFoundPage
-        subtitle={<FormattedMessage id="ENCOUNTER_NOT_FOUND" />}
+        subtitle={<FormattedMessage id="SIGHTING_NOT_FOUND" />}
       />
     );
 
-  const encounterFields = [
+  console.log(sighting);
+
+  const sightingFields = [
     {
       name: 'species',
       value: 'Grampus Griseus',
@@ -55,8 +59,8 @@ export default function Encounter() {
   return (
     <MainColumn>
       <EntityHeader
-        name={encounter.id}
-        imgSrc={encounter.profile}
+        name={sighting.id}
+        imgSrc={sighting.profile}
         fieldValues={[]}
         fieldSchema={schema}
         editable
@@ -71,34 +75,34 @@ export default function Encounter() {
           <Typography>
             <FormattedMessage
               id="ENTITY_HEADER_SPECIES"
-              values={{ species: encounter.species }}
+              values={{ species: sighting.species }}
             />
           </Typography>
           <Typography>
             <FormattedMessage
               id="ENTITY_HEADER_REGION"
-              values={{ region: encounter.region }}
+              values={{ region: sighting.region }}
             />
           </Typography>
           <Typography>
             <FormattedMessage
               id="ENTITY_HEADER_CONTEXT"
-              values={{ context: encounter.context }}
+              values={{ context: sighting.context }}
             />
           </Typography>
           <Typography>
             <FormattedMessage id="ENTITY_HEADER_SUBMITTER" />
-            <Link href={`/users/${encounter.userId}`}>
-              {encounter.user}
+            <Link href={`/users/${sighting.userId}`}>
+              {sighting.user}
             </Link>
           </Typography>
         </div>
       </EntityHeader>
       <Status />
       <Tabs
-        value={activeTab}
+        value={activeTab.replace('#', '')}
         onChange={(_, newValue) => {
-          setActiveTab(newValue);
+          window.location.hash = newValue;
         }}
       >
         <Tab
@@ -114,6 +118,15 @@ export default function Encounter() {
           value="photographs"
         />
       </Tabs>
+      {activeTab === '#individuals' && (
+        <IndividualsGallery sighting={sighting} />
+      )}
+      {activeTab === '#annotations' && (
+        <AnnotationsGallery sighting={sighting} />
+      )}
+      {activeTab === '#photographs' && (
+        <PhotoGallery sighting={sighting} />
+      )}
     </MainColumn>
   );
 }

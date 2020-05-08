@@ -7,6 +7,7 @@ export default function BigAvatar({
   imgSrc,
   name,
   editable,
+  size = 150,
   square = false,
 }) {
   const [avatarHovered, setAvatarHovered] = useState(false);
@@ -15,8 +16,8 @@ export default function BigAvatar({
   return (
     <div
       style={{
-        width: 150,
-        height: 150,
+        width: size,
+        height: size,
         position: 'relative',
         borderRadius: '50%',
         cursor: editable ? 'pointer' : 'unset',
@@ -31,8 +32,8 @@ export default function BigAvatar({
         src={imgSrc}
         alt={`Profile for ${name}`}
         style={{
-          width: 150,
-          height: 150,
+          width: size,
+          height: size,
           borderRadius: square ? 'unset' : '50%',
           border: '1px solid #ccc',
         }}
@@ -43,8 +44,8 @@ export default function BigAvatar({
             position: 'absolute',
             left: 1,
             top: 1,
-            width: 150,
-            height: 150,
+            width: size,
+            height: size,
             opacity: avatarHovered ? 1 : 0,
           }}
           onMouseEnter={() => setAvatarHovered(true)}
@@ -53,7 +54,7 @@ export default function BigAvatar({
         >
           <defs>
             <clipPath id="cut-off-top">
-              <rect x={0} y={75} width={150} height={75} />
+              <rect x={0} y={0.5 * size} width={size} height={0.5 * size} />
             </clipPath>
           </defs>
           {square ? (
@@ -67,10 +68,10 @@ export default function BigAvatar({
             />
           ) : (
             <ellipse
-              cx={75}
-              cy={75}
-              rx={75}
-              ry={75}
+              cx={0.5 * size}
+              cy={0.5 * size}
+              rx={0.5 * size}
+              ry={0.5 * size}
               fill="rgba(0, 0, 0, 0.5)"
               clipPath="url(#cut-off-top)"
             />

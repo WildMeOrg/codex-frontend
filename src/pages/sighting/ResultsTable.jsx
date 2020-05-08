@@ -50,7 +50,7 @@ export default function ResultsTable({ sightings }) {
                 <span>
                   {individuals.map((id, i) => (
                     <span key={id}>
-                      {(i !== 0) && ', '}
+                      {i !== 0 && ', '}
                       <Link href={`/individuals/${id}`}>{id}</Link>
                     </span>
                   ))}
@@ -97,14 +97,14 @@ export default function ResultsTable({ sightings }) {
           expandableRows: true,
           expandableRowsOnClick: true,
           renderExpandableRow: (_, { dataIndex }) => {
-            const expandedEncounter = sightings[dataIndex];
+            const expandedSighting = sightings[dataIndex];
 
             return (
               <tr>
                 <td colSpan={999}>
                   <div style={{ display: 'flex' }}>
                     <img
-                      src={expandedEncounter.profile}
+                      src={expandedSighting.profile}
                       alt="Expanded sighting"
                       style={{
                         width: 200,
@@ -124,7 +124,7 @@ export default function ResultsTable({ sightings }) {
                         variant="outlined"
                         color="secondary"
                         style={{ marginTop: 16 }}
-                        href={`/sightings/${expandedEncounter.id}`}
+                        href={`/sightings/${expandedSighting.id}`}
                       >
                         <FormattedMessage id="VIEW_SIGHTING" />
                       </ButtonLink>

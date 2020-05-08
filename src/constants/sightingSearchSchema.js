@@ -49,7 +49,7 @@ export default [
   {
     name: 'status',
     labelId: 'STATUS',
-    descriptionId: 'STATUS_ENCOUNTERS_DESCRIPTION',
+    descriptionId: 'STATUS_SIGHTING_DESCRIPTION',
     category: sightingSearchCategories.attributes.name,
     fieldType: fieldTypes.select,
     choices: ['Alive', 'Dead', 'Unknown'],
