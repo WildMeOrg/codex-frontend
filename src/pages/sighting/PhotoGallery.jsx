@@ -1,5 +1,4 @@
 import React from 'react';
-import { get } from 'lodash-es';
 import { FormattedMessage } from 'react-intl';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
@@ -27,6 +26,7 @@ export default function IndividualsGallery({ sighting }) {
         avatarSize={240}
         entities={photos}
         square
+        linkAll={false}
         getHref={() => null}
         filterKey="name"
         titleKey="name"

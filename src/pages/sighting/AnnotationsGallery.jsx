@@ -19,14 +19,14 @@ export default function IndividualsGallery({ sighting }) {
     [],
   );
 
-  console.log(annotations);
-
   return (
     <div style={{ marginTop: 12 }}>
       <AvatarGallery
+        getAnnotations={annotation => [annotation]}
         entities={annotations}
         avatarSize={240}
         square
+        linkAll={false}
         getHref={() => null}
         filterKey="id"
         titleKey="id"
@@ -34,15 +34,20 @@ export default function IndividualsGallery({ sighting }) {
         renderDetails={annotation => {
           return (
             <div style={{ display: 'flex', flexDirection: 'column' }}>
-              <Button size="small" variant="outlined">
-                Edit Annotation
+              <Button
+                size="small"
+                variant="outlined"
+                style={{ marginTop: 12 }}
+              >
+                <FormattedMessage id="EDIT_ANNOTATION" />
               </Button>
               <Button
                 size="small"
                 variant="contained"
                 color="secondary"
+                style={{ marginTop: 6 }}
               >
-                Match Annotation
+                <FormattedMessage id="MATCH_ANNOTATION" />
               </Button>
             </div>
           );

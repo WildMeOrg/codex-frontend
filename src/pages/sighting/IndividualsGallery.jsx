@@ -17,6 +17,7 @@ export default function IndividualsGallery({ sighting }) {
         entities={individuals}
         avatarSize={240}
         square
+        linkAll={false}
         getHref={individual => `/individuals/${individual.id}`}
         filterKey="id"
         titleKey="id"

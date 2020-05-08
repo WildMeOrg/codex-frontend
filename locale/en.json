@@ -73,6 +73,8 @@
     "ATTRIBUTES": "Attributes",
     "RELATIONSHIPS": "Relationships",
     "EDIT_PROFILE": "Edit profile",
+    "EDIT_ANNOTATION": "Edit annotation",
+    "MATCH_ANNOTATION": "Match annotation",
     "SUBMITTED_BY": "Submitted by ",
     "INDIVIDUAL_NOT_FOUND": "Individual not found",
     "START_DATE": "Start date",

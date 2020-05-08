@@ -39,8 +39,6 @@ export default function Encounter() {
       />
     );
 
-  console.log(sighting);
-
   const sightingFields = [
     {
       name: 'species',

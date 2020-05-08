@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
+import { get } from 'lodash-es';
+import { useTheme } from '@material-ui/core/styles';
 import SvgText from './SvgText';
 import EditAvatar from './EditAvatar';
 
@@ -8,8 +10,10 @@ export default function BigAvatar({
   name,
   editable,
   size = 150,
+  annotations,
   square = false,
 }) {
+  const theme = useTheme();
   const [avatarHovered, setAvatarHovered] = useState(false);
   const [editingAvatar, setEditingAvatar] = useState(false);
 
@@ -38,6 +42,48 @@ export default function BigAvatar({
           border: '1px solid #ccc',
         }}
       />
+      {annotations && annotations.length > 0 && (
+        <svg
+          style={{
+            position: 'absolute',
+            left: 1,
+            top: 1,
+            width: size,
+            height: size,
+          }}
+        >
+          {annotations.map(annotation => (
+            <g key={annotation.id}>
+              <rect
+                x={get(annotation, 'parameters.x', undefined)}
+                y={get(annotation, 'parameters.y', undefined)}
+                width={get(annotation, 'parameters.width', undefined)}
+                height={get(
+                  annotation,
+                  'parameters.height',
+                  undefined,
+                )}
+                stroke="white"
+                fill="none"
+                strokeWidth={8}
+              />
+              <rect
+                x={get(annotation, 'parameters.x', undefined)}
+                y={get(annotation, 'parameters.y', undefined)}
+                width={get(annotation, 'parameters.width', undefined)}
+                height={get(
+                  annotation,
+                  'parameters.height',
+                  undefined,
+                )}
+                stroke={theme.palette.secondary.main}
+                fill="none"
+                strokeWidth={4}
+              />
+            </g>
+          ))}
+        </svg>
+      )}
       {editable && (
         <svg
           style={{
@@ -54,7 +100,12 @@ export default function BigAvatar({
         >
           <defs>
             <clipPath id="cut-off-top">
-              <rect x={0} y={0.5 * size} width={size} height={0.5 * size} />
+              <rect
+                x={0}
+                y={0.5 * size}
+                width={size}
+                height={0.5 * size}
+              />
             </clipPath>
           </defs>
           {square ? (

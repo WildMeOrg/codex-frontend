@@ -6,9 +6,9 @@ export default function AnnotationEditor({ id, imgSrc, onChange }) {
   const div = useRef(null);
   const theme = useTheme();
 
+  /* eslint-disable */
   if (div && div.current) {
     new BboxAnnotator(imgSrc, {
-      // eslint-disable-line no-new
       prefix: `${id}-`,
       mode: 'rectangle',
       modes: 'rectangle',
@@ -28,6 +28,7 @@ export default function AnnotationEditor({ id, imgSrc, onChange }) {
       },
     });
   }
+  /* eslint-enable */
 
   return (
     <div
