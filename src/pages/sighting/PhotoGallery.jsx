@@ -10,6 +10,10 @@ import AnnotationEditor from '../../components/AnnotationEditor';
 
 export default function PhotoGallery({ sighting }) {
   const [activeAnnotation, setAnnotation] = useState(null);
+  const [
+    createAnnotationSource,
+    setCreateAnnotationSource,
+  ] = useState(null);
   const photos = sighting.encounters.reduce((memo, encounter) => {
     const newPhotos = encounter.images.map(image => {
       const matchingAnnotations = encounter.annotations.filter(
@@ -30,11 +34,18 @@ export default function PhotoGallery({ sighting }) {
       {Boolean(activeAnnotation) && (
         <AnnotationEditor
           annotations={[activeAnnotation]}
-          imgSrc={
-            activeAnnotation ? activeAnnotation.imageSrc : undefined
-          }
+          imgSrc={activeAnnotation.imageSrc}
           onClose={() => setAnnotation(null)}
           onChange={() => setAnnotation(null)}
+        />
+      )}
+      {Boolean(createAnnotationSource) && (
+        <AnnotationEditor
+          disableDelete
+          titleId="CREATE_ANNOTATION"
+          imgSrc={createAnnotationSource}
+          onClose={() => setCreateAnnotationSource(null)}
+          onChange={() => setCreateAnnotationSource(null)}
         />
       )}
       <AvatarGallery
@@ -93,7 +104,13 @@ export default function PhotoGallery({ sighting }) {
                   </div>
                 );
               })}
-              <Button size="small" variant="outlined">
+              <Button
+                onClick={() => {
+                  setCreateAnnotationSource(photo.profile);
+                }}
+                size="small"
+                variant="outlined"
+              >
                 <FormattedMessage id="NEW_ANNOTATION" />
               </Button>
             </div>

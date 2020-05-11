@@ -11,6 +11,8 @@ import { useTheme } from '@material-ui/core/styles';
 import BboxAnnotator from 'bboxjs';
 
 export default function AnnotationEditor({
+  titleId = 'EDIT_ANNOTATION',
+  disableDelete = false,
   imgSrc,
   onClose,
   onChange,
@@ -93,7 +95,7 @@ export default function AnnotationEditor({
   return (
     <Dialog open onClose={onClose}>
       <DialogTitle onClose={onClose}>
-        <FormattedMessage id="EDIT_ANNOTATION" />
+        <FormattedMessage id={titleId} />
       </DialogTitle>
       <DialogContent>
         <div style={{ width: 400, padding: '0 40px' }}>
@@ -102,23 +104,31 @@ export default function AnnotationEditor({
             style={{ width: '100%', zIndex: 999 }}
             ref={divRef}
           />
-          {confirmDelete ? (
-            <Typography style={{ margin: '8px 0' }}>
-              <FormattedMessage id="DELETE_ANNOTATION_CONFIRMATION" />
-            </Typography>
-          ) : (
-            <Button
-              onClick={() => setConfirmDelete(true)}
-              style={{ color: 'red', margin: '8px 0' }}
-            >
-              <FormattedMessage id="DELETE_THIS_ANNOTATION" />
-            </Button>
+          {!disableDelete && (
+            <div style={{ margin: '8px 0' }}>
+              {confirmDelete ? (
+                <Typography>
+                  <FormattedMessage id="DELETE_ANNOTATION_CONFIRMATION" />
+                </Typography>
+              ) : (
+                <Button
+                  onClick={() => setConfirmDelete(true)}
+                  style={{ color: 'red' }}
+                >
+                  <FormattedMessage id="DELETE_THIS_ANNOTATION" />
+                </Button>
+              )}
+            </div>
           )}
         </div>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose}><FormattedMessage id="CANCEL" /></Button>
-        <Button onClick={() => onChange(rect)}><FormattedMessage id="SAVE" /></Button>
+        <Button onClick={onClose}>
+          <FormattedMessage id="CANCEL" />
+        </Button>
+        <Button onClick={() => onChange(rect)}>
+          <FormattedMessage id="SAVE" />
+        </Button>
       </DialogActions>
     </Dialog>
   );

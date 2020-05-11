@@ -5,7 +5,6 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
-import EditProfile from './EditProfile';
 import BigAvatar from './BigAvatar';
 
 export default function EntityHeader({
@@ -13,9 +12,9 @@ export default function EntityHeader({
   name,
   hideFields = [],
   fieldValues,
-  fieldSchema,
   editable,
   children,
+  renderEditDialog,
   square = false,
 }) {
   const intl = useIntl();
@@ -79,12 +78,7 @@ export default function EntityHeader({
           </div>
         </Grid>
       </Grid>
-      <EditProfile
-        visible={editingProfile}
-        onClose={() => setEditingProfile(false)}
-        fieldSchema={fieldSchema}
-        fieldValues={fieldValues}
-      />
+      {renderEditDialog(editingProfile, () => setEditingProfile(false))}
       <Divider />
     </>
   );

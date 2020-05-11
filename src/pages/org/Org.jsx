@@ -7,6 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import EntityHeader from '../../components/EntityHeader';
 import MainColumn from '../../components/MainColumn';
 import NotFoundPage from '../../components/NotFoundPage';
+import EditProfile from '../../components/EditProfile';
 import EncounterGallery from '../../components/EncounterGallery';
 import { selectOrgs } from '../../modules/orgs/selectors';
 import orgSchema from '../../constants/orgSchema';
@@ -47,6 +48,16 @@ export default function Org() {
         editable={org.editable}
         hideFields={['description']}
         square
+        renderEditDialog={(visible, onClose) => {
+          return (
+            <EditProfile
+              visible={visible}
+              onClose={onClose}
+              fieldValues={org.fields}
+              fieldSchema={orgSchema}
+            />
+          );
+        }}
       >
         <Typography variant="body2">
           {get(description, '0.value')}

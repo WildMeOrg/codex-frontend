@@ -7,6 +7,7 @@ import EntityHeader from '../../components/EntityHeader';
 import MainColumn from '../../components/MainColumn';
 import NotFoundPage from '../../components/NotFoundPage';
 import EncounterGallery from '../../components/EncounterGallery';
+import EditProfile from '../../components/EditProfile';
 import { selectIndividuals } from '../../modules/individuals/selectors';
 import { selectSpeciesFields } from '../../modules/site/selectors';
 import useIndividuals from '../../modules/individuals/useIndividuals';
@@ -40,6 +41,16 @@ export default function Individual() {
         fieldValues={individual.fields}
         fieldSchema={fieldSchema}
         editable={individual.editable}
+        renderEditDialog={(visible, onClose) => {
+          return (
+            <EditProfile
+              visible={visible}
+              onClose={onClose}
+              fieldValues={individual.fields}
+              fieldSchema={fieldSchema}
+            />
+          );
+        }}
       />
       <EncounterGallery
         hideIndividual

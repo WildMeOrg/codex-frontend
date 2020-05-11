@@ -9,6 +9,7 @@ import Tab from '@material-ui/core/Tab';
 import EntityHeader from '../../components/EntityHeader';
 import MainColumn from '../../components/MainColumn';
 import NotFoundPage from '../../components/NotFoundPage';
+import EditProfile from '../../components/EditProfile';
 import Link from '../../components/Link';
 import {
   selectSightings,
@@ -62,6 +63,25 @@ export default function Encounter() {
         fieldValues={[]}
         fieldSchema={schema}
         editable
+        renderEditDialog={(visible, onClose) => {
+          return (
+            <EditProfile
+              visible={visible}
+              onClose={onClose}
+              fieldValues={[{
+                name: 'species',
+                value: sighting.taxonomy,
+              }, {
+                name: 'location_freeform',
+                value: sighting.region,
+              }, {
+                name: 'sightingContext',
+                value: sighting.context,
+              }]}
+              fieldSchema={schema}
+            />
+          );
+        }}
       >
         <div
           style={{
@@ -73,7 +93,7 @@ export default function Encounter() {
           <Typography>
             <FormattedMessage
               id="ENTITY_HEADER_SPECIES"
-              values={{ species: sighting.species }}
+              values={{ species: sighting.taxonomy }}
             />
           </Typography>
           <Typography>
@@ -91,7 +111,7 @@ export default function Encounter() {
           <Typography>
             <FormattedMessage id="ENTITY_HEADER_SUBMITTER" />
             <Link href={`/users/${sighting.userId}`}>
-              {sighting.user}
+              {sighting.submitter}
             </Link>
           </Typography>
         </div>

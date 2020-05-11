@@ -7,6 +7,7 @@ import EntityHeader from '../../components/EntityHeader';
 import MainColumn from '../../components/MainColumn';
 import NotFoundPage from '../../components/NotFoundPage';
 import EncounterGallery from '../../components/EncounterGallery';
+import EditProfile from '../../components/EditProfile';
 import { selectUsers } from '../../modules/users/selectors';
 import userSchema from '../../constants/userSchema';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
@@ -41,6 +42,16 @@ export default function User() {
         fieldValues={user.fields}
         fieldSchema={userSchema}
         editable={user.editable}
+        renderEditDialog={(visible, onClose) => {
+          return (
+            <EditProfile
+              visible={visible}
+              onClose={onClose}
+              fieldValues={user.fields}
+              fieldSchema={userSchema}
+            />
+          );
+        }}
       />
       <EncounterGallery
         title={
