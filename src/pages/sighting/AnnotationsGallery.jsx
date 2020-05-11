@@ -1,11 +1,12 @@
-import React from 'react';
-import { get } from 'lodash-es';
+import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
+import AnnotationEditor from '../../components/AnnotationEditor';
 import AvatarGallery from '../../components/AvatarGallery';
 
 export default function IndividualsGallery({ sighting }) {
+  const [activeAnnotation, setAnnotation] = useState(null);
+
   const annotations = sighting.encounters.reduce(
     (memo, encounter) => {
       const newAnnotations = encounter.annotations.map(annotation => {
@@ -21,6 +22,16 @@ export default function IndividualsGallery({ sighting }) {
 
   return (
     <div style={{ marginTop: 12 }}>
+      {Boolean(activeAnnotation) && (
+        <AnnotationEditor
+          annotations={[activeAnnotation]}
+          imgSrc={
+            activeAnnotation ? activeAnnotation.imageSrc : undefined
+          }
+          onClose={() => setAnnotation(null)}
+          onChange={() => setAnnotation(null)}
+        />
+      )}
       <AvatarGallery
         getAnnotations={annotation => [annotation]}
         entities={annotations}
@@ -38,6 +49,12 @@ export default function IndividualsGallery({ sighting }) {
                 size="small"
                 variant="outlined"
                 style={{ marginTop: 12 }}
+                onClick={() =>
+                  setAnnotation({
+                    ...annotation,
+                    imageSrc: annotation.profile,
+                  })
+                }
               >
                 <FormattedMessage id="EDIT_ANNOTATION" />
               </Button>

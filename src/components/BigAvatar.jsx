@@ -55,27 +55,51 @@ export default function BigAvatar({
           {annotations.map(annotation => (
             <g key={annotation.id}>
               <rect
-                x={get(annotation, 'parameters.x', undefined)}
-                y={get(annotation, 'parameters.y', undefined)}
-                width={get(annotation, 'parameters.width', undefined)}
-                height={get(
-                  annotation,
-                  'parameters.height',
-                  undefined,
-                )}
+                x={
+                  0.01 *
+                  size *
+                  get(annotation, 'parameters.left', undefined)
+                }
+                y={
+                  0.01 *
+                  size *
+                  get(annotation, 'parameters.top', undefined)
+                }
+                width={
+                  0.01 *
+                  size *
+                  get(annotation, 'parameters.width', undefined)
+                }
+                height={
+                  0.01 *
+                  size *
+                  get(annotation, 'parameters.height', undefined)
+                }
                 stroke="white"
                 fill="none"
                 strokeWidth={8}
               />
               <rect
-                x={get(annotation, 'parameters.x', undefined)}
-                y={get(annotation, 'parameters.y', undefined)}
-                width={get(annotation, 'parameters.width', undefined)}
-                height={get(
-                  annotation,
-                  'parameters.height',
-                  undefined,
-                )}
+                x={
+                  0.01 *
+                  size *
+                  get(annotation, 'parameters.left', undefined)
+                }
+                y={
+                  0.01 *
+                  size *
+                  get(annotation, 'parameters.top', undefined)
+                }
+                width={
+                  0.01 *
+                  size *
+                  get(annotation, 'parameters.width', undefined)
+                }
+                height={
+                  0.01 *
+                  size *
+                  get(annotation, 'parameters.height', undefined)
+                }
                 stroke={theme.palette.secondary.main}
                 fill="none"
                 strokeWidth={4}

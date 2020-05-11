@@ -1,15 +1,29 @@
-import React, { useRef } from 'react';
+import React, { useCallback, useState } from 'react';
+import { get } from 'lodash-es';
+import { FormattedMessage } from 'react-intl';
+import Dialog from '@material-ui/core/Dialog';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogActions from '@material-ui/core/DialogActions';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
 import { useTheme } from '@material-ui/core/styles';
 import BboxAnnotator from 'bboxjs';
 
-export default function AnnotationEditor({ id, imgSrc, onChange }) {
-  const div = useRef(null);
+export default function AnnotationEditor({
+  imgSrc,
+  onClose,
+  onChange,
+  annotations = [],
+}) {
+  const [rect, setRect] = useState({});
+  const [confirmDelete, setConfirmDelete] = useState(false);
   const theme = useTheme();
 
-  /* eslint-disable */
-  if (div && div.current) {
-    new BboxAnnotator(imgSrc, {
-      prefix: `${id}-`,
+  const divRef = useCallback(() => {
+    const bba = new BboxAnnotator(imgSrc, {
+      // eslint-disable-line no-new
+      prefix: 'editor-',
       mode: 'rectangle',
       modes: 'rectangle',
       colors: {
@@ -20,21 +34,92 @@ export default function AnnotationEditor({ id, imgSrc, onChange }) {
       },
       actions: {
         entry: {
+          addition: false,
           parts: false,
+          deletion: false,
         },
       },
       callbacks: {
-        onchange: onChange,
+        onchange: e => {
+          const theta = get(e, '0.angles.theta');
+          const percentLeft = get(e, '0.percent.left');
+          const percentTop = get(e, '0.percent.top');
+          const percentWidth = get(e, '0.percent.width');
+          const percentHeight = get(e, '0.percent.height');
+          setRect({
+            theta,
+            percentLeft,
+            percentTop,
+            percentWidth,
+            percentHeight,
+          });
+        },
       },
     });
-  }
-  /* eslint-enable */
+
+    if (annotations.length === 0) {
+      bba.add_entry({
+        label: '1',
+        percent: {
+          left: 10,
+          top: 10,
+          width: 80,
+          height: 80,
+        },
+        angles: {
+          theta: 0,
+        },
+        highlighted: true,
+      });
+    } else {
+      annotations.forEach(annotation => {
+        bba.add_entry({
+          label: annotation.id,
+          percent: {
+            left: annotation.parameters.left,
+            top: annotation.parameters.top,
+            width: annotation.parameters.width,
+            height: annotation.parameters.height,
+          },
+          angles: {
+            theta: annotation.parameters.theta,
+          },
+          highlighted: true,
+        });
+      });
+    }
+  }, []);
 
   return (
-    <div
-      id={`${id}bbox-annotator-container`}
-      style={{ width: '100%', zIndex: 999999 }}
-      ref={div}
-    />
+    <Dialog open onClose={onClose}>
+      <DialogTitle onClose={onClose}>
+        <FormattedMessage id="EDIT_ANNOTATION" />
+      </DialogTitle>
+      <DialogContent>
+        <div style={{ width: 400, padding: '0 40px' }}>
+          <div
+            id="editor-bbox-annotator-container"
+            style={{ width: '100%', zIndex: 999 }}
+            ref={divRef}
+          />
+          {confirmDelete ? (
+            <Typography style={{ margin: '8px 0' }}>
+              <FormattedMessage id="DELETE_ANNOTATION_CONFIRMATION" />
+            </Typography>
+          ) : (
+            <Button
+              onClick={() => setConfirmDelete(true)}
+              style={{ color: 'red', margin: '8px 0' }}
+            >
+              <FormattedMessage id="DELETE_THIS_ANNOTATION" />
+            </Button>
+          )}
+        </div>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={onClose}><FormattedMessage id="CANCEL" /></Button>
+        <Button onClick={() => onChange(rect)}><FormattedMessage id="SAVE" /></Button>
+      </DialogActions>
+    </Dialog>
   );
 }
