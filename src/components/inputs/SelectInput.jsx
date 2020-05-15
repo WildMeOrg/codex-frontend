@@ -11,6 +11,7 @@ export default function LabeledInput({
   required,
   value,
   onChange,
+  minimalLabels = false,
   ...rest
 }) {
   const intl = useIntl();
@@ -46,7 +47,9 @@ export default function LabeledInput({
           </MenuItem>
         ))}
       </Select>
-      <FormHelperText>{getDescription(schema)}</FormHelperText>
+      {!minimalLabels && (
+        <FormHelperText>{getDescription(schema)}</FormHelperText>
+      )}
     </>
   );
 }

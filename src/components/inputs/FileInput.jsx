@@ -20,6 +20,7 @@ export default function FileInput({
   schema,
   value,
   onChange,
+  minimalLabels = false, // eslint-disable-line no-unused-vars
   ...rest
 }) {
   const intl = useIntl();
@@ -30,8 +31,8 @@ export default function FileInput({
     const uppyInstance = Uppy({
       meta: { type: 'test' },
       restrictions: {
-        maxNumberOfFiles: 10000000, // 10 MB
-        maxFileSize: 100,
+        maxNumberOfFiles: 100,
+        maxFileSize: 10000000, // 10 MB
         allowedFileTypes: schema.allowedFileTypes || null,
       },
       autoProceed: true,
@@ -80,17 +81,31 @@ export default function FileInput({
         </Button>
       )}
       {value && (
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          <Typography>{value.name}</Typography>
-          <IconButton
-            size="small"
-            onClick={() => {
-              onChange(null);
-              uppy.reset();
-            }}
-          >
-            <DeleteIcon style={{ color: '#DC2113' }} />
-          </IconButton>
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+          {get(value, 'type', '').includes('image') && (
+            <img
+              alt="Uploaded media"
+              style={{
+                maxHeight: 120,
+                maxWidth: 120,
+                height: 'auto',
+                width: 'auto',
+              }}
+              src={get(value, 'response.uploadURL', null)}
+            />
+          )}
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <Typography>{value.name}</Typography>
+            <IconButton
+              size="small"
+              onClick={() => {
+                onChange(null);
+                uppy.reset();
+              }}
+            >
+              <DeleteIcon style={{ color: '#DC2113' }} />
+            </IconButton>
+          </div>
         </div>
       )}
       {uppy && (

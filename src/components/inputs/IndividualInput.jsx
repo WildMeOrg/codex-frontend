@@ -24,6 +24,7 @@ export default function IndividualInput({
   schema,
   value,
   onChange,
+  minimalLabels = false,
   ...rest
 }) {
   const intl = useIntl();
@@ -61,7 +62,7 @@ export default function IndividualInput({
           </IconButton>
         </div>
       )}
-      {schema && schema.descriptionId && (
+      {schema && !minimalLabels && schema.descriptionId && (
         <FormHelperText style={{ maxWidth: 220 }}>
           <FormattedMessage id={schema.descriptionId} />
         </FormHelperText>

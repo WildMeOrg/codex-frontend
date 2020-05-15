@@ -226,10 +226,16 @@ export default function AppHeader() {
                 <AdminSettingsIcon />
               </ListItemIcon>
               <ListItemText>
-                <FormattedMessage
-                  id="ADMINISTRATION"
-                  defaultMessage="Administration"
-                />
+                <Link
+                  href="/administration"
+                  noUnderline
+                  onClick={() => setDrawerOpen(false)}
+                >
+                  <FormattedMessage
+                    id="ADMINISTRATION"
+                    defaultMessage="Administration"
+                  />
+                </Link>
               </ListItemText>
             </ListItem>
           </List>

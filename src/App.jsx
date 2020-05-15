@@ -19,6 +19,7 @@ import ReportSightings from './pages/report/ReportSightings';
 import FourOhFour from './pages/fourohfour/FourOhFour';
 import SearchIndividuals from './pages/individual/SearchIndividuals';
 import SearchSightings from './pages/sighting/SearchSightings';
+import Administration from './pages/administration/Administration';
 import materialTheme from './styles/materialTheme';
 import messagesEn from '../locale/en.json';
 import messagesEs from '../locale/es.json';
@@ -78,6 +79,9 @@ export default function App() {
               </Route>
               <Route path="/report">
                 <ReportSightings />
+              </Route>
+              <Route path="/administration">
+                <Administration />
               </Route>
               <Route path="/" exact>
                 <div />

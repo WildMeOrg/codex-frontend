@@ -31,11 +31,20 @@ export const selectSpeciesFields = state => ({
   ],
 });
 
-export const selectSiteName = state => 'Flukebook';
-
 export const selectSiteSettings = state => ({
-  name: 'Flukebook',
+  siteName: 'Flukebook',
+  private: true,
+  googleApiKey: '',
+  lightBackgroundLogo: logoForWhiteBackground,
+  darkBackgroundLogo: logoForBlackBackground,
+  sightingFields: [],
+  individualFields: [],
 });
+
+export const selectSiteName = state => {
+  const settings = selectSiteSettings(state);
+  return settings.siteName;
+};
 
 export const selectLogos = state => ({
   white: logoForWhiteBackground,

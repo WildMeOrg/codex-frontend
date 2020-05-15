@@ -36,6 +36,7 @@ export default function LabeledInput({
   value,
   onChange,
   width,
+  minimalLabels = false,
   ...rest
 }) {
   const intl = useIntl();
@@ -61,6 +62,7 @@ export default function LabeledInput({
         schema={schema}
         value={value}
         onChange={onChange}
+        minimalLabels={minimalLabels}
         {...rest}
       />
     );
@@ -72,6 +74,7 @@ export default function LabeledInput({
         schema={schema}
         value={value}
         onChange={onChange}
+        minimalLabels={minimalLabels}
         {...rest}
       />
     );
@@ -83,6 +86,7 @@ export default function LabeledInput({
         schema={schema}
         value={value}
         onChange={onChange}
+        minimalLabels={minimalLabels}
         {...rest}
       />
     );
@@ -129,7 +133,9 @@ export default function LabeledInput({
             value={value.value}
           />
         </div>
-        <FormHelperText>{getDescription(schema)}</FormHelperText>
+        {!minimalLabels && (
+          <FormHelperText>{getDescription(schema)}</FormHelperText>
+        )}
       </Core>
     );
   }
@@ -144,7 +150,9 @@ export default function LabeledInput({
             justifyContent: 'space-between',
           }}
         >
-          <Typography>{getLabel(schema)}</Typography>
+          {!minimalLabels && (
+            <Typography>{getLabel(schema)}</Typography>
+          )}
           <Switch
             checked={value}
             onChange={e => {
@@ -153,9 +161,11 @@ export default function LabeledInput({
           />
         </div>
 
-        <FormHelperText style={{ marginTop: 0 }}>
-          {getDescription(schema)}
-        </FormHelperText>
+        {!minimalLabels && (
+          <FormHelperText style={{ marginTop: 0 }}>
+            {getDescription(schema)}
+          </FormHelperText>
+        )}
       </Core>
     );
   }
@@ -192,13 +202,15 @@ export default function LabeledInput({
             'aria-label': `${getLabel(schema)} input`,
           }}
         />
-        <Typography
-          variant="caption"
-          color="textSecondary"
-          style={{ marginTop: 4 }}
-        >
-          {getDescription(schema)}
-        </Typography>
+        {!minimalLabels && (
+          <Typography
+            variant="caption"
+            color="textSecondary"
+            style={{ marginTop: 4 }}
+          >
+            {getDescription(schema)}
+          </Typography>
+        )}
       </MuiPickersUtilsProvider>
     );
   }
@@ -209,13 +221,15 @@ export default function LabeledInput({
         <Typography variant="subtitle2" style={{ marginTop: 16 }}>
           {getLabel(schema)}
         </Typography>
-        <Typography
-          variant="caption"
-          color="textSecondary"
-          style={{ marginTop: 4 }}
-        >
-          {getDescription(schema)}
-        </Typography>
+        {!minimalLabels && (
+          <Typography
+            variant="caption"
+            color="textSecondary"
+            style={{ marginTop: 4 }}
+          >
+            {getDescription(schema)}
+          </Typography>
+        )}
         <KeyboardDatePicker
           disableToolbar
           variant="inline"
@@ -259,6 +273,7 @@ export default function LabeledInput({
           schema={schema}
           value={value}
           onChange={onChange}
+          minimalLabels={minimalLabels}
           {...rest}
         />
       </Core>
@@ -281,7 +296,9 @@ export default function LabeledInput({
         }}
         value={value}
       />
-      <FormHelperText>{getDescription(schema)}</FormHelperText>
+      {!minimalLabels && (
+        <FormHelperText>{getDescription(schema)}</FormHelperText>
+      )}
     </Core>
   );
 }
