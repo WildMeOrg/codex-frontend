@@ -42,8 +42,8 @@ export default function LabeledInput({
         {...rest}
       >
         {schema.choices.map(option => (
-          <MenuItem value={option} key={option}>
-            {option}
+          <MenuItem value={option.value} key={option.value}>
+            {getLabel(option)}
           </MenuItem>
         ))}
       </Select>

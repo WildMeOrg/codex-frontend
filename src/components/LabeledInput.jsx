@@ -6,7 +6,6 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import TextField from '@material-ui/core/TextField';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
-import Switch from '@material-ui/core/Switch';
 import Typography from '@material-ui/core/Typography';
 import DateFnsUtils from '@date-io/date-fns';
 import {
@@ -18,6 +17,10 @@ import FeetMetersInput from './inputs/FeetMetersInput';
 import IndividualInput from './inputs/IndividualInput';
 import RelationshipsInput from './inputs/RelationshipsInput';
 import SelectInput from './inputs/SelectInput';
+import FieldSetInput from './inputs/FieldSetInput';
+import BooleanInput from './inputs/BooleanInput';
+import TextInput from './inputs/TextInput';
+import OptionEditor from './inputs/OptionEditor';
 
 function Core({ children, required, width, style = {} }) {
   return (
@@ -30,15 +33,17 @@ function Core({ children, required, width, style = {} }) {
   );
 }
 
-export default function LabeledInput({
-  schema,
-  required,
-  value,
-  onChange,
-  width,
-  minimalLabels = false,
-  ...rest
-}) {
+export default function LabeledInput(props) {
+  const {
+    schema,
+    required,
+    value,
+    onChange,
+    width,
+    minimalLabels = false,
+    ...rest
+  } = props;
+
   const intl = useIntl();
 
   function getLabel(object) {
@@ -57,39 +62,19 @@ export default function LabeledInput({
     return <div>Maps coming soon...</div>;
 
   if (schema.fieldType === 'file') {
-    return (
-      <FileInput
-        schema={schema}
-        value={value}
-        onChange={onChange}
-        minimalLabels={minimalLabels}
-        {...rest}
-      />
-    );
+    return <FileInput {...props} />;
   }
 
   if (schema.fieldType === 'individual') {
-    return (
-      <IndividualInput
-        schema={schema}
-        value={value}
-        onChange={onChange}
-        minimalLabels={minimalLabels}
-        {...rest}
-      />
-    );
+    return <IndividualInput {...props} />;
   }
 
   if (schema.fieldType === 'relationships') {
-    return (
-      <RelationshipsInput
-        schema={schema}
-        value={value}
-        onChange={onChange}
-        minimalLabels={minimalLabels}
-        {...rest}
-      />
-    );
+    return <RelationshipsInput {...props} />;
+  }
+
+  if (schema.fieldType === 'optioneditor') {
+    return <OptionEditor {...props} />;
   }
 
   if (schema.fieldType === 'comparator') {
@@ -141,46 +126,21 @@ export default function LabeledInput({
   }
 
   if (schema.fieldType === 'boolean') {
-    return (
-      <Core required={required} schema={schema} width={width}>
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-          }}
-        >
-          {!minimalLabels && (
-            <Typography>{getLabel(schema)}</Typography>
-          )}
-          <Switch
-            checked={value}
-            onChange={e => {
-              onChange(e.target.checked);
-            }}
-          />
-        </div>
-
-        {!minimalLabels && (
-          <FormHelperText style={{ marginTop: 0 }}>
-            {getDescription(schema)}
-          </FormHelperText>
-        )}
-      </Core>
-    );
+    return <BooleanInput {...props} />;
   }
 
   if (['select', 'multiselect'].includes(schema.fieldType)) {
     return (
       <Core schema={schema} required={required} width={width}>
-        <SelectInput
-          schema={schema}
-          required={required}
-          value={value}
-          onChange={onChange}
-          width={width}
-          {...rest}
-        />
+        <SelectInput {...props} />
+      </Core>
+    );
+  }
+
+  if (schema.fieldType === 'fieldset') {
+    return (
+      <Core schema={schema} required={required} width={width}>
+        <FieldSetInput {...props} />
       </Core>
     );
   }
@@ -269,36 +229,10 @@ export default function LabeledInput({
   if (schema.fieldType === 'feetmeters') {
     return (
       <Core schema={schema} required={required} width={width}>
-        <FeetMetersInput
-          schema={schema}
-          value={value}
-          onChange={onChange}
-          minimalLabels={minimalLabels}
-          {...rest}
-        />
+        <FeetMetersInput {...props} />
       </Core>
     );
   }
 
-  return (
-    <Core schema={schema} required={required} width={width}>
-      <TextField
-        id={schema.name}
-        multiline={schema.fieldType === 'longstring'}
-        label={getLabel(schema)}
-        type={
-          ['float', 'integer'].includes(schema.fieldType)
-            ? 'number'
-            : 'undefined'
-        }
-        onChange={e => {
-          onChange(e.target.value);
-        }}
-        value={value}
-      />
-      {!minimalLabels && (
-        <FormHelperText>{getDescription(schema)}</FormHelperText>
-      )}
-    </Core>
-  );
+  return <TextInput {...props} />;
 }

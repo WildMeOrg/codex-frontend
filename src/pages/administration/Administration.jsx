@@ -43,7 +43,9 @@ export default function Administration() {
         />
         <Tab label={<FormattedMessage id="LOGS" />} value="logs" />
       </Tabs>
-      {activeTab === '#settings' && <SiteSettings />}
+      {activeTab === '#settings' && (
+        <SiteSettings primaryButtonId="SAVE_CHANGES" />
+      )}
       {activeTab === '#jobs' && <div>Jobs</div>}
       {activeTab === '#actions' && <div>Actions</div>}
       {activeTab === '#logs' && <div>Logs</div>}

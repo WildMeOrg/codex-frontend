@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { FormattedMessage } from 'react-intl';
+import { useIntl, FormattedMessage } from 'react-intl';
+import { uniqBy } from 'lodash-es';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
@@ -8,10 +9,53 @@ import { selectSiteSettings } from '../../modules/site/selectors';
 import siteSettingsSchema from '../../constants/siteSettingsSchema';
 import LabeledInput from '../../components/LabeledInput';
 
-export default function SiteSettings() {
-  const siteSettings = useSelector(selectSiteSettings);
+function getFieldsetErrors(intl, fieldset, fieldsetName) {
+  const noLabelFields = fieldset.filter(field => field.label === '');
+  const noValueFields = fieldset.filter(field => field.label === '');
+  const sameLabels =
+    uniqBy(fieldset, 'label').length !== fieldset.length;
+  const sameValues =
+    uniqBy(fieldset, 'value').length !== fieldset.length;
 
-  console.log(siteSettings);
+  const errors = [];
+  if (noLabelFields.length > 0)
+    errors.push(
+      intl.formatMessage(
+        { id: 'CUSTOM_FIELD_NO_LABEL_ERROR' },
+        { fieldsetName },
+      ),
+    );
+  if (noValueFields.length > 0)
+    errors.push(
+      intl.formatMessage(
+        { id: 'CUSTOM_FIELD_NO_VALUE_ERROR' },
+        { fieldsetName },
+      ),
+    );
+  if (sameLabels)
+    errors.push(
+      intl.formatMessage(
+        { id: 'CUSTOM_FIELD_SAME_LABEL_ERROR' },
+        { fieldsetName },
+      ),
+    );
+  if (sameValues)
+    errors.push(
+      intl.formatMessage(
+        { id: 'CUSTOM_FIELD_SAME_VALUE_ERROR' },
+        { fieldsetName },
+      ),
+    );
+
+  return errors;
+}
+
+export default function SiteSettings({ primaryButtonId }) {
+  const intl = useIntl();
+  const siteSettings = useSelector(selectSiteSettings);
+  const [submissionAttempted, setSubmissionAttempted] = useState(
+    false,
+  );
 
   const [formValues, setFormValues] = useState(
     siteSettingsSchema.reduce((memo, field) => {
@@ -19,7 +63,19 @@ export default function SiteSettings() {
       return memo;
     }, {}),
   );
-  console.log(formValues);
+
+  const sightingErrors = getFieldsetErrors(
+    intl,
+    formValues.sightingFields,
+    intl.formatMessage({ id: 'CUSTOM_SIGHTING_FIELD_LABEL' }),
+  );
+  const individualErrors = getFieldsetErrors(
+    intl,
+    formValues.individualFields,
+    intl.formatMessage({ id: 'CUSTOM_INDIVIDUAL_FIELD_LABEL' }),
+  );
+
+  const errors = [...sightingErrors, ...individualErrors];
 
   return (
     <Grid container direction="column" style={{ marginTop: 40 }}>
@@ -28,6 +84,7 @@ export default function SiteSettings() {
 
         return (
           <Grid
+            onClick={() => setSubmissionAttempted(false)}
             key={settingSchema.name}
             item
             style={{
@@ -55,20 +112,24 @@ export default function SiteSettings() {
               </Typography>
             </div>
             <div
-              style={{ marginTop: 24, marginLeft: 80, minWidth: 300 }}
+              style={{
+                marginTop: 24,
+                marginLeft: 80,
+                width: 300,
+                minWidth: 300,
+              }}
             >
               <LabeledInput
                 schema={settingSchema}
                 minimalLabels
                 value={formValues[settingSchema.name]}
                 onChange={value => {
-                  console.log(value);
                   setFormValues({
                     ...formValues,
                     [settingSchema.name]: value,
                   });
                 }}
-                width={232}
+                width={280}
               />
             </div>
           </Grid>
@@ -78,12 +139,29 @@ export default function SiteSettings() {
         item
         style={{
           display: 'flex',
-          justifyContent: 'center',
-          marginTop: 40,
+          flexDirection: 'column',
+          alignItems: 'center',
+          marginTop: 28,
         }}
       >
-        <Button variant="contained" color="secondary">
-          Save changes
+        {submissionAttempted && (
+          <div>
+            {errors.map(error => (
+              <Typography style={{ color: '#DC2113' }}>
+                {error}
+              </Typography>
+            ))}
+          </div>
+        )}
+        <Button
+          onClick={() => {
+            setSubmissionAttempted(true);
+          }}
+          style={{ marginTop: 12 }}
+          variant="contained"
+          color="secondary"
+        >
+          <FormattedMessage id={primaryButtonId} />
         </Button>
       </Grid>
     </Grid>

@@ -67,6 +67,11 @@ export default function AppHeader() {
   const logos = useSelector(selectLogos);
   const [drawerOpen, setDrawerOpen] = useState(false);
 
+  const handleClick = () => {
+    window.scrollTo(0, 0);
+    setDrawerOpen(false);
+  };
+
   return (
     <AppBar position="fixed" className={clsx(classes.appBar)}>
       <Drawer open={drawerOpen} onClose={() => setDrawerOpen(false)}>
@@ -82,11 +87,7 @@ export default function AppHeader() {
                 margin: 20,
               }}
             >
-              <Link
-                noUnderline
-                href="/"
-                onClick={() => setDrawerOpen(false)}
-              >
+              <Link noUnderline href="/" onClick={handleClick}>
                 <img
                   src={logos.black}
                   style={{ height: 40 }}
@@ -103,7 +104,7 @@ export default function AppHeader() {
                 <Link
                   noUnderline
                   href="/report"
-                  onClick={() => setDrawerOpen(false)}
+                  onClick={handleClick}
                 >
                   <FormattedMessage id="REPORT_SIGHTINGS" />
                 </Link>
@@ -118,7 +119,7 @@ export default function AppHeader() {
                 <Link
                   href="/sightings"
                   noUnderline
-                  onClick={() => setDrawerOpen(false)}
+                  onClick={handleClick}
                 >
                   <FormattedMessage id="SIGHTINGS" />
                 </Link>
@@ -132,7 +133,7 @@ export default function AppHeader() {
                 <Link
                   href="/individuals"
                   noUnderline
-                  onClick={() => setDrawerOpen(false)}
+                  onClick={handleClick}
                 >
                   <FormattedMessage
                     id="INDIVIDUALS"
@@ -146,11 +147,7 @@ export default function AppHeader() {
                 <PersonIcon />
               </ListItemIcon>
               <ListItemText>
-                <Link
-                  href="/users"
-                  noUnderline
-                  onClick={() => setDrawerOpen(false)}
-                >
+                <Link href="/users" noUnderline onClick={handleClick}>
                   <FormattedMessage
                     id="USERS"
                     defaultMessage="Users"
@@ -163,11 +160,7 @@ export default function AppHeader() {
                 <GroupIcon />
               </ListItemIcon>
               <ListItemText>
-                <Link
-                  href="/orgs"
-                  noUnderline
-                  onClick={() => setDrawerOpen(false)}
-                >
+                <Link href="/orgs" noUnderline onClick={handleClick}>
                   <FormattedMessage
                     id="ORGANIZATIONS"
                     defaultMessage="Organizations"
@@ -229,7 +222,7 @@ export default function AppHeader() {
                 <Link
                   href="/administration"
                   noUnderline
-                  onClick={() => setDrawerOpen(false)}
+                  onClick={handleClick}
                 >
                   <FormattedMessage
                     id="ADMINISTRATION"
@@ -262,7 +255,7 @@ export default function AppHeader() {
             href="/"
             noUnderline
             style={{ display: 'flex' }}
-            onClick={() => setDrawerOpen(false)}
+            onClick={handleClick}
           >
             <img
               src={logos.white}
