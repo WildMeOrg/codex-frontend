@@ -12,6 +12,7 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
+import fieldTypes from '../constants/fieldTypes';
 import FileInput from './inputs/FileInput';
 import FeetMetersInput from './inputs/FeetMetersInput';
 import IndividualInput from './inputs/IndividualInput';
@@ -21,6 +22,8 @@ import FieldSetInput from './inputs/FieldSetInput';
 import BooleanInput from './inputs/BooleanInput';
 import TextInput from './inputs/TextInput';
 import OptionEditor from './inputs/OptionEditor';
+import TreeViewInput from './inputs/TreeViewInput';
+import TreeViewEditor from './inputs/TreeViewEditor';
 
 function Core({ children, required, width, style = {} }) {
   return (
@@ -58,26 +61,34 @@ export default function LabeledInput(props) {
     return get(object, 'description', '');
   }
 
-  if (schema.fieldType === 'latlong')
+  if (schema.fieldType === fieldTypes.latlong)
     return <div>Maps coming soon...</div>;
 
-  if (schema.fieldType === 'file') {
+  if (schema.fieldType === fieldTypes.file) {
     return <FileInput {...props} />;
   }
 
-  if (schema.fieldType === 'individual') {
+  if (schema.fieldType === fieldTypes.treeview) {
+    return <TreeViewInput {...props} />;
+  }
+
+  if (schema.fieldType === fieldTypes.treeeditor) {
+    return <TreeViewEditor {...props} />;
+  }
+
+  if (schema.fieldType === fieldTypes.individual) {
     return <IndividualInput {...props} />;
   }
 
-  if (schema.fieldType === 'relationships') {
+  if (schema.fieldType === fieldTypes.relationships) {
     return <RelationshipsInput {...props} />;
   }
 
-  if (schema.fieldType === 'optioneditor') {
+  if (schema.fieldType === fieldTypes.optioneditor) {
     return <OptionEditor {...props} />;
   }
 
-  if (schema.fieldType === 'comparator') {
+  if (schema.fieldType === fieldTypes.comparator) {
     return (
       <Core
         schema={schema}
@@ -125,11 +136,15 @@ export default function LabeledInput(props) {
     );
   }
 
-  if (schema.fieldType === 'boolean') {
+  if (schema.fieldType === fieldTypes.boolean) {
     return <BooleanInput {...props} />;
   }
 
-  if (['select', 'multiselect'].includes(schema.fieldType)) {
+  if (
+    [fieldTypes.select, fieldTypes.multiselect].includes(
+      schema.fieldType,
+    )
+  ) {
     return (
       <Core schema={schema} required={required} width={width}>
         <SelectInput {...props} />
@@ -137,7 +152,7 @@ export default function LabeledInput(props) {
     );
   }
 
-  if (schema.fieldType === 'fieldset') {
+  if (schema.fieldType === fieldTypes.fieldset) {
     return (
       <Core schema={schema} required={required} width={width}>
         <FieldSetInput {...props} />
@@ -145,7 +160,7 @@ export default function LabeledInput(props) {
     );
   }
 
-  if (schema.fieldType === 'date') {
+  if (schema.fieldType === fieldTypes.date) {
     return (
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
         <KeyboardDatePicker
@@ -175,7 +190,7 @@ export default function LabeledInput(props) {
     );
   }
 
-  if (schema.fieldType === 'daterange') {
+  if (schema.fieldType === fieldTypes.daterange) {
     return (
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
         <Typography variant="subtitle2" style={{ marginTop: 16 }}>
@@ -226,7 +241,7 @@ export default function LabeledInput(props) {
     );
   }
 
-  if (schema.fieldType === 'feetmeters') {
+  if (schema.fieldType === fieldTypes.feetmeters) {
     return (
       <Core schema={schema} required={required} width={width}>
         <FeetMetersInput {...props} />
@@ -234,5 +249,5 @@ export default function LabeledInput(props) {
     );
   }
 
-  return <TextInput {...props} />;
+  return <TextInput {...props} {...rest} />;
 }

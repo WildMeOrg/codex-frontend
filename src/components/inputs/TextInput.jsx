@@ -32,7 +32,7 @@ export default function LabeledInput(props) {
   function getLabel(object) {
     if (object.labelId)
       return intl.formatMessage({ id: object.labelId });
-    return get(object, 'label', 'Missing label');
+    return get(object, 'label', undefined);
   }
 
   function getDescription(object) {

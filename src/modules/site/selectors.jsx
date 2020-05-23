@@ -52,7 +52,7 @@ export const selectSiteSettings = state => ({
   },
   sightingFields: [],
   individualFields: [],
-  regionChoices: [
+  regions: [
     {
       name: 'Kenya',
       id: 'Kenya',
@@ -168,6 +168,11 @@ export const selectSiteSettings = state => ({
 export const selectSiteName = state => {
   const settings = selectSiteSettings(state);
   return settings.siteName;
+};
+
+export const selectRegions = state => {
+  const settings = selectSiteSettings(state);
+  return settings.regions;
 };
 
 export const selectLogos = state => {

@@ -1,5 +1,4 @@
-/* Where it's not obvious, I left comments defining the variable types */
-
+/* Where it's not obvious, I tried to leave a comment with the field value's type */
 const fieldTypes = {
   string: 'string',
   longstring: 'longstring',
@@ -16,10 +15,13 @@ const fieldTypes = {
   multiselect: 'multiselect', // array of strings
   comparator: 'comparator', // { comparator: one of ["LT", "LTE", "GT", "GTE", "EQ"], value: float }
   boolean: 'boolean',
+  treeview: 'treeview', // nested array
+  treeeditor: 'treeeditor', // nested array
   fieldset: 'fieldset', // array of schema objects. used only in admin panel
   optioneditor: 'optioneditor', // used only in admin panel
 };
 
+/* Informaton about fields that can be turned into custom fields */
 export const fieldTypeChoices = [
   { labelId: 'STRING', value: fieldTypes.string, defaultValue: '' },
   {
