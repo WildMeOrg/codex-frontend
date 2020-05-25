@@ -23,6 +23,7 @@ const updateTwoWeekData = (obj, job) => {
     0,
   );
   obj.twoWeeks.totalRunTime += get(job, 'time_runtime_sec', 0);
+  if (job.time_completed) obj.twoWeeks.jobsProcessed += 1;
   if (['received', 'accepted', 'queued'].includes(job.status)) {
     obj.twoWeeks.jobsInQueue += 1;
   }
@@ -59,8 +60,30 @@ const categorizeJob = (obj, job) => {
 };
 
 export default function useServerStatus() {
-  const [jobData, setJobData] = useState({});
+  const initialState = {
+    lastHour: {
+      totalTurnaroundTime: 0,
+      totalRunTime: 0,
+      jobsProcessed: 0,
+    },
+    twoWeeks: {
+      totalTurnaroundTime: 0,
+      totalRunTime: 0,
+      jobsProcessed: 0,
+      jobsInQueue: 0,
+    },
+    byStatus: {
+      inDetectionQueue: [],
+      inIdentificationQueue: [],
+      error: [],
+      completed: [],
+      inProgress: [],
+    },
+  };
+
+  const [jobData, setJobData] = useState(initialState);
   const [error, setError] = useState(null);
+  const [isFetched, setIsFetched] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -71,25 +94,7 @@ export default function useServerStatus() {
 
         const data = get(result, 'data.response.json_result');
 
-        const summary = {
-          lastHour: {
-            totalTurnaroundTime: 0,
-            totalRunTime: 0,
-            jobsProcessed: 0,
-          },
-          twoWeeks: {
-            totalTurnaroundTime: 0,
-            totalRunTime: 0,
-            jobsInQueue: 0,
-          },
-          byStatus: {
-            inDetectionQueue: [],
-            inIdentificationQueue: [],
-            error: [],
-            completed: [],
-            inProgress: [],
-          },
-        };
+        const summary = { ...initialState };
 
         const oneHourAgo = subHours(Date.now(), 1);
 
@@ -103,12 +108,14 @@ export default function useServerStatus() {
       } catch (requestError) {
         console.error('Error requesting computer vision server data');
         console.error(requestError.message);
-        setError('Error requesting server data');
+        setError(true);
+      } finally {
+        setIsFetched(true);
       }
     };
 
     fetchData();
   }, []);
 
-  return [jobData, error];
+  return [jobData, error, isFetched];
 }
