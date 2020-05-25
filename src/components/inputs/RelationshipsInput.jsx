@@ -1,5 +1,6 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
+import { v4 as uuid } from 'uuid';
 import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
@@ -14,13 +15,19 @@ export default function RelationshipsInput({
   schema,
   value: relationships,
   onChange,
+  minimalLabels = false, // eslint-disable-line no-unused-vars
   ...rest
 }) {
+  relationships.sort((a, b) => {
+    if (a.timeCreated < b.timeCreated) return -1;
+    return 1;
+  });
+
   return (
     <div>
       {relationships.map(relationship => {
         const otherRelationships = relationships.filter(
-          r => r.tempId !== relationship.tempId,
+          r => r.id !== relationship.id,
         );
 
         return (
@@ -30,7 +37,7 @@ export default function RelationshipsInput({
               flexDirection: 'column',
               marginBottom: 12,
             }}
-            key={relationship.tempId}
+            key={relationship.id}
           >
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <Typography variant="subtitle2">
@@ -54,17 +61,17 @@ export default function RelationshipsInput({
                 <Select
                   labelId="relationship-type-selector-label"
                   id="relationship-type-selector"
-                  value={relationship.type}
+                  value={relationship.value}
                   onChange={e => {
                     const newType = e.target.value;
                     onChange([
                       ...otherRelationships,
-                      { ...relationship, type: newType },
+                      { ...relationship, value: newType },
                     ]);
                   }}
                 >
                   {schema.choices.map(option => (
-                    <MenuItem value={option.type} key={option.type}>
+                    <MenuItem value={option.value} key={option.value}>
                       <FormattedMessage id={option.labelId} />
                     </MenuItem>
                   ))}
@@ -91,8 +98,9 @@ export default function RelationshipsInput({
             {
               targetIndividualId: null,
               direction: null,
-              type: '',
-              tempId: Date.now(),
+              value: '',
+              id: uuid(),
+              timeCreated: Date.now(),
             },
           ]);
         }}

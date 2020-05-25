@@ -165,10 +165,22 @@ export const selectIndividualSearchSchema = state => {
       category: categories.attributes.name,
       fieldType: fieldTypes.select,
       choices: [
-        'Delphinidae',
-        'Grampus Griseus',
-        'Kogia Sima',
-        'Unknown',
+        {
+          value: 'delphinae',
+          label: 'Delphinidae',
+        },
+        {
+          value: 'grampus-griseus',
+          label: 'Grampus Griseus',
+        },
+        {
+          value: 'kogia-sima',
+          label: 'Kogia Sima',
+        },
+        {
+          value: 'Unknown',
+          label: 'Unknown',
+        },
       ],
       defaultValue: '',
     },
@@ -185,7 +197,28 @@ export const selectIndividualSearchSchema = state => {
       label: 'Haplotype',
       category: categories.samples.name,
       fieldType: fieldTypes.multiselect,
-      choices: ['A', 'A+', 'A-', 'A3', 'A4'],
+      choices: [
+        {
+          value: 'A',
+          label: 'A',
+        },
+        {
+          value: 'A+',
+          label: 'A+',
+        },
+        {
+          value: 'A-',
+          label: 'A-',
+        },
+        {
+          value: 'A3',
+          label: 'A3',
+        },
+        {
+          value: 'A4',
+          label: 'A4',
+        },
+      ],
       defaultValue: [],
     },
   ];

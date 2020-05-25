@@ -59,7 +59,24 @@ export default [
     labelId: 'SEX',
     category: individualSearchCategories.attributes.name,
     fieldType: fieldTypes.select,
-    choices: ['male', 'female', 'non-binary', 'unknown'],
+    choices: [
+      {
+        value: 'male',
+        labelId: 'MALE',
+      },
+      {
+        value: 'female',
+        labelId: 'FEMALE',
+      },
+      {
+        value: 'non-binary',
+        labelId: 'NON_BINARY',
+      },
+      {
+        value: 'unknown',
+        labelId: 'UNKNOWN',
+      },
+    ],
     defaultValue: '',
   },
   {
@@ -68,7 +85,20 @@ export default [
     descriptionId: 'STATUS_INDIVIDUALS_DESCRIPTION',
     category: individualSearchCategories.attributes.name,
     fieldType: fieldTypes.select,
-    choices: ['Alive', 'Dead', 'Unknown'],
+    choices: [
+      {
+        value: 'alive',
+        labelId: 'ALIVE',
+      },
+      {
+        value: 'dead',
+        labelId: 'DEAD',
+      },
+      {
+        value: 'unknown',
+        labelId: 'UNKNOWN',
+      },
+    ],
     defaultValue: '',
   },
   {

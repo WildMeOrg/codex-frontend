@@ -17,8 +17,11 @@ import User from './pages/user/User';
 import Users from './pages/user/Users';
 import ReportSightings from './pages/report/ReportSightings';
 import FourOhFour from './pages/fourohfour/FourOhFour';
+import { selectSiteSettings } from './modules/site/selectors';
 import SearchIndividuals from './pages/individual/SearchIndividuals';
 import SearchSightings from './pages/sighting/SearchSightings';
+import Administration from './pages/administration/Administration';
+import SiteSetup from './pages/administration/SiteSetup';
 import materialTheme from './styles/materialTheme';
 import messagesEn from '../locale/en.json';
 import messagesEs from '../locale/es.json';
@@ -31,6 +34,8 @@ const messageMap = {
 export default function App() {
   const theme = createMuiTheme(materialTheme);
   const locale = useSelector(selectLocale);
+
+  const siteSettings = useSelector(selectSiteSettings);
 
   return (
     <ThemeProvider theme={theme}>
@@ -51,41 +56,48 @@ export default function App() {
             }}
           >
             <AppHeader />
-            <Switch>
-              <Route path="/individuals/:id">
-                <Individual />
-              </Route>
-              <Route path="/individuals">
-                <SearchIndividuals />
-              </Route>
-              <Route path="/sightings/:id">
-                <Sighting />
-              </Route>
-              <Route path="/sightings">
-                <SearchSightings />
-              </Route>
-              <Route path="/users/:id">
-                <User />
-              </Route>
-              <Route path="/users">
-                <Users />
-              </Route>
-              <Route path="/orgs/:id">
-                <Org />
-              </Route>
-              <Route path="/orgs">
-                <Orgs />
-              </Route>
-              <Route path="/report">
-                <ReportSightings />
-              </Route>
-              <Route path="/" exact>
-                <div />
-              </Route>
-              <Route>
-                <FourOhFour />
-              </Route>
-            </Switch>
+            {siteSettings.needsSetup ? (
+              <SiteSetup />
+            ) : (
+              <Switch>
+                <Route path="/individuals/:id">
+                  <Individual />
+                </Route>
+                <Route path="/individuals">
+                  <SearchIndividuals />
+                </Route>
+                <Route path="/sightings/:id">
+                  <Sighting />
+                </Route>
+                <Route path="/sightings">
+                  <SearchSightings />
+                </Route>
+                <Route path="/users/:id">
+                  <User />
+                </Route>
+                <Route path="/users">
+                  <Users />
+                </Route>
+                <Route path="/orgs/:id">
+                  <Org />
+                </Route>
+                <Route path="/orgs">
+                  <Orgs />
+                </Route>
+                <Route path="/report">
+                  <ReportSightings />
+                </Route>
+                <Route path="/administration">
+                  <Administration />
+                </Route>
+                <Route path="/" exact>
+                  <div />
+                </Route>
+                <Route>
+                  <FourOhFour />
+                </Route>
+              </Switch>
+            )}
           </main>
           <Footer />
         </BrowserRouter>

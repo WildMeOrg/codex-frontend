@@ -78,7 +78,9 @@ export default function EntityHeader({
           </div>
         </Grid>
       </Grid>
-      {renderEditDialog(editingProfile, () => setEditingProfile(false))}
+      {renderEditDialog(editingProfile, () =>
+        setEditingProfile(false),
+      )}
       <Divider />
     </>
   );

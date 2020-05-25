@@ -36,9 +36,18 @@ export default [
     fieldType: fieldTypes.select,
     required: true,
     choices: [
-      'Research effort',
-      'Wildlife tour',
-      'Opportunistic sighting',
+      {
+        value: 'research-effort',
+        labelId: 'RESEARCH_EFFORT',
+      },
+      {
+        value: 'wildlife-tour',
+        labelId: 'WILDLIFE_TOUR',
+      },
+      {
+        value: 'opportunistic-sighting',
+        labelId: 'OPPORTUNISTIC_SIGHTING',
+      },
     ],
     defaultValue: '',
   },
@@ -63,7 +72,24 @@ export default [
     labelId: 'SEX',
     category: sightingCategories.animal.name,
     fieldType: fieldTypes.select,
-    choices: ['male', 'female', 'non-binary', 'unknown'],
+    choices: [
+      {
+        value: 'male',
+        labelId: 'MALE',
+      },
+      {
+        value: 'female',
+        labelId: 'FEMALE',
+      },
+      {
+        value: 'non-binary',
+        labelId: 'NON_BINARY',
+      },
+      {
+        value: 'unknown',
+        labelId: 'UNKNOWN',
+      },
+    ],
     defaultValue: '',
   },
   {
@@ -72,7 +98,20 @@ export default [
     descriptionId: 'STATUS_SIGHTING_DESCRIPTION',
     category: sightingCategories.animal.name,
     fieldType: fieldTypes.select,
-    choices: ['Alive', 'Dead', 'Unknown'],
+    choices: [
+      {
+        value: 'alive',
+        labelId: 'ALIVE',
+      },
+      {
+        value: 'dead',
+        labelId: 'DEAD',
+      },
+      {
+        value: 'unknown',
+        labelId: 'UNKNOWN',
+      },
+    ],
     defaultValue: '',
   },
   {

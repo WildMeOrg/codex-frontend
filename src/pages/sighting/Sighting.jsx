@@ -21,7 +21,7 @@ import AnnotationsGallery from './AnnotationsGallery';
 import IndividualsGallery from './IndividualsGallery';
 import PhotoGallery from './PhotoGallery';
 
-export default function Encounter() {
+export default function Sighting() {
   const { id } = useParams();
 
   // fetch data for Id...
@@ -68,16 +68,20 @@ export default function Encounter() {
             <EditProfile
               visible={visible}
               onClose={onClose}
-              fieldValues={[{
-                name: 'species',
-                value: sighting.taxonomy,
-              }, {
-                name: 'location_freeform',
-                value: sighting.region,
-              }, {
-                name: 'sightingContext',
-                value: sighting.context,
-              }]}
+              fieldValues={[
+                {
+                  name: 'species',
+                  value: sighting.taxonomy,
+                },
+                {
+                  name: 'location_freeform',
+                  value: sighting.region,
+                },
+                {
+                  name: 'sightingContext',
+                  value: sighting.context,
+                },
+              ]}
               fieldSchema={schema}
             />
           );

@@ -43,7 +43,24 @@ export default [
     labelId: 'SEX',
     category: sightingSearchCategories.attributes.name,
     fieldType: fieldTypes.select,
-    choices: ['male', 'female', 'non-binary', 'unknown'],
+    choices: [
+      {
+        value: 'male',
+        labelId: 'MALE',
+      },
+      {
+        value: 'female',
+        labelId: 'FEMALE',
+      },
+      {
+        value: 'non-binary',
+        labelId: 'NON_BINARY',
+      },
+      {
+        value: 'unknown',
+        labelId: 'UNKNOWN',
+      },
+    ],
     defaultValue: '',
   },
   {
@@ -52,7 +69,20 @@ export default [
     descriptionId: 'STATUS_SIGHTING_DESCRIPTION',
     category: sightingSearchCategories.attributes.name,
     fieldType: fieldTypes.select,
-    choices: ['Alive', 'Dead', 'Unknown'],
+    choices: [
+      {
+        value: 'alive',
+        labelId: 'ALIVE',
+      },
+      {
+        value: 'dead',
+        labelId: 'DEAD',
+      },
+      {
+        value: 'unknown',
+        labelId: 'UNKNOWN',
+      },
+    ],
     defaultValue: '',
   },
   {
@@ -76,7 +106,20 @@ export default [
     labelId: 'SIGHTING_STATUS',
     category: sightingSearchCategories.metadata.name,
     fieldType: fieldTypes.select,
-    choices: ['Approved', 'Unapproved', 'Unidentifiable'],
+    choices: [
+      {
+        value: 'approved',
+        labelId: 'APPROVED',
+      },
+      {
+        value: 'unapproved',
+        labelId: 'UNAPPROVED',
+      },
+      {
+        value: 'unidentifiable',
+        labelId: 'UNIDENTIFIABLE',
+      },
+    ],
     defaultValue: '',
   },
   {

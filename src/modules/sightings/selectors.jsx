@@ -278,10 +278,22 @@ export const selectSightingSearchSchema = state => {
       category: categories.attributes.name,
       fieldType: fieldTypes.select,
       choices: [
-        'Delphinidae',
-        'Grampus Griseus',
-        'Kogia Sima',
-        'Unknown',
+        {
+          value: 'delphinae',
+          label: 'Delphinidae',
+        },
+        {
+          value: 'grampus-griseus',
+          label: 'Grampus Griseus',
+        },
+        {
+          value: 'kogia-sima',
+          label: 'Kogia Sima',
+        },
+        {
+          value: 'Unknown',
+          label: 'Unknown',
+        },
       ],
       defaultValue: '',
     },
@@ -303,10 +315,22 @@ export const selectSightingSchema = state => {
       category: categories.general.name,
       fieldType: fieldTypes.select,
       choices: [
-        'Delphinidae',
-        'Grampus Griseus',
-        'Kogia Sima',
-        'Unknown',
+        {
+          value: 'delphinae',
+          label: 'Delphinidae',
+        },
+        {
+          value: 'grampus-griseus',
+          label: 'Grampus Griseus',
+        },
+        {
+          value: 'kogia-sima',
+          label: 'Kogia Sima',
+        },
+        {
+          value: 'Unknown',
+          label: 'Unknown',
+        },
       ],
       required: true,
       defaultValue: '',
@@ -334,23 +358,23 @@ export const selectSightingSchema = state => {
       fieldType: fieldTypes.relationships,
       choices: [
         {
-          type: 'mother',
+          value: 'mother',
           labelId: 'MOTHER_OF',
         },
         {
-          type: 'father',
+          value: 'father',
           labelId: 'FATHER_OF',
         },
         {
-          type: 'calf',
+          value: 'calf',
           labelId: 'CALF_OF',
         },
         {
-          type: 'family',
+          value: 'family',
           labelId: 'IN_A_FAMILY_WITH',
         },
         {
-          type: 'group',
+          value: 'group',
           labelId: 'IN_A_GROUP_WITH',
         },
       ],
