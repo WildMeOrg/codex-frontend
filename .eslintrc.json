@@ -23,6 +23,7 @@
     "function-paren-newline": 0,
     "no-underscore-dangle": 0,
     "no-console": 0,
+    "operator-linebreak": 0,
     "indent": 0,
     "camelcase": 0,
     "space-before-function-paren": 0,

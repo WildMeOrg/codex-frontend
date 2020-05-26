@@ -16,7 +16,7 @@ function Core({ children, required, width, style = {} }) {
   );
 }
 
-export default function LabeledInput(props) {
+export default function TextInput(props) {
   const {
     schema,
     required,

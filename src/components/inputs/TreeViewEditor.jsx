@@ -1,17 +1,28 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { flattenDeep, get } from 'lodash-es';
 import { useIntl, FormattedMessage } from 'react-intl';
 import { v4 as uuid } from 'uuid';
 import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
+import IconButton from '@material-ui/core/IconButton';
+import InputAdornment from '@material-ui/core/InputAdornment';
 import TreeView from '@material-ui/lab/TreeView';
+import NewChildIcon from '@material-ui/icons/KeyboardReturn';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import TreeItem from '@material-ui/lab/TreeItem';
 import TextInput from './TextInput';
+import DeleteButton from '../DeleteButton';
 
-const textInputWidth = 140;
+const textInputWidth = 200;
+
+function getNewLeaf() {
+  return {
+    id: uuid(),
+    name: '',
+  };
+}
 
 function Core({ children, required, width, style = {} }) {
   return (
@@ -22,6 +33,40 @@ function Core({ children, required, width, style = {} }) {
       {children}
     </FormControl>
   );
+}
+
+function addChild(tree, parentId) {
+  function updateLevel(leaves) {
+    const newLeaves = [];
+    leaves.forEach(leaf => {
+      if (leaf.locationID) {
+        leaf.locationID = updateLevel(leaf.locationID);
+        if (leaf.id === parentId) leaf.locationID.push(getNewLeaf());
+      } else if (leaf.id === parentId) {
+        leaf.locationID = [getNewLeaf()];
+      }
+      newLeaves.push(leaf);
+    });
+    return newLeaves;
+  }
+
+  return updateLevel(tree);
+}
+
+function deleteFromTree(tree, deleteId) {
+  function updateLevel(leaves) {
+    const newLeaves = [];
+    leaves.forEach(leaf => {
+      if (leaf.id !== deleteId) {
+        if (leaf.locationID)
+          leaf.locationID = updateLevel(leaf.locationID);
+        newLeaves.push(leaf);
+      }
+    });
+    return newLeaves;
+  }
+
+  return updateLevel(tree);
 }
 
 function updateTree(tree, leafId, newLeafName) {
@@ -38,23 +83,6 @@ function updateTree(tree, leafId, newLeafName) {
   }
 
   updateLevel(newTree);
-  return newTree;
-}
-
-function addToTree(tree, parentLeaf, newLeaf) {
-  const newTree = [...tree];
-  console.log(tree, parentLeaf, newLeaf);
-  function updateLevel(parent) {
-    if (parent.id === parentLeaf.id) {
-      if (!parent.locationID) parent.locationID = [];
-      parent.locationID.push(newLeaf);
-    }
-    parent.locationID.forEach(leaf => {
-      if (leaf.locationID) updateLevel(leaf.locationID);
-    });
-  }
-
-  updateLevel({ id: 'WORLD', name: 'WORLD', locationID: tree });
   return newTree;
 }
 
@@ -85,7 +113,7 @@ export default function TreeViewEditor(props) {
     return get(object, 'description', '');
   }
 
-  function renderLevel(leaves, parent) {
+  function renderLevel(leaves, level) {
     return (
       <>
         {leaves.map(leaf => (
@@ -104,25 +132,48 @@ export default function TreeViewEditor(props) {
                   onChange(updateTree(value, leaf.id, newName))
                 }
                 value={leaf.name}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        size="small"
+                        onClick={() => {
+                          onChange(addChild(value, leaf.id));
+                        }}
+                      >
+                        <NewChildIcon
+                          style={{
+                            transform:
+                              'rotateX(180deg) rotateZ(180deg)',
+                          }}
+                        />
+                      </IconButton>
+                      <DeleteButton
+                        onClick={() => {
+                          onChange(deleteFromTree(value, leaf.id));
+                        }}
+                      />
+                    </InputAdornment>
+                  ),
+                }}
               />
             }
           >
-            {leaf.locationID && renderLevel(leaf.locationID, leaf)}
+            {leaf.locationID &&
+              renderLevel(leaf.locationID, level + 1)}
           </TreeItem>
         ))}
-        <Button
-          onClick={() => {
-            const newLeaf = {
-              id: uuid(),
-              name: '',
-            };
-            onChange(addToTree(value, parent, newLeaf));
-          }}
-          style={{ marginLeft: 20 }}
-          size="small"
-        >
-          <FormattedMessage id="NEW_REGION" />
-        </Button>
+        {level === 0 && (
+          <Button
+            onClick={() => {
+              onChange([...value, getNewLeaf()]);
+            }}
+            style={{ marginLeft: 20 }}
+            size="small"
+          >
+            <FormattedMessage id="NEW_REGION" />
+          </Button>
+        )}
       </>
     );
   }
@@ -155,7 +206,7 @@ export default function TreeViewEditor(props) {
             { object: getLabel(schema) },
           )}
         >
-          {renderLevel(value, { id: 'WORLD', name: 'WORLD', locationID: value })}
+          {renderLevel(value, 0)}
         </TreeItem>
       </TreeView>
       {!minimalLabels && (

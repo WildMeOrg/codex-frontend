@@ -5,13 +5,13 @@ import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
-import DeleteIcon from '@material-ui/icons/Delete';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import CloseIcon from '@material-ui/icons/Close';
 import TextInput from './TextInput';
+import DeleteButton from '../DeleteButton';
 
 export default function OptionEditor({
   schema,
@@ -86,12 +86,9 @@ export default function OptionEditor({
                   <Typography variant="subtitle2">
                     <FormattedMessage id="OPTION" />
                   </Typography>
-                  <IconButton
-                    size="small"
+                  <DeleteButton
                     onClick={() => onChange(otherOptions)}
-                  >
-                    <DeleteIcon style={{ color: '#DC2113' }} />
-                  </IconButton>
+                  />
                 </div>
                 <div
                   style={{ display: 'flex', alignItems: 'flex-end' }}

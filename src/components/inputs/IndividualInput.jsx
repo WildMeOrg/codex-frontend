@@ -17,8 +17,8 @@ import ListItemText from '@material-ui/core/ListItemText';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import CloseIcon from '@material-ui/icons/Close';
 import SearchIcon from '@material-ui/icons/Search';
-import DeleteIcon from '@material-ui/icons/Delete';
 import { selectSearchResults } from '../../modules/individuals/selectors';
+import DeleteButton from '../DeleteButton';
 
 export default function IndividualInput({
   schema,
@@ -52,14 +52,11 @@ export default function IndividualInput({
       {value && (
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <Typography>{value}</Typography>
-          <IconButton
-            size="small"
+          <DeleteButton
             onClick={() => {
               onChange(null);
             }}
-          >
-            <DeleteIcon style={{ color: '#DC2113' }} />
-          </IconButton>
+          />
         </div>
       )}
       {schema && !minimalLabels && schema.descriptionId && (

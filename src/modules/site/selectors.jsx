@@ -40,14 +40,14 @@ export const selectSiteSettings = state => ({
     name: 'Screen Shot 2020-04-14 at 1.23.28 PM.png',
     type: 'image/png',
     response: {
-      uploadURL: logoForWhiteBackground,
+      uploadURL: logoForBlackBackground,
     },
   },
   darkBackgroundLogo: {
     name: 'Screen Shot 2020-04-14 at 1.23.28 PM.png',
     type: 'image/png',
     response: {
-      uploadURL: logoForBlackBackground,
+      uploadURL: logoForWhiteBackground,
     },
   },
   sightingFields: [],
