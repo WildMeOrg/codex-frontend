@@ -24,6 +24,7 @@ import TextInput from './inputs/TextInput';
 import OptionEditor from './inputs/OptionEditor';
 import TreeViewInput from './inputs/TreeViewInput';
 import LatLongInput from './inputs/LatLongInput';
+import AreaInput from './inputs/AreaInput';
 import TreeViewEditor from './inputs/TreeViewEditor';
 
 function Core({ children, required, width, style = {} }) {
@@ -64,6 +65,9 @@ export default function LabeledInput(props) {
 
   if (schema.fieldType === fieldTypes.latlong)
     return <LatLongInput {...props} />;
+
+  if (schema.fieldType === fieldTypes.area)
+    return <AreaInput {...props} />;
 
   if (schema.fieldType === fieldTypes.file) {
     return <FileInput {...props} />;

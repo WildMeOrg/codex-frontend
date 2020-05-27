@@ -9,7 +9,7 @@ const fieldTypes = {
   integer: 'integer',
   file: 'file',
   latlong: 'latlong', // [float, float] defines [lat, lng]
-  region: 'region', // [float, float, float, float] ????
+  area: 'area', // { north: float, east: float, south: float, west: float } defines a geographic bounding box
   date: 'date',
   daterange: 'daterange', // [date, date]
   select: 'select', // string

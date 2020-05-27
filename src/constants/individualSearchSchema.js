@@ -51,8 +51,8 @@ export default [
     labelId: 'LOCATION',
     descriptionId: 'LOCATION_DESCRIPTION',
     category: individualSearchCategories.location.name,
-    fieldType: fieldTypes.region,
-    defaultValue: [null, null, null, null],
+    fieldType: fieldTypes.area,
+    defaultValue: null,
   },
   {
     name: 'sex',

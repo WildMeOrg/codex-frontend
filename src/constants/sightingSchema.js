@@ -33,7 +33,7 @@ export default [
   },
   {
     name: 'location',
-    labelId: 'LOCATION',
+    labelId: 'EXACT_LOCATION',
     descriptionId: 'LOCATION_DESCRIPTION',
     category: sightingCategories.general.name,
     fieldType: fieldTypes.latlong,

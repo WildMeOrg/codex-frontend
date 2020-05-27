@@ -42,11 +42,11 @@ export default [
   },
   {
     name: 'location',
-    labelId: 'LOCATION',
-    descriptionId: 'LOCATION_DESCRIPTION',
+    labelId: 'BOUNDING_BOX',
+    descriptionId: 'BOUNDING_BOX_DESCRIPTION',
     category: sightingSearchCategories.location.name,
-    fieldType: fieldTypes.region,
-    defaultValue: [null, null, null, null],
+    fieldType: fieldTypes.area,
+    defaultValue: null,
   },
   {
     name: 'sex',
