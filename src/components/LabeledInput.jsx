@@ -23,6 +23,7 @@ import BooleanInput from './inputs/BooleanInput';
 import TextInput from './inputs/TextInput';
 import OptionEditor from './inputs/OptionEditor';
 import TreeViewInput from './inputs/TreeViewInput';
+import LatLongInput from './inputs/LatLongInput';
 import TreeViewEditor from './inputs/TreeViewEditor';
 
 function Core({ children, required, width, style = {} }) {
@@ -62,7 +63,7 @@ export default function LabeledInput(props) {
   }
 
   if (schema.fieldType === fieldTypes.latlong)
-    return <div>Maps coming soon...</div>;
+    return <LatLongInput {...props} />;
 
   if (schema.fieldType === fieldTypes.file) {
     return <FileInput {...props} />;

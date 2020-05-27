@@ -5,3 +5,7 @@ This template as a guide. Transloadit is used to process uploaded media. */
 export const transloaditKey = '';
 
 export const transloaditTemplateId = '';
+
+export const transloaditService = 'https://api2.transloadit.com';
+
+export const googleMapsApiKey = '';

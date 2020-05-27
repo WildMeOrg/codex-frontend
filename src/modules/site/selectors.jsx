@@ -178,8 +178,8 @@ export const selectRegions = state => {
 export const selectLogos = state => {
   const siteSettings = selectSiteSettings(state);
   return {
-    white: siteSettings.lightBackgroundLogo.response.uploadURL,
-    black: siteSettings.darkBackgroundLogo.response.uploadURL,
+    white: siteSettings.darkBackgroundLogo.response.uploadURL,
+    black: siteSettings.lightBackgroundLogo.response.uploadURL,
   };
 };
 

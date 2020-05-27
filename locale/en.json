@@ -66,6 +66,7 @@
     "DROPDOWN": "Dropdown",
     "MULTI_SELECT_DROPDOWN": "Multi-select dropdown",
     "COMPARATOR": "Comparator",
+    "SELECT_LOCATION": "Select Location",
     "BOOLEAN": "Boolean",
     "LOGS": "Logs",
     "REGION": "Region",
