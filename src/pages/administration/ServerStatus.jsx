@@ -6,6 +6,7 @@ import {
   FormattedNumber,
 } from 'react-intl';
 import { get, round } from 'lodash-es';
+import parse from 'date-fns/parse';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Skeleton from '@material-ui/lab/Skeleton';
@@ -204,7 +205,13 @@ const WaffleSquare = ({
   const dateReceivedLabel = intl.formatMessage({
     id: 'SERVER_TOOLTIP_DATE_RECEIVED_LABEL',
   });
-  const dateReceivedValue = intl.formatDate(new Date(time_received), {
+
+  const timeReceived = parse(
+    time_received.substring(0, 19),
+    'yyyy-MM-dd HH:mm:ss',
+    new Date(),
+  );
+  const dateReceivedValue = intl.formatDate(timeReceived, {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
@@ -329,13 +336,9 @@ export default function ServerStatus() {
         <FormattedMessage id="SERVER_STATUS_PAGE_TITLE" />
       </Typography>
       {error ? (
-        <Grid style={{ marginTop: 12 }} item>
-          {error && (
-            <Typography color="error">
-              <FormattedMessage id="REQUEST_ERROR" />
-            </Typography>
-          )}
-        </Grid>
+        <Typography color="error">
+          <FormattedMessage id="REQUEST_ERROR" />
+        </Typography>
       ) : (
         <>
           <Typography
@@ -355,59 +358,71 @@ export default function ServerStatus() {
             spacing={isXs ? 1 : 2}
             style={{ marginBottom: '32px' }}
           >
-            <SummaryCard
-              xs={12}
-              sm={4}
-              loading={!isFetched}
-              title={
-                <FormattedMessage id="SERVER_SUMMARY_TURNAROUND_TIME" />
-              }
-              content={
-                <FormattedNumber
-                  value={
-                    elapsedTimeInWords(lastHourAverageTurnaroundTime)
-                      .value
+            {lastHour.error ? (
+              <Typography color="error">
+                <FormattedMessage id="SERVER_LAST_HOUR_ERROR" />
+              </Typography>
+            ) : (
+              <>
+                <SummaryCard
+                  xs={12}
+                  sm={4}
+                  loading={!isFetched}
+                  title={
+                    <FormattedMessage id="SERVER_SUMMARY_TURNAROUND_TIME" />
                   }
-                  unit={
-                    elapsedTimeInWords(lastHourAverageTurnaroundTime)
-                      .unit
+                  content={
+                    <FormattedNumber
+                      value={
+                        elapsedTimeInWords(
+                          lastHourAverageTurnaroundTime,
+                        ).value
+                      }
+                      unit={
+                        elapsedTimeInWords(
+                          lastHourAverageTurnaroundTime,
+                        ).unit
+                      }
+                      unitDisplay="long"
+                      style="unit" // eslint-disable-line react/style-prop-object
+                    />
                   }
-                  unitDisplay="long"
-                  style="unit" // eslint-disable-line react/style-prop-object
                 />
-              }
-            />
-            <SummaryCard
-              xs={12}
-              sm={4}
-              loading={!isFetched}
-              title={
-                <FormattedMessage id="SERVER_SUMMARY_RUN_TIME" />
-              }
-              content={
-                <FormattedNumber
-                  value={
-                    elapsedTimeInWords(lastHourAverageRunTime).value
+                <SummaryCard
+                  xs={12}
+                  sm={4}
+                  loading={!isFetched}
+                  title={
+                    <FormattedMessage id="SERVER_SUMMARY_RUN_TIME" />
                   }
-                  unit={
-                    elapsedTimeInWords(lastHourAverageRunTime).unit
+                  content={
+                    <FormattedNumber
+                      value={
+                        elapsedTimeInWords(lastHourAverageRunTime)
+                          .value
+                      }
+                      unit={
+                        elapsedTimeInWords(lastHourAverageRunTime)
+                          .unit
+                      }
+                      unitDisplay="long"
+                      style="unit" // eslint-disable-line react/style-prop-object
+                    />
                   }
-                  unitDisplay="long"
-                  style="unit" // eslint-disable-line react/style-prop-object
                 />
-              }
-            />
-            <SummaryCard
-              xs={12}
-              sm={4}
-              loading={!isFetched}
-              title={
-                <FormattedMessage id="SERVER_SUMMARY_JOBS_PROCESSED" />
-              }
-              content={
-                <FormattedNumber value={lastHour.jobsProcessed} />
-              }
-            />
+                <SummaryCard
+                  xs={12}
+                  sm={4}
+                  loading={!isFetched}
+                  title={
+                    <FormattedMessage id="SERVER_SUMMARY_JOBS_PROCESSED" />
+                  }
+                  content={
+                    <FormattedNumber value={lastHour.jobsProcessed} />
+                  }
+                />
+              </>
+            )}
           </Grid>
           <Typography
             variant="h6"

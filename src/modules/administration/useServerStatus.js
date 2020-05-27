@@ -2,11 +2,26 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { get } from 'lodash-es';
 import compareAsc from 'date-fns/compareAsc';
+import isValid from 'date-fns/isValid';
+import parse from 'date-fns/parse';
 import subHours from 'date-fns/subHours';
 
 const updateLastHourData = (obj, job, dateLimit) => {
-  if (compareAsc(new Date(job.time_completed), dateLimit) === -1)
+  if (!job.time_completed) return;
+
+  const timeCompleted = parse(
+    job.time_completed.substring(0, 19),
+    'yyyy-MM-dd HH:mm:ss',
+    new Date(),
+  );
+  if (!isValid(timeCompleted)) {
+    console.error('Invalid "time_completed" date');
+    obj.lastHour.error = true;
     return;
+  }
+
+  if (compareAsc(timeCompleted, dateLimit) === -1) return;
+
   obj.lastHour.totalTurnaroundTime += get(
     job,
     'time_turnaround_sec',
@@ -65,6 +80,7 @@ export default function useServerStatus() {
       totalTurnaroundTime: 0,
       totalRunTime: 0,
       jobsProcessed: 0,
+      error: false,
     },
     twoWeeks: {
       totalTurnaroundTime: 0,

@@ -282,6 +282,7 @@
     "REQUEST_ERROR": "There was an error loading the data. Please try again.",
     "SERVER_LAST_HOUR": "Last Hour",
     "SERVER_ALL_JOBS": "All Jobs",
+    "SERVER_LAST_HOUR_ERROR": "There was an error calculating the data for the last hour.", 
     "SERVER_SUMMARY_TURNAROUND_TIME": "Job Turnaround Time",
     "SERVER_SUMMARY_RUN_TIME": "Job Run Time",
     "SERVER_SUMMARY_JOBS_PROCESSED": "Jobs Processed",

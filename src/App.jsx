@@ -6,6 +6,9 @@ import {
 } from '@material-ui/core/styles';
 import { IntlProvider } from 'react-intl';
 import { useSelector } from 'react-redux';
+import '@formatjs/intl-numberformat/polyfill';
+import enPolyfill from '@formatjs/intl-numberformat/dist/locale-data/en.json';
+import esPolyfill from '@formatjs/intl-numberformat/dist/locale-data/es.json';
 import AppHeader from './components/AppHeader';
 import Footer from './components/Footer';
 import { selectLocale } from './modules/app/selectors';
@@ -25,6 +28,12 @@ import SiteSetup from './pages/administration/SiteSetup';
 import materialTheme from './styles/materialTheme';
 import messagesEn from '../locale/en.json';
 import messagesEs from '../locale/es.json';
+
+// polyfill to enable formatting of a number using the unit prop
+if (typeof Intl.NumberFormat.__addLocaleData === 'function') {
+  Intl.NumberFormat.__addLocaleData(enPolyfill);
+  Intl.NumberFormat.__addLocaleData(esPolyfill);
+}
 
 const messageMap = {
   en: messagesEn,
