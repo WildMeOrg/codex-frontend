@@ -7,9 +7,8 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
 import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
-import DeleteIcon from '@material-ui/icons/Delete';
 import IndividualInput from './IndividualInput';
+import DeleteButton from '../DeleteButton';
 
 export default function RelationshipsInput({
   schema,
@@ -43,12 +42,9 @@ export default function RelationshipsInput({
               <Typography variant="subtitle2">
                 <FormattedMessage id="RELATIONSHIP" />
               </Typography>
-              <IconButton
-                size="small"
+              <DeleteButton
                 onClick={() => onChange(otherRelationships)}
-              >
-                <DeleteIcon style={{ color: '#DC2113' }} />
-              </IconButton>
+              />
             </div>
             <div
               style={{ display: 'flex', alignItems: 'flex-end' }}

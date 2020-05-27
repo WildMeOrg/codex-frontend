@@ -63,6 +63,13 @@ export default [
     defaultValue: null,
   },
   {
+    name: 'regions',
+    labelId: 'REGIONS',
+    descriptionId: 'REGIONS_DESCRIPTION',
+    fieldType: fieldTypes.treeeditor,
+    defaultValue: [],
+  },
+  {
     id: 'sightingFields',
     name: 'sightingFields',
     labelId: 'SIGHTING_FIELDS',

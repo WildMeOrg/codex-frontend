@@ -3,8 +3,6 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { get } from 'lodash-es';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
-import DeleteIcon from '@material-ui/icons/Delete';
 import Uppy from '@uppy/core';
 import Transloadit from '@uppy/transloadit';
 import DashboardModal from '@uppy/react/lib/DashboardModal';
@@ -15,11 +13,13 @@ import {
   transloaditTemplateId,
   transloaditService,
 } from '../../constants/apiKeys';
+import DeleteButton from '../DeleteButton';
 
 export default function FileInput({
   schema,
   value,
   onChange,
+  dark = false,
   minimalLabels = false, // eslint-disable-line no-unused-vars
   ...rest
 }) {
@@ -90,21 +90,20 @@ export default function FileInput({
                 maxWidth: 120,
                 height: 'auto',
                 width: 'auto',
+                padding: 20,
+                backgroundColor: dark ? '#1f2640' : 'unset',
               }}
               src={get(value, 'response.uploadURL', null)}
             />
           )}
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <Typography>{value.name}</Typography>
-            <IconButton
-              size="small"
+            <DeleteButton
               onClick={() => {
                 onChange(null);
                 uppy.reset();
               }}
-            >
-              <DeleteIcon style={{ color: '#DC2113' }} />
-            </IconButton>
+            />
           </div>
         </div>
       )}

@@ -8,12 +8,11 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
 import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
-import DeleteIcon from '@material-ui/icons/Delete';
 import { fieldTypeChoices } from '../../constants/fieldTypes';
 import BooleanInput from './BooleanInput';
 import TextInput from './TextInput';
 import OptionEditor from './OptionEditor';
+import DeleteButton from '../DeleteButton';
 
 export default function FieldSetInput({
   schema,
@@ -51,12 +50,7 @@ export default function FieldSetInput({
               <Typography variant="subtitle2">
                 <FormattedMessage id="CUSTOM_FIELD" />
               </Typography>
-              <IconButton
-                size="small"
-                onClick={() => onChange(otherFields)}
-              >
-                <DeleteIcon style={{ color: '#DC2113' }} />
-              </IconButton>
+              <DeleteButton onClick={() => onChange(otherFields)} />
             </div>
             <div
               style={{ display: 'flex', flexDirection: 'column' }}

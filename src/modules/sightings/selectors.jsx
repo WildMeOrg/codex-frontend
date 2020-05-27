@@ -1,6 +1,6 @@
 import defaultProfile from '../../assets/defaultProfile.jpg';
 import sightingImage from '../../assets/fluke.png';
-
+import { selectRegions } from '../site/selectors';
 import sightingSearchSchema, {
   sightingSearchCategories,
 } from '../../constants/sightingSearchSchema';
@@ -262,6 +262,20 @@ export const selectSightings = state => [
   },
 ];
 
+export const selectRegionSchema = state => {
+  const regionSchema = sightingSchema.find(
+    item => item.name === 'region',
+  );
+  return { ...regionSchema, choices: selectRegions(state) };
+};
+
+export const selectRegionSearchSchema = state => {
+  const regionSchema = sightingSearchSchema.find(
+    item => item.name === 'region',
+  );
+  return { ...regionSchema, choices: selectRegions(state) };
+};
+
 export const selectSearchResults = state => selectSightings(state);
 
 export const selectSightingSearchCategories = state => ({
@@ -270,6 +284,11 @@ export const selectSightingSearchCategories = state => ({
 
 export const selectSightingSearchSchema = state => {
   const categories = selectSightingSearchCategories(state);
+
+  const regionSchema = selectRegionSearchSchema(state);
+  const otherSchemas = sightingSearchSchema.filter(
+    item => item.name !== 'region',
+  );
 
   return [
     {
@@ -297,7 +316,8 @@ export const selectSightingSearchSchema = state => {
       ],
       defaultValue: '',
     },
-    ...sightingSearchSchema,
+    regionSchema,
+    ...otherSchemas,
   ];
 };
 
@@ -307,6 +327,11 @@ export const selectSightingCategories = state => ({
 
 export const selectSightingSchema = state => {
   const categories = selectSightingCategories(state);
+
+  const regionSchema = selectRegionSchema(state);
+  const otherSchemas = sightingSchema.filter(
+    item => item.name !== 'region',
+  );
 
   return [
     {
@@ -335,7 +360,8 @@ export const selectSightingSchema = state => {
       required: true,
       defaultValue: '',
     },
-    ...sightingSchema,
+    regionSchema,
+    ...otherSchemas,
     {
       name: 'additionalMedia',
       labelId: 'ADDITIONAL_MEDIA',

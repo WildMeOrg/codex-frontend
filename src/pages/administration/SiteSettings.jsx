@@ -115,8 +115,8 @@ export default function SiteSettings({ primaryButtonId }) {
               style={{
                 marginTop: 24,
                 marginLeft: 80,
-                width: 300,
-                minWidth: 300,
+                width: 400,
+                minWidth: 400,
               }}
             >
               <LabeledInput
@@ -130,6 +130,11 @@ export default function SiteSettings({ primaryButtonId }) {
                   });
                 }}
                 width={280}
+                dark={
+                  settingSchema.name === 'darkBackgroundLogo'
+                    ? true
+                    : undefined
+                }
               />
             </div>
           </Grid>

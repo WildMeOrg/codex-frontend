@@ -40,19 +40,19 @@ export const selectSiteSettings = state => ({
     name: 'Screen Shot 2020-04-14 at 1.23.28 PM.png',
     type: 'image/png',
     response: {
-      uploadURL: logoForWhiteBackground,
+      uploadURL: logoForBlackBackground,
     },
   },
   darkBackgroundLogo: {
     name: 'Screen Shot 2020-04-14 at 1.23.28 PM.png',
     type: 'image/png',
     response: {
-      uploadURL: logoForBlackBackground,
+      uploadURL: logoForWhiteBackground,
     },
   },
   sightingFields: [],
   individualFields: [],
-  regionChoices: [
+  regions: [
     {
       name: 'Kenya',
       id: 'Kenya',
@@ -168,6 +168,11 @@ export const selectSiteSettings = state => ({
 export const selectSiteName = state => {
   const settings = selectSiteSettings(state);
   return settings.siteName;
+};
+
+export const selectRegions = state => {
+  const settings = selectSiteSettings(state);
+  return settings.regions;
 };
 
 export const selectLogos = state => {

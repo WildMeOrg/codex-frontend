@@ -31,6 +31,16 @@ export default [
     defaultValue: [null, null],
   },
   {
+    name: 'region',
+    labelId: 'REGION',
+    category: sightingSearchCategories.location.name,
+    fieldType: fieldTypes.treeview,
+    required: true,
+    multiselect: true,
+    choices: [],
+    defaultValue: [],
+  },
+  {
     name: 'location',
     labelId: 'LOCATION',
     descriptionId: 'LOCATION_DESCRIPTION',
