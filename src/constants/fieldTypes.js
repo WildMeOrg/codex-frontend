@@ -8,7 +8,8 @@ const fieldTypes = {
   relationships: 'relationships', // { targetIndividualId: string, direction: enum, type: enum, id: int }
   integer: 'integer',
   file: 'file',
-  latlong: 'latlong', // [float, float]
+  latlong: 'latlong', // [float, float] defines [lat, lng]
+  region: 'region', // [float, float, float, float] ????
   date: 'date',
   daterange: 'daterange', // [date, date]
   select: 'select', // string

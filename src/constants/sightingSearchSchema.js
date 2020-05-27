@@ -45,8 +45,8 @@ export default [
     labelId: 'LOCATION',
     descriptionId: 'LOCATION_DESCRIPTION',
     category: sightingSearchCategories.location.name,
-    fieldType: fieldTypes.latlong,
-    defaultValue: null,
+    fieldType: fieldTypes.region,
+    defaultValue: [null, null, null, null],
   },
   {
     name: 'sex',
