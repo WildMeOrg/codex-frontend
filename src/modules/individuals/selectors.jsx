@@ -1,4 +1,5 @@
 import defaultProfile from '../../assets/defaultProfile.jpg';
+import fluke from '../../assets/fluke.png';
 import individualSearchSchema, {
   individualSearchCategories,
 } from '../../constants/individualSearchSchema';
@@ -89,7 +90,7 @@ export const selectSearchResults = state => [
     encounterCount: 7,
     locationsSighted: 3,
     lastSeen: Date.now(),
-    profile: defaultProfile,
+    profile: fluke,
   },
   {
     id: 'WB-104',
@@ -98,7 +99,7 @@ export const selectSearchResults = state => [
     encounterCount: 5,
     locationsSighted: 2,
     lastSeen: Date.now(),
-    profile: defaultProfile,
+    profile: fluke,
   },
   {
     id: 'WB-132',
@@ -107,7 +108,7 @@ export const selectSearchResults = state => [
     encounterCount: 22,
     locationsSighted: 13,
     lastSeen: Date.now(),
-    profile: defaultProfile,
+    profile: fluke,
   },
   {
     id: 'WB-420',
@@ -116,7 +117,7 @@ export const selectSearchResults = state => [
     encounterCount: 47,
     locationsSighted: 3,
     lastSeen: Date.now(),
-    profile: defaultProfile,
+    profile: fluke,
   },
   {
     id: 'WB-88',
@@ -125,7 +126,7 @@ export const selectSearchResults = state => [
     encounterCount: 20,
     locationsSighted: 1,
     lastSeen: Date.now(),
-    profile: defaultProfile,
+    profile: fluke,
   },
   {
     id: 'WB-61',
@@ -134,7 +135,7 @@ export const selectSearchResults = state => [
     encounterCount: 42,
     locationsSighted: 4,
     lastSeen: Date.now(),
-    profile: defaultProfile,
+    profile: fluke,
   },
   {
     id: 'WB-42',
@@ -143,7 +144,7 @@ export const selectSearchResults = state => [
     encounterCount: 88,
     locationsSighted: 1,
     lastSeen: Date.now(),
-    profile: defaultProfile,
+    profile: fluke,
   },
 ];
 

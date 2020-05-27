@@ -16,6 +16,7 @@ import useDocumentTitle from '../../hooks/useDocumentTitle';
 export default function Individual() {
   const { id } = useParams();
 
+  /* not using API results because API is not ready */
   const [results, error] = useIndividuals([id]);
 
   // fetch data for Id...

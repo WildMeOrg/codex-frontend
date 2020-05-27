@@ -38,6 +38,9 @@ export default function SearchIndividuals() {
     }, {}),
   );
 
+  /* not fetching from API because API is not ready */
+  const searchResults = useSelector(selectSearchResults);
+
   return (
     <div style={{ display: 'flex' }}>
       <Hidden smUp>
@@ -89,7 +92,7 @@ export default function SearchIndividuals() {
           </Button>
         </Hidden>
         <ResultsTable
-          individuals={useSelector(selectSearchResults)}
+          individuals={searchResults}
         />
       </div>
     </div>
