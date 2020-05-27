@@ -7,6 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import MainColumn from '../../components/MainColumn';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import SiteSettings from './SiteSettings';
+import ServerStatus from './ServerStatus';
 
 export default function Administration() {
   /* eslint-disable */
@@ -46,7 +47,7 @@ export default function Administration() {
       {activeTab === '#settings' && (
         <SiteSettings primaryButtonId="SAVE_CHANGES" />
       )}
-      {activeTab === '#jobs' && <div>Jobs</div>}
+      {activeTab === '#jobs' && <ServerStatus />}
       {activeTab === '#actions' && <div>Actions</div>}
       {activeTab === '#logs' && <div>Logs</div>}
     </MainColumn>

@@ -1,21 +1,19 @@
 import React from 'react';
 import { css } from '@emotion/core';
-import {
-  useIntl,
-  FormattedMessage,
-  FormattedNumber,
-} from 'react-intl';
+import { FormattedMessage, FormattedNumber } from 'react-intl';
 import { get, round } from 'lodash-es';
-import parse from 'date-fns/parse';
 import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
 import Skeleton from '@material-ui/lab/Skeleton';
-import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import { useTheme, withStyles } from '@material-ui/core/styles';
+import { useTheme } from '@material-ui/core/styles';
 import useServerStatus from '../../modules/administration/useServerStatus';
-import MainColumn from '../../components/MainColumn';
+import SummaryCard from './components/SummaryCard';
+import LegendItem from './components/LegendItem';
+import WaffleSquare from './components/WaffleSquare';
+import { getElapsedTimeInWords } from '../../utils/formatters';
+
+const skeletonHeight = `${16 / 0.6}px`;
 
 const visuallyHiddenCSS = css`
   position: absolute;
@@ -29,249 +27,6 @@ const visuallyHiddenCSS = css`
 `;
 
 const ROUND_PRECISION = 1;
-
-const elapsedTimeInWords = (() => {
-  const SECONDS_PER_MINUTE = 60;
-  const SECONDS_PER_HOUR = 60 * 60;
-  const SECONDS_PER_DAY = 3600 * 24;
-  const cache = {};
-
-  return seconds => {
-    if (seconds in cache) {
-      return cache[seconds];
-    }
-
-    let result;
-    if (seconds < SECONDS_PER_MINUTE) {
-      result = { value: seconds, unit: 'second' };
-    } else if (
-      seconds >= SECONDS_PER_MINUTE &&
-      seconds < SECONDS_PER_HOUR
-    ) {
-      result = {
-        value: round(seconds / SECONDS_PER_MINUTE, ROUND_PRECISION),
-        unit: 'minute',
-      };
-    } else if (
-      seconds >= SECONDS_PER_HOUR &&
-      seconds < SECONDS_PER_DAY
-    ) {
-      result = {
-        value: round(seconds / SECONDS_PER_HOUR, ROUND_PRECISION),
-        unit: 'hour',
-      };
-    } else {
-      result = {
-        value: round(seconds / SECONDS_PER_DAY, ROUND_PRECISION),
-        unit: 'day',
-      };
-    }
-
-    cache[seconds] = result;
-    return result;
-  };
-})();
-
-function SummaryCard({ title, content, loading = false, ...rest }) {
-  const isXs = useMediaQuery(theme => theme.breakpoints.only('xs'));
-
-  return (
-    <Grid item {...rest}>
-      <Paper
-        square
-        variant="outlined"
-        style={{
-          padding: '12px',
-          height: '100%',
-          boxSizing: 'border-box',
-        }}
-      >
-        <Typography
-          variant="body1"
-          component="dt"
-          gutterBottom
-          style={{
-            fontWeight: 'bold',
-            fontSize: '0.9em',
-            display: isXs ? 'inline-block' : 'block',
-            marginRight: isXs ? '1em' : 0,
-          }}
-        >
-          {title}
-        </Typography>
-        {loading ? (
-          <Skeleton variant="text" width="45%" />
-        ) : (
-          <Typography
-            variant="body2"
-            component="dd"
-            style={{
-              fontSize: '1.1em',
-              marginInlineStart: 0,
-              display: isXs ? 'inline-block' : 'block',
-            }}
-          >
-            {content}
-          </Typography>
-        )}
-      </Paper>
-    </Grid>
-  );
-}
-
-function LegendItem({ color, label }) {
-  return (
-    <div>
-      <dt
-        aria-label={`color: ${color}`}
-        style={{
-          backgroundColor: color,
-          display: 'inline-block',
-          width: '12px',
-          height: '12px',
-          marginRight: '6px',
-        }}
-      />
-      <Typography
-        variant="body1"
-        component="dd"
-        display="inline"
-        style={{ fontSize: '0.9em' }}
-      >
-        {label}
-      </Typography>
-    </div>
-  );
-}
-
-const LightTooltip = withStyles(theme => ({
-  tooltip: {
-    backgroundColor: theme.palette.common.white,
-    color: 'rgba(0, 0, 0, 0.87)',
-    boxShadow: theme.shadows[1],
-    fontSize: 11,
-  },
-  arrow: {
-    color: theme.palette.common.white,
-  },
-}))(Tooltip);
-
-const WaffleSquare = ({
-  job,
-  size = '10px',
-  gap = '3px',
-  categoryData,
-}) => {
-  const theme = useTheme();
-  const intl = useIntl();
-
-  const waffleSquareCSS = css`
-    dt {
-      display: inline-block;
-    }
-
-    div:first-of-type dt,
-    div:first-of-type dd {
-      border-bottom: 1px solid ${theme.palette.text.primary};
-      margin-bottom: 0.5em;
-    }
-
-    dd {
-      display inline-block;
-      margin-inline-start: 0;
-      padding-left: 4px;
-    }
-  `;
-
-  const { status, jobcounter, time_received } = job;
-  const formattedJobData = {};
-
-  const jobCounterLabel = intl.formatMessage({
-    id: 'SERVER_TOOLTIP_JOBCOUNTER_LABEL',
-  });
-  const jobCounterValue = intl.formatNumber(jobcounter, {
-    useGrouping: false,
-  });
-  formattedJobData[jobCounterLabel] = jobCounterValue;
-
-  const statusLabel = intl.formatMessage({
-    id: 'SERVER_TOOLTIP_STATUS_LABEL',
-  });
-  const statusValue = intl.formatMessage({
-    id: `SERVER_STATUS_${status.toUpperCase()}`,
-  });
-  formattedJobData[statusLabel] = statusValue;
-
-  const dateReceivedLabel = intl.formatMessage({
-    id: 'SERVER_TOOLTIP_DATE_RECEIVED_LABEL',
-  });
-
-  const timeReceived = parse(
-    time_received.substring(0, 19),
-    'yyyy-MM-dd HH:mm:ss',
-    new Date(),
-  );
-  const dateReceivedValue = intl.formatDate(timeReceived, {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  });
-  formattedJobData[dateReceivedLabel] = dateReceivedValue;
-
-  const ariaLabel = intl.formatMessage(
-    { id: 'SERVER_TOOLTIP_ARIA_LABEL' },
-    {
-      jobCounterLabel,
-      jobCounterValue,
-      statusLabel,
-      statusValue,
-      dateReceivedLabel,
-      dateReceivedValue,
-    },
-  );
-
-  return (
-    <LightTooltip
-      arrow
-      placement="top"
-      aria-label={ariaLabel}
-      title={
-        <dl css={waffleSquareCSS}>
-          {Object.entries(formattedJobData).map(([key, value]) => (
-            <div key={key}>
-              <Typography
-                variant="body1"
-                component="dt"
-                gutterBottom
-                style={{ fontSize: 'inherit' }}
-              >
-                {key}
-              </Typography>
-              <Typography
-                variant="body1"
-                component="dd"
-                gutterBottom
-                style={{ fontSize: 'inherit' }}
-              >
-                {value}
-              </Typography>
-            </div>
-          ))}
-        </dl>
-      }
-    >
-      <li
-        style={{
-          width: size,
-          height: size,
-          margin: `${gap} ${gap} 0 ${gap}`,
-          display: 'inline-block',
-          backgroundColor: categoryData.color || 'black',
-        }}
-      />
-    </LightTooltip>
-  );
-};
 
 const categoryData = {
   inDetectionQueue: {
@@ -303,36 +58,29 @@ export default function ServerStatus() {
   const [results, error, isFetched] = useServerStatus();
   const { lastHour, twoWeeks, byStatus } = results;
 
+  const jobsProcessedInLastHour = get(lastHour, 'jobsProcessed', 0);
+  const jobsProcessedInTwoWeeks = get(twoWeeks, 'jobsProcessed', 0);
+
   const lastHourAverageTurnaroundTime = round(
-    get(lastHour, 'totalTurnaroundTime') /
-      (get(lastHour, 'jobsProcessed') || 1),
+    get(lastHour, 'totalTurnaroundTime') / jobsProcessedInLastHour,
     ROUND_PRECISION,
   );
   const lastHourAverageRunTime = round(
-    get(lastHour, 'totalRunTime') /
-      (get(lastHour, 'jobsProcessed') || 1),
+    get(lastHour, 'totalRunTime') / jobsProcessedInLastHour,
     ROUND_PRECISION,
   );
   const twoWeeksAverageTurnaroundTime = round(
-    get(twoWeeks, 'totalTurnaroundTime') /
-      (get(twoWeeks, 'jobsProcessed') || 1),
+    get(twoWeeks, 'totalTurnaroundTime') / jobsProcessedInTwoWeeks,
     ROUND_PRECISION,
   );
   const twoWeeksAverageRunTime = round(
-    get(twoWeeks, 'totalRunTime') /
-      (get(twoWeeks, 'jobsProcessed') || 1),
+    get(twoWeeks, 'totalRunTime') / jobsProcessedInTwoWeeks,
     ROUND_PRECISION,
   );
 
   return (
-    <MainColumn
-      style={{ padding: '0 16px', boxSizing: 'border-box' }}
-    >
-      <Typography
-        variant="h3"
-        component="h3"
-        style={{ margin: '16px 0', paddingTop: '16px' }}
-      >
+    <div style={{ padding: 16, boxSizing: 'border-box' }}>
+      <Typography variant="h4" component="h4">
         <FormattedMessage id="SERVER_STATUS_PAGE_TITLE" />
       </Typography>
       {error ? (
@@ -343,7 +91,7 @@ export default function ServerStatus() {
         <>
           <Typography
             variant="h6"
-            component="h4"
+            component="h6"
             style={{
               margin: '16px 0',
               textDecoration: 'underline',
@@ -356,7 +104,7 @@ export default function ServerStatus() {
             container
             component="dl"
             spacing={isXs ? 1 : 2}
-            style={{ marginBottom: '32px' }}
+            style={{ marginBottom: 32 }}
           >
             {lastHour.error ? (
               <Typography color="error">
@@ -374,12 +122,12 @@ export default function ServerStatus() {
                   content={
                     <FormattedNumber
                       value={
-                        elapsedTimeInWords(
+                        getElapsedTimeInWords(
                           lastHourAverageTurnaroundTime,
                         ).value
                       }
                       unit={
-                        elapsedTimeInWords(
+                        getElapsedTimeInWords(
                           lastHourAverageTurnaroundTime,
                         ).unit
                       }
@@ -398,11 +146,11 @@ export default function ServerStatus() {
                   content={
                     <FormattedNumber
                       value={
-                        elapsedTimeInWords(lastHourAverageRunTime)
+                        getElapsedTimeInWords(lastHourAverageRunTime)
                           .value
                       }
                       unit={
-                        elapsedTimeInWords(lastHourAverageRunTime)
+                        getElapsedTimeInWords(lastHourAverageRunTime)
                           .unit
                       }
                       unitDisplay="long"
@@ -439,7 +187,7 @@ export default function ServerStatus() {
             container
             component="dl"
             spacing={isXs ? 1 : 2}
-            style={{ marginBottom: '32px' }}
+            style={{ marginBottom: 32 }}
           >
             <SummaryCard
               xs={12}
@@ -451,12 +199,14 @@ export default function ServerStatus() {
               content={
                 <FormattedNumber
                   value={
-                    elapsedTimeInWords(twoWeeksAverageTurnaroundTime)
-                      .value
+                    getElapsedTimeInWords(
+                      twoWeeksAverageTurnaroundTime,
+                    ).value
                   }
                   unit={
-                    elapsedTimeInWords(twoWeeksAverageTurnaroundTime)
-                      .unit
+                    getElapsedTimeInWords(
+                      twoWeeksAverageTurnaroundTime,
+                    ).unit
                   }
                   unitDisplay="long"
                   style="unit" // eslint-disable-line react/style-prop-object
@@ -473,10 +223,11 @@ export default function ServerStatus() {
               content={
                 <FormattedNumber
                   value={
-                    elapsedTimeInWords(twoWeeksAverageRunTime).value
+                    getElapsedTimeInWords(twoWeeksAverageRunTime)
+                      .value
                   }
                   unit={
-                    elapsedTimeInWords(twoWeeksAverageRunTime).unit
+                    getElapsedTimeInWords(twoWeeksAverageRunTime).unit
                   }
                   unitDisplay="long"
                   style="unit" // eslint-disable-line react/style-prop-object
@@ -516,7 +267,7 @@ export default function ServerStatus() {
             </dl>
           </header>
           {isFetched ? (
-            <div style={{ padding: '0', margin: '-3px' }}>
+            <div style={{ padding: 0, margin: -3 }}>
               {Object.entries(byStatus)
                 .filter(entry => entry[1].length > 0)
                 .map(([category, jobs]) => (
@@ -531,7 +282,7 @@ export default function ServerStatus() {
                         <WaffleSquare
                           key={job.job_id}
                           job={job}
-                          size="16px"
+                          size={16}
                           gap="3px"
                           categoryData={categoryData[category]}
                         />
@@ -542,15 +293,15 @@ export default function ServerStatus() {
             </div>
           ) : (
             <>
-              <Skeleton height={`${16 / 0.6}px`} />
-              <Skeleton height={`${16 / 0.6}px`} />
-              <Skeleton height={`${16 / 0.6}px`} />
-              <Skeleton height={`${16 / 0.6}px`} />
-              <Skeleton height={`${16 / 0.6}px`} width="60%" />
+              <Skeleton height={skeletonHeight} />
+              <Skeleton height={skeletonHeight} />
+              <Skeleton height={skeletonHeight} />
+              <Skeleton height={skeletonHeight} />
+              <Skeleton height={skeletonHeight} width="60%" />
             </>
           )}
         </>
       )}
-    </MainColumn>
+    </div>
   );
 }
