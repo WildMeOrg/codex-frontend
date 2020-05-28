@@ -91,9 +91,7 @@ export default function SearchIndividuals() {
             <FormattedMessage id="SHOW_FILTERS" />
           </Button>
         </Hidden>
-        <ResultsTable
-          individuals={searchResults}
-        />
+        <ResultsTable individuals={searchResults} />
       </div>
     </div>
   );

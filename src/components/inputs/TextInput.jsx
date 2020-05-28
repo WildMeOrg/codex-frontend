@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { get } from 'lodash-es';
 import { useIntl } from 'react-intl';
 import FormControl from '@material-ui/core/FormControl';
@@ -16,7 +16,7 @@ function Core({ children, required, width, style = {} }) {
   );
 }
 
-export default function TextInput(props) {
+function TextInput(props) {
   const {
     schema,
     required,
@@ -46,6 +46,7 @@ export default function TextInput(props) {
       <TextField
         id={schema.name}
         multiline={schema.fieldType === 'longstring'}
+        rowsMax={schema.fieldType === 'longstring' ? 5 : undefined}
         label={getLabel(schema)}
         type={
           ['float', 'integer'].includes(schema.fieldType)
@@ -64,3 +65,5 @@ export default function TextInput(props) {
     </Core>
   );
 }
+
+export default memo(TextInput);

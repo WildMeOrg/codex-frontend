@@ -129,7 +129,6 @@ export default function SiteSettings({ primaryButtonId }) {
                     [settingSchema.name]: value,
                   });
                 }}
-                width={280}
                 dark={
                   settingSchema.name === 'darkBackgroundLogo'
                     ? true

@@ -169,6 +169,7 @@ export default function TreeViewEditor(props) {
               onChange([...value, getNewLeaf()]);
             }}
             style={{ marginLeft: 20 }}
+            variant="outlined"
             size="small"
           >
             <FormattedMessage id="NEW_REGION" />
