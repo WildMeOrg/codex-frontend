@@ -25,6 +25,7 @@ import SearchIndividuals from './pages/individual/SearchIndividuals';
 import SearchSightings from './pages/sighting/SearchSightings';
 import Administration from './pages/administration/Administration';
 import SiteSetup from './pages/administration/SiteSetup';
+import Login from './pages/auth/Login';
 import materialTheme from './styles/materialTheme';
 import messagesEn from '../locale/en.json';
 import messagesEs from '../locale/es.json';
@@ -98,6 +99,9 @@ export default function App() {
                 </Route>
                 <Route path="/administration">
                   <Administration />
+                </Route>
+                <Route path="/login">
+                  <Login />
                 </Route>
                 <Route path="/" exact>
                   <div />
