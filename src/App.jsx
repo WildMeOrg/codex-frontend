@@ -26,6 +26,7 @@ import SearchSightings from './pages/sighting/SearchSightings';
 import Administration from './pages/administration/Administration';
 import SiteSetup from './pages/administration/SiteSetup';
 import Login from './pages/auth/Login';
+import Forgot from './pages/auth/Forgot';
 import materialTheme from './styles/materialTheme';
 import messagesEn from '../locale/en.json';
 import messagesEs from '../locale/es.json';
@@ -99,6 +100,9 @@ export default function App() {
                 </Route>
                 <Route path="/administration">
                   <Administration />
+                </Route>
+                <Route path="/forgot">
+                  <Forgot />
                 </Route>
                 <Route path="/login">
                   <Login />
