@@ -5,26 +5,22 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import TextInput from '../../components/inputs/TextInput';
-import InlineButton from '../../components/InlineButton';
 import Shell from './Shell';
 
-export default function Forgot() {
+export default function RequestInvitation() {
   const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
+  const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const [requestSent, setRequestSent] = useState(false);
   const [error, setError] = useState('');
 
-  const titleId = 'PASSWORD_RESET';
-  const instructionsId = 'FORGOT_PASSWORD_INSTRUCTIONS';
+  const titleId = 'REQUEST_INVITE';
+  const instructionsId = 'REQUEST_INVITATION_INSTRUCTIONS';
 
   if (requestSent) {
     return (
-      <Shell titleId={titleId} instructionsId={instructionsId}>
-        <Typography
-          style={{ padding: '8px 16px 0 16px', maxWidth: 400 }}
-        >
-          <FormattedMessage id="PASSWORD_RESET_SENT" />
-        </Typography>
+      <Shell titleId={titleId} instructionsId="REQUEST_SENT">
         <Button
           onClick={() => {
             setRequestSent(false);
@@ -33,7 +29,7 @@ export default function Forgot() {
           color="secondary"
           variant="contained"
         >
-          <FormattedMessage id="TRY_AGAIN" />
+          <FormattedMessage id="RETURN_HOME" />
         </Button>
       </Shell>
     );
@@ -55,6 +51,25 @@ export default function Forgot() {
             variant="outlined"
           />
         </Grid>
+        <Grid item>
+          <TextInput
+            schema={{ labelId: 'YOUR_NAME' }}
+            value={name}
+            onChange={newName => setName(newName)}
+            variant="outlined"
+          />
+        </Grid>
+        <Grid item>
+          <TextInput
+            schema={{
+              labelId: 'MESSAGE_FOR_ADMINISTRATORS',
+              fieldType: 'longstring',
+            }}
+            value={message}
+            onChange={newMessage => setMessage(newMessage)}
+            variant="outlined"
+          />
+        </Grid>
         <Grid item style={{ position: 'relative' }}>
           <Button
             onClick={() => {
@@ -69,7 +84,7 @@ export default function Forgot() {
             variant="contained"
             disabled={loading}
           >
-            <FormattedMessage id="RESET_PASSWORD" />
+            <FormattedMessage id="SEND_REQUEST" />
           </Button>
           {loading && (
             <CircularProgress
@@ -93,13 +108,6 @@ export default function Forgot() {
             {error}
           </Typography>
         )}
-        <Grid item>
-          <Typography>
-            <InlineButton>Log in</InlineButton>
-            <span style={{ margin: '0 12px' }}> | </span>
-            <InlineButton>Request an invitation</InlineButton>
-          </Typography>
-        </Grid>
       </Grid>
     </Shell>
   );

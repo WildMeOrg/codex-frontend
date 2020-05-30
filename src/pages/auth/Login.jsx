@@ -4,30 +4,21 @@ import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import MainColumn from '../../components/MainColumn';
 import TextInput from '../../components/inputs/TextInput';
 import InlineButton from '../../components/InlineButton';
+import Shell from './Shell';
 
 export default function Login({ callback }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
   return (
-    <MainColumn>
-      <Typography
-        variant="h3"
-        component="h3"
-        style={{ padding: '16px 0 8px 16px' }}
-      >
-        <FormattedMessage id="WELCOME_BACK" />
-      </Typography>
-      <Typography
-        variant="subtitle2"
-        style={{ padding: '0 0 8px 16px' }}
-      >
-        <FormattedMessage id="LOG_IN_INSTRUCTIONS" />
-      </Typography>
+    <Shell
+      titleId="WELCOME_BACK"
+      instructionsId="LOG_IN_INSTRUCTIONS"
+    >
       <Grid
         container
         spacing={2}
@@ -70,7 +61,7 @@ export default function Login({ callback }) {
             variant="contained"
             disabled={loading}
           >
-            Log in
+            <FormattedMessage id="LOG_IN" />
           </Button>
           {loading && (
             <CircularProgress
@@ -96,12 +87,16 @@ export default function Login({ callback }) {
         )}
         <Grid item>
           <Typography>
-            <InlineButton>Forgot?</InlineButton>
+            <InlineButton>
+              <FormattedMessage id="FORGOT_QUESTION" />
+            </InlineButton>
             <span style={{ margin: '0 12px' }}> | </span>
-            <InlineButton>Request an invitation</InlineButton>
+            <InlineButton>
+              <FormattedMessage id="REQUEST_INVITE" />
+            </InlineButton>
           </Typography>
         </Grid>
       </Grid>
-    </MainColumn>
+    </Shell>
   );
 }

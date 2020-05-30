@@ -5,42 +5,22 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import TextInput from '../../components/inputs/TextInput';
-import InlineButton from '../../components/InlineButton';
 import Shell from './Shell';
 
-export default function Forgot() {
-  const [email, setEmail] = useState('');
+export default function Login({ callback }) {
+  const [name, setName] = useState('');
+  const [password, setPassword] = useState('');
+  const [passwordConfirmation, setPasswordConfirmation] = useState('');
   const [loading, setLoading] = useState(false);
-  const [requestSent, setRequestSent] = useState(false);
-  const [error, setError] = useState('');
 
-  const titleId = 'PASSWORD_RESET';
-  const instructionsId = 'FORGOT_PASSWORD_INSTRUCTIONS';
-
-  if (requestSent) {
-    return (
-      <Shell titleId={titleId} instructionsId={instructionsId}>
-        <Typography
-          style={{ padding: '8px 16px 0 16px', maxWidth: 400 }}
-        >
-          <FormattedMessage id="PASSWORD_RESET_SENT" />
-        </Typography>
-        <Button
-          onClick={() => {
-            setRequestSent(false);
-          }}
-          style={{ width: 280, margin: '24px 16px 16px 16px' }}
-          color="secondary"
-          variant="contained"
-        >
-          <FormattedMessage id="TRY_AGAIN" />
-        </Button>
-      </Shell>
-    );
-  }
+  let errorId = null;
+  if (password !== passwordConfirmation) errorId = 'PASSWORDS_DO_NOT_MATCH';
 
   return (
-    <Shell titleId={titleId} instructionsId={instructionsId}>
+    <Shell
+      titleId="CREATE_ACCOUNT"
+      instructionsId="CREATE_ACCOUNT_INSTRUCTIONS"
+    >
       <Grid
         container
         spacing={2}
@@ -49,27 +29,49 @@ export default function Forgot() {
       >
         <Grid item>
           <TextInput
-            schema={{ labelId: 'EMAIL_ADDRESS' }}
-            value={email}
-            onChange={newEmail => setEmail(newEmail)}
+            schema={{ labelId: 'YOUR_NAME' }}
+            value={name}
+            onChange={newName => setName(newName)}
             variant="outlined"
+          />
+        </Grid>
+        <Grid item>
+          <TextInput
+            schema={{ labelId: 'PASSWORD' }}
+            value={password}
+            onChange={newPassword => setPassword(newPassword)}
+            variant="outlined"
+            type="password"
+          />
+        </Grid>
+        <Grid item>
+          <TextInput
+            schema={{ labelId: 'CONFIRM_PASSWORD' }}
+            value={passwordConfirmation}
+            onChange={newPassword => setPasswordConfirmation(newPassword)}
+            variant="outlined"
+            type="password"
           />
         </Grid>
         <Grid item style={{ position: 'relative' }}>
           <Button
+            disabled={loading || password !== passwordConfirmation}
             onClick={() => {
               setLoading(true);
               setTimeout(() => {
                 setLoading(false);
-                setRequestSent(true);
+                if (callback) {
+                  callback();
+                } else {
+                  console.log('looks good!'); // redirect home
+                }
               }, 1000);
             }}
             style={{ width: '100%' }}
             color="secondary"
             variant="contained"
-            disabled={loading}
           >
-            <FormattedMessage id="RESET_PASSWORD" />
+            <FormattedMessage id="CREATE_ACCOUNT" />
           </Button>
           {loading && (
             <CircularProgress
@@ -84,22 +86,15 @@ export default function Forgot() {
             />
           )}
         </Grid>
-        {error && (
+        {errorId && (
           <Typography
             variant="caption"
             color="error"
             style={{ paddingLeft: 8 }}
           >
-            {error}
+            <FormattedMessage id={errorId} />
           </Typography>
         )}
-        <Grid item>
-          <Typography>
-            <InlineButton>Log in</InlineButton>
-            <span style={{ margin: '0 12px' }}> | </span>
-            <InlineButton>Request an invitation</InlineButton>
-          </Typography>
-        </Grid>
       </Grid>
     </Shell>
   );
