@@ -1,20 +1,31 @@
 import React, { useState } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { useIntl, FormattedMessage } from 'react-intl';
+import { useHistory } from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import useDocumentTitle from '../../hooks/useDocumentTitle';
 import TextInput from '../../components/inputs/TextInput';
 import Shell from './Shell';
 
-export default function Login({ callback }) {
+export default function Create({ callback }) {
+  const history = useHistory();
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
-  const [passwordConfirmation, setPasswordConfirmation] = useState('');
+  const [passwordConfirmation, setPasswordConfirmation] = useState(
+    '',
+  );
   const [loading, setLoading] = useState(false);
 
+  const intl = useIntl();
+  useDocumentTitle(intl.formatMessage({ id: 'CREATE_ACCOUNT' }));
+
+  const disableCreate = password === '' || loading || password !== passwordConfirmation;
+
   let errorId = null;
-  if (password !== passwordConfirmation) errorId = 'PASSWORDS_DO_NOT_MATCH';
+  if (password !== passwordConfirmation)
+    errorId = 'PASSWORDS_DO_NOT_MATCH';
 
   return (
     <Shell
@@ -48,14 +59,16 @@ export default function Login({ callback }) {
           <TextInput
             schema={{ labelId: 'CONFIRM_PASSWORD' }}
             value={passwordConfirmation}
-            onChange={newPassword => setPasswordConfirmation(newPassword)}
+            onChange={newPassword =>
+              setPasswordConfirmation(newPassword)
+            }
             variant="outlined"
             type="password"
           />
         </Grid>
         <Grid item style={{ position: 'relative' }}>
           <Button
-            disabled={loading || password !== passwordConfirmation}
+            disabled={disableCreate}
             onClick={() => {
               setLoading(true);
               setTimeout(() => {
@@ -63,7 +76,7 @@ export default function Login({ callback }) {
                 if (callback) {
                   callback();
                 } else {
-                  console.log('looks good!'); // redirect home
+                  history.push('/welcome');
                 }
               }, 1000);
             }}

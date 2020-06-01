@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { useIntl, FormattedMessage } from 'react-intl';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import useDocumentTitle from '../../hooks/useDocumentTitle';
 import TextInput from '../../components/inputs/TextInput';
+import ButtonLink from '../../components/ButtonLink';
 import Shell from './Shell';
 
 export default function RequestInvitation() {
@@ -15,22 +17,23 @@ export default function RequestInvitation() {
   const [requestSent, setRequestSent] = useState(false);
   const [error, setError] = useState('');
 
+  const intl = useIntl();
+  useDocumentTitle(intl.formatMessage({ id: 'REQUEST_INVITE' }));
+
   const titleId = 'REQUEST_INVITE';
   const instructionsId = 'REQUEST_INVITATION_INSTRUCTIONS';
 
   if (requestSent) {
     return (
       <Shell titleId={titleId} instructionsId="REQUEST_SENT">
-        <Button
-          onClick={() => {
-            setRequestSent(false);
-          }}
+        <ButtonLink
+          href="/"
           style={{ width: 280, margin: '24px 16px 16px 16px' }}
           color="secondary"
           variant="contained"
         >
           <FormattedMessage id="RETURN_HOME" />
-        </Button>
+        </ButtonLink>
       </Shell>
     );
   }

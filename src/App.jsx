@@ -27,6 +27,7 @@ import Administration from './pages/administration/Administration';
 import SiteSetup from './pages/administration/SiteSetup';
 import CreateAccount from './pages/auth/Create';
 import Login from './pages/auth/Login';
+import Welcome from './pages/auth/Welcome';
 import Forgot from './pages/auth/Forgot';
 import Logout from './pages/auth/Logout';
 import RequestInvitation from './pages/auth/RequestInvitation';
@@ -118,6 +119,9 @@ export default function App() {
                 </Route>
                 <Route path="/create">
                   <CreateAccount />
+                </Route>
+                <Route path="/welcome">
+                  <Welcome />
                 </Route>
                 <Route path="/" exact>
                   <div />

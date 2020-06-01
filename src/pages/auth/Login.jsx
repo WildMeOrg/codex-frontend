@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { useIntl, FormattedMessage } from 'react-intl';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import useDocumentTitle from '../../hooks/useDocumentTitle';
 import TextInput from '../../components/inputs/TextInput';
 import InlineButton from '../../components/InlineButton';
+import Link from '../../components/Link';
 import Shell from './Shell';
 
 export default function Login({ callback }) {
@@ -13,6 +15,9 @@ export default function Login({ callback }) {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  const intl = useIntl();
+  useDocumentTitle(intl.formatMessage({ id: 'LOG_IN' }));
 
   return (
     <Shell
@@ -88,11 +93,15 @@ export default function Login({ callback }) {
         <Grid item>
           <Typography>
             <InlineButton>
-              <FormattedMessage id="FORGOT_QUESTION" />
+              <Link href="/forgot">
+                <FormattedMessage id="FORGOT_QUESTION" />
+              </Link>
             </InlineButton>
             <span style={{ margin: '0 12px' }}> | </span>
             <InlineButton>
-              <FormattedMessage id="REQUEST_INVITE" />
+              <Link href="/request">
+                <FormattedMessage id="REQUEST_INVITE" />
+              </Link>
             </InlineButton>
           </Typography>
         </Grid>
