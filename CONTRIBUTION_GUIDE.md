@@ -14,11 +14,11 @@ We rely heavily on Material UI. When a component exists in Material UI, use it i
 
 ## Global state 
 
-This project uses Redux but only minimally. Not all responses from the server need to be held in the store, only things that are referenced constantly. 
+This project uses Redux but only minimally. Not all responses from the server need to be held in the store, only things that are used all over the place.
 
 ## Translations 
 
-All displayed text must support translation - for this we use `react-intl`. Translation keys are verbatum English abbreviations of the displayed text in all caps. English translations are stored in `en.json`. 
+All displayed text must support translation - for this we use `react-intl`. Translation keys are verbatum English abbreviations of the displayed text in all caps. You can see some examples in `/locale/en.json`. 
 
 If you want to help translate the project, that is very much appreciated and needed, but please don't do it by manually editing files in `/locale`. Your changes will wind up getting overwritten by Transloadit.
 
