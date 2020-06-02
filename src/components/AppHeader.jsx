@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import clsx from 'clsx';
 import { FormattedMessage } from 'react-intl';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Drawer from '@material-ui/core/Drawer';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -15,9 +16,7 @@ import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import Avatar from '@material-ui/core/Avatar';
-import Badge from '@material-ui/core/Badge';
 import MenuIcon from '@material-ui/icons/Menu';
-import NotificationsIcon from '@material-ui/icons/Notifications';
 import AddToPhotosIcon from '@material-ui/icons/AddToPhotos';
 import AdminSettingsIcon from '@material-ui/icons/Lock';
 import PersonIcon from '@material-ui/icons/Person';
@@ -25,9 +24,12 @@ import GroupIcon from '@material-ui/icons/Group';
 import SubjectIcon from '@material-ui/icons/Subject';
 import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 import SightingIcon from '@material-ui/icons/PhotoCamera';
-
 import SettingsIcon from '@material-ui/icons/Settings';
+
 import { selectLogos } from '../modules/site/selectors';
+import { selectIsAuthenticated } from '../modules/app/selectors';
+import { setLoginRedirect } from '../modules/app/actions';
+import ButtonLink from './ButtonLink';
 import Link from './Link';
 import IndividualIcon from './icons/IndividualIcon';
 
@@ -63,7 +65,11 @@ const useStyles = makeStyles(theme => ({
 
 export default function AppHeader() {
   const classes = useStyles();
+  const theme = useTheme();
+  const location = useLocation();
+  const dispatch = useDispatch();
 
+  const isAuthenticated = useSelector(selectIsAuthenticated);
   const logos = useSelector(selectLogos);
   const [drawerOpen, setDrawerOpen] = useState(false);
 
@@ -264,14 +270,19 @@ export default function AppHeader() {
             />
           </Link>
         </Typography>
-        <IconButton color="inherit">
-          <Badge badgeContent={3} color="secondary">
-            <NotificationsIcon />
-          </Badge>
-        </IconButton>
-        <Avatar className={classes.avatar} variant="square">
-          1
-        </Avatar>
+        {isAuthenticated ? (
+          <Avatar className={classes.avatar} variant="square">
+            1
+          </Avatar>
+        ) : (
+          <ButtonLink
+            style={{ color: theme.palette.common.white }}
+            href="/login"
+            onClick={() => { dispatch(setLoginRedirect(location.pathname)); }}
+          >
+            <FormattedMessage id="LOG_IN" />
+          </ButtonLink>
+        )}
       </Toolbar>
     </AppBar>
   );

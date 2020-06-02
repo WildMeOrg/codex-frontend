@@ -21,7 +21,8 @@ export default function Create({ callback }) {
   const intl = useIntl();
   useDocumentTitle(intl.formatMessage({ id: 'CREATE_ACCOUNT' }));
 
-  const disableCreate = password === '' || loading || password !== passwordConfirmation;
+  const disableCreate =
+    password === '' || loading || password !== passwordConfirmation;
 
   let errorId = null;
   if (password !== passwordConfirmation)

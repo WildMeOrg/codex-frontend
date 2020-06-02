@@ -20,7 +20,10 @@ export default function Welcome() {
         component="h3"
         style={{ padding: '16px 0 8px 16px' }}
       >
-        <FormattedMessage id="WELCOME_TO_SITENAME" values={{ siteName }} />
+        <FormattedMessage
+          id="WELCOME_TO_SITENAME"
+          values={{ siteName }}
+        />
       </Typography>
       <Typography
         variant="body1"
@@ -46,7 +49,11 @@ export default function Welcome() {
         </Grid>
         <Grid item style={{ position: 'relative' }}>
           <ButtonLink
-            style={{ width: '100%', backgroundColor: 'rgb(79, 84, 255)', color: 'white' }}
+            style={{
+              width: '100%',
+              backgroundColor: 'rgb(79, 84, 255)',
+              color: 'white',
+            }}
             variant="contained"
             href="/report"
           >
@@ -55,7 +62,11 @@ export default function Welcome() {
         </Grid>
         <Grid item style={{ position: 'relative' }}>
           <ButtonLink
-            style={{ width: '100%', backgroundColor: 'rgb(232, 85, 0)', color: 'white' }}
+            style={{
+              width: '100%',
+              backgroundColor: 'rgb(232, 85, 0)',
+              color: 'white',
+            }}
             variant="contained"
             href="/individuals"
           >
