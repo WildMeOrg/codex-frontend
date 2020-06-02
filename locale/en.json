@@ -284,6 +284,7 @@
     "PHOTOGRAPHS": "Photographs",
     "CROP": "Crop",
     "REMOVE": "Remove",
+    "SELECT_MULTIPLE_REGIONS_HINT": "Select multiple regions by holding the command key on Mac OS or the ctrl key on Windows and Linux.",
     "PHOTO_OPTIMIZE_1": "Learn how to ",
     "PHOTO_OPTIMIZE_2": "optimize your photos",
     "PHOTO_OPTIMIZE_3": " for identification.",

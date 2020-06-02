@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { get } from 'lodash-es';
-import { useIntl } from 'react-intl';
+import { useIntl, FormattedMessage } from 'react-intl';
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import TreeView from '@material-ui/lab/TreeView';
@@ -67,13 +67,15 @@ export default function LabeledInput(props) {
     setSelected(nodeIds);
   };
 
+  const multiselect = Boolean(schema.multiselect);
+
   return (
     <Core schema={schema} required={required} width={width}>
       <TreeView
         style={{ marginTop: 20 }}
         defaultCollapseIcon={<ExpandMoreIcon />}
         defaultExpandIcon={<ChevronRightIcon />}
-        multiSelect={Boolean(schema.multiselect)}
+        multiSelect={multiselect}
         expanded={expanded}
         selected={selected}
         onNodeToggle={handleToggle}
@@ -92,6 +94,11 @@ export default function LabeledInput(props) {
       </TreeView>
       {!minimalLabels && (
         <FormHelperText>{getDescription(schema)}</FormHelperText>
+      )}
+      {multiselect && (
+        <FormHelperText>
+          <FormattedMessage id="SELECT_MULTIPLE_REGIONS_HINT" />
+        </FormHelperText>
       )}
     </Core>
   );
