@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
+import { useSelector, useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { selectLoginRedirect } from '../../modules/app/selectors';
+import { toggleAuthenticated } from '../../modules/app/actions';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import TextInput from '../../components/inputs/TextInput';
 import InlineButton from '../../components/InlineButton';
@@ -16,7 +20,11 @@ export default function Login({ callback }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
+  const dispatch = useDispatch();
   const intl = useIntl();
+  const history = useHistory();
+
+  const loginRedirect = useSelector(selectLoginRedirect);
   useDocumentTitle(intl.formatMessage({ id: 'LOG_IN' }));
 
   return (
@@ -56,9 +64,10 @@ export default function Login({ callback }) {
                 setLoading(false);
                 if (callback) {
                   callback();
-                } else {
-                  console.log('looks good!'); // redirect home
                 }
+
+                dispatch(toggleAuthenticated());
+                history.push(loginRedirect);
               }, 1000);
             }}
             style={{ width: '100%' }}
