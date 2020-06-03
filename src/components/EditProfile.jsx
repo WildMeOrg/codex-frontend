@@ -46,10 +46,10 @@ export default function({
                 <LabeledInput
                   schema={schema}
                   value={formState[fieldData.name]}
-                  onChange={e => {
+                  onChange={newFieldValue => {
                     setFormState({
                       ...formState,
-                      [fieldData.name]: e.target.value,
+                      [fieldData.name]: newFieldValue,
                     });
                   }}
                 />

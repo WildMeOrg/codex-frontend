@@ -6,6 +6,8 @@ import Grid from '@material-ui/core/Grid';
 import Input from '@material-ui/core/Input';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import SearchIcon from '@material-ui/icons/Search';
+import IconButton from '@material-ui/core/IconButton';
+import MoreIcon from '@material-ui/icons/Delete';
 import BigAvatar from './BigAvatar';
 import Link from './Link';
 
@@ -34,6 +36,8 @@ export default function AvatarGallery({
   entities,
   renderDetails,
   getHref,
+  canDelete,
+  onDelete = Function.prototype,
   linkAll = true,
   avatarSize = 150,
   titleKey = 'name',
@@ -73,18 +77,18 @@ export default function AvatarGallery({
         </Typography>
       )}
       <Grid container spacing={6} justify={justify}>
-        {filteredEntities.map(entity => {
-          return (
-            <Grid key={entity.id} item>
-              <Link
-                noUnderline
-                href={getHref(entity)}
-                style={{
-                  display: 'flex',
-                  alignItems: justify,
-                  flexDirection: 'column',
-                }}
-              >
+        {filteredEntities.map(entity => (
+          <Grid key={entity.id} item>
+            <Link
+              noUnderline
+              href={getHref(entity)}
+              style={{
+                display: 'flex',
+                alignItems: justify,
+                flexDirection: 'column',
+              }}
+            >
+              <div style={{ position: 'relative' }}>
                 <BigAvatar
                   imgSrc={entity.profile}
                   name={entity[titleKey]}
@@ -92,24 +96,40 @@ export default function AvatarGallery({
                   size={avatarSize}
                   annotations={getAnnotations(entity)}
                 />
-                {linkAll && (
-                  <Details
-                    renderDetails={renderDetails}
-                    titleKey={titleKey}
-                    entity={entity}
-                  />
+                {canDelete && (
+                  <IconButton
+                    color="tertiary"
+                    onClick={e => {
+                      e.preventDefault();
+                      onDelete(entity);
+                    }}
+                    style={{
+                      position: 'absolute',
+                      top: -12,
+                      right: -28,
+                    }}
+                  >
+                    <MoreIcon size="large" />
+                  </IconButton>
                 )}
-              </Link>
-              {!linkAll && (
+              </div>
+              {linkAll && (
                 <Details
                   renderDetails={renderDetails}
                   titleKey={titleKey}
                   entity={entity}
                 />
               )}
-            </Grid>
-          );
-        })}
+            </Link>
+            {!linkAll && (
+              <Details
+                renderDetails={renderDetails}
+                titleKey={titleKey}
+                entity={entity}
+              />
+            )}
+          </Grid>
+        ))}
       </Grid>
     </>
   );

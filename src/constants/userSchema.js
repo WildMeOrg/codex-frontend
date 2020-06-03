@@ -18,16 +18,45 @@ const userSchema = [
     fieldType: 'string',
   },
   {
-    name: 'email',
-    labelId: 'EMAIL_ADDRESS',
-    defaultValue: '',
-    fieldType: 'string',
-  },
-  {
     name: 'forum_id',
     labelId: 'FORUM_USERNAME',
     defaultValue: '',
     fieldType: 'string',
+  },
+  {
+    name: 'email',
+    labelId: 'EMAIL_ADDRESS',
+    defaultValue: '',
+    fieldType: 'string',
+    adminOnly: true,
+  },
+  {
+    name: 'password',
+    labelId: 'PASSWORD',
+    defaultValue: '',
+    fieldType: 'string',
+    adminOnly: true,
+  },
+  {
+    name: 'role',
+    labelId: 'ROLE',
+    defaultValue: ['user'],
+    fieldType: 'multiselect',
+    choices: [
+      {
+        value: 'user',
+        label: 'User',
+      },
+      {
+        value: 'admin',
+        label: 'Administrator',
+      },
+      {
+        value: 'machinelearning',
+        label: 'Machine Learning',
+      },
+    ],
+    adminOnly: true,
   },
 ];
 
