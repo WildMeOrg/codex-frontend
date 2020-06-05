@@ -7,7 +7,7 @@ import EntityHeader from '../../components/EntityHeader';
 import MainColumn from '../../components/MainColumn';
 import NotFoundPage from '../../components/NotFoundPage';
 import EncounterGallery from '../../components/EncounterGallery';
-import EditProfile from '../../components/EditProfile';
+import EditProfile from '../../components/EditEntityModal';
 import { selectIndividuals } from '../../modules/individuals/selectors';
 import { selectSpeciesFields } from '../../modules/site/selectors';
 import useIndividuals from '../../modules/individuals/useIndividuals';

@@ -1,31 +1,30 @@
-import React, { useState } from 'react';
-import { capitalize } from 'lodash-es';
-import { useIntl, FormattedMessage } from 'react-intl';
-import Button from '@material-ui/core/Button';
+import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
+import IconButton from '@material-ui/core/IconButton';
+import SettingsIcon from '@material-ui/icons/Settings';
 import BigAvatar from './BigAvatar';
 
 export default function EntityHeader({
   imgSrc,
   name,
-  hideFields = [],
-  fieldValues,
   editable,
   children,
-  renderEditDialog,
   square = false,
+  onSettingsClick,
 }) {
-  const intl = useIntl();
-  const [editingProfile, setEditingProfile] = useState(false);
   return (
     <>
-      <Grid
-        container
-        style={{ padding: '24px 0', flexWrap: 'nowrap' }}
-      >
-        <Grid style={{ marginLeft: 12 }} item>
+      <Grid container>
+        <Grid
+          style={{
+            marginTop: 12,
+            marginLeft: 12,
+            padding: '24px 0 0 0',
+          }}
+          item
+        >
           <BigAvatar
             imgSrc={imgSrc}
             editable={editable}
@@ -33,54 +32,49 @@ export default function EntityHeader({
             square={square}
           />
         </Grid>
-        <Grid item style={{ marginLeft: 28 }}>
-          <div style={{ display: 'flex', alignItems: 'flex-start' }}>
-            <Typography variant="h4" component="h4">
+        <Grid
+          item
+          style={{
+            marginLeft: 12,
+            flexGrow: 1,
+            padding: '24px 12px 24px 0',
+            overflow: 'hidden',
+            maxWidth: 677, // (i never said i was a role model)
+          }}
+        >
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+            }}
+          >
+            <Typography
+              variant="h4"
+              component="h4"
+              style={{
+                whiteSpace: 'nowrap',
+                textOverflow: 'ellipsis',
+                overflow: 'hidden',
+                maxWidth: '80%',
+              }}
+            >
               {name}
             </Typography>
             {editable && (
-              <Button
-                style={{ marginLeft: 16, flexShrink: 0 }}
-                variant="outlined"
-                size="small"
-                onClick={() => setEditingProfile(!editingProfile)}
+              <IconButton
+                aria-label="Edit settings and profile"
+                onClick={onSettingsClick}
               >
-                <FormattedMessage
-                  id="EDIT_PROFILE"
-                  defaultMessage="Edit Profile"
-                />
-              </Button>
+                <SettingsIcon fontSize="large" />
+              </IconButton>
             )}
           </div>
           <div style={{ marginLeft: 4, marginTop: 4 }}>
             {children}
           </div>
-          <div style={{ marginLeft: 4 }}>
-            {fieldValues.map(fieldData => {
-              if (hideFields.includes(fieldData.name)) return null;
-              return (
-                <div
-                  key={fieldData.name}
-                  style={{ display: 'flex', marginTop: 4 }}
-                >
-                  <Typography>
-                    {`${intl.formatMessage({
-                      id: fieldData.name.toUpperCase(),
-                      defaultMessage: capitalize(fieldData.name),
-                    })}:`}
-                  </Typography>
-                  <Typography style={{ marginLeft: 4 }}>
-                    {fieldData.value}
-                  </Typography>
-                </div>
-              );
-            })}
-          </div>
         </Grid>
       </Grid>
-      {renderEditDialog(editingProfile, () =>
-        setEditingProfile(false),
-      )}
       <Divider />
     </>
   );

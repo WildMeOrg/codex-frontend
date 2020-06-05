@@ -1,12 +1,16 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
+import SettingsIcon from '@material-ui/icons/Settings';
 
 export default function Header({
   title,
   showButton,
   buttonText,
   onButtonClick,
+  showSettings,
+  onSettingsClick,
 }) {
   return (
     <div
@@ -32,6 +36,11 @@ export default function Header({
         >
           {buttonText}
         </Button>
+      )}
+      {showSettings && (
+        <IconButton onClick={onSettingsClick}>
+          <SettingsIcon />
+        </IconButton>
       )}
     </div>
   );

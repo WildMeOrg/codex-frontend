@@ -9,7 +9,7 @@ import Tab from '@material-ui/core/Tab';
 import EntityHeader from '../../components/EntityHeader';
 import MainColumn from '../../components/MainColumn';
 import NotFoundPage from '../../components/NotFoundPage';
-import EditProfile from '../../components/EditProfile';
+import EditProfile from '../../components/EditEntityModal';
 import Link from '../../components/Link';
 import {
   selectSightings,

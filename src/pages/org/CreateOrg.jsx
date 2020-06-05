@@ -7,14 +7,10 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import LabeledInput from '../../components/LabeledInput';
-import userSchema from '../../constants/userSchema';
+import orgSchema from '../../constants/orgSchema';
 
-const schemas = userSchema.filter(
-  field => field.requiredForUserCreation,
-);
-
-export default function CreateUser({ open, onClose, onCreateUser }) {
-  const initialState = schemas.reduce((memo, field) => {
+export default function CreateOrg({ open, onClose, onCreateUser }) {
+  const initialState = orgSchema.reduce((memo, field) => {
     memo[field.name] = field.defaultValue;
     return memo;
   }, {});
@@ -24,7 +20,7 @@ export default function CreateUser({ open, onClose, onCreateUser }) {
   return (
     <Dialog open={open} onClose={onClose}>
       <DialogTitle>
-        <FormattedMessage id="CREATE_USER" />
+        <FormattedMessage id="CREATE_ORG" />
       </DialogTitle>
       <DialogContent>
         <Grid
@@ -34,7 +30,7 @@ export default function CreateUser({ open, onClose, onCreateUser }) {
           component="form"
           style={{ maxWidth: 320, marginBottom: 12 }}
         >
-          {schemas.map(field => (
+          {orgSchema.map(field => (
             <Grid item>
               <LabeledInput
                 schema={field}
@@ -55,7 +51,7 @@ export default function CreateUser({ open, onClose, onCreateUser }) {
           <FormattedMessage id="CANCEL" />
         </Button>
         <Button onClick={() => onCreateUser(formState)}>
-          <FormattedMessage id="CREATE_USER" />
+          <FormattedMessage id="CREATE" />
         </Button>
       </DialogActions>
     </Dialog>

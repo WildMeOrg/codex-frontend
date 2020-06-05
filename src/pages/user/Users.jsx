@@ -6,11 +6,11 @@ import Typography from '@material-ui/core/Typography';
 import AvatarGallery from '../../components/AvatarGallery';
 import MainColumn from '../../components/MainColumn';
 import Header from '../../components/Header';
+import ConfirmDelete from '../../components/ConfirmDelete';
 import { selectUsers } from '../../modules/users/selectors';
 import { selectSiteName } from '../../modules/site/selectors';
 import { selectIsAdministrator } from '../../modules/app/selectors';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
-import ConfirmDelete from './ConfirmDelete';
 import CreateUser from './CreateUser';
 
 export default function Users() {
@@ -52,7 +52,7 @@ export default function Users() {
         onClose={() => setUserToDelete(null)}
         onDelete={() => setUserToDelete(null)}
         open={Boolean(userToDelete)}
-        username={deleteUsername}
+        entityToDelete={deleteUsername}
       />
       <CreateUser
         open={creatingUser}

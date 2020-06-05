@@ -106,7 +106,7 @@ export default function AvatarGallery({
                     style={{
                       position: 'absolute',
                       top: -12,
-                      right: -28,
+                      right: square ? -52 : -28,
                     }}
                   >
                     <MoreIcon size="large" />

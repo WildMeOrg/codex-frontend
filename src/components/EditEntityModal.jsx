@@ -6,30 +6,52 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
 import LabeledInput from './LabeledInput';
 
 export default function({
-  visible,
-  onClose,
+  open,
+  onSave = Function.prototype,
+  onClose = Function.prototype,
   fieldValues,
   fieldSchema,
+  categories,
 }) {
+  const categoryArray = Object.values(categories);
+
   const initialState = fieldValues.reduce((memo, field) => {
     memo[field.name] = field.value;
     return memo;
   }, {});
 
   const [formState, setFormState] = useState(initialState);
+  const [currentCategory, setCurrentCategory] = useState(
+    categories ? categoryArray[0].name : null,
+  );
 
   return (
-    <Dialog open={visible} onClose={onClose}>
+    <Dialog open={open} onClose={onClose}>
       <DialogTitle>
-        <FormattedMessage
-          id="EDIT_PROFILE"
-          defaultMessage="Edit Profile"
-        />
+        <FormattedMessage id="EDIT" />
       </DialogTitle>
       <DialogContent>
+        <Tabs
+          component="h3"
+          value={currentCategory}
+          style={{ marginTop: 0 }}
+          onChange={(_, newCategory) =>
+            setCurrentCategory(newCategory)
+          }
+        >
+          {categoryArray.map(category => (
+            <Tab
+              key={category.name}
+              value={category.name}
+              label={<FormattedMessage id={category.labelId} />}
+            />
+          ))}
+        </Tabs>
         <Grid
           container
           spacing={2}
@@ -41,6 +63,12 @@ export default function({
               candidateSchema =>
                 candidateSchema.name === fieldData.name,
             );
+
+            const matchingCategory = currentCategory
+              ? schema.category === currentCategory
+              : true;
+            if (!matchingCategory) return null;
+
             return (
               <Grid item key={fieldData.name}>
                 <LabeledInput
@@ -70,8 +98,7 @@ export default function({
         </Button>
         <Button
           onClick={() => {
-            // submit data and wait for response...
-            onClose();
+            onSave(formState);
           }}
           color="primary"
           autoFocus

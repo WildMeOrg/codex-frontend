@@ -11,7 +11,7 @@ export default function ConfirmDelete({
   open,
   onClose,
   onDelete,
-  username,
+  entityToDelete,
 }) {
   return (
     <Dialog open={open} onClose={onClose}>
@@ -22,7 +22,7 @@ export default function ConfirmDelete({
         <Typography>
           <FormattedMessage
             id="CONFIRM_DELETE_DESCRIPTION"
-            values={{ username }}
+            values={{ entity: entityToDelete }}
           />
         </Typography>
       </DialogContent>
