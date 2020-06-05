@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
@@ -6,10 +6,14 @@ import { toLower } from 'lodash-es';
 import Typography from '@material-ui/core/Typography';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
+// import SpeciesIcon from '@material-ui/icons/Category';
+// import RegionIcon from '@material-ui/icons/MyLocation';
+// import ContextIcon from '@material-ui/icons/NaturePeople';
+// import SubmitterIcon from '@material-ui/icons/Person';
 import EntityHeader from '../../components/EntityHeader';
 import MainColumn from '../../components/MainColumn';
 import NotFoundPage from '../../components/NotFoundPage';
-import EditProfile from '../../components/EditProfile';
+import EditProfile from '../../components/EditEntityModal';
 import Link from '../../components/Link';
 import {
   selectSightings,
@@ -28,6 +32,7 @@ export default function Sighting() {
   const sightings = useSelector(selectSightings);
   const schema = useSelector(selectSightingSchema);
   useDocumentTitle(`Sighting ${id}`);
+  const [editingProfile, setEditingProfile] = useState(false);
 
   const activeTab = window.location.hash || '#individuals';
 
@@ -40,52 +45,32 @@ export default function Sighting() {
       />
     );
 
-  const sightingFields = [
-    {
-      name: 'species',
-      value: 'Grampus Griseus',
-    },
-    {
-      name: 'sightingDate',
-      value: new Date(),
-    },
-    {
-      name: 'encounterContext',
-      value: 'Research effort',
-    },
-  ];
-
   return (
     <MainColumn>
+      <EditProfile
+        open={editingProfile}
+        onClose={() => setEditingProfile(false)}
+        fieldValues={[
+          {
+            name: 'species',
+            value: sighting.taxonomy,
+          },
+          {
+            name: 'location_freeform',
+            value: sighting.region,
+          },
+          {
+            name: 'sightingContext',
+            value: sighting.context,
+          },
+        ]}
+        fieldSchema={schema}
+      />
       <EntityHeader
         name={sighting.id}
         imgSrc={sighting.profile}
-        fieldValues={[]}
-        fieldSchema={schema}
+        onSettingsClick={() => setEditingProfile(true)}
         editable
-        renderEditDialog={(visible, onClose) => {
-          return (
-            <EditProfile
-              visible={visible}
-              onClose={onClose}
-              fieldValues={[
-                {
-                  name: 'species',
-                  value: sighting.taxonomy,
-                },
-                {
-                  name: 'location_freeform',
-                  value: sighting.region,
-                },
-                {
-                  name: 'sightingContext',
-                  value: sighting.context,
-                },
-              ]}
-              fieldSchema={schema}
-            />
-          );
-        }}
       >
         <div
           style={{

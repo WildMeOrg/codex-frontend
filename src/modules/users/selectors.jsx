@@ -117,6 +117,22 @@ export const selectUsers = state => ({
         name: 'forum_id',
         value: 'boboooo',
       },
+      {
+        name: 'show_email_in_profile',
+        value: true,
+      },
+      {
+        name: 'receive_notification_emails',
+        value: true,
+      },
+      {
+        name: 'receive_newsletter_emails',
+        value: false,
+      },
+      {
+        name: 'footer_logo',
+        value: null,
+      },
     ],
     settings: {
       pendingReports: [

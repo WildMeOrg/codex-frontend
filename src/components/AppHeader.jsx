@@ -278,7 +278,9 @@ export default function AppHeader() {
           <ButtonLink
             style={{ color: theme.palette.common.white }}
             href="/login"
-            onClick={() => { dispatch(setLoginRedirect(location.pathname)); }}
+            onClick={() => {
+              dispatch(setLoginRedirect(location.pathname));
+            }}
           >
             <FormattedMessage id="LOG_IN" />
           </ButtonLink>

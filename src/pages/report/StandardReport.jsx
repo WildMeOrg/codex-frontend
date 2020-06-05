@@ -129,6 +129,7 @@ export default function StandardReport({ variant, onBack }) {
                         </Typography>
                       </Hidden>
                       <LabeledInput
+                        minimalLabels={input.fieldType === 'file'}
                         schema={input}
                         value={formValues[input.name]}
                         onChange={value => {
