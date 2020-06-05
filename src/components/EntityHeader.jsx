@@ -37,7 +37,7 @@ export default function EntityHeader({
           style={{
             marginLeft: 12,
             flexGrow: 1,
-            padding: '24px 12px 24px 0',
+            padding: '24px 12px 12px 0',
             overflow: 'hidden',
             maxWidth: 677, // (i never said i was a role model)
           }}
@@ -75,7 +75,7 @@ export default function EntityHeader({
           </div>
         </Grid>
       </Grid>
-      <Divider />
+      <Divider style={{ marginTop: 12 }} />
     </>
   );
 }

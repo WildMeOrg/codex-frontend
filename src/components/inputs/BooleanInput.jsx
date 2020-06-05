@@ -41,7 +41,7 @@ export default function BooleanInput({
   }
 
   return (
-    <Core required={required} schema={schema} width={width}>
+    <Core required={required} width={width}>
       <div
         style={{
           display: 'flex',

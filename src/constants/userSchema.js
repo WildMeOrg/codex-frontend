@@ -65,6 +65,7 @@ const userSchema = [
   {
     name: 'footer_logo',
     labelId: 'FOOTER_LOGO',
+    descriptionId: 'FOOTER_LOGO_DESCRIPTION',
     fieldType: 'file',
     allowedFileTypes: ['.jpg', '.jpeg', '.png'],
     defaultValue: null,

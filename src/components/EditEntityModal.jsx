@@ -18,7 +18,7 @@ export default function({
   fieldSchema,
   categories,
 }) {
-  const categoryArray = Object.values(categories);
+  const categoryArray = categories ? Object.values(categories) : null;
 
   const initialState = fieldValues.reduce((memo, field) => {
     memo[field.name] = field.value;
@@ -36,22 +36,24 @@ export default function({
         <FormattedMessage id="EDIT" />
       </DialogTitle>
       <DialogContent>
-        <Tabs
-          component="h3"
-          value={currentCategory}
-          style={{ marginTop: 0 }}
-          onChange={(_, newCategory) =>
-            setCurrentCategory(newCategory)
-          }
-        >
-          {categoryArray.map(category => (
-            <Tab
-              key={category.name}
-              value={category.name}
-              label={<FormattedMessage id={category.labelId} />}
-            />
-          ))}
-        </Tabs>
+        {categories && (
+          <Tabs
+            component="h3"
+            value={currentCategory}
+            style={{ marginTop: 0 }}
+            onChange={(_, newCategory) =>
+              setCurrentCategory(newCategory)
+            }
+          >
+            {categoryArray.map(category => (
+              <Tab
+                key={category.name}
+                value={category.name}
+                label={<FormattedMessage id={category.labelId} />}
+              />
+            ))}
+          </Tabs>
+        )}
         <Grid
           container
           spacing={2}
