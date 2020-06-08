@@ -13,6 +13,7 @@ import {
   selectIndividualSearchSchema,
 } from '../../modules/individuals/selectors';
 import ResultsTable from './ResultsTable';
+import ButtonLink from '../../components/ButtonLink';
 
 const drawerWidth = 280;
 
@@ -70,13 +71,35 @@ export default function SearchIndividuals() {
         </Drawer>
       </Hidden>
       <div style={{ marginTop: 64, width: '100%' }}>
-        <Typography
-          variant="h3"
-          component="h3"
-          style={{ margin: '16px 0 16px 16px' }}
+        <div
+          style={{
+            width: '80%',
+            margin: '0 16px 16px 16px',
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
         >
-          <FormattedMessage id="EXPLORE_INDIVIDUALS" />
-        </Typography>
+          <Typography
+            variant="h3"
+            component="h3"
+            style={{ margin: '16px 0' }}
+          >
+            <FormattedMessage id="EXPLORE_INDIVIDUALS" />
+          </Typography>
+          <ButtonLink
+            variant="outlined"
+            href="/individuals/picture-book"
+            linkProps={{
+              target: '_blank',
+              rel: 'noopener noreferrer',
+            }}
+            style={{ flexShrink: 0 }}
+          >
+            <FormattedMessage id="PRINT_PHOTO_BOOK" />
+          </ButtonLink>
+        </div>
         <SearchFilterList
           formValues={formValues}
           setFormValues={setFormValues}

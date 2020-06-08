@@ -13,6 +13,7 @@ import AppHeader from './components/AppHeader';
 import Footer from './components/Footer';
 import { selectLocale } from './modules/app/selectors';
 import Individual from './pages/individual/Individual';
+import PictureBook from './pages/individual/PictureBook';
 import Sighting from './pages/sighting/Sighting';
 import Org from './pages/org/Org';
 import Orgs from './pages/org/Orgs';
@@ -69,6 +70,9 @@ export default function App() {
               <SiteSetup />
             ) : (
               <Switch>
+                <Route path="/individuals/picture-book">
+                  <PictureBook />
+                </Route>
                 <Route path="/individuals/:id">
                   <Individual />
                 </Route>

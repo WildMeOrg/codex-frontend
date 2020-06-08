@@ -252,6 +252,7 @@
     "MEMBER_COUNT": "{memberCount} {memberCount, plural, =0 {members} one {member} other {members}}",
     "SEX": "Sex",
     "AGE": "Age",
+    "PRINT_PHOTO_BOOK": "Print photo book",
     "ACTIVE_FILTERS": "Active Filters",
     "NO_ACTIVE_FILTERS": "No active filters. Create a filter to get started.",
     "CONFIRM": "Confirm",
