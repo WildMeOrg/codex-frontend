@@ -18,6 +18,7 @@ import orgSchema, {
   orgSchemaCategories,
 } from '../../constants/orgSchema';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
+import MembersPanel from './MembersPanel';
 
 const items = [
   {
@@ -102,6 +103,7 @@ export default function Org() {
           })}
         </Grid>
       </EntityHeader>
+      <MembersPanel />
       <EncounterGallery
         title={<FormattedMessage id="SIGHTINGS" />}
         encounters={org.encounters}
