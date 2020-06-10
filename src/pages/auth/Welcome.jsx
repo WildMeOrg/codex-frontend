@@ -14,7 +14,13 @@ export default function Welcome() {
   useDocumentTitle(intl.formatMessage({ id: 'WELCOME' }));
 
   return (
-    <MainColumn>
+    <MainColumn
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        maxWidth: 500,
+      }}
+    >
       <Typography
         variant="h3"
         component="h3"
@@ -27,7 +33,7 @@ export default function Welcome() {
       </Typography>
       <Typography
         variant="body1"
-        style={{ padding: '0 16px 8px 16px', maxWidth: 460 }}
+        style={{ padding: '0 16px 8px 16px', maxWidth: 400 }}
       >
         <FormattedMessage id="ACCOUNT_CREATION_SUCCESS" />
       </Typography>
@@ -44,7 +50,7 @@ export default function Welcome() {
             variant="contained"
             href="/"
           >
-            <FormattedMessage id="VIEW_HOMEPAGE" />
+            <FormattedMessage id="VIEW_HOME" />
           </ButtonLink>
         </Grid>
         <Grid item style={{ position: 'relative' }}>

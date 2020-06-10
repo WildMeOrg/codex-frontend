@@ -16,9 +16,13 @@ export default function CreateOrg({ open, onClose, onCreateUser }) {
   }, {});
 
   const [formState, setFormState] = useState(initialState);
+  const closeAndEmptyForm = () => {
+    setFormState(initialState);
+    onClose();
+  };
 
   return (
-    <Dialog open={open} onClose={onClose}>
+    <Dialog open={open} onClose={closeAndEmptyForm}>
       <DialogTitle>
         <FormattedMessage id="CREATE_ORG" />
       </DialogTitle>
@@ -47,7 +51,7 @@ export default function CreateOrg({ open, onClose, onCreateUser }) {
         </Grid>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose}>
+        <Button onClick={closeAndEmptyForm}>
           <FormattedMessage id="CANCEL" />
         </Button>
         <Button onClick={() => onCreateUser(formState)}>
