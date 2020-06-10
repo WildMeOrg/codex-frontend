@@ -5,7 +5,7 @@ import MainColumn from '../../components/MainColumn';
 
 export default function Shell({ titleId, instructionsId, children }) {
   return (
-    <MainColumn>
+    <MainColumn style={{ width: 300 }}>
       <Typography
         variant="h3"
         component="h3"
