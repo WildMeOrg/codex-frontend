@@ -303,7 +303,7 @@
     "MEMBER": "Member",
     "MODERATOR": "Moderator",
     "AGE": "Age",
-    "PRINT_PHOTO_BOOK": "Print photo book",
+    "PRINT_PHOTOBOOK": "Print photobook",
     "ACTIVE_FILTERS": "Active Filters",
     "NO_ACTIVE_FILTERS": "No active filters. Create a filter to get started.",
     "CONFIRM": "Confirm",
@@ -394,9 +394,8 @@
     "SERVER_TOOLTIP_JOBCOUNTER_LABEL": "Jobcounter:",
     "SERVER_TOOLTIP_STATUS_LABEL": "Status:",
     "SERVER_TOOLTIP_DATE_RECEIVED_LABEL": "Received on:",
-    "SERVER_TOOLTIP_ARIA_LABEL": "{jobCounterLabel} {jobCounterValue}; {statusLabel} {statusValue}; {dateReceivedLabel} {dateReceivedValue}",
-    "PRINTABLE_FLUKE_BOOK": "Printable Fluke Book",
-    "NO_IMAGES": "There are no images for this individual",
+    "PRINTABLE_PHOTOBOOK": "Printable Photobook",
+    "NO_IMAGES": "There are no images for this individual.",
     "PRINT": "Print",
     "LOADING": "Loading"
 }

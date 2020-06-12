@@ -49,7 +49,9 @@ export default function MembersModal({
           <CloseIcon />
         </IconButton>
       </DialogTitle>
-      <DialogContent style={{ padding: '8px 12px', overflowX: 'hidden' }}>
+      <DialogContent
+        style={{ padding: '8px 12px', overflowX: 'hidden' }}
+      >
         <Grid container direction="column">
           <Grid item>
             <Input
@@ -111,7 +113,7 @@ export default function MembersModal({
           <Grid item style={{ marginTop: 12 }}>
             <BooleanInput
               value={isModerator}
-              onChange={(value) => setIsModerator(value)}
+              onChange={value => setIsModerator(value)}
               width={200}
               schema={{
                 labelId: 'INVITE_AS_MODERATOR',

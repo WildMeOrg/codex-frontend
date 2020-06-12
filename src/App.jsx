@@ -76,7 +76,7 @@ export default function App() {
               <SiteSetup />
             ) : (
               <Switch>
-                <Route path="/individuals/picture-book">
+                <Route path="/individuals/picturebook">
                   <PictureBook />
                 </Route>
                 <Route path="/individuals/:id">
