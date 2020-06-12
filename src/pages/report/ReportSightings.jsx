@@ -7,8 +7,10 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import Radio from '@material-ui/core/Radio';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
+import InfoIcon from '@material-ui/icons/InfoOutlined';
 import MainColumn from '../../components/MainColumn';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
+import Link from '../../components/Link';
 import StandardReport from './StandardReport';
 import BulkReport from './BulkReport';
 import UploadManager from './UploadManager';
@@ -91,6 +93,24 @@ export default function ReportSightings() {
             {mode !== '' && (
               <Grid item>
                 <UploadManager files={files} setFiles={setFiles} />
+                <div
+                  style={{ display: 'flex', alignItems: 'center' }}
+                >
+                  <InfoIcon
+                    fontSize="small"
+                    style={{ marginRight: 4 }}
+                  />
+                  <Typography variant="caption">
+                    <FormattedMessage id="PHOTO_OPTIMIZE_1" />
+                    <Link
+                      external
+                      href="http://wiki.wildbook.org/en/researchers/photography"
+                    >
+                      <FormattedMessage id="PHOTO_OPTIMIZE_2" />
+                    </Link>
+                    <FormattedMessage id="PHOTO_OPTIMIZE_3" />
+                  </Typography>
+                </div>
               </Grid>
             )}
 

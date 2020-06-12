@@ -64,10 +64,9 @@ export default function StandardReport({ variant, onBack }) {
           const inputsInCategory = schema.filter(
             f => f.category === category.name,
           );
-          const requiredCategory = some(
-            inputsInCategory,
-            input => input.required,
-          );
+          const requiredCategory =
+            category.required ||
+            some(inputsInCategory, input => input.required);
 
           if (variant === 'multiple' && category.individualFields)
             return null;
@@ -100,42 +99,49 @@ export default function StandardReport({ variant, onBack }) {
                     flexDirection: 'column',
                   }}
                 >
-                  {inputsInCategory.map(input => {
-                    return (
-                      <div
-                        key={`${category.name} - ${input.name}`}
-                        style={{
-                          display: 'flex',
-                          marginBottom: 12,
-                        }}
-                      >
-                        <Hidden xsDown>
-                          <Typography
-                            style={{
-                              marginRight: 16,
-                              marginTop: 20,
-                              width: 180,
-                              textAlign: 'right',
-                            }}
-                          >
-                            <FormattedMessage id={input.labelId} />
-                            {input.required && ' *'}
-                          </Typography>
-                        </Hidden>
-                        <LabeledInput
-                          schema={input}
-                          value={formValues[input.name]}
-                          onChange={value => {
-                            setFormValues({
-                              ...formValues,
-                              [input.name]: value,
-                            });
+                  {category.descriptionId && (
+                    <Typography
+                      variant="subtitle2"
+                      style={{ marginBottom: 12 }}
+                    >
+                      <FormattedMessage id={category.descriptionId} />
+                    </Typography>
+                  )}
+                  {inputsInCategory.map(input => (
+                    <div
+                      key={`${category.name} - ${input.name}`}
+                      style={{
+                        display: 'flex',
+                        marginBottom: 12,
+                      }}
+                    >
+                      <Hidden xsDown>
+                        <Typography
+                          style={{
+                            marginRight: 16,
+                            marginTop: 20,
+                            width: 180,
+                            textAlign: 'right',
                           }}
-                          width={220}
-                        />
-                      </div>
-                    );
-                  })}
+                        >
+                          <FormattedMessage id={input.labelId} />
+                          {input.required && ' *'}
+                        </Typography>
+                      </Hidden>
+                      <LabeledInput
+                        minimalLabels={input.fieldType === 'file'}
+                        schema={input}
+                        value={formValues[input.name]}
+                        onChange={value => {
+                          setFormValues({
+                            ...formValues,
+                            [input.name]: value,
+                          });
+                        }}
+                        width={220}
+                      />
+                    </div>
+                  ))}
                 </div>
               </ExpansionPanelDetails>
             </BigExpansionPanel>

@@ -26,6 +26,12 @@ import SearchIndividuals from './pages/individual/SearchIndividuals';
 import SearchSightings from './pages/sighting/SearchSightings';
 import Administration from './pages/administration/Administration';
 import SiteSetup from './pages/administration/SiteSetup';
+import CreateAccount from './pages/auth/Create';
+import Login from './pages/auth/Login';
+import Welcome from './pages/auth/Welcome';
+import Forgot from './pages/auth/Forgot';
+import Logout from './pages/auth/Logout';
+import RequestInvitation from './pages/auth/RequestInvitation';
 import materialTheme from './styles/materialTheme';
 import messagesEn from '../locale/en.json';
 import messagesEs from '../locale/es.json';
@@ -102,6 +108,24 @@ export default function App() {
                 </Route>
                 <Route path="/administration">
                   <Administration />
+                </Route>
+                <Route path="/forgot">
+                  <Forgot />
+                </Route>
+                <Route path="/login">
+                  <Login />
+                </Route>
+                <Route path="/logout">
+                  <Logout />
+                </Route>
+                <Route path="/request">
+                  <RequestInvitation />
+                </Route>
+                <Route path="/create">
+                  <CreateAccount />
+                </Route>
+                <Route path="/welcome">
+                  <Welcome />
                 </Route>
                 <Route path="/" exact>
                   <div />

@@ -16,6 +16,18 @@ export const selectOrgs = state => ({
         name: 'website',
         value: 'https://www.noaa.gov/',
       },
+      {
+        name: 'collaboration_mode',
+        value: 'read',
+      },
+      {
+        name: 'control_member_settings',
+        value: true,
+      },
+      {
+        name: 'footer_logo',
+        value: null,
+      },
     ],
     data: {
       members: [

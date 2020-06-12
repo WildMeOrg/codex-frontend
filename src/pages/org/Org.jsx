@@ -1,17 +1,44 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
-import { get, filter, toLower } from 'lodash-es';
+import { get, toLower } from 'lodash-es';
 import Typography from '@material-ui/core/Typography';
+import Grid from '@material-ui/core/Grid';
+import WebIcon from '@material-ui/icons/Web';
+import DescriptionIcon from '@material-ui/icons/Description';
 import EntityHeader from '../../components/EntityHeader';
 import MainColumn from '../../components/MainColumn';
 import NotFoundPage from '../../components/NotFoundPage';
-import EditProfile from '../../components/EditProfile';
+import EditEntityModal from '../../components/EditEntityModal';
 import EncounterGallery from '../../components/EncounterGallery';
+import Link from '../../components/Link';
 import { selectOrgs } from '../../modules/orgs/selectors';
-import orgSchema from '../../constants/orgSchema';
+import orgSchema, {
+  orgSchemaCategories,
+} from '../../constants/orgSchema';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
+import MembersPanel from './MembersPanel';
+
+const items = [
+  {
+    key: 'description',
+    icon: DescriptionIcon,
+    render: description => description,
+  },
+  {
+    key: 'website',
+    icon: WebIcon,
+    render: website => (
+      <>
+        <FormattedMessage id="PROFILE_LABEL_WEBSITE" />
+        <Link external href={website}>
+          {website}
+        </Link>
+      </>
+    ),
+  },
+];
 
 export default function Org() {
   const { id } = useParams();
@@ -19,6 +46,7 @@ export default function Org() {
 
   // fetch data for Id...
   const orgs = useSelector(selectOrgs);
+  const [editingProfile, setEditingProfile] = useState(false);
 
   const org = orgs[toLower(id)];
   if (!org)
@@ -33,43 +61,51 @@ export default function Org() {
       />
     );
 
-  const description = filter(
-    get(org, 'fields', []),
-    field => field.name === 'description',
-  );
-
   return (
     <MainColumn>
-      <EntityHeader
-        name={org.name}
-        imgSrc={org.profile}
+      <EditEntityModal
+        open={editingProfile}
+        onClose={() => setEditingProfile(false)}
         fieldValues={org.fields}
         fieldSchema={orgSchema}
-        editable={org.editable}
-        hideFields={['description']}
+        categories={orgSchemaCategories}
+      />
+      <EntityHeader
         square
-        renderEditDialog={(visible, onClose) => {
-          return (
-            <EditProfile
-              visible={visible}
-              onClose={onClose}
-              fieldValues={org.fields}
-              fieldSchema={orgSchema}
-            />
-          );
-        }}
+        name={org.name}
+        imgSrc={org.profile}
+        editable={org.editable}
+        onSettingsClick={() => setEditingProfile(true)}
       >
-        <Typography variant="body2">
-          {get(description, '0.value')}
-        </Typography>
+        <Grid container direction="column" spacing={1}>
+          {items.map(item => {
+            const matchingData = org.fields.find(
+              field => field.name === item.key,
+            );
+            const matchingSchemaObject = orgSchema.find(
+              schemaObject => schemaObject.name === item.key,
+            );
+            const fieldValue = get(matchingData, 'value', null);
+            if (!matchingData || !matchingSchemaObject) return null;
+            if (matchingSchemaObject.defaultValue === fieldValue)
+              return null;
+
+            const Icon = item.icon;
+
+            return (
+              <Grid key={item.key} item style={{ display: 'flex' }}>
+                <Icon color="action" style={{ marginRight: 8 }} />
+                <Typography>
+                  {item.render(matchingData.value)}
+                </Typography>
+              </Grid>
+            );
+          })}
+        </Grid>
       </EntityHeader>
+      <MembersPanel />
       <EncounterGallery
-        title={
-          <FormattedMessage
-            id="ENCOUNTERS"
-            defaultMessage="Encounters"
-          />
-        }
+        title={<FormattedMessage id="SIGHTINGS" />}
         encounters={org.encounters}
       />
     </MainColumn>

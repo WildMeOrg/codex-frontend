@@ -2,12 +2,14 @@ import {
   TOGGLE_SIDE_PANEL,
   TOGGLE_AUTHENTICATED,
   SET_LOCALE,
+  SET_LOGIN_REDIRECT,
 } from './actions';
 
 const initialState = {
   locale: 'en',
   authenticated: false,
   sidePanelOpen: false,
+  loginRedirect: '/',
 };
 
 export function appReducer(state = initialState, action) {
@@ -27,6 +29,11 @@ export function appReducer(state = initialState, action) {
       return {
         ...state,
         locale: action.data,
+      };
+    case SET_LOGIN_REDIRECT:
+      return {
+        ...state,
+        loginRedirect: action.data,
       };
     default:
       return state;

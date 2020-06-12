@@ -53,6 +53,9 @@ export default function BulkReport({ onBack, files }) {
     return row;
   });
 
+  const readyToGenerate =
+    fields.region || fields.location || fields.location_freeform;
+
   const templateString =
     files.length > 0
       ? Papa.unparse(templateContents, { header: true })
@@ -143,7 +146,7 @@ export default function BulkReport({ onBack, files }) {
             <Typography style={{ margin: '12px 0' }}>
               <FormattedMessage id="GENERATE_TEMPLATE_DESCRIPTION_2" />
             </Typography>
-            <Button variant="outlined">
+            <Button variant="outlined" disabled={!readyToGenerate}>
               <a
                 style={{ textDecoration: 'unset', color: 'unset' }}
                 href={`data:text/plain;charset=utf-8,${encodeURIComponent(
@@ -154,6 +157,15 @@ export default function BulkReport({ onBack, files }) {
                 <FormattedMessage id="GENERATE_TEMPLATE" />
               </a>
             </Button>
+            {!readyToGenerate && (
+              <Typography
+                variant="caption"
+                color="error"
+                style={{ marginTop: 4 }}
+              >
+                <FormattedMessage id="GENERATE_DISABLED_NO_LOCATION" />
+              </Typography>
+            )}
           </ExpansionPanelDetails>
         </BigExpansionPanel>
         <BigExpansionPanel>

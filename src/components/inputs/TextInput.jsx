@@ -41,6 +41,11 @@ function TextInput(props) {
     return get(object, 'description', '');
   }
 
+  let type = 'undefined';
+  if (['float', 'integer'].includes(schema.fieldType))
+    type = 'number';
+  if (schema.fieldType === 'password') type = 'password';
+
   return (
     <Core schema={schema} required={required} width={width}>
       <TextField
@@ -48,11 +53,7 @@ function TextInput(props) {
         multiline={schema.fieldType === 'longstring'}
         rowsMax={schema.fieldType === 'longstring' ? 5 : undefined}
         label={getLabel(schema)}
-        type={
-          ['float', 'integer'].includes(schema.fieldType)
-            ? 'number'
-            : 'undefined'
-        }
+        type={type}
         onChange={e => {
           onChange(e.target.value);
         }}
