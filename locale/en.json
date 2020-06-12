@@ -326,5 +326,6 @@
     "SERVER_TOOLTIP_ARIA_LABEL": "{jobCounterLabel} {jobCounterValue}; {statusLabel} {statusValue}; {dateReceivedLabel} {dateReceivedValue}",
     "PRINTABLE_FLUKE_BOOK": "Printable Fluke Book",
     "NO_IMAGES": "There are no images for this individual",
-    "PRINT": "Print"
+    "PRINT": "Print",
+    "LOADING": "Loading"
 }

@@ -8,12 +8,25 @@ function scaleImage(image, multiplier) {
   image.height *= multiplier;
 }
 
-function preloadImage(src) {
-  return new Promise(resolve => {
-    const image = new Image();
-    image.src = src;
-    image.decode().finally(() => resolve(image));
-  });
+async function preloadImages(srcArr) {
+  const results = await Promise.allSettled(
+    srcArr.map(src => {
+      const image = new Image();
+      image.src = src;
+      return new Promise((resolve, reject) =>
+        image
+          .decode()
+          .then(() => resolve(image))
+          .catch(() =>
+            reject(new Error(`Error decoding image "${image.src}"`)),
+          ),
+      );
+    }),
+  );
+
+  return results
+    .filter(({ value }) => !!value)
+    .map(({ value }) => value);
 }
 
 function getGalleryRatio([header, sub1, sub2]) {
@@ -54,29 +67,69 @@ export default function PictureBookGallery({
 
   useEffect(
     () => {
-      if (isLoading) {
-        if (images.length === 0) {
+      try {
+        if (isLoading) {
+          if (images.length === 0) {
+            setIsLoading(false);
+            if (onLoad) onLoad();
+            return;
+          }
+
+          const prepareGallery = async () => {
+            // Preload Images
+            let loadedImages = [];
+            if (images.length <= 3) {
+              loadedImages = await preloadImages(images);
+            } else {
+              // If an image does not load, replace it with the next image
+              // in the array
+              let startingIndex = 0;
+              let numImagesToLoad = 3;
+              let numRemainingImagesToTry = images.length;
+
+              while (
+                loadedImages.length < 3 &&
+                numRemainingImagesToTry > 0
+              ) {
+                const imagesToTry = images.slice(
+                  startingIndex,
+                  startingIndex + numImagesToLoad,
+                );
+
+                // eslint-disable-next-line no-await-in-loop
+                const results = await preloadImages(imagesToTry);
+                loadedImages.push(...results);
+
+                startingIndex += numImagesToLoad;
+                numRemainingImagesToTry -= numImagesToLoad;
+                numImagesToLoad = Math.min(
+                  3 - loadedImages.length,
+                  numRemainingImagesToTry,
+                );
+              }
+            }
+
+            if (loadedImages.length === 0) {
+              setIsLoading(false);
+              if (onLoad) onLoad();
+              return;
+            }
+
+            // Determine Gallery Aspect Ratio
+            const ratio = getGalleryRatio(loadedImages);
+
+            setDisplayImages(loadedImages.map(({ src }) => src));
+            setGalleryRatio(ratio);
+          };
+          prepareGallery();
+        }
+      } catch (err) {
+        console.error('Error loading picture book gallery');
+        console.error(err);
+        if (isLoading) {
           setIsLoading(false);
           if (onLoad) onLoad();
-          return;
         }
-
-        const prepareGallery = async () => {
-          // Preload Images
-          const imagesToLoad =
-            images.length <= 3 ? images : images.slice(0, 3);
-
-          const loadedImages = await Promise.allSettled(
-            imagesToLoad.map(imageSrc => preloadImage(imageSrc)),
-          ).then(result => result.map(({ value }) => value));
-
-          // Determine Gallery Aspect Ratio
-          const ratio = getGalleryRatio(loadedImages);
-
-          setDisplayImages(loadedImages.map(({ src }) => src));
-          setGalleryRatio(ratio);
-        };
-        prepareGallery();
       }
     },
     [images, isLoading],
@@ -92,7 +145,10 @@ export default function PictureBookGallery({
     [isLoading, galleryRatio],
   );
 
-  if (images.length === 0) {
+  if (
+    images.length === 0 ||
+    (!isLoading && displayImages.length === 0)
+  ) {
     return (
       <Typography>
         <FormattedMessage id="NO_IMAGES" />

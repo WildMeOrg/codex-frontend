@@ -4,7 +4,9 @@ import { useSelector } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { useTheme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import Typography from '@material-ui/core/Typography';
+import { cloneDeep } from 'lodash-es';
 import { selectSearchResults } from '../../modules/individuals/selectors';
 import PrintablePictureBookPage from './components/PrintablePictureBookPage';
 import PictureBookIndividual from './components/PictureBookIndividual';
@@ -23,6 +25,20 @@ const mockPhotos = [
   [savannaPic],
   [],
   [savannaPic, oceanPic, flukePic, newsitePic],
+  ['/invalid.jpg', newsitePic, oceanPic],
+  [newsitePic, 'invalid.jpg', savannaPic],
+  [oceanPic, savannaPic, 'invalid.jpg'],
+  [oceanPic, 'invalid.jpg', 'invalid.tiff'],
+  [
+    'invalid.jpg',
+    savannaPic,
+    'invalid.tiff',
+    oceanPic,
+    flukePic,
+    newsitePic,
+  ],
+  ['invalid.jpg', 'invalid.tiff', 'invalid.png'],
+  [oceanPic, flukePic, newsitePic],
 ];
 
 // temporary way to associate placeholder photos with individuals
@@ -53,7 +69,11 @@ function resetStylesForPrintingCSS(theme) {
 
 export default function PictureBook() {
   const theme = useTheme();
-  const searchResults = useSelector(selectSearchResults);
+  const searchResultsOriginal = useSelector(selectSearchResults);
+  const searchResults = [
+    ...searchResultsOriginal,
+    ...cloneDeep(searchResultsOriginal),
+  ];
   addPhotosToSearchResults(searchResults);
 
   const [pagesLoading, setPagesLoading] = useState(
@@ -79,6 +99,17 @@ export default function PictureBook() {
   return (
     <>
       <Global styles={resetStylesForPrintingCSS(theme)} />
+      {isLoading && (
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <CircularProgress
+            color="secondary"
+            style={{ marginRight: 16 }}
+          />
+          <Typography>
+            <FormattedMessage id="LOADING" />
+          </Typography>
+        </div>
+      )}
       <PrintablePictureBookPage isVisible={!isLoading}>
         <div
           style={{
@@ -104,9 +135,10 @@ export default function PictureBook() {
           </Button>
         </div>
       </PrintablePictureBookPage>
-      {searchResults.map(individual => (
+      {searchResults.map((individual, index) => (
         <PictureBookIndividual
-          key={individual.id}
+          // eslint-disable-next-line react/no-array-index-key
+          key={`${individual.id}-${index}`} // remove index from key when using real data
           isVisible={!isLoading}
           individual={individual}
           onLoad={useCallback(
