@@ -162,10 +162,15 @@ export default function PictureBookGallery({
         flex-wrap: wrap;
         align-items: flex-start;
 
-        width: 4.5in;
-        height: calc(4.5in / ${galleryRatio || 1});
-        max-height: 5in;
-        max-width: calc(5in * ${galleryRatio || 1});
+        width: 400px;
+        height: calc(400px / ${galleryRatio || 1});
+
+        @media print {
+          width: 4.5in;
+          height: calc(4.5in / ${galleryRatio || 1});
+          max-height: 5in;
+          max-width: calc(5in * ${galleryRatio || 1});
+        }
 
         img {
           width: 50%;

@@ -11,6 +11,7 @@ export default function PrintablePictureBookPage({
         page-break-after: always;
         display: ${isVisible ? 'flex' : 'none'};
         flex-direction: column;
+        justify-content: center;
         box-sizing: border-box;
 
         > * {
@@ -19,6 +20,7 @@ export default function PrintablePictureBookPage({
 
         .gallery-container {
           flex-grow: 1;
+          overflow-x: scroll;
         }
 
         @media print {

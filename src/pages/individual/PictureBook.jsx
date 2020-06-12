@@ -115,7 +115,8 @@ export default function PictureBook() {
           style={{
             display: 'flex',
             justifyContent: 'space-between',
-            alignItems: 'flex-start',
+            flexWrap: 'wrap-reverse',
+            alignItems: 'flex-end',
           }}
         >
           <Typography variant="h2" component="h1">
@@ -126,6 +127,7 @@ export default function PictureBook() {
             disabled={isLoading}
             onClick={() => window.print()}
             css={css`
+              margin-bottom: 16px;
               @media print {
                 display: none;
               }
