@@ -24,7 +24,7 @@ const dataCSS = css`
   }
 `;
 
-export default function PictureBookPage({
+export default function PictureBookIndividual({
   individual,
   isVisible = true,
   onLoad,

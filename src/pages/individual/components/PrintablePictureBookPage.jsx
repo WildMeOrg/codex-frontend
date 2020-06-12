@@ -20,7 +20,7 @@ export default function PrintablePictureBookPage({
 
         .gallery-container {
           flex-grow: 1;
-          overflow-x: scroll;
+          overflow-x: auto;
         }
 
         @media print {
