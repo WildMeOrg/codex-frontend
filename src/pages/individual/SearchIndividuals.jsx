@@ -90,14 +90,15 @@ export default function SearchIndividuals() {
           </Typography>
           <ButtonLink
             variant="outlined"
-            href="/individuals/picture-book"
+            href="/individuals/picturebook"
             linkProps={{
               target: '_blank',
               rel: 'noopener noreferrer',
             }}
+            size="small"
             style={{ flexShrink: 0 }}
           >
-            <FormattedMessage id="PRINT_PHOTO_BOOK" />
+            <FormattedMessage id="PRINT_PHOTOBOOK" />
           </ButtonLink>
         </div>
         <SearchFilterList

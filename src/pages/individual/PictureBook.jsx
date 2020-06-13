@@ -1,12 +1,12 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useState } from 'react';
 import { Global, css } from '@emotion/core';
 import { useSelector } from 'react-redux';
+import { cloneDeep } from 'lodash-es';
 import { FormattedMessage } from 'react-intl';
 import { useTheme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Typography from '@material-ui/core/Typography';
-import { cloneDeep } from 'lodash-es';
 import { selectSearchResults } from '../../modules/individuals/selectors';
 import PrintablePictureBookPage from './components/PrintablePictureBookPage';
 import PictureBookIndividual from './components/PictureBookIndividual';
@@ -82,20 +82,9 @@ export default function PictureBook() {
       return acc;
     }, {}),
   );
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(
-    () => {
-      if (
-        isLoading &&
-        !Object.values(pagesLoading).some(value => value === true)
-      ) {
-        setIsLoading(false);
-      }
-    },
-    [isLoading, pagesLoading],
+  const isLoading = Object.values(pagesLoading).some(value =>
+    Boolean(value),
   );
-
   return (
     <>
       <Global styles={resetStylesForPrintingCSS(theme)} />
@@ -115,19 +104,21 @@ export default function PictureBook() {
           style={{
             display: 'flex',
             justifyContent: 'space-between',
-            flexWrap: 'wrap-reverse',
+            flexWrap: 'wrap',
             alignItems: 'flex-end',
           }}
         >
           <Typography variant="h2" component="h1">
-            <FormattedMessage id="PRINTABLE_FLUKE_BOOK" />
+            <FormattedMessage id="PRINTABLE_PHOTOBOOK" />
           </Typography>
           <Button
-            variant="outlined"
+            variant="contained"
+            color="secondary"
+            size="large"
             disabled={isLoading}
             onClick={() => window.print()}
             css={css`
-              margin-bottom: 16px;
+              margin-top: 16px;
               @media print {
                 display: none;
               }
@@ -143,14 +134,12 @@ export default function PictureBook() {
           key={`${individual.id}-${index}`} // remove index from key when using real data
           isVisible={!isLoading}
           individual={individual}
-          onLoad={useCallback(
-            () =>
-              setPagesLoading(prevState => ({
-                ...prevState,
-                [individual.id]: false,
-              })),
-            [],
-          )}
+          onLoad={() =>
+            setPagesLoading(prevState => ({
+              ...prevState,
+              [individual.id]: false,
+            }))
+          }
         />
       ))}
     </>
