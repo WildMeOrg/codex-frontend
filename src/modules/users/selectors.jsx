@@ -133,6 +133,14 @@ export const selectUsers = state => ({
         name: 'footer_logo',
         value: null,
       },
+      {
+        name: 'use_usa_dates',
+        value: true,
+      },
+      {
+        name: 'locale',
+        value: 'en',
+      },
     ],
     settings: {
       pendingReports: [

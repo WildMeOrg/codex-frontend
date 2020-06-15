@@ -35,7 +35,7 @@ export default function({
       <DialogTitle>
         <FormattedMessage id="EDIT" />
       </DialogTitle>
-      <DialogContent>
+      <DialogContent style={{ height: 500 }}>
         {categories && (
           <Tabs
             component="h3"

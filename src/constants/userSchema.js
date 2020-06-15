@@ -63,6 +63,40 @@ const userSchema = [
     category: userSchemaCategories.settings.name,
   },
   {
+    name: 'use_usa_dates',
+    labelId: 'PREFERRED_DATE_FORMAT',
+    defaultValue: true,
+    fieldType: 'select',
+    choices: [
+      {
+        value: true,
+        label: 'MM-DD-YYYY',
+      },
+      {
+        value: false,
+        label: 'DD-MM-YYYY',
+      },
+    ],
+    category: userSchemaCategories.settings.name,
+  },
+  {
+    name: 'locale',
+    labelId: 'LOCALE',
+    defaultValue: 'en',
+    fieldType: 'select',
+    choices: [
+      {
+        value: 'en',
+        label: 'English',
+      },
+      {
+        value: 'es',
+        label: 'Spanish',
+      },
+    ],
+    category: userSchemaCategories.settings.name,
+  },
+  {
     name: 'footer_logo',
     labelId: 'FOOTER_LOGO',
     descriptionId: 'FOOTER_LOGO_DESCRIPTION',
