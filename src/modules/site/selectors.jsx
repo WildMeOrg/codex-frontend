@@ -1,5 +1,6 @@
 import logoForBlackBackground from '../../assets/logo-for-black-bg.png';
 import logoForWhiteBackground from '../../assets/logo-for-white-bg.png';
+import splashVideo from '../../assets/splashvid.webm';
 
 export const selectSpeciesFields = state => ({
   bear: [
@@ -36,6 +37,10 @@ export const selectSiteSettings = state => ({
   private: true,
   needsSetup: false,
   googleApiKey: '',
+  tagline: 'A.I. for Cetacean Research',
+  exploreTagline:
+    'Explore the world’s largest open database of cetacean sightings.',
+  splashVideo,
   lightBackgroundLogo: {
     name: 'Screen Shot 2020-04-14 at 1.23.28 PM.png',
     type: 'image/png',

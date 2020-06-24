@@ -31,6 +31,7 @@ import Login from './pages/auth/Login';
 import Welcome from './pages/auth/Welcome';
 import Forgot from './pages/auth/Forgot';
 import Logout from './pages/auth/Logout';
+import Root from './pages/root/Root';
 import RequestInvitation from './pages/auth/RequestInvitation';
 import materialTheme from './styles/materialTheme';
 import messagesEn from '../locale/en.json';
@@ -128,7 +129,7 @@ export default function App() {
                   <Welcome />
                 </Route>
                 <Route path="/" exact>
-                  <div />
+                  <Root />
                 </Route>
                 <Route>
                   <FourOhFour />

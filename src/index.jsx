@@ -5,8 +5,8 @@ import { hot } from 'react-hot-loader/root';
 
 import 'normalize.css';
 import '../fonts/fonts.css';
+import './styles/globalStyles.css';
 
-// import GlobalStyles from './styles/GlobalStyles';
 import App from './App';
 import storeConfigs from './store';
 
@@ -16,7 +16,6 @@ const root = document.getElementById('root');
 
 const Main = hot(() => (
   <>
-    {/* <GlobalStyles /> */}
     <Provider store={store}>
       <App />
     </Provider>

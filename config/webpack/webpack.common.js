@@ -57,7 +57,7 @@ module.exports = {
         ],
       },
       {
-        test: /\.(gif|jpg|jpeg|png)$/,
+        test: /\.(gif|jpg|jpeg|png|webm)$/,
         include: [resolve(rootDir, 'src')],
         use: {
           loader: 'file-loader',

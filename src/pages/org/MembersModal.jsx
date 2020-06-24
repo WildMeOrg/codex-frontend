@@ -19,6 +19,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import DeleteIcon from '@material-ui/icons/Delete';
 import UndoIcon from '@material-ui/icons/Undo';
 import IconButton from '@material-ui/core/IconButton';
+import FilterBar from '../../components/FilterBar';
 import Link from '../../components/Link';
 
 const word = 'HERPADERPAFEEDMEREALDATAPLEAASEE';
@@ -29,6 +30,7 @@ export default function MembersModal({
   onSaveChanges = Function.prototype,
 }) {
   const [changes, setChanges] = useState({});
+  const [filter, setFilter] = useState('');
 
   return (
     <Dialog
@@ -47,13 +49,27 @@ export default function MembersModal({
         </IconButton>
       </DialogTitle>
       <DialogContent style={{ padding: '8px 12px' }}>
-        <Typography variant="subtitle1" style={{ padding: '0 16px' }}>
-          <FormattedMessage
-            id="MEMBER_COUNT"
-            values={{ memberCount: 561 }}
-          />
-        </Typography>
-        <List dense>
+        <div>
+          <FilterBar value={filter} onChange={setFilter} />
+          <Typography
+            variant="subtitle1"
+            style={{ padding: '0 16px' }}
+          >
+            <FormattedMessage
+              id="MEMBER_COUNT"
+              values={{ memberCount: 561 }}
+            />
+          </Typography>
+        </div>
+        <List
+          dense
+          style={{
+            overflow: 'scroll',
+            height: 400,
+            maxHeight: '70%',
+            minWidth: 400,
+          }}
+        >
           {word.split('').map((character, i) => {
             const role = i < 3 ? 'moderator' : 'member';
             const roleTranslateId =
