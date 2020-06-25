@@ -50,7 +50,7 @@ export default function Welcome() {
             variant="contained"
             href="/"
           >
-            <FormattedMessage id="VIEW_HOME" />
+            <FormattedMessage id="VIEW_HOMEPAGE" />
           </ButtonLink>
         </Grid>
         <Grid item style={{ position: 'relative' }}>

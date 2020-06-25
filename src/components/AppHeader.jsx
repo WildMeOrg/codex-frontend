@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import clsx from 'clsx';
 import { FormattedMessage } from 'react-intl';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { useTheme } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -19,38 +18,7 @@ import ButtonLink from './ButtonLink';
 import Link from './Link';
 import AppDrawer from './AppDrawer';
 
-const useStyles = makeStyles(theme => ({
-  toolbar: {
-    paddingRight: 24, // keep right padding when drawer closed
-  },
-  toolbarIcon: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    padding: '0 8px',
-    ...theme.mixins.toolbar,
-  },
-  appBar: {
-    zIndex: theme.zIndex.drawer + 1,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-  },
-  title: {
-    flexGrow: 1,
-    fontSize: 50,
-  },
-
-  avatar: {
-    marginLeft: theme.spacing(1),
-    width: theme.spacing(4),
-    height: theme.spacing(4),
-  },
-}));
-
 export default function AppHeader() {
-  const classes = useStyles();
   const theme = useTheme();
   const location = useLocation();
   const dispatch = useDispatch();
@@ -60,19 +28,34 @@ export default function AppHeader() {
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const handleClick = () => {
-    window.scrollTo(0, 0);
     setDrawerOpen(false);
   };
 
   return (
-    <AppBar position="fixed" className={clsx(classes.appBar)}>
+    <AppBar
+      position="fixed"
+      style={{
+        zIndex: theme.zIndex.drawer + 1,
+        transition: theme.transitions.create(['width', 'margin'], {
+          easing: theme.transitions.easing.sharp,
+          duration: theme.transitions.duration.leavingScreen,
+        }),
+      }}
+    >
       <AppDrawer
         open={drawerOpen}
         onClose={() => setDrawerOpen(false)}
         handleClick={handleClick}
         isAuthenticated={isAuthenticated}
       />
-      <Toolbar className={classes.toolbar}>
+      <Toolbar
+        style={{
+          paddingRight: 24,
+          maxWidth: 1170,
+          width: '100%',
+          margin: '0 auto',
+        }}
+      >
         <IconButton
           edge="start"
           style={{ marginRight: 8 }}
@@ -103,12 +86,20 @@ export default function AppHeader() {
           </Link>
         </Typography>
         {isAuthenticated ? (
-          <Avatar className={classes.avatar} variant="square">
+          <Avatar
+            style={{
+              marginLeft: theme.spacing(1),
+              width: theme.spacing(4),
+              height: theme.spacing(4),
+            }}
+            variant="square"
+          >
             1
           </Avatar>
         ) : (
           <ButtonLink
-            style={{ color: theme.palette.common.white }}
+            variant="contained"
+            color="secondary"
             href="/login"
             onClick={() => {
               dispatch(setLoginRedirect(location.pathname));

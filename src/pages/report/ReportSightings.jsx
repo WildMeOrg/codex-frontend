@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
+import { useSelector } from 'react-redux';
+
 import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -8,7 +10,11 @@ import Radio from '@material-ui/core/Radio';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import InfoIcon from '@material-ui/icons/InfoOutlined';
+import Drawer from '@material-ui/core/Drawer';
+
+import { selectIsAuthenticated } from '../../modules/app/selectors';
 import MainColumn from '../../components/MainColumn';
+import ButtonLink from '../../components/ButtonLink';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import Link from '../../components/Link';
 import StandardReport from './StandardReport';
@@ -17,9 +23,12 @@ import UploadManager from './UploadManager';
 
 export default function ReportSightings() {
   useDocumentTitle('Report Encounters');
+  const isAuthenticated = useSelector(selectIsAuthenticated);
+
   const [mode, setMode] = useState('');
   const [files, setFiles] = useState([]);
   const [reporting, setReporting] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(!isAuthenticated);
 
   const noImages = mode !== '' && files.length === 0;
 
@@ -27,6 +36,48 @@ export default function ReportSightings() {
 
   return (
     <MainColumn style={{ display: 'flex', justifyContent: 'center' }}>
+      <Drawer
+        open={drawerOpen}
+        anchor="bottom"
+        PaperProps={{ style: { padding: '20px 20px 32px 20px' } }}
+      >
+        <Typography>
+          <FormattedMessage id="REPORT_LOGIN_PROMPT" />
+        </Typography>
+        <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+          <Button
+            variant="contained"
+            color="secondary"
+            style={{ marginTop: 12, marginRight: 20 }}
+            onClick={() => setDrawerOpen(false)}
+          >
+            <FormattedMessage id="CONTINUE" />
+          </Button>
+          <ButtonLink
+            variant="contained"
+            style={{
+              color: 'white',
+              marginTop: 12,
+              marginRight: 20,
+              backgroundColor: 'rgba(79, 84, 255)',
+            }}
+            href="/login"
+          >
+            <FormattedMessage id="LOG_IN" />
+          </ButtonLink>
+          <ButtonLink
+            variant="contained"
+            style={{
+              color: 'white',
+              marginTop: 12,
+              backgroundColor: 'rgba(232, 85, 0)',
+            }}
+            href="/request"
+          >
+            <FormattedMessage id="REQUEST_INVITE" />
+          </ButtonLink>
+        </div>
+      </Drawer>
       <Grid
         container
         direction="column"

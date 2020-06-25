@@ -1,5 +1,10 @@
-import React from 'react';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import {
+  BrowserRouter,
+  Switch,
+  Route,
+  useLocation,
+} from 'react-router-dom';
 import {
   createMuiTheme,
   ThemeProvider,
@@ -48,6 +53,19 @@ const messageMap = {
   es: messagesEs,
 };
 
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(
+    () => {
+      window.scrollTo(0, 0);
+    },
+    [pathname],
+  );
+
+  return null;
+}
+
 export default function App() {
   const theme = createMuiTheme(materialTheme);
   const locale = useSelector(selectLocale);
@@ -62,6 +80,7 @@ export default function App() {
         messages={messageMap[locale]}
       >
         <BrowserRouter basename="/">
+          <ScrollToTop />
           <main
             style={{
               height: '100%',
