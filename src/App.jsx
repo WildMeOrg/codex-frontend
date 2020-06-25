@@ -1,5 +1,10 @@
-import React from 'react';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import {
+  BrowserRouter,
+  Switch,
+  Route,
+  useLocation,
+} from 'react-router-dom';
 import {
   createMuiTheme,
   ThemeProvider,
@@ -31,6 +36,7 @@ import Login from './pages/auth/Login';
 import Welcome from './pages/auth/Welcome';
 import Forgot from './pages/auth/Forgot';
 import Logout from './pages/auth/Logout';
+import Root from './pages/root/Root';
 import RequestInvitation from './pages/auth/RequestInvitation';
 import materialTheme from './styles/materialTheme';
 import messagesEn from '../locale/en.json';
@@ -47,6 +53,19 @@ const messageMap = {
   es: messagesEs,
 };
 
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(
+    () => {
+      window.scrollTo(0, 0);
+    },
+    [pathname],
+  );
+
+  return null;
+}
+
 export default function App() {
   const theme = createMuiTheme(materialTheme);
   const locale = useSelector(selectLocale);
@@ -61,6 +80,7 @@ export default function App() {
         messages={messageMap[locale]}
       >
         <BrowserRouter basename="/">
+          <ScrollToTop />
           <main
             style={{
               height: '100%',
@@ -128,7 +148,7 @@ export default function App() {
                   <Welcome />
                 </Route>
                 <Route path="/" exact>
-                  <div />
+                  <Root />
                 </Route>
                 <Route>
                   <FourOhFour />

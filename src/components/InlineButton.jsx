@@ -12,6 +12,7 @@ export default function InlineButton({
         textDecoration: 'underline',
         cursor: 'pointer',
         padding: 0,
+        background: 'unset',
         ...style,
       }}
       type="button"

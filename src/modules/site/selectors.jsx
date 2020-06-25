@@ -1,5 +1,7 @@
 import logoForBlackBackground from '../../assets/logo-for-black-bg.png';
 import logoForWhiteBackground from '../../assets/logo-for-white-bg.png';
+import splashVideo from '../../assets/splashvid.webm';
+import shane from '../../assets/shane.jpg';
 
 export const selectSpeciesFields = state => ({
   bear: [
@@ -36,6 +38,15 @@ export const selectSiteSettings = state => ({
   private: true,
   needsSetup: false,
   googleApiKey: '',
+  tagline: 'A.I. for Cetacean Research',
+  exploreTagline:
+    'Explore the world’s largest open database of cetacean sightings.',
+  testimonial:
+    'Sperm whales roam so vastly that no one research group can study them across their range. PhotoID as a tool for conservation and research finds power in numbers and international, inter-institutional collaboration. Flukebook enables us to do this easily.',
+  testimonialAuthor: 'Shane Gero',
+  testimonialAuthorCredentials: 'The Dominica Sperm Whale Project',
+  testimonialAuthorImage: shane,
+  splashVideo,
   lightBackgroundLogo: {
     name: 'Screen Shot 2020-04-14 at 1.23.28 PM.png',
     type: 'image/png',

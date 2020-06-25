@@ -1,15 +1,13 @@
 import React, { useState } from 'react';
 import { get } from 'lodash-es';
-import { useIntl, FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
-import Input from '@material-ui/core/Input';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import SearchIcon from '@material-ui/icons/Search';
 import IconButton from '@material-ui/core/IconButton';
 import MoreIcon from '@material-ui/icons/Delete';
 import BigAvatar from './BigAvatar';
 import Link from './Link';
+import FilterBar from './FilterBar';
 
 function Details({ entity, titleKey, renderDetails }) {
   return (
@@ -46,7 +44,6 @@ export default function AvatarGallery({
   justify = 'center',
   square = false,
 }) {
-  const intl = useIntl();
   const [filter, setFilter] = useState('');
 
   const filteredEntities = entities.filter(entity =>
@@ -56,17 +53,7 @@ export default function AvatarGallery({
   return (
     <>
       {entities.length > 6 && (
-        <Input
-          style={{ margin: '16px 0 20px 16px', width: 260 }}
-          placeholder={intl.formatMessage({ id: 'SEARCH' })}
-          value={filter}
-          onChange={e => setFilter(e.target.value)}
-          startAdornment={
-            <InputAdornment position="start">
-              <SearchIcon />
-            </InputAdornment>
-          }
-        />
+        <FilterBar value={filter} onChange={setFilter} />
       )}
       {filteredEntities.length === 0 && (
         <Typography style={{ marginLeft: 16 }}>
