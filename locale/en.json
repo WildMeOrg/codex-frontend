@@ -420,8 +420,8 @@
     "EXPLORE_TAGLINE_DESCRIPTION": "The tagline under the Search & Export icon on the splash page.",
     "SPLASH_VIDEO": "Splash video",
     "SPLASH_VIDEO_DESCRIPTION": "The video that plays front and center on the splash page.",
-    "TAGLINE": "The text displayed front and center on the splash page.",
-    "TAGLINE_DESCRIPTION": "Preferred date format",
+    "TAGLINE": "Tagline",
+    "TAGLINE_DESCRIPTION": "The text displayed front and center on the splash page.",
     "LOCALE": "Locale",
     "LOADING": "Loading"
 }

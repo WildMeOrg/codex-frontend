@@ -6,7 +6,6 @@ import Papa from 'papaparse';
 
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
 import FormGroup from '@material-ui/core/FormGroup';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
@@ -14,10 +13,9 @@ import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import BackIcon from '@material-ui/icons/KeyboardBackspace';
 
 import { selectSightingSchema } from '../../modules/sightings/selectors';
-import AsyncButton from '../../components/AsyncButton';
+import Button from '../../components/Button';
 import InlineButton from '../../components/InlineButton';
 import LabeledInput from '../../components/LabeledInput';
 import BigExpansionPanel from '../../components/BigExpansionPanel';
@@ -71,8 +69,7 @@ export default function BulkReport({ onBack, files }) {
         <Button
           onClick={onBack}
           style={{ marginTop: 8 }}
-          size="small"
-          startIcon={<BackIcon />}
+          display="back"
         >
           <FormattedMessage id="BACK_TO_PHOTOS" />
         </Button>
@@ -146,7 +143,7 @@ export default function BulkReport({ onBack, files }) {
             <Typography style={{ margin: '12px 0' }}>
               <FormattedMessage id="GENERATE_TEMPLATE_DESCRIPTION_2" />
             </Typography>
-            <Button variant="outlined" disabled={!readyToGenerate}>
+            <Button display="panel" disabled={!readyToGenerate}>
               <a
                 style={{ textDecoration: 'unset', color: 'unset' }}
                 href={`data:text/plain;charset=utf-8,${encodeURIComponent(
@@ -256,7 +253,7 @@ export default function BulkReport({ onBack, files }) {
           flexDirection: 'column',
         }}
       >
-        <AsyncButton
+        <Button
           onClick={() => {
             // check that terms and conditions were accepted
             setTermsError(!acceptedTerms);
@@ -272,11 +269,10 @@ export default function BulkReport({ onBack, files }) {
           }}
           style={{ width: 200 }}
           loading={loading}
-          variant="contained"
-          color="secondary"
+          display="primary"
         >
           <FormattedMessage id="REPORT_SIGHTINGS" />
-        </AsyncButton>
+        </Button>
       </Grid>
       <Grid style={{ marginTop: 12 }} item>
         {termsError && (

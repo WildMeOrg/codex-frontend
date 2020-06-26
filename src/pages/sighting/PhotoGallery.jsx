@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
-import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import EditIcon from '@material-ui/icons/Edit';
 import MatchIcon from '@material-ui/icons/AssignmentInd';
 import AvatarGallery from '../../components/AvatarGallery';
 import AnnotationEditor from '../../components/AnnotationEditor';
+import Button from '../../components/Button';
 
 export default function PhotoGallery({ sighting }) {
   const [activeAnnotation, setAnnotation] = useState(null);
@@ -109,7 +109,7 @@ export default function PhotoGallery({ sighting }) {
                   setCreateAnnotationSource(photo.profile);
                 }}
                 size="small"
-                variant="outlined"
+                display="panel"
               >
                 <FormattedMessage id="NEW_ANNOTATION" />
               </Button>

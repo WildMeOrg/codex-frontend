@@ -3,7 +3,6 @@ import { FormattedMessage } from 'react-intl';
 import { useSelector } from 'react-redux';
 import Hidden from '@material-ui/core/Hidden';
 import Drawer from '@material-ui/core/Drawer';
-import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import FilterPanel from '../../components/FilterPanel';
 import SearchFilterList from '../../components/SearchFilterList';
@@ -14,6 +13,7 @@ import {
 } from '../../modules/individuals/selectors';
 import ResultsTable from './ResultsTable';
 import ButtonLink from '../../components/ButtonLink';
+import Button from '../../components/Button';
 
 const drawerWidth = 280;
 
@@ -89,13 +89,11 @@ export default function SearchIndividuals() {
             <FormattedMessage id="EXPLORE_INDIVIDUALS" />
           </Typography>
           <ButtonLink
-            variant="outlined"
             href="/individuals/picturebook"
             linkProps={{
               target: '_blank',
               rel: 'noopener noreferrer',
             }}
-            size="small"
             style={{ flexShrink: 0 }}
           >
             <FormattedMessage id="PRINT_PHOTOBOOK" />
@@ -109,7 +107,6 @@ export default function SearchIndividuals() {
         <Hidden smUp>
           <Button
             style={{ margin: 16 }}
-            variant="outlined"
             onClick={() => setMobileDrawerOpen(true)}
           >
             <FormattedMessage id="SHOW_FILTERS" />

@@ -3,9 +3,8 @@ import GoogleMapReact from 'google-map-react';
 import { FormattedMessage } from 'react-intl';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import BackIcon from '@material-ui/icons/ArrowBack';
 import { googleMapsApiKey } from '../../../constants/apiKeys';
+import Button from '../../../components/Button';
 import LabeledInput from '../../../components/LabeledInput';
 import fakeData from './fakeData';
 
@@ -59,10 +58,7 @@ export default function Map({
             justifyContent: 'space-between',
           }}
         >
-          <Button
-            startIcon={<BackIcon />}
-            onClick={onDisableInteractive}
-          >
+          <Button display="back" onClick={onDisableInteractive}>
             <FormattedMessage id="BACK" />
           </Button>
           <div>
@@ -84,7 +80,7 @@ export default function Map({
             />
             <LabeledInput
               value={time}
-              onChange={(t) => setTime(t)}
+              onChange={t => setTime(t)}
               width={200}
               schema={{
                 labelId: 'TIME',
@@ -240,7 +236,7 @@ export default function Map({
               </Typography>
             </Grid>
             <Button
-              variant="outlined"
+              display="panel"
               style={{ marginTop: 20, borderColor: 'black' }}
               onClick={onSetInteractive}
             >

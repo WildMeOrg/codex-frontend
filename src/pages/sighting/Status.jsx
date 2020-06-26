@@ -1,9 +1,9 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
+import Button from '../../components/Button';
 
 export default function Status({ onMatch, onMarkComplete }) {
   const photos = [
@@ -97,14 +97,15 @@ export default function Status({ onMatch, onMarkComplete }) {
         </Grid>
       </Grid>
       <Grid item style={{ display: 'flex', flexDirection: 'column' }}>
-        <Button
-          onClick={onMatch}
-          variant="contained"
-          color="secondary"
-        >
+        <Button onClick={onMatch} display="primary">
           <FormattedMessage id="MATCH_ANNOTATIONS" />
         </Button>
-        <Button onClick={onMarkComplete} size="small">
+        <Button
+          display="basic"
+          style={{ marginTop: 4 }}
+          onClick={onMarkComplete}
+          size="small"
+        >
           <FormattedMessage id="MARK_SIGHTING_COMPLETE" />
         </Button>
       </Grid>

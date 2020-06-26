@@ -4,7 +4,7 @@ import { useTheme } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
+import Button from '../../components/Button';
 import InlineButton from '../../components/InlineButton';
 import MembersModal from './MembersModal';
 import InviteModal from './InviteModal';
@@ -40,13 +40,6 @@ export default function MembersPanel() {
           <Typography variant="h6">
             <FormattedMessage id="MEMBERS" />
           </Typography>
-          <Button
-            onClick={() => setInviteModalOpen(true)}
-            style={{ marginLeft: 16 }}
-            size="small"
-          >
-            <FormattedMessage id="SEND_INVITATION" />
-          </Button>
         </Grid>
         <Grid item>
           <InlineButton onClick={() => setMembersModalOpen(true)}>
@@ -71,6 +64,15 @@ export default function MembersPanel() {
           </Grid>
         ))}
       </Grid>
+      <div>
+        <Button
+          onClick={() => setInviteModalOpen(true)}
+          style={{ marginTop: 12 }}
+          display="panel"
+        >
+          <FormattedMessage id="SEND_INVITATION" />
+        </Button>
+      </div>
     </div>
   );
 }

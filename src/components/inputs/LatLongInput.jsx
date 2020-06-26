@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { get } from 'lodash-es';
-import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -11,6 +10,7 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import CloseIcon from '@material-ui/icons/Close';
 import LatLngMap from './mapUtils/LatLngMap';
 import TextInput from './TextInput';
+import Button from '../Button';
 
 export default function LatLongInput({
   schema,
@@ -57,7 +57,6 @@ export default function LatLongInput({
       </div>
       <Button
         size="small"
-        variant="outlined"
         onClick={() => setModalOpen(true)}
         {...rest}
       >
@@ -86,6 +85,7 @@ export default function LatLongInput({
         </DialogContent>
         <DialogActions>
           <Button
+            display="basic"
             onClick={() => {
               onClose();
             }}
@@ -93,6 +93,7 @@ export default function LatLongInput({
             <FormattedMessage id="CANCEL" />
           </Button>
           <Button
+            display="basic"
             onClick={() => {
               onChange(mapLatLng);
               onClose();

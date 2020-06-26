@@ -2,7 +2,6 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { get } from 'lodash-es';
 import { v4 as uuid } from 'uuid';
-import Button from '@material-ui/core/Button';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
@@ -16,6 +15,7 @@ import { fieldTypeChoices } from '../../constants/fieldTypes';
 import BooleanInput from './BooleanInput';
 import TextInput from './TextInput';
 import OptionEditor from './OptionEditor';
+import Button from '../Button';
 
 export default function FieldSetInput({
   schema,
@@ -192,7 +192,6 @@ export default function FieldSetInput({
           ]);
         }}
         size="small"
-        variant="outlined"
       >
         <FormattedMessage
           id={fieldset.length > 0 ? 'ADD_ANOTHER_FIELD' : 'ADD_FIELD'}

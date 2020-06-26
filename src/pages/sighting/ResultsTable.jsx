@@ -121,8 +121,7 @@ export default function ResultsTable({ sightings }) {
                       </Typography>
                       <Typography>Region: South Sahara</Typography>
                       <ButtonLink
-                        variant="outlined"
-                        color="secondary"
+                        display="panel"
                         style={{ marginTop: 16 }}
                         href={`/sightings/${expandedSighting.id}`}
                       >

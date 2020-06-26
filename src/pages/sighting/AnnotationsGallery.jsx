@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
-import Button from '@material-ui/core/Button';
 import AnnotationEditor from '../../components/AnnotationEditor';
 import AvatarGallery from '../../components/AvatarGallery';
+import Button from '../../components/Button';
 
 export default function IndividualsGallery({ sighting }) {
   const [activeAnnotation, setAnnotation] = useState(null);
@@ -47,8 +47,15 @@ export default function IndividualsGallery({ sighting }) {
             <div style={{ display: 'flex', flexDirection: 'column' }}>
               <Button
                 size="small"
-                variant="outlined"
-                style={{ marginTop: 12 }}
+                display="primary"
+                style={{ marginTop: 6 }}
+              >
+                <FormattedMessage id="MATCH_ANNOTATION" />
+              </Button>
+              <Button
+                size="small"
+                display="basic"
+                style={{ marginTop: 4 }}
                 onClick={() =>
                   setAnnotation({
                     ...annotation,
@@ -57,14 +64,6 @@ export default function IndividualsGallery({ sighting }) {
                 }
               >
                 <FormattedMessage id="EDIT_ANNOTATION" />
-              </Button>
-              <Button
-                size="small"
-                variant="contained"
-                color="secondary"
-                style={{ marginTop: 6 }}
-              >
-                <FormattedMessage id="MATCH_ANNOTATION" />
               </Button>
             </div>
           );

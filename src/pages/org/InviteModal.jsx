@@ -5,7 +5,6 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogActions from '@material-ui/core/DialogActions';
-import Button from '@material-ui/core/Button';
 import Input from '@material-ui/core/Input';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Grid from '@material-ui/core/Grid';
@@ -19,6 +18,7 @@ import IconButton from '@material-ui/core/IconButton';
 import SearchIcon from '@material-ui/icons/Search';
 import NavigateIcon from '@material-ui/icons/Visibility';
 import Link from '../../components/Link';
+import Button from '../../components/Button';
 import BooleanInput from '../../components/inputs/BooleanInput';
 
 const word = 'HERPADERPAFEEDMEREALDATAPLEAASEE';
@@ -123,10 +123,14 @@ export default function MembersModal({
         </Grid>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose}>
+        <Button display="basic" onClick={onClose}>
           <FormattedMessage id="CANCEL" />
         </Button>
-        <Button disabled={!user} onClick={() => onInvite(user)}>
+        <Button
+          display="basic"
+          disabled={!user}
+          onClick={() => onInvite(user)}
+        >
           <FormattedMessage id="SEND_INVITATION" />
         </Button>
       </DialogActions>

@@ -1,8 +1,8 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import SettingsIcon from '@material-ui/icons/Settings';
+import Button from './Button';
 
 export default function Header({
   title,
@@ -31,7 +31,6 @@ export default function Header({
       {showButton && (
         <Button
           onClick={onButtonClick}
-          variant="outlined"
           style={{ margin: '16px 8px' }}
         >
           {buttonText}

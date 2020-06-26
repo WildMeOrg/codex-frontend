@@ -23,8 +23,7 @@ export default function Logout() {
           <ButtonLink
             href="/login"
             style={{ width: '100%' }}
-            color="secondary"
-            variant="contained"
+            display="primary"
           >
             <FormattedMessage id="LOG_IN" />
           </ButtonLink>

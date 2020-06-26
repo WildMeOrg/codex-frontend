@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useSelector } from 'react-redux';
 
-import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import RadioGroup from '@material-ui/core/RadioGroup';
@@ -17,6 +16,7 @@ import MainColumn from '../../components/MainColumn';
 import ButtonLink from '../../components/ButtonLink';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import Link from '../../components/Link';
+import Button from '../../components/Button';
 import StandardReport from './StandardReport';
 import BulkReport from './BulkReport';
 import UploadManager from './UploadManager';
@@ -46,31 +46,26 @@ export default function ReportSightings() {
         </Typography>
         <div style={{ display: 'flex', flexWrap: 'wrap' }}>
           <Button
-            variant="contained"
-            color="secondary"
+            display="primary"
             style={{ marginTop: 12, marginRight: 20 }}
             onClick={() => setDrawerOpen(false)}
           >
             <FormattedMessage id="CONTINUE" />
           </Button>
           <ButtonLink
-            variant="contained"
+            display="secondary"
             style={{
-              color: 'white',
               marginTop: 12,
               marginRight: 20,
-              backgroundColor: 'rgba(79, 84, 255)',
             }}
             href="/login"
           >
             <FormattedMessage id="LOG_IN" />
           </ButtonLink>
           <ButtonLink
-            variant="contained"
+            display="tertiary"
             style={{
-              color: 'white',
               marginTop: 12,
-              backgroundColor: 'rgba(232, 85, 0)',
             }}
             href="/request"
           >
@@ -142,10 +137,14 @@ export default function ReportSightings() {
             </Grid>
 
             {mode !== '' && (
-              <Grid item>
+              <Grid item style={{ marginTop: 20 }}>
                 <UploadManager files={files} setFiles={setFiles} />
                 <div
-                  style={{ display: 'flex', alignItems: 'center' }}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    marginTop: 20,
+                  }}
                 >
                   <InfoIcon
                     fontSize="small"
@@ -167,8 +166,7 @@ export default function ReportSightings() {
 
             <Grid item>
               <Button
-                variant="contained"
-                color={noImages ? 'default' : 'secondary'}
+                display={noImages ? 'subtle' : 'primary'}
                 disabled={!mode}
                 onClick={() => setReporting(true)}
                 style={{ marginTop: 16 }}

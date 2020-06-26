@@ -6,6 +6,7 @@ import Grid from '@material-ui/core/Grid';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import MainColumn from '../../components/MainColumn';
 import ButtonLink from '../../components/ButtonLink';
+import Button from '../../components/Button';
 import { selectSiteName } from '../../modules/site/selectors';
 
 export default function Welcome() {
@@ -46,8 +47,7 @@ export default function Welcome() {
         <Grid item style={{ position: 'relative' }}>
           <ButtonLink
             style={{ width: '100%' }}
-            color="secondary"
-            variant="contained"
+            display="primary"
             href="/"
           >
             <FormattedMessage id="VIEW_HOMEPAGE" />
@@ -57,9 +57,8 @@ export default function Welcome() {
           <ButtonLink
             style={{
               width: '100%',
-              backgroundColor: 'rgb(79, 84, 255)',
-              color: 'white',
             }}
+            display="secondary"
             variant="contained"
             href="/report"
           >
@@ -70,9 +69,8 @@ export default function Welcome() {
           <ButtonLink
             style={{
               width: '100%',
-              backgroundColor: 'rgb(232, 85, 0)',
-              color: 'white',
             }}
+            display="tertiary"
             variant="contained"
             href="/individuals"
           >

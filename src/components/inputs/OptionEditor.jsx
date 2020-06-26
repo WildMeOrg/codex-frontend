@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { v4 as uuid } from 'uuid';
-import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
@@ -12,6 +11,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import CloseIcon from '@material-ui/icons/Close';
 import TextInput from './TextInput';
 import DeleteButton from '../DeleteButton';
+import Button from '../Button';
 
 export default function OptionEditor({
   schema,
@@ -38,7 +38,6 @@ export default function OptionEditor({
         </Typography>
         <Button
           size="small"
-          variant="outlined"
           style={{ marginTop: 16 }}
           onClick={() => setModalOpen(true)}
           {...rest}
@@ -135,7 +134,6 @@ export default function OptionEditor({
               ]);
             }}
             size="small"
-            variant="outlined"
           >
             <FormattedMessage
               id={
@@ -148,6 +146,7 @@ export default function OptionEditor({
         </DialogContent>
         <DialogActions>
           <Button
+            display="basic"
             onClick={() => {
               onClose();
             }}

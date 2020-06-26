@@ -5,9 +5,9 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
-import Button from '@material-ui/core/Button';
 import { useTheme } from '@material-ui/core/styles';
 import BboxAnnotator from 'bboxjs';
+import Button from '../../components/Button';
 
 export default function Cropper({ imgSrc, onClose, setCrop }) {
   const [rect, setRect] = useState({});
@@ -135,8 +135,13 @@ export default function Cropper({ imgSrc, onClose, setCrop }) {
         <canvas ref={canvasRef} width={100} height={100} />
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose}>Cancel</Button>
-        <Button onClick={() => saveCrop(canvasRef.current)}>
+        <Button display="basic" onClick={onClose}>
+          Cancel
+        </Button>
+        <Button
+          display="basic"
+          onClick={() => saveCrop(canvasRef.current)}
+        >
           Save
         </Button>
       </DialogActions>
