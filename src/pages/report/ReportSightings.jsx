@@ -25,6 +25,8 @@ export default function ReportSightings() {
   useDocumentTitle('Report Encounters');
   const isAuthenticated = useSelector(selectIsAuthenticated);
 
+  console.log(isAuthenticated);
+
   const [mode, setMode] = useState('');
   const [files, setFiles] = useState([]);
   const [reporting, setReporting] = useState(false);

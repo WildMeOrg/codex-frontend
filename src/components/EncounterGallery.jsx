@@ -8,6 +8,7 @@ import ViewModule from '@material-ui/icons/ViewModule';
 import ViewList from '@material-ui/icons/ViewList';
 import EncounterCard from './EncounterCard';
 import Link from './Link';
+import DataDisplay from './dataDisplays/DataDisplay';
 
 export default function EncounterGallery({
   title,
@@ -18,7 +19,7 @@ export default function EncounterGallery({
   const [tableView, setTableView] = useState(true);
 
   return (
-    <div style={{ marginLeft: 12 }}>
+    <div style={{ margin: '0 12px' }}>
       <Grid
         container
         justify="space-between"
@@ -110,6 +111,52 @@ export default function EncounterGallery({
           }}
         />
       )}
+      <DataDisplay
+        columns={[
+          {
+            name: 'id',
+            label: 'Sighting ID',
+            options: {
+              customBodyRender: value => (
+                <Link href={`/sightings/${value}`}>{value}</Link>
+              ),
+            },
+          },
+          {
+            name: 'individualId',
+            label: 'Individual',
+            options: {
+              customBodyRender: value => (
+                <Link href={`/individuals/${value}`}>{value}</Link>
+              ),
+              display: hideIndividual ? 'false' : 'true',
+            },
+          },
+          {
+            name: 'submissionDate',
+            label: 'Date',
+            options: {
+              customBodyRender: value => format(value, 'M/dd/yy'),
+            },
+          },
+          {
+            name: 'photoCount',
+            label: 'Photographs',
+          },
+          {
+            name: 'user',
+            label: 'Submitter',
+            options: {
+              customBodyRender: value => (
+                <Link href={`/users/${value}`}>{value}</Link>
+              ),
+              display: false,
+            },
+          },
+        ]}
+        data={encounters}
+        title="Sightings of Teddy"
+      />
     </div>
   );
 }
