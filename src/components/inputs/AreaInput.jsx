@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
-import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import Dialog from '@material-ui/core/Dialog';
@@ -12,6 +11,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import AreaMap from './mapUtils/AreaMap';
 import DeleteButton from '../DeleteButton';
 import { defaultAreaBounds } from '../../constants/defaults';
+import Button from '../Button';
 
 export default function AreaInput({
   schema,
@@ -30,7 +30,6 @@ export default function AreaInput({
       {!value && (
         <Button
           size="small"
-          variant="outlined"
           onClick={() => setModalOpen(true)}
           {...rest}
         >
@@ -73,6 +72,7 @@ export default function AreaInput({
         </DialogContent>
         <DialogActions>
           <Button
+            display="basic"
             onClick={() => {
               onClose();
             }}
@@ -80,6 +80,7 @@ export default function AreaInput({
             <FormattedMessage id="CANCEL" />
           </Button>
           <Button
+            display="basic"
             onClick={() => {
               onChange(mapArea);
               onClose();

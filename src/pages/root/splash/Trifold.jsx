@@ -42,14 +42,16 @@ function Cta() {
       <div>
         <ButtonLink
           href="/report"
-          color="secondary"
-          variant="contained"
+          display="primary"
+          style={{ width: 240 }}
         >
           <FormattedMessage id="REPORT_A_SIGHTING" />
         </ButtonLink>
       </div>
       <div>
         <ButtonLink
+          display="secondary"
+          style={{ width: 240, marginTop: 12 }}
           external
           href="http://wiki.wildbook.org/en/researchers/overview"
         >

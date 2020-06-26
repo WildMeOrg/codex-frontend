@@ -1,14 +1,16 @@
 import React, { useCallback, useState } from 'react';
 import { get } from 'lodash-es';
 import { FormattedMessage } from 'react-intl';
+import BboxAnnotator from 'bboxjs';
+
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
 import { useTheme } from '@material-ui/core/styles';
-import BboxAnnotator from 'bboxjs';
+
+import Button from './Button';
 
 export default function AnnotationEditor({
   titleId = 'EDIT_ANNOTATION',
@@ -123,10 +125,10 @@ export default function AnnotationEditor({
         </div>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose}>
+        <Button display="basic" onClick={onClose}>
           <FormattedMessage id="CANCEL" />
         </Button>
-        <Button onClick={() => onChange(rect)}>
+        <Button display="basic" onClick={() => onChange(rect)}>
           <FormattedMessage id="SAVE" />
         </Button>
       </DialogActions>

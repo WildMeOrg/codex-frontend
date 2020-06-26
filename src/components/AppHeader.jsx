@@ -98,8 +98,7 @@ export default function AppHeader() {
           </Avatar>
         ) : (
           <ButtonLink
-            variant="contained"
-            color="secondary"
+            display="primary"
             href="/login"
             onClick={() => {
               dispatch(setLoginRedirect(location.pathname));

@@ -3,8 +3,8 @@ import { FormattedMessage } from 'react-intl';
 import { useSelector } from 'react-redux';
 import Hidden from '@material-ui/core/Hidden';
 import Drawer from '@material-ui/core/Drawer';
-import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import Button from '../../components/Button';
 import FilterPanel from '../../components/FilterPanel';
 import SearchFilterList from '../../components/SearchFilterList';
 import {
@@ -82,7 +82,7 @@ export default function SearchEncounters() {
         <Hidden smUp>
           <Button
             style={{ margin: 16 }}
-            variant="outlined"
+            display="panel"
             onClick={() => setMobileDrawerOpen(true)}
           >
             <FormattedMessage id="SHOW_FILTERS" />

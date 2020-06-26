@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { get } from 'lodash-es';
-import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import ReactCrop from 'react-image-crop';
-import PhotoUploader from './PhotoUploader';
 import 'react-image-crop/dist/ReactCrop.css';
+
+import Button from './Button';
+import PhotoUploader from './PhotoUploader';
 
 export default function EditAvatar({ visible, onClose, square }) {
   const [choosingPhoto, setChoosingPhoto] = useState(true);
@@ -57,7 +58,7 @@ export default function EditAvatar({ visible, onClose, square }) {
             onClick={() => {
               setChoosingPhoto(false);
             }}
-            color="primary"
+            display="basic"
             autoFocus
           >
             <FormattedMessage
@@ -70,7 +71,7 @@ export default function EditAvatar({ visible, onClose, square }) {
           <>
             <Button
               onClick={() => setChoosingPhoto(true)}
-              color="primary"
+              display="basic"
             >
               <FormattedMessage
                 id="CHANGE_PHOTO"
@@ -78,11 +79,11 @@ export default function EditAvatar({ visible, onClose, square }) {
               />
             </Button>
             <Button
+              display="basic"
               onClick={() => {
                 // submit data and wait for response...
                 onClose();
               }}
-              color="primary"
               autoFocus
             >
               <FormattedMessage id="SAVE" defaultMessage="Save" />

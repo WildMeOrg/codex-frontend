@@ -58,7 +58,7 @@ export default [
     name: 'tagline',
     labelId: 'TAGLINE',
     descriptionId: 'TAGLINE_DESCRIPTION',
-    fieldType: fieldTypes.string,
+    fieldType: fieldTypes.longstring,
     defaultValue: '',
   },
   {
@@ -66,7 +66,7 @@ export default [
     name: 'exploreTagline',
     labelId: 'EXPLORE_TAGLINE',
     descriptionId: 'EXPLORE_TAGLINE_DESCRIPTION',
-    fieldType: fieldTypes.string,
+    fieldType: fieldTypes.longstring,
     defaultValue: '',
   },
   {

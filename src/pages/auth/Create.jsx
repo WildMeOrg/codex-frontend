@@ -3,10 +3,10 @@ import { useIntl, FormattedMessage } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import TextInput from '../../components/inputs/TextInput';
+import Button from '../../components/Button';
 import Shell from './Shell';
 
 export default function Create({ callback }) {
@@ -82,8 +82,7 @@ export default function Create({ callback }) {
               }, 1000);
             }}
             style={{ width: '100%' }}
-            color="secondary"
-            variant="contained"
+            display="primary"
           >
             <FormattedMessage id="CREATE_ACCOUNT" />
           </Button>

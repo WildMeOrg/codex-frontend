@@ -2,7 +2,6 @@ import React from 'react';
 import { flattenDeep, get } from 'lodash-es';
 import { useIntl, FormattedMessage } from 'react-intl';
 import { v4 as uuid } from 'uuid';
-import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import IconButton from '@material-ui/core/IconButton';
@@ -14,6 +13,7 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import TreeItem from '@material-ui/lab/TreeItem';
 import TextInput from './TextInput';
 import DeleteButton from '../DeleteButton';
+import Button from '../Button';
 
 const textInputWidth = 200;
 
@@ -169,7 +169,6 @@ export default function TreeViewEditor(props) {
               onChange([...value, getNewLeaf()]);
             }}
             style={{ marginLeft: 20 }}
-            variant="outlined"
             size="small"
           >
             <FormattedMessage id="NEW_REGION" />

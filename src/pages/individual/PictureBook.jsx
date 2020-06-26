@@ -4,10 +4,10 @@ import { useSelector } from 'react-redux';
 import { cloneDeep } from 'lodash-es';
 import { FormattedMessage } from 'react-intl';
 import { useTheme } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Typography from '@material-ui/core/Typography';
 import { selectSearchResults } from '../../modules/individuals/selectors';
+import Button from '../../components/Button';
 import PrintablePictureBookPage from './components/PrintablePictureBookPage';
 import PictureBookIndividual from './components/PictureBookIndividual';
 
@@ -112,8 +112,7 @@ export default function PictureBook() {
             <FormattedMessage id="PRINTABLE_PHOTOBOOK" />
           </Typography>
           <Button
-            variant="contained"
-            color="secondary"
+            display="primary"
             size="large"
             disabled={isLoading}
             onClick={() => window.print()}

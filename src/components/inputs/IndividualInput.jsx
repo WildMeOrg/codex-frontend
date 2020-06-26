@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useSelector } from 'react-redux';
 import { format } from 'date-fns';
-import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import Input from '@material-ui/core/Input';
@@ -19,6 +18,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import SearchIcon from '@material-ui/icons/Search';
 import { selectSearchResults } from '../../modules/individuals/selectors';
 import DeleteButton from '../DeleteButton';
+import Button from '../Button';
 
 export default function IndividualInput({
   schema,
@@ -41,7 +41,6 @@ export default function IndividualInput({
       {!value && (
         <Button
           size="small"
-          variant="outlined"
           style={{ marginTop: 16 }}
           onClick={() => setModalOpen(true)}
           {...rest}
@@ -130,6 +129,7 @@ export default function IndividualInput({
         </DialogContent>
         <DialogActions>
           <Button
+            display="basic"
             onClick={() => {
               onChange(null);
               setSelectedIndividual(null);
@@ -139,6 +139,7 @@ export default function IndividualInput({
             <FormattedMessage id="CANCEL" />
           </Button>
           <Button
+            display="basic"
             onClick={() => {
               onChange(selectedIndividual);
               setSelectedIndividual(null);

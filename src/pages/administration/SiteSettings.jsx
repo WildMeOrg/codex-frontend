@@ -4,10 +4,10 @@ import { useIntl, FormattedMessage } from 'react-intl';
 import { uniqBy } from 'lodash-es';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
 import { selectSiteSettings } from '../../modules/site/selectors';
 import siteSettingsSchema from '../../constants/siteSettingsSchema';
 import LabeledInput from '../../components/LabeledInput';
+import Button from '../../components/Button';
 
 function getFieldsetErrors(intl, fieldset, fieldsetName) {
   const noLabelFields = fieldset.filter(field => field.label === '');
@@ -162,8 +162,7 @@ export default function SiteSettings({ primaryButtonId }) {
             setSubmissionAttempted(true);
           }}
           style={{ marginTop: 12 }}
-          variant="contained"
-          color="secondary"
+          display="primary"
         >
           <FormattedMessage id={primaryButtonId} />
         </Button>

@@ -4,14 +4,13 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import { selectLoginRedirect } from '../../modules/app/selectors';
 import { toggleAuthenticated } from '../../modules/app/actions';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import TextInput from '../../components/inputs/TextInput';
 import InlineButton from '../../components/InlineButton';
 import Link from '../../components/Link';
+import Button from '../../components/Button';
 import Shell from './Shell';
 
 export default function Login({ callback }) {
@@ -71,24 +70,11 @@ export default function Login({ callback }) {
               }, 1000);
             }}
             style={{ width: '100%' }}
-            color="secondary"
-            variant="contained"
-            disabled={loading}
+            display="primary"
+            loading={loading}
           >
             <FormattedMessage id="LOG_IN" />
           </Button>
-          {loading && (
-            <CircularProgress
-              size={24}
-              style={{
-                position: 'absolute',
-                top: '50%',
-                left: '50%',
-                marginLeft: -12,
-                marginTop: -12,
-              }}
-            />
-          )}
         </Grid>
         {error && (
           <Typography

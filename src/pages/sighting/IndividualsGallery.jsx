@@ -1,9 +1,9 @@
 import React from 'react';
 import { get } from 'lodash-es';
 import { FormattedMessage } from 'react-intl';
-import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import AvatarGallery from '../../components/AvatarGallery';
+import Button from '../../components/Button';
 
 export default function IndividualsGallery({ sighting }) {
   const individuals = sighting.encounters.map(encounter => ({
@@ -42,7 +42,11 @@ export default function IndividualsGallery({ sighting }) {
                   values={{ sex: individual.sex }}
                 />
               </Typography>
-              <Button size="small" variant="outlined">
+              <Button
+                size="small"
+                display="panel"
+                style={{ marginTop: 4 }}
+              >
                 Edit Metadata
               </Button>
             </div>

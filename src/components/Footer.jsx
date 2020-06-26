@@ -1,13 +1,13 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useDispatch } from 'react-redux';
-import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import Divider from '@material-ui/core/Divider';
 import TwitterIcon from '@material-ui/icons/Twitter';
 import FacebookIcon from '@material-ui/icons/Facebook';
 import { setLocale } from '../modules/app/actions';
+import Button from './Button';
 import Link from './Link';
 
 const dotSpacing = 8;
@@ -87,12 +87,14 @@ export default function Footer() {
             <Button
               style={{ textTransform: 'unset' }}
               onClick={() => dispatch(setLocale('en'))}
+              display="basic"
             >
               English
             </Button>
             <Button
               style={{ textTransform: 'unset' }}
               onClick={() => dispatch(setLocale('es'))}
+              display="basic"
             >
               Español
             </Button>

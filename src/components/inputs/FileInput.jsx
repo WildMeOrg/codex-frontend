@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { get } from 'lodash-es';
-import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
@@ -16,6 +15,7 @@ import {
   transloaditService,
 } from '../../constants/apiKeys';
 import DeleteButton from '../DeleteButton';
+import Button from '../Button';
 
 function Core({ children, required, width, style = {} }) {
   return (
@@ -105,7 +105,6 @@ export default function FileInput({
       {!value && (
         <Button
           size="small"
-          variant="outlined"
           style={{ marginTop: 8 }}
           onClick={() => setModalOpen(true)}
           {...rest}
@@ -130,7 +129,7 @@ export default function FileInput({
             />
           )}
           <div style={{ display: 'flex', alignItems: 'center' }}>
-            <Typography>{value.name}</Typography>
+            <Typography variant="caption">{value.name}</Typography>
             <DeleteButton
               onClick={() => {
                 onChange(null);

@@ -96,8 +96,6 @@ export default function ResultsTable({ individuals }) {
                         <Link href="google.com">3/16/2019</Link>
                       </Typography>
                       <ButtonLink
-                        variant="outlined"
-                        color="secondary"
                         style={{ marginTop: 16 }}
                         href={`/individuals/${expandedIndividual.id}`}
                       >

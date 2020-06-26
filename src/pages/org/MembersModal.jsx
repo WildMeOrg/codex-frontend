@@ -7,7 +7,6 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogActions from '@material-ui/core/DialogActions';
-import Button from '@material-ui/core/Button';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import List from '@material-ui/core/List';
@@ -21,6 +20,7 @@ import UndoIcon from '@material-ui/icons/Undo';
 import IconButton from '@material-ui/core/IconButton';
 import FilterBar from '../../components/FilterBar';
 import Link from '../../components/Link';
+import Button from '../../components/Button';
 
 const word = 'HERPADERPAFEEDMEREALDATAPLEAASEE';
 
@@ -150,10 +150,13 @@ export default function MembersModal({
       </DialogContent>
       {Object.keys(changes).length > 0 && (
         <DialogActions>
-          <Button onClick={onClose}>
+          <Button display="basic" onClick={onClose}>
             <FormattedMessage id="CANCEL" />
           </Button>
-          <Button onClick={() => onSaveChanges(changes)}>
+          <Button
+            display="basic"
+            onClick={() => onSaveChanges(changes)}
+          >
             <FormattedMessage id="SAVE_CHANGES" />
           </Button>
         </DialogActions>

@@ -1,7 +1,6 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { v4 as uuid } from 'uuid';
-import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -9,6 +8,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Typography from '@material-ui/core/Typography';
 import IndividualInput from './IndividualInput';
 import DeleteButton from '../DeleteButton';
+import Button from '../Button';
 
 export default function RelationshipsInput({
   schema,
@@ -101,7 +101,6 @@ export default function RelationshipsInput({
           ]);
         }}
         size="small"
-        variant="outlined"
       >
         <FormattedMessage
           id={

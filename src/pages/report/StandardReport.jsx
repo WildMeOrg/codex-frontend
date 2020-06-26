@@ -3,7 +3,6 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { useSelector } from 'react-redux';
 import { some, values } from 'lodash-es';
 import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Hidden from '@material-ui/core/Hidden';
@@ -18,7 +17,7 @@ import {
 } from '../../modules/sightings/selectors';
 import { selectSiteName } from '../../modules/site/selectors';
 import LabeledInput from '../../components/LabeledInput';
-import AsyncButton from '../../components/AsyncButton';
+import Button from '../../components/Button';
 import InlineButton from '../../components/InlineButton';
 import BigExpansionPanel from '../../components/BigExpansionPanel';
 import TermsAndConditionsDialog from './TermsAndConditionsDialog';
@@ -53,8 +52,7 @@ export default function StandardReport({ variant, onBack }) {
         <Button
           onClick={onBack}
           style={{ marginTop: 8 }}
-          size="small"
-          startIcon={<BackIcon />}
+          display="back"
         >
           <FormattedMessage id="BACK_TO_PHOTOS" />
         </Button>
@@ -191,7 +189,7 @@ export default function StandardReport({ variant, onBack }) {
           flexDirection: 'column',
         }}
       >
-        <AsyncButton
+        <Button
           onClick={() => {
             // check that required fields are complete
             const nextIncompleteFields = schema.filter(
@@ -215,11 +213,10 @@ export default function StandardReport({ variant, onBack }) {
           }}
           style={{ width: 200 }}
           loading={loading}
-          variant="contained"
-          color="secondary"
+          display="primary"
         >
           <FormattedMessage id="REPORT_SIGHTING" />
-        </AsyncButton>
+        </Button>
       </Grid>
       <Grid style={{ marginTop: 12 }} item>
         {termsError && (

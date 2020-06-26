@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
-import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import LabeledInput from '../../components/LabeledInput';
+import Button from '../../components/Button';
 import orgSchema from '../../constants/orgSchema';
 
 export default function CreateOrg({ open, onClose, onCreateUser }) {
@@ -51,10 +51,13 @@ export default function CreateOrg({ open, onClose, onCreateUser }) {
         </Grid>
       </DialogContent>
       <DialogActions>
-        <Button onClick={closeAndEmptyForm}>
+        <Button display="basic" onClick={closeAndEmptyForm}>
           <FormattedMessage id="CANCEL" />
         </Button>
-        <Button onClick={() => onCreateUser(formState)}>
+        <Button
+          display="basic"
+          onClick={() => onCreateUser(formState)}
+        >
           <FormattedMessage id="CREATE" />
         </Button>
       </DialogActions>
