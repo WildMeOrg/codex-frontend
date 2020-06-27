@@ -137,6 +137,7 @@ export default function EncounterGallery({
             label: 'Date',
             options: {
               customBodyRender: value => format(value, 'M/dd/yy'),
+              getStringValue: value => format(value, 'M/dd/yy'),
             },
           },
           {

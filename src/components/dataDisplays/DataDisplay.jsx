@@ -23,6 +23,7 @@ import CloudDownload from '@material-ui/icons/CloudDownload';
 
 import FilterBar from '../FilterBar';
 import CollabsibleRow from './CollapsibleRow';
+import sendCsv from './sendCsv';
 
 function getCellAlignment(cellIndex) {
   if (cellIndex === 0) return undefined;
@@ -52,7 +53,9 @@ export default function DataDisplay({
   const visibleData = data.filter(datum => {
     let match = false;
     columns.forEach(c => {
-      const dataValue = JSON.stringify(get(datum, c.name, ''));
+      const dataParser =
+        get(c, 'options.getStringValue') || JSON.stringify;
+      const dataValue = dataParser(get(datum, c.name, ''));
       if (dataValue.includes(filter)) match = true;
     });
     return match;
@@ -92,6 +95,7 @@ export default function DataDisplay({
                 />
                 {columns.map(c => (
                   <FormControlLabel
+                    key={c.name}
                     control={
                       <Checkbox
                         size="small"
@@ -138,7 +142,10 @@ export default function DataDisplay({
           </Typography>
         </Grid>
         <Grid item>
-          <IconButton size="small">
+          <IconButton
+            onClick={() => sendCsv(visibleColumns, visibleData)}
+            size="small"
+          >
             <CloudDownload style={{ marginRight: 4 }} />
           </IconButton>
           {onPrint && (
