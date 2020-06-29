@@ -12,7 +12,7 @@ import {
   selectSightingSearchCategories,
   selectSightingSearchSchema,
 } from '../../modules/sightings/selectors';
-import ResultsTable from './ResultsTable';
+import SightingsDisplay from '../../components/dataDisplays/SightingsDisplay';
 
 const drawerWidth = 280;
 
@@ -29,6 +29,7 @@ const paperProps = {
 export default function SearchEncounters() {
   const categories = useSelector(selectSightingSearchCategories);
   const schema = useSelector(selectSightingSearchSchema);
+  const searchResults = useSelector(selectSearchResults);
 
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
   const [formValues, setFormValues] = useState(
@@ -88,7 +89,9 @@ export default function SearchEncounters() {
             <FormattedMessage id="SHOW_FILTERS" />
           </Button>
         </Hidden>
-        <ResultsTable sightings={useSelector(selectSearchResults)} />
+        <div style={{ margin: '40px 40px 20px 16px' }}>
+          <SightingsDisplay sightings={searchResults} />
+        </div>
       </div>
     </div>
   );

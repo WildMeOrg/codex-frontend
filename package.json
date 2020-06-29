@@ -116,7 +116,6 @@
     "history": "^4.9.0",
     "google-map-react": "^1.1.7",
     "lodash-es": "^4.17.15",
-    "mui-datatables": "^2.14.0",
     "papaparse": "^5.2.0",
     "query-string": "^6.9.0",
     "react": "^16.8.6",

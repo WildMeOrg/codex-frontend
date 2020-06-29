@@ -153,16 +153,17 @@ export default function DataDisplay({
               <Print style={{ marginRight: 4 }} />
             </IconButton>
           )}
-          <IconButton size="small">
-            <FilterList
-              onClick={event => {
-                setAnchorEl(anchorEl ? null : event.currentTarget);
-              }}
-            />
+          <IconButton
+            onClick={event => {
+              setAnchorEl(anchorEl ? null : event.currentTarget);
+            }}
+            size="small"
+          >
+            <FilterList />
           </IconButton>
         </Grid>
       </Grid>
-      <TableContainer component={Paper}>
+      <TableContainer>
         <Table
           style={{ minWidth: 10 }}
           size="small"
