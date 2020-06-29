@@ -11,9 +11,8 @@ import {
   selectIndividualSearchCategories,
   selectIndividualSearchSchema,
 } from '../../modules/individuals/selectors';
-import ResultsTable from './ResultsTable';
-import ButtonLink from '../../components/ButtonLink';
 import Button from '../../components/Button';
+import IndividualsDisplay from '../../components/dataDisplays/IndividualsDisplay';
 
 const drawerWidth = 280;
 
@@ -73,12 +72,7 @@ export default function SearchIndividuals() {
       <div style={{ marginTop: 64, width: '100%' }}>
         <div
           style={{
-            width: '80%',
             margin: '0 16px 16px 16px',
-            display: 'flex',
-            flexWrap: 'wrap',
-            justifyContent: 'space-between',
-            alignItems: 'center',
           }}
         >
           <Typography
@@ -88,16 +82,6 @@ export default function SearchIndividuals() {
           >
             <FormattedMessage id="EXPLORE_INDIVIDUALS" />
           </Typography>
-          <ButtonLink
-            href="/individuals/picturebook"
-            linkProps={{
-              target: '_blank',
-              rel: 'noopener noreferrer',
-            }}
-            style={{ flexShrink: 0 }}
-          >
-            <FormattedMessage id="PRINT_PHOTOBOOK" />
-          </ButtonLink>
         </div>
         <SearchFilterList
           formValues={formValues}
@@ -112,7 +96,9 @@ export default function SearchIndividuals() {
             <FormattedMessage id="SHOW_FILTERS" />
           </Button>
         </Hidden>
-        <ResultsTable individuals={searchResults} />
+        <div style={{ margin: '40px 40px 20px 16px' }}>
+          <IndividualsDisplay individuals={searchResults} />
+        </div>
       </div>
     </div>
   );
