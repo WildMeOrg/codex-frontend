@@ -7,7 +7,7 @@ import {
 
 const initialState = {
   locale: 'en',
-  authenticated: true, // temporary
+  authenticated: false,
   sidePanelOpen: false,
   loginRedirect: '/',
 };
