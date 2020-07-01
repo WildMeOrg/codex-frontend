@@ -4,8 +4,9 @@ import Grid from '@material-ui/core/Grid';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import Button from '../../components/Button';
+import ButtonLink from '../../components/ButtonLink';
 
-export default function Status({ onMatch, onMarkComplete }) {
+export default function Status({ onMarkComplete }) {
   const photos = [
     true,
     true,
@@ -97,9 +98,9 @@ export default function Status({ onMatch, onMarkComplete }) {
         </Grid>
       </Grid>
       <Grid item style={{ display: 'flex', flexDirection: 'column' }}>
-        <Button onClick={onMatch} display="primary">
+        <ButtonLink href="/match/S-101" display="primary">
           <FormattedMessage id="MATCH_ANNOTATIONS" />
-        </Button>
+        </ButtonLink>
         <Button
           display="basic"
           style={{ marginTop: 4 }}

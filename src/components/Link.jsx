@@ -17,7 +17,7 @@ export default function Link({
   const styles = {
     color: disabled ? theme.palette.text.disabled : 'unset',
     textDecoration: noUnderline ? 'unset' : 'underline',
-    cursor: disabled ? 'not-allowed' : 'pointer',
+    cursor: disabled ? 'default' : 'pointer',
     ...style,
   };
 

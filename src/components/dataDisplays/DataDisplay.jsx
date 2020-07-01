@@ -30,17 +30,21 @@ function getCellAlignment(cellIndex) {
   return 'right';
 }
 
+/* Note for component consumers: every data item needs a unique ID!
+   Yeah yeah typescript proptypes yeah yeah */
 export default function DataDisplay({
   columns,
   data,
   title,
   onPrint,
   renderExpandedRow,
+  variant = 'primary',
 }) {
   const initialColumnNames = columns
     .filter(c => get(c, 'options.display', true))
     .map(c => c.name);
 
+  const [selectedRow, setSelectedRow] = useState(null);
   const [visibleColumnNames, setVisibleColumnNames] = useState(
     initialColumnNames,
   );
@@ -137,17 +141,26 @@ export default function DataDisplay({
         style={{ margin: '16px 0' }}
       >
         <Grid item>
-          <Typography component="h5" variant="h5">
+          <Typography
+            component={variant === 'primary' ? 'h5' : undefined}
+            variant={variant === 'primary' ? 'h5' : 'subtitle2'}
+            style={{
+              margin:
+                variant === 'secondary' ? '12px 0 0 12px' : 'unset',
+            }}
+          >
             {title}
           </Typography>
         </Grid>
         <Grid item>
-          <IconButton
-            onClick={() => sendCsv(visibleColumns, visibleData)}
-            size="small"
-          >
-            <CloudDownload style={{ marginRight: 4 }} />
-          </IconButton>
+          {variant === 'primary' && (
+            <IconButton
+              onClick={() => sendCsv(visibleColumns, visibleData)}
+              size="small"
+            >
+              <CloudDownload style={{ marginRight: 4 }} />
+            </IconButton>
+          )}
           {onPrint && (
             <IconButton onClick={onPrint} size="small">
               <Print style={{ marginRight: 4 }} />
@@ -163,7 +176,10 @@ export default function DataDisplay({
           </IconButton>
         </Grid>
       </Grid>
-      <TableContainer>
+      <TableContainer
+        component={variant === 'secondary' ? Paper : undefined}
+        elevation={variant === 'secondary' ? 2 : undefined}
+      >
         <Table
           style={{ minWidth: 10 }}
           size="small"
@@ -200,6 +216,15 @@ export default function DataDisplay({
           <TableBody>
             {sortedData.map(datum => (
               <CollabsibleRow
+                key={datum.id}
+                onClick={() => {
+                  if (selectedRow === datum.id) {
+                    setSelectedRow(null);
+                  } else {
+                    setSelectedRow(datum.id);
+                  }
+                }}
+                selected={selectedRow === datum.id}
                 datum={datum}
                 columns={visibleColumns}
                 renderExpandedRow={renderExpandedRow}
