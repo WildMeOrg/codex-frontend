@@ -39,6 +39,8 @@ export default function DataDisplay({
   onPrint,
   renderExpandedRow,
   variant = 'primary',
+  noTitleBar,
+  ...rest
 }) {
   const initialColumnNames = columns
     .filter(c => get(c, 'options.display', true))
@@ -76,7 +78,7 @@ export default function DataDisplay({
   );
 
   return (
-    <div>
+    <div {...rest}>
       <Popper
         open={filterPopperOpen}
         anchorEl={anchorEl}
@@ -134,48 +136,50 @@ export default function DataDisplay({
           </Fade>
         )}
       </Popper>
-      <Grid
-        container
-        justify="space-between"
-        alignItems="center"
-        style={{ margin: '16px 0' }}
-      >
-        <Grid item>
-          <Typography
-            component={variant === 'primary' ? 'h5' : undefined}
-            variant={variant === 'primary' ? 'h5' : 'subtitle2'}
-            style={{
-              margin:
-                variant === 'secondary' ? '12px 0 0 12px' : 'unset',
-            }}
-          >
-            {title}
-          </Typography>
-        </Grid>
-        <Grid item>
-          {variant === 'primary' && (
+      {!noTitleBar && (
+        <Grid
+          container
+          justify="space-between"
+          alignItems="center"
+          style={{ margin: '16px 0' }}
+        >
+          <Grid item>
+            <Typography
+              component={variant === 'primary' ? 'h5' : undefined}
+              variant={variant === 'primary' ? 'h5' : 'subtitle2'}
+              style={{
+                margin:
+                  variant === 'secondary' ? '12px 0 0 12px' : 'unset',
+              }}
+            >
+              {title}
+            </Typography>
+          </Grid>
+          <Grid item>
+            {variant === 'primary' && (
+              <IconButton
+                onClick={() => sendCsv(visibleColumns, visibleData)}
+                size="small"
+              >
+                <CloudDownload style={{ marginRight: 4 }} />
+              </IconButton>
+            )}
+            {onPrint && (
+              <IconButton onClick={onPrint} size="small">
+                <Print style={{ marginRight: 4 }} />
+              </IconButton>
+            )}
             <IconButton
-              onClick={() => sendCsv(visibleColumns, visibleData)}
+              onClick={event => {
+                setAnchorEl(anchorEl ? null : event.currentTarget);
+              }}
               size="small"
             >
-              <CloudDownload style={{ marginRight: 4 }} />
+              <FilterList />
             </IconButton>
-          )}
-          {onPrint && (
-            <IconButton onClick={onPrint} size="small">
-              <Print style={{ marginRight: 4 }} />
-            </IconButton>
-          )}
-          <IconButton
-            onClick={event => {
-              setAnchorEl(anchorEl ? null : event.currentTarget);
-            }}
-            size="small"
-          >
-            <FilterList />
-          </IconButton>
+          </Grid>
         </Grid>
-      </Grid>
+      )}
       <TableContainer
         component={variant === 'secondary' ? Paper : undefined}
         elevation={variant === 'secondary' ? 2 : undefined}
