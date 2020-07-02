@@ -267,6 +267,7 @@
     "CANDIDATE_MATCHES": "Candidate matches",
     "SUBMITTED_ON_DATE": "Submitted {date}",
     "ROLE": "Role",
+    "MATCH_NOT_FOUND": "Match results not found",
     "END_OF_SENTENCE": ".",
     "FORUM_USERNAME": "Forum username",
     "PROFILE_LABEL_FORUM_ID": "Forum username: ",

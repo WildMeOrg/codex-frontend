@@ -43,7 +43,7 @@ export default function Sighting() {
   if (!sighting)
     return (
       <NotFoundPage
-        subtitle={<FormattedMessage id="SIGHTING_NOT_FOUND" />}
+        subtitle={<FormattedMessage id="MATCH_NOT_FOUND" />}
       />
     );
 
