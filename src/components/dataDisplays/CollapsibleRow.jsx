@@ -21,11 +21,12 @@ export default function CollabsibleRow({
   columns,
   datum,
   renderExpandedRow,
+  ...rest
 }) {
   const [open, setOpen] = useState(false);
   return (
     <>
-      <TableRow>
+      <TableRow {...rest}>
         {renderExpandedRow && (
           <TableCell style={{ borderBottom: 'none' }}>
             <IconButton

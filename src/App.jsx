@@ -32,6 +32,7 @@ import SearchSightings from './pages/sighting/SearchSightings';
 import Administration from './pages/administration/Administration';
 import SiteSetup from './pages/administration/SiteSetup';
 import CreateAccount from './pages/auth/Create';
+import Match from './pages/match/Match';
 import Login from './pages/auth/Login';
 import Welcome from './pages/auth/Welcome';
 import Forgot from './pages/auth/Forgot';
@@ -104,6 +105,9 @@ export default function App() {
                 </Route>
                 <Route path="/individuals">
                   <SearchIndividuals />
+                </Route>
+                <Route path="/match/:id">
+                  <Match />
                 </Route>
                 <Route path="/sightings/:id">
                   <Sighting />
