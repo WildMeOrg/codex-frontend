@@ -119,13 +119,13 @@ export default function AppHeader() {
               <div style={{ padding: '12px 0' }}>
                 <Link href="/" noUnderline>
                   <Typography style={{ margin: '0 20px' }}>
-                    View profile
+                    <FormattedMessage id="VIEW_PROFILE" />
                   </Typography>
                 </Link>
                 <Divider style={{ margin: '12px 0' }} />
                 <Link href="/logout" noUnderline>
                   <Typography style={{ margin: '0 20px' }}>
-                    Log out
+                    <FormattedMessage id="LOG_OUT" />
                   </Typography>
                 </Link>
               </div>

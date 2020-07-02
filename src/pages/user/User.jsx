@@ -77,15 +77,16 @@ const items = [
   },
 ];
 
-export default function User() {
+export default function User({ userId }) {
   const { id } = useParams();
-  useDocumentTitle(capitalize(id));
+  const displayedUserId = userId || id;
+  useDocumentTitle(capitalize(displayedUserId));
 
   // fetch data for Id...
   const users = useSelector(selectUsers);
   const [editingProfile, setEditingProfile] = useState(false);
 
-  const user = users[toLower(id)];
+  const user = users[toLower(displayedUserId)];
   if (!user)
     return (
       <NotFoundPage
