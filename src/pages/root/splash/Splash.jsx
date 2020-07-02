@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Player } from 'video-react';
+import ReactPlayer from 'react-player';
 import { useIntl } from 'react-intl';
 import { useSelector } from 'react-redux';
 import { useTheme } from '@material-ui/core/styles';
@@ -30,9 +30,14 @@ export default function Splash() {
       {!mapOnly && (
         <>
           <div style={{ position: 'relative' }}>
-            <Player playsInline autoPlay>
-              <source src={siteSettings.splashVideo} />
-            </Player>
+            <ReactPlayer
+              url={siteSettings.splashVideo}
+              muted
+              autoPlay
+              playing
+              width="100vw"
+              height="auto"
+            />
             <div
               style={{
                 position: 'absolute',
