@@ -113,8 +113,8 @@
     "bboxjs": "^1.0.0",
     "clsx": "^1.1.0",
     "date-fns": "^2.11.1",
-    "history": "^4.9.0",
     "google-map-react": "^1.1.7",
+    "history": "^4.9.0",
     "lodash-es": "^4.17.15",
     "papaparse": "^5.2.0",
     "query-string": "^6.9.0",
@@ -122,8 +122,8 @@
     "react-dom": "^16.8.6",
     "react-image-crop": "^8.6.1",
     "react-intl": "^4.2.2",
-    "uuid": "^3.4.0",
-    "video-react": "^0.14.1"
+    "react-player": "^2.4.0",
+    "uuid": "^3.4.0"
   },
   "husky": {
     "hooks": {
