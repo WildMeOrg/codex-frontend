@@ -398,7 +398,7 @@
     "LAST_24_HOURS": "Last 24 hours",
     "LAST_7_DAYS": "Last 7 days",
     "LAST_30_DAYS": "Last 30 days",
-    "MAP_DATA_NOTE": "Note: more granular data is available to logged in users.",
+    "MAP_DATA_NOTE": "More granular data is available to logged in users.",
     "WELCOME_TO_SITENAME": "Welcome to {siteName}!",
     "ACCOUNT_CREATION_SUCCESS": "Your account has been successfully created. How would you like to proceed?",
     "REQUEST_INVITE": "Request an invitation",

@@ -166,7 +166,7 @@ export default function Sighting() {
               },
             ]}
           />
-          <div style={{ width: 300 }}>
+          <div style={{ width: '100%', textAlign: 'center' }}>
             <Button display="secondary">
               <FormattedMessage id="CONFIRM_MATCH" />
             </Button>

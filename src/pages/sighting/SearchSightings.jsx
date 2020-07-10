@@ -67,7 +67,7 @@ export default function SearchEncounters() {
           />
         </Drawer>
       </Hidden>
-      <div style={{ marginTop: 64, width: '100%' }}>
+      <div style={{ marginTop: 64, width: '100%', overflow: 'auto' }}>
         <Typography
           variant="h3"
           component="h3"
