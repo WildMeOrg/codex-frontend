@@ -12,8 +12,8 @@ import {
 import { IntlProvider } from 'react-intl';
 import { useSelector } from 'react-redux';
 import '@formatjs/intl-numberformat/polyfill';
-import enPolyfill from '@formatjs/intl-numberformat/dist/locale-data/en.json';
-import esPolyfill from '@formatjs/intl-numberformat/dist/locale-data/es.json';
+import enPolyfill from '@formatjs/intl-numberformat/dist/locale-data/en';
+import esPolyfill from '@formatjs/intl-numberformat/dist/locale-data/es';
 import AppHeader from './components/AppHeader';
 import Footer from './components/Footer';
 import { selectLocale } from './modules/app/selectors';
