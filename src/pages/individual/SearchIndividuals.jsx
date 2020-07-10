@@ -69,7 +69,7 @@ export default function SearchIndividuals() {
           />
         </Drawer>
       </Hidden>
-      <div style={{ marginTop: 64, width: '100%' }}>
+      <div style={{ marginTop: 64, width: '100%', overflow: 'auto' }}>
         <div
           style={{
             margin: '0 16px 16px 16px',

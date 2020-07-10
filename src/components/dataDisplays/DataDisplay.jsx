@@ -199,6 +199,7 @@ export default function DataDisplay({
                     key={c.name}
                     align={getCellAlignment(i)}
                     sortDirection={activeSort ? sortDirection : false}
+                    style={{ whiteSpace: 'nowrap' }}
                   >
                     <TableSortLabel
                       active={activeSort}
