@@ -16,6 +16,7 @@ import Divider from '@material-ui/core/Divider';
 import { selectLogos } from '../modules/site/selectors';
 import { selectIsAuthenticated } from '../modules/app/selectors';
 import { setLoginRedirect } from '../modules/app/actions';
+import useSiteSettings from '../modules/site/useSiteSettings';
 import ButtonLink from './ButtonLink';
 import Link from './Link';
 import AppDrawer from './AppDrawer';
@@ -32,6 +33,9 @@ export default function AppHeader() {
   const logos = useSelector(selectLogos);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const siteSettings = useSiteSettings();
+  console.log(siteSettings);
 
   const handleClick = () => {
     setDrawerOpen(false);
