@@ -9,7 +9,7 @@ import siteSettingsSchema from '../../constants/siteSettingsSchema';
 import LabeledInput from '../../components/LabeledInput';
 import Button from '../../components/Button';
 import useSiteSettings from '../../models/site/useSiteSettings';
-import usePutSiteSettings from '../../models/site/putSiteSettings';
+import usePutSiteSettings from '../../models/site/usePutSiteSettings';
 
 function getFieldsetErrors(intl, fieldset, fieldsetName) {
   const noLabelFields = fieldset.filter(field => field.label === '');

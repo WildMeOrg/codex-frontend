@@ -11,13 +11,16 @@ import TextInput from '../../components/inputs/TextInput';
 import InlineButton from '../../components/InlineButton';
 import Link from '../../components/Link';
 import Button from '../../components/Button';
+// import usePostLogin from '../../models/auth/usePostLogin';
 import Shell from './Shell';
 
 export default function Login({ callback }) {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  // const postLogin = usePostLogin();
 
   const dispatch = useDispatch();
   const intl = useIntl();
@@ -40,8 +43,8 @@ export default function Login({ callback }) {
         <Grid item>
           <TextInput
             schema={{ labelId: 'USERNAME_OR_EMAIL' }}
-            value={username}
-            onChange={newUsername => setUsername(newUsername)}
+            value={email}
+            onChange={newUsername => setEmail(newUsername)}
             variant="outlined"
           />
         </Grid>
@@ -68,6 +71,7 @@ export default function Login({ callback }) {
                 dispatch(toggleAuthenticated());
                 history.push(loginRedirect);
               }, 1000);
+              // postLogin({ email, password };)
             }}
             style={{ width: '100%' }}
             display="primary"
