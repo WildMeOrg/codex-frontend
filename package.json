@@ -77,8 +77,6 @@
     "react-router-dom": "^5.0.1",
     "redux": "^4.0.4",
     "redux-devtools-extension": "^2.13.8",
-    "redux-logger": "^3.0.6",
-    "redux-pack": "^0.1.5",
     "redux-thunk": "^2.3.0",
     "reselect": "^4.0.0",
     "run-script-os": "^1.1.1",

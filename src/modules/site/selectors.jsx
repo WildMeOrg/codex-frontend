@@ -33,7 +33,7 @@ export const selectSpeciesFields = state => ({
   ],
 });
 
-export const selectSiteSettingsNeedsFetch = state => true;
+export const selectSiteSettingsNeedsFetch = state => state.needsFetch;
 
 export const selectSiteSettings = state => ({
   siteName: 'Flukebook',

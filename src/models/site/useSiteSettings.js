@@ -1,15 +1,25 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
-import { useSelector } from 'react-redux';
-import { selectSiteSettingsNeedsFetch } from './selectors';
 import getAxiosResponse from '../../utils/getAxiosResponse';
+import {
+  AppContext,
+  setSiteSettingsNeedsFetch,
+  setSiteSettingsSchema,
+  setSiteSettings,
+} from '../../context';
 
 export default function useSiteSettings() {
-  const [siteSettings, setSiteSettings] = useState(null);
-  const [siteSettingsSchema, setSiteSettingsSchema] = useState(null);
+  const { state, dispatch } = useContext(AppContext);
   const [error, setError] = useState(null);
+  const [settingsLoading, setSettingsLoading] = useState(true);
+  const [schemaLoading, setSchemaLoading] = useState(true);
+  const loading = settingsLoading || schemaLoading;
 
-  const needsFetch = useSelector(selectSiteSettingsNeedsFetch);
+  const {
+    siteSettings,
+    siteSettingsSchema,
+    siteSettingsNeedsFetch,
+  } = state;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -17,9 +27,13 @@ export default function useSiteSettings() {
         const schemaPacket = await axios(
           'https://nextgen.dev-wildbook.org/api/v0/configurationDefinition/__bundle_setup',
         );
-        setSiteSettingsSchema(getAxiosResponse(schemaPacket));
+        dispatch(
+          setSiteSettingsSchema(getAxiosResponse(schemaPacket)),
+        );
+        setSchemaLoading(false);
       } catch (fetchError) {
         setError(fetchError);
+        setSchemaLoading(false);
         console.error('Error fetching site settings');
         console.error(fetchError);
       }
@@ -35,29 +49,32 @@ export default function useSiteSettings() {
           const setingsPacket = await axios(
             'https://nextgen.dev-wildbook.org/api/v0/configuration/__bundle_setup',
           );
-          setSiteSettings(getAxiosResponse(setingsPacket));
+          dispatch(setSiteSettings(getAxiosResponse(setingsPacket)));
+          dispatch(setSiteSettingsNeedsFetch(false));
+          setSettingsLoading(false);
         } catch (fetchError) {
           setError(fetchError);
+          setSettingsLoading(false);
           console.error('Error fetching site settings');
           console.error(fetchError);
         }
       };
 
-      if (needsFetch) fetchData();
+      if (siteSettingsNeedsFetch) fetchData();
     },
-    [needsFetch],
+    [siteSettingsNeedsFetch],
   );
 
-  let mergedSettings = null;
+  let data = null;
   if (siteSettings && siteSettingsSchema) {
-    mergedSettings = [];
+    data = [];
     siteSettings.forEach(setting => {
       const matchingSchema = siteSettingsSchema.find(
         schema => schema.configurationId === setting.id,
       );
-      mergedSettings.push({ ...setting, ...matchingSchema });
+      data.push({ ...setting, ...matchingSchema });
     });
   }
 
-  return [mergedSettings, error];
+  return { data, loading, error };
 }
