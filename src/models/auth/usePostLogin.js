@@ -19,8 +19,7 @@ export default function usePostLogin() {
           scope: 'public',
         },
       });
-      // dispatch(setSiteSettingsNeedsFetch(true));
-      console.log(response);
+      // need to dispatch auth credentials to context
     } catch (postError) {
       console.error('Error updating site settings');
       console.error(postError);

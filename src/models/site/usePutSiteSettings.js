@@ -14,7 +14,6 @@ export default function usePutSiteSettings() {
         data,
       });
       dispatch(setSiteSettingsNeedsFetch(true));
-      console.log(response);
     } catch (postError) {
       console.error('Error updating site settings');
       console.error(postError);
