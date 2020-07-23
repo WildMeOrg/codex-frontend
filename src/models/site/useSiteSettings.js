@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
+import { merge } from 'lodash-es';
 import axios from 'axios';
 import getAxiosResponse from '../../utils/getAxiosResponse';
 import {
@@ -67,13 +68,7 @@ export default function useSiteSettings() {
 
   let data = null;
   if (siteSettings && siteSettingsSchema) {
-    data = [];
-    siteSettings.forEach(setting => {
-      const matchingSchema = siteSettingsSchema.find(
-        schema => schema.configurationId === setting.id,
-      );
-      data.push({ ...setting, ...matchingSchema });
-    });
+    data = merge(siteSettingsSchema, siteSettings);
   }
 
   return { data, loading, error };
