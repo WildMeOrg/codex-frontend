@@ -1,10 +1,5 @@
-import React, { useEffect } from 'react';
-import {
-  BrowserRouter,
-  Switch,
-  Route,
-  useLocation,
-} from 'react-router-dom';
+import React, { useEffect, useReducer } from 'react';
+import { BrowserRouter, useLocation } from 'react-router-dom';
 import {
   createMuiTheme,
   ThemeProvider,
@@ -14,34 +9,13 @@ import { useSelector } from 'react-redux';
 import '@formatjs/intl-numberformat/polyfill';
 import enPolyfill from '@formatjs/intl-numberformat/dist/locale-data/en';
 import esPolyfill from '@formatjs/intl-numberformat/dist/locale-data/es';
-import AppHeader from './components/AppHeader';
 import Footer from './components/Footer';
 import { selectLocale } from './modules/app/selectors';
-import Individual from './pages/individual/Individual';
-import PictureBook from './pages/individual/PictureBook';
-import Sighting from './pages/sighting/Sighting';
-import Org from './pages/org/Org';
-import Orgs from './pages/org/Orgs';
-import User from './pages/user/User';
-import Users from './pages/user/Users';
-import ReportSightings from './pages/report/ReportSightings';
-import FourOhFour from './pages/fourohfour/FourOhFour';
-import { selectSiteSettings } from './modules/site/selectors';
-import SearchIndividuals from './pages/individual/SearchIndividuals';
-import SearchSightings from './pages/sighting/SearchSightings';
-import Administration from './pages/administration/Administration';
-import SiteSetup from './pages/administration/SiteSetup';
-import CreateAccount from './pages/auth/Create';
-import Match from './pages/match/Match';
-import Login from './pages/auth/Login';
-import Welcome from './pages/auth/Welcome';
-import Forgot from './pages/auth/Forgot';
-import Logout from './pages/auth/Logout';
-import Root from './pages/root/Root';
-import RequestInvitation from './pages/auth/RequestInvitation';
 import materialTheme from './styles/materialTheme';
 import messagesEn from '../locale/en.json';
 import messagesEs from '../locale/es.json';
+import { AppContext, initialState } from './context';
+import BigSwitch from './BigSwitch';
 
 // polyfill to enable formatting of a number using the unit prop
 if (typeof Intl.NumberFormat.__addLocaleData === 'function') {
@@ -57,21 +31,30 @@ const messageMap = {
 function ScrollToTop() {
   const { pathname } = useLocation();
 
-  useEffect(
-    () => {
-      window.scrollTo(0, 0);
-    },
-    [pathname],
-  );
+  useEffect(() => window.scrollTo(0, 0), [pathname]);
 
   return null;
+}
+
+function reducer(state, action) {
+  const { type, data } = action;
+  if (type === 'SET_SITE_SETTINGS_NEEDS_FETCH') {
+    return { ...state, siteSettingsNeedsFetch: data };
+  }
+  if (type === 'SET_SITE_SETTINGS_SCHEMA') {
+    return { ...state, siteSettingsSchema: data };
+  }
+  if (type === 'SET_SITE_SETTINGS') {
+    return { ...state, siteSettings: data };
+  }
+  console.warn('Action not recongized', action);
+  return state;
 }
 
 export default function App() {
   const theme = createMuiTheme(materialTheme);
   const locale = useSelector(selectLocale);
-
-  const siteSettings = useSelector(selectSiteSettings);
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   return (
     <ThemeProvider theme={theme}>
@@ -80,88 +63,13 @@ export default function App() {
         defaultLocale="en"
         messages={messageMap[locale]}
       >
-        <BrowserRouter basename="/">
-          <ScrollToTop />
-          <main
-            style={{
-              height: '100%',
-              width: '100%',
-              justifyContent: 'center',
-              alignItems: 'center',
-              overflow: 'hidden',
-              minHeight: '100vh',
-            }}
-          >
-            <AppHeader />
-            {siteSettings.needsSetup ? (
-              <SiteSetup />
-            ) : (
-              <Switch>
-                <Route path="/individuals/picturebook">
-                  <PictureBook />
-                </Route>
-                <Route path="/individuals/:id">
-                  <Individual />
-                </Route>
-                <Route path="/individuals">
-                  <SearchIndividuals />
-                </Route>
-                <Route path="/match/:id">
-                  <Match />
-                </Route>
-                <Route path="/sightings/:id">
-                  <Sighting />
-                </Route>
-                <Route path="/sightings">
-                  <SearchSightings />
-                </Route>
-                <Route path="/users/:id">
-                  <User />
-                </Route>
-                <Route path="/users">
-                  <Users />
-                </Route>
-                <Route path="/orgs/:id">
-                  <Org />
-                </Route>
-                <Route path="/orgs">
-                  <Orgs />
-                </Route>
-                <Route path="/report">
-                  <ReportSightings />
-                </Route>
-                <Route path="/administration">
-                  <Administration />
-                </Route>
-                <Route path="/forgot">
-                  <Forgot />
-                </Route>
-                <Route path="/login">
-                  <Login />
-                </Route>
-                <Route path="/logout">
-                  <Logout />
-                </Route>
-                <Route path="/request">
-                  <RequestInvitation />
-                </Route>
-                <Route path="/create">
-                  <CreateAccount />
-                </Route>
-                <Route path="/welcome">
-                  <Welcome />
-                </Route>
-                <Route path="/" exact>
-                  <Root />
-                </Route>
-                <Route>
-                  <FourOhFour />
-                </Route>
-              </Switch>
-            )}
-          </main>
-          <Footer />
-        </BrowserRouter>
+        <AppContext.Provider value={{ state, dispatch }}>
+          <BrowserRouter basename="/">
+            <ScrollToTop />
+            <BigSwitch />
+            <Footer />
+          </BrowserRouter>
+        </AppContext.Provider>
       </IntlProvider>
     </ThemeProvider>
   );
