@@ -10,7 +10,6 @@ import Grid from '@material-ui/core/Grid';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import BackIcon from '@material-ui/icons/KeyboardBackspace';
 import {
   selectSightingSchema,
   selectSightingCategories,
@@ -43,7 +42,7 @@ export default function StandardReport({ variant, onBack }) {
   );
 
   return (
-    <Grid container direction="column">
+    <>
       <TermsAndConditionsDialog
         visible={dialogOpen}
         onClose={() => setDialogOpen(false)}
@@ -237,6 +236,6 @@ export default function StandardReport({ variant, onBack }) {
           </Typography>
         ))}
       </Grid>
-    </Grid>
+    </>
   );
 }

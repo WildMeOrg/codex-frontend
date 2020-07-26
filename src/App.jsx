@@ -9,6 +9,8 @@ import {
   createMuiTheme,
   ThemeProvider,
 } from '@material-ui/core/styles';
+import Fade from '@material-ui/core/Fade';
+import { TransitionGroup } from 'react-transition-group';
 import { IntlProvider } from 'react-intl';
 import { useSelector } from 'react-redux';
 import '@formatjs/intl-numberformat/polyfill';
@@ -42,6 +44,7 @@ import RequestInvitation from './pages/auth/RequestInvitation';
 import materialTheme from './styles/materialTheme';
 import messagesEn from '../locale/en.json';
 import messagesEs from '../locale/es.json';
+import { defaultCrossfadeDuration } from './constants/defaults';
 
 // polyfill to enable formatting of a number using the unit prop
 if (typeof Intl.NumberFormat.__addLocaleData === 'function') {
@@ -82,85 +85,107 @@ export default function App() {
       >
         <BrowserRouter basename="/">
           <ScrollToTop />
-          <main
-            style={{
-              height: '100%',
-              width: '100%',
-              justifyContent: 'center',
-              alignItems: 'center',
-              overflow: 'hidden',
-              minHeight: '100vh',
-            }}
-          >
+          <main>
             <AppHeader />
-            {siteSettings.needsSetup ? (
-              <SiteSetup />
-            ) : (
-              <Switch>
-                <Route path="/individuals/picturebook">
-                  <PictureBook />
-                </Route>
-                <Route path="/individuals/:id">
-                  <Individual />
-                </Route>
-                <Route path="/individuals">
-                  <SearchIndividuals />
-                </Route>
-                <Route path="/match/:id">
-                  <Match />
-                </Route>
-                <Route path="/sightings/:id">
-                  <Sighting />
-                </Route>
-                <Route path="/sightings">
-                  <SearchSightings />
-                </Route>
-                <Route path="/users/:id">
-                  <User />
-                </Route>
-                <Route path="/users">
-                  <Users />
-                </Route>
-                <Route path="/orgs/:id">
-                  <Org />
-                </Route>
-                <Route path="/orgs">
-                  <Orgs />
-                </Route>
-                <Route path="/report">
-                  <ReportSightings />
-                </Route>
-                <Route path="/administration">
-                  <Administration />
-                </Route>
-                <Route path="/forgot">
-                  <Forgot />
-                </Route>
-                <Route path="/login">
-                  <Login />
-                </Route>
-                <Route path="/logout">
-                  <Logout />
-                </Route>
-                <Route path="/request">
-                  <RequestInvitation />
-                </Route>
-                <Route path="/create">
-                  <CreateAccount />
-                </Route>
-                <Route path="/welcome">
-                  <Welcome />
-                </Route>
-                <Route path="/" exact>
-                  <Root />
-                </Route>
-                <Route>
-                  <FourOhFour />
-                </Route>
-              </Switch>
-            )}
+            <Route
+              render={({ location }) => (
+                <TransitionGroup appear component={null}>
+                  <Fade
+                    key={location.key}
+                    timeout={defaultCrossfadeDuration}
+                  >
+                    <div
+                      style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        overflow: 'hidden',
+                        boxSizing: 'border-box',
+                        width: '100%',
+                      }}
+                    >
+                      <div
+                        style={{
+                          minHeight: 'calc(100vh - 64px)',
+                          boxSizing: 'border-box',
+                        }}
+                      >
+                        {siteSettings.needsSetup ? (
+                          <SiteSetup />
+                        ) : (
+                          <Switch location={location}>
+                            <Route path="/individuals/picturebook">
+                              <PictureBook />
+                            </Route>
+                            <Route path="/individuals/:id">
+                              <Individual />
+                            </Route>
+                            <Route path="/individuals">
+                              <SearchIndividuals />
+                            </Route>
+                            <Route path="/match/:id">
+                              <Match />
+                            </Route>
+                            <Route path="/sightings/:id">
+                              <Sighting />
+                            </Route>
+                            <Route path="/sightings">
+                              <SearchSightings />
+                            </Route>
+                            <Route path="/users/:id">
+                              <User />
+                            </Route>
+                            <Route path="/users">
+                              <Users />
+                            </Route>
+                            <Route path="/orgs/:id">
+                              <Org />
+                            </Route>
+                            <Route path="/orgs">
+                              <Orgs />
+                            </Route>
+                            <Route path="/report">
+                              <ReportSightings />
+                            </Route>
+                            <Route path="/administration">
+                              <Administration />
+                            </Route>
+                            <Route path="/forgot">
+                              <Forgot />
+                            </Route>
+                            <Route path="/login">
+                              <Login />
+                            </Route>
+                            <Route path="/logout">
+                              <Logout />
+                            </Route>
+                            <Route path="/request">
+                              <RequestInvitation />
+                            </Route>
+                            <Route path="/create">
+                              <CreateAccount />
+                            </Route>
+                            <Route path="/welcome">
+                              <Welcome />
+                            </Route>
+                            <Route path="/" exact>
+                              <Root />
+                            </Route>
+                            <Route>
+                              <FourOhFour />
+                            </Route>
+                          </Switch>
+                        )}
+                      </div>
+                      <Footer />
+                    </div>
+                  </Fade>
+                </TransitionGroup>
+              )}
+            />
           </main>
-          <Footer />
         </BrowserRouter>
       </IntlProvider>
     </ThemeProvider>

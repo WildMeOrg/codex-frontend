@@ -60,7 +60,7 @@ export default function BulkReport({ onBack, files }) {
       : enabledFields.join(',');
 
   return (
-    <Grid container direction="column">
+    <>
       <TermsAndConditionsDialog
         visible={dialogOpen}
         onClose={() => setDialogOpen(false)}
@@ -281,6 +281,6 @@ export default function BulkReport({ onBack, files }) {
           </Typography>
         )}
       </Grid>
-    </Grid>
+    </>
   );
 }
