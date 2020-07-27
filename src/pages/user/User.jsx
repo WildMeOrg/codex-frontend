@@ -86,7 +86,6 @@ export default function User({ userId }) {
   useDocumentTitle(capitalize(displayedUserId));
 
   const activeTab = window.location.hash || '#sightings';
-  console.log(activeTab);
 
   // fetch data for Id...
   const users = useSelector(selectUsers);
