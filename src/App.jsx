@@ -9,7 +9,6 @@ import { useSelector } from 'react-redux';
 import '@formatjs/intl-numberformat/polyfill';
 import enPolyfill from '@formatjs/intl-numberformat/dist/locale-data/en';
 import esPolyfill from '@formatjs/intl-numberformat/dist/locale-data/es';
-import Footer from './components/Footer';
 import { selectLocale } from './modules/app/selectors';
 import materialTheme from './styles/materialTheme';
 import messagesEn from '../locale/en.json';
@@ -67,7 +66,6 @@ export default function App() {
           <BrowserRouter basename="/">
             <ScrollToTop />
             <BigSwitch />
-            <Footer />
           </BrowserRouter>
         </AppContext.Provider>
       </IntlProvider>

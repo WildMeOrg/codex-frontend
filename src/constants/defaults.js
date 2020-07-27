@@ -4,3 +4,5 @@ export const defaultAreaBounds = {
   east: 14.857142857142884,
   west: -15.428571428571413,
 };
+
+export const defaultCrossfadeDuration = 500;

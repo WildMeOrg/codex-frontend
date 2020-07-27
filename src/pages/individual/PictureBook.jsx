@@ -54,15 +54,24 @@ function resetStylesForPrintingCSS(theme) {
   return css`
     @media screen {
       body {
-        padding: 1rem;
+        padding: 0;
         max-width: ${theme.breakpoints.values.lg}px;
+      }
+
+      main > div:first-of-type {
+        padding: 1rem;
       }
     }
 
     /* visually removes header and footer */
     main > header.MuiAppBar-root,
-    #root > div {
+    main #footer {
       display: none;
+    }
+
+    /* repositions content at top of page */
+    main > div:first-of-type {
+      top: 0 !important;
     }
   `;
 }

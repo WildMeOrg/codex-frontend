@@ -16,7 +16,7 @@ export default function Footer() {
   const dispatch = useDispatch();
 
   return (
-    <div style={{ width: '100%', paddingBottom: 16 }}>
+    <div id="footer" style={{ width: '100%', paddingBottom: 16 }}>
       <Divider />
       <div
         style={{
