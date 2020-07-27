@@ -54,7 +54,7 @@ export default function NotFoundPage({
           {details}
         </Typography>
       </div>
-      <div style={{ position: 'absolute', bottom: '8%', left: 12 }}>
+      <div style={{ position: 'absolute', bottom: 12, left: 12 }}>
         <Typography>
           <FormattedMessage id="PHOTO_BY" />
           <Link external href={artistUrl}>

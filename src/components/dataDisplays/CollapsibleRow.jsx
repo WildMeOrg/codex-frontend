@@ -54,7 +54,7 @@ export default function CollabsibleRow({
                 borderBottom: renderExpandedRow ? 'none' : undefined,
               }}
             >
-              {cellRenderer(cellValue)}
+              {cellRenderer(cellValue, datum)}
             </TableCell>
           );
         })}
