@@ -20,6 +20,7 @@ import useDocumentTitle from '../../hooks/useDocumentTitle';
 import fluke from '../../assets/fluke1.png';
 import fluke2 from '../../assets/fluke2.jpeg';
 import PhotoTile from './PhotoTile';
+import LargeScreenRequired from './LargeScreenRequired';
 
 const heightStyles = {
   height: '100%',
@@ -56,6 +57,7 @@ export default function Sighting() {
         ...heightStyles,
       }}
     >
+      <LargeScreenRequired />
       <div>
         <GridList
           cols={2}
