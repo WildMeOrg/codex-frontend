@@ -10,7 +10,7 @@ import FullscreenIcon from '@material-ui/icons/Fullscreen';
 import Button from '../../components/Button';
 import { openFullscreen } from '../../utils/fullscreen';
 
-export default function Sighting({
+export default function PhotoTile({
   title,
   onPrev,
   onNext,
@@ -18,6 +18,7 @@ export default function Sighting({
   imgId,
   filename,
   fileSubtitle,
+  hideButtons,
   ...rest
 }) {
   return (
@@ -26,17 +27,21 @@ export default function Sighting({
         style={{
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'space-between',
+          justifyContent: hideButtons ? 'center' : 'space-between',
           marginBottom: 4,
         }}
       >
-        <Button size="small" onClick={onPrev}>
-          <FormattedMessage id="PREVIOUS_SMALL_BUTTON" />
-        </Button>
+        {!hideButtons && (
+          <Button size="small" onClick={onPrev}>
+            <FormattedMessage id="PREVIOUS_SMALL_BUTTON" />
+          </Button>
+        )}
         <Typography variant="h6">{title}</Typography>
-        <Button size="small" onClick={onNext}>
-          <FormattedMessage id="NEXT_SMALL_BUTTON" />
-        </Button>
+        {!hideButtons && (
+          <Button size="small" onClick={onNext}>
+            <FormattedMessage id="NEXT_SMALL_BUTTON" />
+          </Button>
+        )}
       </div>
       <div style={{ position: 'relative' }}>
         <img

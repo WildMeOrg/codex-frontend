@@ -21,15 +21,10 @@ import fluke from '../../assets/fluke1.png';
 import fluke2 from '../../assets/fluke2.jpeg';
 import PhotoTile from './PhotoTile';
 
-const heightStyles = {
-  height: '100%',
-  minHeight: '100vh',
-};
-
 const currentAnnotationId = 'currentAnnotation';
 const candidateMatchId = 'candidateMatch';
 
-export default function Sighting() {
+export default function Match({ setMatching }) {
   const intl = useIntl();
   const { id } = useParams();
 
@@ -48,14 +43,7 @@ export default function Sighting() {
     );
 
   return (
-    <div
-      style={{
-        marginTop: 64,
-        width: '100vw',
-        display: 'flex',
-        ...heightStyles,
-      }}
-    >
+    <>
       <div>
         <GridList
           cols={2}
@@ -274,12 +262,16 @@ export default function Sighting() {
                 },
               ]}
             />
-            <Button display="primary" style={{ marginTop: 24 }}>
+            <Button
+              onClick={() => setMatching(false)}
+              display="primary"
+              style={{ marginTop: 24 }}
+            >
               <FormattedMessage id="REVIEW_AND_FINISH" />
             </Button>
           </div>
         )}
       </Paper>
-    </div>
+    </>
   );
 }
