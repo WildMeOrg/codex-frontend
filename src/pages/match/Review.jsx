@@ -1,21 +1,16 @@
 import React from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
-import GridList from '@material-ui/core/GridList';
+import Divider from '@material-ui/core/Divider';
 
-import fluke from '../../assets/fluke1.png';
-import fluke2 from '../../assets/fluke2.jpeg';
+import fluke from '../../assets/fluke.png';
+import fluke2 from '../../assets/cascade.jpg';
 import Button from '../../components/Button';
-import PhotoTile from './PhotoTile';
-
-const currentAnnotationId = 'currentAnnotation';
-const candidateMatchId = 'candidateMatch';
+import AnnotatedPhoto from './AnnotatedPhoto';
 
 export default function Review({ setMatching }) {
-  const intl = useIntl();
-
   const annotations = [
     {
       id: 232,
@@ -36,7 +31,7 @@ export default function Review({ setMatching }) {
       container
       spacing={2}
       direction="column"
-      style={{ width: '80%', margin: '30px auto' }}
+      style={{ margin: '30px auto' }}
     >
       <Grid item>
         <Button display="back" onClick={() => setMatching(true)}>
@@ -45,7 +40,7 @@ export default function Review({ setMatching }) {
       </Grid>
       <Grid style={{ margin: '0 auto' }} item>
         <Typography variant="h3" component="h3">
-          <FormattedMessage id="REVIEW_AND_CONFIRM_MATCHES" />
+          <FormattedMessage id="CONFIRM_AND_SUBMIT_MATCHES" />
         </Typography>
       </Grid>
       {annotations.map((annotation, i) => (
@@ -59,46 +54,65 @@ export default function Review({ setMatching }) {
               annotation.candidateMatch
             }`}
           </Typography>
-          <GridList
-            cols={2}
-            cellHeight="auto"
-            style={{ margin: 4, transform: 'translateZ(0)' }}
-            spacing={8}
+          <Divider />
+          <div
+            style={{
+              display: 'flex',
+              flexWrap: 'nowrap',
+              alignItems: 'center',
+              justifyContent: 'space-around',
+              width: '100vw',
+            }}
           >
-            <PhotoTile
-              hideButtons
-              imgSrc={fluke}
-              imgId={currentAnnotationId}
-              filename="dominica.jpg"
-              fileSubtitle={
-                <FormattedMessage
-                  id="SUBMITTED_ON_DATE"
-                  values={{ date: 'February 14, 2019' }}
-                />
-              }
-              title={intl.formatMessage({
-                id: 'CURRENT_ANNOTATION',
-              })}
+            <AnnotatedPhoto
+              title="dominica-mar-231.jpg"
+              id="1"
+              imageWidth={1508}
+              imageHeight={1454}
+              locationId="Dominica"
+              dateString="11/30/2019"
+              annotations={[
+                {
+                  id: 'img1',
+                  x: 5,
+                  y: 50,
+                  w: 85,
+                  h: 35,
+                },
+              ]}
+              src={fluke}
             />
-            <PhotoTile
-              hideButtons
-              imgSrc={fluke2}
-              imgId={candidateMatchId}
-              filename="fluke8.jpg"
-              fileSubtitle={
-                <FormattedMessage
-                  id="SUBMITTED_ON_DATE"
-                  values={{ date: 'November 12, 2011' }}
-                />
-              }
-              title={intl.formatMessage({ id: 'CANDIDATE_MATCH' })}
+            <AnnotatedPhoto
+              title="WB-201 (Terry)"
+              id="2"
+              imageWidth={1024}
+              imageHeight={768}
+              locationId="Santa Martina"
+              dateString="5/12/2007"
+              annotations={[
+                {
+                  id: 'img1',
+                  x: 50,
+                  y: 5,
+                  w: 10,
+                  h: 10,
+                },
+                {
+                  id: 'img2',
+                  x: 2,
+                  y: 15,
+                  w: 88,
+                  h: 60,
+                },
+              ]}
+              src={fluke2}
             />
-          </GridList>
+          </div>
         </Grid>
       ))}
       <Grid style={{ margin: '0 auto' }} item>
         <Button display="primary">
-          <FormattedMessage id="CONFIRM_ALL_MATCHES" />
+          <FormattedMessage id="CONFIRM_AND_SUBMIT" />
         </Button>
       </Grid>
     </Grid>

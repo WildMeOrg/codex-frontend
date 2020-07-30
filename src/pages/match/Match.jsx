@@ -52,7 +52,7 @@ export default function Match({ setMatching }) {
         }}
       >
         <Typography variant="h3" component="h3">
-          Annotation Match Tool
+          <FormattedMessage id="ANNOTATION_MATCH_TOOL" />
         </Typography>
         <Typography variant="subtitle1">Sighting S-101</Typography>
       </Grid>
@@ -172,12 +172,12 @@ export default function Match({ setMatching }) {
                 variant="subtitle1"
                 style={{ textDecoration: 'underline' }}
               >
-                This Pair
+                <FormattedMessage id="THIS_PAIR" />
               </Typography>
               <Typography>Hotspotter 0.52</Typography>
               <Typography>Curvrank 0.74</Typography>
               <Button display="primary" style={{ marginTop: 8 }}>
-                Match
+                <FormattedMessage id="MATCH" />
               </Button>
             </div>
             <AnnotatedPhoto
@@ -215,7 +215,7 @@ export default function Match({ setMatching }) {
                     })
                   }
                 >
-                  Change
+                  <FormattedMessage id="CHANGE" />
                 </Button>
               )}
             />
@@ -224,7 +224,10 @@ export default function Match({ setMatching }) {
       ))}
       <Grid item style={{ margin: '0 auto' }}>
         <Button
-          onClick={() => setMatching(false)}
+          onClick={() => {
+            setMatching(false);
+            window.scrollTo(0, 0);
+          }}
           display="primary"
           style={{ margin: '24px 0 60px 0' }}
         >
