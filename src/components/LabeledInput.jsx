@@ -26,6 +26,7 @@ import TreeViewInput from './inputs/TreeViewInput';
 import LatLongInput from './inputs/LatLongInput';
 import AreaInput from './inputs/AreaInput';
 import TreeViewEditor from './inputs/TreeViewEditor';
+import LocationIdInput from './inputs/LocationIdInput';
 
 function Core({ children, required, width, style = {} }) {
   return (
@@ -79,6 +80,10 @@ export default function LabeledInput(props) {
 
   if (schema.fieldType === fieldTypes.treeeditor) {
     return <TreeViewEditor {...props} />;
+  }
+
+  if (schema.fieldType === fieldTypes.locationIds) {
+    return <LocationIdInput {...props} />;
   }
 
   if (schema.fieldType === fieldTypes.individual) {

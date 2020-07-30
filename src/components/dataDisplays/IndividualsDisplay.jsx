@@ -37,10 +37,6 @@ export default function IndividualsDisplay({ individuals }) {
       name: 'encounterCount',
       label: 'Encounters',
     },
-    {
-      name: 'locationsSighted',
-      label: 'Locations Sighted',
-    },
   ];
 
   return (
@@ -52,48 +48,44 @@ export default function IndividualsDisplay({ individuals }) {
         window.open('/individuals/picturebook', '_blank');
       }}
       renderExpandedRow={expandedIndividual => (
-        <tr>
-          <td colSpan={999}>
-            <div style={{ display: 'flex' }}>
-              <img
-                src={expandedIndividual.profile}
-                alt="Expanded individual"
-                style={{
-                  width: 200,
-                  height: 160,
-                  padding: 20,
-                }}
-              />
-              <div style={{ padding: '20px 0' }}>
-                <Typography variant="subtitle1">
-                  Recent Activity
-                </Typography>
-                <Typography>
-                  Encounter with <Link href="google.com">Tanya</Link>{' '}
-                  on <Link href="google.com">4/12/2019</Link>
-                </Typography>
-                <Typography>
-                  Encounter with <Link href="google.com">Drew</Link>{' '}
-                  on <Link href="google.com">4/6/2019</Link>
-                </Typography>
-                <Typography>
-                  Encounter with <Link href="google.com">Colin</Link>{' '}
-                  on <Link href="google.com">4/2/2019</Link>
-                </Typography>
-                <Typography>
-                  Encounter with <Link href="google.com">Jasonx</Link>{' '}
-                  on <Link href="google.com">3/16/2019</Link>
-                </Typography>
-                <ButtonLink
-                  style={{ marginTop: 16 }}
-                  href={`/individuals/${expandedIndividual.id}`}
-                >
-                  View Profile
-                </ButtonLink>
-              </div>
-            </div>
-          </td>
-        </tr>
+        <div style={{ display: 'flex' }}>
+          <img
+            src={expandedIndividual.profile}
+            alt="Expanded individual"
+            style={{
+              width: 200,
+              height: 160,
+              padding: 20,
+            }}
+          />
+          <div style={{ padding: '20px 0' }}>
+            <Typography variant="subtitle1">
+              Recent Activity
+            </Typography>
+            <Typography>
+              Encounter with <Link href="google.com">Tanya</Link> on{' '}
+              <Link href="google.com">4/12/2019</Link>
+            </Typography>
+            <Typography>
+              Encounter with <Link href="google.com">Drew</Link> on{' '}
+              <Link href="google.com">4/6/2019</Link>
+            </Typography>
+            <Typography>
+              Encounter with <Link href="google.com">Colin</Link> on{' '}
+              <Link href="google.com">4/2/2019</Link>
+            </Typography>
+            <Typography>
+              Encounter with <Link href="google.com">Jasonx</Link> on{' '}
+              <Link href="google.com">3/16/2019</Link>
+            </Typography>
+            <ButtonLink
+              style={{ marginTop: 16 }}
+              href={`/individuals/${expandedIndividual.id}`}
+            >
+              View Profile
+            </ButtonLink>
+          </div>
+        </div>
       )}
     />
   );

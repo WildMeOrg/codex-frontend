@@ -17,7 +17,8 @@ const fieldTypes = {
   comparator: 'comparator', // { comparator: one of ["LT", "LTE", "GT", "GTE", "EQ"], value: float }
   boolean: 'boolean',
   treeview: 'treeview', // nested array
-  treeeditor: 'treeeditor', // nested array
+  treeeditor: 'treeeditor', // nested array (deprecated, replaced by locationIds)
+  locationIds: 'locationIds',
   fieldset: 'fieldset', // array of schema objects. used only in admin panel
   optioneditor: 'optioneditor', // used only in admin panel
 };

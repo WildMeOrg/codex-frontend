@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { useIntl, FormattedMessage } from 'react-intl';
 import { useSelector } from 'react-redux';
 import Hidden from '@material-ui/core/Hidden';
 import Drawer from '@material-ui/core/Drawer';
 import Typography from '@material-ui/core/Typography';
+import useDocumentTitle from '../../hooks/useDocumentTitle';
 import Button from '../../components/Button';
 import FilterPanel from '../../components/FilterPanel';
 import SearchFilterList from '../../components/SearchFilterList';
@@ -27,6 +28,7 @@ const paperProps = {
 };
 
 export default function SearchEncounters() {
+  const intl = useIntl();
   const categories = useSelector(selectSightingSearchCategories);
   const schema = useSelector(selectSightingSearchSchema);
   const searchResults = useSelector(selectSearchResults);
@@ -38,6 +40,8 @@ export default function SearchEncounters() {
       return memo;
     }, {}),
   );
+
+  useDocumentTitle(intl.formatMessage({ id: 'EXPLORE_SIGHTINGS' }));
 
   return (
     <div style={{ display: 'flex' }}>

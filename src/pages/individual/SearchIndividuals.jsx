@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { useIntl, FormattedMessage } from 'react-intl';
 import { useSelector } from 'react-redux';
 import Hidden from '@material-ui/core/Hidden';
 import Drawer from '@material-ui/core/Drawer';
 import Typography from '@material-ui/core/Typography';
+import useDocumentTitle from '../../hooks/useDocumentTitle';
 import FilterPanel from '../../components/FilterPanel';
 import SearchFilterList from '../../components/SearchFilterList';
 import {
@@ -27,6 +28,7 @@ const paperProps = {
 };
 
 export default function SearchIndividuals() {
+  const intl = useIntl();
   const categories = useSelector(selectIndividualSearchCategories);
   const schema = useSelector(selectIndividualSearchSchema);
 
@@ -37,6 +39,8 @@ export default function SearchIndividuals() {
       return memo;
     }, {}),
   );
+
+  useDocumentTitle(intl.formatMessage({ id: 'EXPLORE_INDIVIDUALS' }));
 
   /* not fetching from API because API is not ready */
   const searchResults = useSelector(selectSearchResults);

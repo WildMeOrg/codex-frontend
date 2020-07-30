@@ -18,6 +18,7 @@ const newSettingFields = [
   'site.private',
   'site.general.tagline',
   'site.general.exploreTagline',
+  'site.custom.regions',
 ];
 
 function getFieldsetErrors(intl, fieldset, fieldsetName) {

@@ -8,7 +8,6 @@ import ButtonLink from '../../components/ButtonLink';
 
 export default function LargeScreenRequired() {
   const theme = useTheme();
-  console.log(theme.breakpoints);
   const isXs = useMediaQuery(theme.breakpoints.down('sm'));
 
   if (!isXs) return null;
