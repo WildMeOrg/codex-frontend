@@ -6,7 +6,6 @@ import Grid from '@material-ui/core/Grid';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import MainColumn from '../../components/MainColumn';
 import ButtonLink from '../../components/ButtonLink';
-import Button from '../../components/Button';
 import { selectSiteName } from '../../modules/site/selectors';
 
 export default function Welcome() {

@@ -18,6 +18,7 @@ const newSettingFields = [
   'site.private',
   'site.general.tagline',
   'site.general.exploreTagline',
+  'site.custom.regions',
 ];
 
 function getFieldsetErrors(intl, fieldset, fieldsetName) {
@@ -75,6 +76,8 @@ export default function SiteSettings({ primaryButtonId }) {
   useEffect(() => {
     setCurrentValues(zipObject(newSettingFields, edmValues));
   }, edmValues);
+
+  console.log(newSiteSettings);
 
   const [submissionAttempted, setSubmissionAttempted] = useState(
     false,

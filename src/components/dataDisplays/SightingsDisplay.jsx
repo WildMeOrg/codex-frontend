@@ -90,37 +90,31 @@ export default function SightingsDisplay({ sightings }) {
       data={tableData}
       title={title}
       renderExpandedRow={expandedSighting => (
-        <tr>
-          <td colSpan={999}>
-            <div style={{ display: 'flex' }}>
-              <img
-                src={expandedSighting.profile}
-                alt="Expanded sighting"
-                style={{
-                  width: 200,
-                  height: 160,
-                  padding: 20,
-                }}
-              />
-              <div style={{ padding: '20px 0' }}>
-                <Typography variant="subtitle1">
-                  <FormattedMessage id="SIGHTING_DETAILS" />
-                </Typography>
-                <Typography>
-                  Species: Megaptera novaeangliae
-                </Typography>
-                <Typography>Region: South Sahara</Typography>
-                <ButtonLink
-                  display="panel"
-                  style={{ marginTop: 16 }}
-                  href={`/sightings/${expandedSighting.id}`}
-                >
-                  <FormattedMessage id="VIEW_SIGHTING" />
-                </ButtonLink>
-              </div>
-            </div>
-          </td>
-        </tr>
+        <div style={{ display: 'flex' }}>
+          <img
+            src={expandedSighting.profile}
+            alt="Expanded sighting"
+            style={{
+              width: 200,
+              height: 160,
+              padding: 20,
+            }}
+          />
+          <div style={{ padding: '20px 0' }}>
+            <Typography variant="subtitle1">
+              <FormattedMessage id="SIGHTING_DETAILS" />
+            </Typography>
+            <Typography>Species: Megaptera novaeangliae</Typography>
+            <Typography>Region: South Sahara</Typography>
+            <ButtonLink
+              display="panel"
+              style={{ marginTop: 16 }}
+              href={`/sightings/${expandedSighting.id}`}
+            >
+              <FormattedMessage id="VIEW_SIGHTING" />
+            </ButtonLink>
+          </div>
+        </div>
       )}
     />
   );
