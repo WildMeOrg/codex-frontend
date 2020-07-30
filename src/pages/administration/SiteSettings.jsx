@@ -77,8 +77,6 @@ export default function SiteSettings({ primaryButtonId }) {
     setCurrentValues(zipObject(newSettingFields, edmValues));
   }, edmValues);
 
-  console.log(newSiteSettings);
-
   const [submissionAttempted, setSubmissionAttempted] = useState(
     false,
   );
