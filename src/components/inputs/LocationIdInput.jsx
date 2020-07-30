@@ -1,5 +1,5 @@
 import React from 'react';
-import { get } from 'lodash-es';
+import { cloneDeep, get } from 'lodash-es';
 import { useIntl, FormattedMessage } from 'react-intl';
 import { v4 as uuid } from 'uuid';
 import FormControl from '@material-ui/core/FormControl';
@@ -36,7 +36,7 @@ function Core({ children, required, width, style = {} }) {
 }
 
 function flattenTree(tree) {
-  const flatTree = [...tree];
+  const flatTree = cloneDeep(tree);
 
   function addLevel(leaves) {
     leaves.forEach(leaf => {
@@ -86,21 +86,19 @@ function deleteFromTree(tree, deleteId) {
 function updateTree(tree, leafId, newLeafName) {
   const flatTree = flattenTree(tree);
   const oldLeaf = flatTree.find(leaf => leaf.id === leafId);
-  const newLeaf = { ...oldLeaf, name: newLeafName };
 
-  const newTree = [...tree];
+  const newTree = cloneDeep(tree);
   function updateLevel(leaves) {
     leaves.forEach((leaf, i) => {
       if (leaf.id === leafId) {
-        leaves[i] = newLeaf; // what the duck
+        const newLeaf = { ...oldLeaf, name: newLeafName };
+        leaves[i] = newLeaf;
       }
       if (leaf.locationID) updateLevel(leaf.locationID);
     });
-    console.log(leaves);
   }
 
   updateLevel(newTree);
-
   return newTree;
 }
 
