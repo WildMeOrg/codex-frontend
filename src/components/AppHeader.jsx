@@ -4,20 +4,27 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 
 import { useTheme } from '@material-ui/core/styles';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import Avatar from '@material-ui/core/Avatar';
-import MenuIcon from '@material-ui/icons/Menu';
 import Popover from '@material-ui/core/Popover';
 import Divider from '@material-ui/core/Divider';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import MenuList from '@material-ui/core/MenuList';
 
+import MenuIcon from '@material-ui/icons/Menu';
+import DropDownIcon from '@material-ui/icons/ArrowDropDown';
 import { selectLogos } from '../modules/site/selectors';
 import { selectIsAuthenticated } from '../modules/app/selectors';
 import { setLoginRedirect } from '../modules/app/actions';
 // import useSiteSettings from '../models/site/useSiteSettings';
 import ButtonLink from './ButtonLink';
+import Button from './Button';
 import Link from './Link';
 import AppDrawer from './AppDrawer';
 import shane from '../assets/shane.jpg';
@@ -29,10 +36,16 @@ export default function AppHeader() {
   const location = useLocation();
   const dispatch = useDispatch();
 
+  const isXs = useMediaQuery(theme.breakpoints.only('sm'));
+
   const isAuthenticated = useSelector(selectIsAuthenticated);
   const logos = useSelector(selectLogos);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [
+    exploreAnchorElement,
+    setExploreAnchorElement,
+  ] = React.useState(null);
 
   // const siteSettings = useSiteSettings();
 
@@ -51,34 +64,36 @@ export default function AppHeader() {
         }),
       }}
     >
-      <AppDrawer
-        open={drawerOpen}
-        onClose={() => setDrawerOpen(false)}
-        handleClick={handleClick}
-        isAuthenticated={isAuthenticated}
-      />
+      {isXs && (
+        <AppDrawer
+          open={drawerOpen}
+          onClose={() => setDrawerOpen(false)}
+          handleClick={handleClick}
+          isAuthenticated={isAuthenticated}
+        />
+      )}
       <Toolbar
         style={{
-          paddingRight: 24,
-          width: '90%',
-          margin: '0 auto',
+          display: 'flex',
+          justifyContent: 'space-between',
         }}
       >
-        <IconButton
-          edge="start"
-          style={{ marginRight: 8 }}
-          color="inherit"
-          aria-label="menu"
-          onClick={() => setDrawerOpen(true)}
-        >
-          <MenuIcon />
-        </IconButton>
+        {isXs && (
+          <IconButton
+            edge="start"
+            color="inherit"
+            aria-label="menu"
+            onClick={() => setDrawerOpen(true)}
+          >
+            <MenuIcon />
+          </IconButton>
+        )}
         <Typography
           component="h1"
           variant="h6"
           color="inherit"
           noWrap
-          style={{ fontSize: 20, flexGrow: 1 }}
+          style={{ fontSize: 20 }}
         >
           <Link
             href="/"
@@ -93,6 +108,102 @@ export default function AppHeader() {
             />
           </Link>
         </Typography>
+        {!isXs && (
+          <>
+            <Typography>
+              <Link noUnderline href="/report">
+                <FormattedMessage id="REPORT_SIGHTINGS" />
+              </Link>
+            </Typography>
+            <div>
+              <Button
+                style={{
+                  textTransform: 'unset',
+                  color: 'white',
+                  fontWeight: 300,
+                  fontSize: 16,
+                  letterSpacing: 0,
+                }}
+                onClick={event =>
+                  setExploreAnchorElement(event.currentTarget)
+                }
+              >
+                <span style={{ letterSpacing: 0 }}>
+                  <FormattedMessage id="EXPLORE" />
+                </span>
+                <DropDownIcon />
+              </Button>
+              <Menu
+                anchorEl={exploreAnchorElement}
+                keepMounted
+                open={Boolean(exploreAnchorElement)}
+                onClose={() => setExploreAnchorElement(null)}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'left',
+                }}
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'left',
+                }}
+              >
+                <MenuList>
+                  <MenuItem>
+                    <Typography>
+                      <Link href="/sightings">
+                        <FormattedMessage id="SIGHTINGS" />
+                      </Link>
+                    </Typography>
+                  </MenuItem>
+                  <MenuItem>
+                    <Typography>
+                      <Link href="/individuals">
+                        <FormattedMessage id="INDIVIDUALS" />
+                      </Link>
+                    </Typography>
+                  </MenuItem>
+                  <MenuItem>
+                    <Typography>
+                      <Link href="/users">
+                        <FormattedMessage id="USERS" />
+                      </Link>
+                    </Typography>
+                  </MenuItem>
+                  <MenuItem>
+                    <Typography>
+                      <Link href="/orgs">
+                        <FormattedMessage id="ORGANIZATIONS" />
+                      </Link>
+                    </Typography>
+                  </MenuItem>
+                </MenuList>
+              </Menu>
+            </div>
+            <Typography>
+              <Link
+                noUnderline
+                href="https://community.wildbook.org/"
+                external
+              >
+                <FormattedMessage id="HELP" />
+              </Link>
+            </Typography>
+            <Typography>
+              <Link
+                noUnderline
+                href="http://wiki.wildbook.org/"
+                external
+              >
+                <FormattedMessage id="DOCS" />
+              </Link>
+            </Typography>
+            <Typography>
+              <Link noUnderline href="/administration">
+                <FormattedMessage id="ADMIN" />
+              </Link>
+            </Typography>
+          </>
+        )}
         {isAuthenticated ? (
           <>
             <Avatar
@@ -136,6 +247,7 @@ export default function AppHeader() {
           </>
         ) : (
           <ButtonLink
+            size={isXs ? 'small' : undefined}
             display="primary"
             href="/login"
             onClick={() => {
