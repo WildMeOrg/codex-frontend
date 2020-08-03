@@ -13,14 +13,17 @@ import IconButton from '@material-ui/core/IconButton';
 import Avatar from '@material-ui/core/Avatar';
 import Popover from '@material-ui/core/Popover';
 import Divider from '@material-ui/core/Divider';
-import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
-
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import MenuIcon from '@material-ui/icons/Menu';
 import DropDownIcon from '@material-ui/icons/ArrowDropDown';
+
 import { selectLogos } from '../modules/site/selectors';
-import { selectIsAuthenticated } from '../modules/app/selectors';
+import {
+  selectIsAuthenticated,
+  selectIsAdministrator,
+} from '../modules/app/selectors';
 import { setLoginRedirect } from '../modules/app/actions';
 // import useSiteSettings from '../models/site/useSiteSettings';
 import ButtonLink from './ButtonLink';
@@ -30,22 +33,21 @@ import AppDrawer from './AppDrawer';
 import shane from '../assets/shane.jpg';
 
 const popoverId = 'popover';
+const exploreSpanId = 'explore';
 
 export default function AppHeader() {
   const theme = useTheme();
   const location = useLocation();
   const dispatch = useDispatch();
 
-  const isXs = useMediaQuery(theme.breakpoints.only('sm'));
+  const isXs = useMediaQuery(theme.breakpoints.down('sm'));
 
   const isAuthenticated = useSelector(selectIsAuthenticated);
+  const isAdministrator = useSelector(selectIsAdministrator);
   const logos = useSelector(selectLogos);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [
-    exploreAnchorElement,
-    setExploreAnchorElement,
-  ] = React.useState(null);
+  const [exploreOpen, setExploreOpen] = React.useState(false);
 
   // const siteSettings = useSiteSettings();
 
@@ -124,60 +126,66 @@ export default function AppHeader() {
                   fontSize: 16,
                   letterSpacing: 0,
                 }}
-                onClick={event =>
-                  setExploreAnchorElement(event.currentTarget)
-                }
+                onClick={() => setExploreOpen(!exploreOpen)}
               >
-                <span style={{ letterSpacing: 0 }}>
+                <span id={exploreSpanId} style={{ letterSpacing: 0 }}>
                   <FormattedMessage id="EXPLORE" />
                 </span>
                 <DropDownIcon />
               </Button>
-              <Menu
-                anchorEl={exploreAnchorElement}
-                keepMounted
-                open={Boolean(exploreAnchorElement)}
-                onClose={() => setExploreAnchorElement(null)}
-                anchorOrigin={{
-                  vertical: 'bottom',
-                  horizontal: 'left',
-                }}
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'left',
+              <ClickAwayListener
+                mouseEvent="onMouseDown"
+                onClickAway={event => {
+                  if (event.target.id !== exploreSpanId)
+                    setExploreOpen(false);
                 }}
               >
-                <MenuList>
-                  <MenuItem>
-                    <Typography>
-                      <Link href="/sightings">
-                        <FormattedMessage id="SIGHTINGS" />
-                      </Link>
-                    </Typography>
-                  </MenuItem>
-                  <MenuItem>
-                    <Typography>
-                      <Link href="/individuals">
-                        <FormattedMessage id="INDIVIDUALS" />
-                      </Link>
-                    </Typography>
-                  </MenuItem>
-                  <MenuItem>
-                    <Typography>
-                      <Link href="/users">
-                        <FormattedMessage id="USERS" />
-                      </Link>
-                    </Typography>
-                  </MenuItem>
-                  <MenuItem>
-                    <Typography>
-                      <Link href="/orgs">
-                        <FormattedMessage id="ORGANIZATIONS" />
-                      </Link>
-                    </Typography>
-                  </MenuItem>
-                </MenuList>
-              </Menu>
+                <div
+                  style={{
+                    position: 'absolute',
+                    backgroundColor: 'black',
+                    padding: '0 12px',
+                    height: exploreOpen ? 164 : 0,
+                    transition: 'height 0.3s ease-in-out',
+                    overflow: 'hidden',
+                  }}
+                >
+                  <MenuList
+                    onClick={() => {
+                      if (exploreOpen) setExploreOpen(false);
+                    }}
+                  >
+                    <Link noUnderline href="/sightings">
+                      <MenuItem>
+                        <Typography>
+                          <FormattedMessage id="SIGHTINGS" />
+                        </Typography>
+                      </MenuItem>
+                    </Link>
+                    <Link noUnderline href="/individuals">
+                      <MenuItem>
+                        <Typography>
+                          <FormattedMessage id="INDIVIDUALS" />
+                        </Typography>
+                      </MenuItem>
+                    </Link>
+                    <Link noUnderline href="/users">
+                      <MenuItem>
+                        <Typography>
+                          <FormattedMessage id="USERS" />
+                        </Typography>
+                      </MenuItem>
+                    </Link>
+                    <Link noUnderline href="/orgs">
+                      <MenuItem>
+                        <Typography>
+                          <FormattedMessage id="ORGANIZATIONS" />
+                        </Typography>
+                      </MenuItem>
+                    </Link>
+                  </MenuList>
+                </div>
+              </ClickAwayListener>
             </div>
             <Typography>
               <Link
@@ -197,18 +205,20 @@ export default function AppHeader() {
                 <FormattedMessage id="DOCS" />
               </Link>
             </Typography>
-            <Typography>
-              <Link noUnderline href="/administration">
-                <FormattedMessage id="ADMIN" />
-              </Link>
-            </Typography>
+            {isAdministrator && (
+              <Typography>
+                <Link noUnderline href="/administration">
+                  <FormattedMessage id="ADMIN" />
+                </Link>
+              </Typography>
+            )}
           </>
         )}
         {isAuthenticated ? (
           <>
             <Avatar
               style={{
-                marginLeft: theme.spacing(1),
+                marginLeft: 8,
               }}
               onClick={e => {
                 setAnchorEl(e.currentTarget);
