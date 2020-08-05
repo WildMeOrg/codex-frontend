@@ -37,7 +37,7 @@ export default function App() {
       <AppHeader />
       <Route
         render={({ location }) => (
-          <TransitionGroup appear component={null}>
+          <TransitionGroup appear>
             <Fade
               key={location.key}
               timeout={defaultCrossfadeDuration}

@@ -32,7 +32,6 @@ export default function FileInput({
   schema,
   value,
   onChange,
-  dark = false,
   required,
   width,
   minimalLabels = false, // eslint-disable-line no-unused-vars
@@ -123,13 +122,15 @@ export default function FileInput({
                 height: 'auto',
                 width: 'auto',
                 padding: 20,
-                backgroundColor: dark ? '#1f2640' : 'unset',
+                backgroundColor: schema.dark ? '#1f2640' : 'unset',
               }}
               src={get(value, 'response.uploadURL', null)}
             />
           )}
           <div style={{ display: 'flex', alignItems: 'center' }}>
-            <Typography variant="caption">{value.name}</Typography>
+            <Typography variant="caption">
+              {value.name || value}
+            </Typography>
             <DeleteButton
               onClick={() => {
                 onChange(null);

@@ -19,8 +19,9 @@ const fieldTypes = {
   treeview: 'treeview', // nested array
   treeeditor: 'treeeditor', // nested array (deprecated, replaced by locationIds)
   locationIds: 'locationIds',
-  fieldset: 'fieldset', // array of schema objects. used only in admin panel
+  fieldset: 'fieldset', // used only in admin panel
   optioneditor: 'optioneditor', // used only in admin panel
+  filetypeeditor: 'filetypeeditor', // used only in admin panel
 };
 
 /* Informaton about fields that can be turned into custom fields */
@@ -70,8 +71,15 @@ export const fieldTypeChoices = [
         labelId: 'ALLOWED_FILE_TYPES',
         descriptionId: 'FILETYPE_OPTIONS_HELPER_TEXT',
         value: 'allowedFileTypes',
-        type: fieldTypes.optioneditor,
+        type: fieldTypes.filetypeeditor,
         defaultValue: [],
+      },
+      {
+        labelId: 'DARK_BACKGROUND',
+        descriptionId: 'DARK_BACKGROUND_HELPER_TEXT',
+        value: 'dark',
+        type: fieldTypes.boolean,
+        defaultValue: false,
       },
     ],
   },
@@ -89,6 +97,7 @@ export const fieldTypeChoices = [
     labelId: 'DATE_RANGE_PICKER',
     value: fieldTypes.daterange,
     defaultValue: [null, null],
+    validCustomField: false,
   },
   {
     labelId: 'DROPDOWN',
@@ -122,6 +131,7 @@ export const fieldTypeChoices = [
     labelId: 'COMPARATOR',
     value: fieldTypes.comparator,
     defaultValue: { comparator: '', value: '' },
+    validCustomField: false,
   },
   {
     labelId: 'BOOLEAN',

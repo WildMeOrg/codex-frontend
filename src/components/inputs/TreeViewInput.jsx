@@ -19,7 +19,7 @@ function Core({ children, required, width, style = {} }) {
   );
 }
 
-export default function LabeledInput(props) {
+export default function TreeViewInput(props) {
   const {
     schema,
     required,

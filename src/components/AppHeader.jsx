@@ -11,8 +11,6 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import Avatar from '@material-ui/core/Avatar';
-import Popover from '@material-ui/core/Popover';
-import Divider from '@material-ui/core/Divider';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
@@ -30,24 +28,23 @@ import ButtonLink from './ButtonLink';
 import Button from './Button';
 import Link from './Link';
 import AppDrawer from './AppDrawer';
+import HeaderMenu from './HeaderMenu';
 import shane from '../assets/shane.jpg';
-
-const popoverId = 'popover';
-const exploreSpanId = 'explore';
 
 export default function AppHeader() {
   const theme = useTheme();
   const location = useLocation();
   const dispatch = useDispatch();
 
-  const isXs = useMediaQuery(theme.breakpoints.down('sm'));
+  const isSm = useMediaQuery(theme.breakpoints.down('sm'));
+  const isXs = useMediaQuery(theme.breakpoints.down('xs'));
 
   const isAuthenticated = useSelector(selectIsAuthenticated);
   const isAdministrator = useSelector(selectIsAdministrator);
   const logos = useSelector(selectLogos);
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [anchorEl, setAnchorEl] = React.useState(null);
   const [exploreOpen, setExploreOpen] = React.useState(false);
+  const [userMenuOpen, setUserMenuOpen] = React.useState(false);
 
   // const siteSettings = useSiteSettings();
 
@@ -66,7 +63,17 @@ export default function AppHeader() {
         }),
       }}
     >
-      {isXs && (
+      {(exploreOpen || userMenuOpen) && (
+        <ClickAwayListener
+          onClickAway={() => {
+            setExploreOpen(false);
+            setUserMenuOpen(false);
+          }}
+        >
+          <div />
+        </ClickAwayListener>
+      )}
+      {isSm && (
         <AppDrawer
           open={drawerOpen}
           onClose={() => setDrawerOpen(false)}
@@ -80,7 +87,7 @@ export default function AppHeader() {
           justifyContent: 'space-between',
         }}
       >
-        {isXs && (
+        {isSm && (
           <IconButton
             edge="start"
             color="inherit"
@@ -110,7 +117,7 @@ export default function AppHeader() {
             />
           </Link>
         </Typography>
-        {!isXs && (
+        {!isSm && (
           <>
             <Typography>
               <Link noUnderline href="/report">
@@ -128,64 +135,43 @@ export default function AppHeader() {
                 }}
                 onClick={() => setExploreOpen(!exploreOpen)}
               >
-                <span id={exploreSpanId} style={{ letterSpacing: 0 }}>
+                <span style={{ letterSpacing: 0 }}>
                   <FormattedMessage id="EXPLORE" />
                 </span>
                 <DropDownIcon />
               </Button>
-              <ClickAwayListener
-                mouseEvent="onMouseDown"
-                onClickAway={event => {
-                  if (event.target.id !== exploreSpanId)
-                    setExploreOpen(false);
-                }}
-              >
-                <div
-                  style={{
-                    position: 'absolute',
-                    backgroundColor: 'black',
-                    padding: '0 12px',
-                    height: exploreOpen ? 164 : 0,
-                    transition: 'height 0.3s ease-in-out',
-                    overflow: 'hidden',
-                  }}
-                >
-                  <MenuList
-                    onClick={() => {
-                      if (exploreOpen) setExploreOpen(false);
-                    }}
-                  >
-                    <Link noUnderline href="/sightings">
-                      <MenuItem>
-                        <Typography>
-                          <FormattedMessage id="SIGHTINGS" />
-                        </Typography>
-                      </MenuItem>
-                    </Link>
-                    <Link noUnderline href="/individuals">
-                      <MenuItem>
-                        <Typography>
-                          <FormattedMessage id="INDIVIDUALS" />
-                        </Typography>
-                      </MenuItem>
-                    </Link>
-                    <Link noUnderline href="/users">
-                      <MenuItem>
-                        <Typography>
-                          <FormattedMessage id="USERS" />
-                        </Typography>
-                      </MenuItem>
-                    </Link>
-                    <Link noUnderline href="/orgs">
-                      <MenuItem>
-                        <Typography>
-                          <FormattedMessage id="ORGANIZATIONS" />
-                        </Typography>
-                      </MenuItem>
-                    </Link>
-                  </MenuList>
-                </div>
-              </ClickAwayListener>
+              <HeaderMenu open={exploreOpen} itemCount={4}>
+                <MenuList onClick={() => setExploreOpen(false)}>
+                  <Link noUnderline href="/sightings">
+                    <MenuItem className="dark-menu-item">
+                      <Typography>
+                        <FormattedMessage id="SIGHTINGS" />
+                      </Typography>
+                    </MenuItem>
+                  </Link>
+                  <Link noUnderline href="/individuals">
+                    <MenuItem className="dark-menu-item">
+                      <Typography>
+                        <FormattedMessage id="INDIVIDUALS" />
+                      </Typography>
+                    </MenuItem>
+                  </Link>
+                  <Link noUnderline href="/users">
+                    <MenuItem className="dark-menu-item">
+                      <Typography>
+                        <FormattedMessage id="USERS" />
+                      </Typography>
+                    </MenuItem>
+                  </Link>
+                  <Link noUnderline href="/orgs">
+                    <MenuItem className="dark-menu-item">
+                      <Typography>
+                        <FormattedMessage id="ORGANIZATIONS" />
+                      </Typography>
+                    </MenuItem>
+                  </Link>
+                </MenuList>
+              </HeaderMenu>
             </div>
             <Typography>
               <Link
@@ -216,48 +202,58 @@ export default function AppHeader() {
         )}
         {isAuthenticated ? (
           <>
-            <Avatar
+            <div
               style={{
-                marginLeft: 8,
+                position: 'relative',
+                display: 'flex',
+                alignItems: 'center',
               }}
-              onClick={e => {
-                setAnchorEl(e.currentTarget);
-              }}
-              src={shane}
-            />
-            <Popover
-              id={popoverId}
-              open={Boolean(anchorEl)}
-              anchorEl={anchorEl}
-              onClose={() => setAnchorEl(null)}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'right',
-              }}
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              style={{ marginTop: 8 }}
             >
-              <div style={{ padding: '12px 0' }}>
-                <Link href="/" noUnderline>
-                  <Typography style={{ margin: '0 20px' }}>
-                    <FormattedMessage id="VIEW_PROFILE" />
-                  </Typography>
-                </Link>
-                <Divider style={{ margin: '12px 0' }} />
-                <Link href="/logout" noUnderline>
-                  <Typography style={{ margin: '0 20px' }}>
-                    <FormattedMessage id="LOG_OUT" />
-                  </Typography>
-                </Link>
-              </div>
-            </Popover>
+              <Avatar
+                style={{
+                  marginLeft: 8,
+                  cursor: 'pointer',
+                }}
+                onClick={() => setUserMenuOpen(true)}
+                src={shane}
+              />
+              <DropDownIcon
+                onClick={() => setUserMenuOpen(true)}
+                style={{ cursor: 'pointer' }}
+              />
+              <HeaderMenu
+                open={userMenuOpen}
+                itemCount={2}
+                style={{ right: -8, marginTop: isXs ? 8 : 12 }}
+              >
+                <MenuList>
+                  <Link href="/" noUnderline>
+                    <MenuItem
+                      style={{ minHeight: 'auto' }}
+                      className="dark-menu-item"
+                    >
+                      <Typography style={{ margin: '0 20px' }}>
+                        <FormattedMessage id="VIEW_PROFILE" />
+                      </Typography>
+                    </MenuItem>
+                  </Link>
+                  <Link href="/logout" noUnderline>
+                    <MenuItem
+                      style={{ minHeight: 'auto' }}
+                      className="dark-menu-item"
+                    >
+                      <Typography style={{ margin: '0 20px' }}>
+                        <FormattedMessage id="LOG_OUT" />
+                      </Typography>
+                    </MenuItem>
+                  </Link>
+                </MenuList>
+              </HeaderMenu>
+            </div>
           </>
         ) : (
           <ButtonLink
-            size={isXs ? 'small' : undefined}
+            size={isSm ? 'small' : undefined}
             display="primary"
             href="/login"
             onClick={() => {

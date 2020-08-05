@@ -55,7 +55,15 @@ function TextInput(props) {
         label={getLabel(schema)}
         type={type}
         onChange={e => {
-          onChange(e.target.value);
+          const inputValue = e.target.value;
+          if (
+            inputValue.match('.') &&
+            schema.fieldType === 'integer'
+          ) {
+            onChange(parseInt(inputValue, 10));
+          } else {
+            onChange(inputValue);
+          }
         }}
         value={value}
         {...rest}
