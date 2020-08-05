@@ -128,7 +128,7 @@ export default function FileInput({
             />
           )}
           <div style={{ display: 'flex', alignItems: 'center' }}>
-            <Typography variant="caption">{value.name}</Typography>
+            <Typography variant="caption">{value.name || value}</Typography>
             <DeleteButton
               onClick={() => {
                 onChange(null);

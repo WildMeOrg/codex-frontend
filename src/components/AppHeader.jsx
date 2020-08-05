@@ -148,28 +148,28 @@ export default function AppHeader() {
                     }}
                   >
                     <Link noUnderline href="/sightings">
-                      <MenuItem>
+                      <MenuItem className="dark-menu-item">
                         <Typography>
                           <FormattedMessage id="SIGHTINGS" />
                         </Typography>
                       </MenuItem>
                     </Link>
                     <Link noUnderline href="/individuals">
-                      <MenuItem>
+                      <MenuItem className="dark-menu-item">
                         <Typography>
                           <FormattedMessage id="INDIVIDUALS" />
                         </Typography>
                       </MenuItem>
                     </Link>
                     <Link noUnderline href="/users">
-                      <MenuItem>
+                      <MenuItem className="dark-menu-item">
                         <Typography>
                           <FormattedMessage id="USERS" />
                         </Typography>
                       </MenuItem>
                     </Link>
                     <Link noUnderline href="/orgs">
-                      <MenuItem>
+                      <MenuItem className="dark-menu-item">
                         <Typography>
                           <FormattedMessage id="ORGANIZATIONS" />
                         </Typography>
@@ -233,14 +233,14 @@ export default function AppHeader() {
               >
                 <MenuList>
                   <Link href="/" noUnderline>
-                    <MenuItem>
+                    <MenuItem className="dark-menu-item">
                       <Typography style={{ margin: '0 20px' }}>
                         <FormattedMessage id="VIEW_PROFILE" />
                       </Typography>
                     </MenuItem>
                   </Link>
                   <Link href="/logout" noUnderline>
-                    <MenuItem>
+                    <MenuItem className="dark-menu-item">
                       <Typography style={{ margin: '0 20px' }}>
                         <FormattedMessage id="LOG_OUT" />
                       </Typography>
