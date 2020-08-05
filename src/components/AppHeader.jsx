@@ -30,6 +30,7 @@ import ButtonLink from './ButtonLink';
 import Button from './Button';
 import Link from './Link';
 import AppDrawer from './AppDrawer';
+import HeaderMenu from './HeaderMenu';
 import shane from '../assets/shane.jpg';
 
 const popoverId = 'popover';
@@ -140,16 +141,7 @@ export default function AppHeader() {
                     setExploreOpen(false);
                 }}
               >
-                <div
-                  style={{
-                    position: 'absolute',
-                    backgroundColor: 'black',
-                    padding: '0 12px',
-                    height: exploreOpen ? 164 : 0,
-                    transition: 'height 0.3s ease-in-out',
-                    overflow: 'hidden',
-                  }}
-                >
+                <HeaderMenu open={exploreOpen} itemCount={4}>
                   <MenuList
                     onClick={() => {
                       if (exploreOpen) setExploreOpen(false);
@@ -184,7 +176,7 @@ export default function AppHeader() {
                       </MenuItem>
                     </Link>
                   </MenuList>
-                </div>
+                </HeaderMenu>
               </ClickAwayListener>
             </div>
             <Typography>
@@ -216,44 +208,47 @@ export default function AppHeader() {
         )}
         {isAuthenticated ? (
           <>
-            <Avatar
+            <div
               style={{
-                marginLeft: 8,
+                position: 'relative',
+                display: 'flex',
+                alignItems: 'center',
               }}
-              onClick={e => {
-                setAnchorEl(e.currentTarget);
-              }}
-              src={shane}
-            />
-            <Popover
-              id={popoverId}
-              open={Boolean(anchorEl)}
-              anchorEl={anchorEl}
-              onClose={() => setAnchorEl(null)}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'right',
-              }}
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              style={{ marginTop: 8 }}
             >
-              <div style={{ padding: '12px 0' }}>
-                <Link href="/" noUnderline>
-                  <Typography style={{ margin: '0 20px' }}>
-                    <FormattedMessage id="VIEW_PROFILE" />
-                  </Typography>
-                </Link>
-                <Divider style={{ margin: '12px 0' }} />
-                <Link href="/logout" noUnderline>
-                  <Typography style={{ margin: '0 20px' }}>
-                    <FormattedMessage id="LOG_OUT" />
-                  </Typography>
-                </Link>
-              </div>
-            </Popover>
+              <Avatar
+                style={{
+                  marginLeft: 8,
+                  cursor: 'pointer',
+                }}
+                onClick={e => {
+                  setAnchorEl(e.currentTarget);
+                }}
+                src={shane}
+              />
+              <DropDownIcon style={{ cursor: 'pointer' }} />
+              <HeaderMenu
+                open
+                itemCount={2}
+                style={{ right: -8, marginTop: 12 }}
+              >
+                <MenuList>
+                  <Link href="/" noUnderline>
+                    <MenuItem>
+                      <Typography style={{ margin: '0 20px' }}>
+                        <FormattedMessage id="VIEW_PROFILE" />
+                      </Typography>
+                    </MenuItem>
+                  </Link>
+                  <Link href="/logout" noUnderline>
+                    <MenuItem>
+                      <Typography style={{ margin: '0 20px' }}>
+                        <FormattedMessage id="LOG_OUT" />
+                      </Typography>
+                    </MenuItem>
+                  </Link>
+                </MenuList>
+              </HeaderMenu>
+            </div>
           </>
         ) : (
           <ButtonLink

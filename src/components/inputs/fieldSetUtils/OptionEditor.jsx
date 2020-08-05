@@ -9,9 +9,9 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import CloseIcon from '@material-ui/icons/Close';
-import TextInput from './TextInput';
-import DeleteButton from '../DeleteButton';
-import Button from '../Button';
+import TextInput from '../TextInput';
+import DeleteButton from '../../DeleteButton';
+import Button from '../../Button';
 
 export default function OptionEditor({
   schema,
@@ -65,9 +65,9 @@ export default function OptionEditor({
               <FormattedMessage id={schema.descriptionId} />
             </Typography>
           )}
-          {options.map(option => {
+          {options.map((option, optionIndex) => {
             const otherOptions = options.filter(
-              o => o.value !== option.value,
+              o => o.id !== option.id,
             );
 
             return (
@@ -96,10 +96,12 @@ export default function OptionEditor({
                   <FormControl style={{ marginRight: 12 }}>
                     <TextInput
                       onChange={value => {
-                        onChange([
-                          ...otherOptions,
-                          { ...option, value },
-                        ]);
+                        const newOptions = [...options];
+                        newOptions[optionIndex] = {
+                          ...option,
+                          value,
+                        };
+                        onChange(newOptions);
                       }}
                       schema={{ labelId: 'OPTION_VALUE' }}
                       value={option.value}
@@ -108,10 +110,12 @@ export default function OptionEditor({
                   <FormControl style={{ marginLeft: 12 }}>
                     <TextInput
                       onChange={label => {
-                        onChange([
-                          ...otherOptions,
-                          { ...option, label },
-                        ]);
+                        const newOptions = [...options];
+                        newOptions[optionIndex] = {
+                          ...option,
+                          label,
+                        };
+                        onChange(newOptions);
                       }}
                       schema={{ labelId: 'OPTION_LABEL' }}
                       value={option.label}

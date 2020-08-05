@@ -1,17 +1,30 @@
 import React from 'react';
 import { get } from 'lodash-es';
 import { useIntl } from 'react-intl';
+import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
 
-export default function LabeledInput({
+function Core({ children, required, width, style = {} }) {
+  return (
+    <FormControl
+      required={required}
+      style={{ width: width || 280, marginBottom: 4, ...style }}
+    >
+      {children}
+    </FormControl>
+  );
+}
+
+export default function SelectInput({
   schema,
   required,
   value,
   onChange,
   minimalLabels = false,
+  width,
   ...rest
 }) {
   const intl = useIntl();
@@ -29,7 +42,7 @@ export default function LabeledInput({
   }
 
   return (
-    <>
+    <Core schema={schema} required={required} width={width}>
       <InputLabel>{getLabel(schema)}</InputLabel>
       <Select
         labelId={`${schema.name}-selector-label`}
@@ -50,6 +63,6 @@ export default function LabeledInput({
       {!minimalLabels && (
         <FormHelperText>{getDescription(schema)}</FormHelperText>
       )}
-    </>
+    </Core>
   );
 }

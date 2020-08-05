@@ -52,6 +52,7 @@ export default [
     fieldType: fieldTypes.file,
     allowedFileTypes: ['.jpg', '.jpeg', '.png'],
     defaultValue: null,
+    dark: true,
   },
   {
     id: 'tagline',

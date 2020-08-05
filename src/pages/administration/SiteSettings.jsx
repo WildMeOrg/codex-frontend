@@ -8,10 +8,13 @@ import Divider from '@material-ui/core/Divider';
 import Skeleton from '@material-ui/lab/Skeleton';
 import { selectSiteSettings } from '../../modules/site/selectors';
 import siteSettingsSchema from '../../constants/siteSettingsSchema';
-import LabeledInput from '../../components/LabeledInput';
 import Button from '../../components/Button';
 import useSiteSettings from '../../models/site/useSiteSettings';
 import usePutSiteSettings from '../../models/site/usePutSiteSettings';
+
+import LabeledInput from '../../components/LabeledInput';
+import FieldSetInput from '../../components/inputs/FieldSetInput';
+import fieldTypes from '../../constants/fieldTypes';
 
 const newSettingFields = [
   'site.name',
@@ -60,6 +63,14 @@ function getFieldsetErrors(intl, fieldset, fieldsetName) {
     );
 
   return errors;
+}
+
+/* FieldSetInput cannot be rendered by LabeledInput, this avoids a circular dependency. */
+function SettingInput(props) {
+  if (get(props, ['schema', 'fieldType']) === fieldTypes.fieldset) {
+    return <FieldSetInput {...props} />;
+  }
+  return <LabeledInput {...props} />;
 }
 
 export default function SiteSettings({ primaryButtonId }) {
@@ -176,7 +187,7 @@ export default function SiteSettings({ primaryButtonId }) {
               }}
             >
               {matchingSetting && valueIsDefined ? (
-                <LabeledInput
+                <SettingInput
                   schema={{
                     labelId: matchingSetting.labelId,
                     descriptionId: matchingSetting.descriptionId,
@@ -239,7 +250,7 @@ export default function SiteSettings({ primaryButtonId }) {
                 minWidth: 400,
               }}
             >
-              <LabeledInput
+              <SettingInput
                 schema={settingSchema}
                 minimalLabels
                 value={formValues[settingSchema.name]}
@@ -249,11 +260,6 @@ export default function SiteSettings({ primaryButtonId }) {
                     [settingSchema.name]: value,
                   });
                 }}
-                dark={
-                  settingSchema.name === 'darkBackgroundLogo'
-                    ? true
-                    : undefined
-                }
               />
             </div>
           </Grid>
