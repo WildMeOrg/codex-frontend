@@ -84,11 +84,7 @@ export default function ReportSightings() {
             <FormattedMessage id="REPORT_SIGHTINGS" />
           </Typography>
         </Grid>
-        <Grid
-          item
-          container
-          direction="column"
-        >
+        <Grid item container direction="column">
           {!reporting && (
             <>
               <Grid item>
@@ -102,8 +98,7 @@ export default function ReportSightings() {
                       value="one"
                       control={<Radio />}
                       onClick={e => {
-                        if (e.target.value)
-                          setMode(e.target.value);
+                        if (e.target.value) setMode(e.target.value);
                       }}
                       label={
                         <FormattedMessage id="ONE_SIGHTING_ONE_INDIVIDUAL" />
@@ -116,8 +111,7 @@ export default function ReportSightings() {
                       value="multiple"
                       control={<Radio />}
                       onClick={e => {
-                        if (e.target.value)
-                          setMode(e.target.value);
+                        if (e.target.value) setMode(e.target.value);
                       }}
                       label={
                         <FormattedMessage id="ONE_SIGHTING_MULTIPLE_INDIVIDUALS" />
@@ -130,8 +124,7 @@ export default function ReportSightings() {
                       value="bulk"
                       control={<Radio />}
                       onClick={e => {
-                        if (e.target.value)
-                          setMode(e.target.value);
+                        if (e.target.value) setMode(e.target.value);
                       }}
                       label={
                         <FormattedMessage id="MULTIPLE_SIGHTINGS" />
@@ -146,10 +139,7 @@ export default function ReportSightings() {
 
               {mode !== '' && (
                 <Grid item style={{ marginTop: 20 }}>
-                  <UploadManager
-                    files={files}
-                    setFiles={setFiles}
-                  />
+                  <UploadManager files={files} setFiles={setFiles} />
                   <div
                     style={{
                       display: 'flex',

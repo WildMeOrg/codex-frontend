@@ -81,7 +81,9 @@ export default function FileTypeEditor({
                     <FormattedMessage id="FILETYPE" />
                   </Typography>
                   <DeleteButton
-                    onClick={() => onChange(filetypes.splice(index, 1))}
+                    onClick={() =>
+                      onChange(filetypes.splice(index, 1))
+                    }
                   />
                 </div>
                 <div
@@ -106,10 +108,7 @@ export default function FileTypeEditor({
           <Button
             style={{ marginTop: 16 }}
             onClick={() => {
-              onChange([
-                ...filetypes,
-                '',
-              ]);
+              onChange([...filetypes, '']);
             }}
             size="small"
           >

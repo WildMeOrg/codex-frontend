@@ -197,8 +197,10 @@ export default function FieldSetInput({
                 </FormControl>
                 {configuration.map(configurableProperty => {
                   let ConfigurationInput = OptionEditor;
-                  if (configurableProperty.type === 'boolean') ConfigurationInput = BooleanInput;
-                  if (configurableProperty.type === 'filetypeeditor') ConfigurationInput = FileTypeEditor;
+                  if (configurableProperty.type === 'boolean')
+                    ConfigurationInput = BooleanInput;
+                  if (configurableProperty.type === 'filetypeeditor')
+                    ConfigurationInput = FileTypeEditor;
 
                   return (
                     <ConfigurationInput
@@ -221,7 +223,7 @@ export default function FieldSetInput({
                         onChange([...otherFields, newField]);
                       }}
                     />
-                  )
+                  );
                 })}
                 <Button
                   style={{ marginTop: 12 }}

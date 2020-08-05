@@ -13,7 +13,7 @@ export default function HeaderMenu({
         backgroundColor: 'black',
         padding: '0 12px',
         height: open ? itemCount * 44 : 0,
-        transition: 'height 0.3s ease-in-out',
+        transition: 'height 0.1s ease-in-out',
         overflow: 'hidden',
         top: '100%',
         ...style,

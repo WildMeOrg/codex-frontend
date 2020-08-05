@@ -13,6 +13,7 @@ import LocationIdInput from './LocationIdInput';
 import ComparatorInput from './ComparatorInput';
 import DateInput from './DateInput';
 import DateRangeInput from './DateRangeInput';
+import RelationshipsInput from './RelationshipsInput';
 
 const inputMap = {
   [fieldTypes.latlong]: LatLongInput,
@@ -29,6 +30,7 @@ const inputMap = {
   [fieldTypes.date]: DateInput,
   [fieldTypes.daterange]: DateRangeInput,
   [fieldTypes.feetmeters]: FeetMetersInput,
+  [fieldTypes.relationships]: RelationshipsInput,
   [fieldTypes.string]: TextInput,
   [fieldTypes.longstring]: TextInput,
   [fieldTypes.integer]: TextInput,

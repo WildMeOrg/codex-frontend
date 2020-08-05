@@ -11,8 +11,6 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import Avatar from '@material-ui/core/Avatar';
-import Popover from '@material-ui/core/Popover';
-import Divider from '@material-ui/core/Divider';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
@@ -33,9 +31,6 @@ import AppDrawer from './AppDrawer';
 import HeaderMenu from './HeaderMenu';
 import shane from '../assets/shane.jpg';
 
-const popoverId = 'popover';
-const exploreSpanId = 'explore';
-
 export default function AppHeader() {
   const theme = useTheme();
   const location = useLocation();
@@ -47,8 +42,8 @@ export default function AppHeader() {
   const isAdministrator = useSelector(selectIsAdministrator);
   const logos = useSelector(selectLogos);
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [anchorEl, setAnchorEl] = React.useState(null);
   const [exploreOpen, setExploreOpen] = React.useState(false);
+  const [userMenuOpen, setUserMenuOpen] = React.useState(false);
 
   // const siteSettings = useSiteSettings();
 
@@ -67,6 +62,16 @@ export default function AppHeader() {
         }),
       }}
     >
+      {(exploreOpen || userMenuOpen) && (
+        <ClickAwayListener
+          onClickAway={() => {
+            setExploreOpen(false);
+            setUserMenuOpen(false);
+          }}
+        >
+          <div />
+        </ClickAwayListener>
+      )}
       {isXs && (
         <AppDrawer
           open={drawerOpen}
@@ -129,55 +134,43 @@ export default function AppHeader() {
                 }}
                 onClick={() => setExploreOpen(!exploreOpen)}
               >
-                <span id={exploreSpanId} style={{ letterSpacing: 0 }}>
+                <span style={{ letterSpacing: 0 }}>
                   <FormattedMessage id="EXPLORE" />
                 </span>
                 <DropDownIcon />
               </Button>
-              <ClickAwayListener
-                mouseEvent="onMouseDown"
-                onClickAway={event => {
-                  if (event.target.id !== exploreSpanId)
-                    setExploreOpen(false);
-                }}
-              >
-                <HeaderMenu open={exploreOpen} itemCount={4}>
-                  <MenuList
-                    onClick={() => {
-                      if (exploreOpen) setExploreOpen(false);
-                    }}
-                  >
-                    <Link noUnderline href="/sightings">
-                      <MenuItem className="dark-menu-item">
-                        <Typography>
-                          <FormattedMessage id="SIGHTINGS" />
-                        </Typography>
-                      </MenuItem>
-                    </Link>
-                    <Link noUnderline href="/individuals">
-                      <MenuItem className="dark-menu-item">
-                        <Typography>
-                          <FormattedMessage id="INDIVIDUALS" />
-                        </Typography>
-                      </MenuItem>
-                    </Link>
-                    <Link noUnderline href="/users">
-                      <MenuItem className="dark-menu-item">
-                        <Typography>
-                          <FormattedMessage id="USERS" />
-                        </Typography>
-                      </MenuItem>
-                    </Link>
-                    <Link noUnderline href="/orgs">
-                      <MenuItem className="dark-menu-item">
-                        <Typography>
-                          <FormattedMessage id="ORGANIZATIONS" />
-                        </Typography>
-                      </MenuItem>
-                    </Link>
-                  </MenuList>
-                </HeaderMenu>
-              </ClickAwayListener>
+              <HeaderMenu open={exploreOpen} itemCount={4}>
+                <MenuList onClick={() => setExploreOpen(false)}>
+                  <Link noUnderline href="/sightings">
+                    <MenuItem className="dark-menu-item">
+                      <Typography>
+                        <FormattedMessage id="SIGHTINGS" />
+                      </Typography>
+                    </MenuItem>
+                  </Link>
+                  <Link noUnderline href="/individuals">
+                    <MenuItem className="dark-menu-item">
+                      <Typography>
+                        <FormattedMessage id="INDIVIDUALS" />
+                      </Typography>
+                    </MenuItem>
+                  </Link>
+                  <Link noUnderline href="/users">
+                    <MenuItem className="dark-menu-item">
+                      <Typography>
+                        <FormattedMessage id="USERS" />
+                      </Typography>
+                    </MenuItem>
+                  </Link>
+                  <Link noUnderline href="/orgs">
+                    <MenuItem className="dark-menu-item">
+                      <Typography>
+                        <FormattedMessage id="ORGANIZATIONS" />
+                      </Typography>
+                    </MenuItem>
+                  </Link>
+                </MenuList>
+              </HeaderMenu>
             </div>
             <Typography>
               <Link
@@ -220,14 +213,15 @@ export default function AppHeader() {
                   marginLeft: 8,
                   cursor: 'pointer',
                 }}
-                onClick={e => {
-                  setAnchorEl(e.currentTarget);
-                }}
+                onClick={() => setUserMenuOpen(true)}
                 src={shane}
               />
-              <DropDownIcon style={{ cursor: 'pointer' }} />
+              <DropDownIcon
+                onClick={() => setUserMenuOpen(true)}
+                style={{ cursor: 'pointer' }}
+              />
               <HeaderMenu
-                open
+                open={userMenuOpen}
                 itemCount={2}
                 style={{ right: -8, marginTop: 12 }}
               >
