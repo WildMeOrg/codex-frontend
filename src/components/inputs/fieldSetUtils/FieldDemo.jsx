@@ -19,8 +19,8 @@ export default function FieldDemo({
   const [demoFieldValue, setDemoFieldValue] = useState(initialValue);
 
   return (
-    <Dialog open={open}>
-      <DialogTitle>
+    <Dialog open={open} onClose={onClose}>
+      <DialogTitle onClose={onClose}>
         <FormattedMessage id="CUSTOM_FIELD_DEMO" />
         <IconButton
           style={{ position: 'absolute', top: 8, right: 16 }}

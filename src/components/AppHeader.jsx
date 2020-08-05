@@ -36,7 +36,8 @@ export default function AppHeader() {
   const location = useLocation();
   const dispatch = useDispatch();
 
-  const isXs = useMediaQuery(theme.breakpoints.down('sm'));
+  const isSm = useMediaQuery(theme.breakpoints.down('sm'));
+  const isXs = useMediaQuery(theme.breakpoints.down('xs'));
 
   const isAuthenticated = useSelector(selectIsAuthenticated);
   const isAdministrator = useSelector(selectIsAdministrator);
@@ -72,7 +73,7 @@ export default function AppHeader() {
           <div />
         </ClickAwayListener>
       )}
-      {isXs && (
+      {isSm && (
         <AppDrawer
           open={drawerOpen}
           onClose={() => setDrawerOpen(false)}
@@ -86,7 +87,7 @@ export default function AppHeader() {
           justifyContent: 'space-between',
         }}
       >
-        {isXs && (
+        {isSm && (
           <IconButton
             edge="start"
             color="inherit"
@@ -116,7 +117,7 @@ export default function AppHeader() {
             />
           </Link>
         </Typography>
-        {!isXs && (
+        {!isSm && (
           <>
             <Typography>
               <Link noUnderline href="/report">
@@ -223,18 +224,24 @@ export default function AppHeader() {
               <HeaderMenu
                 open={userMenuOpen}
                 itemCount={2}
-                style={{ right: -8, marginTop: 12 }}
+                style={{ right: -8, marginTop: isXs ? 8 : 12 }}
               >
                 <MenuList>
                   <Link href="/" noUnderline>
-                    <MenuItem className="dark-menu-item">
+                    <MenuItem
+                      style={{ minHeight: 'auto' }}
+                      className="dark-menu-item"
+                    >
                       <Typography style={{ margin: '0 20px' }}>
                         <FormattedMessage id="VIEW_PROFILE" />
                       </Typography>
                     </MenuItem>
                   </Link>
                   <Link href="/logout" noUnderline>
-                    <MenuItem className="dark-menu-item">
+                    <MenuItem
+                      style={{ minHeight: 'auto' }}
+                      className="dark-menu-item"
+                    >
                       <Typography style={{ margin: '0 20px' }}>
                         <FormattedMessage id="LOG_OUT" />
                       </Typography>
@@ -246,7 +253,7 @@ export default function AppHeader() {
           </>
         ) : (
           <ButtonLink
-            size={isXs ? 'small' : undefined}
+            size={isSm ? 'small' : undefined}
             display="primary"
             href="/login"
             onClick={() => {

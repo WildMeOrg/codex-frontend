@@ -97,6 +97,7 @@ export const fieldTypeChoices = [
     labelId: 'DATE_RANGE_PICKER',
     value: fieldTypes.daterange,
     defaultValue: [null, null],
+    validCustomField: false,
   },
   {
     labelId: 'DROPDOWN',

@@ -21,6 +21,12 @@ import FileTypeEditor from './fieldSetUtils/FileTypeEditor';
 import Button from '../Button';
 import FieldDemo from './fieldSetUtils/FieldDemo';
 
+const customFieldTypeChoices = fieldTypeChoices.filter(
+  fieldTypeSchema =>
+    fieldTypeSchema.validCustomField ||
+    fieldTypeSchema.validCustomField === undefined,
+);
+
 function updateSchema(field, property, value) {
   return {
     ...field,
@@ -173,7 +179,7 @@ export default function FieldSetInput({
                       onChange([...otherFields, newField]);
                     }}
                   >
-                    {fieldTypeChoices.map(option => (
+                    {customFieldTypeChoices.map(option => (
                       <MenuItem
                         value={option.value}
                         key={option.value}
