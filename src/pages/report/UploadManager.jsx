@@ -13,6 +13,7 @@ import {
   transloaditTemplateId,
   transloaditService,
 } from '../../constants/apiKeys';
+import { getExifData } from '../../utils/exif';
 import Cropper from './Cropper';
 
 import '@uppy/core/dist/style.css';
@@ -21,6 +22,7 @@ import '@uppy/status-bar/dist/style.css';
 
 export default function UploadManager({ files, setFiles }) {
   const intl = useIntl();
+  const [exifData, setExifData] = useState([]);
   const [uppy, setUppy] = useState(null);
   const [cropper, setCropper] = useState({
     open: false,
@@ -64,8 +66,12 @@ export default function UploadManager({ files, setFiles }) {
         croppedImage: null,
       }));
       const newFileList = [...fileRef.current, ...newFiles];
-
       setFiles(newFileList);
+
+      const newFilePaths = newFiles.map(file => file.filePath);
+      getExifData(newFilePaths, newExifData => {
+        setExifData([...exifData, ...newExifData]);
+      });
     });
 
     setUppy(uppyInstance);

@@ -24,7 +24,8 @@ import UploadManager from './UploadManager';
 export default function ReportSightings() {
   const intl = useIntl();
   useDocumentTitle(intl.formatMessage({ id: 'REPORT_SIGHTINGS' }));
-  const isAuthenticated = useSelector(selectIsAuthenticated);
+  const isAuthenticated = true;
+  // const isAuthenticated = useSelector(selectIsAuthenticated);
 
   const [mode, setMode] = useState('');
   const [files, setFiles] = useState([]);

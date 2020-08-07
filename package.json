@@ -111,6 +111,7 @@
     "bboxjs": "^1.0.0",
     "clsx": "^1.1.0",
     "date-fns": "^2.11.1",
+    "exifreader": "^3.12.0",
     "google-map-react": "^1.1.7",
     "history": "^4.9.0",
     "lodash-es": "^4.17.15",
