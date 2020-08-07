@@ -8,6 +8,9 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Popover from '@material-ui/core/Popover';
 import Divider from '@material-ui/core/Divider';
+import IconButton from '@material-ui/core/IconButton';
+import RightIcon from '@material-ui/icons/ChevronRight';
+import LeftIcon from '@material-ui/icons/ChevronLeft';
 
 import NotFoundPage from '../../components/NotFoundPage';
 import Button from '../../components/Button';
@@ -218,7 +221,38 @@ export default function Match({ setMatching }) {
                   <FormattedMessage id="CHANGE" />
                 </Button>
               )}
-            />
+            >
+              <div
+                style={{
+                  position: 'absolute',
+                  bottom: 12,
+                  left: 12,
+                  backgroundColor: 'white',
+                  border: '1px solid grey',
+                  borderRadius: 12,
+                  opacity: 0.9,
+                }}
+              >
+                <IconButton style={{ padding: 8 }}>
+                  <LeftIcon />
+                </IconButton>
+              </div>
+              <div
+                style={{
+                  position: 'absolute',
+                  bottom: 12,
+                  right: 12,
+                  backgroundColor: 'white',
+                  border: '1px solid grey',
+                  borderRadius: 12,
+                  opacity: 0.9,
+                }}
+              >
+                <IconButton style={{ padding: 8 }}>
+                  <RightIcon />
+                </IconButton>
+              </div>
+            </AnnotatedPhoto>
           </div>
         </Grid>
       ))}

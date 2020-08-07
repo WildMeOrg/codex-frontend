@@ -3,6 +3,8 @@ import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { toLower } from 'lodash-es';
+import { useTheme } from '@material-ui/core/styles';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 import NotFoundPage from '../../components/NotFoundPage';
 import { selectSightings } from '../../modules/sightings/selectors';
@@ -19,6 +21,10 @@ const heightStyles = {
 export default function MatchReview() {
   const intl = useIntl();
   const { id } = useParams();
+  const theme = useTheme();
+
+  const isSm = useMediaQuery(theme.breakpoints.down('sm'));
+  const marginTop = isSm ? 56 : 64;
 
   // fetch data for Id...
   const sightings = useSelector(selectSightings);
@@ -37,7 +43,7 @@ export default function MatchReview() {
   return (
     <div
       style={{
-        marginTop: 64,
+        marginTop,
         width: '100vw',
         display: 'flex',
         ...heightStyles,

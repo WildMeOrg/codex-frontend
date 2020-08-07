@@ -145,8 +145,12 @@ export default function DataDisplay({
         >
           <Grid item>
             <Typography
-              component={variant === 'primary' ? 'h5' : undefined}
-              variant={variant === 'primary' ? 'h5' : 'subtitle2'}
+              component={
+                variant === 'primary' ? 'subtitle1' : undefined
+              }
+              variant={
+                variant === 'primary' ? 'subtitle1' : 'subtitle2'
+              }
               style={{
                 margin:
                   variant === 'secondary' ? '12px 0 0 12px' : 'unset',

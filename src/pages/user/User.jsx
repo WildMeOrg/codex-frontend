@@ -5,8 +5,6 @@ import { FormattedMessage } from 'react-intl';
 import { get, capitalize, toLower } from 'lodash-es';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
 import ForumIcon from '@material-ui/icons/Forum';
 import EmailIcon from '@material-ui/icons/Email';
 import LocationIcon from '@material-ui/icons/PersonPin';
@@ -85,8 +83,6 @@ export default function User({ userId }) {
   const displayedUserId = userId || id;
   useDocumentTitle(capitalize(displayedUserId));
 
-  const activeTab = window.location.hash || '#sightings';
-
   // fetch data for Id...
   const users = useSelector(selectUsers);
   const [editingProfile, setEditingProfile] = useState(false);
@@ -140,41 +136,21 @@ export default function User({ userId }) {
           })}
         </Grid>
       </EntityHeader>
-      {user.editable && (
-        <Tabs
-          value={activeTab.replace('#', '')}
-          onChange={(_, newValue) => {
-            window.location.hash = newValue;
-          }}
-          style={{ margin: '20px 0' }}
-        >
-          <Tab
-            label={<FormattedMessage id="SIGHTINGS" />}
-            value="sightings"
-          />
-          <Tab
-            label={<FormattedMessage id="TASKS" />}
-            value="tasks"
-          />
-        </Tabs>
-      )}
-      {activeTab === '#sightings' && (
-        <EncounterGallery
-          title={
-            !user.editable ? (
-              <FormattedMessage
-                id="USERS_SIGHTINGS"
-                values={{ name: user.name }}
-              />
-            ) : (
-              undefined
-            )
-          }
-          encounters={user.encounters}
-          hideSubmitted
-        />
-      )}
-      {activeTab === '#tasks' && <Tasks />}
+      {user.editable && <Tasks />}
+      <EncounterGallery
+        title={
+          !user.editable ? (
+            <FormattedMessage
+              id="USERS_SIGHTINGS"
+              values={{ name: user.name }}
+            />
+          ) : (
+            <FormattedMessage id="SIGHTINGS" />
+          )
+        }
+        encounters={user.encounters}
+        hideSubmitted
+      />
     </MainColumn>
   );
 }

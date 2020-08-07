@@ -27,6 +27,7 @@ export default function AnnotatedPhoto({
   locationId,
   dateString,
   renderTitleButton = () => null,
+  children,
   ...rest
 }) {
   const theme = useTheme();
@@ -130,6 +131,7 @@ export default function AnnotatedPhoto({
             ))}
           </g>
         </svg>
+        {children}
       </div>
       <div
         style={{
