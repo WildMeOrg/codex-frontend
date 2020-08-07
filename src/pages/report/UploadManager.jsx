@@ -20,9 +20,16 @@ import '@uppy/core/dist/style.css';
 import '@uppy/drag-drop/dist/style.css';
 import '@uppy/status-bar/dist/style.css';
 
-export default function UploadManager({ files, setFiles }) {
+export default function UploadManager({
+  files,
+  setFiles,
+  exifData,
+  setExifData,
+}) {
   const intl = useIntl();
-  const [exifData, setExifData] = useState([]);
+  const currentExifData = useRef();
+  currentExifData.current = exifData;
+
   const [uppy, setUppy] = useState(null);
   const [cropper, setCropper] = useState({
     open: false,
@@ -70,7 +77,7 @@ export default function UploadManager({ files, setFiles }) {
 
       const newFilePaths = newFiles.map(file => file.filePath);
       getExifData(newFilePaths, newExifData => {
-        setExifData([...exifData, ...newExifData]);
+        setExifData([...currentExifData.current, ...newExifData]);
       });
     });
 
