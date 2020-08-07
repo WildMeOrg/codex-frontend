@@ -28,6 +28,7 @@ export default function ReportSightings() {
 
   const [mode, setMode] = useState('');
   const [files, setFiles] = useState([]);
+  const [exifData, setExifData] = useState([]);
   const [reporting, setReporting] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(!isAuthenticated);
   const noImages = mode !== '' && files.length === 0;
@@ -139,7 +140,12 @@ export default function ReportSightings() {
 
               {mode !== '' && (
                 <Grid item style={{ marginTop: 20 }}>
-                  <UploadManager files={files} setFiles={setFiles} />
+                  <UploadManager
+                    exifData={exifData}
+                    setExifData={setExifData}
+                    files={files}
+                    setFiles={setFiles}
+                  />
                   <div
                     style={{
                       display: 'flex',
@@ -184,7 +190,11 @@ export default function ReportSightings() {
             </>
           )}
           {reporting && ['one', 'multiple'].includes(mode) && (
-            <StandardReport onBack={onBack} variant={mode} />
+            <StandardReport
+              exifData={exifData}
+              onBack={onBack}
+              variant={mode}
+            />
           )}
           {reporting && mode === 'bulk' && (
             <BulkReport onBack={onBack} files={files} />

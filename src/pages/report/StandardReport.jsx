@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useSelector } from 'react-redux';
 import { some, values } from 'lodash-es';
@@ -15,18 +15,25 @@ import {
   selectSightingCategories,
 } from '../../modules/sightings/selectors';
 import { selectSiteName } from '../../modules/site/selectors';
+import { getLocationSuggestion } from '../../utils/exif';
 import LabeledInput from '../../components/LabeledInput';
 import Button from '../../components/Button';
 import InlineButton from '../../components/InlineButton';
 import BigExpansionPanel from '../../components/BigExpansionPanel';
+import Callout from '../../components/Callout';
 import TermsAndConditionsDialog from './TermsAndConditionsDialog';
 
-export default function StandardReport({ variant, onBack }) {
+export default function StandardReport({
+  exifData,
+  variant,
+  onBack,
+}) {
   const intl = useIntl();
   const categories = useSelector(selectSightingCategories);
   const schema = useSelector(selectSightingSchema);
   const siteName = useSelector(selectSiteName);
   const [acceptedTerms, setAcceptedTerms] = useState(false);
+  const [exifButtonClicked, setExifButtonClicked] = useState(false);
   const [acceptEmails, setAcceptEmails] = useState(false);
   const [loading, setLoading] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -39,6 +46,11 @@ export default function StandardReport({ variant, onBack }) {
       memo[field.name] = field.defaultValue;
       return memo;
     }, {}),
+  );
+
+  const locationSuggestion = useMemo(
+    () => getLocationSuggestion(exifData),
+    [exifData],
   );
 
   return (
@@ -67,6 +79,11 @@ export default function StandardReport({ variant, onBack }) {
 
           if (variant === 'multiple' && category.individualFields)
             return null;
+
+          const showExifData =
+            category.name === 'location' &&
+            locationSuggestion &&
+            !exifButtonClicked;
 
           return (
             <BigExpansionPanel
@@ -103,6 +120,30 @@ export default function StandardReport({ variant, onBack }) {
                     >
                       <FormattedMessage id={category.descriptionId} />
                     </Typography>
+                  )}
+                  {showExifData && (
+                    <Callout
+                      title={
+                        <FormattedMessage id="IMAGE_METADATA_DETECTED" />
+                      }
+                      description={
+                        <FormattedMessage id="LOCATION_METADATA_DETECTED" />
+                      }
+                      actions={
+                        <Button
+                          display="primary"
+                          onClick={() => {
+                            setFormValues({
+                              ...formValues,
+                              location: locationSuggestion,
+                            });
+                            setExifButtonClicked(true);
+                          }}
+                        >
+                          <FormattedMessage id="AUTOFILL_FIELDS" />
+                        </Button>
+                      }
+                    />
                   )}
                   {inputsInCategory.map(input => (
                     <div
