@@ -16,6 +16,7 @@ import MenuList from '@material-ui/core/MenuList';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import MenuIcon from '@material-ui/icons/Menu';
 import DropDownIcon from '@material-ui/icons/ArrowDropDown';
+import LeavingIcon from '@material-ui/icons/ExitToApp';
 
 import { selectLogos } from '../modules/site/selectors';
 import {
@@ -178,8 +179,13 @@ export default function AppHeader() {
                 noUnderline
                 href="https://community.wildbook.org/"
                 external
+                style={{ display: 'flex', alignItems: 'center' }}
               >
                 <FormattedMessage id="HELP" />
+                <LeavingIcon
+                  style={{ marginLeft: 8 }}
+                  fontSize="small"
+                />
               </Link>
             </Typography>
             <Typography>
@@ -187,8 +193,13 @@ export default function AppHeader() {
                 noUnderline
                 href="http://wiki.wildbook.org/"
                 external
+                style={{ display: 'flex', alignItems: 'center' }}
               >
                 <FormattedMessage id="DOCS" />
+                <LeavingIcon
+                  style={{ marginLeft: 8 }}
+                  fontSize="small"
+                />
               </Link>
             </Typography>
             {isAdministrator && (
