@@ -25,5 +25,5 @@ The development environment is mostly used on OSX but should work on Windows as 
 
 Thanks to [Lokalise](https://lokalise.com/) for providing translation management services.
 
-Thanks to Emily Ke for her contributions. 
+Thanks to Emily Ke and Madeleine Webb for their contributions. 
 
