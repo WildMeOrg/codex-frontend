@@ -8,8 +8,8 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import FormControl from '@material-ui/core/FormControl';
 import FormGroup from '@material-ui/core/FormGroup';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
@@ -76,7 +76,7 @@ export default function BulkReport({ onBack, files }) {
       </Grid>
       <Grid item style={{ marginTop: 20 }}>
         <BigExpansionPanel>
-          <ExpansionPanelSummary
+          <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
             aria-controls="generate-template-panel-content"
             id="generate-template-panel-header"
@@ -84,8 +84,8 @@ export default function BulkReport({ onBack, files }) {
             <Typography variant="subtitle1">
               <FormattedMessage id="CHOOSE_FIELDS" />
             </Typography>
-          </ExpansionPanelSummary>
-          <ExpansionPanelDetails
+          </AccordionSummary>
+          <AccordionDetails
             style={{ display: 'flex', flexDirection: 'column' }}
           >
             <Typography>
@@ -122,10 +122,10 @@ export default function BulkReport({ onBack, files }) {
                 })}
               </FormGroup>
             </FormControl>
-          </ExpansionPanelDetails>
+          </AccordionDetails>
         </BigExpansionPanel>
         <BigExpansionPanel>
-          <ExpansionPanelSummary
+          <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
             aria-controls="generate-template-panel-content"
             id="generate-template-panel-header"
@@ -133,8 +133,8 @@ export default function BulkReport({ onBack, files }) {
             <Typography variant="subtitle1">
               <FormattedMessage id="GENERATE_TEMPLATE_LABEL" />
             </Typography>
-          </ExpansionPanelSummary>
-          <ExpansionPanelDetails
+          </AccordionSummary>
+          <AccordionDetails
             style={{ display: 'flex', flexDirection: 'column' }}
           >
             <Typography>
@@ -163,10 +163,10 @@ export default function BulkReport({ onBack, files }) {
                 <FormattedMessage id="GENERATE_DISABLED_NO_LOCATION" />
               </Typography>
             )}
-          </ExpansionPanelDetails>
+          </AccordionDetails>
         </BigExpansionPanel>
         <BigExpansionPanel>
-          <ExpansionPanelSummary
+          <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
             aria-controls="generate-template-panel-content"
             id="generate-template-panel-header"
@@ -174,8 +174,8 @@ export default function BulkReport({ onBack, files }) {
             <Typography variant="subtitle1">
               <FormattedMessage id="UPLOAD_DATA_SHEET" />
             </Typography>
-          </ExpansionPanelSummary>
-          <ExpansionPanelDetails
+          </AccordionSummary>
+          <AccordionDetails
             style={{ display: 'flex', flexDirection: 'column' }}
           >
             <Typography style={{ marginBottom: 12 }}>
@@ -207,7 +207,7 @@ export default function BulkReport({ onBack, files }) {
               size="medium"
               style={{ width: '100% ' }}
             />
-          </ExpansionPanelDetails>
+          </AccordionDetails>
         </BigExpansionPanel>
       </Grid>
       <Grid item>

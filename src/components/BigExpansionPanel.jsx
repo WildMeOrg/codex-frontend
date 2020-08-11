@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTheme } from '@material-ui/core/styles';
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
+import Accordion from '@material-ui/core/Accordion';
 
 export default function BigExpansionPanel({
   children,
@@ -10,7 +10,7 @@ export default function BigExpansionPanel({
   const theme = useTheme();
 
   return (
-    <ExpansionPanel
+    <Accordion
       style={{
         border: `1px solid ${theme.palette.grey[500]}`,
         boxShadow: 'none',
@@ -23,6 +23,6 @@ export default function BigExpansionPanel({
       {...rest}
     >
       {children}
-    </ExpansionPanel>
+    </Accordion>
   );
 }

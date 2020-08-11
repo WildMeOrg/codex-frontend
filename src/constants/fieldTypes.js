@@ -19,34 +19,75 @@ const fieldTypes = {
   treeview: 'treeview', // nested array
   treeeditor: 'treeeditor', // nested array (deprecated, replaced by locationIds)
   locationIds: 'locationIds',
-  fieldset: 'fieldset', // used only in admin panel
+  fieldset: 'customFields', // used only in admin panel
   optioneditor: 'optioneditor', // used only in admin panel
   filetypeeditor: 'filetypeeditor', // used only in admin panel
 };
 
+const backendTypes = {
+  string: 'string',
+  integer: 'integer',
+  double: 'double',
+  long: 'long',
+  date: 'date',
+  boolean: 'boolean',
+  url: 'url',
+  uuid: 'uuid',
+  image: 'image',
+  video: 'video',
+  color: 'color',
+  geo: 'geo',
+  json: 'json',
+  individual: 'individual',
+  encounter: 'encounter',
+  customFields: 'customFields',
+  locationIds: 'locationIds',
+  taxonomy: 'taxonomy',
+};
+
 /* Informaton about fields that can be turned into custom fields */
 export const fieldTypeChoices = [
-  { labelId: 'STRING', value: fieldTypes.string, defaultValue: '' },
+  {
+    labelId: 'STRING',
+    value: fieldTypes.string,
+    defaultValue: '',
+    backendType: backendTypes.string,
+    backendMultiple: false,
+  },
   {
     labelId: 'LONG_STRING',
     value: fieldTypes.longstring,
     defaultValue: '',
+    backendType: backendTypes.string,
+    backendMultiple: false,
   },
-  { labelId: 'NUMBER', value: fieldTypes.float, defaultValue: null },
+  {
+    labelId: 'NUMBER',
+    value: fieldTypes.float,
+    defaultValue: null,
+    backendType: backendTypes.double,
+    backendMultiple: false,
+  },
   {
     labelId: 'FEET_METERS_SELECTOR',
     value: fieldTypes.feetmeters,
     defaultValue: null,
+    backendType: backendTypes.double,
+    backendMultiple: false,
   },
   {
     labelId: 'INDIVIDUAL_SELECTOR',
     value: fieldTypes.individual,
     defaultValue: null,
+    backendType: backendTypes.individual,
+    backendMultiple: false,
   },
   {
     labelId: 'RELATIONSHIPS_SELECTOR',
     value: fieldTypes.relationships,
     defaultValue: [],
+    backendType: backendTypes.string,
+    backendMultiple: true,
     configuration: [
       {
         labelId: 'RELATIONSHIP_OPTIONS',
@@ -61,11 +102,15 @@ export const fieldTypeChoices = [
     labelId: 'INTEGER',
     value: fieldTypes.integer,
     defaultValue: null,
+    backendType: backendTypes.integer,
+    backendMultiple: false,
   },
   {
     labelId: 'FILE_UPLOADER',
     value: fieldTypes.file,
     defaultValue: [],
+    backendType: backendTypes.string,
+    backendMultiple: false,
     configuration: [
       {
         labelId: 'ALLOWED_FILE_TYPES',
@@ -87,22 +132,30 @@ export const fieldTypeChoices = [
     labelId: 'LAT_LONG_SELECTOR',
     value: fieldTypes.latlong,
     defaultValue: [null, null],
+    backendType: backendTypes.geo,
+    backendMultiple: false,
   },
   {
     labelId: 'DATE_PICKER',
     value: fieldTypes.date,
     defaultValue: null,
+    backendType: backendTypes.date,
+    backendMultiple: false,
   },
   {
     labelId: 'DATE_RANGE_PICKER',
     value: fieldTypes.daterange,
     defaultValue: [null, null],
     validCustomField: false,
+    backendType: backendTypes.string,
+    backendMultiple: true,
   },
   {
     labelId: 'DROPDOWN',
     value: fieldTypes.select,
     defaultValue: '',
+    backendType: backendTypes.string,
+    backendMultiple: false,
     configuration: [
       {
         labelId: 'DROPDOWN_OPTIONS',
@@ -117,6 +170,8 @@ export const fieldTypeChoices = [
     labelId: 'MULTI_SELECT_DROPDOWN',
     value: fieldTypes.multiselect,
     defaultValue: [],
+    backendType: backendTypes.string,
+    backendMultiple: true,
     configuration: [
       {
         labelId: 'DROPDOWN_OPTIONS',
@@ -132,11 +187,15 @@ export const fieldTypeChoices = [
     value: fieldTypes.comparator,
     defaultValue: { comparator: '', value: '' },
     validCustomField: false,
+    backendType: backendTypes.json,
+    backendMultiple: false,
   },
   {
     labelId: 'BOOLEAN',
     value: fieldTypes.boolean,
     defaultValue: null,
+    backendType: backendTypes.boolean,
+    backendMultiple: false,
   },
 ];
 

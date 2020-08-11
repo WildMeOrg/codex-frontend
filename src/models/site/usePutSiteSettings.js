@@ -1,11 +1,13 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import axios from 'axios';
+import { get } from 'lodash-es';
 import { AppContext, setSiteSettingsNeedsFetch } from '../../context';
 
 export default function usePutSiteSettings() {
   const { dispatch } = useContext(AppContext);
+  const [error, setError] = useState(null);
 
-  const putData = async data => {
+  const putSiteSettings = async data => {
     try {
       const response = await axios({
         url: 'https://nextgen.dev-wildbook.org/api/v0/configuration',
@@ -13,12 +15,17 @@ export default function usePutSiteSettings() {
         method: 'post',
         data,
       });
-      dispatch(setSiteSettingsNeedsFetch(true));
+      const successful = get(response, ['data', 'success'], false);
+      if (successful) {
+        dispatch(setSiteSettingsNeedsFetch(true));
+      } else {
+        const serverErrorMessage = get(response, ['data', 'message', 'details']);
+        setError(serverErrorMessage);
+      }
     } catch (postError) {
-      console.error('Error updating site settings');
-      console.error(postError);
+      setError(error);
     }
   };
 
-  return putData;
+  return { putSiteSettings, error, setError };
 }

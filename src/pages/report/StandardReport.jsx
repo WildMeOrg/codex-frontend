@@ -7,8 +7,8 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Hidden from '@material-ui/core/Hidden';
 import Grid from '@material-ui/core/Grid';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import {
   selectSightingSchema,
@@ -90,7 +90,7 @@ export default function StandardReport({
               key={category.name}
               defaultExpanded={category.name === 'general'}
             >
-              <ExpansionPanelSummary
+              <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
                 aria-controls={`${
                   category.name
@@ -105,8 +105,8 @@ export default function StandardReport({
                   )}
                   {requiredCategory && ' *'}
                 </Typography>
-              </ExpansionPanelSummary>
-              <ExpansionPanelDetails>
+              </AccordionSummary>
+              <AccordionDetails>
                 <div
                   style={{
                     display: 'flex',
@@ -181,7 +181,7 @@ export default function StandardReport({
                     </div>
                   ))}
                 </div>
-              </ExpansionPanelDetails>
+              </AccordionDetails>
             </BigExpansionPanel>
           );
         })}
