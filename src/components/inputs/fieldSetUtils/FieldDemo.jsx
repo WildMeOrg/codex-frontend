@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
+import { omit } from 'lodash-es';
 
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
@@ -17,6 +18,17 @@ export default function FieldDemo({
   fieldProps,
 }) {
   const [demoFieldValue, setDemoFieldValue] = useState(initialValue);
+  useEffect(
+    () => {
+      if (demoFieldValue !== initialValue)
+        setDemoFieldValue(initialValue);
+    },
+    [initialValue],
+  );
+
+  const newFieldProps = fieldProps
+    ? omit(fieldProps, ['timeCreated'])
+    : fieldProps;
 
   return (
     <Dialog open={open} onClose={onClose}>
@@ -45,7 +57,7 @@ export default function FieldDemo({
             <LabeledInput
               value={demoFieldValue}
               onChange={newValue => setDemoFieldValue(newValue)}
-              {...fieldProps}
+              {...newFieldProps}
             />
           )}
         </div>

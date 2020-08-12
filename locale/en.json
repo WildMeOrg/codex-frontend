@@ -338,6 +338,8 @@
     "FILTERS": "Filters",
     "LAST_SEEN_DATE": "Last seen on {date}",
     "SHOW_FILTERS": "Show filters",
+    "SUCCESS": "Success",
+    "CHANGES_SAVED": "Your changes have been saved successfully.",
     "SELECT_INDIVIDUAL": "Select individual",
     "AUTO_MATCH": "Match now",
     "AUTO_MATCH_DESCRIPTION": "If you already know which individual is pictured, you can skip identification and select the individual immediately.",

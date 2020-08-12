@@ -56,8 +56,6 @@ export default function FieldSetInput({
 }) {
   const fieldset = get(value, 'definitions', []);
 
-  console.log(fieldset);
-
   fieldset.sort((a, b) => {
     if (a.timeCreated < b.timeCreated) return -1;
     return 1;
@@ -174,7 +172,8 @@ export default function FieldSetInput({
 
                       const newField = {
                         ...field,
-                        multiple: newFieldTypeSpecifier.backendMultiple,
+                        multiple:
+                          newFieldTypeSpecifier.backendMultiple,
                         type: newFieldTypeSpecifier.backendType,
                         schema: {
                           ...field.schema,
@@ -266,6 +265,7 @@ export default function FieldSetInput({
                         get(field, ['schema', 'displayType']) ===
                         choice.value,
                     );
+
                     setDemoField(field);
                     setModalOpen(true);
                     setDemoFieldInitialValue(

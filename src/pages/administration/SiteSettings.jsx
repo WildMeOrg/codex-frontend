@@ -14,15 +14,21 @@ import LabeledInput from '../../components/LabeledInput';
 import FieldSetInput from '../../components/inputs/FieldSetInput';
 import fieldTypes from '../../constants/fieldTypes';
 
+const customFields = {
+  sighting: 'site.custom.customFields.Occurrence',
+  encounter: 'site.custom.customFields.Encounter',
+  individual: 'site.custom.customFields.MarkedIndividual',
+};
+
 const newSettingFields = [
   'site.name',
   'site.private',
   'site.general.tagline',
   'site.general.exploreTagline',
   'site.custom.regions',
-  'site.custom.customFields.Occurrence',
-  'site.custom.customFields.Encounter',
-  // 'site.custom.customFields.MarkedIndividual',
+  customFields.sighting,
+  customFields.encounter,
+  customFields.individual,
 ];
 
 /* FieldSetInput cannot be rendered by LabeledInput, this avoids a circular dependency. */
@@ -35,9 +41,13 @@ function SettingInput(props) {
 
 export default function SiteSettings({ primaryButtonId }) {
   const newSiteSettings = useSiteSettings();
-  const { putSiteSettings, error, setError } = usePutSiteSettings();
-
-  console.log(newSiteSettings);
+  const {
+    putSiteSettings,
+    error,
+    setError,
+    success,
+    setSuccess,
+  } = usePutSiteSettings();
 
   const [currentValues, setCurrentValues] = useState(null);
 
@@ -47,10 +57,6 @@ export default function SiteSettings({ primaryButtonId }) {
   useEffect(() => {
     setCurrentValues(zipObject(newSettingFields, edmValues));
   }, edmValues);
-
-  const [submissionAttempted, setSubmissionAttempted] = useState(
-    false,
-  );
 
   return (
     <Grid container direction="column" style={{ marginTop: 40 }}>
@@ -64,7 +70,6 @@ export default function SiteSettings({ primaryButtonId }) {
         return (
           <Grid
             key={settingKey}
-            onClick={() => setSubmissionAttempted(false)}
             item
             style={{
               display: 'flex',
@@ -166,9 +171,38 @@ export default function SiteSettings({ primaryButtonId }) {
             {error}
           </Alert>
         )}
+        {success && (
+          <Alert onClose={() => setSuccess(false)} severity="success">
+            <AlertTitle>
+              <FormattedMessage id="SUCCESS" />
+            </AlertTitle>
+            <FormattedMessage id="CHANGES_SAVED" />
+          </Alert>
+        )}
         <Button
           onClick={() => {
-            setSubmissionAttempted(true);
+            /* Prepare custom fields objects to send to backend */
+            Object.values(customFields).forEach(customFieldKey => {
+              const fields = currentValues[customFieldKey];
+              if (!fields) {
+                currentValues[customFieldKey] = { definitions: [] };
+              } else {
+                const newFields = get(fields, 'definitions', []).map(
+                  field => {
+                    const choices = get(field, ['schema', 'choices']);
+                    if (!choices) return field;
+                    return {
+                      ...field,
+                      options: choices.map(choice => choice.label),
+                    };
+                  },
+                );
+
+                currentValues[customFieldKey] = {
+                  definitions: newFields,
+                };
+              }
+            });
             putSiteSettings(currentValues);
           }}
           style={{ marginTop: 12 }}

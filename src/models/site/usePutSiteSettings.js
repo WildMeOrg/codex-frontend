@@ -6,6 +6,7 @@ import { AppContext, setSiteSettingsNeedsFetch } from '../../context';
 export default function usePutSiteSettings() {
   const { dispatch } = useContext(AppContext);
   const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(false);
 
   const putSiteSettings = async data => {
     try {
@@ -18,8 +19,13 @@ export default function usePutSiteSettings() {
       const successful = get(response, ['data', 'success'], false);
       if (successful) {
         dispatch(setSiteSettingsNeedsFetch(true));
+        setSuccess(true);
       } else {
-        const serverErrorMessage = get(response, ['data', 'message', 'details']);
+        const serverErrorMessage = get(response, [
+          'data',
+          'message',
+          'details',
+        ]);
         setError(serverErrorMessage);
       }
     } catch (postError) {
@@ -27,5 +33,5 @@ export default function usePutSiteSettings() {
     }
   };
 
-  return { putSiteSettings, error, setError };
+  return { putSiteSettings, error, setError, success, setSuccess };
 }
