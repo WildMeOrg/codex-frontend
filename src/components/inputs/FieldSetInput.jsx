@@ -3,9 +3,9 @@ import { FormattedMessage } from 'react-intl';
 import { get } from 'lodash-es';
 import { v4 as uuid } from 'uuid';
 
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import Accordion from '@material-ui/core/Accordion';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -47,13 +47,15 @@ function Core({ children, required, width, style = {} }) {
 
 export default function FieldSetInput({
   schema,
-  value: fieldset,
+  value,
   onChange,
   minimalLabels = false, // eslint-disable-line no-unused-vars
   width = 330,
   required,
   ...rest
 }) {
+  const fieldset = get(value, 'definitions', []);
+
   fieldset.sort((a, b) => {
     if (a.timeCreated < b.timeCreated) return -1;
     return 1;
@@ -76,25 +78,25 @@ export default function FieldSetInput({
       {fieldset.map(field => {
         const otherFields = fieldset.filter(r => r.id !== field.id);
 
-        const fieldType = fieldTypeChoices.find(
-          f => get(field, ['schema', 'fieldType']) === f.value,
+        const displayType = fieldTypeChoices.find(
+          f => get(field, ['schema', 'displayType']) === f.value,
         );
 
-        const configuration = get(fieldType, 'configuration', []);
+        const configuration = get(displayType, 'configuration', []);
 
         const displayName =
           get(field, ['schema', 'label']) || 'New custom field';
 
         return (
-          <ExpansionPanel key={field.id} style={{ width }}>
-            <ExpansionPanelSummary
+          <Accordion key={field.id} style={{ width }}>
+            <AccordionSummary
               aria-controls={`${displayName} configuration`}
               id={field.id}
               expandIcon={<ExpandMoreIcon />}
             >
               <Typography>{displayName}</Typography>
-            </ExpansionPanelSummary>
-            <ExpansionPanelDetails>
+            </AccordionSummary>
+            <AccordionDetails>
               <div
                 style={{ display: 'flex', flexDirection: 'column' }}
                 {...rest}
@@ -102,25 +104,32 @@ export default function FieldSetInput({
                 <FormControl>
                   <TextInput
                     onChange={name => {
-                      onChange([
-                        ...otherFields,
-                        updateSchema(field, 'name', name),
-                      ]);
+                      onChange({
+                        definitions: [
+                          ...otherFields,
+                          {
+                            ...field,
+                            name,
+                          },
+                        ],
+                      });
                     }}
                     schema={{
                       labelId: 'FIELD_VALUE',
                       descriptionId: 'FIELD_VALUE_DESCRIPTION',
                     }}
-                    value={get(field, ['schema', 'name'], '')}
+                    value={get(field, 'name', '')}
                   />
                 </FormControl>
                 <FormControl style={{ marginTop: 8 }}>
                   <TextInput
                     onChange={label => {
-                      onChange([
-                        ...otherFields,
-                        updateSchema(field, 'label', label),
-                      ]);
+                      onChange({
+                        definitions: [
+                          ...otherFields,
+                          updateSchema(field, 'label', label),
+                        ],
+                      });
                     }}
                     schema={{ labelId: 'FIELD_LABEL' }}
                     value={get(field, ['schema', 'label'], '')}
@@ -129,18 +138,20 @@ export default function FieldSetInput({
                 <FormControl style={{ marginTop: 8 }}>
                   <TextInput
                     onChange={description => {
-                      onChange([
-                        ...otherFields,
-                        updateSchema(
-                          field,
-                          'description',
-                          description,
-                        ),
-                      ]);
+                      onChange({
+                        definitions: [
+                          ...otherFields,
+                          updateSchema(
+                            field,
+                            'description',
+                            description,
+                          ),
+                        ],
+                      });
                     }}
                     schema={{
                       labelId: 'FIELD_DESCRIPTION',
-                      fieldType: 'longstring',
+                      displayType: 'longstring',
                     }}
                     value={get(field, ['schema', 'description'], '')}
                   />
@@ -152,22 +163,30 @@ export default function FieldSetInput({
                   <Select
                     labelId="field-type-selector-label"
                     id="field-type-selector"
-                    value={get(field, ['schema', 'fieldType'], '')}
+                    value={get(field, ['schema', 'displayType'], '')}
                     onChange={e => {
                       const newType = e.target.value;
-                      const newField = updateSchema(
-                        field,
-                        'fieldType',
-                        newType,
-                      );
                       const newFieldTypeSpecifier = fieldTypeChoices.find(
                         f => newType === f.value,
                       );
+
+                      const newField = {
+                        ...field,
+                        multiple:
+                          newFieldTypeSpecifier.backendMultiple,
+                        type: newFieldTypeSpecifier.backendType,
+                        schema: {
+                          ...field.schema,
+                          displayType: newType,
+                        },
+                      };
+
                       const newConfiguration = get(
                         newFieldTypeSpecifier,
                         'configuration',
                         [],
                       );
+
                       newConfiguration.forEach(
                         configurableProperty => {
                           newField.schema[
@@ -176,7 +195,9 @@ export default function FieldSetInput({
                         },
                       );
 
-                      onChange([...otherFields, newField]);
+                      onChange({
+                        definitions: [...otherFields, newField],
+                      });
                     }}
                   >
                     {customFieldTypeChoices.map(option => (
@@ -192,10 +213,12 @@ export default function FieldSetInput({
                 <FormControl style={{ marginTop: 16 }}>
                   <BooleanInput
                     onChange={isRequired => {
-                      onChange([
-                        ...otherFields,
-                        { ...field, required: isRequired },
-                      ]);
+                      onChange({
+                        definitions: [
+                          ...otherFields,
+                          { ...field, required: isRequired },
+                        ],
+                      });
                     }}
                     schema={{ labelId: 'REQUIRED' }}
                     value={Boolean(field.required)}
@@ -226,20 +249,23 @@ export default function FieldSetInput({
                           configurableProperty.value,
                           newOptions,
                         );
-                        onChange([...otherFields, newField]);
+                        onChange({
+                          definitions: [...otherFields, newField],
+                        });
                       }}
                     />
                   );
                 })}
                 <Button
                   style={{ marginTop: 12 }}
-                  disabled={!get(field, ['schema', 'fieldType'])}
+                  disabled={!get(field, ['schema', 'displayType'])}
                   onClick={() => {
                     const fieldTypeSchema = fieldTypeChoices.find(
                       choice =>
-                        get(field, ['schema', 'fieldType']) ===
+                        get(field, ['schema', 'displayType']) ===
                         choice.value,
                     );
+
                     setDemoField(field);
                     setModalOpen(true);
                     setDemoFieldInitialValue(
@@ -251,32 +277,37 @@ export default function FieldSetInput({
                 </Button>
                 <Button
                   style={{ marginTop: 4 }}
-                  onClick={() => onChange(otherFields)}
+                  onClick={() =>
+                    onChange({ definitions: otherFields })
+                  }
                 >
                   <FormattedMessage id="DELETE" />
                 </Button>
               </div>
-            </ExpansionPanelDetails>
-          </ExpansionPanel>
+            </AccordionDetails>
+          </Accordion>
         );
       })}
       <Button
         style={{ marginTop: 16 }}
         onClick={() => {
-          onChange([
-            ...fieldset,
-            {
-              schema: {
-                fieldType: '',
-                label: '',
-                description: '',
+          onChange({
+            definitions: [
+              ...fieldset,
+              {
+                schema: {
+                  displayType: '',
+                  label: '',
+                  description: '',
+                },
                 name: '',
+                multiple: false,
+                required: false,
+                id: uuid(),
+                timeCreated: Date.now(),
               },
-              required: false,
-              id: uuid(),
-              timeCreated: Date.now(),
-            },
-          ]);
+            ],
+          });
         }}
         size="small"
       >

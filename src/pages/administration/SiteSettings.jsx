@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { useIntl, FormattedMessage } from 'react-intl';
-import { get, uniqBy, zipObject } from 'lodash-es';
+import { FormattedMessage } from 'react-intl';
+import { get, zipObject } from 'lodash-es';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
 import Skeleton from '@material-ui/lab/Skeleton';
-import { selectSiteSettings } from '../../modules/site/selectors';
-import siteSettingsSchema from '../../constants/siteSettingsSchema';
+import Alert from '@material-ui/lab/Alert';
+import AlertTitle from '@material-ui/lab/AlertTitle';
 import Button from '../../components/Button';
 import useSiteSettings from '../../models/site/useSiteSettings';
 import usePutSiteSettings from '../../models/site/usePutSiteSettings';
@@ -16,54 +14,22 @@ import LabeledInput from '../../components/LabeledInput';
 import FieldSetInput from '../../components/inputs/FieldSetInput';
 import fieldTypes from '../../constants/fieldTypes';
 
+const customFields = {
+  sighting: 'site.custom.customFields.Occurrence',
+  encounter: 'site.custom.customFields.Encounter',
+  individual: 'site.custom.customFields.MarkedIndividual',
+};
+
 const newSettingFields = [
   'site.name',
   'site.private',
   'site.general.tagline',
   'site.general.exploreTagline',
   'site.custom.regions',
+  customFields.sighting,
+  customFields.encounter,
+  customFields.individual,
 ];
-
-function getFieldsetErrors(intl, fieldset, fieldsetName) {
-  const noLabelFields = fieldset.filter(field => field.label === '');
-  const noValueFields = fieldset.filter(field => field.label === '');
-  const sameLabels =
-    uniqBy(fieldset, 'label').length !== fieldset.length;
-  const sameValues =
-    uniqBy(fieldset, 'value').length !== fieldset.length;
-
-  const errors = [];
-  if (noLabelFields.length > 0)
-    errors.push(
-      intl.formatMessage(
-        { id: 'CUSTOM_FIELD_NO_LABEL_ERROR' },
-        { fieldsetName },
-      ),
-    );
-  if (noValueFields.length > 0)
-    errors.push(
-      intl.formatMessage(
-        { id: 'CUSTOM_FIELD_NO_VALUE_ERROR' },
-        { fieldsetName },
-      ),
-    );
-  if (sameLabels)
-    errors.push(
-      intl.formatMessage(
-        { id: 'CUSTOM_FIELD_SAME_LABEL_ERROR' },
-        { fieldsetName },
-      ),
-    );
-  if (sameValues)
-    errors.push(
-      intl.formatMessage(
-        { id: 'CUSTOM_FIELD_SAME_VALUE_ERROR' },
-        { fieldsetName },
-      ),
-    );
-
-  return errors;
-}
 
 /* FieldSetInput cannot be rendered by LabeledInput, this avoids a circular dependency. */
 function SettingInput(props) {
@@ -74,10 +40,14 @@ function SettingInput(props) {
 }
 
 export default function SiteSettings({ primaryButtonId }) {
-  const intl = useIntl();
-  const siteSettings = useSelector(selectSiteSettings);
   const newSiteSettings = useSiteSettings();
-  const putSiteSettings = usePutSiteSettings();
+  const {
+    putSiteSettings,
+    error,
+    setError,
+    success,
+    setSuccess,
+  } = usePutSiteSettings();
 
   const [currentValues, setCurrentValues] = useState(null);
 
@@ -87,30 +57,6 @@ export default function SiteSettings({ primaryButtonId }) {
   useEffect(() => {
     setCurrentValues(zipObject(newSettingFields, edmValues));
   }, edmValues);
-
-  const [submissionAttempted, setSubmissionAttempted] = useState(
-    false,
-  );
-
-  const [formValues, setFormValues] = useState(
-    siteSettingsSchema.reduce((memo, field) => {
-      memo[field.name] = siteSettings[field.name];
-      return memo;
-    }, {}),
-  );
-
-  const sightingErrors = getFieldsetErrors(
-    intl,
-    formValues.sightingFields,
-    intl.formatMessage({ id: 'CUSTOM_SIGHTING_FIELD_LABEL' }),
-  );
-  const individualErrors = getFieldsetErrors(
-    intl,
-    formValues.individualFields,
-    intl.formatMessage({ id: 'CUSTOM_INDIVIDUAL_FIELD_LABEL' }),
-  );
-
-  const errors = [...sightingErrors, ...individualErrors];
 
   return (
     <Grid container direction="column" style={{ marginTop: 40 }}>
@@ -124,7 +70,6 @@ export default function SiteSettings({ primaryButtonId }) {
         return (
           <Grid
             key={settingKey}
-            onClick={() => setSubmissionAttempted(false)}
             item
             style={{
               display: 'flex',
@@ -209,62 +154,6 @@ export default function SiteSettings({ primaryButtonId }) {
           </Grid>
         );
       })}
-      <Divider style={{ marginTop: 20 }} />
-      {siteSettingsSchema.map(settingSchema => {
-        if (settingSchema.hidden) return null;
-
-        return (
-          <Grid
-            onClick={() => setSubmissionAttempted(false)}
-            key={settingSchema.name}
-            item
-            style={{
-              display: 'flex',
-              width: '100%',
-              justifyContent: 'space-between',
-            }}
-          >
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
-              <Typography
-                style={{
-                  marginTop: 20,
-                }}
-                variant="subtitle1"
-              >
-                <FormattedMessage id={settingSchema.labelId} />
-                {settingSchema.required && ' *'}
-              </Typography>
-              <Typography
-                style={{
-                  marginTop: 4,
-                }}
-              >
-                <FormattedMessage id={settingSchema.descriptionId} />
-              </Typography>
-            </div>
-            <div
-              style={{
-                marginTop: 24,
-                marginLeft: 80,
-                width: 400,
-                minWidth: 400,
-              }}
-            >
-              <SettingInput
-                schema={settingSchema}
-                minimalLabels
-                value={formValues[settingSchema.name]}
-                onChange={value => {
-                  setFormValues({
-                    ...formValues,
-                    [settingSchema.name]: value,
-                  });
-                }}
-              />
-            </div>
-          </Grid>
-        );
-      })}
       <Grid
         item
         style={{
@@ -274,18 +163,46 @@ export default function SiteSettings({ primaryButtonId }) {
           marginTop: 28,
         }}
       >
-        {submissionAttempted && (
-          <div>
-            {errors.map(error => (
-              <Typography style={{ color: '#DC2113' }}>
-                {error}
-              </Typography>
-            ))}
-          </div>
+        {Boolean(error) && (
+          <Alert onClose={() => setError(null)} severity="error">
+            <AlertTitle>
+              <FormattedMessage id="SUBMISSION_ERROR" />
+            </AlertTitle>
+            {error}
+          </Alert>
+        )}
+        {success && (
+          <Alert onClose={() => setSuccess(false)} severity="success">
+            <AlertTitle>
+              <FormattedMessage id="SUCCESS" />
+            </AlertTitle>
+            <FormattedMessage id="CHANGES_SAVED" />
+          </Alert>
         )}
         <Button
           onClick={() => {
-            setSubmissionAttempted(true);
+            /* Prepare custom fields objects to send to backend */
+            Object.values(customFields).forEach(customFieldKey => {
+              const fields = currentValues[customFieldKey];
+              if (!fields) {
+                currentValues[customFieldKey] = { definitions: [] };
+              } else {
+                const newFields = get(fields, 'definitions', []).map(
+                  field => {
+                    const choices = get(field, ['schema', 'choices']);
+                    if (!choices) return field;
+                    return {
+                      ...field,
+                      options: choices.map(choice => choice.label),
+                    };
+                  },
+                );
+
+                currentValues[customFieldKey] = {
+                  definitions: newFields,
+                };
+              }
+            });
             putSiteSettings(currentValues);
           }}
           style={{ marginTop: 12 }}

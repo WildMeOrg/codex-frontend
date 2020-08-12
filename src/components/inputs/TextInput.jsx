@@ -46,6 +46,9 @@ function TextInput(props) {
     type = 'number';
   if (schema.fieldType === 'password') type = 'password';
 
+  const htmlValue =
+    value === null || value === undefined ? '' : value;
+
   return (
     <Core schema={schema} required={required} width={width}>
       <TextField
@@ -65,7 +68,7 @@ function TextInput(props) {
             onChange(inputValue);
           }
         }}
-        value={value}
+        value={htmlValue}
         {...rest}
       />
       {!minimalLabels && (

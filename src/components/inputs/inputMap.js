@@ -20,7 +20,7 @@ const inputMap = {
   [fieldTypes.area]: AreaInput,
   [fieldTypes.file]: FileInput,
   [fieldTypes.treeview]: TreeViewInput,
-  [fieldTypes.treeditor]: TreeViewEditor,
+  [fieldTypes.treeeditor]: TreeViewEditor,
   [fieldTypes.locationIds]: LocationIdInput,
   [fieldTypes.individual]: IndividualInput,
   [fieldTypes.comparator]: ComparatorInput,
