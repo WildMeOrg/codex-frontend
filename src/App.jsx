@@ -1,5 +1,6 @@
 import React, { useEffect, useReducer } from 'react';
 import { BrowserRouter, useLocation } from 'react-router-dom';
+import CssBaseline from '@material-ui/core/CssBaseline';
 import {
   createMuiTheme,
   ThemeProvider,
@@ -57,6 +58,7 @@ export default function App() {
 
   return (
     <ThemeProvider theme={theme}>
+      <CssBaseline />
       <IntlProvider
         locale={locale}
         defaultLocale="en"

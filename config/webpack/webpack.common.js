@@ -138,16 +138,18 @@ module.exports = {
       filename: '[name].css',
       chunkFilename: '[id].css',
     }),
-    new CopyPlugin([
-      {
-        from: resolve(rootDir, 'src/houston/404.html'),
-        to: '404.html',
-      },
-      {
-        from: resolve(rootDir, 'src/houston/ocean.jpeg'),
-        to: 'ocean.jpeg',
-      },
-    ]),
+    new CopyPlugin({
+      patterns: [
+        {
+          from: resolve(rootDir, 'src/houston/404.html'),
+          to: '404.html',
+        },
+        {
+          from: resolve(rootDir, 'src/houston/ocean.jpeg'),
+          to: 'ocean.jpeg',
+        },
+      ],
+    }),
   ],
   node: {
     fs: 'empty',
