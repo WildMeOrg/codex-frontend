@@ -11,7 +11,7 @@ import TextInput from '../../components/inputs/TextInput';
 import InlineButton from '../../components/InlineButton';
 import Link from '../../components/Link';
 import Button from '../../components/Button';
-// import usePostLogin from '../../models/auth/usePostLogin';
+import usePostLogin from '../../models/auth/usePostLogin';
 import Shell from './Shell';
 
 export default function Login({ callback }) {
@@ -20,7 +20,7 @@ export default function Login({ callback }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  // const postLogin = usePostLogin();
+  const postLogin = usePostLogin();
 
   const dispatch = useDispatch();
   const intl = useIntl();
@@ -68,10 +68,10 @@ export default function Login({ callback }) {
                   callback();
                 }
 
-                dispatch(toggleAuthenticated());
-                history.push(loginRedirect);
+                // dispatch(toggleAuthenticated());
+                // history.push(loginRedirect);
               }, 1000);
-              // postLogin({ email, password };)
+              postLogin(email, password);
             }}
             style={{ width: '100%' }}
             display="primary"
