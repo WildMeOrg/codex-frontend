@@ -7,28 +7,32 @@ export default function usePostLogin() {
 
   const postLogin = async (email, password) => {
     try {
-      const response = axios.request({
-        // url: 'https://houston.dyn.wildme.io/api/v1/auth/sessions',
-        url: 'https://wildme.ngrok.io/api/v1/auth/sessions', // temporary url
-        method: 'post',
-        data: {
-          email,
-          password,
-        },
-      });
-      console.log(response);
+      const loginFormData = new FormData();
+      loginFormData.set('email', email);
+      loginFormData.set('password', password);
 
-      setTimeout(() => {
-        console.log(response);
-      }, 5000);
+      // const response = axios.request({
+      //   url: 'https://houston.dyn.wildme.io/api/v1/auth/sessions',
+      //   method: 'post',
+      //   headers: { 'Content-Type': 'multipart/form-data' },
+      //   data: loginFormData,
+      // }, {
+      //   credentials: 'include',
+      // });
+      // console.log(response);
+
       // setTimeout(() => {
-      //   const me = axios.request({
-      //     // url: 'https://houston.dyn.wildme.io/api/v1/users/me',
-      //     url: 'https://wildme.ngrok.io/api/v1/users/me', // temporary url
-      //     method: 'get',
-      //   });
-      //   console.log(me);
+      //   console.log(response);
       // }, 5000);
+      setTimeout(() => {
+        const me = axios.request({
+          url: 'https://houston.dyn.wildme.io/api/v1/users/me',
+          method: 'get',
+        }, {
+          withCredentials: true,
+        });
+        console.log(me);
+      }, 5000);
 
       // need to dispatch auth credentials to context
     } catch (postError) {
