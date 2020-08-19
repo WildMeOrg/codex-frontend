@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { useIntl, FormattedMessage } from 'react-intl';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 
@@ -34,6 +34,7 @@ import shane from '../assets/shane.jpg';
 
 export default function AppHeader() {
   const theme = useTheme();
+  const intl = useIntl();
   const location = useLocation();
   const dispatch = useDispatch();
 
@@ -211,69 +212,72 @@ export default function AppHeader() {
             )}
           </>
         )}
-        {isAuthenticated ? (
-          <>
-            <div
-              style={{
-                position: 'relative',
-                display: 'flex',
-                alignItems: 'center',
-              }}
-            >
-              <Avatar
-                style={{
-                  marginLeft: 8,
-                  cursor: 'pointer',
-                }}
-                onClick={() => setUserMenuOpen(true)}
-                src={shane}
-              />
-              <DropDownIcon
-                onClick={() => setUserMenuOpen(true)}
-                style={{ cursor: 'pointer' }}
-              />
-              <HeaderMenu
-                open={userMenuOpen}
-                itemCount={2}
-                style={{ right: -8, marginTop: isXs ? 8 : 12 }}
-              >
-                <MenuList>
-                  <Link href="/" noUnderline>
-                    <MenuItem
-                      style={{ minHeight: 'auto' }}
-                      className="dark-menu-item"
-                    >
-                      <Typography style={{ margin: '0 20px' }}>
-                        <FormattedMessage id="VIEW_PROFILE" />
-                      </Typography>
-                    </MenuItem>
-                  </Link>
-                  <Link href="/logout" noUnderline>
-                    <MenuItem
-                      style={{ minHeight: 'auto' }}
-                      className="dark-menu-item"
-                    >
-                      <Typography style={{ margin: '0 20px' }}>
-                        <FormattedMessage id="LOG_OUT" />
-                      </Typography>
-                    </MenuItem>
-                  </Link>
-                </MenuList>
-              </HeaderMenu>
-            </div>
-          </>
-        ) : (
-          <ButtonLink
-            size={isSm ? 'small' : undefined}
-            display="primary"
-            href="/login"
-            onClick={() => {
-              dispatch(setLoginRedirect(location.pathname));
+        <div
+          style={{
+            position: 'relative',
+            display: 'flex',
+            alignItems: 'center',
+          }}
+        >
+          <Avatar
+            style={{
+              marginLeft: 8,
+              cursor: 'pointer',
             }}
+            onClick={() => setUserMenuOpen(true)}
+            src={shane}
+          />
+          <DropDownIcon
+            onClick={() => setUserMenuOpen(true)}
+            style={{ cursor: 'pointer' }}
+          />
+          <HeaderMenu
+            open={userMenuOpen}
+            itemCount={2}
+            style={{ right: -8, marginTop: isXs ? 8 : 12 }}
           >
-            <FormattedMessage id="LOG_IN" />
-          </ButtonLink>
-        )}
+            <MenuList>
+              <Link href="/" noUnderline>
+                <MenuItem
+                  style={{ minHeight: 'auto' }}
+                  className="dark-menu-item"
+                >
+                  <Typography style={{ margin: '0 20px' }}>
+                    <FormattedMessage id="VIEW_PROFILE" />
+                  </Typography>
+                </MenuItem>
+              </Link>
+              <form
+                action="http://localhost:5000/logout?next=/"
+                method="POST"
+              >
+                <Typography style={{ margin: '6px 20px 6px 30px' }}>
+                  <input
+                    style={{
+                      cursor: 'pointer',
+                      color: 'white',
+                      border: 'unset',
+                      background: 'unset',
+                      fontWeight: 'unset',
+                    }}
+                    type="submit"
+                    value={intl.formatMessage({ id: 'LOG_OUT' })}
+                  />
+                </Typography>
+              </form>
+              <Link href="/logout" noUnderline>
+                <MenuItem
+                  style={{ minHeight: 'auto' }}
+                  className="dark-menu-item"
+                >
+                  <Typography style={{ margin: '0 20px' }}>
+                    <FormattedMessage id="LOG_OUT" />
+                  </Typography>
+                </MenuItem>
+              </Link>
+            </MenuList>
+          </HeaderMenu>
+        </div>
       </Toolbar>
     </AppBar>
   );

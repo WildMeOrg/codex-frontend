@@ -8,6 +8,7 @@ import MainColumn from '../../components/MainColumn';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import SiteSettings from './SiteSettings';
 import ServerStatus from './ServerStatus';
+import AdminActions from './Actions';
 
 export default function Administration() {
   /* eslint-disable */
@@ -48,7 +49,7 @@ export default function Administration() {
         <SiteSettings primaryButtonId="SAVE_CHANGES" />
       )}
       {activeTab === '#jobs' && <ServerStatus />}
-      {activeTab === '#actions' && <div>Actions</div>}
+      {activeTab === '#actions' && <AdminActions />}
       {activeTab === '#logs' && <div>Logs</div>}
     </MainColumn>
   );

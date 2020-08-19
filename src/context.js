@@ -14,7 +14,13 @@ export const setSiteSettings = data => ({
   data,
 });
 
+export const setMe = data => ({
+  type: 'SET_ME',
+  data,
+});
+
 export const initialState = {
+  me: null,
   siteSettings: null,
   siteSettingsSchema: null,
   siteSettingsNeedsFetch: true,

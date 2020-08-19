@@ -18,6 +18,7 @@ const globals = {
 };
 
 const rootDir = resolve(__dirname, '../../');
+const devdist = path.resolve(rootDir, 'devdist');
 
 // no entry specified - only things that would be the same between each app
 module.exports = {
@@ -29,6 +30,7 @@ module.exports = {
       ? '[name].chunk.js'
       : '[name].[contenthash:8].chunk.js',
     publicPath: '/',
+    path: devdist,
   },
   module: {
     rules: [
