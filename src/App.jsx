@@ -15,7 +15,7 @@ import materialTheme from './styles/materialTheme';
 import messagesEn from '../locale/en.json';
 import messagesEs from '../locale/es.json';
 import { AppContext, initialState } from './context';
-import BigSwitch from './BigSwitch';
+import FrontDesk from './FrontDesk';
 
 // polyfill to enable formatting of a number using the unit prop
 if (typeof Intl.NumberFormat.__addLocaleData === 'function') {
@@ -47,6 +47,9 @@ function reducer(state, action) {
   if (type === 'SET_SITE_SETTINGS') {
     return { ...state, siteSettings: data };
   }
+  if (type === 'SET_ME') {
+    return { ...state, me: data };
+  }
   console.warn('Action not recongized', action);
   return state;
 }
@@ -67,7 +70,7 @@ export default function App() {
         <AppContext.Provider value={{ state, dispatch }}>
           <BrowserRouter basename="/">
             <ScrollToTop />
-            <BigSwitch />
+            <FrontDesk />
           </BrowserRouter>
         </AppContext.Provider>
       </IntlProvider>
