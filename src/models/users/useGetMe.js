@@ -21,8 +21,7 @@ export default function useGetMe() {
         dispatch(setMe(get(response, 'data')));
         setLoading(false);
       } catch (fetchError) {
-        console.log('error', error);
-        console.error('Error fetching me');
+        console.error('Error fetching /me');
         console.error(fetchError);
         setError(fetchError);
         setLoading(false);

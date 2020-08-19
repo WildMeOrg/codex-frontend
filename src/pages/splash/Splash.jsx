@@ -7,6 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import { selectSiteSettings } from '../../modules/site/selectors';
+import UnauthenticatedAppHeader from '../../components/UnauthenticatedAppHeader';
 import Trifold from './Trifold';
 
 export default function Splash() {
@@ -23,7 +24,8 @@ export default function Splash() {
   );
 
   return (
-    <div style={{ marginTop: 64 }}>
+    <div>
+      <UnauthenticatedAppHeader />
       <div style={{ position: 'relative' }}>
         <ReactPlayer
           url={siteSettings.splashVideo}

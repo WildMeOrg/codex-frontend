@@ -19,9 +19,9 @@ import Shell from './Shell';
 const formId = 'loginform';
 
 export default function Login({ showBanner, redirect = '/' }) {
-  const authenticate = useLogin(formId);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const { authenticate, error, setError, loading } = useLogin();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const intl = useIntl();
 
@@ -32,7 +32,11 @@ export default function Login({ showBanner, redirect = '/' }) {
       titleId="WELCOME_BACK"
       instructionsId="LOG_IN_INSTRUCTIONS"
     >
-      {showBanner && <Alert severity="warning"><FormattedMessage id="MUST_LOG_IN" /></Alert> }
+      {showBanner && (
+        <Alert severity="warning">
+          <FormattedMessage id="MUST_LOG_IN" />
+        </Alert>
+      )}
 
       <form
         action={`http://localhost:5000/login?next=${redirect}`}
@@ -54,6 +58,10 @@ export default function Login({ showBanner, redirect = '/' }) {
                 autoComplete="username"
                 variant="outlined"
                 id="email"
+                onChange={e => {
+                  setEmail(e.target.value);
+                  setError(null);
+                }}
                 label={<FormattedMessage id="EMAIL_ADDRESS" />}
               />
             </FormControl>
@@ -68,6 +76,10 @@ export default function Login({ showBanner, redirect = '/' }) {
                 variant="outlined"
                 id="password"
                 type="password"
+                onChange={e => {
+                  setPassword(e.target.value);
+                  setError(null);
+                }}
                 label={<FormattedMessage id="PASSWORD" />}
               />
             </FormControl>
@@ -83,25 +95,18 @@ export default function Login({ showBanner, redirect = '/' }) {
               />
             </FormControl>
           </Grid>
+          {error && <Alert severity="error">{error}</Alert>}
           <Grid item style={{ position: 'relative' }}>
             <Button
-              onClick={() =>
-                authenticate('jason@wildme.org', 'test1234')
-              }
+              loading={loading}
+              onClick={() => {
+                authenticate(email, password, redirect);
+              }}
               display="primary"
             >
               <FormattedMessage id="LOG_IN" />
             </Button>
           </Grid>
-          {error && (
-            <Typography
-              variant="caption"
-              color="error"
-              style={{ paddingLeft: 8 }}
-            >
-              {error}
-            </Typography>
-          )}
           <Grid item>
             <Typography>
               <InlineButton>

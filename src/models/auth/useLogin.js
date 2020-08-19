@@ -1,12 +1,20 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { get } from 'lodash-es';
+import { useIntl } from 'react-intl';
 
-export default function useLogin(formId) {
+export default function useLogin() {
+  const intl = useIntl();
+  const errorMessage = intl.formatMessage({
+    id: 'INVALID_EMAIL_OR_PASSWORD',
+  });
+
   const [error, setError] = useState(null);
-  const authenticate = async (email, password) => {
+  const [loading, setLoading] = useState(false);
+
+  const authenticate = async (email, password, redirect = '/') => {
     try {
-      console.log('attempting authentication', email, password);
+      setLoading(true);
       const response = await axios.request({
         url: 'http://localhost:5000/api/v1/auth/sessions',
         method: 'post',
@@ -17,22 +25,19 @@ export default function useLogin(formId) {
       });
 
       const successful = get(response, 'data.success', false);
-      console.log(response);
 
       if (successful) {
-        setTimeout(() => {
-          const form = document.getElementById(formId);
-          console.log('Submitting form...');
-          if (form) form.submit();
-        }, 3000);
+        window.location.href = redirect;
       } else {
-        setError('Invalid username or password');
+        setError(errorMessage);
       }
-    } catch (loginErorr) {
+    } catch (loginError) {
+      setLoading(false);
+      setError(errorMessage);
       console.error('Error logging in');
-      console.error(loginErorr);
+      console.error(loginError);
     }
   };
 
-  return authenticate;
+  return { authenticate, error, setError, loading };
 }
