@@ -1,25 +1,36 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import Typography from '@material-ui/core/Typography';
-import MainColumn from '../../components/MainColumn';
+import UnauthenticatedAppHeader from '../../components/UnauthenticatedAppHeader';
 
 export default function Shell({ titleId, instructionsId, children }) {
   return (
-    <MainColumn style={{ width: 300 }}>
-      <Typography
-        variant="h3"
-        component="h3"
-        style={{ padding: '16px 0 8px 16px' }}
+    <div>
+      <UnauthenticatedAppHeader />
+      <div
+        style={{
+          margin: '0px auto 200px',
+          width: 300,
+          maxWidth: 851,
+          paddingTop: 120,
+          position: 'relative',
+        }}
       >
-        <FormattedMessage id={titleId} />
-      </Typography>
-      <Typography
-        variant="subtitle2"
-        style={{ padding: '0 16px 8px 16px', maxWidth: 460 }}
-      >
-        <FormattedMessage id={instructionsId} />
-      </Typography>
-      {children}
-    </MainColumn>
+        <Typography
+          variant="h3"
+          component="h3"
+          style={{ padding: '16px 0 8px 16px' }}
+        >
+          <FormattedMessage id={titleId} />
+        </Typography>
+        <Typography
+          variant="subtitle2"
+          style={{ padding: '0 16px 8px 16px', maxWidth: 460 }}
+        >
+          <FormattedMessage id={instructionsId} />
+        </Typography>
+        {children}
+      </div>
+    </div>
   );
 }

@@ -2,7 +2,9 @@ import React, { useEffect, useState } from 'react';
 import Typography from '@material-ui/core/Typography';
 import Link from './Link';
 
-export default function UnauthenticatedAppHeader() {
+export default function UnauthenticatedAppHeader({
+  topTransparency = false,
+}) {
   const [top, setTop] = useState(true);
 
   useEffect(() => {
@@ -31,7 +33,8 @@ export default function UnauthenticatedAppHeader() {
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        backgroundColor: top ? 'rgba(0,0,0,0)' : 'black',
+        backgroundColor:
+          top && topTransparency ? 'rgba(0,0,0,0)' : 'black',
         transition:
           'background-color .5s cubic-bezier(.165,.84,.44,1)',
         willChange: 'background-color',

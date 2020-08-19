@@ -18,12 +18,9 @@ import SearchIndividuals from './pages/individual/SearchIndividuals';
 import SearchSightings from './pages/sighting/SearchSightings';
 import Administration from './pages/administration/Administration';
 import SiteSetup from './pages/administration/SiteSetup';
-import CreateAccount from './pages/auth/Create';
 import MatchReview from './pages/match/MatchReview';
 import Welcome from './pages/auth/Welcome';
-import Forgot from './pages/auth/Forgot';
 import Home from './pages/home/Home';
-import RequestInvitation from './pages/auth/RequestInvitation';
 import Footer from './components/Footer';
 import { defaultCrossfadeDuration } from './constants/defaults';
 
@@ -97,15 +94,6 @@ export default function App() {
                       </Route>
                       <Route path="/administration">
                         <Administration />
-                      </Route>
-                      <Route path="/forgot">
-                        <Forgot />
-                      </Route>
-                      <Route path="/request">
-                        <RequestInvitation />
-                      </Route>
-                      <Route path="/create">
-                        <CreateAccount />
                       </Route>
                       <Route path="/welcome">
                         <Welcome />

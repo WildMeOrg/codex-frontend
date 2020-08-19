@@ -25,7 +25,7 @@ export default function Splash() {
 
   return (
     <div>
-      <UnauthenticatedAppHeader />
+      <UnauthenticatedAppHeader topTransparency />
       <div style={{ position: 'relative' }}>
         <ReactPlayer
           url={siteSettings.splashVideo}
