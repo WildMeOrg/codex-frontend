@@ -2,6 +2,7 @@ import { useState } from 'react';
 import axios from 'axios';
 import { get } from 'lodash-es';
 import { useIntl } from 'react-intl';
+import { houstonUrl } from '../../constants/urls';
 
 export default function useLogin() {
   const intl = useIntl();
@@ -16,7 +17,7 @@ export default function useLogin() {
     try {
       setLoading(true);
       const response = await axios.request({
-        url: 'http://localhost:5000/api/v1/auth/sessions',
+        url: `${houstonUrl}/api/v1/auth/sessions`,
         method: 'post',
         data: {
           email,

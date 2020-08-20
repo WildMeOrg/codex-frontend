@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
-import { useDispatch, useSelector } from 'react-redux';
-import { useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { get } from 'lodash-es';
 
 import { useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
@@ -19,30 +19,24 @@ import DropDownIcon from '@material-ui/icons/ArrowDropDown';
 import LeavingIcon from '@material-ui/icons/ExitToApp';
 
 import { selectLogos } from '../modules/site/selectors';
-import {
-  selectIsAuthenticated,
-  selectIsAdministrator,
-} from '../modules/app/selectors';
-import { setLoginRedirect } from '../modules/app/actions';
 // import useSiteSettings from '../models/site/useSiteSettings';
-import ButtonLink from './ButtonLink';
 import Button from './Button';
 import Link from './Link';
 import AppDrawer from './AppDrawer';
 import HeaderMenu from './HeaderMenu';
+import useGetMe from '../models/users/useGetMe';
 import shane from '../assets/shane.jpg';
+import { houstonUrl } from '../constants/urls';
 
 export default function AppHeader() {
   const theme = useTheme();
   const intl = useIntl();
-  const location = useLocation();
-  const dispatch = useDispatch();
+  const { data: meData } = useGetMe();
+  const isAdministrator = get(meData, 'is_admin', false);
 
   const isSm = useMediaQuery(theme.breakpoints.down('sm'));
   const isXs = useMediaQuery(theme.breakpoints.down('xs'));
 
-  const isAuthenticated = useSelector(selectIsAuthenticated);
-  const isAdministrator = useSelector(selectIsAdministrator);
   const logos = useSelector(selectLogos);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [exploreOpen, setExploreOpen] = React.useState(false);
@@ -80,7 +74,7 @@ export default function AppHeader() {
           open={drawerOpen}
           onClose={() => setDrawerOpen(false)}
           handleClick={handleClick}
-          isAuthenticated={isAuthenticated}
+          isAdministrator={isAdministrator}
         />
       )}
       <Toolbar
@@ -248,7 +242,7 @@ export default function AppHeader() {
                 </MenuItem>
               </Link>
               <form
-                action="http://localhost:5000/logout?next=/"
+                action={`${houstonUrl}/logout?next=/`}
                 method="POST"
               >
                 <Typography style={{ margin: '6px 20px 6px 30px' }}>
@@ -265,16 +259,6 @@ export default function AppHeader() {
                   />
                 </Typography>
               </form>
-              <Link href="/logout" noUnderline>
-                <MenuItem
-                  style={{ minHeight: 'auto' }}
-                  className="dark-menu-item"
-                >
-                  <Typography style={{ margin: '0 20px' }}>
-                    <FormattedMessage id="LOG_OUT" />
-                  </Typography>
-                </MenuItem>
-              </Link>
             </MenuList>
           </HeaderMenu>
         </div>

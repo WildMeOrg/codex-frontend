@@ -8,7 +8,9 @@ import Grid from '@material-ui/core/Grid';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import { selectSiteSettings } from '../../modules/site/selectors';
 import UnauthenticatedAppHeader from '../../components/UnauthenticatedAppHeader';
+import Button from '../../components/Button';
 import Trifold from './Trifold';
+import HowItWorks from './HowItWorks';
 
 export default function Splash() {
   const intl = useIntl();
@@ -23,9 +25,11 @@ export default function Splash() {
     false,
   );
 
+  const themeColor = '#00fff7';
+
   return (
     <div>
-      <UnauthenticatedAppHeader topTransparency />
+      <UnauthenticatedAppHeader siteNameScrolls topTransparency />
       <div style={{ position: 'relative' }}>
         <ReactPlayer
           url={siteSettings.splashVideo}
@@ -34,20 +38,39 @@ export default function Splash() {
           playing
           width="100vw"
           height="auto"
+          style={{ filter: 'brightness(0.5)' }}
         />
         <div
           style={{
             position: 'absolute',
-            bottom: '15%',
+            top: '40%',
             width: '100vw',
             textAlign: 'center',
             color: theme.palette.getContrastText('rgba(0, 0, 0, 0)'),
           }}
         >
-          <Typography variant="h3">{siteSettings.tagline}</Typography>
+          <Typography variant="h3">
+            AI for Whale Shark Research
+          </Typography>
+          <Typography variant="subtitle1">
+            Upload your whale shark images. Help save the species.
+          </Typography>
+          <Button
+            display="primary"
+            style={{
+              marginTop: 16,
+              backgroundColor: themeColor,
+              color: 'black',
+              padding: '12px 28px',
+              borderRadius: 300,
+            }}
+          >
+            Report Sighting
+          </Button>
         </div>
       </div>
       <Trifold />
+      <HowItWorks textColor={themeColor} padding={20} />
       <div
         style={{
           width: '100vw',

@@ -336,6 +336,7 @@
     "PHOTO_COUNT": "{photoCount} {photoCount, plural, =0 {photographs} one {photograph} other {photographs}}",
     "READY_FOR_REVIEW": "Ready for Identification Review",
     "CHANGE_PHOTO": "Change Photo",
+    "HOW_IT_WORKS": "How it workz",
     "USERS_SIGHTINGS": "{name}'s sightings",
     "YOUR_SIGHTINGS": "Your sightings",
     "IDENTIFYING_INDIVIDUALS": "Identifying Individuals",
