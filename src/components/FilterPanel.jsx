@@ -1,9 +1,9 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { values } from 'lodash-es';
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import Accordion from '@material-ui/core/Accordion';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import LabeledInput from './LabeledInput';
@@ -27,8 +27,8 @@ export default function FilterPanel({
         );
 
         return (
-          <ExpansionPanel key={category.name}>
-            <ExpansionPanelSummary
+          <Accordion key={category.name}>
+            <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
               aria-controls={`${category.name}-filter-panel-content`}
               id={`${category.name}-filter-panel-header`}
@@ -40,8 +40,8 @@ export default function FilterPanel({
                   category.label
                 )}
               </Typography>
-            </ExpansionPanelSummary>
-            <ExpansionPanelDetails>
+            </AccordionSummary>
+            <AccordionDetails>
               <div
                 style={{ display: 'flex', flexDirection: 'column' }}
               >
@@ -60,8 +60,8 @@ export default function FilterPanel({
                   />
                 ))}
               </div>
-            </ExpansionPanelDetails>
-          </ExpansionPanel>
+            </AccordionDetails>
+          </Accordion>
         );
       })}
     </div>

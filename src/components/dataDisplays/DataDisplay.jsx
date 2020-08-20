@@ -145,9 +145,6 @@ export default function DataDisplay({
         >
           <Grid item>
             <Typography
-              component={
-                variant === 'primary' ? 'subtitle1' : undefined
-              }
               variant={
                 variant === 'primary' ? 'subtitle1' : 'subtitle2'
               }

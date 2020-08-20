@@ -47,6 +47,7 @@
   "globals": {
     "__DEV__": true,
     "__config__": true,
+    "__HOUSTON__": true,
     "__CLOUD__": true
   }
 }

@@ -17,7 +17,6 @@ import SubjectIcon from '@material-ui/icons/Subject';
 import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 import SightingIcon from '@material-ui/icons/PhotoCamera';
 
-import { selectIsAdministrator } from '../modules/app/selectors';
 import { selectLogos } from '../modules/site/selectors';
 import Link from './Link';
 import IndividualIcon from './icons/IndividualIcon';
@@ -52,10 +51,9 @@ export default function AppDrawer({
   open,
   onClose,
   handleClick,
-  isAuthenticated,
+  isAdministrator,
 }) {
   const logos = useSelector(selectLogos);
-  const isAdministrator = useSelector(selectIsAdministrator);
 
   return (
     <Drawer open={open} onClose={onClose}>
@@ -92,28 +90,24 @@ export default function AppDrawer({
             Icon={SightingIcon}
             href="/sightings"
             onClick={handleClick}
-            disabled={!isAuthenticated}
           />
           <Entry
             messageId="INDIVIDUALS"
             Icon={IndividualIcon}
             href="/individuals"
             onClick={handleClick}
-            disabled={!isAuthenticated}
           />
           <Entry
             messageId="USERS"
             Icon={PersonIcon}
             href="/users"
             onClick={handleClick}
-            disabled={!isAuthenticated}
           />
           <Entry
             messageId="ORGANIZATIONS"
             Icon={GroupIcon}
             href="/orgs"
             onClick={handleClick}
-            disabled={!isAuthenticated}
           />
           {isAdministrator && (
             <>
