@@ -4,13 +4,19 @@ import { useIntl } from 'react-intl';
 import { useSelector } from 'react-redux';
 import { useTheme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import Grid from '@material-ui/core/Grid';
+import ScrollIcon from '@material-ui/icons/KeyboardArrowUp';
+import Fab from '@material-ui/core/Fab';
+
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import { selectSiteSettings } from '../../modules/site/selectors';
 import UnauthenticatedAppHeader from '../../components/UnauthenticatedAppHeader';
 import Button from '../../components/Button';
 import Trifold from './Trifold';
 import HowItWorks from './HowItWorks';
+import Testimonial from './Testimonial';
+import Metrics from './Metrics';
+import HelpAsk from './HelpAsk';
+import Footer from './Footer';
 
 export default function Splash() {
   const intl = useIntl();
@@ -30,6 +36,21 @@ export default function Splash() {
   return (
     <div>
       <UnauthenticatedAppHeader siteNameScrolls topTransparency />
+      <Fab
+        size="small"
+        onClick={() =>
+          window.scroll({ top: 0, left: 0, behavior: 'smooth' })
+        }
+        style={{
+          zIndex: 1,
+          bottom: 20,
+          right: 20,
+          position: 'fixed',
+          backgroundColor: themeColor,
+        }}
+      >
+        <ScrollIcon />
+      </Fab>
       <div style={{ position: 'relative' }}>
         <ReactPlayer
           url={siteSettings.splashVideo}
@@ -71,49 +92,10 @@ export default function Splash() {
       </div>
       <Trifold />
       <HowItWorks textColor={themeColor} padding={20} />
-      <div
-        style={{
-          width: '100vw',
-          maxWidth: 900,
-          textAlign: 'center',
-          margin: '64px auto',
-        }}
-      >
-        <Grid container>
-          <Grid item>
-            <div
-              style={{
-                backgroundImage: `url(${
-                  siteSettings.testimonialAuthorImage
-                })`,
-                borderRadius: 1000,
-                backgroundSize: 'cover',
-                border: `6px solid ${theme.palette.secondary.main}`,
-                margin: '16px 40px 0 40px',
-                height: 140,
-                width: 140,
-              }}
-            />
-          </Grid>
-          <Grid
-            item
-            style={{
-              textAlign: 'left',
-              margin: '16px 40px 0 40px',
-              width: '60%',
-              minWidth: 240,
-            }}
-          >
-            <Typography>{`"${siteSettings.testimonial}"`}</Typography>
-            <Typography variant="subtitle1" style={{ marginTop: 12 }}>
-              {siteSettings.testimonialAuthor.toLocaleUpperCase()}
-            </Typography>
-            <Typography variant="subtitle2">
-              {siteSettings.testimonialAuthorCredentials}
-            </Typography>
-          </Grid>
-        </Grid>
-      </div>
+      <Testimonial />
+      <Metrics />
+      <HelpAsk />
+      <Footer />
     </div>
   );
 }
