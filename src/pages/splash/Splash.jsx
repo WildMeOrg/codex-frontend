@@ -16,6 +16,7 @@ import HowItWorks from './HowItWorks';
 import Testimonial from './Testimonial';
 import Metrics from './Metrics';
 import HelpAsk from './HelpAsk';
+import Footer from './Footer';
 
 export default function Splash() {
   const intl = useIntl();
@@ -94,6 +95,7 @@ export default function Splash() {
       <Testimonial />
       <Metrics />
       <HelpAsk />
+      <Footer />
     </div>
   );
 }
