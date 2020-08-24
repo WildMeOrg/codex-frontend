@@ -56,6 +56,8 @@ export default function Splash() {
           position: 'relative',
           display: 'flex',
           justifyContent: 'center',
+          width: '100vw',
+          height: '100vh',
         }}
       >
         <ReactPlayer
@@ -63,9 +65,21 @@ export default function Splash() {
           muted
           autoPlay
           playing
-          width="auto"
-          height="100vh"
+          width="100%"
+          height="100%"
           style={{ filter: 'brightness(0.5)' }}
+          config={{
+            file: {
+              attributes: {
+                style: {
+                  objectFit: 'cover',
+                  objectPosition: '50% 50%',
+                  width: '100%',
+                  height: '100%',
+                },
+              },
+            },
+          }}
         />
         <div
           style={{
