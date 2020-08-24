@@ -51,21 +51,42 @@ export default function Splash() {
       >
         <ScrollIcon />
       </Fab>
-      <div style={{ position: 'relative' }}>
+      <div
+        style={{
+          position: 'relative',
+          display: 'flex',
+          justifyContent: 'center',
+          width: '100vw',
+          height: '100vh',
+        }}
+      >
         <ReactPlayer
           url={siteSettings.splashVideo}
           muted
           autoPlay
           playing
-          width="100vw"
-          height="auto"
+          width="100%"
+          height="100%"
           style={{ filter: 'brightness(0.5)' }}
+          config={{
+            file: {
+              attributes: {
+                style: {
+                  objectFit: 'cover',
+                  objectPosition: '50% 50%',
+                  width: '100%',
+                  height: '100%',
+                },
+              },
+            },
+          }}
         />
         <div
           style={{
             position: 'absolute',
-            top: '40%',
+            top: '35vh',
             width: '100vw',
+            padding: 20,
             textAlign: 'center',
             color: theme.palette.getContrastText('rgba(0, 0, 0, 0)'),
           }}

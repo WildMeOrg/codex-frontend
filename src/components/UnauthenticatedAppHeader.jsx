@@ -61,7 +61,10 @@ export default function UnauthenticatedAppHeader({
         padding: 40,
       }}
     >
-      <Typography variant="h6" style={{ color: 'white' }}>
+      <Typography
+        variant="h6"
+        style={{ color: 'white', marginRight: 12 }}
+      >
         {siteNameScrolls ? (
           <InlineButton
             noUnderline
@@ -85,7 +88,7 @@ export default function UnauthenticatedAppHeader({
             <div />
           </ClickAwayListener>
         )}
-        <div style={{ color: 'white' }}>
+        <div style={{ color: 'white', flexShrink: 0 }}>
           <InlineButton
             noUnderline
             style={{
@@ -123,7 +126,7 @@ export default function UnauthenticatedAppHeader({
         </div>
         <Link
           noUnderline
-          style={{ color: 'white', marginLeft: 20 }}
+          style={{ color: 'white', marginLeft: 20, flexShrink: 0 }}
           href="/login"
         >
           <Typography>
