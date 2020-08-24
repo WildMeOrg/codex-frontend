@@ -32,13 +32,13 @@ export default function Testimonial() {
       justify="space-around"
       style={{
         width: '100vw',
-        padding: 20,
+        padding: '0 20px',
         backgroundColor: 'black',
         color: 'white',
       }}
     >
       {metrics.map(metric => (
-        <Grid item style={{ display: 'flex' }}>
+        <Grid item style={{ display: 'flex', margin: '20px 0' }}>
           <metric.icon
             style={{ fontSize: '3rem', marginRight: 12 }}
           />

@@ -27,6 +27,7 @@ export default function HowItWorks() {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
+          flexWrap: 'wrap',
         }}
       >
         <Typography variant="h6" style={{ color: 'white' }}>
@@ -54,7 +55,7 @@ export default function HowItWorks() {
           margin: '8px 0 24px 0',
         }}
       >
-        <MenuList>
+        <MenuList style={{ margin: '0 20px' }}>
           <MenuItem>
             <Typography
               variant="subtitle2"
@@ -70,7 +71,7 @@ export default function HowItWorks() {
             <Typography>Request invitation</Typography>
           </MenuItem>
         </MenuList>
-        <MenuList>
+        <MenuList style={{ margin: '0 20px' }}>
           <MenuItem>
             <Typography
               variant="subtitle2"
@@ -89,7 +90,26 @@ export default function HowItWorks() {
             <Typography>Legal</Typography>
           </MenuItem>
         </MenuList>
-        <MenuList>
+        <MenuList style={{ margin: '0 20px' }}>
+          <MenuItem>
+            <Typography
+              variant="subtitle2"
+              style={{ color: themeColor }}
+            >
+              CONTRIBUTE
+            </Typography>
+          </MenuItem>
+          <MenuItem>
+            <Typography>Report sighting</Typography>
+          </MenuItem>
+          <MenuItem>
+            <Typography>Adopt a whale shark</Typography>
+          </MenuItem>
+          <MenuItem>
+            <Typography>Donate</Typography>
+          </MenuItem>
+        </MenuList>
+        <MenuList style={{ margin: '0 20px' }}>
           <MenuItem>
             <Typography
               variant="subtitle2"

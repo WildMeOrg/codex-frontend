@@ -26,13 +26,14 @@ export default function Testimonial() {
   return (
     <Grid
       container
+      justify="center"
       style={{
         width: '100vw',
         maxWidth: 900,
         margin: '64px auto',
       }}
     >
-      <Grid item style={{ width: '40%' }}>
+      <Grid item style={{ marginBottom: 20 }}>
         <div
           style={{
             backgroundImage: `url(${
@@ -50,7 +51,7 @@ export default function Testimonial() {
         item
         style={{
           textAlign: 'left',
-          width: '40%',
+          maxWidth: 400,
           margin: '16px 40px 0 40px',
         }}
       >

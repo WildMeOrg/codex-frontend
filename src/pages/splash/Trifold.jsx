@@ -24,7 +24,7 @@ function Card({
         display: 'flex',
         alignItems: 'center',
         flexDirection: 'column',
-        marginBottom: 60,
+        marginBottom: 40,
       }}
     >
       <img
@@ -61,7 +61,8 @@ export default function Trifold() {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        marginTop: 64,
+        marginTop: 40,
+        padding: 20,
       }}
     >
       <Typography variant="h4" style={{ marginBottom: 12 }}>
@@ -71,7 +72,7 @@ export default function Trifold() {
         style={{
           maxWidth: 600,
           padding: '0px 20px',
-          marginBottom: 32,
+          marginBottom: 40,
         }}
       >
         <FormattedMessage id="TRIFOLD_DESCRIPTION" />
