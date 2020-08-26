@@ -35,6 +35,7 @@ export default function FileInput({
   required,
   width,
   minimalLabels = false, // eslint-disable-line no-unused-vars
+  displayType, // eslint-disable-line no-unused-vars
   ...rest
 }) {
   const intl = useIntl();
@@ -54,12 +55,19 @@ export default function FileInput({
   }
 
   useEffect(() => {
+    let allowedFileTypes = null;
+    if (schema.allowedFileTypes) {
+      allowedFileTypes =
+        schema.allowedFileTypes.length > 0
+          ? schema.allowedFileTypes
+          : null;
+    }
     const uppyInstance = Uppy({
       meta: { type: 'test' },
       restrictions: {
         maxNumberOfFiles: 100,
         maxFileSize: 10000000, // 10 MB
-        allowedFileTypes: schema.allowedFileTypes || null,
+        allowedFileTypes,
       },
       autoProceed: true,
     });

@@ -23,6 +23,9 @@ export default function OptionEditor({
   const [modalOpen, setModalOpen] = useState(false);
   const onClose = () => setModalOpen(false);
 
+  const displayedOptions =
+    options.length > 0 ? options : [{ label: '', value: '', id: 6 }];
+
   return (
     <div>
       <div
@@ -65,11 +68,11 @@ export default function OptionEditor({
               <FormattedMessage id={schema.descriptionId} />
             </Typography>
           )}
-          {options.map((option, optionIndex) => {
+          {displayedOptions.map((option, optionIndex) => {
             const otherOptions = options.filter(
               o => o.id !== option.id,
             );
-
+            const showDeleteButton = displayedOptions.length !== 1;
             return (
               <div
                 style={{
@@ -85,29 +88,17 @@ export default function OptionEditor({
                   <Typography variant="subtitle2">
                     <FormattedMessage id="OPTION" />
                   </Typography>
-                  <DeleteButton
-                    onClick={() => onChange(otherOptions)}
-                  />
+                  {showDeleteButton && (
+                    <DeleteButton
+                      onClick={() => onChange(otherOptions)}
+                    />
+                  )}
                 </div>
                 <div
                   style={{ display: 'flex', alignItems: 'flex-end' }}
                   {...rest}
                 >
                   <FormControl style={{ marginRight: 12 }}>
-                    <TextInput
-                      onChange={value => {
-                        const newOptions = [...options];
-                        newOptions[optionIndex] = {
-                          ...option,
-                          value,
-                        };
-                        onChange(newOptions);
-                      }}
-                      schema={{ labelId: 'OPTION_VALUE' }}
-                      value={option.value}
-                    />
-                  </FormControl>
-                  <FormControl style={{ marginLeft: 12 }}>
                     <TextInput
                       onChange={label => {
                         const newOptions = [...options];
@@ -117,8 +108,24 @@ export default function OptionEditor({
                         };
                         onChange(newOptions);
                       }}
+                      width={200}
                       schema={{ labelId: 'OPTION_LABEL' }}
                       value={option.label}
+                    />
+                  </FormControl>
+                  <FormControl style={{ marginLeft: 12 }}>
+                    <TextInput
+                      onChange={value => {
+                        const newOptions = [...options];
+                        newOptions[optionIndex] = {
+                          ...option,
+                          value,
+                        };
+                        onChange(newOptions);
+                      }}
+                      width={200}
+                      schema={{ labelId: 'OPTION_VALUE' }}
+                      value={option.value}
                     />
                   </FormControl>
                 </div>

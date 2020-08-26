@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { get } from 'lodash-es';
 import { v4 as uuid } from 'uuid';
 
@@ -8,24 +8,20 @@ import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
-import { fieldTypeChoices } from '../../constants/fieldTypes';
+import {
+  fieldTypeChoices,
+  customFieldCategories,
+} from '../../constants/fieldTypes';
 import BooleanInput from './BooleanInput';
 import TextInput from './TextInput';
 import OptionEditor from './fieldSetUtils/OptionEditor';
 import FileTypeEditor from './fieldSetUtils/FileTypeEditor';
 import Button from '../Button';
 import FieldDemo from './fieldSetUtils/FieldDemo';
-
-const customFieldTypeChoices = fieldTypeChoices.filter(
-  fieldTypeSchema =>
-    fieldTypeSchema.validCustomField ||
-    fieldTypeSchema.validCustomField === undefined,
-);
 
 function updateSchema(field, property, value) {
   return {
@@ -54,6 +50,7 @@ export default function FieldSetInput({
   required,
   ...rest
 }) {
+  const intl = useIntl();
   const fieldset = get(value, 'definitions', []);
 
   fieldset.sort((a, b) => {
@@ -161,6 +158,7 @@ export default function FieldSetInput({
                     <FormattedMessage id="FIELD_TYPE" />
                   </InputLabel>
                   <Select
+                    native
                     labelId="field-type-selector-label"
                     id="field-type-selector"
                     value={get(field, ['schema', 'displayType'], '')}
@@ -200,13 +198,29 @@ export default function FieldSetInput({
                       });
                     }}
                   >
-                    {customFieldTypeChoices.map(option => (
-                      <MenuItem
-                        value={option.value}
-                        key={option.value}
+                    {customFieldCategories.map(category => (
+                      <optgroup
+                        label={intl.formatMessage({
+                          id: category.labelId,
+                        })}
+                        key={category.labelId}
                       >
-                        <FormattedMessage id={option.labelId} />
-                      </MenuItem>
+                        {category.fields.map(categoryField => {
+                          const option = fieldTypeChoices.find(
+                            f => f.value === categoryField,
+                          );
+                          return (
+                            <option
+                              value={option.value}
+                              key={option.value}
+                            >
+                              {intl.formatMessage({
+                                id: option.labelId,
+                              })}
+                            </option>
+                          );
+                        })}
+                      </optgroup>
                     ))}
                   </Select>
                 </FormControl>
