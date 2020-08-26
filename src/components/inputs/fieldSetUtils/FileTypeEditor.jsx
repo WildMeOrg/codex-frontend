@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
+
 import FormControl from '@material-ui/core/FormControl';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
@@ -8,6 +9,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import CloseIcon from '@material-ui/icons/Close';
+
 import TextInput from '../TextInput';
 import DeleteButton from '../../DeleteButton';
 import Button from '../../Button';
@@ -21,6 +23,8 @@ export default function FileTypeEditor({
 }) {
   const [modalOpen, setModalOpen] = useState(false);
   const onClose = () => setModalOpen(false);
+
+  const displayedFileTypes = filetypes.length > 0 ? filetypes : [''];
 
   return (
     <div>
@@ -64,7 +68,9 @@ export default function FileTypeEditor({
               <FormattedMessage id={schema.descriptionId} />
             </Typography>
           )}
-          {filetypes.map((filetype, index) => {
+          {displayedFileTypes.map((filetype, index) => {
+            const showDeleteButton = displayedFileTypes.length !== 1;
+
             return (
               <div
                 style={{
@@ -80,11 +86,15 @@ export default function FileTypeEditor({
                   <Typography variant="subtitle2">
                     <FormattedMessage id="FILETYPE" />
                   </Typography>
-                  <DeleteButton
-                    onClick={() =>
-                      onChange(filetypes.splice(index, 1))
-                    }
-                  />
+                  {showDeleteButton && (
+                    <DeleteButton
+                      onClick={() => {
+                        onChange(
+                          filetypes.filter((f, i) => i !== index),
+                        );
+                      }}
+                    />
+                  )}
                 </div>
                 <div
                   style={{ display: 'flex', alignItems: 'flex-end' }}

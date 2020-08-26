@@ -62,7 +62,7 @@ export const fieldTypeChoices = [
     backendMultiple: false,
   },
   {
-    labelId: 'NUMBER',
+    labelId: 'FLOAT_LABEL',
     value: fieldTypes.float,
     defaultValue: null,
     backendType: backendTypes.double,
@@ -99,7 +99,7 @@ export const fieldTypeChoices = [
     ],
   },
   {
-    labelId: 'INTEGER',
+    labelId: 'INTEGER_LABEL',
     value: fieldTypes.integer,
     defaultValue: null,
     backendType: backendTypes.integer,
@@ -108,7 +108,7 @@ export const fieldTypeChoices = [
   {
     labelId: 'FILE_UPLOADER',
     value: fieldTypes.file,
-    defaultValue: [],
+    defaultValue: null,
     backendType: backendTypes.string,
     backendMultiple: false,
     configuration: [
@@ -146,7 +146,6 @@ export const fieldTypeChoices = [
     labelId: 'DATE_RANGE_PICKER',
     value: fieldTypes.daterange,
     defaultValue: [null, null],
-    validCustomField: false,
     backendType: backendTypes.string,
     backendMultiple: true,
   },
@@ -186,7 +185,6 @@ export const fieldTypeChoices = [
     labelId: 'COMPARATOR',
     value: fieldTypes.comparator,
     defaultValue: { comparator: '', value: '' },
-    validCustomField: false,
     backendType: backendTypes.json,
     backendMultiple: false,
   },
@@ -196,6 +194,33 @@ export const fieldTypeChoices = [
     defaultValue: null,
     backendType: backendTypes.boolean,
     backendMultiple: false,
+  },
+];
+
+export const customFieldCategories = [
+  {
+    labelId: 'BASIC_INPUTS',
+    fields: [
+      fieldTypes.boolean,
+      fieldTypes.date,
+      fieldTypes.string,
+      fieldTypes.longstring,
+      fieldTypes.float,
+      fieldTypes.integer,
+    ],
+  },
+  {
+    labelId: 'SPECIAL_INPUTS',
+    fields: [
+      fieldTypes.daterange,
+      fieldTypes.select,
+      fieldTypes.multiselect,
+      fieldTypes.file,
+      fieldTypes.individual,
+      fieldTypes.latlong,
+      fieldTypes.relationships,
+      fieldTypes.feetmeters,
+    ],
   },
 ];
 
