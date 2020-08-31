@@ -73,10 +73,7 @@ const items = [
   },
 ];
 
-export default function UserProfile({
-  children,
-  userData,
-}) {
+export default function UserProfile({ children, userData }) {
   const [editingProfile, setEditingProfile] = useState(false);
 
   if (!userData)

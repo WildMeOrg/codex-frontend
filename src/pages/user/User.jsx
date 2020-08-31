@@ -12,9 +12,5 @@ export default function User({ userId }) {
   useDocumentTitle(capitalize(displayedUserId));
   const users = useSelector(selectUsers);
 
-  return (
-    <UserProfile
-      userData={users[toLower(displayedUserId)]}
-    />
-  );
+  return <UserProfile userData={users[toLower(displayedUserId)]} />;
 }
