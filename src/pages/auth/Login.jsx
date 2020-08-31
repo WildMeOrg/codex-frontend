@@ -107,22 +107,20 @@ export default function Login({ showBanner, redirect = '/' }) {
               <FormattedMessage id="LOG_IN" />
             </Button>
           </Grid>
-          <Grid item>
-            <Typography>
-              <InlineButton>
-                <Link href="/forgot">
-                  <FormattedMessage id="FORGOT_QUESTION" />
-                </Link>
-              </InlineButton>
-              <span style={{ margin: '0 12px' }}> | </span>
-              <InlineButton>
-                <Link href="/request">
-                  <FormattedMessage id="REQUEST_INVITE" />
-                </Link>
-              </InlineButton>
-            </Typography>
-          </Grid>
         </Grid>
+        <Typography style={{ padding: '0 16px' }}>
+          <InlineButton>
+            <Link href="/forgot">
+              <FormattedMessage id="FORGOT_QUESTION" />
+            </Link>
+          </InlineButton>
+          <span style={{ margin: '0 12px' }}> | </span>
+          <InlineButton>
+            <Link href="/request">
+              <FormattedMessage id="REQUEST_INVITE" />
+            </Link>
+          </InlineButton>
+        </Typography>
       </form>
     </Shell>
   );

@@ -65,6 +65,7 @@ export default function Tasks() {
         {fakeData.map(task => (
           <Grid
             item
+            key={task.id}
             style={{
               display: 'flex',
               padding: 12,
