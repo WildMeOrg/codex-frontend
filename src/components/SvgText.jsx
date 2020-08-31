@@ -1,9 +1,9 @@
 import React from 'react';
-import { avenirNext } from '../styles/materialTheme';
+import { lato } from '../styles/materialTheme';
 
 export default function({ children, ...rest }) {
   return (
-    <text textAnchor="middle" fontFamily={avenirNext} {...rest}>
+    <text textAnchor="middle" fontFamily={lato} {...rest}>
       {children}
     </text>
   );

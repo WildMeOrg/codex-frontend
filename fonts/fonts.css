@@ -1,31 +1,39 @@
-@font-face {
-  font-family: 'Avenir Next';
+  @font-face {
+    font-family: 'Lato';
+    font-style: normal;
+    font-weight: 100;
+    src: local('Lato'),
+      url('./Lato-Thin.ttf') format('ttf');
+  }
+
+  @font-face {
+  font-family: 'Lato';
   font-style: normal;
   font-weight: 300;
-  src: local('Avenir Next'),
-    url('./AvenirNext-Regular.woff2') format('woff2');
+  src: local('Lato'),
+    url('./Lato-Light.ttf') format('ttf');
 }
 
 @font-face {
-  font-family: 'Avenir Next';
+  font-family: 'Lato';
   font-style: normal;
   font-weight: 400;
-  src: local('Avenir Next'),
-    url('./AvenirNext-DemiBold.woff2') format('woff2');
+  src: local('Lato'),
+    url('./Lato-Regular.ttf') format('ttf');
 }
 
 @font-face {
-  font-family: 'Avenir Next Condensed';
+  font-family: 'Lato';
   font-style: normal;
-  font-weight: 300;
-  src: local('Avenir Next Condensed'),
-    url('./AvenirNextCondensed-Regular.woff2') format('woff2');
+  font-weight: 700;
+  src: local('Lato'),
+    url('./Lato-Bold.ttf') format('ttf');
 }
 
 @font-face {
-  font-family: 'Avenir Next Condensed';
+  font-family: 'Lato';
   font-style: normal;
-  font-weight: 400;
-  src: local('Avenir Next Condensed'),
-    url('./AvenirNextCondensed-DemiBold.woff2') format('woff2');
+  font-weight: 900;
+  src: local('Lato'),
+    url('./Lato-Black.ttf') format('ttf');
 }

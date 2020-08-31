@@ -1,5 +1,5 @@
-export const avenirNext = [
-  'Avenir Next',
+export const lato = [
+  'Lato',
   '-apple-system',
   'BlinkMacSystemFont',
   '"Segoe UI"',
@@ -12,9 +12,8 @@ export const avenirNext = [
   '"Segoe UI Symbol"',
 ].join(',');
 
-export const avenirNextCondensed = [
-  'Avenir Next Condensed',
-  'Avenir Next',
+export const futura = [
+  'Futura',
   '-apple-system',
   'BlinkMacSystemFont',
   '"Segoe UI"',
@@ -40,15 +39,15 @@ export default {
     },
   },
   typography: {
-    fontFamily: avenirNext,
+    fontFamily: lato,
     h2: {
-      fontFamily: avenirNextCondensed,
+      fontFamily: futura,
     },
     h3: {
-      fontFamily: avenirNextCondensed,
+      fontFamily: futura,
     },
     h5: {
-      fontFamily: avenirNextCondensed,
+      fontFamily: futura,
     },
     body1: {
       fontWeight: 300,
