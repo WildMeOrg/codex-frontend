@@ -45,7 +45,7 @@ export default function HowItWorks() {
             marginRight: 12,
           }}
         >
-          Contact us
+          Community forums
         </Button>
       </div>
       <div

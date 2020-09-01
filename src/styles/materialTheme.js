@@ -1,3 +1,5 @@
+import { darken, lighten } from '@material-ui/core/styles/colorManipulator';
+
 export const lato = [
   'Lato',
   '-apple-system',
@@ -26,13 +28,19 @@ export const futura = [
   '"Segoe UI Symbol"',
 ].join(',');
 
+const colorOptions = ['#D1FD7E', '#8CFD8D', '#68F6E5', '#070500', '#87F0FE', '#CDABFD', '#F1556C', '#FECA75'];
+
+const primaryColor = colorOptions[0];
+const lightPrimaryColor = lighten(colorOptions[0], 0.7);
+const darkPrimaryColor = darken(colorOptions[0], 0.2);
+
 export default {
   palette: {
     primary: {
-      main: '#070500',
+      main: primaryColor,
     },
     secondary: {
-      main: '#7816d8',
+      main: darkPrimaryColor,
     },
     paper: {
       main: '#eeeeee',
@@ -71,6 +79,23 @@ export default {
     MuiButton: {
       label: {
         letterSpacing: '0.1em',
+      },
+      root: {
+        borderRadius: 10000,
+        padding: '6px 20px',
+        fontWeight: 600,
+      },
+      outlined: {
+        padding: '6px 20px',
+      },
+      outlinedSizeSmall: {
+        padding: '4px 12px',
+      },
+      containedSecondary: {
+        backgroundColor: lightPrimaryColor,
+      },
+      contained: {
+        backgroundColor: 'white',
       },
     },
   },

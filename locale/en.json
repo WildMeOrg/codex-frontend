@@ -524,6 +524,8 @@
     "CONFIGURATION_SITE_PRIVATE_LABEL": "Private",
     "CONFIGURATION_SITE_PRIVATE_DESCRIPTION": "Private sites require join requests to be approved by an administrator.",
     "CONFIGURATION_SITE_GENERAL_TAGLINE_LABEL": "Tagline",
+    "CONFIGURATION_SITE_LOOK_THEMECOLOR_LABEL": "Theme color",
+    "CONFIGURATION_SITE_LOOK_THEMECOLOR_DESCRIPTION": "Theme color",
     "CONFIGURATION_SITE_GENERAL_TAGLINE_DESCRIPTION": "The text displayed front and center on the splash page.",
     "CONFIGURATION_SITE_GENERAL_EXPLORETAGLINE_LABEL": "Explore tagline",
     "CONFIGURATION_SITE_GENERAL_EXPLORETAGLINE_DESCRIPTION": "The tagline under the Search & Export icon on the splash page."

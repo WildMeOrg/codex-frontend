@@ -23,6 +23,7 @@ const customFields = {
 const newSettingFields = [
   'site.name',
   'site.private',
+  'site.look.themeColor',
   'site.general.tagline',
   'site.general.exploreTagline',
   'site.custom.regions',

@@ -1,5 +1,6 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
+import { useTheme } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
@@ -7,6 +8,8 @@ import Button from '../../components/Button';
 import ButtonLink from '../../components/ButtonLink';
 
 export default function Status({ onMarkComplete }) {
+  const theme = useTheme();
+
   const photos = [
     true,
     true,
@@ -29,7 +32,7 @@ export default function Status({ onMarkComplete }) {
         padding: 20,
         margin: '20px auto',
         maxWidth: '95vw',
-        border: '5px double #7716d8',
+        border: `5px double ${theme.palette.secondary.main}`,
       }}
       alignItems="center"
       justify="center"
@@ -89,7 +92,7 @@ export default function Status({ onMarkComplete }) {
                   style={{
                     height: 16,
                     width: 16,
-                    backgroundColor: photo ? '#7716d8' : '#ccc',
+                    backgroundColor: photo ? theme.palette.secondary.main : '#ccc',
                   }}
                 />
               </Tooltip>

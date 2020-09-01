@@ -124,7 +124,6 @@ export default function AppHeader() {
               <Button
                 style={{
                   textTransform: 'unset',
-                  color: 'white',
                   fontWeight: 300,
                   fontSize: 16,
                   letterSpacing: 0,
@@ -137,7 +136,7 @@ export default function AppHeader() {
                 <DropDownIcon />
               </Button>
               <HeaderMenu open={exploreOpen} itemCount={4}>
-                <MenuList onClick={() => setExploreOpen(false)}>
+                <MenuList style={{ color: 'white' }} onClick={() => setExploreOpen(false)}>
                   <Link noUnderline href="/sightings">
                     <MenuItem className="dark-menu-item">
                       <Typography>
@@ -236,7 +235,7 @@ export default function AppHeader() {
                   style={{ minHeight: 'auto' }}
                   className="dark-menu-item"
                 >
-                  <Typography style={{ margin: '0 20px' }}>
+                  <Typography style={{ margin: '0 20px', color: 'white' }}>
                     <FormattedMessage id="VIEW_PROFILE" />
                   </Typography>
                 </MenuItem>
@@ -249,10 +248,10 @@ export default function AppHeader() {
                   <input
                     style={{
                       cursor: 'pointer',
-                      color: 'white',
                       border: 'unset',
                       background: 'unset',
                       fontWeight: 'unset',
+                      color: 'white',
                     }}
                     type="submit"
                     value={intl.formatMessage({ id: 'LOG_OUT' })}
