@@ -92,7 +92,9 @@ export default function Status({ onMarkComplete }) {
                   style={{
                     height: 16,
                     width: 16,
-                    backgroundColor: photo ? theme.palette.secondary.main : '#ccc',
+                    backgroundColor: photo
+                      ? theme.palette.secondary.main
+                      : '#ccc',
                   }}
                 />
               </Tooltip>

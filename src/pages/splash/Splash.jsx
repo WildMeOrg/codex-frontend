@@ -11,12 +11,12 @@ import useDocumentTitle from '../../hooks/useDocumentTitle';
 import { selectSiteSettings } from '../../modules/site/selectors';
 import UnauthenticatedAppHeader from '../../components/UnauthenticatedAppHeader';
 import Button from '../../components/Button';
+import Footer from '../../components/Footer';
 import Trifold from './Trifold';
 import HowItWorks from './HowItWorks';
 import Testimonial from './Testimonial';
 import Metrics from './Metrics';
 import HelpAsk from './HelpAsk';
-import Footer from './Footer';
 
 export default function Splash() {
   const intl = useIntl();

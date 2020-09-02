@@ -1,4 +1,7 @@
-import { darken, lighten } from '@material-ui/core/styles/colorManipulator';
+import {
+  darken,
+  lighten,
+} from '@material-ui/core/styles/colorManipulator';
 
 export const lato = [
   'Lato',
@@ -28,7 +31,16 @@ export const futura = [
   '"Segoe UI Symbol"',
 ].join(',');
 
-const colorOptions = ['#D1FD7E', '#8CFD8D', '#68F6E5', '#070500', '#87F0FE', '#CDABFD', '#F1556C', '#FECA75'];
+const colorOptions = [
+  '#D1FD7E',
+  '#8CFD8D',
+  '#68F6E5',
+  '#070500',
+  '#87F0FE',
+  '#CDABFD',
+  '#F1556C',
+  '#FECA75',
+];
 
 const primaryColor = colorOptions[0];
 const lightPrimaryColor = lighten(colorOptions[0], 0.7);

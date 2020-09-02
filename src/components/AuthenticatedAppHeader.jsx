@@ -136,7 +136,10 @@ export default function AppHeader() {
                 <DropDownIcon />
               </Button>
               <HeaderMenu open={exploreOpen} itemCount={4}>
-                <MenuList style={{ color: 'white' }} onClick={() => setExploreOpen(false)}>
+                <MenuList
+                  style={{ color: 'white' }}
+                  onClick={() => setExploreOpen(false)}
+                >
                   <Link noUnderline href="/sightings">
                     <MenuItem className="dark-menu-item">
                       <Typography>
@@ -235,7 +238,9 @@ export default function AppHeader() {
                   style={{ minHeight: 'auto' }}
                   className="dark-menu-item"
                 >
-                  <Typography style={{ margin: '0 20px', color: 'white' }}>
+                  <Typography
+                    style={{ margin: '0 20px', color: 'white' }}
+                  >
                     <FormattedMessage id="VIEW_PROFILE" />
                   </Typography>
                 </MenuItem>
