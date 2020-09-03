@@ -10,6 +10,8 @@
     "ORGANIZATIONS": "Organizations",
     "SUBMISSION_DATE": "Submission Date",
     "SETTINGS": "Settings",
+    "REPORTED_SIGHTINGS": "Reported sightings",
+    "IDENTIFIED_INDIVIDUALS": "Identified individuals",
     "CREATE_NEW_USER": "Create new user",
     "SUBMISSION_ERROR": "Submission error",
     "MUST_LOG_IN": "You must log in to access the page you requested.",

@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactPlayer from 'react-player';
-import { useIntl } from 'react-intl';
+import { useIntl, FormattedMessage } from 'react-intl';
 import { useSelector } from 'react-redux';
 import { useTheme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
@@ -31,13 +31,12 @@ export default function Splash() {
     false,
   );
 
-  const themeColor = '#00fff7';
-
   return (
     <div>
       <UnauthenticatedAppHeader siteNameScrolls topTransparency />
       <Fab
         size="small"
+        color="primary"
         onClick={() =>
           window.scroll({ top: 0, left: 0, behavior: 'smooth' })
         }
@@ -46,7 +45,6 @@ export default function Splash() {
           bottom: 20,
           right: 20,
           position: 'fixed',
-          backgroundColor: themeColor,
         }}
       >
         <ScrollIcon />
@@ -88,7 +86,7 @@ export default function Splash() {
             width: '100vw',
             padding: 20,
             textAlign: 'center',
-            color: theme.palette.getContrastText('rgba(0, 0, 0, 0)'),
+            color: theme.palette.common.white,
           }}
         >
           <Typography variant="h3">
@@ -99,20 +97,17 @@ export default function Splash() {
           </Typography>
           <Button
             display="primary"
+            size="large"
             style={{
               marginTop: 16,
-              backgroundColor: themeColor,
-              color: 'black',
-              padding: '12px 28px',
-              borderRadius: 300,
             }}
           >
-            Report Sighting
+            <FormattedMessage id="REPORT_SIGHTINGS" />
           </Button>
         </div>
       </div>
       <Trifold />
-      <HowItWorks textColor={themeColor} padding={20} />
+      <HowItWorks />
       <Testimonial />
       <Metrics />
       <HelpAsk />

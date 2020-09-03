@@ -1,21 +1,15 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
+import { useTheme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
-import openSource from '../../assets/graphic-opensource.png';
-import identification from '../../assets/graphic-identification.png';
-import searchExport from '../../assets/graphic-searchexport.png';
+import IdentificationIcon from '@material-ui/icons/Fingerprint';
+import CodeIcon from '@material-ui/icons/Code';
+import AnalysisIcon from '@material-ui/icons/BarChart';
 
-const graphicSize = 108;
+function Card({ Icon, titleId, descriptionId }) {
+  const theme = useTheme();
 
-function Card({
-  imgHeight,
-  imgAlt,
-  imgSrc,
-  backgroundColor,
-  titleId,
-  descriptionId,
-}) {
   return (
     <Grid
       item
@@ -27,23 +21,27 @@ function Card({
         marginBottom: 40,
       }}
     >
-      <img
-        src={imgSrc}
-        alt={imgAlt}
+      <div
         style={{
-          backgroundColor,
-          height: imgHeight,
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: theme.palette.primary.main,
           padding: 12,
-          borderRadius: 100000,
+          height: 108,
+          width: 108,
+          borderRadius: 10000,
         }}
-      />
+      >
+        <Icon style={{ fontSize: 64 }} />
+      </div>
       <Typography
-        variant="subtitle1"
+        variant="h6"
         style={{ marginTop: 20, marginBottom: 4 }}
       >
         <FormattedMessage id={titleId} />
       </Typography>
-      <Typography variant="caption">
+      <Typography variant="body2">
         <FormattedMessage id={descriptionId} />
       </Typography>
     </Grid>
@@ -51,8 +49,6 @@ function Card({
 }
 
 export default function Trifold() {
-  const themeColor = '#00fff7';
-
   return (
     <div
       style={{
@@ -65,7 +61,7 @@ export default function Trifold() {
         padding: 20,
       }}
     >
-      <Typography variant="h4" style={{ marginBottom: 12 }}>
+      <Typography variant="h3" style={{ marginBottom: 40 }}>
         <FormattedMessage id="TRIFOLD_TAGLINE" />
       </Typography>
       <Typography
@@ -83,28 +79,19 @@ export default function Trifold() {
         style={{ maxWidth: 800, margin: '0 auto' }}
       >
         <Card
-          backgroundColor={themeColor}
-          imgAlt="Open source"
-          imgSrc={openSource}
-          imgHeight={graphicSize}
           titleId="OPEN_SOURCE"
           descriptionId="OPEN_SOURCE_DESCRIPTION"
+          Icon={CodeIcon}
         />
         <Card
-          backgroundColor={themeColor}
-          imgAlt="Automatic identification"
-          imgSrc={identification}
-          imgHeight={graphicSize}
           titleId="AUTOMATIC_IDENTIFICATION"
           descriptionId="AUTOMATIC_IDENTIFICATION_DESCRIPTION"
+          Icon={IdentificationIcon}
         />
         <Card
-          backgroundColor={themeColor}
-          imgAlt="Analyze and export"
-          imgSrc={searchExport}
-          imgHeight={graphicSize}
           titleId="ANALYZE_AND_EXPORT"
           descriptionId="ANALYZE_AND_EXPORT_DESCRIPTION"
+          Icon={AnalysisIcon}
         />
       </Grid>
     </div>

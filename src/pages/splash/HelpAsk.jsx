@@ -3,9 +3,7 @@ import { FormattedMessage } from 'react-intl';
 import Typography from '@material-ui/core/Typography';
 import Button from '../../components/Button';
 
-export default function HelpAsk({ textColor }) {
-  const themeColor = '#00fff7';
-
+export default function HelpAsk() {
   return (
     <div
       style={{
@@ -20,7 +18,7 @@ export default function HelpAsk({ textColor }) {
       <Typography
         variant="h3"
         component="h3"
-        style={{ color: textColor, margin: '12px 0' }}
+        style={{ margin: '12px 0' }}
       >
         <FormattedMessage id="HOW_CAN_HELP" />
       </Typography>
@@ -38,11 +36,6 @@ export default function HelpAsk({ textColor }) {
           display="primary"
           style={{
             marginTop: 12,
-            backgroundColor: themeColor,
-            color: 'black',
-            padding: '6px 14px',
-            fontSize: 12,
-            borderRadius: 300,
             marginRight: 12,
           }}
         >
@@ -52,11 +45,6 @@ export default function HelpAsk({ textColor }) {
           display="primary"
           style={{
             marginTop: 12,
-            backgroundColor: themeColor,
-            color: 'black',
-            padding: '6px 14px',
-            fontSize: 12,
-            borderRadius: 300,
             marginLeft: 12,
           }}
         >

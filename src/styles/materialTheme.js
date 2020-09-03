@@ -42,7 +42,7 @@ const colorOptions = [
   '#FECA75',
 ];
 
-const primaryColor = colorOptions[0];
+const primaryColor = colorOptions[5];
 const lightPrimaryColor = lighten(colorOptions[0], 0.7);
 const darkPrimaryColor = darken(colorOptions[0], 0.2);
 

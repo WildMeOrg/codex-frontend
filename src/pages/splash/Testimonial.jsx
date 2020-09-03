@@ -20,7 +20,6 @@ export default function Testimonial() {
     false,
   );
 
-  const themeColor = '#00fff7';
   const imageSize = 220;
 
   return (
@@ -70,11 +69,6 @@ export default function Testimonial() {
           display="primary"
           style={{
             marginTop: 12,
-            backgroundColor: themeColor,
-            color: 'black',
-            padding: '6px 14px',
-            fontSize: 12,
-            borderRadius: 300,
           }}
         >
           See contributors
