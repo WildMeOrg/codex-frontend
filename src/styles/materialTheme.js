@@ -46,8 +46,13 @@ const primaryColor = colorOptions[0];
 const lightPrimaryColor = lighten(colorOptions[0], 0.7);
 const darkPrimaryColor = darken(colorOptions[0], 0.2);
 
+const blackColor = '#1a1a1a';
+
 export default {
   palette: {
+    common: {
+      black: blackColor,
+    },
     primary: {
       main: primaryColor,
     },
@@ -56,6 +61,9 @@ export default {
     },
     paper: {
       main: '#eeeeee',
+    },
+    text: {
+      primary: blackColor,
     },
   },
   typography: {

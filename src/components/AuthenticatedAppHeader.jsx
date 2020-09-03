@@ -16,11 +16,9 @@ import MenuList from '@material-ui/core/MenuList';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import MenuIcon from '@material-ui/icons/Menu';
 import DropDownIcon from '@material-ui/icons/ArrowDropDown';
-import LeavingIcon from '@material-ui/icons/ExitToApp';
 
 import { selectLogos } from '../modules/site/selectors';
 // import useSiteSettings from '../models/site/useSiteSettings';
-import Button from './Button';
 import Link from './Link';
 import AppDrawer from './AppDrawer';
 import HeaderMenu from './HeaderMenu';
@@ -57,6 +55,8 @@ export default function AppHeader() {
           easing: theme.transitions.easing.sharp,
           duration: theme.transitions.duration.leavingScreen,
         }),
+        backgroundColor: theme.palette.common.black,
+        color: theme.palette.common.white,
       }}
     >
       {(exploreOpen || userMenuOpen) && (
@@ -120,85 +120,19 @@ export default function AppHeader() {
                 <FormattedMessage id="REPORT_SIGHTINGS" />
               </Link>
             </Typography>
-            <div>
-              <Button
-                style={{
-                  textTransform: 'unset',
-                  fontWeight: 300,
-                  fontSize: 16,
-                  letterSpacing: 0,
-                }}
-                onClick={() => setExploreOpen(!exploreOpen)}
-              >
-                <span style={{ letterSpacing: 0 }}>
-                  <FormattedMessage id="EXPLORE" />
-                </span>
-                <DropDownIcon />
-              </Button>
-              <HeaderMenu open={exploreOpen} itemCount={4}>
-                <MenuList
-                  style={{ color: 'white' }}
-                  onClick={() => setExploreOpen(false)}
-                >
-                  <Link noUnderline href="/sightings">
-                    <MenuItem className="dark-menu-item">
-                      <Typography>
-                        <FormattedMessage id="SIGHTINGS" />
-                      </Typography>
-                    </MenuItem>
-                  </Link>
-                  <Link noUnderline href="/individuals">
-                    <MenuItem className="dark-menu-item">
-                      <Typography>
-                        <FormattedMessage id="INDIVIDUALS" />
-                      </Typography>
-                    </MenuItem>
-                  </Link>
-                  <Link noUnderline href="/users">
-                    <MenuItem className="dark-menu-item">
-                      <Typography>
-                        <FormattedMessage id="USERS" />
-                      </Typography>
-                    </MenuItem>
-                  </Link>
-                  <Link noUnderline href="/orgs">
-                    <MenuItem className="dark-menu-item">
-                      <Typography>
-                        <FormattedMessage id="ORGANIZATIONS" />
-                      </Typography>
-                    </MenuItem>
-                  </Link>
-                </MenuList>
-              </HeaderMenu>
-            </div>
+
             <Typography>
-              <Link
-                noUnderline
-                href="https://community.wildbook.org/"
-                external
-                style={{ display: 'flex', alignItems: 'center' }}
-              >
-                <FormattedMessage id="HELP" />
-                <LeavingIcon
-                  style={{ marginLeft: 8 }}
-                  fontSize="small"
-                />
+              <Link noUnderline href="/individuals">
+                <FormattedMessage id="INDIVIDUALS" />
               </Link>
             </Typography>
+
             <Typography>
-              <Link
-                noUnderline
-                href="http://wiki.wildbook.org/"
-                external
-                style={{ display: 'flex', alignItems: 'center' }}
-              >
-                <FormattedMessage id="DOCS" />
-                <LeavingIcon
-                  style={{ marginLeft: 8 }}
-                  fontSize="small"
-                />
+              <Link noUnderline href="/sightings">
+                <FormattedMessage id="SIGHTINGS" />
               </Link>
             </Typography>
+
             {isAdministrator && (
               <Typography>
                 <Link noUnderline href="/administration">

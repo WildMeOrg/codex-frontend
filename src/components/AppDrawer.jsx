@@ -11,10 +11,6 @@ import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
 import AddToPhotosIcon from '@material-ui/icons/AddToPhotos';
 import AdminSettingsIcon from '@material-ui/icons/Lock';
-import PersonIcon from '@material-ui/icons/Person';
-import GroupIcon from '@material-ui/icons/Group';
-import SubjectIcon from '@material-ui/icons/Subject';
-import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 import SightingIcon from '@material-ui/icons/PhotoCamera';
 
 import { selectLogos } from '../modules/site/selectors';
@@ -57,7 +53,7 @@ export default function AppDrawer({
 
   return (
     <Drawer open={open} onClose={onClose}>
-      <div style={{ width: 300 }}>
+      <div style={{ width: 260 }}>
         <List>
           <Typography
             component="h1"
@@ -84,7 +80,6 @@ export default function AppDrawer({
             href="/report"
             onClick={handleClick}
           />
-          <Divider style={{ marginTop: 12, marginBottom: 12 }} />
           <Entry
             messageId="SIGHTINGS"
             Icon={SightingIcon}
@@ -97,42 +92,14 @@ export default function AppDrawer({
             href="/individuals"
             onClick={handleClick}
           />
-          <Entry
-            messageId="USERS"
-            Icon={PersonIcon}
-            href="/users"
-            onClick={handleClick}
-          />
-          <Entry
-            messageId="ORGANIZATIONS"
-            Icon={GroupIcon}
-            href="/orgs"
-            onClick={handleClick}
-          />
           {isAdministrator && (
-            <>
-              <Divider style={{ marginTop: 12, marginBottom: 12 }} />
-              <Entry
-                messageId="ADMINISTRATION"
-                Icon={AdminSettingsIcon}
-                href="/administration"
-                onClick={handleClick}
-              />
-            </>
+            <Entry
+              messageId="ADMINISTRATION"
+              Icon={AdminSettingsIcon}
+              href="/administration"
+              onClick={handleClick}
+            />
           )}
-          <Divider style={{ marginTop: 12, marginBottom: 12 }} />
-          <Entry
-            messageId="HELP_AND_FEEDBACK"
-            Icon={HelpOutlineIcon}
-            href="https://community.wildbook.org/"
-            external
-          />
-          <Entry
-            messageId="DOCUMENTATION"
-            Icon={SubjectIcon}
-            href="http://wiki.wildbook.org/"
-            external
-          />
         </List>
       </div>
     </Drawer>

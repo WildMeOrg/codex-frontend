@@ -37,8 +37,8 @@ export default function Footer({ authenticated = false }) {
     <div
       style={{
         width: '100%',
-        backgroundColor: 'black',
-        color: 'white',
+        backgroundColor: theme.palette.common.black,
+        color: theme.palette.common.white,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -59,9 +59,7 @@ export default function Footer({ authenticated = false }) {
         <Typography variant="h6" style={{ color: 'white' }}>
           Wild Me for Whale Sharks
         </Typography>
-        <Button
-          display="primary"
-        >
+        <Button display="primary">
           <FormattedMessage id="COMMUNITY_FORUMS" />
         </Button>
       </div>
