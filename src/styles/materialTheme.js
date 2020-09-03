@@ -31,92 +31,83 @@ export const futura = [
   '"Segoe UI Symbol"',
 ].join(',');
 
-const colorOptions = [
-  '#D1FD7E',
-  '#8CFD8D',
-  '#68F6E5',
-  '#070500',
-  '#87F0FE',
-  '#CDABFD',
-  '#F1556C',
-  '#FECA75',
-];
-
-const primaryColor = colorOptions[5];
-const lightPrimaryColor = lighten(colorOptions[0], 0.7);
-const darkPrimaryColor = darken(colorOptions[0], 0.2);
-
 const blackColor = '#1a1a1a';
+const whiteColor = '#ffffff';
 
-export default {
-  palette: {
-    common: {
-      black: blackColor,
-    },
-    primary: {
-      main: primaryColor,
-    },
-    secondary: {
-      main: darkPrimaryColor,
-    },
-    paper: {
-      main: '#eeeeee',
-    },
-    text: {
-      primary: blackColor,
-    },
-  },
-  typography: {
-    fontFamily: lato,
-    h2: {
-      fontFamily: futura,
-    },
-    h3: {
-      fontFamily: futura,
-    },
-    h5: {
-      fontFamily: futura,
-    },
-    body1: {
-      fontWeight: 300,
-    },
-    body2: {
-      fontWeight: 300,
-    },
-    caption: {
-      fontWeight: 300,
-    },
-    subtitle1: {
-      fontSize: '1.1em',
-    },
-  },
-  overrides: {
-    MuiTableCell: {
-      root: {
-        fontStyle: 'unset',
+export default primaryColor => {
+  const lightPrimaryColor = lighten(primaryColor, 0.7);
+  const darkPrimaryColor = darken(primaryColor, 0.2);
+
+  return {
+    palette: {
+      common: {
+        black: blackColor,
+      },
+      primary: {
+        main: primaryColor,
+      },
+      secondary: {
+        main: darkPrimaryColor,
+      },
+      paper: {
+        main: '#eeeeee',
+      },
+      text: {
+        primary: blackColor,
       },
     },
-    MuiButton: {
-      label: {
-        letterSpacing: '0.1em',
+    typography: {
+      fontFamily: lato,
+      h2: {
+        fontFamily: futura,
       },
-      root: {
-        borderRadius: 10000,
-        padding: '6px 20px',
-        fontWeight: 600,
+      h3: {
+        fontFamily: futura,
       },
-      outlined: {
-        padding: '6px 20px',
+      h5: {
+        fontFamily: futura,
       },
-      outlinedSizeSmall: {
-        padding: '4px 12px',
+      body1: {
+        fontWeight: 300,
       },
-      containedSecondary: {
-        backgroundColor: lightPrimaryColor,
+      body2: {
+        fontWeight: 300,
       },
-      contained: {
-        backgroundColor: 'white',
+      caption: {
+        fontWeight: 300,
+      },
+      subtitle1: {
+        fontSize: '1.1em',
       },
     },
-  },
+    overrides: {
+      MuiTableCell: {
+        root: {
+          fontStyle: 'unset',
+        },
+      },
+      MuiButton: {
+        label: {
+          letterSpacing: '0.1em',
+        },
+        root: {
+          borderRadius: 10000,
+          padding: '6px 20px',
+          fontWeight: 600,
+        },
+        outlined: {
+          padding: '6px 20px',
+        },
+        outlinedSizeSmall: {
+          padding: '4px 12px',
+        },
+        containedSecondary: {
+          backgroundColor: lightPrimaryColor,
+        },
+        contained: {
+          backgroundColor: whiteColor,
+        },
+      },
+    },
+  };
 };

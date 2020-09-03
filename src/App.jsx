@@ -1,15 +1,19 @@
 import React, { useEffect, useReducer } from 'react';
 import { BrowserRouter, useLocation } from 'react-router-dom';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import {
-  createMuiTheme,
-  ThemeProvider,
-} from '@material-ui/core/styles';
+import { get } from 'lodash-es';
 import { IntlProvider } from 'react-intl';
 import { useSelector } from 'react-redux';
 import '@formatjs/intl-numberformat/polyfill';
 import enPolyfill from '@formatjs/intl-numberformat/dist/locale-data/en';
 import esPolyfill from '@formatjs/intl-numberformat/dist/locale-data/es';
+
+import CssBaseline from '@material-ui/core/CssBaseline';
+import {
+  createMuiTheme,
+  ThemeProvider,
+} from '@material-ui/core/styles';
+
+import useSiteSettings from './models/site/useSiteSettings';
 import { selectLocale } from './modules/app/selectors';
 import materialTheme from './styles/materialTheme';
 import messagesEn from '../locale/en.json';
@@ -54,10 +58,17 @@ function reducer(state, action) {
   return state;
 }
 
-export default function App() {
-  const theme = createMuiTheme(materialTheme);
+function ContextualizedApp() {
   const locale = useSelector(selectLocale);
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const siteSettings = useSiteSettings();
+
+  const primaryColor = get(siteSettings, [
+    'data',
+    'site.look.themeColor',
+    'value',
+  ]);
+  if (!primaryColor) return null;
+  const theme = createMuiTheme(materialTheme(primaryColor));
 
   return (
     <ThemeProvider theme={theme}>
@@ -67,13 +78,21 @@ export default function App() {
         defaultLocale="en"
         messages={messageMap[locale]}
       >
-        <AppContext.Provider value={{ state, dispatch }}>
-          <BrowserRouter basename="/">
-            <ScrollToTop />
-            <FrontDesk />
-          </BrowserRouter>
-        </AppContext.Provider>
+        <BrowserRouter basename="/">
+          <ScrollToTop />
+          <FrontDesk />
+        </BrowserRouter>
       </IntlProvider>
     </ThemeProvider>
+  );
+}
+
+export default function App() {
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  return (
+    <AppContext.Provider value={{ state, dispatch }}>
+      <ContextualizedApp />
+    </AppContext.Provider>
   );
 }

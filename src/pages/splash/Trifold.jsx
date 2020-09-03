@@ -33,7 +33,9 @@ function Card({ Icon, titleId, descriptionId }) {
           borderRadius: 10000,
         }}
       >
-        <Icon style={{ fontSize: 64 }} />
+        <Icon
+          style={{ fontSize: 64, color: theme.palette.common.white }}
+        />
       </div>
       <Typography
         variant="h6"
