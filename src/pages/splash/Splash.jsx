@@ -9,9 +9,7 @@ import Fab from '@material-ui/core/Fab';
 
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import { selectSiteSettings } from '../../modules/site/selectors';
-import UnauthenticatedAppHeader from '../../components/UnauthenticatedAppHeader';
-import Button from '../../components/Button';
-import Footer from '../../components/Footer';
+import ButtonLink from '../../components/ButtonLink';
 import Trifold from './Trifold';
 import HowItWorks from './HowItWorks';
 import Testimonial from './Testimonial';
@@ -33,7 +31,6 @@ export default function Splash() {
 
   return (
     <div>
-      <UnauthenticatedAppHeader siteNameScrolls topTransparency />
       <Fab
         size="small"
         color="primary"
@@ -95,15 +92,16 @@ export default function Splash() {
           <Typography variant="subtitle1">
             Upload your whale shark images. Help save the species.
           </Typography>
-          <Button
+          <ButtonLink
             display="primary"
             size="large"
             style={{
               marginTop: 16,
             }}
+            href="/report"
           >
             <FormattedMessage id="REPORT_SIGHTINGS" />
-          </Button>
+          </ButtonLink>
         </div>
       </div>
       <Trifold />
@@ -111,7 +109,6 @@ export default function Splash() {
       <Testimonial />
       <Metrics />
       <HelpAsk />
-      <Footer />
     </div>
   );
 }

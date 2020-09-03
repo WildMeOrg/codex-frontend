@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
+import { useTheme } from '@material-ui/core/styles';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
@@ -18,6 +19,7 @@ export default function UnauthenticatedAppHeader({
   topTransparency = false,
   siteNameScrolls = false,
 }) {
+  const theme = useTheme();
   const [top, setTop] = useState(true);
   const [languageMenuOpen, setLanguageMenuOpen] = useState(false);
 
@@ -54,16 +56,18 @@ export default function UnauthenticatedAppHeader({
         justifyContent: 'space-between',
         alignItems: 'center',
         backgroundColor:
-          top && topTransparency ? 'rgba(0,0,0,0)' : 'black',
+          top && topTransparency
+            ? 'rgba(0,0,0,0)'
+            : theme.palette.common.black,
         transition:
           'background-color .5s cubic-bezier(.165,.84,.44,1)',
-        willChange: 'background-color',
+        willChange: topTransparency ? 'background-color' : 'unset',
         padding: 40,
       }}
     >
       <Typography
         variant="h6"
-        style={{ color: 'white', marginRight: 12 }}
+        style={{ color: theme.palette.common.white, marginRight: 12 }}
       >
         {siteNameScrolls ? (
           <InlineButton
@@ -88,7 +92,9 @@ export default function UnauthenticatedAppHeader({
             <div />
           </ClickAwayListener>
         )}
-        <div style={{ color: 'white', flexShrink: 0 }}>
+        <div
+          style={{ color: theme.palette.common.white, flexShrink: 0 }}
+        >
           <InlineButton
             noUnderline
             style={{
@@ -126,7 +132,11 @@ export default function UnauthenticatedAppHeader({
         </div>
         <Link
           noUnderline
-          style={{ color: 'white', marginLeft: 20, flexShrink: 0 }}
+          style={{
+            color: theme.palette.common.white,
+            marginLeft: 20,
+            flexShrink: 0,
+          }}
           href="/login"
         >
           <Typography>

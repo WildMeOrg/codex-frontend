@@ -50,7 +50,7 @@ function reducer(state, action) {
   if (type === 'SET_ME') {
     return { ...state, me: data };
   }
-  console.warn('Action not recongized', action);
+  console.warn('Action not recognized', action);
   return state;
 }
 

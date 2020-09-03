@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
-import { useSelector } from 'react-redux';
 
 import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -9,9 +8,9 @@ import Radio from '@material-ui/core/Radio';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import InfoIcon from '@material-ui/icons/InfoOutlined';
-import Drawer from '@material-ui/core/Drawer';
+import Alert from '@material-ui/lab/Alert';
+import AlertTitle from '@material-ui/lab/AlertTitle';
 
-import { selectIsAuthenticated } from '../../modules/app/selectors';
 import MainColumn from '../../components/MainColumn';
 import ButtonLink from '../../components/ButtonLink';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
@@ -21,59 +20,19 @@ import StandardReport from './StandardReport';
 import BulkReport from './BulkReport';
 import UploadManager from './UploadManager';
 
-export default function ReportSightings() {
+export default function ReportSightings({ authenticated = false }) {
   const intl = useIntl();
   useDocumentTitle(intl.formatMessage({ id: 'REPORT_SIGHTINGS' }));
-  const isAuthenticated = useSelector(selectIsAuthenticated);
-
   const [mode, setMode] = useState('');
   const [files, setFiles] = useState([]);
   const [exifData, setExifData] = useState([]);
   const [reporting, setReporting] = useState(false);
-  const [drawerOpen, setDrawerOpen] = useState(!isAuthenticated);
   const noImages = mode !== '' && files.length === 0;
 
   const onBack = () => setReporting(false);
 
   return (
     <MainColumn style={{ display: 'flex', justifyContent: 'center' }}>
-      <Drawer
-        open={drawerOpen}
-        anchor="bottom"
-        PaperProps={{ style: { padding: '20px 20px 32px 20px' } }}
-      >
-        <Typography>
-          <FormattedMessage id="REPORT_LOGIN_PROMPT" />
-        </Typography>
-        <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-          <Button
-            display="primary"
-            style={{ marginTop: 12, marginRight: 20 }}
-            onClick={() => setDrawerOpen(false)}
-          >
-            <FormattedMessage id="CONTINUE" />
-          </Button>
-          <ButtonLink
-            display="secondary"
-            style={{
-              marginTop: 12,
-              marginRight: 20,
-            }}
-            href="/login"
-          >
-            <FormattedMessage id="LOG_IN" />
-          </ButtonLink>
-          <ButtonLink
-            display="tertiary"
-            style={{
-              marginTop: 12,
-            }}
-            href="/request"
-          >
-            <FormattedMessage id="REQUEST_INVITE" />
-          </ButtonLink>
-        </div>
-      </Drawer>
       <Grid
         container
         direction="column"
@@ -85,6 +44,28 @@ export default function ReportSightings() {
             <FormattedMessage id="REPORT_SIGHTINGS" />
           </Typography>
         </Grid>
+        {!authenticated && (
+          <Grid item style={{ marginTop: 16 }}>
+            <Alert
+              style={{ maxWidth: 600 }}
+              severity="warning"
+              action={
+                <ButtonLink
+                  style={{ flexShrink: 0, marginRight: 8 }}
+                  variant="panel"
+                  href="/login"
+                >
+                  <FormattedMessage id="LOG_IN" />
+                </ButtonLink>
+              }
+            >
+              <AlertTitle>
+                <FormattedMessage id="REPORTING_ANONYMOUSLY" />
+              </AlertTitle>
+              <FormattedMessage id="REPORTING_ANONYMOUSLY_WARNING" />
+            </Alert>
+          </Grid>
+        )}
         <Grid item container direction="column">
           {!reporting && (
             <>

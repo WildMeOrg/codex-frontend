@@ -4,7 +4,7 @@ import { useTheme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import MenuList from '@material-ui/core/MenuList';
 import MenuItem from '@material-ui/core/MenuItem';
-import Button from './Button';
+import ButtonLink from './ButtonLink';
 import Link from './Link';
 import footerMenuSchema from '../constants/footerMenu';
 
@@ -59,9 +59,13 @@ export default function Footer({ authenticated = false }) {
         <Typography variant="h6" style={{ color: 'white' }}>
           Wild Me for Whale Sharks
         </Typography>
-        <Button display="primary">
+        <ButtonLink
+          href="https://community.wildbook.org/"
+          external
+          display="primary"
+        >
           <FormattedMessage id="COMMUNITY_FORUMS" />
-        </Button>
+        </ButtonLink>
       </div>
       <div
         style={{

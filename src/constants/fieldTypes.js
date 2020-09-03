@@ -19,6 +19,7 @@ const fieldTypes = {
   treeview: 'treeview', // nested array
   treeeditor: 'treeeditor', // nested array (deprecated, replaced by locationIds)
   locationIds: 'locationIds',
+  color: 'color', // used only in admin panel
   fieldset: 'customFields', // used only in admin panel
   optioneditor: 'optioneditor', // used only in admin panel
   filetypeeditor: 'filetypeeditor', // used only in admin panel

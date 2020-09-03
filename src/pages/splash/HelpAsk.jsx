@@ -1,7 +1,7 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import Typography from '@material-ui/core/Typography';
-import Button from '../../components/Button';
+import ButtonLink from '../../components/ButtonLink';
 
 export default function HelpAsk() {
   return (
@@ -32,24 +32,27 @@ export default function HelpAsk() {
         <FormattedMessage id="HOW_CAN_HELP_DESCRIPTIONS" />
       </Typography>
       <div>
-        <Button
+        <ButtonLink
           display="primary"
           style={{
             marginTop: 12,
             marginRight: 12,
           }}
+          href="/report"
         >
-          Adopt a whale shark
-        </Button>
-        <Button
+          <FormattedMessage id="REPORT_SIGHTINGS" />
+        </ButtonLink>
+        <ButtonLink
           display="primary"
           style={{
             marginTop: 12,
             marginLeft: 12,
           }}
+          href="https://www.wildme.org/donate/"
+          external
         >
-          Make a donation
-        </Button>
+          <FormattedMessage id="MAKE_A_DONATION" />
+        </ButtonLink>
       </div>
     </div>
   );
