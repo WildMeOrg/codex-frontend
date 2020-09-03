@@ -1,113 +1,116 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { useDispatch } from 'react-redux';
+import { useTheme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
-import Divider from '@material-ui/core/Divider';
-import TwitterIcon from '@material-ui/icons/Twitter';
-import FacebookIcon from '@material-ui/icons/Facebook';
-import { setLocale } from '../modules/app/actions';
-import Button from './Button';
+import MenuList from '@material-ui/core/MenuList';
+import MenuItem from '@material-ui/core/MenuItem';
+import ButtonLink from './ButtonLink';
 import Link from './Link';
+import footerMenuSchema from '../constants/footerMenu';
 
-const dotSpacing = 8;
+function Menu({ labelId, schema, themeColor }) {
+  return (
+    <MenuList style={{ margin: '0 20px' }}>
+      <MenuItem>
+        <Typography variant="subtitle2" style={{ color: themeColor }}>
+          <FormattedMessage id={labelId} />
+        </Typography>
+      </MenuItem>
+      {schema.map(item => (
+        <MenuItem key={item.id}>
+          <Link noUnderline href={item.href} external={item.external}>
+            <Typography>
+              <FormattedMessage id={item.id} />
+            </Typography>
+          </Link>
+        </MenuItem>
+      ))}
+    </MenuList>
+  );
+}
 
-export default function Footer() {
-  const dispatch = useDispatch();
+export default function Footer({ authenticated = false }) {
+  const theme = useTheme();
+  const themeColor = theme.palette.primary.main;
 
   return (
-    <div id="footer" style={{ width: '100%', paddingBottom: 16 }}>
-      <Divider />
+    <div
+      style={{
+        width: '100%',
+        backgroundColor: theme.palette.common.black,
+        color: theme.palette.common.white,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        textAlign: 'center',
+        padding: '32px 20px 12px 20px',
+      }}
+    >
+      <div
+        style={{
+          width: '100%',
+          padding: '0 20px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          flexWrap: 'wrap',
+        }}
+      >
+        <Typography variant="h6" style={{ color: 'white' }}>
+          Wild Me for Whale Sharks
+        </Typography>
+        <ButtonLink
+          href="https://community.wildbook.org/"
+          external
+          display="primary"
+        >
+          <FormattedMessage id="COMMUNITY_FORUMS" />
+        </ButtonLink>
+      </div>
       <div
         style={{
           display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          flexDirection: 'column',
-          padding: '24px 12px',
+          flexWrap: 'wrap',
+          margin: '8px 0 24px 0',
         }}
       >
-        <Typography>
-          <FormattedMessage id="FLUKEBOOK_IS_AN_INSTANCE_OF" />
-          <Link href="http://wildbook.org/">Wildbook</Link>
-          <FormattedMessage id="CREATED_BY_THE_FOLKS_AT" />
-          <Link href="http://wildme.org/">Wild Me</Link>
-          <FormattedMessage id="END_OF_SENTENCE" />
-        </Typography>
-        <Typography style={{ marginTop: 16 }}>
-          <Link
-            style={{ marginRight: dotSpacing }}
-            href="http://wiki.wildbook.org/contact-us"
-            external
-          >
-            <FormattedMessage id="CONTACT" />
-          </Link>
-          {' • '}
-          <Link
-            href="http://wiki.wildbook.org/legal"
-            external
-            style={{
-              marginRight: dotSpacing,
-              marginLeft: dotSpacing,
-            }}
-          >
-            <FormattedMessage id="LEGAL" />
-          </Link>
-          {' • '}
-          <Link
-            href="http://wiki.wildbook.org/"
-            external
-            style={{
-              marginRight: dotSpacing,
-              marginLeft: dotSpacing,
-            }}
-          >
-            <FormattedMessage id="DOCS" />
-          </Link>
-          {' • '}
-          <Link
-            href="https://community.wildbook.org/"
-            external
-            style={{ marginLeft: dotSpacing }}
-          >
-            <FormattedMessage id="COMMUNITY" />
-          </Link>
-        </Typography>
+        <Menu
+          labelId="ACCOUNT"
+          themeColor={themeColor}
+          schema={
+            authenticated
+              ? footerMenuSchema.accountAuthenticated
+              : footerMenuSchema.accountUnauthenticated
+          }
+        />
+        <Menu
+          labelId="RESOURCES"
+          themeColor={themeColor}
+          schema={footerMenuSchema.resources}
+        />
+        <Menu
+          labelId="CONTRIBUTE"
+          themeColor={themeColor}
+          schema={footerMenuSchema.contribute}
+        />
+        <Menu
+          labelId="SOCIAL"
+          themeColor={themeColor}
+          schema={footerMenuSchema.social}
+        />
       </div>
-      <div style={{ width: '80%', margin: '0 auto' }}>
-        <Divider />
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-          }}
-        >
-          <div>
-            <Button
-              style={{ textTransform: 'unset' }}
-              onClick={() => dispatch(setLocale('en'))}
-              display="basic"
-            >
-              English
-            </Button>
-            <Button
-              style={{ textTransform: 'unset' }}
-              onClick={() => dispatch(setLocale('es'))}
-              display="basic"
-            >
-              Español
-            </Button>
-          </div>
-          <div>
-            <IconButton href="https://twitter.com/wildbookORG">
-              <TwitterIcon />
-            </IconButton>
-            <IconButton href="https://www.facebook.com/wildmeorg/">
-              <FacebookIcon />
-            </IconButton>
-          </div>
-        </div>
+      <div
+        style={{
+          width: '100%',
+          padding: '0 20px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <Typography variant="caption">
+          <FormattedMessage id="COPYRIGHT_LINE" />
+        </Typography>
       </div>
     </div>
   );

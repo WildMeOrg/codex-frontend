@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactPlayer from 'react-player';
-import { useIntl } from 'react-intl';
+import { useIntl, FormattedMessage } from 'react-intl';
 import { useSelector } from 'react-redux';
 import { useTheme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
@@ -9,14 +9,12 @@ import Fab from '@material-ui/core/Fab';
 
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import { selectSiteSettings } from '../../modules/site/selectors';
-import UnauthenticatedAppHeader from '../../components/UnauthenticatedAppHeader';
-import Button from '../../components/Button';
+import ButtonLink from '../../components/ButtonLink';
 import Trifold from './Trifold';
 import HowItWorks from './HowItWorks';
 import Testimonial from './Testimonial';
 import Metrics from './Metrics';
 import HelpAsk from './HelpAsk';
-import Footer from './Footer';
 
 export default function Splash() {
   const intl = useIntl();
@@ -31,13 +29,11 @@ export default function Splash() {
     false,
   );
 
-  const themeColor = '#00fff7';
-
   return (
     <div>
-      <UnauthenticatedAppHeader siteNameScrolls topTransparency />
       <Fab
         size="small"
+        color="primary"
         onClick={() =>
           window.scroll({ top: 0, left: 0, behavior: 'smooth' })
         }
@@ -46,7 +42,6 @@ export default function Splash() {
           bottom: 20,
           right: 20,
           position: 'fixed',
-          backgroundColor: themeColor,
         }}
       >
         <ScrollIcon />
@@ -88,7 +83,7 @@ export default function Splash() {
             width: '100vw',
             padding: 20,
             textAlign: 'center',
-            color: theme.palette.getContrastText('rgba(0, 0, 0, 0)'),
+            color: theme.palette.common.white,
           }}
         >
           <Typography variant="h3">
@@ -97,26 +92,23 @@ export default function Splash() {
           <Typography variant="subtitle1">
             Upload your whale shark images. Help save the species.
           </Typography>
-          <Button
+          <ButtonLink
             display="primary"
+            size="large"
             style={{
               marginTop: 16,
-              backgroundColor: themeColor,
-              color: 'black',
-              padding: '12px 28px',
-              borderRadius: 300,
             }}
+            href="/report"
           >
-            Report Sighting
-          </Button>
+            <FormattedMessage id="REPORT_SIGHTINGS" />
+          </ButtonLink>
         </div>
       </div>
       <Trifold />
-      <HowItWorks textColor={themeColor} padding={20} />
+      <HowItWorks />
       <Testimonial />
       <Metrics />
       <HelpAsk />
-      <Footer />
     </div>
   );
 }

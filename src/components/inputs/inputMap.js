@@ -14,8 +14,10 @@ import ComparatorInput from './ComparatorInput';
 import DateInput from './DateInput';
 import DateRangeInput from './DateRangeInput';
 import RelationshipsInput from './RelationshipsInput';
+import ColorInput from './ColorInput';
 
 const inputMap = {
+  [fieldTypes.color]: ColorInput,
   [fieldTypes.latlong]: LatLongInput,
   [fieldTypes.area]: AreaInput,
   [fieldTypes.file]: FileInput,

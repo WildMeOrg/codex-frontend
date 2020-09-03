@@ -1,4 +1,6 @@
 import React from 'react';
+import { useTheme } from '@material-ui/core/styles';
+import { FormattedMessage } from 'react-intl';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import UsersIcon from '@material-ui/icons/People';
@@ -7,24 +9,24 @@ import IndividualsIcon from '@material-ui/icons/Fingerprint';
 
 const metrics = [
   {
-    label: 'Identified whale sharks',
+    labelId: 'IDENTIFIED_INDIVIDUALS',
     count: 257,
     icon: IndividualsIcon,
   },
   {
-    label: 'Reported sightings',
+    labelId: 'REPORTED_SIGHTINGS',
     count: 810,
     icon: SightingsIcon,
   },
   {
-    label: 'Users',
+    labelId: 'USERS',
     count: 951,
     icon: UsersIcon,
   },
 ];
 
 export default function Testimonial() {
-  const themeColor = '#00fff7';
+  const theme = useTheme();
 
   return (
     <Grid
@@ -33,8 +35,8 @@ export default function Testimonial() {
       style={{
         width: '100vw',
         padding: '0 20px',
-        backgroundColor: 'black',
-        color: 'white',
+        backgroundColor: theme.palette.common.black,
+        color: theme.palette.common.white,
       }}
     >
       {metrics.map(metric => (
@@ -44,7 +46,10 @@ export default function Testimonial() {
           />
           <div>
             <Typography
-              style={{ color: themeColor, fontWeight: 'bold' }}
+              style={{
+                color: theme.palette.primary.main,
+                fontWeight: 'bold',
+              }}
             >
               {metric.count}
             </Typography>
@@ -52,7 +57,7 @@ export default function Testimonial() {
               variant="subtitle2"
               style={{ textTransform: 'uppercase' }}
             >
-              {metric.label}
+              <FormattedMessage id={metric.labelId} />
             </Typography>
           </div>
         </Grid>

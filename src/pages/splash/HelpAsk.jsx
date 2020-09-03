@@ -1,11 +1,9 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import Typography from '@material-ui/core/Typography';
-import Button from '../../components/Button';
+import ButtonLink from '../../components/ButtonLink';
 
-export default function HelpAsk({ textColor }) {
-  const themeColor = '#00fff7';
-
+export default function HelpAsk() {
   return (
     <div
       style={{
@@ -20,7 +18,7 @@ export default function HelpAsk({ textColor }) {
       <Typography
         variant="h3"
         component="h3"
-        style={{ color: textColor, margin: '12px 0' }}
+        style={{ margin: '12px 0' }}
       >
         <FormattedMessage id="HOW_CAN_HELP" />
       </Typography>
@@ -34,34 +32,27 @@ export default function HelpAsk({ textColor }) {
         <FormattedMessage id="HOW_CAN_HELP_DESCRIPTIONS" />
       </Typography>
       <div>
-        <Button
+        <ButtonLink
           display="primary"
           style={{
             marginTop: 12,
-            backgroundColor: themeColor,
-            color: 'black',
-            padding: '6px 14px',
-            fontSize: 12,
-            borderRadius: 300,
             marginRight: 12,
           }}
+          href="/report"
         >
-          Adopt a whale shark
-        </Button>
-        <Button
+          <FormattedMessage id="REPORT_SIGHTINGS" />
+        </ButtonLink>
+        <ButtonLink
           display="primary"
           style={{
             marginTop: 12,
-            backgroundColor: themeColor,
-            color: 'black',
-            padding: '6px 14px',
-            fontSize: 12,
-            borderRadius: 300,
             marginLeft: 12,
           }}
+          href="https://www.wildme.org/donate/"
+          external
         >
-          Make a donation
-        </Button>
+          <FormattedMessage id="MAKE_A_DONATION" />
+        </ButtonLink>
       </div>
     </div>
   );

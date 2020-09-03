@@ -24,7 +24,7 @@ import Home from './pages/home/Home';
 import Footer from './components/Footer';
 import { defaultCrossfadeDuration } from './constants/defaults';
 
-export default function App() {
+export default function AuthenticatedSwitch() {
   const siteSettings = useSelector(selectSiteSettings);
 
   return (
@@ -90,7 +90,7 @@ export default function App() {
                         <Orgs />
                       </Route>
                       <Route path="/report">
-                        <ReportSightings />
+                        <ReportSightings authenticated />
                       </Route>
                       <Route path="/administration">
                         <Administration />
@@ -107,7 +107,7 @@ export default function App() {
                     </Switch>
                   )}
                 </div>
-                <Footer />
+                <Footer authenticated />
               </div>
             </Fade>
           </TransitionGroup>

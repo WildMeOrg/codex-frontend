@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
+import { useTheme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import InlineButton from '../../components/InlineButton';
 import graphic from '../../assets/howitworks.png';
@@ -43,26 +44,30 @@ function StepButton({ translationId, step, setStep, active }) {
   );
 }
 
-export default function HowItWorks({ padding = 50, textColor }) {
+export default function HowItWorks() {
+  const theme = useTheme();
   const [step, setStep] = useState('1');
 
   return (
     <div
       style={{
         width: '100%',
-        backgroundColor: 'black',
-        color: 'white',
+        backgroundColor: theme.palette.common.black,
+        color: theme.palette.common.white,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         textAlign: 'center',
-        padding,
+        padding: 50,
       }}
     >
       <Typography
         variant="h3"
         component="h3"
-        style={{ color: textColor, margin: '12px 0' }}
+        style={{
+          color: theme.palette.primary.main,
+          margin: '12px 0',
+        }}
       >
         <FormattedMessage id="HOW_IT_WORKS" />
       </Typography>
@@ -74,7 +79,9 @@ export default function HowItWorks({ padding = 50, textColor }) {
         alt="How it works"
         style={{ height: 'auto', width: 300 }}
       />
-      <Typography style={{ color: 'white', maxWidth: 320 }}>
+      <Typography
+        style={{ color: theme.palette.common.white, maxWidth: 320 }}
+      >
         <FormattedMessage id={stepMap[step].description} />
       </Typography>
       <div style={{ marginTop: 20 }}>
