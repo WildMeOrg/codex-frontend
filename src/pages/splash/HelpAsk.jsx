@@ -2,6 +2,7 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import Typography from '@material-ui/core/Typography';
 import ButtonLink from '../../components/ButtonLink';
+import ResponsiveHeader from '../../components/ResponsiveHeader';
 
 export default function HelpAsk() {
   return (
@@ -15,13 +16,9 @@ export default function HelpAsk() {
         margin: '64px 0',
       }}
     >
-      <Typography
-        variant="h3"
-        component="h3"
-        style={{ margin: '12px 0' }}
-      >
+      <ResponsiveHeader style={{ margin: '12px 0' }}>
         <FormattedMessage id="HOW_CAN_HELP" />
-      </Typography>
+      </ResponsiveHeader>
       <Typography
         style={{
           maxWidth: 600,
@@ -35,8 +32,7 @@ export default function HelpAsk() {
         <ButtonLink
           display="primary"
           style={{
-            marginTop: 12,
-            marginRight: 12,
+            margin: '12px 12px 0 12px',
           }}
           href="/report"
         >
@@ -45,8 +41,7 @@ export default function HelpAsk() {
         <ButtonLink
           display="primary"
           style={{
-            marginTop: 12,
-            marginLeft: 12,
+            margin: '12px 12px 0 12px',
           }}
           href="https://www.wildme.org/donate/"
           external

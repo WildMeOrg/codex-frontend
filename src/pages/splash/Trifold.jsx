@@ -6,6 +6,7 @@ import Grid from '@material-ui/core/Grid';
 import IdentificationIcon from '@material-ui/icons/Fingerprint';
 import CodeIcon from '@material-ui/icons/Code';
 import AnalysisIcon from '@material-ui/icons/BarChart';
+import ResponsiveHeader from '../../components/ResponsiveHeader';
 
 function Card({ Icon, titleId, descriptionId }) {
   const theme = useTheme();
@@ -63,9 +64,9 @@ export default function Trifold() {
         padding: 20,
       }}
     >
-      <Typography variant="h3" style={{ marginBottom: 40 }}>
+      <ResponsiveHeader style={{ marginBottom: 40 }}>
         <FormattedMessage id="TRIFOLD_TAGLINE" />
-      </Typography>
+      </ResponsiveHeader>
       <Typography
         style={{
           maxWidth: 600,

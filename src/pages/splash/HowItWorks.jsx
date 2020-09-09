@@ -3,6 +3,7 @@ import { FormattedMessage } from 'react-intl';
 import { useTheme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import InlineButton from '../../components/InlineButton';
+import ResponsiveHeader from '../../components/ResponsiveHeader';
 import graphic from '../../assets/howitworks.png';
 
 const stepMap = {
@@ -61,16 +62,14 @@ export default function HowItWorks() {
         padding: 50,
       }}
     >
-      <Typography
-        variant="h3"
-        component="h3"
+      <ResponsiveHeader
         style={{
           color: theme.palette.primary.main,
           margin: '12px 0',
         }}
       >
         <FormattedMessage id="HOW_IT_WORKS" />
-      </Typography>
+      </ResponsiveHeader>
       <Typography variant="subtitle1">
         <FormattedMessage id={stepMap[step].title} />
       </Typography>
