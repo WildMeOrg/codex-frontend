@@ -10,6 +10,7 @@ import Fab from '@material-ui/core/Fab';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import { selectSiteSettings } from '../../modules/site/selectors';
 import ButtonLink from '../../components/ButtonLink';
+import ResponsiveHeader from '../../components/ResponsiveHeader';
 import Trifold from './Trifold';
 import HowItWorks from './HowItWorks';
 import Testimonial from './Testimonial';
@@ -86,9 +87,9 @@ export default function Splash() {
             color: theme.palette.common.white,
           }}
         >
-          <Typography variant="h3">
+          <ResponsiveHeader>
             AI for Whale Shark Research
-          </Typography>
+          </ResponsiveHeader>
           <Typography variant="subtitle1">
             Upload your whale shark images. Help save the species.
           </Typography>
