@@ -120,12 +120,12 @@ export default function AnnotatedPhoto({
                 <rect
                   {...getRectProperties(annotation, zoomed)}
                   strokeWidth={10}
-                  stroke="white"
+                  stroke={theme.palette.common.white}
                 />
                 <rect
                   {...getRectProperties(annotation, zoomed)}
                   strokeWidth={4}
-                  stroke={theme.palette.secondary.main}
+                  stroke={theme.palette.common.black}
                 />
               </React.Fragment>
             ))}
