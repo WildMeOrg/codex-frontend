@@ -1,5 +1,6 @@
 import React from 'react';
 import { useTheme } from '@material-ui/core/styles';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { FormattedMessage } from 'react-intl';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
@@ -27,11 +28,13 @@ const metrics = [
 
 export default function Testimonial() {
   const theme = useTheme();
+  const isSm = useMediaQuery(theme.breakpoints.down('sm'));
 
   return (
     <Grid
       container
       justify="space-around"
+      direction={isSm ? 'column' : 'row'}
       style={{
         width: '100vw',
         padding: '0 20px',
@@ -40,15 +43,24 @@ export default function Testimonial() {
       }}
     >
       {metrics.map(metric => (
-        <Grid item style={{ display: 'flex', margin: '20px 0' }}>
+        <Grid
+          item
+          style={{
+            display: 'flex',
+            margin: '32px 0',
+            flexDirection: isSm ? 'column' : 'row',
+            alignItems: isSm ? 'center' : 'unset',
+          }}
+        >
           <metric.icon
-            style={{ fontSize: '3rem', marginRight: 12 }}
+            style={{ fontSize: '3rem', marginRight: isSm ? 0 : 12 }}
           />
-          <div>
+          <div style={{ textAlign: isSm ? 'center' : 'unset' }}>
             <Typography
               style={{
                 color: theme.palette.primary.main,
                 fontWeight: 'bold',
+                fontSize: isSm ? '1.5rem' : '1rem',
               }}
             >
               {metric.count}

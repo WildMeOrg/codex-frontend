@@ -33,6 +33,7 @@ export default function HelpAsk() {
           display="primary"
           style={{
             margin: '12px 12px 0 12px',
+            minWidth: 120,
           }}
           href="/report"
         >
@@ -42,6 +43,7 @@ export default function HelpAsk() {
           display="primary"
           style={{
             margin: '12px 12px 0 12px',
+            minWidth: 200,
           }}
           href="https://www.wildme.org/donate/"
           external

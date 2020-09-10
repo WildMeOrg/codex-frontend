@@ -35,7 +35,7 @@ function Card({ Icon, titleId, descriptionId }) {
         }}
       >
         <Icon
-          style={{ fontSize: 64, color: theme.palette.common.white }}
+          style={{ fontSize: 64, color: theme.palette.common.black }}
         />
       </div>
       <Typography

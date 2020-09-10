@@ -31,7 +31,8 @@ export const futura = [
   '"Segoe UI Symbol"',
 ].join(',');
 
-const blackColor = '#1a1a1a';
+// const blackColor = '#1a1a1a';
+const blackColor = '#0E1014';
 const whiteColor = '#ffffff';
 
 export default primaryColor => {
@@ -88,7 +89,7 @@ export default primaryColor => {
       },
       MuiButton: {
         label: {
-          letterSpacing: '0.1em',
+          letterSpacing: '0.08em',
         },
         root: {
           borderRadius: 10000,
@@ -106,6 +107,7 @@ export default primaryColor => {
         },
         contained: {
           backgroundColor: whiteColor,
+          boxShadow: '1px 2px 6px -2px rgba(0,0,0,0.2)',
         },
       },
     },
