@@ -26,11 +26,11 @@ export default function ConfirmDelete({
           />
         </Typography>
       </DialogContent>
-      <DialogActions>
+      <DialogActions style={{ padding: '0px 24px 24px 24px' }}>
         <Button display="basic" onClick={onClose}>
           <FormattedMessage id="CANCEL" />
         </Button>
-        <Button display="basic" onClick={onDelete}>
+        <Button display="primary" onClick={onDelete}>
           <FormattedMessage id="DELETE" />
         </Button>
       </DialogActions>

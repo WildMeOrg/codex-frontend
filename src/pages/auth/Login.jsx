@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
 
 import Typography from '@material-ui/core/Typography';
@@ -16,7 +16,7 @@ import Link from '../../components/Link';
 import Button from '../../components/Button';
 import Shell from './Shell';
 
-const formId = 'loginform';
+const buttonId = 'submitLogin';
 
 export default function Login({ showBanner, redirect = '/' }) {
   const { authenticate, error, setError, loading } = useLogin();
@@ -26,6 +26,22 @@ export default function Login({ showBanner, redirect = '/' }) {
   const intl = useIntl();
 
   useDocumentTitle(intl.formatMessage({ id: 'LOG_IN' }));
+
+  function onKeyUp(e) {
+    if (e.key === 'Enter') {
+      document.querySelector(`#${buttonId}`).click();
+      e.preventDefault();
+    }
+  }
+
+  useEffect(() => {
+    console.log('adding listener');
+    document.addEventListener('keyup', onKeyUp);
+    return () => {
+      console.log('removing listener');
+      document.removeEventListener('keyup', onKeyUp);
+    };
+  }, []);
 
   return (
     <Shell
@@ -38,11 +54,7 @@ export default function Login({ showBanner, redirect = '/' }) {
         </Alert>
       )}
 
-      <form
-        action={`http://localhost:5000/login?next=${redirect}`}
-        method="POST"
-        id={formId}
-      >
+      <form>
         <Grid
           container
           spacing={2}
@@ -98,6 +110,7 @@ export default function Login({ showBanner, redirect = '/' }) {
           {error && <Alert severity="error">{error}</Alert>}
           <Grid item style={{ position: 'relative' }}>
             <Button
+              id={buttonId}
               loading={loading}
               onClick={() => {
                 authenticate(email, password, redirect);

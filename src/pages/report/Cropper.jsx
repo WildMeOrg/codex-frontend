@@ -134,12 +134,12 @@ export default function Cropper({ imgSrc, onClose, setCrop }) {
         </div>
         <canvas ref={canvasRef} width={100} height={100} />
       </DialogContent>
-      <DialogActions>
+      <DialogActions style={{ padding: '0px 24px 24px 24px' }}>
         <Button display="basic" onClick={onClose}>
           Cancel
         </Button>
         <Button
-          display="basic"
+          display="primary"
           onClick={() => saveCrop(canvasRef.current)}
         >
           Save

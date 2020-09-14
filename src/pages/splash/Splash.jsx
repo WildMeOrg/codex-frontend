@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactPlayer from 'react-player';
 import { useIntl, FormattedMessage } from 'react-intl';
 import { useSelector } from 'react-redux';
@@ -21,6 +21,23 @@ export default function Splash() {
   const intl = useIntl();
   const theme = useTheme();
   const siteSettings = useSelector(selectSiteSettings);
+  const [top, setTop] = useState(true);
+
+  useEffect(() => {
+    const onScroll = () => {
+      if (window.scrollY < 20) {
+        setTop(true);
+      } else {
+        setTop(false);
+      }
+    };
+
+    window.addEventListener('scroll', onScroll);
+
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+    };
+  }, []);
 
   useDocumentTitle(
     intl.formatMessage(
@@ -43,6 +60,9 @@ export default function Splash() {
           bottom: 20,
           right: 20,
           position: 'fixed',
+          opacity: top ? 0 : 1,
+          visibility: top ? 'hidden' : 'visible',
+          transition: 'opacity 0.5s ease-in-out',
         }}
       >
         <ScrollIcon />

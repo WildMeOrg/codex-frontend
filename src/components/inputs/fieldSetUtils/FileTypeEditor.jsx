@@ -131,9 +131,9 @@ export default function FileTypeEditor({
             />
           </Button>
         </DialogContent>
-        <DialogActions>
+        <DialogActions style={{ padding: '0px 24px 24px 24px' }}>
           <Button
-            display="basic"
+            display="primary"
             onClick={() => {
               onClose();
             }}

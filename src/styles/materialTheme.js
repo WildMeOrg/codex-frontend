@@ -82,11 +82,6 @@ export default primaryColor => {
       },
     },
     overrides: {
-      MuiTableCell: {
-        root: {
-          fontStyle: 'unset',
-        },
-      },
       MuiButton: {
         label: {
           letterSpacing: '0.08em',
@@ -108,6 +103,27 @@ export default primaryColor => {
         contained: {
           backgroundColor: whiteColor,
           boxShadow: '1px 2px 6px -2px rgba(0,0,0,0.2)',
+        },
+      },
+      MuiTableCell: {
+        root: {
+          fontStyle: 'unset',
+        },
+      },
+      MuiListItem: {
+        root: {
+          '&$selected': {
+            backgroundColor: lightPrimaryColor,
+          },
+        },
+      },
+      MuiTreeItem: {
+        root: {
+          '&$selected': {
+            '&& > .MuiTreeItem-content .MuiTreeItem-label': {
+              backgroundColor: lightPrimaryColor,
+            },
+          },
         },
       },
     },

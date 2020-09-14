@@ -124,11 +124,11 @@ export default function AnnotationEditor({
           )}
         </div>
       </DialogContent>
-      <DialogActions>
+      <DialogActions style={{ padding: '0px 24px 24px 24px' }}>
         <Button display="basic" onClick={onClose}>
           <FormattedMessage id="CANCEL" />
         </Button>
-        <Button display="basic" onClick={() => onChange(rect)}>
+        <Button display="primary" onClick={() => onChange(rect)}>
           <FormattedMessage id="SAVE" />
         </Button>
       </DialogActions>

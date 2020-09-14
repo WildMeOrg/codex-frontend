@@ -70,7 +70,7 @@ export default function AreaInput({
             onChange={clickedPoint => setMapArea(clickedPoint)}
           />
         </DialogContent>
-        <DialogActions>
+        <DialogActions style={{ padding: '0px 24px 24px 24px' }}>
           <Button
             display="basic"
             onClick={() => {
@@ -80,7 +80,7 @@ export default function AreaInput({
             <FormattedMessage id="CANCEL" />
           </Button>
           <Button
-            display="basic"
+            display="primary"
             onClick={() => {
               onChange(mapArea);
               onClose();
