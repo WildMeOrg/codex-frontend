@@ -35,10 +35,8 @@ export default function Login({ showBanner, redirect = '/' }) {
   }
 
   useEffect(() => {
-    console.log('adding listener');
     document.addEventListener('keyup', onKeyUp);
     return () => {
-      console.log('removing listener');
       document.removeEventListener('keyup', onKeyUp);
     };
   }, []);
