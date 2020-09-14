@@ -20,6 +20,7 @@ export default function usePutSiteSettings() {
       if (successful) {
         dispatch(setSiteSettingsNeedsFetch(true));
         setSuccess(true);
+        setError(null);
       } else {
         const serverErrorMessage = get(response, [
           'data',
@@ -27,9 +28,11 @@ export default function usePutSiteSettings() {
           'details',
         ]);
         setError(serverErrorMessage);
+        setSuccess(false);
       }
     } catch (postError) {
       setError(error);
+      setSuccess(false);
     }
   };
 
