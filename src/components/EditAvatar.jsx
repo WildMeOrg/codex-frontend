@@ -51,7 +51,7 @@ export default function EditAvatar({ visible, onClose, square }) {
           />
         )}
       </DialogContent>
-      <DialogActions style={{ marginTop: 32 }}>
+      <DialogActions style={{ marginTop: 32, padding: '0px 24px 24px 24px' }}>
         {choosingPhoto && (
           <Button
             disabled={!imageSrc}
@@ -63,7 +63,6 @@ export default function EditAvatar({ visible, onClose, square }) {
           >
             <FormattedMessage
               id="NEXT_EDIT"
-              defaultMessage="Next: edit"
             />
           </Button>
         )}
@@ -75,11 +74,10 @@ export default function EditAvatar({ visible, onClose, square }) {
             >
               <FormattedMessage
                 id="CHANGE_PHOTO"
-                defaultMessage="Change photo"
               />
             </Button>
             <Button
-              display="basic"
+              display="primary"
               onClick={() => {
                 // submit data and wait for response...
                 onClose();

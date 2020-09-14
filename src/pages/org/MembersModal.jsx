@@ -149,12 +149,12 @@ export default function MembersModal({
         </List>
       </DialogContent>
       {Object.keys(changes).length > 0 && (
-        <DialogActions>
+        <DialogActions style={{ padding: '0px 24px 24px 24px' }}>
           <Button display="basic" onClick={onClose}>
             <FormattedMessage id="CANCEL" />
           </Button>
           <Button
-            display="basic"
+            display="primary"
             onClick={() => onSaveChanges(changes)}
           >
             <FormattedMessage id="SAVE_CHANGES" />

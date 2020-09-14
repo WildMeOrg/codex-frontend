@@ -155,9 +155,9 @@ export default function OptionEditor({
             />
           </Button>
         </DialogContent>
-        <DialogActions>
+        <DialogActions style={{ padding: '0px 24px 24px 24px' }}>
           <Button
-            display="basic"
+            display="primary"
             onClick={() => {
               onClose();
             }}

@@ -88,7 +88,7 @@ export default function({
           })}
         </Grid>
       </DialogContent>
-      <DialogActions style={{ marginTop: 32 }}>
+      <DialogActions style={{ padding: '0px 24px 24px 24px', marginTop: 32 }}>
         <Button
           onClick={() => {
             setFormState(initialState);
@@ -96,16 +96,16 @@ export default function({
           }}
           display="basic"
         >
-          <FormattedMessage id="CANCEL" defaultMessage="Cancel" />
+          <FormattedMessage id="CANCEL" />
         </Button>
         <Button
           onClick={() => {
             onSave(formState);
           }}
-          display="basic"
+          display="primary"
           autoFocus
         >
-          <FormattedMessage id="CONFIRM" defaultMessage="Confirm" />
+          <FormattedMessage id="CONFIRM" />
         </Button>
       </DialogActions>
     </Dialog>

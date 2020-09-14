@@ -83,7 +83,7 @@ export default function LatLongInput({
             onChange={clickedPoint => setMapLatLng(clickedPoint)}
           />
         </DialogContent>
-        <DialogActions>
+        <DialogActions style={{ padding: '0px 24px 24px 24px' }}>
           <Button
             display="basic"
             onClick={() => {
@@ -93,7 +93,7 @@ export default function LatLongInput({
             <FormattedMessage id="CANCEL" />
           </Button>
           <Button
-            display="basic"
+            display="primary"
             onClick={() => {
               onChange(mapLatLng);
               onClose();

@@ -122,12 +122,12 @@ export default function MembersModal({
           </Grid>
         </Grid>
       </DialogContent>
-      <DialogActions>
+      <DialogActions style={{ padding: '0px 24px 24px 24px' }}>
         <Button display="basic" onClick={onClose}>
           <FormattedMessage id="CANCEL" />
         </Button>
         <Button
-          display="basic"
+          display="primary"
           disabled={!user}
           onClick={() => onInvite(user)}
         >

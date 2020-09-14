@@ -107,10 +107,9 @@ export default function Status({ onMarkComplete }) {
           <FormattedMessage id="MATCH_ANNOTATIONS" />
         </ButtonLink>
         <Button
-          display="basic"
-          style={{ marginTop: 4 }}
+          display="panel"
+          style={{ marginTop: 12 }}
           onClick={onMarkComplete}
-          size="small"
         >
           <FormattedMessage id="MARK_SIGHTING_COMPLETE" />
         </Button>

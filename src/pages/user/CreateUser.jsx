@@ -54,12 +54,12 @@ export default function CreateUser({ open, onClose, onCreateUser }) {
           ))}
         </Grid>
       </DialogContent>
-      <DialogActions>
+      <DialogActions style={{ padding: '0px 24px 24px 24px' }}>
         <Button display="basic" onClick={closeAndEmptyForm}>
           <FormattedMessage id="CANCEL" />
         </Button>
         <Button
-          display="basic"
+          display="primary"
           onClick={() => onCreateUser(formState)}
         >
           <FormattedMessage id="CREATE_USER" />
