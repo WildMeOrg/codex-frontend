@@ -7,7 +7,6 @@ import ForumIcon from '@material-ui/icons/Forum';
 import EmailIcon from '@material-ui/icons/Email';
 import LocationIcon from '@material-ui/icons/PersonPin';
 import WebIcon from '@material-ui/icons/WebAssetSharp';
-import AffiliationIcon from '@material-ui/icons/AccountBalance';
 import EntityHeader from './EntityHeader';
 import MainColumn from './MainColumn';
 import Link from './Link';
@@ -49,16 +48,6 @@ const items = [
           {website}
         </Link>
       </>
-    ),
-  },
-  {
-    key: 'affiliation',
-    icon: AffiliationIcon,
-    render: affiliation => (
-      <FormattedMessage
-        id="PROFILE_LABEL_AFFILIATION"
-        values={{ affiliation }}
-      />
     ),
   },
   {
