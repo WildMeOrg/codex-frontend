@@ -26,18 +26,17 @@ function PairContainer(props) {
   );
 }
 
-export default function JobModal({ open, onClose, jobId }) {
-  const { data, loading, error } = useAcmImageData(jobId);
+export default function JobModal({ open, onClose, acmId }) {
+  const { data, loading, error } = useAcmImageData(acmId);
 
   const dataReady = !loading && !error;
-  console.log(data);
   const annotations = data || [];
 
   return (
     <div>
       <Dialog maxWidth="xl" open={open} onClose={onClose}>
         <DialogTitle onClose={onClose}>
-          {`Matching job ${jobId}`}
+          {`Matching job ${acmId}`}
           <IconButton
             style={{ position: 'absolute', top: 8, right: 16 }}
             aria-label="close"
@@ -49,17 +48,30 @@ export default function JobModal({ open, onClose, jobId }) {
         <DialogContent style={{ marginBottom: 24 }}>
           {loading && (
             <PairContainer>
-              <Skeleton variant="rect" width="40vw" height={400} style={{ margin: 16 }} />
+              <Skeleton
+                variant="rect"
+                width="40vw"
+                height={400}
+                style={{ margin: 16 }}
+              />
               <Skeleton variant="rect" width="200px" height={200} />
-              <Skeleton variant="rect" width="40vw" height={400} style={{ margin: 16 }} />
+              <Skeleton
+                variant="rect"
+                width="40vw"
+                height={400}
+                style={{ margin: 16 }}
+              />
             </PairContainer>
           )}
-          {error && <Typography>Something went wrong. Check the console for details.</Typography>}
-          {!dataReady &&
+          {error && (
+            <Typography>
+              Something went wrong. Check the console for details.
+            </Typography>
+          )}
+          {dataReady &&
             annotations.map(annotation => (
               <PairContainer key={annotation.id}>
                 <AcmImage
-                  key={annotation.id}
                   annotation={annotation}
                 />
                 <div
@@ -83,7 +95,6 @@ export default function JobModal({ open, onClose, jobId }) {
                   </Button>
                 </div>
                 <AcmImage
-                  key={annotation.id}
                   annotation={annotation}
                 />
               </PairContainer>

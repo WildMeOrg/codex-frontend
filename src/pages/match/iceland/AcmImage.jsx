@@ -145,12 +145,7 @@ export default function AcmImage({
             />
             <rect
               {...getRectProperties(annotation, zoomed)}
-              strokeWidth={10}
-              stroke={theme.palette.common.white}
-            />
-            <rect
-              {...getRectProperties(annotation, zoomed)}
-              strokeWidth={4}
+              strokeWidth={4 / zoomData.scale}
               stroke={theme.palette.common.black}
             />
           </g>

@@ -2,13 +2,14 @@ import React, { useState } from 'react';
 import Typography from '@material-ui/core/Typography';
 import MainColumn from '../../../components/MainColumn';
 import InlineButton from '../../../components/InlineButton';
+import Link from '../../../components/Link';
 import DataDisplay from '../../../components/dataDisplays/DataDisplay';
 import JobModal from './JobModal';
 import ids from './icelandIds';
 
 export default function Iceland() {
   const [selectedJob, setSelectedJob] = useState(null);
-  const data = ids.map(id => ({ id, status: 'To do', match: '-' }));
+  const data = ids.map(datum => ({ ...datum, id: datum.acmId, status: 'To do' }));
 
   const columns = [
     {
@@ -16,19 +17,26 @@ export default function Iceland() {
       label: 'Status',
     },
     {
-      name: 'id',
-      label: 'Job id',
+      name: 'acmId',
+      label: 'ACM id',
       options: {
-        customBodyRender: id => (
-          <InlineButton onClick={() => setSelectedJob(id)}>
-            {id}
+        customBodyRender: acmId => (
+          <InlineButton onClick={() => setSelectedJob(acmId)}>
+            {acmId}
           </InlineButton>
         ),
       },
     },
     {
-      name: 'match',
-      label: 'Match',
+      name: 'annotationId',
+      label: 'Annotation ID',
+      options: {
+        customBodyRender: annotationId => (
+          <Link href="/">
+            {annotationId}
+          </Link>
+        ),
+      },
     },
   ];
 
@@ -52,7 +60,7 @@ export default function Iceland() {
       />
       <JobModal
         open={Boolean(selectedJob)}
-        jobId={selectedJob}
+        acmId={selectedJob}
         onClose={() => setSelectedJob(null)}
       />
     </MainColumn>

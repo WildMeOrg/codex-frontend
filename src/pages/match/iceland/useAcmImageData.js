@@ -12,7 +12,7 @@ export default function useAcmImageData(acmId) {
       const fetchData = async () => {
         try {
           const response = await axios(
-            `https://www.flukebook.org/iaResults.jsp?acmId=${'c0e869b6-09e0-4f5e-bfa7-ed7a6d2e29df'}`,
+            `https://www.flukebook.org/iaResults.jsp?acmId=${acmId}`,
           );
           setData(get(response, 'data.annotations'));
           setLoading(false);
