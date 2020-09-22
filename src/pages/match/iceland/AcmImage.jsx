@@ -17,11 +17,12 @@ function getAnnotationZoomData(annotation) {
   ]);
   const imageWidth = get(annotation, ['asset', 'metadata', 'width']);
 
-  if (!(bbox && imageHeight && imageWidth)) return {
-    scale: 1,
-    tx: 50,
-    ty: 50,
-  };
+  if (!(bbox && imageHeight && imageWidth))
+    return {
+      scale: 1,
+      tx: 50,
+      ty: 50,
+    };
 
   const pctHeight = bbox.height / imageHeight;
   const pctWidth = bbox.width / imageWidth;
@@ -169,11 +170,11 @@ export default function AcmImage({
                 height={svgHeight}
               />
               {rectProperties && (
-              <rect
-                {...rectProperties}
-                strokeWidth={4 / zoomData.scale}
-                stroke={theme.palette.common.black}
-              />
+                <rect
+                  {...rectProperties}
+                  strokeWidth={4 / zoomData.scale}
+                  stroke={theme.palette.common.black}
+                />
               )}
             </g>
           </svg>

@@ -5,22 +5,19 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogActions from '@material-ui/core/DialogActions';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import CloseIcon from '@material-ui/icons/Close';
 import Skeleton from '@material-ui/lab/Skeleton';
 import Alert from '@material-ui/lab/Alert';
 
 import useDimensions from '../../../hooks/useDimensions';
-import Button from '../../../components/Button';
-import ButtonLink from '../../../components/ButtonLink';
 import useAcmImageData, {
   fetchAcmImageData,
 } from './useAcmImageData';
 import useIaLogs from './useIalogs';
 import AcmImage from './AcmImage';
 import Candidates from './Candidates';
-import { getFeature } from './utils';
+import ActionButton from './ActionButton';
 
 function PairContainer({ renderChildren = () => null, ...rest }) {
   const containerRef = useRef(null);
@@ -66,12 +63,13 @@ export default function JobModal({ open, onClose, acmId, taskId }) {
     setSelectedCandidateAnnotation,
   ] = useState(null);
 
+  let activeCandidate = null;
   let activeCandidateScore = '-';
   let activeCandidateIndex = 0;
   if (candidates) {
-    const activeCandidate =
+    activeCandidate =
       candidates.find(c => c.id === selectedCandidateId) ||
-      get(candidates, '0');
+      candidates[0];
 
     activeCandidateIndex = candidates.findIndex(
       c => c.id === selectedCandidateId,
@@ -117,11 +115,6 @@ export default function JobModal({ open, onClose, acmId, taskId }) {
     dataReady && candidates && candidates.length > 0;
   const noCandidates = dataReady && !showMatches;
 
-  const candidateIndividual = getFeature(
-    selectedCandidateAnnotation,
-    'individualId',
-  );
-
   const closeModal = () => {
     setSelectedCandidateId(null);
     setSelectedCandidateAnnotation(null);
@@ -138,7 +131,7 @@ export default function JobModal({ open, onClose, acmId, taskId }) {
         onClose={closeModal}
       >
         <DialogTitle onClose={closeModal}>
-          Match results
+          {candidates && `${candidates.length} match candidates`}
           <IconButton
             style={{ position: 'absolute', top: 8, right: 16 }}
             aria-label="close"
@@ -185,85 +178,54 @@ export default function JobModal({ open, onClose, acmId, taskId }) {
             </Alert>
           )}
           {showMatches &&
-            annotations.map(annotation => {
-              const targetIndividual = get(annotation, [
-                'asset',
-                'features',
-                '0',
-                'individualId',
-              ]);
-              return (
-                <PairContainer
-                  key={annotation.id}
-                  renderChildren={width => {
-                    const cardWidth = 0.5 * (width - 160);
-                    return (
-                      <>
-                        <AcmImage
-                          annotation={annotation}
-                          style={{ width: cardWidth }}
-                        />
-                        <div
-                          style={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            width: 160,
-                            minWidth: 160,
-                            alignItems: 'center',
-                          }}
+            annotations.map(annotation => (
+              <PairContainer
+                key={annotation.id}
+                renderChildren={width => {
+                  const cardWidth = 0.5 * (width - 160);
+                  return (
+                    <>
+                      <AcmImage
+                        annotation={annotation}
+                        style={{ width: cardWidth }}
+                      />
+                      <div
+                        style={{
+                          display: 'flex',
+                          flexDirection: 'column',
+                          width: 160,
+                          minWidth: 160,
+                          alignItems: 'center',
+                        }}
+                      >
+                        <Typography
+                          variant="subtitle1"
+                          style={{ textDecoration: 'underline' }}
                         >
-                          <Typography
-                            variant="subtitle1"
-                            style={{ textDecoration: 'underline' }}
-                          >
-                            <FormattedMessage id="THIS_PAIR" />
-                          </Typography>
-                          <Typography>{`Hotspotter ${activeCandidateScore}`}</Typography>
-                          <ButtonLink
-                            external
-                            newTab
-                            href={`https://www.flukebook.org/merge.jsp?individualA=${targetIndividual}&individualB=${candidateIndividual}`}
-                            onClick={() => {}}
-                            display="primary"
-                            style={{ marginTop: 8 }}
-                          >
-                            Merge
-                          </ButtonLink>
-                        </div>
-                        <Candidates
-                          annotation={selectedCandidateAnnotation}
-                          setSelectedCandidateId={
-                            setSelectedCandidateId
-                          }
-                          candidates={candidates}
-                          activeCandidateIndex={activeCandidateIndex}
-                          style={{ width: cardWidth }}
+                          <FormattedMessage id="THIS_PAIR" />
+                        </Typography>
+                        <Typography>{`Hotspotter ${activeCandidateScore}`}</Typography>
+                        <ActionButton
+                          annotation1={annotation}
+                          annotation2={selectedCandidateAnnotation}
+                          style={{ marginTop: 8 }}
                         />
-                      </>
-                    );
-                  }}
-                />
-              );
-            })}
+                      </div>
+                      <Candidates
+                        annotation={selectedCandidateAnnotation}
+                        setSelectedCandidateId={
+                          setSelectedCandidateId
+                        }
+                        candidates={candidates}
+                        activeCandidateIndex={activeCandidateIndex}
+                        style={{ width: cardWidth }}
+                      />
+                    </>
+                  );
+                }}
+              />
+            ))}
         </DialogContent>
-        {/* <DialogActions style={{ padding: '0px 24px 24px 24px' }}>
-          <Button
-            display="basic"
-            onClick={() => {
-              onClose();
-            }}
-          >
-            Close
-          </Button>
-          <Button
-            display="primary"
-            onClick={() => {
-              onClose();
-            }}
-          >
-            Next
-          </Button>
-        </DialogActions> */}
       </Dialog>
     </div>
   );
