@@ -2,6 +2,13 @@ import { useEffect, useState } from 'react';
 import { get } from 'lodash-es';
 import axios from 'axios';
 
+export const fetchAcmImageData = async acmId => {
+  const response = await axios(
+    `https://www.flukebook.org/iaResults.jsp?acmId=${acmId}`,
+  );
+  return get(response, 'data.annotations');
+};
+
 export default function useAcmImageData(acmId) {
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
@@ -30,5 +37,5 @@ export default function useAcmImageData(acmId) {
     [acmId],
   );
 
-  return { data, loading, error };
+  return { data, loading, error, setError, setLoading };
 }

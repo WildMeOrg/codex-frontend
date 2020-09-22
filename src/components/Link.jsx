@@ -9,6 +9,7 @@ export default function Link({
   disabled = false,
   noUnderline = false,
   external = false,
+  newTab = false,
   onClick,
   ...rest
 }) {
@@ -31,7 +32,13 @@ export default function Link({
 
   if (external) {
     return (
-      <a href={href} style={styles} onClick={onClick} {...rest}>
+      <a
+        href={href}
+        target={newTab ? '_blank' : 'unset'}
+        style={styles}
+        onClick={onClick}
+        {...rest}
+      >
         {children}
       </a>
     );

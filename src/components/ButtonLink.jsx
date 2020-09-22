@@ -6,6 +6,7 @@ export default function ButtonLink({
   children,
   href,
   external = false,
+  newTab = false,
   linkProps,
   ...rest
 }) {
@@ -15,6 +16,7 @@ export default function ButtonLink({
         noUnderline
         href={href}
         external={external}
+        newTab={newTab}
         {...linkProps}
       >
         {children}

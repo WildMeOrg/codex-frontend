@@ -37,6 +37,7 @@ export default function DataDisplay({
   data,
   title,
   onPrint,
+  initiallySelectedRow = null,
   renderExpandedRow,
   variant = 'primary',
   noTitleBar,
@@ -46,7 +47,9 @@ export default function DataDisplay({
     .filter(c => get(c, 'options.display', true))
     .map(c => c.name);
 
-  const [selectedRow, setSelectedRow] = useState(null);
+  const [selectedRow, setSelectedRow] = useState(
+    initiallySelectedRow,
+  );
   const [visibleColumnNames, setVisibleColumnNames] = useState(
     initialColumnNames,
   );

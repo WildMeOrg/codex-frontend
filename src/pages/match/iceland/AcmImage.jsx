@@ -2,22 +2,27 @@ import React, { useRef, useState } from 'react';
 import { get } from 'lodash-es';
 import { format, parseISO } from 'date-fns';
 import { useTheme } from '@material-ui/core/styles';
+import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
+import Link from '../../../components/Link';
 import useDimensions from '../../../hooks/useDimensions';
+import { getFeature } from './utils';
 
 function getAnnotationZoomData(annotation) {
-  const bbox = get(annotation, [
-    'asset',
-    'features',
-    '0',
-    'parameters',
-  ]);
+  const bbox = getFeature(annotation, 'parameters');
   const imageHeight = get(annotation, [
     'asset',
     'metadata',
     'height',
   ]);
   const imageWidth = get(annotation, ['asset', 'metadata', 'width']);
+
+  if (!(bbox && imageHeight && imageWidth)) return {
+    scale: 1,
+    tx: 50,
+    ty: 50,
+  };
+
   const pctHeight = bbox.height / imageHeight;
   const pctWidth = bbox.width / imageWidth;
 
@@ -39,6 +44,7 @@ export default function AcmImage({
   style = {},
   locationId,
   dateString,
+  renderTitleButton = () => null,
   children,
   ...rest
 }) {
@@ -58,20 +64,23 @@ export default function AcmImage({
   ]);
   const imageWidth = get(annotation, ['asset', 'metadata', 'width']);
   const date = get(annotation, ['asset', 'dateTime']);
-  const formattedDate = date ? format(parseISO(date), 'M/dd/yy') : '';
+  const formattedDate = date
+    ? format(parseISO(date), 'MMMM d, yyyy')
+    : '';
   const imageUrl = get(annotation, ['asset', 'url']);
-  const displayName = get(annotation, [
-    'asset',
-    'features',
-    '0',
-    'displayName',
-  ]);
+
+  const displayName = getFeature(annotation, 'displayName');
+  const individualId = getFeature(annotation, 'individualId');
+  const encounterId = getFeature(annotation, 'encounterId');
+
   const filename = get(annotation, ['asset', 'filename']);
 
   const svgHeight = (width * imageHeight) / imageWidth;
 
   function getRectProperties(annot, currentlyZoomed) {
-    const bbox = get(annot, ['asset', 'features', '0', 'parameters']);
+    const bbox = getFeature(annot, 'parameters');
+
+    if (!bbox) return null;
 
     return {
       x: `${(100 * bbox.x) / imageWidth}%`,
@@ -91,10 +100,12 @@ export default function AcmImage({
     };
   }
 
+  const rectProperties = getRectProperties(annotation, zoomed);
+
   return (
     <div
       ref={containerRef}
-      style={{ margin: 16, width: '100%', ...style }}
+      style={{ margin: 16, width: '100%', flexGrow: 1, ...style }}
       {...rest}
     >
       <div
@@ -105,53 +116,70 @@ export default function AcmImage({
           marginBottom: 4,
         }}
       >
-        <Typography variant="subtitle1">{filename}</Typography>
+        <Typography variant="h6">
+          {displayName ? (
+            <Link
+              href={`https://www.flukebook.org/individuals.jsp?id=${individualId}`}
+              external
+              newTab
+            >
+              {displayName}
+            </Link>
+          ) : (
+            'Unassigned'
+          )}
+        </Typography>
+        {renderTitleButton()}
       </div>
-      <div
-        style={{
-          overflow: 'hidden',
-          lineHeight: 0,
-          position: 'relative',
-          backgroundColor: 'dimgrey',
-        }}
-      >
-        <svg
+      <Tooltip title={filename}>
+        <div
           style={{
-            transform: zoomed
-              ? `scale(${zoomData.scale})`
-              : 'scale(1)',
-            transition: 'transform 0.2s ease-in-out',
-            cursor: zoomed ? 'zoom-out' : 'unset',
+            overflow: 'hidden',
+            lineHeight: 0,
+            position: 'relative',
+            backgroundColor: 'dimgrey',
           }}
-          width={width}
-          height={svgHeight}
-          transform="scale(1)"
         >
-          <g
+          <svg
             style={{
               transform: zoomed
-                ? `translate(${zoomData.tx}%, ${zoomData.ty}%)`
-                : 'translate(0, 0)',
+                ? `scale(${zoomData.scale})`
+                : 'scale(1)',
               transition: 'transform 0.2s ease-in-out',
+              cursor: zoomed ? 'zoom-out' : 'unset',
             }}
+            width={width}
+            height={svgHeight}
+            transform="scale(1)"
           >
-            <image
-              onClick={() => {
-                if (zoomed) setZoomed(false);
+            <g
+              style={{
+                transform: zoomed
+                  ? `translate(${zoomData.tx}%, ${zoomData.ty}%)`
+                  : 'translate(0, 0)',
+                transition: 'transform 0.2s ease-in-out',
               }}
-              href={imageUrl}
-              width={width}
-              height={svgHeight}
-            />
-            <rect
-              {...getRectProperties(annotation, zoomed)}
-              strokeWidth={4 / zoomData.scale}
-              stroke={theme.palette.common.black}
-            />
-          </g>
-        </svg>
-        {children}
-      </div>
+            >
+              <image
+                onClick={() => {
+                  if (zoomed) setZoomed(false);
+                }}
+                href={imageUrl}
+                width={width}
+                height={svgHeight}
+              />
+              {rectProperties && (
+              <rect
+                {...rectProperties}
+                strokeWidth={4 / zoomData.scale}
+                stroke={theme.palette.common.black}
+              />
+              )}
+            </g>
+          </svg>
+          {children}
+        </div>
+      </Tooltip>
       <div
         style={{
           width: '100%',
@@ -159,8 +187,17 @@ export default function AcmImage({
           justifyContent: 'space-between',
         }}
       >
-        <Typography>{displayName}</Typography>
-        <Typography>{formattedDate}</Typography>
+        <Typography>
+          <Link
+            external
+            newTab
+            href={`https://www.flukebook.org/encounters/encounter.jsp?number=${encounterId}`}
+          >
+            {formattedDate
+              ? `Observed ${formattedDate}`
+              : 'View sighting'}
+          </Link>
+        </Typography>
       </div>
     </div>
   );

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { get } from 'lodash-es';
 import Typography from '@material-ui/core/Typography';
 import MainColumn from '../../../components/MainColumn';
 import InlineButton from '../../../components/InlineButton';
@@ -9,7 +10,11 @@ import ids from './icelandIds';
 
 export default function Iceland() {
   const [selectedJob, setSelectedJob] = useState(null);
-  const data = ids.map(datum => ({ ...datum, id: datum.acmId, status: 'To do' }));
+  const data = ids.map(datum => ({
+    ...datum,
+    id: datum.acmId,
+    status: 'To do',
+  }));
 
   const columns = [
     {
@@ -20,8 +25,12 @@ export default function Iceland() {
       name: 'acmId',
       label: 'ACM id',
       options: {
-        customBodyRender: acmId => (
-          <InlineButton onClick={() => setSelectedJob(acmId)}>
+        customBodyRender: (acmId, job) => (
+          <InlineButton
+            onClick={() => {
+              setSelectedJob(job);
+            }}
+          >
             {acmId}
           </InlineButton>
         ),
@@ -32,9 +41,7 @@ export default function Iceland() {
       label: 'Annotation ID',
       options: {
         customBodyRender: annotationId => (
-          <Link href="/">
-            {annotationId}
-          </Link>
+          <Link href="/">{annotationId}</Link>
         ),
       },
     },
@@ -60,7 +67,8 @@ export default function Iceland() {
       />
       <JobModal
         open={Boolean(selectedJob)}
-        acmId={selectedJob}
+        acmId={get(selectedJob, 'acmId')}
+        taskId={get(selectedJob, 'taskId')}
         onClose={() => setSelectedJob(null)}
       />
     </MainColumn>
