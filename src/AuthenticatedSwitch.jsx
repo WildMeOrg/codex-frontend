@@ -19,6 +19,7 @@ import SearchSightings from './pages/sighting/SearchSightings';
 import Administration from './pages/administration/Administration';
 import SiteSetup from './pages/administration/SiteSetup';
 import MatchReview from './pages/match/MatchReview';
+import Iceland from './pages/match/iceland/Iceland';
 import Welcome from './pages/auth/Welcome';
 import Home from './pages/home/Home';
 import Footer from './components/Footer';
@@ -94,6 +95,9 @@ export default function AuthenticatedSwitch() {
                       </Route>
                       <Route path="/administration">
                         <Administration />
+                      </Route>
+                      <Route path="/iceland">
+                        <Iceland />
                       </Route>
                       <Route path="/welcome">
                         <Welcome />

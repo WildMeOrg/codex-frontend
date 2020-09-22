@@ -51,7 +51,9 @@ export default function EditAvatar({ visible, onClose, square }) {
           />
         )}
       </DialogContent>
-      <DialogActions style={{ marginTop: 32, padding: '0px 24px 24px 24px' }}>
+      <DialogActions
+        style={{ marginTop: 32, padding: '0px 24px 24px 24px' }}
+      >
         {choosingPhoto && (
           <Button
             disabled={!imageSrc}
@@ -61,9 +63,7 @@ export default function EditAvatar({ visible, onClose, square }) {
             display="basic"
             autoFocus
           >
-            <FormattedMessage
-              id="NEXT_EDIT"
-            />
+            <FormattedMessage id="NEXT_EDIT" />
           </Button>
         )}
         {!choosingPhoto && (
@@ -72,9 +72,7 @@ export default function EditAvatar({ visible, onClose, square }) {
               onClick={() => setChoosingPhoto(true)}
               display="basic"
             >
-              <FormattedMessage
-                id="CHANGE_PHOTO"
-              />
+              <FormattedMessage id="CHANGE_PHOTO" />
             </Button>
             <Button
               display="primary"

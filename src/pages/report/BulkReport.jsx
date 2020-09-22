@@ -143,7 +143,11 @@ export default function BulkReport({ onBack, files }) {
             <Typography style={{ margin: '12px 0' }}>
               <FormattedMessage id="GENERATE_TEMPLATE_DESCRIPTION_2" />
             </Typography>
-            <Button style={{ width: 300 }} display="panel" disabled={!readyToGenerate}>
+            <Button
+              style={{ width: 300 }}
+              display="panel"
+              disabled={!readyToGenerate}
+            >
               <a
                 style={{ textDecoration: 'unset', color: 'unset' }}
                 href={`data:text/plain;charset=utf-8,${encodeURIComponent(

@@ -88,7 +88,9 @@ export default function({
           })}
         </Grid>
       </DialogContent>
-      <DialogActions style={{ padding: '0px 24px 24px 24px', marginTop: 32 }}>
+      <DialogActions
+        style={{ padding: '0px 24px 24px 24px', marginTop: 32 }}
+      >
         <Button
           onClick={() => {
             setFormState(initialState);
