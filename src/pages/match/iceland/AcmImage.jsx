@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { get } from 'lodash-es';
 import { format, parseISO } from 'date-fns';
 import { useTheme } from '@material-ui/core/styles';
@@ -8,7 +8,14 @@ import Link from '../../../components/Link';
 import useDimensions from '../../../hooks/useDimensions';
 import { getFeature } from './utils';
 
-function getAnnotationZoomData(annotation) {
+const noTransform = {
+  scale: 1,
+  tx: 50,
+  ty: 50,
+};
+
+function shouldZoom(annotation) {
+  if (!annotation) return false;
   const bbox = getFeature(annotation, 'parameters');
   const imageHeight = get(annotation, [
     'asset',
@@ -17,12 +24,24 @@ function getAnnotationZoomData(annotation) {
   ]);
   const imageWidth = get(annotation, ['asset', 'metadata', 'width']);
 
-  if (!(bbox && imageHeight && imageWidth))
-    return {
-      scale: 1,
-      tx: 50,
-      ty: 50,
-    };
+  const insufficientData = !(bbox && imageWidth && imageHeight);
+  if (insufficientData) return false;
+  if (bbox.width > 0.8 * imageWidth) return false;
+  if (bbox.height > 0.8 * imageHeight) return false;
+  return true;
+}
+
+function getAnnotationZoomData(annotation, allowZoom) {
+  const bbox = getFeature(annotation, 'parameters');
+  const imageHeight = get(annotation, [
+    'asset',
+    'metadata',
+    'height',
+  ]);
+  const imageWidth = get(annotation, ['asset', 'metadata', 'width']);
+
+  const insufficientData = !(bbox && imageHeight && imageWidth);
+  if (!allowZoom || insufficientData) return noTransform;
 
   const pctHeight = bbox.height / imageHeight;
   const pctWidth = bbox.width / imageWidth;
@@ -53,10 +72,27 @@ export default function AcmImage({
 
   const containerRef = useRef(null);
   const { width } = useDimensions(containerRef);
-  const [zoomed, setZoomed] = useState(true);
-  const [zoomData, setZoomData] = useState(
-    getAnnotationZoomData(annotation),
+  const [zoomEnabled, setZoomEnabled] = useState(null);
+  const [zoomed, setZoomed] = useState(null);
+  const [zoomData, setZoomData] = useState(null);
+
+  useEffect(
+    () => {
+      if (!annotation) {
+        setZoomEnabled(null);
+        setZoomed(null);
+        setZoomData(null);
+      } else {
+        const enableZoom = shouldZoom(annotation);
+        setZoomEnabled(enableZoom);
+        setZoomed(enableZoom); // later we will only do this if there is only one annotation
+        setZoomData(getAnnotationZoomData(annotation, enableZoom));
+      }
+    },
+    [get(annotation, 'id')],
   );
+
+  if (!annotation) return null;
 
   const imageHeight = get(annotation, [
     'asset',
@@ -78,30 +114,33 @@ export default function AcmImage({
 
   const svgHeight = (width * imageHeight) / imageWidth;
 
-  function getRectProperties(annot, currentlyZoomed) {
+  function getRectProperties(annot, currentlyZoomed, allowZoom) {
     const bbox = getFeature(annot, 'parameters');
 
     if (!bbox) return null;
 
-    return {
+    const baseProperties = {
       x: `${(100 * bbox.x) / imageWidth}%`,
       y: `${(100 * bbox.y) / imageHeight}%`,
       width: `${(100 * bbox.width) / imageWidth}%`,
       height: `${(100 * bbox.height) / imageHeight}%`,
-      cursor: currentlyZoomed ? 'zoom-out' : 'zoom-in',
       fill: 'transparent',
-      onClick: () => {
-        if (currentlyZoomed) {
-          setZoomed(false);
-        } else {
-          setZoomed(true);
-          setZoomData(getAnnotationZoomData(annot));
-        }
-      },
+    };
+
+    if (!allowZoom) return baseProperties;
+
+    return {
+      ...baseProperties,
+      cursor: currentlyZoomed ? 'zoom-out' : 'zoom-in',
+      onClick: () => setZoomed(!currentlyZoomed),
     };
   }
 
-  const rectProperties = getRectProperties(annotation, zoomed);
+  const rectProperties = getRectProperties(
+    annotation,
+    zoomed,
+    zoomEnabled,
+  );
 
   return (
     <div
@@ -172,7 +211,7 @@ export default function AcmImage({
               {rectProperties && (
                 <rect
                   {...rectProperties}
-                  strokeWidth={4 / zoomData.scale}
+                  strokeWidth={zoomed ? 4 / zoomData.scale : 4}
                   stroke={theme.palette.common.black}
                 />
               )}
