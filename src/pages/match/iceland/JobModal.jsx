@@ -1,6 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { get } from 'lodash-es';
+import { get, debounce } from 'lodash-es';
+import { useTheme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import Dialog from '@material-ui/core/Dialog';
@@ -9,8 +10,9 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import CloseIcon from '@material-ui/icons/Close';
 import Skeleton from '@material-ui/lab/Skeleton';
 import Alert from '@material-ui/lab/Alert';
+import Backdrop from '@material-ui/core/Backdrop';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
-import useDimensions from '../../../hooks/useDimensions';
 import useAcmImageData, {
   fetchAcmImageData,
 } from './useAcmImageData';
@@ -19,10 +21,9 @@ import AcmImage from './AcmImage';
 import Candidates from './Candidates';
 import ActionButton from './ActionButton';
 
-function PairContainer({ renderChildren = () => null, ...rest }) {
-  const containerRef = useRef(null);
-  const { width } = useDimensions(containerRef);
+const actionAreaWidth = 160;
 
+function PairContainer(props) {
   return (
     <div
       style={{
@@ -32,14 +33,34 @@ function PairContainer({ renderChildren = () => null, ...rest }) {
         justifyContent: 'space-around',
         width: '100%',
       }}
-      {...rest}
-    >
-      {renderChildren(width)}
-    </div>
+      {...props}
+    />
   );
 }
 
 export default function JobModal({ open, onClose, acmId, taskId }) {
+  const [screenWidth, setScreenWidth] = useState(null);
+
+  useEffect(() => {
+    const recordScreenWidth = () => setScreenWidth(window.innerWidth);
+    const debouncedRecordScreenWidth = debounce(
+      recordScreenWidth,
+      200,
+    );
+    window.addEventListener('resize', debouncedRecordScreenWidth);
+    recordScreenWidth();
+
+    return () => {
+      window.removeEventListener(
+        'resize',
+        debouncedRecordScreenWidth,
+      );
+    };
+  }, []);
+
+  const modalWidth = screenWidth * 0.9;
+  const imageWidth = 0.5 * (modalWidth - actionAreaWidth);
+
   const {
     data: annotations,
     loading: targetLoading,
@@ -62,6 +83,8 @@ export default function JobModal({ open, onClose, acmId, taskId }) {
     selectedCandidateAnnotation,
     setSelectedCandidateAnnotation,
   ] = useState(null);
+
+  const theme = useTheme();
 
   let activeCandidate = null;
   let activeCandidateScore = '-';
@@ -123,6 +146,16 @@ export default function JobModal({ open, onClose, acmId, taskId }) {
     onClose();
   };
 
+  if (loading && open) {
+    return (
+      <Backdrop open style={{ zIndex: 1 }}>
+        <CircularProgress
+          style={{ color: theme.palette.common.white }}
+        />
+      </Backdrop>
+    );
+  }
+
   return (
     <div>
       <Dialog
@@ -142,29 +175,21 @@ export default function JobModal({ open, onClose, acmId, taskId }) {
         </DialogTitle>
         <DialogContent style={{ marginBottom: 24 }}>
           {loading && (
-            <PairContainer
-              renderChildren={() => (
-                <React.Fragment>
-                  <Skeleton
-                    variant="rect"
-                    width="40vw"
-                    height={400}
-                    style={{ margin: 16 }}
-                  />
-                  <Skeleton
-                    variant="rect"
-                    width="200px"
-                    height={200}
-                  />
-                  <Skeleton
-                    variant="rect"
-                    width="40vw"
-                    height={400}
-                    style={{ margin: 16 }}
-                  />
-                </React.Fragment>
-              )}
-            />
+            <PairContainer>
+              <Skeleton
+                variant="rect"
+                width="40vw"
+                height={400}
+                style={{ margin: 16 }}
+              />
+              <Skeleton variant="rect" width="200px" height={200} />
+              <Skeleton
+                variant="rect"
+                width="40vw"
+                height={400}
+                style={{ margin: 16 }}
+              />
+            </PairContainer>
           )}
           {error && (
             <Alert severity="error">
@@ -179,51 +204,41 @@ export default function JobModal({ open, onClose, acmId, taskId }) {
           )}
           {showMatches &&
             annotations.map(annotation => (
-              <PairContainer
-                key={annotation.id}
-                renderChildren={width => {
-                  const cardWidth = 0.5 * (width - 160);
-                  return (
-                    <>
-                      <AcmImage
-                        annotation={annotation}
-                        style={{ width: cardWidth }}
-                      />
-                      <div
-                        style={{
-                          display: 'flex',
-                          flexDirection: 'column',
-                          width: 160,
-                          minWidth: 160,
-                          alignItems: 'center',
-                        }}
-                      >
-                        <Typography
-                          variant="subtitle1"
-                          style={{ textDecoration: 'underline' }}
-                        >
-                          <FormattedMessage id="THIS_PAIR" />
-                        </Typography>
-                        <Typography>{`Hotspotter ${activeCandidateScore}`}</Typography>
-                        <ActionButton
-                          annotation1={annotation}
-                          annotation2={selectedCandidateAnnotation}
-                          style={{ marginTop: 8 }}
-                        />
-                      </div>
-                      <Candidates
-                        annotation={selectedCandidateAnnotation}
-                        setSelectedCandidateId={
-                          setSelectedCandidateId
-                        }
-                        candidates={candidates}
-                        activeCandidateIndex={activeCandidateIndex}
-                        style={{ width: cardWidth }}
-                      />
-                    </>
-                  );
-                }}
-              />
+              <PairContainer key={annotation.id}>
+                <AcmImage
+                  annotation={annotation}
+                  style={{ width: imageWidth }}
+                />
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    width: actionAreaWidth,
+                    minWidth: actionAreaWidth,
+                    alignItems: 'center',
+                  }}
+                >
+                  <Typography
+                    variant="subtitle1"
+                    style={{ textDecoration: 'underline' }}
+                  >
+                    <FormattedMessage id="THIS_PAIR" />
+                  </Typography>
+                  <Typography>{`Hotspotter ${activeCandidateScore}`}</Typography>
+                  <ActionButton
+                    annotation1={annotation}
+                    annotation2={selectedCandidateAnnotation}
+                    style={{ marginTop: 8 }}
+                  />
+                </div>
+                <Candidates
+                  annotation={selectedCandidateAnnotation}
+                  setSelectedCandidateId={setSelectedCandidateId}
+                  candidates={candidates}
+                  activeCandidateIndex={activeCandidateIndex}
+                  style={{ width: imageWidth }}
+                />
+              </PairContainer>
             ))}
         </DialogContent>
       </Dialog>
