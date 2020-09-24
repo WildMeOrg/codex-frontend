@@ -13,7 +13,7 @@ export default function CustomButton({
 }) {
   let variant = undefined; // eslint-disable-line
   let color = undefined; // eslint-disable-line
-  const roleStyles = {};
+  let roleStyles = {};
 
   if (display === 'back') {
     return (
@@ -29,7 +29,13 @@ export default function CustomButton({
   }
 
   if (
-    ['primary', 'secondary', 'tertiary', 'subtle'].includes(display)
+    [
+      'primary',
+      'secondary',
+      'tertiary',
+      'subtle',
+      'marketing',
+    ].includes(display)
   ) {
     variant = 'contained';
   }
@@ -42,6 +48,13 @@ export default function CustomButton({
 
   if (display === 'panel') {
     variant = 'outlined';
+  }
+
+  if (display === 'marketing') {
+    roleStyles = {
+      padding: '20px 32px',
+    };
+    color = 'primary';
   }
 
   if (disabled) {

@@ -20,7 +20,7 @@ export default function Testimonial() {
     false,
   );
 
-  const imageSize = 220;
+  const imageSize = '25vw';
 
   return (
     <Grid
@@ -28,7 +28,6 @@ export default function Testimonial() {
       justify="center"
       style={{
         width: '100vw',
-        maxWidth: 900,
         margin: '64px auto',
       }}
     >
@@ -50,25 +49,36 @@ export default function Testimonial() {
         item
         style={{
           textAlign: 'left',
-          maxWidth: 400,
-          margin: '16px 40px 0 40px',
+          maxWidth: 480,
+          marginLeft: 120,
         }}
       >
-        <Typography style={{ fontStyle: 'italic' }}>
+        <Typography
+          style={{
+            fontStyle: 'italic',
+            fontSize: 24,
+            lineHeight: '35px',
+            letterSpacing: '0.05em',
+          }}
+        >
           {`"${siteSettings.testimonial}"`}
         </Typography>
         <Typography
-          variant="subtitle2"
-          style={{ marginTop: 12, textTransform: 'uppercase' }}
+          style={{
+            marginTop: 40,
+            fontSize: 22,
+            letterSpacing: '0.04em',
+            fontWeight: 'bold',
+          }}
         >
           {`${siteSettings.testimonialAuthor}, ${
             siteSettings.testimonialAuthorCredentials
           }`}
         </Typography>
         <Button
-          display="primary"
+          display="marketing"
           style={{
-            marginTop: 12,
+            marginTop: 52,
           }}
         >
           See contributors
