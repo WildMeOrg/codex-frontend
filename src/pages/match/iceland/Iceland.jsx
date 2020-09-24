@@ -3,10 +3,10 @@ import { get } from 'lodash-es';
 
 import Typography from '@material-ui/core/Typography';
 import Skeleton from '@material-ui/lab/Skeleton';
+import { DataGrid } from '@material-ui/data-grid';
 
 import MainColumn from '../../../components/MainColumn';
 import InlineButton from '../../../components/InlineButton';
-import DataDisplay from '../../../components/dataDisplays/DataDisplay';
 import JobModal from './JobModal';
 import ids from './icelandIds';
 import useStatus from './useStatus';
@@ -23,30 +23,23 @@ export default function Iceland() {
 
   const columns = [
     {
-      name: 'status',
-      label: 'Status',
-      options: {
-        customBodyRender: status => (loading ? <Skeleton /> : status),
-      },
+      field: 'status',
+      headerName: 'Status',
+      renderCell: ({ value }) => (loading ? <Skeleton /> : value),
     },
     {
-      name: 'acmId',
-      label: 'ACM ID',
-      options: {
-        customBodyRender: (acmId, job) => (
-          <InlineButton
-            onClick={() => {
-              setSelectedJob(job);
-            }}
-          >
-            {acmId}
-          </InlineButton>
-        ),
-      },
-    },
-    {
-      name: 'annotationId',
-      label: 'Target annotation ID',
+      field: 'acmId',
+      headerName: 'Job Id (ACM Id)',
+      width: 400,
+      renderCell: ({ data: rowData, value }) => (
+        <InlineButton
+          onClick={() => {
+            setSelectedJob(rowData);
+          }}
+        >
+          {value}
+        </InlineButton>
+      ),
     },
   ];
 
@@ -63,10 +56,12 @@ export default function Iceland() {
       >
         Iceland Many-to-Many Matching Tool
       </Typography>
-      <DataDisplay
-        title={`${ids.length} match results`}
-        data={data}
+      <DataGrid
         columns={columns}
+        rows={data}
+        rowHeight={36}
+        autoHeight
+        pageSize={50}
       />
       <JobModal
         open={Boolean(selectedJob)}
