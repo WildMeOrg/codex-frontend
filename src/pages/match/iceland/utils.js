@@ -1,5 +1,23 @@
+import axios from 'axios';
 import { get } from 'lodash-es';
 
 export function getFeature(annotation, feature) {
   return get(annotation, ['asset', 'features', '0', feature]);
+}
+
+export async function setStatus(id, status) {
+  const response = await axios(
+    'https://nextgen.dev-wildbook.org/api/v0/UserValue/iceland',
+  );
+
+  const currentValue = get(response, ['data', 'response'], {});
+
+  axios({
+    url: 'https://nextgen.dev-wildbook.org/api/v0/UserValue/iceland',
+    method: 'post',
+    data: {
+      ...currentValue,
+      [id]: status,
+    },
+  });
 }

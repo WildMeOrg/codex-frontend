@@ -15,7 +15,8 @@ const actions = {
   },
   createIndividual: {
     title: 'Create new individual',
-    buildUrl: () => 'https://www.flukebook.org/',
+    buildUrl: encounterId =>
+      `https://www.flukebook.org/encounters/encounter.jsp?number=${encounterId}`,
   },
 };
 
@@ -42,7 +43,7 @@ export default function ActionButton({
     url = actions.merge.buildUrl(individualId2, encounterId1);
   } else {
     title = actions.createIndividual.title;
-    url = actions.createIndividual.buildUrl();
+    url = actions.createIndividual.buildUrl(encounterId1);
   }
 
   return (
