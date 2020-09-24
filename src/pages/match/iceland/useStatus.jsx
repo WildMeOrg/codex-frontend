@@ -16,7 +16,7 @@ export default function useAcmImageData(key) {
     () => {
       const fetchData = async () => {
         try {
-          await sleep(200);
+          await sleep(400);
           const response = await axios(
             'https://nextgen.dev-wildbook.org/api/v0/UserValue/iceland',
           );
