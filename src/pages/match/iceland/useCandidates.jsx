@@ -39,10 +39,30 @@ export default function useIaLogs(taskId, acmId) {
             candidate => candidate.score > 0.7,
           );
 
-          const filteredSortedCandidates = filteredCandidates.sort(
-            (a, b) => {
-              return a.score < b.score ? 1 : -1;
+          const candidateData = await Promise.all(
+            filteredCandidates.map(candidate => {
+              const candidateAcmId = get(candidate, 'id');
+              return axios(
+                `https://www.flukebook.org/iaResults.jsp?acmId=${candidateAcmId}`,
+              );
+            }),
+          );
+
+          const candidatesWithData = zipWith(
+            filteredCandidates,
+            candidateData,
+            (candidate, candidateFetchResponse) => {
+              const annotation = get(candidateFetchResponse, [
+                'data',
+                'annotations',
+                '0',
+              ]);
+              return { ...candidate, annotation };
             },
+          );
+
+          const filteredSortedCandidates = candidatesWithData.sort(
+            (a, b) => (a.score < b.score ? 1 : -1),
           );
 
           setData(filteredSortedCandidates);

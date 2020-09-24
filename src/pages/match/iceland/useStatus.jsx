@@ -2,7 +2,12 @@ import { useEffect, useState } from 'react';
 import { get } from 'lodash-es';
 import axios from 'axios';
 
-export default function useAcmImageData(acmId) {
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+export default function useAcmImageData(key) {
+  /* Optional key causes re-fetch when the key is updated */
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -11,23 +16,24 @@ export default function useAcmImageData(acmId) {
     () => {
       const fetchData = async () => {
         try {
+          await sleep(200);
           const response = await axios(
-            `https://www.flukebook.org/iaResults.jsp?acmId=${acmId}`,
+            'https://nextgen.dev-wildbook.org/api/v0/UserValue/iceland',
           );
-          setData(get(response, ['data', 'annotations', '0']));
+          setData(get(response, ['data', 'response'], {}));
           setLoading(false);
           setError(false);
         } catch (fetchError) {
           setError(fetchError);
           setLoading(false);
-          console.error('Error fetching site settings');
+          console.error('Error fetching Iceland status data');
           console.error(fetchError);
         }
       };
 
-      if (acmId) fetchData();
+      fetchData();
     },
-    [acmId],
+    [key],
   );
 
   return { data, loading, error, setError, setLoading };

@@ -1,29 +1,37 @@
 import React, { useState } from 'react';
 import { get } from 'lodash-es';
+
 import Typography from '@material-ui/core/Typography';
+import Skeleton from '@material-ui/lab/Skeleton';
+
 import MainColumn from '../../../components/MainColumn';
 import InlineButton from '../../../components/InlineButton';
-import Link from '../../../components/Link';
 import DataDisplay from '../../../components/dataDisplays/DataDisplay';
 import JobModal from './JobModal';
 import ids from './icelandIds';
+import useStatus from './useStatus';
 
 export default function Iceland() {
   const [selectedJob, setSelectedJob] = useState(null);
+  const { data: statuses, loading } = useStatus(selectedJob);
+
   const data = ids.map(datum => ({
     ...datum,
     id: datum.acmId,
-    status: 'To do',
+    status: get(statuses, datum.acmId, 'To do'),
   }));
 
   const columns = [
     {
       name: 'status',
       label: 'Status',
+      options: {
+        customBodyRender: status => (loading ? <Skeleton /> : status),
+      },
     },
     {
       name: 'acmId',
-      label: 'ACM id',
+      label: 'ACM ID',
       options: {
         customBodyRender: (acmId, job) => (
           <InlineButton
@@ -38,12 +46,7 @@ export default function Iceland() {
     },
     {
       name: 'annotationId',
-      label: 'Annotation ID',
-      options: {
-        customBodyRender: annotationId => (
-          <Link href="/">{annotationId}</Link>
-        ),
-      },
+      label: 'Target annotation ID',
     },
   ];
 
