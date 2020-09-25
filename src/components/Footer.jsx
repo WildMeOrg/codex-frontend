@@ -60,7 +60,10 @@ export default function Footer({ authenticated = false }) {
           flexWrap: 'wrap',
         }}
       >
-        <Typography variant="subtitle1" style={{ color: 'white' }}>
+        <Typography
+          variant="subtitle1"
+          style={{ color: theme.palette.common.white }}
+        >
           Wild Me for Whale Sharks
         </Typography>
         <ButtonLink

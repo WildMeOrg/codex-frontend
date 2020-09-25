@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { get, zipWith } from 'lodash-es';
+import { get, zipWith, sortBy } from 'lodash-es';
 import axios from 'axios';
 
 export default function useIaLogs(taskId, acmId) {
@@ -61,8 +61,9 @@ export default function useIaLogs(taskId, acmId) {
             },
           );
 
-          const filteredSortedCandidates = candidatesWithData.sort(
-            (a, b) => (a.score < b.score ? 1 : -1),
+          const filteredSortedCandidates = sortBy(
+            candidatesWithData,
+            candidate => -candidate.score,
           );
 
           setData(filteredSortedCandidates);

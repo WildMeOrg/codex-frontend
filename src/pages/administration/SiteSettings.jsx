@@ -68,6 +68,7 @@ export default function SiteSettings({ primaryButtonId }) {
         ]);
         const valueIsDefined =
           get(currentValues, settingKey, undefined) !== undefined;
+
         return (
           <Grid
             key={settingKey}

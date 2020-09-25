@@ -1,6 +1,7 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { v4 as uuid } from 'uuid';
+import { sortBy } from 'lodash-es';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -17,15 +18,12 @@ export default function RelationshipsInput({
   minimalLabels = false, // eslint-disable-line no-unused-vars
   ...rest
 }) {
-  relationships.sort((a, b) => {
-    if (a.timeCreated < b.timeCreated) return -1;
-    return 1;
-  });
+  const sortedRelationships = sortBy(relationships, 'timeCreaed');
 
   return (
     <div>
-      {relationships.map(relationship => {
-        const otherRelationships = relationships.filter(
+      {sortedRelationships.map(relationship => {
+        const otherRelationships = sortedRelationships.filter(
           r => r.id !== relationship.id,
         );
 
@@ -90,7 +88,7 @@ export default function RelationshipsInput({
         style={{ marginTop: 16 }}
         onClick={() => {
           onChange([
-            ...relationships,
+            ...sortedRelationships,
             {
               targetIndividualId: null,
               direction: null,

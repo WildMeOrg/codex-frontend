@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { get } from 'lodash-es';
+import { get, sortBy } from 'lodash-es';
 import { v4 as uuid } from 'uuid';
 
 import Accordion from '@material-ui/core/Accordion';
@@ -53,10 +53,8 @@ export default function FieldSetInput({
   const intl = useIntl();
   const fieldset = get(value, 'definitions', []);
 
-  fieldset.sort((a, b) => {
-    if (a.timeCreated < b.timeCreated) return -1;
-    return 1;
-  });
+  const sortedFieldset = sortBy(fieldset, ['timeCreated']);
+
   const [demoField, setDemoField] = useState(null);
   const [demoFieldInitialValue, setDemoFieldInitialValue] = useState(
     null,
@@ -72,8 +70,10 @@ export default function FieldSetInput({
         initialValue={demoFieldInitialValue}
         fieldProps={demoField}
       />
-      {fieldset.map(field => {
-        const otherFields = fieldset.filter(r => r.id !== field.id);
+      {sortedFieldset.map(field => {
+        const otherFields = sortedFieldset.filter(
+          r => r.id !== field.id,
+        );
 
         const displayType = fieldTypeChoices.find(
           f => get(field, ['schema', 'displayType']) === f.value,
@@ -307,7 +307,7 @@ export default function FieldSetInput({
         onClick={() => {
           onChange({
             definitions: [
-              ...fieldset,
+              ...sortedFieldset,
               {
                 schema: {
                   displayType: '',
@@ -326,7 +326,11 @@ export default function FieldSetInput({
         size="small"
       >
         <FormattedMessage
-          id={fieldset.length > 0 ? 'ADD_ANOTHER_FIELD' : 'ADD_FIELD'}
+          id={
+            sortedFieldset.length > 0
+              ? 'ADD_ANOTHER_FIELD'
+              : 'ADD_FIELD'
+          }
         />
       </Button>
     </Core>
