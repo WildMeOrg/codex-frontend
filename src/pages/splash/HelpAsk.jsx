@@ -21,16 +21,18 @@ export default function HelpAsk() {
       </ResponsiveHeader>
       <Typography
         style={{
-          maxWidth: 600,
-          padding: '0px 20px',
-          marginBottom: 32,
+          maxWidth: 900,
+          padding: '32px 20px 40px 32px',
+          lineHeight: '45px',
+          letterSpacing: '0.04em',
+          fontSize: 24,
         }}
       >
         <FormattedMessage id="HOW_CAN_HELP_DESCRIPTIONS" />
       </Typography>
       <div>
         <ButtonLink
-          display="primary"
+          display="marketing"
           style={{
             margin: '12px 12px 0 12px',
             minWidth: 120,
@@ -40,7 +42,7 @@ export default function HelpAsk() {
           <FormattedMessage id="REPORT_SIGHTINGS" />
         </ButtonLink>
         <ButtonLink
-          display="primary"
+          display="marketing"
           style={{
             margin: '12px 12px 0 12px',
             minWidth: 200,

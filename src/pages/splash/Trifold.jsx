@@ -19,7 +19,7 @@ function Card({ Icon, titleId, descriptionId }) {
         display: 'flex',
         alignItems: 'center',
         flexDirection: 'column',
-        marginBottom: 40,
+        marginBottom: 48,
       }}
     >
       <div
@@ -39,12 +39,20 @@ function Card({ Icon, titleId, descriptionId }) {
         />
       </div>
       <Typography
-        variant="h6"
-        style={{ marginTop: 20, marginBottom: 4 }}
+        variant="h5"
+        style={{ marginTop: 40, marginBottom: 20 }}
       >
         <FormattedMessage id={titleId} />
       </Typography>
-      <Typography variant="body2">
+      <Typography
+        style={{
+          color: '#818181',
+          lineHeight: '25px',
+          fontSize: 18,
+          letterSpacing: '0.04em',
+          fontWeight: 400,
+        }}
+      >
         <FormattedMessage id={descriptionId} />
       </Typography>
     </Grid>
@@ -64,14 +72,17 @@ export default function Trifold() {
         padding: 20,
       }}
     >
-      <ResponsiveHeader style={{ marginBottom: 40 }}>
+      <ResponsiveHeader style={{ marginBottom: 48 }}>
         <FormattedMessage id="TRIFOLD_TAGLINE" />
       </ResponsiveHeader>
       <Typography
         style={{
-          maxWidth: 600,
+          maxWidth: 900,
           padding: '0px 20px',
-          marginBottom: 40,
+          marginBottom: 60,
+          fontSize: 24,
+          lineHeight: '45px',
+          letterSpacing: '0.04em',
         }}
       >
         <FormattedMessage id="TRIFOLD_DESCRIPTION" />

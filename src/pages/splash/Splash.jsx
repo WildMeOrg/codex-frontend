@@ -3,7 +3,6 @@ import ReactPlayer from 'react-player';
 import { useIntl, FormattedMessage } from 'react-intl';
 import { useSelector } from 'react-redux';
 import { useTheme } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
 import ScrollIcon from '@material-ui/icons/KeyboardArrowUp';
 import Fab from '@material-ui/core/Fab';
 
@@ -16,6 +15,7 @@ import HowItWorks from './HowItWorks';
 import Testimonial from './Testimonial';
 import Metrics from './Metrics';
 import HelpAsk from './HelpAsk';
+import Social from './Social';
 
 export default function Splash() {
   const intl = useIntl();
@@ -103,21 +103,24 @@ export default function Splash() {
             top: '35vh',
             width: '100vw',
             padding: 20,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
             textAlign: 'center',
             color: theme.palette.common.white,
           }}
         >
-          <ResponsiveHeader>
+          <ResponsiveHeader component="h1">
             AI for Whale Shark Research
           </ResponsiveHeader>
-          <Typography variant="subtitle1">
+          <ResponsiveHeader component="subtitle1">
             Upload your whale shark images. Help save the species.
-          </Typography>
+          </ResponsiveHeader>
           <ButtonLink
-            display="primary"
+            display="marketing"
             size="large"
             style={{
-              marginTop: 16,
+              marginTop: '8vh',
             }}
             href="/report"
           >
@@ -130,6 +133,7 @@ export default function Splash() {
       <Testimonial />
       <Metrics />
       <HelpAsk />
+      <Social />
     </div>
   );
 }

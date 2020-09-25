@@ -12,13 +12,17 @@ function Menu({ labelId, schema, themeColor }) {
   return (
     <MenuList style={{ margin: '0 20px' }}>
       <MenuItem>
-        <Typography variant="subtitle2" style={{ color: themeColor }}>
+        <Typography
+          component="h6"
+          variant="h6"
+          style={{ color: themeColor }}
+        >
           <FormattedMessage id={labelId} />
         </Typography>
       </MenuItem>
       {schema.map(item => (
         <MenuItem key={item.id}>
-          <Link noUnderline href={item.href} external={item.external}>
+          <Link href={item.href} external={item.external}>
             <Typography>
               <FormattedMessage id={item.id} />
             </Typography>
@@ -56,13 +60,13 @@ export default function Footer({ authenticated = false }) {
           flexWrap: 'wrap',
         }}
       >
-        <Typography variant="h6" style={{ color: 'white' }}>
+        <Typography variant="subtitle1" style={{ color: 'white' }}>
           Wild Me for Whale Sharks
         </Typography>
         <ButtonLink
           href="https://community.wildbook.org/"
           external
-          display="primary"
+          display="marketing"
         >
           <FormattedMessage id="COMMUNITY_FORUMS" />
         </ButtonLink>
