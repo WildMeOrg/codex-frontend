@@ -1,11 +1,11 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
 import { useSelector } from 'react-redux';
-import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import Button from '../../components/Button';
+import ResponsiveText from '../../components/ResponsiveText';
 import { selectSiteSettings } from '../../modules/site/selectors';
 
 export default function Testimonial() {
@@ -29,9 +29,11 @@ export default function Testimonial() {
       style={{
         width: '100vw',
         margin: '64px auto',
+        display: 'flex',
+        justifyContent: 'space-evenly',
       }}
     >
-      <Grid item style={{ marginBottom: 20 }}>
+      <Grid item style={{ marginBottom: 40 }}>
         <div
           style={{
             backgroundImage: `url(${
@@ -42,6 +44,8 @@ export default function Testimonial() {
             float: 'right',
             height: imageSize,
             width: imageSize,
+            minHeight: 280,
+            minWidth: 280,
           }}
         />
       </Grid>
@@ -50,23 +54,36 @@ export default function Testimonial() {
         style={{
           textAlign: 'left',
           maxWidth: 480,
-          marginLeft: 120,
+          padding: '0 20px',
         }}
       >
-        <Typography
+        <ResponsiveText
+          mobileStyle={{
+            fontSize: 20,
+            lineHeight: '30px',
+          }}
+          desktopStyle={{
+            fontSize: 24,
+            lineHeight: '36px',
+          }}
           style={{
             fontStyle: 'italic',
-            fontSize: 24,
-            lineHeight: '35px',
             letterSpacing: '0.05em',
           }}
         >
           {`"${siteSettings.testimonial}"`}
-        </Typography>
-        <Typography
+        </ResponsiveText>
+        <ResponsiveText
+          mobileStyle={{
+            fontSize: 18,
+            lineHeight: '26px',
+          }}
+          desktopStyle={{
+            fontSize: 22,
+            lineHeight: '36px',
+          }}
           style={{
             marginTop: 40,
-            fontSize: 22,
             letterSpacing: '0.04em',
             fontWeight: 'bold',
           }}
@@ -74,7 +91,7 @@ export default function Testimonial() {
           {`${siteSettings.testimonialAuthor}, ${
             siteSettings.testimonialAuthorCredentials
           }`}
-        </Typography>
+        </ResponsiveText>
         <Button
           display="marketing"
           style={{

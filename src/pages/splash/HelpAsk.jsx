@@ -1,8 +1,7 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import Typography from '@material-ui/core/Typography';
 import ButtonLink from '../../components/ButtonLink';
-import ResponsiveHeader from '../../components/ResponsiveHeader';
+import ResponsiveText from '../../components/ResponsiveText';
 
 export default function HelpAsk() {
   return (
@@ -16,20 +15,26 @@ export default function HelpAsk() {
         margin: '64px 0',
       }}
     >
-      <ResponsiveHeader style={{ margin: '12px 0' }}>
+      <ResponsiveText component="h2" style={{ margin: '12px 0' }}>
         <FormattedMessage id="HOW_CAN_HELP" />
-      </ResponsiveHeader>
-      <Typography
+      </ResponsiveText>
+      <ResponsiveText
+        mobileStyle={{
+          lineHeight: '30px',
+          fontSize: 20,
+        }}
+        desktopStyle={{
+          lineHeight: '45px',
+          fontSize: 24,
+        }}
         style={{
           maxWidth: 900,
           padding: '32px 20px 40px 32px',
-          lineHeight: '45px',
           letterSpacing: '0.04em',
-          fontSize: 24,
         }}
       >
         <FormattedMessage id="HOW_CAN_HELP_DESCRIPTIONS" />
-      </Typography>
+      </ResponsiveText>
       <div>
         <ButtonLink
           display="marketing"

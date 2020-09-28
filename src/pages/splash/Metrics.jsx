@@ -60,7 +60,7 @@ export default function Testimonial() {
             }}
           >
             <metric.icon
-              style={{ fontSize: '4rem', marginRight: isSm ? 0 : 12 }}
+              style={{ fontSize: 52, marginRight: isSm ? 0 : 12 }}
             />
             <div style={{ textAlign: isSm ? 'center' : 'unset' }}>
               <Typography
