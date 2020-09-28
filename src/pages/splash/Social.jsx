@@ -1,9 +1,22 @@
 import React from 'react';
 import { useTheme } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
+import IconButton from '@material-ui/core/IconButton';
 import FacebookIcon from '@material-ui/icons/Facebook';
 import InstagramIcon from '@material-ui/icons/Instagram';
 import GithubIcon from '@material-ui/icons/GitHub';
+import ResponsiveText from '../../components/ResponsiveText';
+
+function SocialButton({ Icon }) {
+  const theme = useTheme();
+
+  return (
+    <IconButton>
+      <Icon
+        style={{ fontSize: 32, color: theme.palette.common.black }}
+      />
+    </IconButton>
+  );
+}
 
 export default function Social() {
   const theme = useTheme();
@@ -14,17 +27,18 @@ export default function Social() {
         backgroundColor: theme.palette.primary.main,
         padding: '60px 20px',
         display: 'flex',
+        flexWrap: 'wrap',
         alignItems: 'center',
         justifyContent: 'center',
       }}
     >
-      <Typography component="h5" variant="h5">
+      <ResponsiveText component="h5">
         Follow our conservation work
-      </Typography>
-      <div style={{ marginLeft: 16 }}>
-        <FacebookIcon style={{ marginLeft: 24, fontSize: '3em' }} />
-        <InstagramIcon style={{ marginLeft: 24, fontSize: '3em' }} />
-        <GithubIcon style={{ marginLeft: 24, fontSize: '3em' }} />
+      </ResponsiveText>
+      <div style={{ margin: '0 16px' }}>
+        <SocialButton Icon={FacebookIcon} />
+        <SocialButton Icon={InstagramIcon} />
+        <SocialButton Icon={GithubIcon} />
       </div>
     </div>
   );

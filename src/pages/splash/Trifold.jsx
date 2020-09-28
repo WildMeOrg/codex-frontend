@@ -6,7 +6,7 @@ import Grid from '@material-ui/core/Grid';
 import IdentificationIcon from '@material-ui/icons/Fingerprint';
 import CodeIcon from '@material-ui/icons/Code';
 import AnalysisIcon from '@material-ui/icons/BarChart';
-import ResponsiveHeader from '../../components/ResponsiveHeader';
+import ResponsiveText from '../../components/ResponsiveText';
 
 function Card({ Icon, titleId, descriptionId }) {
   const theme = useTheme();
@@ -38,12 +38,12 @@ function Card({ Icon, titleId, descriptionId }) {
           style={{ fontSize: 64, color: theme.palette.common.black }}
         />
       </div>
-      <Typography
-        variant="h5"
+      <ResponsiveText
+        component="h5"
         style={{ marginTop: 40, marginBottom: 20 }}
       >
         <FormattedMessage id={titleId} />
-      </Typography>
+      </ResponsiveText>
       <Typography
         style={{
           color: '#818181',
@@ -72,25 +72,31 @@ export default function Trifold() {
         padding: 20,
       }}
     >
-      <ResponsiveHeader style={{ marginBottom: 48 }}>
+      <ResponsiveText component="h2" style={{ marginBottom: 48 }}>
         <FormattedMessage id="TRIFOLD_TAGLINE" />
-      </ResponsiveHeader>
-      <Typography
+      </ResponsiveText>
+      <ResponsiveText
+        desktopStyle={{
+          fontSize: 24,
+          lineHeight: '45px',
+        }}
+        mobileStyle={{
+          fontSize: 16,
+          lineHeight: '30px',
+        }}
         style={{
           maxWidth: 900,
           padding: '0px 20px',
           marginBottom: 60,
-          fontSize: 24,
-          lineHeight: '45px',
           letterSpacing: '0.04em',
         }}
       >
         <FormattedMessage id="TRIFOLD_DESCRIPTION" />
-      </Typography>
+      </ResponsiveText>
       <Grid
         container
         justify="space-around"
-        style={{ maxWidth: 800, margin: '0 auto' }}
+        style={{ maxWidth: 900, margin: '0 auto' }}
       >
         <Card
           titleId="OPEN_SOURCE"
