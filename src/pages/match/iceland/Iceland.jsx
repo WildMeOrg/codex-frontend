@@ -17,7 +17,7 @@ export default function Iceland() {
 
   const data = ids.map(datum => ({
     ...datum,
-    id: datum.acmId,
+    id: `${datum.acmId}-${datum.taskId}-${datum.annotationID}`,
     status: get(statuses, datum.acmId, 'To do'),
   }));
 
