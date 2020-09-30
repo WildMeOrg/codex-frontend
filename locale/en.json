@@ -524,6 +524,7 @@
     "NO_IMAGES": "There are no images for this individual.",
     "TASKS": "Tasks",
     "PRINT": "Print",
+    "NOTES": "Notes",
     "SITE_DATABASE_TAGLINE": "The {siteName} Database",
     "OPEN_SOURCE": "Open Source",
     "ANALYZE_AND_EXPORT": "Analyze & Export",
