@@ -5,16 +5,20 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import CloseIcon from '@material-ui/icons/Close';
 import Alert from '@material-ui/lab/Alert';
+import ModalActions from './ModalActions';
 
 export default function AlertModal({
   open,
   onClose,
   title,
+  setStatus,
+  notes,
+  acmId,
   severity = 'warning',
   ...rest
 }) {
   return (
-    <Dialog open={open} onClose={onClose}>
+    <Dialog open={open} onClose={onClose} fullWidth maxWidth="md">
       <DialogTitle onClose={onClose}>
         {title}
         <IconButton
@@ -28,6 +32,12 @@ export default function AlertModal({
       <DialogContent style={{ marginBottom: 24 }}>
         <Alert severity={severity} {...rest} />
       </DialogContent>
+      <ModalActions
+        notes={notes}
+        closeModal={onClose}
+        setStatus={setStatus}
+        acmId={acmId}
+      />
     </Dialog>
   );
 }

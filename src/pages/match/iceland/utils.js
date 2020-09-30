@@ -21,3 +21,20 @@ export async function setStatus(id, status) {
     },
   });
 }
+
+export async function setNotes(id, note) {
+  const response = await axios(
+    'https://nextgen.dev-wildbook.org/api/v0/UserValue/notes',
+  );
+
+  const currentValue = get(response, ['data', 'response'], {});
+
+  axios({
+    url: 'https://nextgen.dev-wildbook.org/api/v0/UserValue/notes',
+    method: 'post',
+    data: {
+      ...currentValue,
+      [id]: note,
+    },
+  });
+}

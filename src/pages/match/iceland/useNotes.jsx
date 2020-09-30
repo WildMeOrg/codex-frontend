@@ -6,7 +6,7 @@ function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-export default function useStatus(key) {
+export default function useNotes(key) {
   /* Optional key causes re-fetch when the key is updated */
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
@@ -18,7 +18,7 @@ export default function useStatus(key) {
         try {
           await sleep(400);
           const response = await axios(
-            'https://nextgen.dev-wildbook.org/api/v0/UserValue/iceland',
+            'https://nextgen.dev-wildbook.org/api/v0/UserValue/notes',
           );
           setData(get(response, ['data', 'response'], {}));
           setLoading(false);
@@ -26,7 +26,7 @@ export default function useStatus(key) {
         } catch (fetchError) {
           setError(fetchError);
           setLoading(false);
-          console.error('Error fetching Iceland status data');
+          console.error('Error fetching Iceland notes data');
           console.error(fetchError);
         }
       };

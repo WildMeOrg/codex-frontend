@@ -7,17 +7,16 @@ import IconButton from '@material-ui/core/IconButton';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import DialogActions from '@material-ui/core/DialogActions';
 import CloseIcon from '@material-ui/icons/Close';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-import Button from '../../../components/Button';
 import useAcmImageData from './useAcmImageData';
 import useCandidates from './useCandidates';
 import AcmImage from './AcmImage';
 import ActionButton from './ActionButton';
 import AlertModal from './AlertModal';
+import ModalActions from './ModalActions';
 import { setStatus } from './utils';
 
 const actionAreaWidth = 160;
@@ -37,7 +36,13 @@ function PairContainer(props) {
   );
 }
 
-export default function JobModal({ open, onClose, acmId, taskId }) {
+export default function JobModal({
+  open,
+  onClose,
+  acmId,
+  taskId,
+  notes,
+}) {
   const [screenWidth, setScreenWidth] = useState(null);
 
   useEffect(() => {
@@ -112,6 +117,9 @@ export default function JobModal({ open, onClose, acmId, taskId }) {
       <AlertModal
         open
         onClose={closeModal}
+        setStatus={setStatus}
+        notes={notes}
+        acmId={acmId}
         title={title}
         severity={severity}
       >
@@ -178,33 +186,12 @@ export default function JobModal({ open, onClose, acmId, taskId }) {
             );
           })}
         </DialogContent>
-        <DialogActions>
-          <Button
-            onClick={() => {
-              closeModal();
-              setStatus(acmId, 'To do');
-            }}
-          >
-            Mark to do
-          </Button>
-          <Button
-            onClick={() => {
-              closeModal();
-              setStatus(acmId, 'Flagged for review');
-            }}
-          >
-            Flag for review
-          </Button>
-          <Button
-            display="primary"
-            onClick={() => {
-              closeModal();
-              setStatus(acmId, 'Complete');
-            }}
-          >
-            Mark complete
-          </Button>
-        </DialogActions>
+        <ModalActions
+          notes={notes}
+          closeModal={closeModal}
+          setStatus={setStatus}
+          acmId={acmId}
+        />
       </Dialog>
     );
   }
