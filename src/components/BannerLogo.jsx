@@ -7,15 +7,16 @@ import Link from './Link';
 import useSiteSettings from '../models/site/useSiteSettings';
 
 export default function BannerLogo({ href, onClick, ...rest }) {
-  const { data: newSiteSettings, loading, error } = useSiteSettings();
+  const { data: siteSettings, loading, error } = useSiteSettings();
   const theme = useTheme();
 
   let Container = 'div';
   if (onClick) Container = InlineButton;
   if (href) Container = Link;
 
-  const noUnderline = href || onClick ? true : undefined;
-  const siteName = get(newSiteSettings, ['site.name', 'value'], '');
+  const containerProps = href || onClick ? { noUnderline: true } : {};
+
+  const siteName = get(siteSettings, ['site.name', 'value'], '');
 
   if (loading || error) return null;
 
@@ -23,7 +24,7 @@ export default function BannerLogo({ href, onClick, ...rest }) {
     <Container
       href={href}
       onClick={onClick}
-      noUnderline={noUnderline}
+      {...containerProps}
       {...rest}
     >
       <Typography
