@@ -63,7 +63,7 @@ export default function HowItWorks() {
       }}
     >
       <ResponsiveText
-        component="h2"
+        variant="h2"
         style={{
           color: theme.palette.primary.main,
           margin: '12px 0',

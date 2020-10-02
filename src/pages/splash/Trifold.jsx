@@ -39,7 +39,7 @@ function Card({ Icon, titleId, descriptionId }) {
         />
       </div>
       <ResponsiveText
-        component="h5"
+        variant="h5"
         style={{ marginTop: 40, marginBottom: 20 }}
       >
         <FormattedMessage id={titleId} />
@@ -72,7 +72,7 @@ export default function Trifold() {
         padding: 20,
       }}
     >
-      <ResponsiveText component="h2" style={{ marginBottom: 48 }}>
+      <ResponsiveText variant="h2" style={{ marginBottom: 48 }}>
         <FormattedMessage id="TRIFOLD_TAGLINE" />
       </ResponsiveText>
       <ResponsiveText

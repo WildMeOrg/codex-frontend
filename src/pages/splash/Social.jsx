@@ -32,7 +32,7 @@ export default function Social() {
         justifyContent: 'center',
       }}
     >
-      <ResponsiveText component="h5">
+      <ResponsiveText variant="h5">
         Follow our conservation work
       </ResponsiveText>
       <div style={{ margin: '0 16px' }}>

@@ -11,6 +11,7 @@ import DropDownIcon from '@material-ui/icons/ArrowDropDown';
 import HeaderMenu from './HeaderMenu';
 import Link from './Link';
 import InlineButton from './InlineButton';
+import BannerLogo from './BannerLogo';
 
 const languages = ['English', 'Español', 'Deutch'];
 const activeLanguage = 'English';
@@ -43,8 +44,6 @@ export default function UnauthenticatedAppHeader({
     language => language !== activeLanguage,
   );
 
-  const siteName = 'Wild Me for Whale Sharks';
-
   return (
     <div
       style={{
@@ -65,23 +64,12 @@ export default function UnauthenticatedAppHeader({
         padding: 40,
       }}
     >
-      <Typography
-        variant="h6"
-        style={{ color: theme.palette.common.white, marginRight: 12 }}
-      >
-        {siteNameScrolls ? (
-          <InlineButton
-            noUnderline
-            onClick={() => window.scrollTo(0, 0)}
-          >
-            {siteName}
-          </InlineButton>
-        ) : (
-          <Link href="/" noUnderline>
-            {siteName}
-          </Link>
-        )}
-      </Typography>
+      <BannerLogo
+        href={siteNameScrolls ? '/' : 'unset'}
+        onClick={
+          siteNameScrolls ? () => window.scrollTo(0, 0) : 'unset'
+        }
+      />
       <div style={{ display: 'flex' }}>
         {languageMenuOpen && (
           <ClickAwayListener
@@ -99,9 +87,8 @@ export default function UnauthenticatedAppHeader({
             noUnderline
             style={{
               textTransform: 'unset',
-              fontWeight: 300,
               fontSize: 16,
-              letterSpacing: 0,
+              letterSpacing: '0.04em',
               display: 'flex',
               alignItems: 'center',
             }}

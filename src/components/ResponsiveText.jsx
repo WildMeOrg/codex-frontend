@@ -8,23 +8,27 @@ const sizeMap = {
   h1: {
     mobile: 32,
     desktop: 48,
+    component: 'h1',
   },
   h2: {
     mobile: 28,
     desktop: 40,
+    component: 'h2',
   },
   h5: {
     mobile: 20,
     desktop: 24,
+    component: 'h5',
   },
   subtitle1: {
     mobile: 16,
     desktop: 20,
+    component: 'p',
   },
 };
 
 export default function ResponsiveText({
-  component,
+  variant,
   children,
   mobileStyle = {},
   desktopStyle = {},
@@ -33,8 +37,9 @@ export default function ResponsiveText({
 }) {
   const theme = useTheme();
   const isSm = useMediaQuery(theme.breakpoints.down('sm'));
-  const smallSize = get(sizeMap, [component, 'mobile'], 12);
-  const largeSize = get(sizeMap, [component, 'desktop'], 14);
+  const smallSize = get(sizeMap, [variant, 'mobile'], 12);
+  const largeSize = get(sizeMap, [variant, 'desktop'], 14);
+  const component = get(sizeMap, [variant, 'component'], undefined);
 
   const responsiveStyle = isSm
     ? { fontSize: smallSize, ...mobileStyle }
@@ -42,7 +47,7 @@ export default function ResponsiveText({
 
   return (
     <Typography
-      variant={component}
+      variant={variant}
       component={component}
       style={{ ...responsiveStyle, ...style }}
       {...rest}

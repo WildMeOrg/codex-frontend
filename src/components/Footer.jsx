@@ -6,6 +6,7 @@ import MenuList from '@material-ui/core/MenuList';
 import MenuItem from '@material-ui/core/MenuItem';
 import ButtonLink from './ButtonLink';
 import Link from './Link';
+import BannerLogo from './BannerLogo';
 import footerMenuSchema from '../constants/footerMenu';
 
 function Menu({ labelId, schema, themeColor }) {
@@ -60,12 +61,7 @@ export default function Footer({ authenticated = false }) {
           flexWrap: 'wrap',
         }}
       >
-        <Typography
-          variant="subtitle1"
-          style={{ color: theme.palette.common.white }}
-        >
-          Wild Me for Whale Sharks
-        </Typography>
+        <BannerLogo />
         <ButtonLink
           href="https://community.wildbook.org/"
           external
