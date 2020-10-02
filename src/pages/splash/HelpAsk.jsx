@@ -15,7 +15,7 @@ export default function HelpAsk() {
         margin: '64px 0',
       }}
     >
-      <ResponsiveText component="h2" style={{ margin: '12px 0' }}>
+      <ResponsiveText variant="h2" style={{ margin: '12px 0' }}>
         <FormattedMessage id="HOW_CAN_HELP" />
       </ResponsiveText>
       <ResponsiveText

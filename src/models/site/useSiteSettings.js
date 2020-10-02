@@ -11,16 +11,20 @@ import {
 
 export default function useSiteSettings() {
   const { state, dispatch } = useContext(AppContext);
-  const [error, setError] = useState(null);
-  const [settingsLoading, setSettingsLoading] = useState(true);
-  const [schemaLoading, setSchemaLoading] = useState(true);
-  const loading = settingsLoading || schemaLoading;
-
   const {
     siteSettings,
     siteSettingsSchema,
     siteSettingsNeedsFetch,
   } = state;
+
+  const [error, setError] = useState(null);
+  const [settingsLoading, setSettingsLoading] = useState(
+    siteSettingsNeedsFetch,
+  );
+  const [schemaLoading, setSchemaLoading] = useState(
+    siteSettingsNeedsFetch,
+  );
+  const loading = settingsLoading || schemaLoading;
 
   useEffect(() => {
     const fetchData = async () => {

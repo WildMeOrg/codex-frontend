@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import ReactPlayer from 'react-player';
+import { get } from 'lodash-es';
 import { useIntl, FormattedMessage } from 'react-intl';
 import { useSelector } from 'react-redux';
 import { useTheme } from '@material-ui/core/styles';
@@ -10,6 +11,7 @@ import useDocumentTitle from '../../hooks/useDocumentTitle';
 import { selectSiteSettings } from '../../modules/site/selectors';
 import ButtonLink from '../../components/ButtonLink';
 import ResponsiveText from '../../components/ResponsiveText';
+import useSiteSettings from '../../models/site/useSiteSettings';
 import Trifold from './Trifold';
 import HowItWorks from './HowItWorks';
 import Testimonial from './Testimonial';
@@ -20,6 +22,8 @@ import Social from './Social';
 export default function Splash() {
   const intl = useIntl();
   const theme = useTheme();
+  const { data: newSiteSettings, loading, error } = useSiteSettings();
+
   const siteSettings = useSelector(selectSiteSettings);
   const [top, setTop] = useState(true);
 
@@ -42,10 +46,12 @@ export default function Splash() {
   useDocumentTitle(
     intl.formatMessage(
       { id: 'WELCOME_TO_SITENAME' },
-      { siteName: siteSettings.siteName },
+      { siteName: get(newSiteSettings, ['site.name', 'value']) },
     ),
     false,
   );
+
+  if (loading || error) return null;
 
   return (
     <div>
@@ -110,10 +116,10 @@ export default function Splash() {
             color: theme.palette.common.white,
           }}
         >
-          <ResponsiveText component="h1">
-            AI for Whale Shark Research
+          <ResponsiveText variant="h1">
+            {get(newSiteSettings, ['site.general.tagline', 'value'])}
           </ResponsiveText>
-          <ResponsiveText component="subtitle1">
+          <ResponsiveText variant="subtitle1">
             Upload your whale shark images. Help save the species.
           </ResponsiveText>
           <ButtonLink

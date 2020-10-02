@@ -17,7 +17,6 @@ export const lato = [
   '"Segoe UI Symbol"',
 ].join(',');
 
-// const blackColor = '#1a1a1a';
 const blackColor = '#0E1014';
 const whiteColor = '#ffffff';
 
@@ -64,10 +63,10 @@ export default primaryColor => {
         letterSpacing: '0.02em',
       },
       body1: {
-        fontWeight: 300,
+        fontWeight: 400,
       },
       body2: {
-        fontWeight: 200,
+        fontWeight: 300,
         letterSpacing: '0.04em',
       },
       caption: {

@@ -1,25 +1,51 @@
 import React from 'react';
+import { get } from 'lodash-es';
+import { FormattedMessage } from 'react-intl';
 import { useTheme } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import FacebookIcon from '@material-ui/icons/Facebook';
 import InstagramIcon from '@material-ui/icons/Instagram';
 import GithubIcon from '@material-ui/icons/GitHub';
+import TwitterIcon from '@material-ui/icons/Twitter';
+import useSiteSettings from '../../models/site/useSiteSettings';
 import ResponsiveText from '../../components/ResponsiveText';
 
-function SocialButton({ Icon }) {
+function SocialButton({ Icon, href }) {
   const theme = useTheme();
 
   return (
-    <IconButton>
-      <Icon
-        style={{ fontSize: 32, color: theme.palette.common.black }}
-      />
-    </IconButton>
+    <a href={href} target="_blank" rel="noopener noreferrer">
+      <IconButton>
+        <Icon
+          style={{ fontSize: 32, color: theme.palette.common.black }}
+        />
+      </IconButton>
+    </a>
   );
 }
 
 export default function Social() {
+  const { data: siteSettings, loading, error } = useSiteSettings();
   const theme = useTheme();
+
+  const facebookLink = get(
+    siteSettings,
+    ['site.links.facebookLink', 'value'],
+    '',
+  );
+  const instagramLink = get(
+    siteSettings,
+    ['site.links.instagramLink', 'value'],
+    '',
+  );
+  const twitterLink = get(
+    siteSettings,
+    ['site.links.twitterLink', 'value'],
+    '',
+  );
+  const antisocial = !(facebookLink || instagramLink || twitterLink);
+
+  if (loading || error || antisocial) return null;
 
   return (
     <div
@@ -32,13 +58,23 @@ export default function Social() {
         justifyContent: 'center',
       }}
     >
-      <ResponsiveText component="h5">
-        Follow our conservation work
+      <ResponsiveText variant="h5">
+        <FormattedMessage id="FOLLOW_ASK" />
       </ResponsiveText>
       <div style={{ margin: '0 16px' }}>
-        <SocialButton Icon={FacebookIcon} />
-        <SocialButton Icon={InstagramIcon} />
-        <SocialButton Icon={GithubIcon} />
+        {facebookLink && (
+          <SocialButton Icon={FacebookIcon} href={facebookLink} />
+        )}
+        {instagramLink && (
+          <SocialButton Icon={InstagramIcon} href={instagramLink} />
+        )}
+        {twitterLink && (
+          <SocialButton Icon={TwitterIcon} href={twitterLink} />
+        )}
+        <SocialButton
+          Icon={GithubIcon}
+          href="https://github.com/WildbookOrg/wildbook-frontend"
+        />
       </div>
     </div>
   );

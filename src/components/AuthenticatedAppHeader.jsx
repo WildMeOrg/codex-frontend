@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
-import { useSelector } from 'react-redux';
 import { get } from 'lodash-es';
 
 import { useTheme } from '@material-ui/core/styles';
@@ -17,10 +16,10 @@ import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import MenuIcon from '@material-ui/icons/Menu';
 import DropDownIcon from '@material-ui/icons/ArrowDropDown';
 
-import { selectLogos } from '../modules/site/selectors';
 // import useSiteSettings from '../models/site/useSiteSettings';
 import Link from './Link';
 import AppDrawer from './AppDrawer';
+import BannerLogo from './BannerLogo';
 import HeaderMenu from './HeaderMenu';
 import useGetMe from '../models/users/useGetMe';
 import shane from '../assets/shane.jpg';
@@ -35,7 +34,6 @@ export default function AppHeader() {
   const isSm = useMediaQuery(theme.breakpoints.down('sm'));
   const isXs = useMediaQuery(theme.breakpoints.down('xs'));
 
-  const logos = useSelector(selectLogos);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [exploreOpen, setExploreOpen] = React.useState(false);
   const [userMenuOpen, setUserMenuOpen] = React.useState(false);
@@ -93,26 +91,7 @@ export default function AppHeader() {
             <MenuIcon />
           </IconButton>
         )}
-        <Typography
-          component="h1"
-          variant="h6"
-          color="inherit"
-          noWrap
-          style={{ fontSize: 20 }}
-        >
-          <Link
-            href="/"
-            noUnderline
-            style={{ display: 'flex' }}
-            onClick={handleClick}
-          >
-            <img
-              src={logos.white}
-              style={{ height: 30 }}
-              alt="Site logo"
-            />
-          </Link>
-        </Typography>
+        <BannerLogo href="/" onClick={handleClick} />
         {!isSm && (
           <>
             <Typography>

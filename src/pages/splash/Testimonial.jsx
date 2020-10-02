@@ -1,26 +1,31 @@
 import React from 'react';
-import { useIntl } from 'react-intl';
+import { get } from 'lodash-es';
 import { useSelector } from 'react-redux';
 import Grid from '@material-ui/core/Grid';
 
-import useDocumentTitle from '../../hooks/useDocumentTitle';
 import Button from '../../components/Button';
 import ResponsiveText from '../../components/ResponsiveText';
+import useSiteSettings from '../../models/site/useSiteSettings';
 import { selectSiteSettings } from '../../modules/site/selectors';
 
-export default function Testimonial() {
-  const intl = useIntl();
-  const siteSettings = useSelector(selectSiteSettings);
+const imageSize = '25vw';
 
-  useDocumentTitle(
-    intl.formatMessage(
-      { id: 'WELCOME_TO_SITENAME' },
-      { siteName: siteSettings.siteName },
-    ),
-    false,
+export default function Testimonial() {
+  const oldSiteSettings = useSelector(selectSiteSettings);
+  const { data: siteSettings, loading, error } = useSiteSettings();
+
+  const testimonial = get(
+    siteSettings,
+    ['site.general.testimonial', 'value'],
+    '',
+  );
+  const testimonialCitation = get(
+    siteSettings,
+    ['site.general.testimonialCitation', 'value'],
+    '',
   );
 
-  const imageSize = '25vw';
+  if (loading || error) return null;
 
   return (
     <Grid
@@ -37,7 +42,7 @@ export default function Testimonial() {
         <div
           style={{
             backgroundImage: `url(${
-              siteSettings.testimonialAuthorImage
+              oldSiteSettings.testimonialAuthorImage
             })`,
             borderRadius: 1000,
             backgroundSize: 'cover',
@@ -71,7 +76,7 @@ export default function Testimonial() {
             letterSpacing: '0.05em',
           }}
         >
-          {`"${siteSettings.testimonial}"`}
+          {`"${testimonial}"`}
         </ResponsiveText>
         <ResponsiveText
           mobileStyle={{
@@ -88,9 +93,7 @@ export default function Testimonial() {
             fontWeight: 'bold',
           }}
         >
-          {`${siteSettings.testimonialAuthor}, ${
-            siteSettings.testimonialAuthorCredentials
-          }`}
+          {testimonialCitation}
         </ResponsiveText>
         <Button
           display="marketing"

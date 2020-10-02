@@ -1,4 +1,5 @@
 import React from 'react';
+import { get } from 'lodash-es';
 import { FormattedMessage } from 'react-intl';
 import { useTheme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
@@ -7,6 +8,7 @@ import IdentificationIcon from '@material-ui/icons/Fingerprint';
 import CodeIcon from '@material-ui/icons/Code';
 import AnalysisIcon from '@material-ui/icons/BarChart';
 import ResponsiveText from '../../components/ResponsiveText';
+import useSiteSettings from '../../models/site/useSiteSettings';
 
 function Card({ Icon, titleId, descriptionId }) {
   const theme = useTheme();
@@ -39,7 +41,7 @@ function Card({ Icon, titleId, descriptionId }) {
         />
       </div>
       <ResponsiveText
-        component="h5"
+        variant="h5"
         style={{ marginTop: 40, marginBottom: 20 }}
       >
         <FormattedMessage id={titleId} />
@@ -60,6 +62,15 @@ function Card({ Icon, titleId, descriptionId }) {
 }
 
 export default function Trifold() {
+  const { data: siteSettings, loading, error } = useSiteSettings();
+  const siteDescription = get(
+    siteSettings,
+    ['site.general.description', 'value'],
+    '',
+  );
+
+  if (loading || error) return null;
+
   return (
     <div
       style={{
@@ -72,7 +83,7 @@ export default function Trifold() {
         padding: 20,
       }}
     >
-      <ResponsiveText component="h2" style={{ marginBottom: 48 }}>
+      <ResponsiveText variant="h2" style={{ marginBottom: 48 }}>
         <FormattedMessage id="TRIFOLD_TAGLINE" />
       </ResponsiveText>
       <ResponsiveText
@@ -91,7 +102,7 @@ export default function Trifold() {
           letterSpacing: '0.04em',
         }}
       >
-        <FormattedMessage id="TRIFOLD_DESCRIPTION" />
+        {siteDescription}
       </ResponsiveText>
       <Grid
         container
