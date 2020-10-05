@@ -2,6 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useSelector } from 'react-redux';
 import { some, values } from 'lodash-es';
+
 import Typography from '@material-ui/core/Typography';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -10,6 +11,9 @@ import Grid from '@material-ui/core/Grid';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import Alert from '@material-ui/lab/Alert';
+import AlertTitle from '@material-ui/lab/AlertTitle';
+
 import {
   selectSightingSchema,
   selectSightingCategories,
@@ -52,6 +56,8 @@ export default function StandardReport({
     () => getLocationSuggestion(exifData),
     [exifData],
   );
+
+  const showErrorAlertBox = incompleteFields.length > 0 || termsError;
 
   return (
     <>
@@ -202,7 +208,7 @@ export default function StandardReport({
           }
         />
       </Grid>
-      <Grid item>
+      <Grid item style={{ marginBottom: 12 }}>
         <FormControlLabel
           control={
             <Checkbox
@@ -221,12 +227,41 @@ export default function StandardReport({
           }
         />
       </Grid>
+      {showErrorAlertBox && (
+        <Grid item style={{ marginBottom: 12 }}>
+          <Alert severity="error">
+            <AlertTitle>
+              <FormattedMessage id="SUBMISSION_ERROR" />
+            </AlertTitle>
+            {termsError && (
+              <p style={{ margin: '4px 0' }}>
+                <FormattedMessage id="TERMS_ERROR" />
+              </p>
+            )}
+            {incompleteFields.map(incompleteField => (
+              <p
+                style={{ margin: '4px 0' }}
+                key={incompleteField.name}
+              >
+                <FormattedMessage
+                  id="INCOMPLETE_FIELD"
+                  values={{
+                    fieldName: intl.formatMessage({
+                      id: incompleteField.labelId,
+                    }),
+                  }}
+                />
+              </p>
+            ))}
+          </Alert>
+        </Grid>
+      )}
       <Grid
         item
         style={{
-          marginTop: 40,
           display: 'flex',
           flexDirection: 'column',
+          marginTop: 12,
         }}
       >
         <Button
@@ -257,25 +292,6 @@ export default function StandardReport({
         >
           <FormattedMessage id="REPORT_SIGHTING" />
         </Button>
-      </Grid>
-      <Grid style={{ marginTop: 12 }} item>
-        {termsError && (
-          <Typography color="error">
-            <FormattedMessage id="TERMS_ERROR" />
-          </Typography>
-        )}
-        {incompleteFields.map(incompleteField => (
-          <Typography key={incompleteField.name} color="error">
-            <FormattedMessage
-              id="INCOMPLETE_FIELD"
-              values={{
-                fieldName: intl.formatMessage({
-                  id: incompleteField.labelId,
-                }),
-              }}
-            />
-          </Typography>
-        ))}
       </Grid>
     </>
   );
