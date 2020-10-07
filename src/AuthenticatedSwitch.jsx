@@ -18,6 +18,7 @@ import SearchIndividuals from './pages/individual/SearchIndividuals';
 import SearchSightings from './pages/sighting/SearchSightings';
 import Administration from './pages/administration/Administration';
 import SiteSetup from './pages/administration/SiteSetup';
+import AdminActions from './pages/administration/Actions';
 import MatchReview from './pages/match/MatchReview';
 import Iceland from './pages/match/iceland/Iceland';
 import Welcome from './pages/auth/Welcome';
@@ -92,6 +93,9 @@ export default function AuthenticatedSwitch() {
                       </Route>
                       <Route path="/report">
                         <ReportSightings authenticated />
+                      </Route>
+                      <Route path="/admin/actions">
+                        <AdminActions />
                       </Route>
                       <Route path="/administration">
                         <Administration />
