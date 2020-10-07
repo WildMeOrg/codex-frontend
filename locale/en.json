@@ -329,6 +329,7 @@
     "LOCATION_FREEFORM_DESCRIPTION": "Freeform field to describe the location where the sighting took place.",
     "LOCATION_DESCRIPTION": "The precise latitude and longitude where the sighting took place.",
     "WEBSITE": "Website",
+    "SERVER_STATUS": "Server Status",
     "YOUR_NAME": "Your name",
     "CHOOSE_PHOTO": "Choose photo",
     "EMAIL_ADDRESS": "Email address",

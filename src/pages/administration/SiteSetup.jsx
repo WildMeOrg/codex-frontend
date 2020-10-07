@@ -3,7 +3,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import MainColumn from '../../components/MainColumn';
 import newSiteImage from '../../assets/newsite.png';
-import SiteSettings from './SiteSettings';
+import SiteSetupForm from './SiteSetupForm';
 
 export default function SiteSetup() {
   return (
@@ -27,7 +27,7 @@ export default function SiteSetup() {
           </Typography>
         </Grid>
       </Grid>
-      <SiteSettings primaryButtonId="FINISH_SETUP" />
+      <SiteSetupForm primaryButtonId="FINISH_SETUP" />
     </MainColumn>
   );
 }

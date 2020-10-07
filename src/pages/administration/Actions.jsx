@@ -29,7 +29,12 @@ export default function AdminActions() {
       >
         <FormattedMessage id="ADMINISTRATIVE_ACTIONS" />
       </Typography>
-      <Grid container direction="column" alignItems="center">
+      <Grid
+        container
+        direction="column"
+        alignItems="center"
+        style={{ paddingBottom: 40 }}
+      >
         <Grid item style={{ width: '100%' }}>
           <Typography
             variant="h6"

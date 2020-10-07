@@ -111,14 +111,6 @@ export default function AppHeader() {
                 <FormattedMessage id="SIGHTINGS" />
               </Link>
             </Typography>
-
-            {isAdministrator && (
-              <Typography>
-                <Link noUnderline href="/administration">
-                  <FormattedMessage id="ADMIN" />
-                </Link>
-              </Typography>
-            )}
           </>
         )}
         <div
@@ -142,7 +134,7 @@ export default function AppHeader() {
           />
           <HeaderMenu
             open={userMenuOpen}
-            itemCount={2}
+            itemCount={isAdministrator ? 5 : 2}
             style={{ right: -8, marginTop: isXs ? 8 : 12 }}
           >
             <MenuList>
@@ -158,6 +150,48 @@ export default function AppHeader() {
                   </Typography>
                 </MenuItem>
               </Link>
+              {isAdministrator && (
+                <Link href="/admin/settings" noUnderline>
+                  <MenuItem
+                    style={{ minHeight: 'auto' }}
+                    className="dark-menu-item"
+                  >
+                    <Typography
+                      style={{ margin: '0 20px', color: 'white' }}
+                    >
+                      <FormattedMessage id="SITE_SETTINGS" />
+                    </Typography>
+                  </MenuItem>
+                </Link>
+              )}
+              {isAdministrator && (
+                <Link href="/admin/server" noUnderline>
+                  <MenuItem
+                    style={{ minHeight: 'auto' }}
+                    className="dark-menu-item"
+                  >
+                    <Typography
+                      style={{ margin: '0 20px', color: 'white' }}
+                    >
+                      <FormattedMessage id="SERVER_STATUS" />
+                    </Typography>
+                  </MenuItem>
+                </Link>
+              )}
+              {isAdministrator && (
+                <Link href="/admin/actions" noUnderline>
+                  <MenuItem
+                    style={{ minHeight: 'auto' }}
+                    className="dark-menu-item"
+                  >
+                    <Typography
+                      style={{ margin: '0 20px', color: 'white' }}
+                    >
+                      <FormattedMessage id="ADMINISTRATIVE_ACTIONS" />
+                    </Typography>
+                  </MenuItem>
+                </Link>
+              )}
               <form
                 action={`${houstonUrl}/logout?next=/`}
                 method="POST"
