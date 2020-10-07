@@ -12,11 +12,14 @@ import LatLngMap from './mapUtils/LatLngMap';
 import TextInput from './TextInput';
 import Button from '../Button';
 
+const inputMargin = 8;
+
 export default function LatLongInput({
   schema,
   value,
   onChange,
   minimalLabels = false,
+  width = 208,
   ...rest
 }) {
   const [modalOpen, setModalOpen] = useState(false);
@@ -33,12 +36,14 @@ export default function LatLongInput({
 
   const onClose = () => setModalOpen(false);
 
+  const inputWidth = 0.5 * width;
+
   return (
     <div>
       <div style={{ display: 'flex' }}>
         <TextInput
-          width={100}
-          style={{ marginRight: 4 }}
+          width={inputWidth}
+          style={{ marginRight: 0.5 * inputMargin }}
           value={currentLatitudeString}
           onChange={newLat => {
             onChange([parseFloat(newLat), currentLongitude]);
@@ -46,9 +51,9 @@ export default function LatLongInput({
           schema={{ labelId: 'LATITUDE', fieldType: 'float' }}
         />
         <TextInput
-          width={100}
+          width={inputWidth}
           value={currentLongitudeString}
-          style={{ marginLeft: 4 }}
+          style={{ marginLeft: 0.5 * inputMargin }}
           onChange={newLng => {
             onChange([currentLatitude, parseFloat(newLng)]);
           }}
@@ -63,7 +68,7 @@ export default function LatLongInput({
         <FormattedMessage id="CHOOSE_ON_MAP" />
       </Button>
       {schema && !minimalLabels && schema.descriptionId && (
-        <FormHelperText style={{ maxWidth: 220 }}>
+        <FormHelperText style={{ maxWidth: width }}>
           <FormattedMessage id={schema.descriptionId} />
         </FormHelperText>
       )}

@@ -15,6 +15,7 @@ export default function InlineButton({
         color: 'inherit',
         padding: 0,
         background: 'unset',
+        letterSpacing: '0.04em',
         ...style,
       }}
       type="button"

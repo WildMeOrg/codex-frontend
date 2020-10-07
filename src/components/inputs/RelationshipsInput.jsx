@@ -18,7 +18,7 @@ export default function RelationshipsInput({
   minimalLabels = false, // eslint-disable-line no-unused-vars
   ...rest
 }) {
-  const sortedRelationships = sortBy(relationships, 'timeCreaed');
+  const sortedRelationships = sortBy(relationships, 'timeCreated');
 
   return (
     <div>

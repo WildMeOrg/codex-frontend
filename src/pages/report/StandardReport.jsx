@@ -1,16 +1,13 @@
 import React, { useMemo, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useSelector } from 'react-redux';
-import { some, values } from 'lodash-es';
+import { values } from 'lodash-es';
 
 import Typography from '@material-ui/core/Typography';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import Hidden from '@material-ui/core/Hidden';
 import Grid from '@material-ui/core/Grid';
-import AccordionSummary from '@material-ui/core/AccordionSummary';
-import AccordionDetails from '@material-ui/core/AccordionDetails';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import Paper from '@material-ui/core/Paper';
 import Alert from '@material-ui/lab/Alert';
 import AlertTitle from '@material-ui/lab/AlertTitle';
 
@@ -23,7 +20,6 @@ import { getLocationSuggestion } from '../../utils/exif';
 import LabeledInput from '../../components/LabeledInput';
 import Button from '../../components/Button';
 import InlineButton from '../../components/InlineButton';
-import BigExpansionPanel from '../../components/BigExpansionPanel';
 import Callout from '../../components/Callout';
 import TermsAndConditionsDialog from './TermsAndConditionsDialog';
 
@@ -79,9 +75,6 @@ export default function StandardReport({
           const inputsInCategory = schema.filter(
             f => f.category === category.name,
           );
-          const requiredCategory =
-            category.required ||
-            some(inputsInCategory, input => input.required);
 
           if (variant === 'multiple' && category.individualFields)
             return null;
@@ -92,107 +85,106 @@ export default function StandardReport({
             !exifButtonClicked;
 
           return (
-            <BigExpansionPanel
-              key={category.name}
-              defaultExpanded={category.name === 'general'}
-            >
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls={`${
-                  category.name
-                }-filter-panel-content`}
-                id={`${category.name}-filter-panel-header`}
-              >
-                <Typography variant="subtitle1">
-                  {category.labelId ? (
-                    <FormattedMessage id={category.labelId} />
-                  ) : (
-                    category.label
-                  )}
-                  {requiredCategory && ' *'}
+            <div key={category.name}>
+              <div style={{ marginLeft: 12 }}>
+                <Typography variant="h6" style={{ marginTop: 20 }}>
+                  <FormattedMessage id={category.labelId} />
                 </Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                <div
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                  }}
-                >
-                  {category.descriptionId && (
-                    <Typography
-                      variant="subtitle2"
-                      style={{ marginBottom: 12 }}
-                    >
-                      <FormattedMessage id={category.descriptionId} />
-                    </Typography>
-                  )}
-                  {showExifData && (
-                    <Callout
-                      title={
-                        <FormattedMessage id="IMAGE_METADATA_DETECTED" />
-                      }
-                      description={
-                        <FormattedMessage id="LOCATION_METADATA_DETECTED" />
-                      }
-                      actions={
-                        <Button
-                          display="primary"
-                          onClick={() => {
-                            setFormValues({
-                              ...formValues,
-                              location: locationSuggestion,
-                            });
-                            setExifButtonClicked(true);
-                          }}
-                        >
-                          <FormattedMessage id="AUTOFILL_FIELDS" />
-                        </Button>
-                      }
-                    />
-                  )}
-                  {inputsInCategory.map(input => (
-                    <div
-                      key={`${category.name} - ${input.name}`}
-                      style={{
-                        display: 'flex',
-                        marginBottom: 12,
-                      }}
-                    >
-                      <Hidden xsDown>
-                        <Typography
-                          style={{
-                            marginRight: 16,
-                            marginTop: 20,
-                            width: 180,
-                            textAlign: 'right',
-                          }}
-                        >
-                          <FormattedMessage id={input.labelId} />
-                          {input.required && ' *'}
-                        </Typography>
-                      </Hidden>
-                      <LabeledInput
-                        minimalLabels={input.fieldType === 'file'}
-                        schema={input}
-                        value={formValues[input.name]}
-                        onChange={value => {
+                {category.descriptionId && (
+                  <Typography
+                    variant="subtitle2"
+                    style={{ marginBottom: 12 }}
+                  >
+                    <FormattedMessage id={category.descriptionId} />
+                  </Typography>
+                )}
+              </div>
+              <Paper
+                elevation={2}
+                style={{
+                  marginTop: 20,
+                  marginBottom: 12,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                }}
+              >
+                {showExifData && (
+                  <Callout
+                    title={
+                      <FormattedMessage id="IMAGE_METADATA_DETECTED" />
+                    }
+                    description={
+                      <FormattedMessage id="LOCATION_METADATA_DETECTED" />
+                    }
+                    actions={
+                      <Button
+                        display="primary"
+                        onClick={() => {
                           setFormValues({
                             ...formValues,
-                            [input.name]: value,
+                            location: locationSuggestion,
                           });
+                          setExifButtonClicked(true);
                         }}
-                        width={220}
-                      />
+                      >
+                        <FormattedMessage id="AUTOFILL_FIELDS" />
+                      </Button>
+                    }
+                  />
+                )}
+                {inputsInCategory.map(input => (
+                  <div
+                    key={`${category.name} - ${input.name}`}
+                    style={{
+                      width: '100%',
+                      display: 'flex',
+                      flexWrap: 'wrap',
+                      justifyContent: 'space-between',
+                      padding: 24,
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        marginTop: 20,
+                        minWidth: 200,
+                        maxWidth: 400,
+                      }}
+                    >
+                      <Typography>
+                        <FormattedMessage id={input.labelId} />
+                        {input.required && ' *'}
+                      </Typography>
+                      {input.descriptionId && (
+                        <Typography variant="caption">
+                          <FormattedMessage
+                            id={input.descriptionId}
+                          />
+                        </Typography>
+                      )}
                     </div>
-                  ))}
-                </div>
-              </AccordionDetails>
-            </BigExpansionPanel>
+                    <LabeledInput
+                      minimalLabels
+                      schema={input}
+                      value={formValues[input.name]}
+                      onChange={value => {
+                        setFormValues({
+                          ...formValues,
+                          [input.name]: value,
+                        });
+                      }}
+                      width={220}
+                    />
+                  </div>
+                ))}
+              </Paper>
+            </div>
           );
         })}
       </Grid>
-      <Grid item>
+      <Grid item style={{ marginTop: 30 }}>
         <FormControlLabel
           control={
             <Checkbox

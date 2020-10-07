@@ -33,17 +33,24 @@ const newSettingFields = [
   'site.links.instagramLink',
   'site.links.twitterLink',
   'site.custom.regions',
+  'site.custom.customFieldCategories',
   customFields.sighting,
   customFields.encounter,
   customFields.individual,
 ];
 
 /* FieldSetInput cannot be rendered by LabeledInput, this avoids a circular dependency. */
-function SettingInput(props) {
-  if (get(props, ['schema', 'fieldType']) === fieldTypes.fieldset) {
-    return <FieldSetInput {...props} />;
+function SettingInput({ customFieldCategories, schema, ...rest }) {
+  if (get(schema, 'fieldType') === fieldTypes.fieldset) {
+    return (
+      <FieldSetInput
+        schema={schema}
+        customFieldCategories={customFieldCategories}
+        {...rest}
+      />
+    );
   }
-  return <LabeledInput {...props} />;
+  return <LabeledInput schema={schema} {...rest} />;
 }
 
 export default function SiteSettings({ primaryButtonId }) {
@@ -64,6 +71,12 @@ export default function SiteSettings({ primaryButtonId }) {
   useEffect(() => {
     setCurrentValues(zipObject(newSettingFields, edmValues));
   }, edmValues);
+
+  const customFieldCategories = get(
+    newSiteSettings,
+    ['data', 'site.custom.customFieldCategories', 'value'],
+    [],
+  );
 
   return (
     <Grid container direction="column" style={{ marginTop: 40 }}>
@@ -141,6 +154,7 @@ export default function SiteSettings({ primaryButtonId }) {
             >
               {matchingSetting && valueIsDefined ? (
                 <SettingInput
+                  customFieldCategories={customFieldCategories}
                   schema={{
                     labelId: matchingSetting.labelId,
                     descriptionId: matchingSetting.descriptionId,

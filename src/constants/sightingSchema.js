@@ -19,8 +19,8 @@ export const sightingCategories = {
     individualFields: false,
   },
   animal: {
-    name: 'animal',
-    labelId: 'ANIMAL_INFORMATION',
+    name: 'individual',
+    labelId: 'INDIVIDUAL_INFORMATION',
     individualFields: true,
   },
 };
