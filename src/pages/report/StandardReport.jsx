@@ -10,6 +10,7 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Alert from '@material-ui/lab/Alert';
 import AlertTitle from '@material-ui/lab/AlertTitle';
+import ExifIcon from '@material-ui/icons/FlashOn';
 
 import {
   selectSightingSchema,
@@ -20,7 +21,6 @@ import { getLocationSuggestion } from '../../utils/exif';
 import LabeledInput from '../../components/LabeledInput';
 import Button from '../../components/Button';
 import InlineButton from '../../components/InlineButton';
-import Callout from '../../components/Callout';
 import TermsAndConditionsDialog from './TermsAndConditionsDialog';
 
 export default function StandardReport({
@@ -110,16 +110,13 @@ export default function StandardReport({
                 }}
               >
                 {showExifData && (
-                  <Callout
-                    title={
-                      <FormattedMessage id="IMAGE_METADATA_DETECTED" />
-                    }
-                    description={
-                      <FormattedMessage id="LOCATION_METADATA_DETECTED" />
-                    }
-                    actions={
+                  <Alert
+                    style={{ marginTop: 24 }}
+                    icon={<ExifIcon />}
+                    action={
                       <Button
-                        display="primary"
+                        display="panel"
+                        size="small"
                         onClick={() => {
                           setFormValues({
                             ...formValues,
@@ -131,7 +128,12 @@ export default function StandardReport({
                         <FormattedMessage id="AUTOFILL_FIELDS" />
                       </Button>
                     }
-                  />
+                  >
+                    <AlertTitle>
+                      <FormattedMessage id="IMAGE_METADATA_DETECTED" />
+                    </AlertTitle>
+                    <FormattedMessage id="LOCATION_METADATA_DETECTED" />
+                  </Alert>
                 )}
                 {inputsInCategory.map(input => (
                   <div
