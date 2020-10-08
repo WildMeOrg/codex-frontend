@@ -12,18 +12,22 @@ export default function ConfirmDelete({
   onClose,
   onDelete,
   entityToDelete,
+  message,
+  title,
 }) {
   return (
     <Dialog open={open} onClose={onClose}>
       <DialogTitle>
-        <FormattedMessage id="CONFIRM_DELETE" />
+        {title || <FormattedMessage id="CONFIRM_DELETE" />}
       </DialogTitle>
       <DialogContent>
         <Typography>
-          <FormattedMessage
-            id="CONFIRM_DELETE_DESCRIPTION"
-            values={{ entity: entityToDelete }}
-          />
+          {message || (
+            <FormattedMessage
+              id="CONFIRM_DELETE_DESCRIPTION"
+              values={{ entity: entityToDelete }}
+            />
+          )}
         </Typography>
       </DialogContent>
       <DialogActions style={{ padding: '0px 24px 24px 24px' }}>

@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useSelector } from 'react-redux';
-import { values } from 'lodash-es';
+import { get, values } from 'lodash-es';
 
 import Typography from '@material-ui/core/Typography';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -12,16 +12,30 @@ import Alert from '@material-ui/lab/Alert';
 import AlertTitle from '@material-ui/lab/AlertTitle';
 import ExifIcon from '@material-ui/icons/FlashOn';
 
+import useSiteSettings from '../../models/site/useSiteSettings';
 import {
   selectSightingSchema,
   selectSightingCategories,
 } from '../../modules/sightings/selectors';
 import { selectSiteName } from '../../modules/site/selectors';
 import { getLocationSuggestion } from '../../utils/exif';
-import LabeledInput from '../../components/LabeledInput';
+import InputRow from '../../components/InputRow';
 import Button from '../../components/Button';
 import InlineButton from '../../components/InlineButton';
 import TermsAndConditionsDialog from './TermsAndConditionsDialog';
+
+function getCustomFields(siteSettings, property) {
+  return get(
+    siteSettings,
+    [
+      'data',
+      `site.custom.customFields.${property}`,
+      'value',
+      'definitions',
+    ],
+    [],
+  );
+}
 
 export default function StandardReport({
   exifData,
@@ -29,6 +43,31 @@ export default function StandardReport({
   onBack,
 }) {
   const intl = useIntl();
+  const siteSettings = useSiteSettings();
+  const customFieldCategories = get(
+    siteSettings,
+    ['data', 'site.custom.customFieldCategories'],
+    [],
+  );
+  const customEncounterFields = getCustomFields(
+    siteSettings,
+    'Encounter',
+  );
+  const customIndividualFields = getCustomFields(
+    siteSettings,
+    'MarkedIndividual',
+  );
+  const customSightingFields = getCustomFields(
+    siteSettings,
+    'Occurrence',
+  );
+  console.log(
+    customFieldCategories,
+    customEncounterFields,
+    customIndividualFields,
+    customSightingFields,
+  );
+
   const categories = useSelector(selectSightingCategories);
   const schema = useSelector(selectSightingSchema);
   const siteName = useSelector(selectSiteName);
@@ -136,50 +175,20 @@ export default function StandardReport({
                   </Alert>
                 )}
                 {inputsInCategory.map(input => (
-                  <div
+                  <InputRow
                     key={`${category.name} - ${input.name}`}
-                    style={{
-                      width: '100%',
-                      display: 'flex',
-                      flexWrap: 'wrap',
-                      justifyContent: 'space-between',
-                      padding: 24,
+                    labelId={input.labelId}
+                    descriptionId={input.descriptionId}
+                    required={input.required}
+                    schema={input}
+                    value={formValues[input.name]}
+                    onChange={value => {
+                      setFormValues({
+                        ...formValues,
+                        [input.name]: value,
+                      });
                     }}
-                  >
-                    <div
-                      style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        marginTop: 20,
-                        minWidth: 200,
-                        maxWidth: 400,
-                      }}
-                    >
-                      <Typography>
-                        <FormattedMessage id={input.labelId} />
-                        {input.required && ' *'}
-                      </Typography>
-                      {input.descriptionId && (
-                        <Typography variant="caption">
-                          <FormattedMessage
-                            id={input.descriptionId}
-                          />
-                        </Typography>
-                      )}
-                    </div>
-                    <LabeledInput
-                      minimalLabels
-                      schema={input}
-                      value={formValues[input.name]}
-                      onChange={value => {
-                        setFormValues({
-                          ...formValues,
-                          [input.name]: value,
-                        });
-                      }}
-                      width={220}
-                    />
-                  </div>
+                  />
                 ))}
               </Paper>
             </div>

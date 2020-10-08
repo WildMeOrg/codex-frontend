@@ -36,5 +36,40 @@ export default function usePutSiteSettings() {
     }
   };
 
-  return { putSiteSettings, error, setError, success, setSuccess };
+  const putSiteSetting = async (property, data) => {
+    try {
+      const response = await axios({
+        url: `https://nextgen.dev-wildbook.org/api/v0/configuration/${property}`,
+        withCredentials: true,
+        method: 'post',
+        data,
+      });
+      const successful = get(response, ['data', 'success'], false);
+      if (successful) {
+        dispatch(setSiteSettingsNeedsFetch(true));
+        setSuccess(true);
+        setError(null);
+      } else {
+        const serverErrorMessage = get(response, [
+          'data',
+          'message',
+          'details',
+        ]);
+        setError(serverErrorMessage);
+        setSuccess(false);
+      }
+    } catch (postError) {
+      setError(error);
+      setSuccess(false);
+    }
+  };
+
+  return {
+    putSiteSettings,
+    putSiteSetting,
+    error,
+    setError,
+    success,
+    setSuccess,
+  };
 }
