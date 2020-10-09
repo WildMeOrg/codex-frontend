@@ -142,13 +142,12 @@ export default function FieldSettings() {
             deleteCategory,
             customFieldCategories,
           );
-          putSiteSetting(categorySettingName, newCustomCategories)
-            .then(() => {
-              console.log('hurr');
-            })
-            .catch(() => {
-              console.log('thurr');
-            });
+          putSiteSetting(
+            categorySettingName,
+            newCustomCategories,
+          ).then(() => {
+            onCloseConfirmDelete();
+          });
         }}
       />
       {dialogData && (
@@ -227,18 +226,12 @@ export default function FieldSettings() {
                         dialogData,
                         customFieldCategories,
                       );
-                      console.log(newCustomCategories);
                       putSiteSetting(
                         categorySettingName,
                         newCustomCategories,
-                      )
-                        .then(() => {
-                          console.log('hurr');
-                        })
-                        .catch(() => {
-                          console.log('thurr');
-                        });
-                      // onClose();
+                      ).then(() => {
+                        onCloseCategoryDialog();
+                      });
                     }
                   }}
                 >
