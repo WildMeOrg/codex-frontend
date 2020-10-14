@@ -42,11 +42,11 @@ export const getElapsedTimeInWords = (
   return result;
 };
 
-export function formatError(error) {
+export const formatError = error => {
   /* You can also throw the server response from a failed Houston
    * request at this thing. */
   const serverError = get(error, ['data', 'message', 'details']);
   const stringError = error instanceof Error && error.toString();
   const errorToPrint = serverError || stringError || error;
   return JSON.stringify(errorToPrint, null, 2);
-}
+};
