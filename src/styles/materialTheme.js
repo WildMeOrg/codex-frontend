@@ -66,7 +66,7 @@ export default primaryColor => {
         fontWeight: 400,
       },
       body2: {
-        fontWeight: 300,
+        fontWeight: 400,
         letterSpacing: '0.04em',
       },
       caption: {

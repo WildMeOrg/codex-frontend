@@ -37,10 +37,16 @@ export default function ActionButton({
     url = actions.merge.buildUrl(individualId1, individualId2);
   } else if (individualId1) {
     title = actions.addToIndividual.title;
-    url = actions.merge.buildUrl(individualId1, encounterId2);
+    url = actions.addToIndividual.buildUrl(
+      individualId1,
+      encounterId2,
+    );
   } else if (individualId2) {
     title = actions.addToIndividual.title;
-    url = actions.merge.buildUrl(individualId2, encounterId1);
+    url = actions.addToIndividual.buildUrl(
+      individualId2,
+      encounterId1,
+    );
   } else {
     title = actions.createIndividual.title;
     url = actions.createIndividual.buildUrl(encounterId1);

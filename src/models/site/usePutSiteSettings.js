@@ -2,6 +2,7 @@ import { useContext, useState } from 'react';
 import axios from 'axios';
 import { get } from 'lodash-es';
 import { AppContext, setSiteSettingsNeedsFetch } from '../../context';
+import { formatError } from '../../utils/formatters';
 
 export default function usePutSiteSettings() {
   const { dispatch } = useContext(AppContext);
@@ -22,19 +23,47 @@ export default function usePutSiteSettings() {
         setSuccess(true);
         setError(null);
       } else {
-        const serverErrorMessage = get(response, [
-          'data',
-          'message',
-          'details',
-        ]);
-        setError(serverErrorMessage);
+        setError(formatError(response));
         setSuccess(false);
       }
     } catch (postError) {
-      setError(error);
+      setError(formatError(postError));
       setSuccess(false);
     }
   };
 
-  return { putSiteSettings, error, setError, success, setSuccess };
+  const putSiteSetting = async (property, data) => {
+    try {
+      const response = await axios({
+        url: `https://nextgen.dev-wildbook.org/api/v0/configuration/${property}`,
+        withCredentials: true,
+        method: 'post',
+        data: {
+          _value: data,
+        },
+      });
+      const successful = get(response, ['data', 'success'], false);
+      if (successful) {
+        console.log('that was successful');
+        dispatch(setSiteSettingsNeedsFetch(true));
+        setSuccess(true);
+        setError(null);
+      } else {
+        setError(formatError(response));
+        setSuccess(false);
+      }
+    } catch (postError) {
+      setError(formatError(postError));
+      setSuccess(false);
+    }
+  };
+
+  return {
+    putSiteSettings,
+    putSiteSetting,
+    error,
+    setError,
+    success,
+    setSuccess,
+  };
 }

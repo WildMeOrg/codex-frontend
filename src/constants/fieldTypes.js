@@ -23,6 +23,7 @@ const fieldTypes = {
   fieldset: 'customFields', // used only in admin panel
   optioneditor: 'optioneditor', // used only in admin panel
   filetypeeditor: 'filetypeeditor', // used only in admin panel
+  categorylist: 'categoryList', // used only in admin panel
 };
 
 const backendTypes = {
@@ -46,7 +47,7 @@ const backendTypes = {
   taxonomy: 'taxonomy',
 };
 
-/* Informaton about fields that can be turned into custom fields */
+/* Information about fields that can be turned into custom fields */
 export const fieldTypeChoices = [
   {
     labelId: 'STRING',

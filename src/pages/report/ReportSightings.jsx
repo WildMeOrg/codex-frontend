@@ -23,10 +23,10 @@ import UploadManager from './UploadManager';
 export default function ReportSightings({ authenticated = false }) {
   const intl = useIntl();
   useDocumentTitle(intl.formatMessage({ id: 'REPORT_SIGHTINGS' }));
-  const [mode, setMode] = useState('');
+  const [mode, setMode] = useState('one');
   const [files, setFiles] = useState([]);
   const [exifData, setExifData] = useState([]);
-  const [reporting, setReporting] = useState(false);
+  const [reporting, setReporting] = useState(true);
   const noImages = mode !== '' && files.length === 0;
 
   const onBack = () => setReporting(false);
@@ -47,12 +47,11 @@ export default function ReportSightings({ authenticated = false }) {
         {!authenticated && (
           <Grid item style={{ marginTop: 16 }}>
             <Alert
-              style={{ maxWidth: 600 }}
               severity="warning"
               action={
                 <ButtonLink
                   style={{ flexShrink: 0, marginRight: 8 }}
-                  variant="panel"
+                  display="panel"
                   href="/login"
                 >
                   <FormattedMessage id="LOG_IN" />

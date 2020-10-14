@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import { get, sortBy } from 'lodash-es';
 import { v4 as uuid } from 'uuid';
 
@@ -7,21 +7,18 @@ import Accordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-import InputLabel from '@material-ui/core/InputLabel';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
-import {
-  fieldTypeChoices,
-  customFieldCategories,
-} from '../../constants/fieldTypes';
+import { fieldTypeChoices } from '../../constants/fieldTypes';
 import BooleanInput from './BooleanInput';
 import TextInput from './TextInput';
+import SelectInput from './SelectInput';
 import OptionEditor from './fieldSetUtils/OptionEditor';
 import FileTypeEditor from './fieldSetUtils/FileTypeEditor';
 import Button from '../Button';
 import FieldDemo from './fieldSetUtils/FieldDemo';
+import FieldTypeSelector from './fieldSetUtils/FieldTypeSelector';
 
 function updateSchema(field, property, value) {
   return {
@@ -48,9 +45,9 @@ export default function FieldSetInput({
   minimalLabels = false, // eslint-disable-line no-unused-vars
   width = 330,
   required,
+  customFieldCategories,
   ...rest
 }) {
-  const intl = useIntl();
   const fieldset = get(value, 'definitions', []);
 
   const sortedFieldset = sortBy(fieldset, ['timeCreated']);
@@ -98,132 +95,86 @@ export default function FieldSetInput({
                 style={{ display: 'flex', flexDirection: 'column' }}
                 {...rest}
               >
-                <FormControl>
-                  <TextInput
-                    onChange={name => {
-                      onChange({
-                        definitions: [
-                          ...otherFields,
-                          {
-                            ...field,
-                            name,
-                          },
-                        ],
-                      });
-                    }}
+                <TextInput
+                  onChange={name => {
+                    onChange({
+                      definitions: [
+                        ...otherFields,
+                        {
+                          ...field,
+                          name,
+                        },
+                      ],
+                    });
+                  }}
+                  schema={{
+                    labelId: 'FIELD_VALUE',
+                    descriptionId: 'FIELD_VALUE_DESCRIPTION',
+                  }}
+                  value={get(field, 'name', '')}
+                />
+                <TextInput
+                  style={{ marginTop: 8 }}
+                  onChange={label => {
+                    onChange({
+                      definitions: [
+                        ...otherFields,
+                        updateSchema(field, 'label', label),
+                      ],
+                    });
+                  }}
+                  schema={{ labelId: 'FIELD_LABEL' }}
+                  value={get(field, ['schema', 'label'], '')}
+                />
+                <TextInput
+                  style={{ marginTop: 8 }}
+                  onChange={description => {
+                    onChange({
+                      definitions: [
+                        ...otherFields,
+                        updateSchema(
+                          field,
+                          'description',
+                          description,
+                        ),
+                      ],
+                    });
+                  }}
+                  schema={{
+                    labelId: 'FIELD_DESCRIPTION',
+                    displayType: 'longstring',
+                  }}
+                  value={get(field, ['schema', 'description'], '')}
+                />
+                <FieldTypeSelector
+                  field={field}
+                  otherFields={otherFields}
+                  onChange={onChange}
+                />
+                {customFieldCategories.length > 0 && (
+                  <SelectInput
                     schema={{
-                      labelId: 'FIELD_VALUE',
-                      descriptionId: 'FIELD_VALUE_DESCRIPTION',
+                      labelId: 'CATEGORY',
+                      choices: customFieldCategories.map(c => ({
+                        ...c,
+                        value: c.id,
+                      })),
                     }}
-                    value={get(field, 'name', '')}
-                  />
-                </FormControl>
-                <FormControl style={{ marginTop: 8 }}>
-                  <TextInput
-                    onChange={label => {
-                      onChange({
-                        definitions: [
-                          ...otherFields,
-                          updateSchema(field, 'label', label),
-                        ],
-                      });
-                    }}
-                    schema={{ labelId: 'FIELD_LABEL' }}
-                    value={get(field, ['schema', 'label'], '')}
-                  />
-                </FormControl>
-                <FormControl style={{ marginTop: 8 }}>
-                  <TextInput
-                    onChange={description => {
+                    onChange={newCategory => {
                       onChange({
                         definitions: [
                           ...otherFields,
                           updateSchema(
                             field,
-                            'description',
-                            description,
+                            'category',
+                            newCategory,
                           ),
                         ],
                       });
                     }}
-                    schema={{
-                      labelId: 'FIELD_DESCRIPTION',
-                      displayType: 'longstring',
-                    }}
-                    value={get(field, ['schema', 'description'], '')}
+                    value={get(field, ['schema', 'category'], '')}
                   />
-                </FormControl>
-                <FormControl style={{ width: 280, marginTop: 8 }}>
-                  <InputLabel>
-                    <FormattedMessage id="FIELD_TYPE" />
-                  </InputLabel>
-                  <Select
-                    native
-                    labelId="field-type-selector-label"
-                    id="field-type-selector"
-                    value={get(field, ['schema', 'displayType'], '')}
-                    onChange={e => {
-                      const newType = e.target.value;
-                      const newFieldTypeSpecifier = fieldTypeChoices.find(
-                        f => newType === f.value,
-                      );
-
-                      const newField = {
-                        ...field,
-                        multiple:
-                          newFieldTypeSpecifier.backendMultiple,
-                        type: newFieldTypeSpecifier.backendType,
-                        schema: {
-                          ...field.schema,
-                          displayType: newType,
-                        },
-                      };
-
-                      const newConfiguration = get(
-                        newFieldTypeSpecifier,
-                        'configuration',
-                        [],
-                      );
-
-                      newConfiguration.forEach(
-                        configurableProperty => {
-                          newField.schema[
-                            configurableProperty.value
-                          ] = configurableProperty.defaultValue;
-                        },
-                      );
-
-                      onChange({
-                        definitions: [...otherFields, newField],
-                      });
-                    }}
-                  >
-                    {customFieldCategories.map(category => (
-                      <optgroup
-                        label={intl.formatMessage({
-                          id: category.labelId,
-                        })}
-                        key={category.labelId}
-                      >
-                        {category.fields.map(categoryField => {
-                          const option = fieldTypeChoices.find(
-                            f => f.value === categoryField,
-                          );
-                          return (
-                            <option
-                              value={option.value}
-                              key={option.value}
-                            >
-                              {intl.formatMessage({
-                                id: option.labelId,
-                              })}
-                            </option>
-                          );
-                        })}
-                      </optgroup>
-                    ))}
-                  </Select>
-                </FormControl>
+                )}
                 <FormControl style={{ marginTop: 16 }}>
                   <BooleanInput
                     onChange={isRequired => {

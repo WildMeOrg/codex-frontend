@@ -16,8 +16,10 @@ import FourOhFour from './pages/fourohfour/FourOhFour';
 import { selectSiteSettings } from './modules/site/selectors';
 import SearchIndividuals from './pages/individual/SearchIndividuals';
 import SearchSightings from './pages/sighting/SearchSightings';
-import Administration from './pages/administration/Administration';
 import SiteSetup from './pages/administration/SiteSetup';
+import AdminActions from './pages/administration/Actions';
+import ServerStatus from './pages/administration/ServerStatus';
+import EditSiteSettings from './pages/administration/EditSiteSettings';
 import MatchReview from './pages/match/MatchReview';
 import Iceland from './pages/match/iceland/Iceland';
 import Welcome from './pages/auth/Welcome';
@@ -93,8 +95,14 @@ export default function AuthenticatedSwitch() {
                       <Route path="/report">
                         <ReportSightings authenticated />
                       </Route>
-                      <Route path="/administration">
-                        <Administration />
+                      <Route path="/admin/actions">
+                        <AdminActions />
+                      </Route>
+                      <Route path="/admin/server">
+                        <ServerStatus />
+                      </Route>
+                      <Route path="/admin/settings">
+                        <EditSiteSettings />
                       </Route>
                       <Route path="/iceland">
                         <Iceland />

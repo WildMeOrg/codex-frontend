@@ -1,4 +1,4 @@
-import { round } from 'lodash-es';
+import { get, round } from 'lodash-es';
 
 const elapsedTimeCache = {};
 export const getElapsedTimeInWords = (
@@ -40,4 +40,13 @@ export const getElapsedTimeInWords = (
 
   elapsedTimeCache[durationInSeconds] = result;
   return result;
+};
+
+export const formatError = error => {
+  /* You can also throw the server response from a failed Houston
+   * request at this thing. */
+  const serverError = get(error, ['data', 'message', 'details']);
+  const stringError = error instanceof Error && error.toString();
+  const errorToPrint = serverError || stringError || error;
+  return JSON.stringify(errorToPrint, null, 2);
 };

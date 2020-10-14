@@ -33,32 +33,38 @@ export default function DateInput(props) {
     return get(object, 'description', '');
   }
 
+  /* Note: the wrapper div is there because MuiPicker creates two child elements,
+   * which messes up display if this component is a flex child. */
   return (
-    <MuiPickersUtilsProvider utils={DateFnsUtils}>
-      <KeyboardDatePicker
-        disableToolbar
-        variant="inline"
-        format="MM/dd/yyyy"
-        margin="normal"
-        id={`${getLabel(schema)}-date-input`}
-        label={getLabel(schema)}
-        value={value}
-        onChange={onChange}
-        style={{ margin: 0, width }}
-        KeyboardButtonProps={{
-          'aria-label': `${getLabel(schema)} input`,
-        }}
-        {...rest}
-      />
-      {!minimalLabels && (
-        <Typography
-          variant="caption"
-          color="textSecondary"
-          style={{ marginTop: 4 }}
-        >
-          {getDescription(schema)}
-        </Typography>
-      )}
-    </MuiPickersUtilsProvider>
+    <div>
+      <MuiPickersUtilsProvider utils={DateFnsUtils}>
+        <>
+          <KeyboardDatePicker
+            disableToolbar
+            variant="inline"
+            format="MM/dd/yyyy"
+            margin="normal"
+            id={`${getLabel(schema)}-date-input`}
+            label={getLabel(schema)}
+            value={value}
+            onChange={onChange}
+            style={{ margin: 0, width }}
+            KeyboardButtonProps={{
+              'aria-label': `${getLabel(schema)} input`,
+            }}
+            {...rest}
+          />
+          {!minimalLabels && (
+            <Typography
+              variant="caption"
+              color="textSecondary"
+              style={{ marginTop: 4 }}
+            >
+              {getDescription(schema)}
+            </Typography>
+          )}
+        </>
+      </MuiPickersUtilsProvider>
+    </div>
   );
 }
