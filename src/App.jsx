@@ -20,6 +20,7 @@ import messagesEn from '../locale/en.json';
 import messagesEs from '../locale/es.json';
 import { AppContext, initialState } from './context';
 import FrontDesk from './FrontDesk';
+import ServerErrorPage from './components/ServerErrorPage';
 
 // polyfill to enable formatting of a number using the unit prop
 if (typeof Intl.NumberFormat.__addLocaleData === 'function') {
@@ -60,13 +61,17 @@ function reducer(state, action) {
 
 function ContextualizedApp() {
   const locale = useSelector(selectLocale);
-  const siteSettings = useSiteSettings();
+  const { data, error } = useSiteSettings();
 
-  const primaryColor = get(siteSettings, [
-    'data',
-    'site.look.themeColor',
-    'value',
-  ]);
+  const primaryColor = get(data, ['site.look.themeColor', 'value']);
+
+  if (error)
+    return (
+      <ServerErrorPage
+        title="Server unavailable"
+        details="The server could not be reached. Unfortuntely, normal site functionality is currently unavailable. Please check back at a later date."
+      />
+    );
   if (!primaryColor) return null;
   const theme = createMuiTheme(materialTheme(primaryColor));
 
