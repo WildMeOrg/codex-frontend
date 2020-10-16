@@ -19,7 +19,7 @@
     "VALUE": "Value",
     "CUSTOM_INDIVIDUAL_FIELDS": "Custom individual fields",
     "CUSTOM_SIGHTING_FIELDS": "Custom sighting fields",
-    "CUSTOM_COMBINED_FIELDS": "Custom combined fields",
+    "CUSTOM_ENCOUNTER_FIELDS": "Custom encounter fields",
     "DEFAULT_CATEGORY_NOT_EDITABLE": "Default categories are not editable.",
     "CATEGORY_EDIT_MESSAGE": "Only sightings fields can be assigned to sightings categories, and only individual fields can be assigned to individual categories.",
     "HELP_AND_FEEDBACK": "Help & Feedback",

@@ -60,7 +60,7 @@ export default function FieldSettings() {
       <CustomFieldTable
         categories={customFieldCategories}
         fields={customEncounterFields}
-        titleId="CUSTOM_COMBINED_FIELDS"
+        titleId="CUSTOM_ENCOUNTER_FIELDS"
         settingName="site.custom.customFields.Encounter"
       />
     </Grid>

@@ -73,7 +73,7 @@ export default function EditField({
           required
           onChange={name => {
             setEditedField({
-              ...field,
+              ...editedField,
               name,
             });
           }}
@@ -88,7 +88,7 @@ export default function EditField({
           labelId="LABEL"
           required
           onChange={label => {
-            setEditedField(updateSchema(field, 'label', label));
+            setEditedField(updateSchema(editedField, 'label', label));
           }}
           schema={{
             labelId: 'LABEL',
@@ -100,7 +100,7 @@ export default function EditField({
           labelId="DESCRIPTION"
           onChange={description => {
             setEditedField(
-              updateSchema(field, 'description', description),
+              updateSchema(editedField, 'description', description),
             );
           }}
           schema={{
@@ -112,7 +112,7 @@ export default function EditField({
         <InputRow
           labelId="REQUIRED"
           onChange={isRequired => {
-            setEditedField({ ...field, required: isRequired });
+            setEditedField({ ...editedField, required: isRequired });
           }}
           schema={{
             labelId: 'REQUIRED',
@@ -132,7 +132,7 @@ export default function EditField({
           labelId="CATEGORY"
           onChange={newCategory => {
             setEditedField(
-              updateSchema(field, 'category', newCategory),
+              updateSchema(editedField, 'category', newCategory),
             );
           }}
           schema={{
