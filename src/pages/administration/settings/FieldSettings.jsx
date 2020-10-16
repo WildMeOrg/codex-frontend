@@ -38,6 +38,18 @@ export default function FieldSettings() {
 
   if (loading || error) return null;
 
+  const customIndividualCategories = customFieldCategories.filter(
+    c => c.type === categoryTypes.individual,
+  );
+
+  const customSightingCategories = customFieldCategories.filter(
+    c => c.type === categoryTypes.sighting,
+  );
+
+  const customEncounterCategories = customFieldCategories.filter(
+    c => c.type === categoryTypes.encounter,
+  );
+
   return (
     <Grid
       container
@@ -47,27 +59,24 @@ export default function FieldSettings() {
     >
       <CategoryTable />
       <CustomFieldTable
-        categories={customFieldCategories.filter(
-          c => c.type === categoryTypes.individual,
-        )}
+        categories={customIndividualCategories}
         fields={customIndividualFields}
         titleId="CUSTOM_INDIVIDUAL_FIELDS"
+        descriptionId="CUSTOM_INDIVIDUAL_FIELDS_DESCRIPTION"
         settingName="site.custom.customFields.MarkedIndividual"
       />
       <CustomFieldTable
-        categories={customFieldCategories.filter(
-          c => c.type === categoryTypes.sighting,
-        )}
+        categories={customSightingCategories}
         fields={customSightingFields}
         titleId="CUSTOM_SIGHTING_FIELDS"
+        descriptionId="CUSTOM_SIGHTING_FIELDS_DESCRIPTION"
         settingName="site.custom.customFields.Occurrence"
       />
       <CustomFieldTable
-        categories={customFieldCategories.filter(
-          c => c.type === categoryTypes.encounter,
-        )}
+        categories={customEncounterCategories}
         fields={customEncounterFields}
         titleId="CUSTOM_ENCOUNTER_FIELDS"
+        descriptionId="CUSTOM_ENCOUNTER_FIELDS_DESCRIPTION"
         settingName="site.custom.customFields.Encounter"
       />
     </Grid>

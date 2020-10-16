@@ -79,6 +79,16 @@ export default primaryColor => {
       },
     },
     overrides: {
+      MuiTypography: {
+        colorTextSecondary: {
+          color: '#141414',
+        },
+      },
+      MuiFormHelperText: {
+        root: {
+          color: '#141414',
+        },
+      },
       MuiButton: {
         label: {
           letterSpacing: '0.02em',

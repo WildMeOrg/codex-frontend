@@ -28,6 +28,7 @@ import EditField from './EditField';
 export default function CustomFieldTable({
   categories,
   fields,
+  descriptionId,
   titleId,
   settingName,
 }) {
@@ -161,7 +162,7 @@ export default function CustomFieldTable({
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          margin: '12px 0',
+          marginTop: 12,
         }}
       >
         <Typography variant="h5" component="h5">
@@ -189,7 +190,11 @@ export default function CustomFieldTable({
           <FormattedMessage id="ADD_NEW" />
         </Button>
       </div>
+      <Typography variant="caption" style={{ marginBottom: 12 }}>
+        <FormattedMessage id={descriptionId} />
+      </Typography>
       <DataDisplay
+        style={{ marginTop: 8 }}
         noTitleBar
         variant="secondary"
         columns={tableColumns}
