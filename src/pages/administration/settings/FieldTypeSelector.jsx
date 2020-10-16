@@ -11,10 +11,7 @@ import {
   customFieldCategories,
 } from '../../../constants/fieldTypes';
 
-export default function FieldTypeSelector({
-  onChange,
-  field,
-}) {
+export default function FieldTypeSelector({ onChange, field }) {
   const intl = useIntl();
 
   return (

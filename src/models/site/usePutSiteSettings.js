@@ -44,7 +44,6 @@ export default function usePutSiteSettings() {
       });
       const successful = get(response, ['data', 'success'], false);
       if (successful) {
-        console.log('that was successful');
         dispatch(setSiteSettingsNeedsFetch(true));
         setSuccess(true);
         setError(null);

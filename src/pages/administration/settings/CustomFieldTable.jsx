@@ -35,9 +35,14 @@ export default function CustomFieldTable({
   const [deleteField, setDeleteField] = useState(null);
   const [editField, setEditField] = useState(null);
   const [previewField, setPreviewField] = useState(null);
-  const [previewInitialValue, setPreviewInitialValue] = useState(null);
+  const [previewInitialValue, setPreviewInitialValue] = useState(
+    null,
+  );
   const { putSiteSetting, error, setError } = usePutSiteSettings();
-  
+
+  const putFields = definitions =>
+    putSiteSetting(settingName, { definitions });
+
   const tableColumns = [
     {
       name: 'schema.label',
@@ -61,15 +66,18 @@ export default function CustomFieldTable({
               <Tooltip title={intl.formatMessage({ id: 'PREVIEW' })}>
                 <IconButton
                   onClick={() => {
-                    const fieldDisplayType = get(field, ['schema', 'displayType']);
+                    const fieldDisplayType = get(field, [
+                      'schema',
+                      'displayType',
+                    ]);
 
                     const displayTypeSchema = fieldTypeChoices.find(
-                      schema =>
-                      fieldDisplayType ===
-                      schema.value,
+                      schema => fieldDisplayType === schema.value,
                     );
 
-                    setPreviewInitialValue(get(displayTypeSchema, 'defaultValue'));
+                    setPreviewInitialValue(
+                      get(displayTypeSchema, 'defaultValue'),
+                    );
                     setPreviewField(field);
                   }}
                   aria-label={intl.formatMessage({ id: 'PREVIEW' })}
@@ -116,13 +124,10 @@ export default function CustomFieldTable({
         open={Boolean(editField)}
         onClose={onCloseEditField}
         field={editField}
-        onSubmit={(editedField) => {
+        onSubmit={editedField => {
           const newFields = mergeItemById(editedField, fields);
 
-          putSiteSetting(
-            settingName,
-            newFields,
-          ).then(() => {
+          putFields(newFields).then(() => {
             onCloseEditField();
           });
         }}
@@ -144,14 +149,8 @@ export default function CustomFieldTable({
           />
         }
         onDelete={() => {
-          const newCustomCategories = removeItemById(
-            deleteField,
-            fields,
-          );
-          putSiteSetting(
-            settingName,
-            newCustomCategories,
-          ).then(() => {
+          const newFields = removeItemById(deleteField, fields);
+          putFields(newFields).then(() => {
             onCloseConfirmDelete();
           });
         }}

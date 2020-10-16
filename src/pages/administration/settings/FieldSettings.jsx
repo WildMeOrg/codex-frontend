@@ -38,7 +38,12 @@ export default function FieldSettings() {
   if (loading || error) return null;
 
   return (
-    <Grid container direction="column" spacing={3} style={{ marginTop: 40 }}>
+    <Grid
+      container
+      direction="column"
+      spacing={3}
+      style={{ marginTop: 40 }}
+    >
       <CategoryTable />
       <CustomFieldTable
         categories={customFieldCategories}

@@ -50,7 +50,12 @@ export default function EditField({
   const configuration = get(displayTypeSchema, 'configuration', []);
 
   return (
-    <Dialog PaperProps={{ style: { width: 800 } }} maxWidth="lg" open={open} onClose={onClose}>
+    <Dialog
+      PaperProps={{ style: { width: 800 } }}
+      maxWidth="lg"
+      open={open}
+      onClose={onClose}
+    >
       <DialogTitle onClose={onClose}>
         <FormattedMessage id="EDIT_FIELD" />
         <IconButton
@@ -94,11 +99,9 @@ export default function EditField({
         <InputRow
           labelId="DESCRIPTION"
           onChange={description => {
-            setEditedField(updateSchema(
-              field,
-              'description',
-              description,
-            ));
+            setEditedField(
+              updateSchema(field, 'description', description),
+            );
           }}
           schema={{
             labelId: 'DESCRIPTION',
@@ -117,9 +120,7 @@ export default function EditField({
           }}
           value={get(editedField, 'required', false)}
         />
-        <InputRow
-          labelId="FIELD_TYPE"
-          >
+        <InputRow labelId="FIELD_TYPE">
           <FieldTypeSelector
             field={editedField}
             onChange={newField => {
@@ -130,11 +131,9 @@ export default function EditField({
         <InputRow
           labelId="CATEGORY"
           onChange={newCategory => {
-            setEditedField(updateSchema(
-              field,
-              'category',
-              newCategory,
-            ));
+            setEditedField(
+              updateSchema(field, 'category', newCategory),
+            );
           }}
           schema={{
             labelId: 'CATEGORY',
@@ -164,14 +163,17 @@ export default function EditField({
                 ])}
                 schema={{
                   labelId: configurableProperty.labelId,
-                  descriptionId:
-                    configurableProperty.descriptionId,
+                  descriptionId: configurableProperty.descriptionId,
                 }}
-                onChange={newOptions => setEditedField(updateSchema(
-                  field,
-                  configurableProperty.value,
-                  newOptions,
-                ))}
+                onChange={newOptions =>
+                  setEditedField(
+                    updateSchema(
+                      field,
+                      configurableProperty.value,
+                      newOptions,
+                    ),
+                  )
+                }
               />
             </InputRow>
           );
@@ -179,10 +181,7 @@ export default function EditField({
         {children}
       </DialogContent>
       <DialogActions style={{ padding: '0px 24px 24px 24px' }}>
-        <Button
-          display="basic"
-          onClick={onClose}
-        >
+        <Button display="basic" onClick={onClose}>
           <FormattedMessage id="CANCEL" />
         </Button>
         <Button

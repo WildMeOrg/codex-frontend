@@ -53,7 +53,9 @@ export default function InputRow({
           </Typography>
         )}
       </div>
-      {children || <LabeledInput minimalLabels width={220} {...rest} />}
+      {children || (
+        <LabeledInput minimalLabels width={220} {...rest} />
+      )}
     </div>
   );
 }
