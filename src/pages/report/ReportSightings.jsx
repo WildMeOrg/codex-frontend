@@ -23,10 +23,10 @@ import UploadManager from './UploadManager';
 export default function ReportSightings({ authenticated = false }) {
   const intl = useIntl();
   useDocumentTitle(intl.formatMessage({ id: 'REPORT_SIGHTINGS' }));
-  const [mode, setMode] = useState('one');
+  const [mode, setMode] = useState('');
   const [files, setFiles] = useState([]);
   const [exifData, setExifData] = useState([]);
-  const [reporting, setReporting] = useState(true);
+  const [reporting, setReporting] = useState(false);
   const noImages = mode !== '' && files.length === 0;
 
   const onBack = () => setReporting(false);

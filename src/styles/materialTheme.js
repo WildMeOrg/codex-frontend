@@ -81,12 +81,12 @@ export default primaryColor => {
     overrides: {
       MuiTypography: {
         colorTextSecondary: {
-          color: '#141414',
+          color: '#0E1014',
         },
       },
       MuiFormHelperText: {
         root: {
-          color: '#141414',
+          color: '#0E1014',
         },
       },
       MuiButton: {
