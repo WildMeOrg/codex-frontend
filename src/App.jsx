@@ -69,7 +69,7 @@ function ContextualizedApp() {
     return (
       <ServerErrorPage
         title="Server unavailable"
-        details="The server could not be reached. Unfortuntely, normal site functionality is currently unavailable. Please check back at a later date."
+        details="The server could not be reached. Unfortunately, normal site functionality is currently unavailable. Check back at a later date."
       />
     );
   if (!primaryColor) return null;

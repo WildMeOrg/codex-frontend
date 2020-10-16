@@ -62,7 +62,11 @@ export default function StandardReport({
     siteSettings,
     'Occurrence',
   );
-  const customFields = [...customEncounterFields, ...customIndividualFields, ...customSightingFields];
+  const customFields = [
+    ...customEncounterFields,
+    ...customIndividualFields,
+    ...customSightingFields,
+  ];
 
   const categories = useSelector(selectSightingCategories);
   const schema = useSelector(selectSightingSchema);
@@ -194,10 +198,15 @@ export default function StandardReport({
       <Grid item>
         {customFieldCategories.map(category => {
           const inputsInCategory = customFields.filter(
-            customField => get(customField, ['schema', 'category']) === category.id,
+            customField =>
+              get(customField, ['schema', 'category']) ===
+              category.id,
           );
 
-          if (variant === 'multiple' && category.type === categoryTypes.individual)
+          if (
+            variant === 'multiple' &&
+            category.type === categoryTypes.individual
+          )
             return null;
 
           return (
@@ -221,7 +230,10 @@ export default function StandardReport({
                   <InputRow
                     key={`${category.id} - ${input.name}`}
                     label={get(input, ['schema', 'label'])}
-                    description={get(input, ['schema', 'description'])}
+                    description={get(input, [
+                      'schema',
+                      'description',
+                    ])}
                     required={input.required}
                     schema={input.schema}
                     value={null}
