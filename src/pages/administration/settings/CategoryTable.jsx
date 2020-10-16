@@ -272,7 +272,6 @@ export default function FieldSettings() {
       <DataDisplay
         noTitleBar
         variant="secondary"
-        title={<FormattedMessage id="FIELD_CATEGORIES" />}
         columns={categoryColumns}
         data={categories}
       />

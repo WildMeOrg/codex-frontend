@@ -5,6 +5,8 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
+import Alert from '@material-ui/lab/Alert';
+import AlertTitle from '@material-ui/lab/AlertTitle';
 import Button from './Button';
 
 export default function ConfirmDelete({
@@ -13,6 +15,7 @@ export default function ConfirmDelete({
   onDelete,
   entityToDelete,
   message,
+  error,
   title,
 }) {
   return (
@@ -29,6 +32,14 @@ export default function ConfirmDelete({
             />
           )}
         </Typography>
+        {error && (
+          <Alert severity="error">
+            <AlertTitle>
+              <FormattedMessage id="SUBMISSION_ERROR" />
+            </AlertTitle>
+            {error}
+          </Alert>
+        )}
       </DialogContent>
       <DialogActions style={{ padding: '0px 24px 24px 24px' }}>
         <Button display="basic" onClick={onClose}>

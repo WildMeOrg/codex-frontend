@@ -9,7 +9,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import CloseIcon from '@material-ui/icons/Close';
 
-import LabeledInput from '../../LabeledInput';
+import LabeledInput from '../../../components/LabeledInput';
 
 export default function FieldDemo({
   open,

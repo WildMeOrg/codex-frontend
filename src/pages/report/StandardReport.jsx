@@ -19,6 +19,7 @@ import {
 } from '../../modules/sightings/selectors';
 import { selectSiteName } from '../../modules/site/selectors';
 import { getLocationSuggestion } from '../../utils/exif';
+import categoryTypes from '../../constants/categoryTypes';
 import InputRow from '../../components/InputRow';
 import Button from '../../components/Button';
 import InlineButton from '../../components/InlineButton';
@@ -46,7 +47,7 @@ export default function StandardReport({
   const siteSettings = useSiteSettings();
   const customFieldCategories = get(
     siteSettings,
-    ['data', 'site.custom.customFieldCategories'],
+    ['data', 'site.custom.customFieldCategories', 'value'],
     [],
   );
   const customEncounterFields = getCustomFields(
@@ -61,12 +62,11 @@ export default function StandardReport({
     siteSettings,
     'Occurrence',
   );
-  console.log(
-    customFieldCategories,
-    customEncounterFields,
-    customIndividualFields,
-    customSightingFields,
-  );
+  const customFields = [
+    ...customEncounterFields,
+    ...customIndividualFields,
+    ...customSightingFields,
+  ];
 
   const categories = useSelector(selectSightingCategories);
   const schema = useSelector(selectSightingSchema);
@@ -187,6 +187,58 @@ export default function StandardReport({
                         ...formValues,
                         [input.name]: value,
                       });
+                    }}
+                  />
+                ))}
+              </Paper>
+            </div>
+          );
+        })}
+      </Grid>
+      <Grid item>
+        {customFieldCategories.map(category => {
+          const inputsInCategory = customFields.filter(
+            customField =>
+              get(customField, ['schema', 'category']) ===
+              category.id,
+          );
+
+          if (
+            variant === 'multiple' &&
+            category.type === categoryTypes.individual
+          )
+            return null;
+
+          return (
+            <div key={category.name}>
+              <div style={{ marginLeft: 12 }}>
+                <Typography variant="h6" style={{ marginTop: 20 }}>
+                  {category.label}
+                </Typography>
+              </div>
+              <Paper
+                elevation={2}
+                style={{
+                  marginTop: 20,
+                  marginBottom: 12,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                }}
+              >
+                {inputsInCategory.map(input => (
+                  <InputRow
+                    key={`${category.id} - ${input.name}`}
+                    label={get(input, ['schema', 'label'])}
+                    description={get(input, [
+                      'schema',
+                      'description',
+                    ])}
+                    required={input.required}
+                    schema={input.schema}
+                    value={null}
+                    onChange={value => {
+                      console.log(value);
                     }}
                   />
                 ))}
