@@ -5,6 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import useSiteSettings from '../../../models/site/useSiteSettings';
 import CategoryTable from './CategoryTable';
 import CustomFieldTable from './CustomFieldTable';
+import categoryTypes from '../../../constants/categoryTypes';
 
 function getCustomFields(siteSettings, property) {
   return get(
@@ -46,19 +47,25 @@ export default function FieldSettings() {
     >
       <CategoryTable />
       <CustomFieldTable
-        categories={customFieldCategories}
+        categories={customFieldCategories.filter(
+          c => c.type === categoryTypes.individual,
+        )}
         fields={customIndividualFields}
         titleId="CUSTOM_INDIVIDUAL_FIELDS"
         settingName="site.custom.customFields.MarkedIndividual"
       />
       <CustomFieldTable
-        categories={customFieldCategories}
+        categories={customFieldCategories.filter(
+          c => c.type === categoryTypes.sighting,
+        )}
         fields={customSightingFields}
         titleId="CUSTOM_SIGHTING_FIELDS"
         settingName="site.custom.customFields.Occurrence"
       />
       <CustomFieldTable
-        categories={customFieldCategories}
+        categories={customFieldCategories.filter(
+          c => c.type === categoryTypes.encounter,
+        )}
         fields={customEncounterFields}
         titleId="CUSTOM_ENCOUNTER_FIELDS"
         settingName="site.custom.customFields.Encounter"

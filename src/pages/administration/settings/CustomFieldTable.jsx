@@ -60,50 +60,48 @@ export default function CustomFieldTable({
       name: 'actions',
       label: intl.formatMessage({ id: 'ACTIONS' }),
       options: {
-        customBodyRender: (_, field) => {
-          return (
-            <div>
-              <Tooltip title={intl.formatMessage({ id: 'PREVIEW' })}>
-                <IconButton
-                  onClick={() => {
-                    const fieldDisplayType = get(field, [
-                      'schema',
-                      'displayType',
-                    ]);
+        customBodyRender: (_, field) => (
+          <div>
+            <Tooltip title={intl.formatMessage({ id: 'PREVIEW' })}>
+              <IconButton
+                onClick={() => {
+                  const fieldDisplayType = get(field, [
+                    'schema',
+                    'displayType',
+                  ]);
 
-                    const displayTypeSchema = fieldTypeChoices.find(
-                      schema => fieldDisplayType === schema.value,
-                    );
+                  const displayTypeSchema = fieldTypeChoices.find(
+                    schema => fieldDisplayType === schema.value,
+                  );
 
-                    setPreviewInitialValue(
-                      get(displayTypeSchema, 'defaultValue'),
-                    );
-                    setPreviewField(field);
-                  }}
-                  aria-label={intl.formatMessage({ id: 'PREVIEW' })}
-                >
-                  <PreviewIcon />
-                </IconButton>
-              </Tooltip>
-              <Tooltip title={intl.formatMessage({ id: 'EDIT' })}>
-                <IconButton
-                  onClick={() => setEditField(field)}
-                  aria-label={intl.formatMessage({ id: 'EDIT' })}
-                >
-                  <EditIcon />
-                </IconButton>
-              </Tooltip>
-              <Tooltip title={intl.formatMessage({ id: 'DELETE' })}>
-                <IconButton
-                  onClick={() => setDeleteField(field)}
-                  aria-label={intl.formatMessage({ id: 'DELETE' })}
-                >
-                  <DeleteIcon />
-                </IconButton>
-              </Tooltip>
-            </div>
-          );
-        },
+                  setPreviewInitialValue(
+                    get(displayTypeSchema, 'defaultValue'),
+                  );
+                  setPreviewField(field);
+                }}
+                aria-label={intl.formatMessage({ id: 'PREVIEW' })}
+              >
+                <PreviewIcon />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title={intl.formatMessage({ id: 'EDIT' })}>
+              <IconButton
+                onClick={() => setEditField(field)}
+                aria-label={intl.formatMessage({ id: 'EDIT' })}
+              >
+                <EditIcon />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title={intl.formatMessage({ id: 'DELETE' })}>
+              <IconButton
+                onClick={() => setDeleteField(field)}
+                aria-label={intl.formatMessage({ id: 'DELETE' })}
+              >
+                <DeleteIcon />
+              </IconButton>
+            </Tooltip>
+          </div>
+        ),
       },
     },
   ];
@@ -124,11 +122,13 @@ export default function CustomFieldTable({
         open={Boolean(editField)}
         onClose={onCloseEditField}
         field={editField}
+        error={error}
+        categories={categories}
         onSubmit={editedField => {
           const newFields = mergeItemById(editedField, fields);
 
-          putFields(newFields).then(() => {
-            onCloseEditField();
+          putFields(newFields).then(requestSuccessful => {
+            if (requestSuccessful) onCloseEditField();
           });
         }}
       />
@@ -142,6 +142,7 @@ export default function CustomFieldTable({
         open={Boolean(deleteField)}
         onClose={onCloseConfirmDelete}
         title={<FormattedMessage id="DELETE_FIELD" />}
+        error={error}
         message={
           <FormattedMessage
             id="CONFIRM_DELETE_FIELD"
@@ -150,8 +151,8 @@ export default function CustomFieldTable({
         }
         onDelete={() => {
           const newFields = removeItemById(deleteField, fields);
-          putFields(newFields).then(() => {
-            onCloseConfirmDelete();
+          putFields(newFields).then(requestSuccessful => {
+            if (requestSuccessful) onCloseConfirmDelete();
           });
         }}
       />

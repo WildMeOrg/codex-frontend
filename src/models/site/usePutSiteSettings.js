@@ -47,13 +47,16 @@ export default function usePutSiteSettings() {
         dispatch(setSiteSettingsNeedsFetch(true));
         setSuccess(true);
         setError(null);
-      } else {
-        setError(formatError(response));
-        setSuccess(false);
+        return true;
       }
+
+      setError(formatError(response));
+      setSuccess(false);
+      return false;
     } catch (postError) {
       setError(formatError(postError));
       setSuccess(false);
+      return false;
     }
   };
 

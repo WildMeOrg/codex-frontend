@@ -8,6 +8,8 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogActions from '@material-ui/core/DialogActions';
 import CloseIcon from '@material-ui/icons/Close';
+import Alert from '@material-ui/lab/Alert';
+import AlertTitle from '@material-ui/lab/AlertTitle';
 
 import BooleanInput from '../../../components/inputs/BooleanInput';
 import Button from '../../../components/Button';
@@ -30,6 +32,8 @@ export default function EditField({
   onClose,
   field,
   onSubmit,
+  error,
+  categories,
   children,
 }) {
   const [editedField, setEditedField] = useState(field);
@@ -138,7 +142,10 @@ export default function EditField({
           schema={{
             labelId: 'CATEGORY',
             displayType: 'select',
-            choices: [],
+            choices: categories.map(c => ({
+              label: c.label,
+              value: c.id,
+            })),
           }}
           value={get(editedField, ['schema', 'category'], '')}
         />
@@ -179,6 +186,14 @@ export default function EditField({
           );
         })}
         {children}
+        {error && (
+          <Alert severity="error">
+            <AlertTitle>
+              <FormattedMessage id="SUBMISSION_ERROR" />
+            </AlertTitle>
+            {error}
+          </Alert>
+        )}
       </DialogContent>
       <DialogActions style={{ padding: '0px 24px 24px 24px' }}>
         <Button display="basic" onClick={onClose}>
