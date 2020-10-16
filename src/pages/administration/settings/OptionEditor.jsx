@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
-
+import { v4 as uuid } from 'uuid';
 import FormControl from '@material-ui/core/FormControl';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
@@ -10,13 +10,13 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import CloseIcon from '@material-ui/icons/Close';
 
-import TextInput from '../TextInput';
-import DeleteButton from '../../DeleteButton';
-import Button from '../../Button';
+import TextInput from '../../../components/inputs/TextInput';
+import DeleteButton from '../../../components/DeleteButton';
+import Button from '../../../components/Button';
 
-export default function FileTypeEditor({
+export default function OptionEditor({
   schema,
-  value: filetypes,
+  value,
   onChange,
   minimalLabels = false, // eslint-disable-line no-unused-vars
   ...rest
@@ -24,7 +24,9 @@ export default function FileTypeEditor({
   const [modalOpen, setModalOpen] = useState(false);
   const onClose = () => setModalOpen(false);
 
-  const displayedFileTypes = filetypes.length > 0 ? filetypes : [''];
+  const options = value || [];
+  const displayedOptions =
+    options.length > 0 ? options : [{ label: '', value: '', id: 6 }];
 
   return (
     <div>
@@ -36,9 +38,6 @@ export default function FileTypeEditor({
           width: '100%',
         }}
       >
-        <Typography>
-          <FormattedMessage id={schema.labelId} />
-        </Typography>
         <Button
           size="small"
           style={{ marginTop: 16 }}
@@ -46,14 +45,14 @@ export default function FileTypeEditor({
           {...rest}
         >
           <FormattedMessage
-            id="X_FILETYPES"
-            values={{ x: filetypes.length }}
+            id="X_OPTIONS"
+            values={{ x: options.length }}
           />
         </Button>
       </div>
       <Dialog open={modalOpen} onClose={onClose}>
         <DialogTitle onClose={onClose}>
-          <FormattedMessage id="ALLOWED_FILETYPES_EDITOR" />
+          <FormattedMessage id="OPTION_EDITOR" />
           <IconButton
             style={{ position: 'absolute', top: 8, right: 16 }}
             aria-label="close"
@@ -68,9 +67,11 @@ export default function FileTypeEditor({
               <FormattedMessage id={schema.descriptionId} />
             </Typography>
           )}
-          {displayedFileTypes.map((filetype, index) => {
-            const showDeleteButton = displayedFileTypes.length !== 1;
-
+          {displayedOptions.map((option, optionIndex) => {
+            const otherOptions = options.filter(
+              o => o.id !== option.id,
+            );
+            const showDeleteButton = displayedOptions.length !== 1;
             return (
               <div
                 style={{
@@ -78,21 +79,17 @@ export default function FileTypeEditor({
                   flexDirection: 'column',
                   marginBottom: 12,
                 }}
-                key={index}
+                key={option.id}
               >
                 <div
                   style={{ display: 'flex', alignItems: 'center' }}
                 >
                   <Typography variant="subtitle2">
-                    <FormattedMessage id="FILETYPE" />
+                    <FormattedMessage id="OPTION" />
                   </Typography>
                   {showDeleteButton && (
                     <DeleteButton
-                      onClick={() => {
-                        onChange(
-                          filetypes.filter((f, i) => i !== index),
-                        );
-                      }}
+                      onClick={() => onChange(otherOptions)}
                     />
                   )}
                 </div>
@@ -102,13 +99,32 @@ export default function FileTypeEditor({
                 >
                   <FormControl style={{ marginRight: 12 }}>
                     <TextInput
-                      onChange={value => {
-                        const newFiletypes = [...filetypes];
-                        newFiletypes[index] = value;
-                        onChange(newFiletypes);
+                      onChange={label => {
+                        const newOptions = [...options];
+                        newOptions[optionIndex] = {
+                          ...option,
+                          label,
+                        };
+                        onChange(newOptions);
                       }}
-                      schema={{ labelId: 'FILETYPE' }}
-                      value={filetype}
+                      width={200}
+                      schema={{ labelId: 'OPTION_LABEL' }}
+                      value={option.label}
+                    />
+                  </FormControl>
+                  <FormControl style={{ marginLeft: 12 }}>
+                    <TextInput
+                      onChange={newValue => {
+                        const newOptions = [...options];
+                        newOptions[optionIndex] = {
+                          ...option,
+                          newValue,
+                        };
+                        onChange(newOptions);
+                      }}
+                      width={200}
+                      schema={{ labelId: 'OPTION_VALUE' }}
+                      value={option.value}
                     />
                   </FormControl>
                 </div>
@@ -118,15 +134,22 @@ export default function FileTypeEditor({
           <Button
             style={{ marginTop: 16 }}
             onClick={() => {
-              onChange([...filetypes, '']);
+              onChange([
+                ...options,
+                {
+                  label: '',
+                  value: '',
+                  id: uuid(),
+                },
+              ]);
             }}
             size="small"
           >
             <FormattedMessage
               id={
-                filetypes.length > 0
-                  ? 'ADD_ANOTHER_FILETYPE'
-                  : 'ADD_FILETYPE'
+                options.length > 0
+                  ? 'ADD_ANOTHER_OPTION'
+                  : 'ADD_OPTION'
               }
             />
           </Button>

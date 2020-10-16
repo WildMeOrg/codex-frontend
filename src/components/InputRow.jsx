@@ -11,6 +11,7 @@ export default function InputRow({
   description,
   descriptionId,
   required,
+  children,
   ...rest
 }) {
   const showDescription = description || descriptionId;
@@ -21,6 +22,7 @@ export default function InputRow({
         display: 'flex',
         flexWrap: 'wrap',
         justifyContent: 'space-between',
+        alignItems: 'center',
         padding: 24,
         width: '100%',
         containerStyles,
@@ -51,7 +53,7 @@ export default function InputRow({
           </Typography>
         )}
       </div>
-      <LabeledInput minimalLabels width={220} {...rest} />
+      {children || <LabeledInput minimalLabels width={220} {...rest} />}
     </div>
   );
 }

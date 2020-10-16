@@ -14,12 +14,11 @@ import {
 export default function FieldTypeSelector({
   onChange,
   field,
-  otherFields,
 }) {
   const intl = useIntl();
 
   return (
-    <FormControl style={{ width: 280, marginTop: 8 }}>
+    <FormControl style={{ width: 220, marginTop: 8 }}>
       <InputLabel>
         <FormattedMessage id="FIELD_TYPE" />
       </InputLabel>
@@ -55,9 +54,7 @@ export default function FieldTypeSelector({
               configurableProperty.defaultValue;
           });
 
-          onChange({
-            definitions: [...otherFields, newField],
-          });
+          onChange(newField);
         }}
       >
         {customFieldCategories.map(category => (

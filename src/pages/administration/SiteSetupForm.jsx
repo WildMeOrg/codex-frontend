@@ -11,8 +11,6 @@ import useSiteSettings from '../../models/site/useSiteSettings';
 import usePutSiteSettings from '../../models/site/usePutSiteSettings';
 
 import LabeledInput from '../../components/LabeledInput';
-import FieldSetInput from '../../components/inputs/FieldSetInput';
-import fieldTypes from '../../constants/fieldTypes';
 
 const customFields = {
   sighting: 'site.custom.customFields.Occurrence',
@@ -39,17 +37,7 @@ const newSettingFields = [
   customFields.individual,
 ];
 
-/* FieldSetInput cannot be rendered by LabeledInput, this avoids a circular dependency. */
 function SettingInput({ customFieldCategories, schema, ...rest }) {
-  if (get(schema, 'fieldType') === fieldTypes.fieldset) {
-    return (
-      <FieldSetInput
-        schema={schema}
-        customFieldCategories={customFieldCategories}
-        {...rest}
-      />
-    );
-  }
   return <LabeledInput schema={schema} {...rest} />;
 }
 

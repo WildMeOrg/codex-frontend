@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
 import { get } from 'lodash-es';
+import { v4 as uuid } from 'uuid';
 
 import IconButton from '@material-ui/core/IconButton';
 import Grid from '@material-ui/core/Grid';
@@ -19,6 +20,10 @@ import {
   mergeItemById,
   removeItemById,
 } from '../../../utils/manipulators';
+import { fieldTypeChoices } from '../../../constants/fieldTypes';
+
+import FieldDemo from './FieldDemo';
+import EditField from './EditField';
 
 export default function CustomFieldTable({
   categories,
@@ -28,8 +33,11 @@ export default function CustomFieldTable({
 }) {
   const intl = useIntl();
   const [deleteField, setDeleteField] = useState(null);
+  const [editField, setEditField] = useState(null);
+  const [previewField, setPreviewField] = useState(null);
+  const [previewInitialValue, setPreviewInitialValue] = useState(null);
   const { putSiteSetting, error, setError } = usePutSiteSettings();
-
+  
   const tableColumns = [
     {
       name: 'schema.label',
@@ -52,7 +60,18 @@ export default function CustomFieldTable({
             <div>
               <Tooltip title={intl.formatMessage({ id: 'PREVIEW' })}>
                 <IconButton
-                  onClick={() => {}}
+                  onClick={() => {
+                    const fieldDisplayType = get(field, ['schema', 'displayType']);
+
+                    const displayTypeSchema = fieldTypeChoices.find(
+                      schema =>
+                      fieldDisplayType ===
+                      schema.value,
+                    );
+
+                    setPreviewInitialValue(get(displayTypeSchema, 'defaultValue'));
+                    setPreviewField(field);
+                  }}
                   aria-label={intl.formatMessage({ id: 'PREVIEW' })}
                 >
                   <PreviewIcon />
@@ -60,7 +79,7 @@ export default function CustomFieldTable({
               </Tooltip>
               <Tooltip title={intl.formatMessage({ id: 'EDIT' })}>
                 <IconButton
-                  onClick={() => {}}
+                  onClick={() => setEditField(field)}
                   aria-label={intl.formatMessage({ id: 'EDIT' })}
                 >
                   <EditIcon />
@@ -86,8 +105,34 @@ export default function CustomFieldTable({
     setDeleteField(null);
   };
 
+  const onCloseEditField = () => {
+    if (error) setError(null);
+    setEditField(null);
+  };
+
   return (
     <Grid item>
+      <EditField
+        open={Boolean(editField)}
+        onClose={onCloseEditField}
+        field={editField}
+        onSubmit={(editedField) => {
+          const newFields = mergeItemById(editedField, fields);
+
+          putSiteSetting(
+            settingName,
+            newFields,
+          ).then(() => {
+            onCloseEditField();
+          });
+        }}
+      />
+      <FieldDemo
+        open={Boolean(previewField)}
+        onClose={() => setPreviewField(null)}
+        initialValue={previewInitialValue}
+        fieldProps={previewField}
+      />
       <ConfirmDelete
         open={Boolean(deleteField)}
         onClose={onCloseConfirmDelete}
@@ -103,7 +148,6 @@ export default function CustomFieldTable({
             deleteField,
             fields,
           );
-          console.log(fields, newCustomCategories);
           putSiteSetting(
             settingName,
             newCustomCategories,
@@ -127,7 +171,20 @@ export default function CustomFieldTable({
           size="small"
           display="panel"
           startIcon={<AddIcon />}
-          onClick={() => {}}
+          onClick={() =>
+            setEditField({
+              schema: {
+                displayType: '',
+                label: '',
+                description: '',
+              },
+              name: '',
+              multiple: false,
+              required: false,
+              id: uuid(),
+              timeCreated: Date.now(),
+            })
+          }
         >
           <FormattedMessage id="ADD_NEW" />
         </Button>

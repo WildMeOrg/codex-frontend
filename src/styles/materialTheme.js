@@ -71,6 +71,7 @@ export default primaryColor => {
       },
       caption: {
         fontWeight: 300,
+        fontSize: 14,
       },
       subtitle1: {
         fontSize: 20,
