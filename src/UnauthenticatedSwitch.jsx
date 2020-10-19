@@ -46,6 +46,7 @@ export default function AuthenticatedSwitch() {
                   style={{
                     minHeight: 'calc(100vh - 64px)',
                     boxSizing: 'border-box',
+                    overflow: 'auto',
                   }}
                 >
                   <Switch location={location}>
