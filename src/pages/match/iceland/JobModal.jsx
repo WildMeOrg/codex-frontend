@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { debounce } from 'lodash-es';
+import { get, filter, debounce } from 'lodash-es';
 import { useTheme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
@@ -17,7 +17,7 @@ import AcmImage from './AcmImage';
 import ActionButton from './ActionButton';
 import AlertModal from './AlertModal';
 import ModalActions from './ModalActions';
-import { setStatus } from './utils';
+import { getFeature, setStatus } from './utils';
 
 const actionAreaWidth = 160;
 
@@ -84,11 +84,25 @@ export default function JobModal({
   const loading = targetLoading || candidatesLoading;
   const error = fetchTargetError || fetchCandidatesError;
   const dataReady = !loading && !error;
+
+  const filteredCandidates = filter(candidates, candidate => {
+    const targetIndividualId = getFeature(
+      targetAnnotation,
+      'individualId',
+    );
+    const candidateIndividualId = getFeature(
+      get(candidate, 'annotation'),
+      'individualId',
+    );
+    if (targetIndividualId === candidateIndividualId) return false;
+    return true;
+  });
+
   const showMatches =
     dataReady &&
     targetAnnotation &&
-    candidates &&
-    candidates.length > 0;
+    filteredCandidates &&
+    filteredCandidates.length > 0;
   const noCandidates = dataReady && !showMatches;
 
   const closeModal = () => {
@@ -146,10 +160,11 @@ export default function JobModal({
           </IconButton>
         </DialogTitle>
         <DialogContent style={{ marginBottom: 24 }}>
-          {candidates.map(candidate => {
+          {filteredCandidates.map(candidate => {
             const score = candidate.score
               ? parseFloat(candidate.score).toFixed(2)
               : '-';
+
             return (
               <PairContainer key={candidate.id}>
                 <AcmImage
