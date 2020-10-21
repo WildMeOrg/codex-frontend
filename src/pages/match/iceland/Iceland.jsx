@@ -14,6 +14,10 @@ import useNotes from './useNotes';
 
 export default function Iceland() {
   const [selectedJob, setSelectedJob] = useState(null);
+  const [currentPage, setCurrentPage] = useState(
+    localStorage.getItem('page') || undefined,
+  );
+
   const { data: statuses, loading: statusLoading } = useStatus(
     selectedJob,
   );
@@ -78,6 +82,11 @@ export default function Iceland() {
         rowHeight={36}
         autoHeight
         pageSize={50}
+        page={currentPage}
+        onPageChange={({ page }) => {
+          localStorage.setItem('page', page);
+          setCurrentPage(page);
+        }}
       />
       <JobModal
         open={Boolean(selectedJob)}
