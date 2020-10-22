@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import { merge } from 'lodash-es';
 import axios from 'axios';
 import getAxiosResponse from '../../utils/getAxiosResponse';
+import { formatError } from '../../utils/formatters';
 import {
   AppContext,
   setSiteSettingsNeedsFetch,
@@ -39,7 +40,7 @@ export default function useSiteSettings() {
         );
         setSchemaLoading(false);
       } catch (fetchError) {
-        setError(fetchError);
+        setError(formatError(fetchError));
         setSchemaLoading(false);
         console.error('Error fetching site settings');
         console.error(fetchError);
@@ -53,14 +54,14 @@ export default function useSiteSettings() {
     () => {
       const fetchData = async () => {
         try {
-          const setingsPacket = await axios(
+          const settingsPacket = await axios(
             'https://nextgen.dev-wildbook.org/api/v0/configuration/__bundle_setup',
           );
-          dispatch(setSiteSettings(getAxiosResponse(setingsPacket)));
+          dispatch(setSiteSettings(getAxiosResponse(settingsPacket)));
           dispatch(setSiteSettingsNeedsFetch(false));
           setSettingsLoading(false);
         } catch (fetchError) {
-          setError(fetchError);
+          setError(formatError(fetchError));
           setSettingsLoading(false);
           console.error('Error fetching site settings');
           console.error(fetchError);

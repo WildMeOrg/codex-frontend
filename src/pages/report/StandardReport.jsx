@@ -18,6 +18,7 @@ import {
   selectSightingCategories,
 } from '../../modules/sightings/selectors';
 import { selectSiteName } from '../../modules/site/selectors';
+import usePutSighting from '../../models/sighting/usePutSighting';
 import { getLocationSuggestion } from '../../utils/exif';
 import categoryTypes from '../../constants/categoryTypes';
 import InputRow from '../../components/InputRow';
@@ -45,6 +46,7 @@ export default function StandardReport({
 }) {
   const intl = useIntl();
   const siteSettings = useSiteSettings();
+  const { loading, error: putError, putSighting } = usePutSighting();
   const customFieldCategories = get(
     siteSettings,
     ['data', 'site.custom.customFieldCategories', 'value'],
@@ -74,7 +76,6 @@ export default function StandardReport({
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [exifButtonClicked, setExifButtonClicked] = useState(false);
   const [acceptEmails, setAcceptEmails] = useState(false);
-  const [loading, setLoading] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [incompleteFields, setIncompleteFields] = useState([]);
   const [termsError, setTermsError] = useState(false);
@@ -92,7 +93,8 @@ export default function StandardReport({
     [exifData],
   );
 
-  const showErrorAlertBox = incompleteFields.length > 0 || termsError;
+  const showErrorAlertBox =
+    incompleteFields.length > 0 || termsError || putError;
 
   return (
     <>
@@ -288,6 +290,9 @@ export default function StandardReport({
             <AlertTitle>
               <FormattedMessage id="SUBMISSION_ERROR" />
             </AlertTitle>
+            {putError && (
+              <p style={{ margin: '4px 0' }}>{putError}</p>
+            )}
             {termsError && (
               <p style={{ margin: '4px 0' }}>
                 <FormattedMessage id="TERMS_ERROR" />
@@ -333,12 +338,13 @@ export default function StandardReport({
             setTermsError(!acceptedTerms);
 
             if (nextIncompleteFields.length === 0 && acceptedTerms) {
-              console.log('Time to report the sighting');
-              setLoading(true);
-              setTimeout(() => {
-                console.log('Sighting submitted');
-                setLoading(false);
-              }, 150000);
+              putSighting({
+                decimalLatitude: 4.572030525741444,
+                startTime: '2020-10-22T16:42:43.369Z',
+                endTime: '2020-10-23T16:50:07.609Z',
+                submissionContentReferences: [],
+                submissions: [],
+              });
             }
           }}
           style={{ width: 200 }}

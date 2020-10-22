@@ -1,6 +1,10 @@
 import { createContext } from 'react';
 
 export const AppContext = createContext({});
+export const setSightingsNeedsFetch = data => ({
+  type: 'SET_SIGHTINGS_NEEDS_FETCH',
+  data,
+});
 export const setSiteSettingsNeedsFetch = data => ({
   type: 'SET_SITE_SETTINGS_NEEDS_FETCH',
   data,
@@ -24,4 +28,5 @@ export const initialState = {
   siteSettings: null,
   siteSettingsSchema: null,
   siteSettingsNeedsFetch: true,
+  sightingsNeedsFetch: true,
 };
