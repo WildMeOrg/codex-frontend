@@ -43,6 +43,9 @@ function ScrollToTop() {
 
 function reducer(state, action) {
   const { type, data } = action;
+  if (type === 'SET_SIGHTINGS_NEEDS_FETCH') {
+    return { ...state, sightingsNeedsFetch: data };
+  }
   if (type === 'SET_SITE_SETTINGS_NEEDS_FETCH') {
     return { ...state, siteSettingsNeedsFetch: data };
   }

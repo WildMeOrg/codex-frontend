@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
-import { toLower } from 'lodash-es';
+import { get, toLower } from 'lodash-es';
 import Typography from '@material-ui/core/Typography';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -13,13 +13,16 @@ import Tab from '@material-ui/core/Tab';
 import EntityHeader from '../../components/EntityHeader';
 import MainColumn from '../../components/MainColumn';
 import NotFoundPage from '../../components/NotFoundPage';
+import ErrorPage from '../../components/ErrorPage';
 import EditProfile from '../../components/EditEntityModal';
 import Link from '../../components/Link';
 import {
   selectSightings,
   selectSightingSchema,
 } from '../../modules/sightings/selectors';
+import useSighting from '../../models/sighting/useSighting';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
+import { formatDate } from '../../utils/formatters';
 import Status from './Status';
 import AnnotationsGallery from './AnnotationsGallery';
 import IndividualsGallery from './IndividualsGallery';
@@ -27,6 +30,9 @@ import PhotoGallery from './PhotoGallery';
 
 export default function Sighting() {
   const { id } = useParams();
+  const { data, loading, error } = useSighting(
+    '560d3721-0ced-48f7-b2d8-acc992d41267',
+  );
 
   // fetch data for Id...
   const sightings = useSelector(selectSightings);
@@ -38,12 +44,24 @@ export default function Sighting() {
 
   const sighting = sightings.find(e => toLower(e.id) === toLower(id));
 
+  if (loading) return null;
+  if (error)
+    return (
+      <ErrorPage
+        subtitle={<FormattedMessage id="AN_ERROR_OCCURRED" />}
+      />
+    );
   if (!sighting)
     return (
       <NotFoundPage
         subtitle={<FormattedMessage id="SIGHTING_NOT_FOUND" />}
       />
     );
+
+  const sightingDate = get(data, ['startTime']);
+  const formattedSightingDate = sightingDate
+    ? formatDate(sightingDate)
+    : '';
 
   return (
     <MainColumn>
@@ -81,8 +99,8 @@ export default function Sighting() {
         >
           <Typography>
             <FormattedMessage
-              id="ENTITY_HEADER_SPECIES"
-              values={{ species: sighting.taxonomy }}
+              id="ENTITY_HEADER_SIGHTING_DATE"
+              values={{ date: formattedSightingDate }}
             />
           </Typography>
           <Typography>

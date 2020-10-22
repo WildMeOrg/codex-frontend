@@ -1,4 +1,17 @@
 import { get, round } from 'lodash-es';
+import { format } from 'date-fns';
+
+export const formatDate = input => {
+  try {
+    const jsDate =
+      typeof input === 'string' ? new Date(input) : input;
+    const formattedDate = format(jsDate, 'M/dd/yy');
+    return formattedDate;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+};
 
 const elapsedTimeCache = {};
 export const getElapsedTimeInWords = (
