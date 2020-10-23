@@ -10,12 +10,11 @@ import AgeIcon from '@material-ui/icons/Height';
 import StatusIcon from '@material-ui/icons/LocalHospital';
 import EntityHeader from '../../components/EntityHeader';
 import MainColumn from '../../components/MainColumn';
-import NotFoundPage from '../../components/NotFoundPage';
+import SadScreen from '../../components/SadScreen';
 import EncounterGallery from '../../components/EncounterGallery';
 import EditProfile from '../../components/EditEntityModal';
 import { selectIndividuals } from '../../modules/individuals/selectors';
 import { selectSpeciesFields } from '../../modules/site/selectors';
-import useIndividuals from '../../modules/individuals/useIndividuals';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 
 const items = [
@@ -48,9 +47,6 @@ const items = [
 export default function Individual() {
   const { id } = useParams();
 
-  /* not using API results because API is not ready */
-  const [results, error] = useIndividuals([id]);
-
   // fetch data for Id...
   const individuals = useSelector(selectIndividuals);
   const speciesFields = useSelector(selectSpeciesFields);
@@ -60,8 +56,9 @@ export default function Individual() {
   const individual = individuals[toLower(id)];
   if (!individual)
     return (
-      <NotFoundPage
-        subtitle={<FormattedMessage id="INDIVIDUAL_NOT_FOUND" />}
+      <SadScreen
+        variant="notFoundOcean"
+        subtitleId="INDIVIDUAL_NOT_FOUND"
       />
     );
 

@@ -12,9 +12,9 @@ import Tab from '@material-ui/core/Tab';
 // import SubmitterIcon from '@material-ui/icons/Person';
 import EntityHeader from '../../components/EntityHeader';
 import MainColumn from '../../components/MainColumn';
-import NotFoundPage from '../../components/NotFoundPage';
-import ErrorPage from '../../components/ErrorPage';
 import EditProfile from '../../components/EditEntityModal';
+import LoadingScreen from '../../components/LoadingScreen';
+import SadScreen from '../../components/SadScreen';
 import Link from '../../components/Link';
 import {
   selectSightings,
@@ -43,18 +43,22 @@ export default function Sighting() {
   const activeTab = window.location.hash || '#individuals';
 
   const sighting = sightings.find(e => toLower(e.id) === toLower(id));
+  const is404 = false;
 
-  if (loading) return null;
-  if (error)
+  if (loading) return <LoadingScreen />;
+  if (is404)
     return (
-      <ErrorPage
-        subtitle={<FormattedMessage id="AN_ERROR_OCCURRED" />}
+      <SadScreen
+        subtitleId="SIGHTING_NOT_FOUND"
+        variant="genericError"
       />
     );
+  if (error) return <SadScreen variant="genericError" />;
   if (!sighting)
     return (
-      <NotFoundPage
-        subtitle={<FormattedMessage id="SIGHTING_NOT_FOUND" />}
+      <SadScreen
+        variant="notFoundOcean"
+        subtitleId="SIGHTING_NOT_FOUND"
       />
     );
 

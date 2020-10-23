@@ -20,7 +20,7 @@ import messagesEn from '../locale/en.json';
 import messagesEs from '../locale/es.json';
 import { AppContext, initialState } from './context';
 import FrontDesk from './FrontDesk';
-import ServerErrorPage from './components/ServerErrorPage';
+import SadScreen from './components/SadScreen';
 
 // polyfill to enable formatting of a number using the unit prop
 if (typeof Intl.NumberFormat.__addLocaleData === 'function') {
@@ -68,13 +68,7 @@ function ContextualizedApp() {
 
   const primaryColor = get(data, ['site.look.themeColor', 'value']);
 
-  if (error)
-    return (
-      <ServerErrorPage
-        title="Server unavailable"
-        details="The server could not be reached. Unfortunately, normal site functionality is currently unavailable. Check back at a later date."
-      />
-    );
+  if (error) return <SadScreen variant="serverError" />;
   if (!primaryColor) return null;
   const theme = createMuiTheme(materialTheme(primaryColor));
 

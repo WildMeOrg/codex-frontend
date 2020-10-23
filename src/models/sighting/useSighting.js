@@ -28,7 +28,7 @@ export default function useSighting(sightingId) {
           setLoading(false);
           setSightingData(get(response, ['data', 'result']));
         } catch (fetchError) {
-          console.error('Error fetching /me');
+          console.error(`Error fetching sighting ${sightingId}`);
           console.error(fetchError);
           setError(formatError(fetchError));
           setLoading(false);

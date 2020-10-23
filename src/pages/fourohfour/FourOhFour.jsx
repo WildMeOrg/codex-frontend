@@ -1,16 +1,10 @@
 import React from 'react';
-import { FormattedMessage } from 'react-intl';
-import NotFoundPage from '../../components/NotFoundPage';
+import SadScreen from '../../components/SadScreen';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 
-export default function({ variant = 'ocean' }) {
+export default function() {
   useDocumentTitle('Page not found');
   return (
-    <NotFoundPage
-      title="404"
-      subtitle={<FormattedMessage id="PAGE_NOT_FOUND" />}
-      details={<FormattedMessage id="404_DETAILS" />}
-      variant={variant}
-    />
+    <SadScreen variant="notFoundOcean" subtitleId="PAGE_NOT_FOUND" />
   );
 }
