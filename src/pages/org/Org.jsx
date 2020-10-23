@@ -9,7 +9,7 @@ import WebIcon from '@material-ui/icons/Web';
 import DescriptionIcon from '@material-ui/icons/Description';
 import EntityHeader from '../../components/EntityHeader';
 import MainColumn from '../../components/MainColumn';
-import NotFoundPage from '../../components/NotFoundPage';
+import SadScreen from '../../components/SadScreen';
 import EditEntityModal from '../../components/EditEntityModal';
 import EncounterGallery from '../../components/EncounterGallery';
 import Link from '../../components/Link';
@@ -51,14 +51,7 @@ export default function Org() {
   const org = orgs[toLower(id)];
   if (!org)
     return (
-      <NotFoundPage
-        subtitle={
-          <FormattedMessage
-            id="ORG_NOT_FOUND"
-            defaultMessage="Org not found"
-          />
-        }
-      />
+      <SadScreen variant="notFoundOcean" subtitleId="ORG_NOT_FOUND" />
     );
 
   return (

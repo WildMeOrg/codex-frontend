@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 import { toLower } from 'lodash-es';
 import { useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
-import NotFoundPage from '../../components/NotFoundPage';
+import SadScreen from '../../components/SadScreen';
 import { selectSightings } from '../../modules/sightings/selectors';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import LargeScreenRequired from './LargeScreenRequired';
@@ -35,8 +35,9 @@ export default function MatchReview() {
 
   if (!sighting)
     return (
-      <NotFoundPage
-        subtitle={<FormattedMessage id="MATCH_NOT_FOUND" />}
+      <SadScreen
+        variant="notFoundOcean"
+        subtitleId="PAGE_NOT_FOUND"
       />
     );
 

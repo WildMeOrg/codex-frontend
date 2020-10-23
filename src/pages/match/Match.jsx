@@ -12,7 +12,7 @@ import IconButton from '@material-ui/core/IconButton';
 import RightIcon from '@material-ui/icons/ChevronRight';
 import LeftIcon from '@material-ui/icons/ChevronLeft';
 
-import NotFoundPage from '../../components/NotFoundPage';
+import SadScreen from '../../components/SadScreen';
 import Button from '../../components/Button';
 import DataDisplay from '../../components/dataDisplays/DataDisplay';
 import { selectSightings } from '../../modules/sightings/selectors';
@@ -38,8 +38,9 @@ export default function Match({ setMatching }) {
 
   if (!sighting)
     return (
-      <NotFoundPage
-        subtitle={<FormattedMessage id="MATCH_NOT_FOUND" />}
+      <SadScreen
+        variant="notFoundOcean"
+        subtitleId="PAGE_NOT_FOUND"
       />
     );
 

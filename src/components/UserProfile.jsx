@@ -10,7 +10,7 @@ import WebIcon from '@material-ui/icons/WebAssetSharp';
 import EntityHeader from './EntityHeader';
 import MainColumn from './MainColumn';
 import Link from './Link';
-import NotFoundPage from './NotFoundPage';
+import SadScreen from './SadScreen';
 import EncounterGallery from './EncounterGallery';
 import EditEntityModal from './EditEntityModal';
 import userSchema, {
@@ -67,8 +67,9 @@ export default function UserProfile({ children, userData }) {
 
   if (!userData)
     return (
-      <NotFoundPage
-        subtitle={<FormattedMessage id="USER_NOT_FOUND" />}
+      <SadScreen
+        variant="notFoundOcean"
+        subtitleId="USER_NOT_FOUND"
       />
     );
 
