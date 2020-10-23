@@ -302,7 +302,7 @@
     "MATCH": "Match",
     "CHANGE": "Change",
     "EDIT_ANNOTATION": "Edit annotation",
-    "UNKNOWN_ERROR_DESCRIPTION": "An unknown error occurred. Check the ",
+    "UNKNOWN_ERROR_DESCRIPTION": "An unknown error occurred. If the problem persists, you can report this error on the Community Forums.",
     "MATCH_ANNOTATION": "Match annotation",
     "DELETE_ANNOTATION_CONFIRMATION": "Click save to delete this annotation.",
     "DELETE_THIS_ANNOTATION": "Delete this annotation",
