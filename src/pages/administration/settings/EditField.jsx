@@ -16,7 +16,7 @@ import Button from '../../../components/Button';
 import InputRow from '../../../components/InputRow';
 import { fieldTypeChoices } from '../../../constants/fieldTypes';
 
-import OptionEditor from './OptionEditor';
+import OptionEditorButton from './OptionEditorButton';
 import FileTypeEditor from './FileTypeEditor';
 import FieldTypeSelector from './FieldTypeSelector';
 
@@ -150,7 +150,7 @@ export default function EditField({
           value={get(editedField, ['schema', 'category'], '')}
         />
         {configuration.map(configurableProperty => {
-          let ConfigurationInput = OptionEditor;
+          let ConfigurationInput = OptionEditorButton;
           if (configurableProperty.type === 'boolean')
             ConfigurationInput = BooleanInput;
           if (configurableProperty.type === 'filetypeeditor')

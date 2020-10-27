@@ -2,7 +2,6 @@ import React from 'react';
 import { flattenDeep, get } from 'lodash-es';
 import { useIntl, FormattedMessage } from 'react-intl';
 import { v4 as uuid } from 'uuid';
-import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import IconButton from '@material-ui/core/IconButton';
 import InputAdornment from '@material-ui/core/InputAdornment';
@@ -11,11 +10,11 @@ import NewChildIcon from '@material-ui/icons/KeyboardReturn';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import TreeItem from '@material-ui/lab/TreeItem';
-import TextInput from './TextInput';
-import DeleteButton from '../DeleteButton';
-import Button from '../Button';
+import TextInput from '../../../../components/inputs/TextInput';
+import DeleteButton from '../../../../components/DeleteButton';
+import Button from '../../../../components/Button';
 
-const textInputWidth = 200;
+const textInputWidth = 300;
 
 function getNewLeaf() {
   return {
@@ -24,16 +23,7 @@ function getNewLeaf() {
   };
 }
 
-function Core({ children, required, width, style = {} }) {
-  return (
-    <FormControl
-      required={required}
-      style={{ width: width || 280, marginBottom: 4, ...style }}
-    >
-      {children}
-    </FormControl>
-  );
-}
+const rootId = 'ROOT';
 
 function addChild(tree, parentId) {
   function updateLevel(leaves) {
@@ -92,13 +82,12 @@ export default function TreeViewEditor(props) {
     required,
     value,
     onChange,
-    width,
     minimalLabels = false,
     ...rest
   } = props;
 
   const intl = useIntl();
-  const [expanded, setExpanded] = React.useState([]);
+  const [expanded, setExpanded] = React.useState([rootId]);
   const [selected, setSelected] = React.useState([]);
 
   function getLabel(object) {
@@ -179,6 +168,7 @@ export default function TreeViewEditor(props) {
   }
 
   const handleToggle = (event, nodeIds) => {
+    console.log(nodeIds);
     setExpanded(nodeIds);
   };
 
@@ -187,7 +177,7 @@ export default function TreeViewEditor(props) {
   };
 
   return (
-    <Core schema={schema} required={required} width={width}>
+    <div>
       <TreeView
         style={{ marginTop: 20 }}
         defaultCollapseIcon={<ExpandMoreIcon />}
@@ -200,7 +190,7 @@ export default function TreeViewEditor(props) {
         {...rest}
       >
         <TreeItem
-          nodeId="IGNORE"
+          nodeId={rootId}
           label={intl.formatMessage(
             { id: 'EDIT_OBJECT' },
             { object: getLabel(schema) },
@@ -212,6 +202,6 @@ export default function TreeViewEditor(props) {
       {!minimalLabels && (
         <FormHelperText>{getDescription(schema)}</FormHelperText>
       )}
-    </Core>
+    </div>
   );
 }
