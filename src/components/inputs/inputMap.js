@@ -8,7 +8,6 @@ import TextInput from './TextInput';
 import TreeViewInput from './TreeViewInput';
 import LatLongInput from './LatLongInput';
 import AreaInput from './AreaInput';
-import TreeViewEditor from './TreeViewEditor';
 import LocationIdInput from './LocationIdInput';
 import ComparatorInput from './ComparatorInput';
 import DateInput from './DateInput';
@@ -23,7 +22,6 @@ const inputMap = {
   [fieldTypes.area]: AreaInput,
   [fieldTypes.file]: FileInput,
   [fieldTypes.treeview]: TreeViewInput,
-  [fieldTypes.treeeditor]: TreeViewEditor,
   [fieldTypes.locationIds]: LocationIdInput,
   [fieldTypes.individual]: IndividualInput,
   [fieldTypes.comparator]: ComparatorInput,

@@ -5,6 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import useSiteSettings from '../../../models/site/useSiteSettings';
 import CategoryTable from './CategoryTable';
 import CustomFieldTable from './CustomFieldTable';
+import DefaultFieldTable from './DefaultFieldTable';
 import categoryTypes from '../../../constants/categoryTypes';
 
 function getCustomFields(siteSettings, property) {
@@ -57,6 +58,7 @@ export default function FieldSettings() {
       spacing={3}
       style={{ marginTop: 40 }}
     >
+      <DefaultFieldTable siteSettings={siteSettings} />
       <CategoryTable />
       <CustomFieldTable
         categories={customIndividualCategories}
