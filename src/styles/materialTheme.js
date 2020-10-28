@@ -72,6 +72,8 @@ export default primaryColor => {
       caption: {
         fontWeight: 300,
         fontSize: 14,
+        letterSpacing: '0.02em',
+        color: darken(blackColor, 0.5),
       },
       subtitle1: {
         fontSize: 20,
