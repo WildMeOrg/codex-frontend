@@ -23,7 +23,7 @@ export default function InputRow({
         flexWrap: 'wrap',
         justifyContent: 'space-between',
         alignItems: 'center',
-        padding: 24,
+        padding: 12,
         width: '100%',
         containerStyles,
       }}
