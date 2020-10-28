@@ -160,15 +160,15 @@ export default function FieldSettings() {
             )}
           </DialogTitle>
           <DialogContent>
-            {dialogData.isDefault ? (
-              <Typography>
-                <FormattedMessage id="DEFAULT_CATEGORY_NOT_EDITABLE" />
-              </Typography>
-            ) : (
-              <Typography>
-                <FormattedMessage id="CATEGORY_EDIT_MESSAGE" />
-              </Typography>
-            )}
+            <Typography variant="caption">
+              <FormattedMessage
+                id={
+                  dialogData.isDefault
+                    ? 'DEFAULT_CATEGORY_NOT_EDITABLE'
+                    : 'CATEGORY_EDIT_MESSAGE'
+                }
+              />
+            </Typography>
             <InputRow
               labelId="LABEL"
               disabled={dialogData.isDefault}

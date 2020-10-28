@@ -148,6 +148,7 @@ export default function StandardReport({
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'center',
+                  padding: '0px 12px',
                 }}
               >
                 {showExifData && (
