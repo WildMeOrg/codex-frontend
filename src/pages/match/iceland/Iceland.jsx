@@ -87,6 +87,7 @@ export default function Iceland() {
           localStorage.setItem('page', page);
           setCurrentPage(page);
         }}
+        style={{ height: 1900 }}
       />
       <JobModal
         open={Boolean(selectedJob)}

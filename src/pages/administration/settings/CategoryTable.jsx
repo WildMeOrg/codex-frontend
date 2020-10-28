@@ -269,6 +269,9 @@ export default function FieldSettings() {
           <FormattedMessage id="ADD_NEW" />
         </Button>
       </div>
+      <Typography variant="caption" style={{ marginBottom: 12 }}>
+        <FormattedMessage id="FIELD_CATEGORIES_DESCRIPTION" />
+      </Typography>
       <DataDisplay
         noTitleBar
         variant="secondary"
