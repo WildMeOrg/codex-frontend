@@ -76,19 +76,20 @@ export default function Iceland() {
       >
         Iceland Many-to-Many Matching Tool
       </Typography>
-      <DataGrid
-        columns={columns}
-        rows={data}
-        rowHeight={36}
-        autoHeight
-        pageSize={50}
-        page={currentPage}
-        onPageChange={({ page }) => {
-          localStorage.setItem('page', page);
-          setCurrentPage(page);
-        }}
-        style={{ height: 1900 }}
-      />
+      <div style={{ overflow: 'auto', height: 1900 }}>
+        <DataGrid
+          autoHeight
+          columns={columns}
+          rows={data}
+          rowHeight={36}
+          pageSize={50}
+          page={currentPage}
+          onPageChange={({ page }) => {
+            localStorage.setItem('page', page);
+            setCurrentPage(page);
+          }}
+        />
+      </div>
       <JobModal
         open={Boolean(selectedJob)}
         acmId={get(selectedJob, 'acmId')}
