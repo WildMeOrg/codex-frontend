@@ -5,6 +5,8 @@ import IconButton from '@material-ui/core/IconButton';
 import EditIcon from '@material-ui/icons/Edit';
 import ViewIcon from '@material-ui/icons/Visibility';
 import DeleteIcon from '@material-ui/icons/Delete';
+import DownloadIcon from '@material-ui/icons/GetApp';
+import CopyIcon from '@material-ui/icons/FileCopy';
 
 const variantMap = {
   edit: {
@@ -18,6 +20,14 @@ const variantMap = {
   delete: {
     labelId: 'DELETE',
     component: DeleteIcon,
+  },
+  download: {
+    labelId: 'DOWNLOAD',
+    component: DownloadIcon,
+  },
+  copy: {
+    labelId: 'COPY',
+    component: CopyIcon,
   },
 };
 

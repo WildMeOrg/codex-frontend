@@ -14,8 +14,7 @@ import pjson from '../package.json';
 import App from './App';
 import storeConfigs from './store';
 
-/* Switch to !dev after release. For now lets make sure sentry is working properly */
-if (__DEV__) {
+if (!__DEV__) {
   Sentry.init({
     dsn: sentryDsn,
     release: `frontend@${get(pjson, 'release')}`,
