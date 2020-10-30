@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
@@ -6,16 +6,23 @@ import { get, toLower } from 'lodash-es';
 import Typography from '@material-ui/core/Typography';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
+import Paper from '@material-ui/core/Paper';
+
 // import SpeciesIcon from '@material-ui/icons/Category';
 // import RegionIcon from '@material-ui/icons/MyLocation';
 // import ContextIcon from '@material-ui/icons/NaturePeople';
 // import SubmitterIcon from '@material-ui/icons/Person';
-import EntityHeader from '../../components/EntityHeader';
 import MainColumn from '../../components/MainColumn';
+import InputRow from '../../components/InputRow';
+import DividerTitle from '../../components/DividerTitle';
 import EditProfile from '../../components/EditEntityModal';
 import LoadingScreen from '../../components/LoadingScreen';
+import ActionIcon from '../../components/ActionIcon';
 import SadScreen from '../../components/SadScreen';
-import Link from '../../components/Link';
+import DateRenderer from '../../components/renderers/DateRenderer';
+import GpsRenderer from '../../components/renderers/GpsRenderer';
+import TaxonomyRenderer from '../../components/renderers/TaxonomyRenderer';
+import DefaultRenderer from '../../components/renderers/DefaultRenderer';
 import {
   selectSightings,
   selectSightingSchema,
@@ -28,10 +35,99 @@ import AnnotationsGallery from './AnnotationsGallery';
 import IndividualsGallery from './IndividualsGallery';
 import PhotoGallery from './PhotoGallery';
 
+const metadata = [
+  {
+    id: 'startTime',
+    labelId: 'SIGHTING_START',
+    getData: data => get(data, 'startTime'),
+    renderer: DateRenderer,
+    editable: true,
+  },
+  {
+    id: 'endTime',
+    labelId: 'SIGHTING_END',
+    getData: data => get(data, 'endTime'),
+    renderer: DateRenderer,
+    editable: true,
+  },
+  {
+    id: 'created',
+    labelId: 'REPORTED_ON',
+    getData: data => get(data, 'created'),
+    renderer: DateRenderer,
+    editable: false,
+  },
+  {
+    id: 'modified',
+    labelId: 'LAST_MODIFIED',
+    getData: data => get(data, 'modified'),
+    renderer: DateRenderer,
+    editable: false,
+  },
+  {
+    id: 'owner',
+    labelId: 'REPORTED_BY',
+    getData: data => get(data, 'owner'),
+    editable: false,
+  },
+  {
+    id: 'taxonomies',
+    labelId: 'TAXONOMIES',
+    getData: data => get(data, 'taxonomies'),
+    renderer: TaxonomyRenderer,
+    editable: true,
+  },
+  {
+    id: 'locationId',
+    labelId: 'REGION',
+    getData: data => get(data, 'locationId'),
+    editable: true,
+  },
+  {
+    id: 'gps',
+    labelId: 'EXACT_LOCATION',
+    getData: data => [
+      get(data, 'decimalLatitude'),
+      get(data, 'decimalLongitude'),
+    ],
+    renderer: GpsRenderer,
+    editable: true,
+  },
+  {
+    id: 'bearing',
+    labelId: 'BEARING',
+    getData: data => get(data, 'bearing'),
+    editable: true,
+  },
+  {
+    id: 'verbatimLocality',
+    labelId: 'FREEFORM_LOCATION',
+    getData: data => get(data, 'verbatimLocality'),
+    editable: true,
+  },
+  {
+    id: 'behavior',
+    labelId: 'BEHAVIOR',
+    getData: data => get(data, 'behavior'),
+    editable: true,
+  },
+];
+
 export default function Sighting() {
   const { id } = useParams();
   const { data, loading, error } = useSighting(
-    '560d3721-0ced-48f7-b2d8-acc992d41267',
+    '01c049ce-a936-4c51-bd41-4ba0c39c20ff',
+  );
+
+  const mergedFields = useMemo(
+    () => {
+      if (!data) return null;
+      return metadata.map(metadatum => ({
+        ...metadatum,
+        value: metadatum.getData(data),
+      }));
+    },
+    [get(data, 'version')],
   );
 
   // fetch data for Id...
@@ -62,13 +158,51 @@ export default function Sighting() {
       />
     );
 
-  const sightingDate = get(data, ['startTime']);
-  const formattedSightingDate = sightingDate
-    ? formatDate(sightingDate)
-    : '';
+  const sightingDisplayDate =
+    get(data, ['startTime']) || get(data, ['endTime']);
 
   return (
     <MainColumn>
+      <Paper style={{ padding: 30, marginTop: 100 }}>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'flex-start',
+          }}
+        >
+          <div>
+            <Typography variant="h4">
+              {sightingDisplayDate && (
+                <FormattedMessage
+                  id="ENTITY_HEADER_SIGHTING_DATE"
+                  values={{
+                    date: formatDate(sightingDisplayDate, true),
+                  }}
+                />
+              )}
+            </Typography>
+            <Typography variant="subtitle" style={{ marginTop: 12 }}>
+              Reported by George Masterson
+            </Typography>
+          </div>
+          <ActionIcon variant="edit" />
+        </div>
+        <DividerTitle titleId="STATUS" />
+        <Status />
+        <DividerTitle titleId="METADATA" />
+
+        {mergedFields &&
+          mergedFields.map(field => {
+            if (!field.value) return null;
+            const Renderer = field.renderer || DefaultRenderer;
+            return (
+              <InputRow labelId={field.labelId} key={field.id}>
+                <Renderer value={field.value} />
+              </InputRow>
+            );
+          })}
+      </Paper>
       <EditProfile
         open={editingProfile}
         onClose={() => setEditingProfile(false)}
@@ -88,51 +222,13 @@ export default function Sighting() {
         ]}
         fieldSchema={schema}
       />
-      <EntityHeader
-        name={sighting.id}
-        imgSrc={sighting.profile}
-        onSettingsClick={() => setEditingProfile(true)}
-        editable
-      >
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            marginTop: 4,
-          }}
-        >
-          <Typography>
-            <FormattedMessage
-              id="ENTITY_HEADER_SIGHTING_DATE"
-              values={{ date: formattedSightingDate }}
-            />
-          </Typography>
-          <Typography>
-            <FormattedMessage
-              id="ENTITY_HEADER_REGION"
-              values={{ region: sighting.region }}
-            />
-          </Typography>
-          <Typography>
-            <FormattedMessage
-              id="ENTITY_HEADER_CONTEXT"
-              values={{ context: sighting.context }}
-            />
-          </Typography>
-          <Typography>
-            <FormattedMessage id="ENTITY_HEADER_SUBMITTER" />
-            <Link href={`/users/${sighting.userId}`}>
-              {sighting.submitter}
-            </Link>
-          </Typography>
-        </div>
-      </EntityHeader>
-      <Status />
+
       <Tabs
         value={activeTab.replace('#', '')}
         onChange={(_, newValue) => {
           window.location.hash = newValue;
         }}
+        style={{ margin: '32px 0 20px' }}
       >
         <Tab
           label={<FormattedMessage id="INDIVIDUALS" />}

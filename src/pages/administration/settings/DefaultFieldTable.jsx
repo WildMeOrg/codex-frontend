@@ -2,15 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
 import { get } from 'lodash-es';
 
-import IconButton from '@material-ui/core/IconButton';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import Tooltip from '@material-ui/core/Tooltip';
-import EditIcon from '@material-ui/icons/Edit';
 import Alert from '@material-ui/lab/Alert';
 
 import usePutSiteSettings from '../../../models/site/usePutSiteSettings';
 import DataDisplay from '../../../components/dataDisplays/DataDisplay';
+import ActionIcon from '../../../components/ActionIcon';
 import categoryTypes from '../../../constants/categoryTypes';
 import {
   RegionEditor,
@@ -88,16 +86,12 @@ export default function DefaultFieldTable({ siteSettings }) {
       label: intl.formatMessage({ id: 'ACTIONS' }),
       options: {
         customBodyRender: (_, field) => (
-          <Tooltip title={intl.formatMessage({ id: 'EDIT' })}>
-            <IconButton
-              onClick={() => {
-                setEditField(field);
-              }}
-              aria-label={intl.formatMessage({ id: 'EDIT' })}
-            >
-              <EditIcon />
-            </IconButton>
-          </Tooltip>
+          <ActionIcon
+            variant="edit"
+            onClick={() => {
+              setEditField(field);
+            }}
+          />
         ),
       },
     },

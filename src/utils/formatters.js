@@ -1,11 +1,12 @@
 import { get, round } from 'lodash-es';
 import { format } from 'date-fns';
 
-export const formatDate = input => {
+export const formatDate = (input, fancy) => {
+  const formatter = fancy ? 'PP' : 'Pp';
   try {
     const jsDate =
       typeof input === 'string' ? new Date(input) : input;
-    const formattedDate = format(jsDate, 'M/dd/yy');
+    const formattedDate = format(jsDate, formatter);
     return formattedDate;
   } catch (error) {
     console.error(error);
