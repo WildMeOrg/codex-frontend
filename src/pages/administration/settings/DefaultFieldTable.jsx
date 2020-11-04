@@ -40,6 +40,22 @@ const configurableFields = [
   },
 ];
 
+function getInitialFormState(siteSettings) {
+  const regions = get(siteSettings, ['site.custom.regions', 'value']);
+  const species = get(
+    siteSettings,
+    ['site.general.species', 'value'],
+    [],
+  );
+  const relationships = get(
+    siteSettings,
+    ['site.general.relationships', 'value'],
+    [],
+  );
+
+  return { regions, species, relationships };
+}
+
 export default function DefaultFieldTable({ siteSettings }) {
   const intl = useIntl();
   const [formSettings, setFormSettings] = useState(null);
@@ -47,23 +63,7 @@ export default function DefaultFieldTable({ siteSettings }) {
   const { putSiteSetting, error, setError } = usePutSiteSettings();
 
   useEffect(
-    () => {
-      const regions = get(siteSettings, [
-        'site.custom.regions',
-        'value',
-      ]);
-      const species = get(
-        siteSettings,
-        ['site.general.species', 'value'],
-        [],
-      );
-      const relationships = get(
-        siteSettings,
-        ['site.general.relationships', 'value'],
-        [],
-      );
-      setFormSettings({ regions, species, relationships });
-    },
+    () => setFormSettings(getInitialFormState(siteSettings)),
     [siteSettings],
   );
 
@@ -108,7 +108,10 @@ export default function DefaultFieldTable({ siteSettings }) {
         <editField.Editor
           formSettings={formSettings}
           setFormSettings={setFormSettings}
-          onClose={onCloseEditor}
+          onClose={() => {
+            setFormSettings(getInitialFormState(siteSettings));
+            onCloseEditor();
+          }}
           onSubmit={() => {
             if (editField.id === 'region') {
               putSiteSetting(

@@ -2,7 +2,7 @@ import React from 'react';
 import { get } from 'lodash-es';
 
 import OptionEditor from '../OptionEditor';
-import TreeViewEditor from './TreeViewEditor';
+import TreeEditor from './TreeEditor';
 import ConfigureDefaultField from './ConfigureDefaultField';
 
 export function SpeciesEditor({
@@ -77,7 +77,7 @@ export function RegionEditor({
 
   return (
     <ConfigureDefaultField onClose={onClose} onSubmit={onSubmit} open>
-      <TreeViewEditor
+      <TreeEditor
         schema={{ labelId: 'REGIONS' }}
         value={tree}
         onChange={locationID => {
