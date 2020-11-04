@@ -168,7 +168,6 @@ export default function TreeViewEditor(props) {
   }
 
   const handleToggle = (event, nodeIds) => {
-    console.log(nodeIds);
     setExpanded(nodeIds);
   };
 

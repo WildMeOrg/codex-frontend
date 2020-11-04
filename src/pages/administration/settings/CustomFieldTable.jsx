@@ -19,7 +19,7 @@ import {
 import { fieldTypeChoices } from '../../../constants/fieldTypes';
 
 import FieldDemo from './FieldDemo';
-import EditField from './EditField';
+import AddOrEditField from './AddOrEditField';
 
 export default function CustomFieldTable({
   categories,
@@ -51,7 +51,17 @@ export default function CustomFieldTable({
     },
     {
       name: 'schema.displayType',
-      label: intl.formatMessage({ id: 'TYPE' }),
+      label: intl.formatMessage({ id: 'FIELD_TYPE' }),
+    },
+    {
+      name: 'schema.category',
+      label: intl.formatMessage({ id: 'CATEGORY' }),
+      options: {
+        customBodyRender: categoryId => {
+          const category = categories.find(c => c.id === categoryId);
+          return get(category, 'label', '');
+        },
+      },
     },
     {
       name: 'actions',
@@ -104,7 +114,8 @@ export default function CustomFieldTable({
 
   return (
     <Grid item>
-      <EditField
+      <AddOrEditField
+        newField={get(editField, 'name') === ''}
         open={Boolean(editField)}
         onClose={onCloseEditField}
         field={editField}

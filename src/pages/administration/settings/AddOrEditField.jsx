@@ -28,6 +28,7 @@ function updateSchema(field, property, value) {
 }
 
 export default function EditField({
+  newField,
   open,
   onClose,
   field,
@@ -61,7 +62,9 @@ export default function EditField({
       onClose={onClose}
     >
       <DialogTitle onClose={onClose}>
-        <FormattedMessage id="EDIT_FIELD" />
+        <FormattedMessage
+          id={newField ? 'ADD_FIELD' : 'EDIT_FIELD'}
+        />
         <IconButton
           style={{ position: 'absolute', top: 8, right: 16 }}
           aria-label="close"
@@ -127,8 +130,8 @@ export default function EditField({
         <InputRow labelId="FIELD_TYPE">
           <FieldTypeSelector
             field={editedField}
-            onChange={newField => {
-              setEditedField(newField);
+            onChange={nextField => {
+              setEditedField(nextField);
             }}
           />
         </InputRow>

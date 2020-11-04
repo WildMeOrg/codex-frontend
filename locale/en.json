@@ -37,7 +37,7 @@
     "CUSTOM_SIGHTING_FIELDS_DESCRIPTION": "Sighting fields appear once per sighting.",
     "CUSTOM_ENCOUNTER_FIELDS_DESCRIPTION": "Encounter fields appear for each animal in each sighting.",
     "DEFAULT_CATEGORY_NOT_EDITABLE": "Default categories are not editable.",
-    "CATEGORY_EDIT_MESSAGE": "Only sightings fields can be assigned to sightings categories, and only individual fields can be assigned to individual categories.",
+    "CATEGORY_EDIT_MESSAGE": "Categories can have sightings fields, encounter fields, OR individual fields.",
     "HELP_AND_FEEDBACK": "Help & Feedback",
     "INDIVIDUAL": "Individual",
     "INDIVIDUALS": "Individuals",
