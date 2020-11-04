@@ -3,16 +3,12 @@ import { useIntl, FormattedMessage } from 'react-intl';
 import { get } from 'lodash-es';
 import { v4 as uuid } from 'uuid';
 
-import IconButton from '@material-ui/core/IconButton';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import Tooltip from '@material-ui/core/Tooltip';
-import EditIcon from '@material-ui/icons/Edit';
 import AddIcon from '@material-ui/icons/Add';
-import DeleteIcon from '@material-ui/icons/Delete';
-import PreviewIcon from '@material-ui/icons/Visibility';
 
 import usePutSiteSettings from '../../../models/site/usePutSiteSettings';
+import ActionIcon from '../../../components/ActionIcon';
 import Button from '../../../components/Button';
 import ConfirmDelete from '../../../components/ConfirmDelete';
 import DataDisplay from '../../../components/dataDisplays/DataDisplay';
@@ -23,7 +19,7 @@ import {
 import { fieldTypeChoices } from '../../../constants/fieldTypes';
 
 import FieldDemo from './FieldDemo';
-import EditField from './EditField';
+import AddOrEditField from './AddOrEditField';
 
 export default function CustomFieldTable({
   categories,
@@ -55,7 +51,17 @@ export default function CustomFieldTable({
     },
     {
       name: 'schema.displayType',
-      label: intl.formatMessage({ id: 'TYPE' }),
+      label: intl.formatMessage({ id: 'FIELD_TYPE' }),
+    },
+    {
+      name: 'schema.category',
+      label: intl.formatMessage({ id: 'CATEGORY' }),
+      options: {
+        customBodyRender: categoryId => {
+          const category = categories.find(c => c.id === categoryId);
+          return get(category, 'label', '');
+        },
+      },
     },
     {
       name: 'actions',
@@ -63,44 +69,33 @@ export default function CustomFieldTable({
       options: {
         customBodyRender: (_, field) => (
           <div>
-            <Tooltip title={intl.formatMessage({ id: 'PREVIEW' })}>
-              <IconButton
-                onClick={() => {
-                  const fieldDisplayType = get(field, [
-                    'schema',
-                    'displayType',
-                  ]);
+            <ActionIcon
+              variant="view"
+              labelId="PREVIEW"
+              onClick={() => {
+                const fieldDisplayType = get(field, [
+                  'schema',
+                  'displayType',
+                ]);
 
-                  const displayTypeSchema = fieldTypeChoices.find(
-                    schema => fieldDisplayType === schema.value,
-                  );
+                const displayTypeSchema = fieldTypeChoices.find(
+                  schema => fieldDisplayType === schema.value,
+                );
 
-                  setPreviewInitialValue(
-                    get(displayTypeSchema, 'defaultValue'),
-                  );
-                  setPreviewField(field);
-                }}
-                aria-label={intl.formatMessage({ id: 'PREVIEW' })}
-              >
-                <PreviewIcon />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title={intl.formatMessage({ id: 'EDIT' })}>
-              <IconButton
-                onClick={() => setEditField(field)}
-                aria-label={intl.formatMessage({ id: 'EDIT' })}
-              >
-                <EditIcon />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title={intl.formatMessage({ id: 'DELETE' })}>
-              <IconButton
-                onClick={() => setDeleteField(field)}
-                aria-label={intl.formatMessage({ id: 'DELETE' })}
-              >
-                <DeleteIcon />
-              </IconButton>
-            </Tooltip>
+                setPreviewInitialValue(
+                  get(displayTypeSchema, 'defaultValue'),
+                );
+                setPreviewField(field);
+              }}
+            />
+            <ActionIcon
+              variant="edit"
+              onClick={() => setEditField(field)}
+            />
+            <ActionIcon
+              variant="delete"
+              onClick={() => setDeleteField(field)}
+            />
           </div>
         ),
       },
@@ -119,7 +114,8 @@ export default function CustomFieldTable({
 
   return (
     <Grid item>
-      <EditField
+      <AddOrEditField
+        newField={get(editField, 'name') === ''}
         open={Boolean(editField)}
         onClose={onCloseEditField}
         field={editField}

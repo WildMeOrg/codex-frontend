@@ -5,21 +5,17 @@ import { v4 as uuid } from 'uuid';
 
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import Tooltip from '@material-ui/core/Tooltip';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import Alert from '@material-ui/lab/Alert';
-import IconButton from '@material-ui/core/IconButton';
 import AddIcon from '@material-ui/icons/Add';
-import EditIcon from '@material-ui/icons/Edit';
-import PreviewIcon from '@material-ui/icons/Visibility';
-import DeleteIcon from '@material-ui/icons/Delete';
 
 import useSiteSettings from '../../../models/site/useSiteSettings';
 import usePutSiteSettings from '../../../models/site/usePutSiteSettings';
 import Button from '../../../components/Button';
+import ActionIcon from '../../../components/ActionIcon';
 import InputRow from '../../../components/InputRow';
 import ConfirmDelete from '../../../components/ConfirmDelete';
 import DataDisplay from '../../../components/dataDisplays/DataDisplay';
@@ -78,35 +74,23 @@ export default function FieldSettings() {
           const { isDefault } = category;
           if (isDefault)
             return (
-              <Tooltip
-                title={intl.formatMessage({ id: 'VIEW_ONLY' })}
-              >
-                <IconButton
-                  onClick={() => setDialogData(category)}
-                  aria-label={intl.formatMessage({ id: 'VIEW_ONLY' })}
-                >
-                  <PreviewIcon />
-                </IconButton>
-              </Tooltip>
+              <ActionIcon
+                labelId="VIEW_ONLY"
+                variant="view"
+                onClick={() => setDialogData(category)}
+              />
             );
           return (
             <div>
-              <Tooltip title={intl.formatMessage({ id: 'EDIT' })}>
-                <IconButton
-                  onClick={() => setDialogData(category)}
-                  aria-label={intl.formatMessage({ id: 'EDIT' })}
-                >
-                  <EditIcon />
-                </IconButton>
-              </Tooltip>
-              <Tooltip title={intl.formatMessage({ id: 'REMOVE' })}>
-                <IconButton
-                  onClick={() => setDeleteCategory(category)}
-                  aria-label={intl.formatMessage({ id: 'REMOVE' })}
-                >
-                  <DeleteIcon />
-                </IconButton>
-              </Tooltip>
+              <ActionIcon
+                variant="edit"
+                onClick={() => setDialogData(category)}
+              />
+              <ActionIcon
+                labelId="REMOVE"
+                variant="delete"
+                onClick={() => setDeleteCategory(category)}
+              />
             </div>
           );
         },
