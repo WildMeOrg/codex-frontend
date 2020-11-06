@@ -75,7 +75,11 @@ export default function useSiteSettings() {
 
   let data = null;
   if (siteSettings && siteSettingsSchema) {
-    data = merge(siteSettingsSchema, siteSettings);
+    /* Order of this merge is CRUCIAL. Values from the settings object must
+     * override values from the schema object. If the order ever needs to be
+     * changed for some reason, extensive QA of the RegionEditor component
+     * will be necesssary. */
+    data = merge(siteSettings, siteSettingsSchema);
   }
 
   return { data, loading, error };
