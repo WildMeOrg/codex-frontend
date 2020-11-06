@@ -2,11 +2,13 @@ import { useContext, useEffect, useState } from 'react';
 import { merge } from 'lodash-es';
 import axios from 'axios';
 import getAxiosResponse from '../../utils/getAxiosResponse';
+import getResponseVersion from '../../utils/getResponseVersion';
 import { formatError } from '../../utils/formatters';
 import {
   AppContext,
   setSiteSettingsNeedsFetch,
   setSiteSettingsSchema,
+  setSiteSettingsVersion,
   setSiteSettings,
 } from '../../context';
 
@@ -15,6 +17,7 @@ export default function useSiteSettings() {
   const {
     siteSettings,
     siteSettingsSchema,
+    siteSettingsVersion,
     siteSettingsNeedsFetch,
   } = state;
 
@@ -57,6 +60,11 @@ export default function useSiteSettings() {
           const settingsPacket = await axios(
             'https://nextgen.dev-wildbook.org/api/v0/configuration/__bundle_setup',
           );
+          dispatch(
+            setSiteSettingsVersion(
+              getResponseVersion(settingsPacket),
+            ),
+          );
           dispatch(setSiteSettings(getAxiosResponse(settingsPacket)));
           dispatch(setSiteSettingsNeedsFetch(false));
           setSettingsLoading(false);
@@ -82,5 +90,5 @@ export default function useSiteSettings() {
     data = merge(siteSettings, siteSettingsSchema);
   }
 
-  return { data, loading, error };
+  return { data, loading, error, siteSettingsVersion };
 }

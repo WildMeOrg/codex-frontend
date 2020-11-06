@@ -56,7 +56,10 @@ function getInitialFormState(siteSettings) {
   return { regions, species, relationships };
 }
 
-export default function DefaultFieldTable({ siteSettings }) {
+export default function DefaultFieldTable({
+  siteSettings,
+  siteSettingsVersion,
+}) {
   const intl = useIntl();
   const [formSettings, setFormSettings] = useState(null);
   const [editField, setEditField] = useState(null);
@@ -64,7 +67,7 @@ export default function DefaultFieldTable({ siteSettings }) {
 
   useEffect(
     () => setFormSettings(getInitialFormState(siteSettings)),
-    [siteSettings],
+    [siteSettingsVersion],
   );
 
   const tableColumns = [

@@ -136,7 +136,6 @@ export default function TreeEditor({
   onChange,
   ...rest
 }) {
-  console.log(value);
   return (
     <div {...rest}>
       <div
