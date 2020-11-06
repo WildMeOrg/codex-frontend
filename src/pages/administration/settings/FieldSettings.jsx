@@ -17,7 +17,12 @@ function getCustomFields(siteSettings, property) {
 }
 
 export default function FieldSettings() {
-  const { data: siteSettings, loading, error } = useSiteSettings();
+  const {
+    data: siteSettings,
+    loading,
+    error,
+    siteSettingsVersion,
+  } = useSiteSettings();
 
   const customFieldCategories = get(
     siteSettings,
@@ -58,7 +63,10 @@ export default function FieldSettings() {
       spacing={3}
       style={{ marginTop: 40 }}
     >
-      <DefaultFieldTable siteSettings={siteSettings} />
+      <DefaultFieldTable
+        siteSettings={siteSettings}
+        siteSettingsVersion={siteSettingsVersion}
+      />
       <CategoryTable />
       <CustomFieldTable
         categories={customIndividualCategories}

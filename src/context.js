@@ -13,6 +13,10 @@ export const setSiteSettingsSchema = data => ({
   type: 'SET_SITE_SETTINGS_SCHEMA',
   data,
 });
+export const setSiteSettingsVersion = data => ({
+  type: 'SET_SITE_SETTINGS_VERSION',
+  data,
+});
 export const setSiteSettings = data => ({
   type: 'SET_SITE_SETTINGS',
   data,
@@ -27,6 +31,7 @@ export const initialState = {
   me: null,
   siteSettings: null,
   siteSettingsSchema: null,
+  siteSettingsVersion: null,
   siteSettingsNeedsFetch: true,
   sightingsNeedsFetch: true,
 };
