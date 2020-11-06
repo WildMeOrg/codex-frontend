@@ -17,63 +17,47 @@ function getNewLeaf() {
   };
 }
 
+function deleteFromTree(tree, deleteId) {
+  const prunedTree = tree.map(leaf => {
+    const newLocationID = leaf.locationID
+      ? deleteFromTree(leaf.locationID, deleteId)
+      : undefined;
+    return { ...leaf, locationID: newLocationID };
+  });
+
+  return prunedTree.filter(leaf => leaf.id !== deleteId);
+}
+
+function addLeaf(tree, parentId) {
+  // Set parentId falsey and the leaf will be added to the root of the tree.
+  if (!parentId) return [getNewLeaf(), ...tree];
+  return tree.map(leaf => {
+    let newLocationID = leaf.locationID
+      ? addLeaf(leaf.locationID, parentId)
+      : undefined;
+    if (leaf.id === parentId) {
+      newLocationID = newLocationID
+        ? [getNewLeaf(), ...newLocationID]
+        : [getNewLeaf()];
+    }
+    return { ...leaf, locationID: newLocationID };
+  });
+}
+
 function updateTree(tree, leafId, newLeafName) {
-  const newTree = [...tree];
-  function updateLevel(leaves) {
-    leaves.forEach((leaf, i) => {
-      if (leaf.id === leafId) {
-        leaves[i] = {
-          ...leaves[i],
-          name: newLeafName,
-        };
-        return;
-      }
-      if (leaf.locationID) updateLevel(leaf.locationID);
-    });
-  }
-
-  updateLevel(newTree);
-  return newTree;
-}
-
-function deleteFromTree(root, deleteId) {
-  function updateLevel(leaves) {
-    const newLeaves = [];
-    leaves.forEach(leaf => {
-      const newLeaf = leaf.locationID
-        ? { ...leaf, locationID: updateLevel(leaf.locationID) }
-        : leaf;
-      if (leaf.id !== deleteId) {
-        newLeaves.push(newLeaf);
-      }
-    });
-    return newLeaves;
-  }
-
-  return updateLevel(root);
-}
-
-function addChild(root, parentId) {
-  function updateLevel(leaves) {
-    const newLeaves = [];
-    leaves.forEach(leaf => {
-      if (leaf.locationID) {
-        leaf.locationID = updateLevel(leaf.locationID);
-        if (leaf.id === parentId) leaf.locationID.push(getNewLeaf());
-      } else if (leaf.id === parentId) {
-        leaf.locationID = [getNewLeaf()];
-      }
-      newLeaves.push(leaf);
-    });
-    return newLeaves;
-  }
-
-  return updateLevel(root);
+  return tree.map(leaf => {
+    const newLocationID = leaf.locationID
+      ? updateTree(leaf.locationID, leafId, newLeafName)
+      : undefined;
+    const newLeaf = { ...leaf, locationID: newLocationID };
+    if (newLeaf.id === leafId) newLeaf.name = newLeafName;
+    return newLeaf;
+  });
 }
 
 function Leaf({ level, data, root, onChange, children }) {
   return (
-    <div style={{ marginLeft: level * 20, marginTop: 10 }}>
+    <div style={{ marginLeft: level * 32, marginTop: 10 }}>
       <TextInput
         width={240}
         schema={{ name: get(data, 'name') }}
@@ -87,7 +71,7 @@ function Leaf({ level, data, root, onChange, children }) {
               <IconButton
                 size="small"
                 onClick={() => {
-                  onChange(addChild(root, data.id));
+                  onChange(addLeaf(root, data.id));
                 }}
               >
                 <NewChildIcon />
@@ -150,7 +134,7 @@ export default function TreeEditor({
         </Typography>
         <Button
           onClick={() => {
-            onChange([getNewLeaf(), ...value]);
+            onChange(addLeaf(value));
           }}
           style={{ width: 200 }}
           size="small"
