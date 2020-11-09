@@ -84,30 +84,32 @@ export default function RelationshipsInput({
           </div>
         );
       })}
-      <Button
-        style={{ marginTop: 16 }}
-        onClick={() => {
-          onChange([
-            ...sortedRelationships,
-            {
-              targetIndividualId: null,
-              direction: null,
-              value: '',
-              id: uuid(),
-              timeCreated: Date.now(),
-            },
-          ]);
-        }}
-        size="small"
-      >
-        <FormattedMessage
-          id={
-            relationships.length > 0
-              ? 'ADD_ANOTHER_RELATIONSHIP'
-              : 'ADD_RELATIONSHIP'
-          }
-        />
-      </Button>
+      {relationships && (
+        <Button
+          style={{ marginTop: 16 }}
+          onClick={() => {
+            onChange([
+              ...sortedRelationships,
+              {
+                targetIndividualId: null,
+                direction: null,
+                value: '',
+                id: uuid(),
+                timeCreated: Date.now(),
+              },
+            ]);
+          }}
+          size="small"
+        >
+          <FormattedMessage
+            id={
+              relationships.length > 0
+                ? 'ADD_ANOTHER_RELATIONSHIP'
+                : 'ADD_RELATIONSHIP'
+            }
+          />
+        </Button>
+      )}
     </div>
   );
 }
