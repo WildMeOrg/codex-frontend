@@ -15,18 +15,11 @@ import Paper from '@material-ui/core/Paper';
 import MainColumn from '../../components/MainColumn';
 import InputRow from '../../components/InputRow';
 import DividerTitle from '../../components/DividerTitle';
-import EditProfile from '../../components/EditEntityModal';
 import LoadingScreen from '../../components/LoadingScreen';
 import ActionIcon from '../../components/ActionIcon';
 import SadScreen from '../../components/SadScreen';
-import DateRenderer from '../../components/renderers/DateRenderer';
-import GpsRenderer from '../../components/renderers/GpsRenderer';
-import TaxonomyRenderer from '../../components/renderers/TaxonomyRenderer';
 import DefaultRenderer from '../../components/renderers/DefaultRenderer';
-import {
-  selectSightings,
-  selectSightingSchema,
-} from '../../modules/sightings/selectors';
+import { selectSightings } from '../../modules/sightings/selectors';
 import useSighting from '../../models/sighting/useSighting';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import { formatDate } from '../../utils/formatters';
@@ -34,84 +27,8 @@ import Status from './Status';
 import AnnotationsGallery from './AnnotationsGallery';
 import IndividualsGallery from './IndividualsGallery';
 import PhotoGallery from './PhotoGallery';
-
-const metadata = [
-  {
-    id: 'startTime',
-    labelId: 'SIGHTING_START',
-    getData: data => get(data, 'startTime'),
-    renderer: DateRenderer,
-    editable: true,
-  },
-  {
-    id: 'endTime',
-    labelId: 'SIGHTING_END',
-    getData: data => get(data, 'endTime'),
-    renderer: DateRenderer,
-    editable: true,
-  },
-  {
-    id: 'created',
-    labelId: 'REPORTED_ON',
-    getData: data => get(data, 'created'),
-    renderer: DateRenderer,
-    editable: false,
-  },
-  {
-    id: 'modified',
-    labelId: 'LAST_MODIFIED',
-    getData: data => get(data, 'modified'),
-    renderer: DateRenderer,
-    editable: false,
-  },
-  {
-    id: 'owner',
-    labelId: 'REPORTED_BY',
-    getData: data => get(data, 'owner'),
-    editable: false,
-  },
-  {
-    id: 'taxonomies',
-    labelId: 'TAXONOMIES',
-    getData: data => get(data, 'taxonomies'),
-    renderer: TaxonomyRenderer,
-    editable: true,
-  },
-  {
-    id: 'locationId',
-    labelId: 'REGION',
-    getData: data => get(data, 'locationId'),
-    editable: true,
-  },
-  {
-    id: 'gps',
-    labelId: 'EXACT_LOCATION',
-    getData: data => [
-      get(data, 'decimalLatitude'),
-      get(data, 'decimalLongitude'),
-    ],
-    renderer: GpsRenderer,
-    editable: true,
-  },
-  {
-    id: 'bearing',
-    labelId: 'BEARING',
-    getData: data => get(data, 'bearing'),
-    editable: true,
-  },
-  {
-    id: 'verbatimLocality',
-    labelId: 'FREEFORM_LOCATION',
-    getData: data => get(data, 'verbatimLocality'),
-    editable: true,
-  },
-  {
-    id: 'behavior',
-    labelId: 'BEHAVIOR',
-    getData: data => get(data, 'behavior'),
-    editable: true,
-  },
-];
+import EditSightingMetadata from './EditSightingMetadata';
+import MetadataDefinitions from './constants/MetadataDefinitions';
 
 export default function Sighting() {
   const { id } = useParams();
@@ -122,7 +39,7 @@ export default function Sighting() {
   const mergedFields = useMemo(
     () => {
       if (!data) return null;
-      return metadata.map(metadatum => ({
+      return MetadataDefinitions.map(metadatum => ({
         ...metadatum,
         value: metadatum.getData(data),
       }));
@@ -132,7 +49,6 @@ export default function Sighting() {
 
   // fetch data for Id...
   const sightings = useSelector(selectSightings);
-  const schema = useSelector(selectSightingSchema);
   useDocumentTitle(`Sighting ${id}`);
   const [editingProfile, setEditingProfile] = useState(false);
 
@@ -186,7 +102,10 @@ export default function Sighting() {
               Reported by George Masterson
             </Typography>
           </div>
-          <ActionIcon variant="edit" />
+          <ActionIcon
+            onClick={() => setEditingProfile(true)}
+            variant="edit"
+          />
         </div>
         <DividerTitle titleId="STATUS" />
         <Status />
@@ -203,26 +122,13 @@ export default function Sighting() {
             );
           })}
       </Paper>
-      <EditProfile
+      <EditSightingMetadata
         open={editingProfile}
         onClose={() => setEditingProfile(false)}
-        fieldValues={[
-          {
-            name: 'species',
-            value: sighting.taxonomy,
-          },
-          {
-            name: 'location_freeform',
-            value: sighting.region,
-          },
-          {
-            name: 'sightingContext',
-            value: sighting.context,
-          },
-        ]}
-        fieldSchema={schema}
+        onSubmit={() => setEditingProfile(false)}
+        error={null}
+        metadata={mergedFields}
       />
-
       <Tabs
         value={activeTab.replace('#', '')}
         onChange={(_, newValue) => {
