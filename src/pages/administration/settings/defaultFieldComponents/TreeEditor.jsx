@@ -65,6 +65,7 @@ function Leaf({ level, data, root, onChange, children }) {
           onChange(updateTree(root, data.id, newName));
         }}
         value={get(data, 'name')}
+        autoFocus
         InputProps={{
           endAdornment: (
             <InputAdornment position="end">
