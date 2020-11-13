@@ -11,14 +11,14 @@ export default function useIndividuals(ids) {
       const fetchData = async () => {
         try {
           await axios(
-            'https://nextgen.dev-wildbook.org/api/v0/login?content=%7B%22login%22:%22test%22,%22password%22:%22test1234%22%7D',
+            `${__nexgen_url__}/api/v0/login?content=%7B%22login%22:%22test%22,%22password%22:%22test1234%22%7D`,
           );
 
           ids.forEach(async id => {
             try {
               const result = await axios({
                 withCredentials: true,
-                url: `https://nextgen.dev-wildbook.org/api/org.ecocean.MarkedIndividual?individualID==%27${id}%27`,
+                url: `${__nexgen_url__}/api/org.ecocean.MarkedIndividual?individualID==%27${id}%27`,
               });
 
               const data = get(result, 'data.0');

@@ -23,7 +23,6 @@ import BannerLogo from './BannerLogo';
 import HeaderMenu from './HeaderMenu';
 import useGetMe from '../models/users/useGetMe';
 import shane from '../assets/shane.jpg';
-import { houstonUrl } from '../constants/urls';
 
 export default function AppHeader() {
   const theme = useTheme();
@@ -193,7 +192,7 @@ export default function AppHeader() {
                 </Link>
               )}
               <form
-                action={`${houstonUrl}/logout?next=/`}
+                action={`${__houston_url__}/logout?next=/`}
                 method="POST"
               >
                 <Typography style={{ margin: '6px 20px 6px 30px' }}>

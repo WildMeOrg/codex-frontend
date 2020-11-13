@@ -34,8 +34,7 @@ export default function useSiteSettings() {
     const fetchData = async () => {
       try {
         const schemaPacket = await axios({
-          url:
-            'https://nextgen.dev-wildbook.org/api/v0/configurationDefinition/__bundle_setup',
+          url: `${__nexgen_url__}/api/v0/configurationDefinition/__bundle_setup`,
           timeout: 2000,
         });
         dispatch(
@@ -58,7 +57,7 @@ export default function useSiteSettings() {
       const fetchData = async () => {
         try {
           const settingsPacket = await axios(
-            'https://nextgen.dev-wildbook.org/api/v0/configuration/__bundle_setup',
+            `${__nexgen_url__}/api/v0/configuration/__bundle_setup`,
           );
           dispatch(
             setSiteSettingsVersion(
