@@ -3,7 +3,6 @@ import axios from 'axios';
 import { get } from 'lodash-es';
 import * as Sentry from '@sentry/react';
 import { AppContext, setMe } from '../../context';
-import { houstonUrl } from '../../constants/urls';
 
 export default function useGetMe() {
   const { state, dispatch } = useContext(AppContext);
@@ -17,7 +16,7 @@ export default function useGetMe() {
     const getMe = async () => {
       try {
         const response = await axios.request({
-          url: `${houstonUrl}/api/v1/users/me`,
+          url: `${__houston_url__}/api/v1/users/me`,
           method: 'get',
         });
         const meData = get(response, 'data');

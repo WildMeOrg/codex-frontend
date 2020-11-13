@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { get } from 'lodash-es';
-import { jonUrl } from '../../constants/urls';
 import { formatError } from '../../utils/formatters';
 
 export default function useSighting(sightingId) {
@@ -14,7 +13,7 @@ export default function useSighting(sightingId) {
       const fetchSightingData = async () => {
         try {
           const response = await axios.request({
-            url: `${jonUrl}/api/v0/org.ecocean.Occurrence/${sightingId}?detail-org.ecocean.Occurrence=max`,
+            url: `${__nexgen_url__}/api/v0/org.ecocean.Occurrence/${sightingId}?detail-org.ecocean.Occurrence=max`,
             method: 'get',
           });
 
