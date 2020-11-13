@@ -21,6 +21,7 @@ import AdminActions from './pages/administration/Actions';
 import ServerStatus from './pages/administration/ServerStatus';
 import EditSiteSettings from './pages/administration/EditSiteSettings';
 import MatchReview from './pages/match/MatchReview';
+import FlagsOnly from './pages/match/iceland/FlagsOnly';
 import Iceland from './pages/match/iceland/Iceland';
 import Welcome from './pages/auth/Welcome';
 import Home from './pages/home/Home';
@@ -103,6 +104,9 @@ export default function AuthenticatedSwitch() {
                       </Route>
                       <Route path="/admin/settings">
                         <EditSiteSettings />
+                      </Route>
+                      <Route path="/iceland/flags">
+                        <FlagsOnly />
                       </Route>
                       <Route path="/iceland">
                         <Iceland />
