@@ -12,7 +12,7 @@ import ids from './icelandIds';
 import useStatus from './useStatus';
 import useNotes from './useNotes';
 
-export default function Iceland() {
+export default function FlagsOnly() {
   const [selectedJob, setSelectedJob] = useState(null);
   const [currentPage, setCurrentPage] = useState(undefined);
   const { data: statuses, loading: statusLoading } = useStatus(
@@ -28,6 +28,11 @@ export default function Iceland() {
     status: get(statuses, datum.acmId, 'To do'),
     notes: get(notes, datum.acmId, ''),
   }));
+
+  const filteredData = data.filter(datum => {
+    if (datum.status === 'Flagged for review') return true;
+    return false;
+  });
 
   const columns = [
     {
@@ -71,12 +76,12 @@ export default function Iceland() {
           textAlign: 'center',
         }}
       >
-        Iceland Many-to-Many Matching Tool
+        Iceland Many-to-Many Matching Tool: Flagged Only
       </Typography>
       <div style={{ overflow: 'auto', height: 1900 }}>
         <DataGrid
           columns={columns}
-          rows={data}
+          rows={filteredData}
           rowHeight={36}
           pageSize={50}
           page={currentPage}
