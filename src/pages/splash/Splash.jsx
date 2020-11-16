@@ -135,8 +135,16 @@ export default function Splash() {
             <FormattedMessage id="REPORT_SIGHTINGS" />
           </ButtonLink>
         </div>
-        <div
-          style={{ position: 'absolute', bottom: '10%', right: '5%' }}
+        <a
+          href="https://www.wildme.org/"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            position: 'absolute',
+            bottom: '10%',
+            right: '5%',
+            textDecoration: 'unset',
+          }}
         >
           <Typography
             style={{
@@ -168,7 +176,7 @@ export default function Splash() {
               </span>
             </Typography>
           </div>
-        </div>
+        </a>
       </div>
       <Trifold />
       <HowItWorks />
