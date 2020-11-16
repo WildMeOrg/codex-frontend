@@ -13,7 +13,7 @@ import { selectSiteSettings } from '../../modules/site/selectors';
 import ButtonLink from '../../components/ButtonLink';
 import ResponsiveText from '../../components/ResponsiveText';
 import useSiteSettings from '../../models/site/useSiteSettings';
-import wildMeLogo from '../../assets/wildme-logo.svg';
+import WildMeLogo from '../../components/svg/WildMeLogo';
 import Trifold from './Trifold';
 import HowItWorks from './HowItWorks';
 import Testimonial from './Testimonial';
@@ -148,11 +148,8 @@ export default function Splash() {
             Powered by
           </Typography>
           <div style={{ display: 'flex', alignItems: 'flex-end' }}>
-            <img
-              width={72}
-              style={{ filter: 'invert(1)' }}
-              src={wildMeLogo}
-              alt="Wild Me logo"
+            <WildMeLogo
+              style={{ fill: theme.palette.common.white, width: 72 }}
             />
             <Typography
               style={{ color: 'white', fontSize: 24, marginLeft: 8 }}
