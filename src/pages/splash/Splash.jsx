@@ -6,14 +6,13 @@ import { useSelector } from 'react-redux';
 import { useTheme } from '@material-ui/core/styles';
 import ScrollIcon from '@material-ui/icons/KeyboardArrowUp';
 import Fab from '@material-ui/core/Fab';
-import Typography from '@material-ui/core/Typography';
 
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import { selectSiteSettings } from '../../modules/site/selectors';
 import ButtonLink from '../../components/ButtonLink';
 import ResponsiveText from '../../components/ResponsiveText';
 import useSiteSettings from '../../models/site/useSiteSettings';
-import WildMeLogo from '../../components/svg/WildMeLogo';
+import poweredBy from '../../assets/powered-by.svg';
 import Trifold from './Trifold';
 import HowItWorks from './HowItWorks';
 import Testimonial from './Testimonial';
@@ -146,36 +145,11 @@ export default function Splash() {
             textDecoration: 'unset',
           }}
         >
-          <Typography
-            style={{
-              marginLeft: 6,
-              color: '#ddd',
-              fontStyle: 'italic',
-            }}
-          >
-            Powered by
-          </Typography>
-          <div style={{ display: 'flex', alignItems: 'flex-end' }}>
-            <WildMeLogo
-              style={{ fill: theme.palette.common.white, width: 72 }}
-            />
-            <Typography
-              style={{ color: 'white', fontSize: 24, marginLeft: 8 }}
-            >
-              <span style={{ fontWeight: 'bold' }}>WILD</span>
-              <span>ME</span>
-              <span
-                style={{
-                  marginLeft: 4,
-                  fontStyle: 'italic',
-                  fontWeight: 300,
-                  textTransform: 'uppercase',
-                }}
-              >
-                sage
-              </span>
-            </Typography>
-          </div>
+          <img
+            src={poweredBy}
+            style={{ width: 300 }}
+            alt="Powered by Wild Me Codex"
+          />
         </a>
       </div>
       <Trifold />
