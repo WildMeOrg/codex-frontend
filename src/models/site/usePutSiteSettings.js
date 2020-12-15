@@ -12,7 +12,7 @@ export default function usePutSiteSettings() {
   const putSiteSettings = async data => {
     try {
       const response = await axios({
-        url: `${__nexgen_url__}/api/v0/configuration`,
+        url: `${__houston_url__}/api/v1/configuration/default`,
         withCredentials: true,
         method: 'post',
         data,
@@ -35,7 +35,7 @@ export default function usePutSiteSettings() {
   const putSiteSetting = async (property, data) => {
     try {
       const response = await axios({
-        url: `${__nexgen_url__}/api/v0/configuration/${property}`,
+        url: `${__houston_url__}/api/v1/configuration/default/${property}`,
         withCredentials: true,
         method: 'post',
         data: {
