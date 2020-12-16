@@ -34,7 +34,7 @@ export default function useSiteSettings() {
     const fetchData = async () => {
       try {
         const schemaPacket = await axios({
-          url: `${__nexgen_url__}/api/v0/configurationDefinition/__bundle_setup`,
+          url: `${__houston_url__}/api/v1/configurationDefinition/default/__bundle_setup`,
           timeout: 2000,
         });
         dispatch(
@@ -57,7 +57,7 @@ export default function useSiteSettings() {
       const fetchData = async () => {
         try {
           const settingsPacket = await axios(
-            `${__nexgen_url__}/api/v0/configuration/__bundle_setup`,
+            `${__houston_url__}/api/v1/configuration/default/__bundle_setup`,
           );
           dispatch(
             setSiteSettingsVersion(
