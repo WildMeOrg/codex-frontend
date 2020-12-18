@@ -21,9 +21,21 @@ npm start
 
 The development environment is mostly used on OSX but should work on Windows as well. Use Powershell or edit the `npm start:win32` command to set `NODE_ENV` using the appropriate syntax for your preferred shell.
 
+## Configuration and build
+
+A build can be initiated with the command `npm run build`. You can specify the URL for Houston in `/config/config.json` or as a command line argument. Here are some examples of a correctly specifying the Houston URL:
+
+```
+npm run build -- --houston https://houston.dyn.wildme.io
+npm run build -- --houston localhost:9999
+npm start -- --houston localhost:4232
+```
+
 ## Thanks
 
 Thanks to [Lokalise](https://lokalise.com/) for providing translation management services.
+
+Thanks to [flatfile](https://flatfile.io/) for providing data import services.
 
 Thanks to Emily Ke and Madeleine Webb for their contributions. 
 

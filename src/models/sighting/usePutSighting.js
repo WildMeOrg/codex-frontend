@@ -12,7 +12,7 @@ export default function usePutSighting() {
   const putSighting = async data => {
     try {
       const response = await axios({
-        url: `${__nexgen_url__}/api/v0/org.ecocean.Occurrence`,
+        url: `${__houston_url__}/api/v0/org.ecocean.Occurrence`,
         withCredentials: true,
         method: 'post',
         data,
