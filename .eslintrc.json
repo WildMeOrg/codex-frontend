@@ -48,7 +48,6 @@
   "globals": {
     "__DEV__": true,
     "__config__": true,
-    "__houston_url__": true,
-    "__nexgen_url__": true
+    "__houston_url__": true
   }
 }

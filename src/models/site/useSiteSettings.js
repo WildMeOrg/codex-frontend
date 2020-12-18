@@ -59,12 +59,12 @@ export default function useSiteSettings() {
           const settingsPacket = await axios(
             `${__houston_url__}/api/v1/configuration/default/__bundle_setup`,
           );
-          dispatch(
-            setSiteSettingsVersion(
-              getResponseVersion(settingsPacket),
-            ),
-          );
-          dispatch(setSiteSettings(getAxiosResponse(settingsPacket)));
+          const responseVersion = getResponseVersion(settingsPacket);
+          const axiosResponse = getAxiosResponse(settingsPacket);
+          if (!responseVersion || !axiosResponse)
+            throw Error('Axios response was unreadable.');
+          dispatch(setSiteSettingsVersion(responseVersion));
+          dispatch(setSiteSettings(axiosResponse));
           dispatch(setSiteSettingsNeedsFetch(false));
           setSettingsLoading(false);
         } catch (fetchError) {

@@ -13,7 +13,7 @@ export default function useSighting(sightingId) {
       const fetchSightingData = async () => {
         try {
           const response = await axios.request({
-            url: `${__nexgen_url__}/api/v0/org.ecocean.Occurrence/${sightingId}?detail-org.ecocean.Occurrence=max`,
+            url: `${__houston_url__}/api/v0/org.ecocean.Occurrence/${sightingId}?detail-org.ecocean.Occurrence=max`,
             method: 'get',
           });
 
