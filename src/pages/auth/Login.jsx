@@ -57,7 +57,7 @@ export default function Login({ showBanner, redirect = '/' }) {
           container
           spacing={2}
           direction="column"
-          style={{ padding: 16, width: 280 }}
+          style={{ padding: '16px 0', width: 280 }}
         >
           <Grid item>
             <FormControl
@@ -119,7 +119,7 @@ export default function Login({ showBanner, redirect = '/' }) {
             </Button>
           </Grid>
         </Grid>
-        <Typography style={{ padding: '0 16px' }}>
+        <Typography>
           <InlineButton>
             <Link href="/forgot">
               <FormattedMessage id="FORGOT_QUESTION" />

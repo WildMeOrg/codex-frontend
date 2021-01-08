@@ -225,7 +225,7 @@
   "REQUEST_SENT": "Your request has been sent. An administrator will be contacting you shortly.",
   "PASSWORD_RESET_SENT": "Your password reset request has been sent. In a few moments you should receive an email from noreply@wildbook.org with next steps. If you do not receive the email, double-check your spam folder before trying again.",
   "WELCOME_BACK": "Welcome back",
-  "LOG_IN_INSTRUCTIONS": "Log in with your Wildbook username or email",
+  "LOG_IN_INSTRUCTIONS": "Log in with your Codex email address.",
   "NEW_REGION": "Add region",
   "USERNAME_OR_EMAIL": "Username or email",
   "PASSWORD": "Password",

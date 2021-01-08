@@ -1,33 +1,44 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
+import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
+import ResponsiveText from './ResponsiveText';
 
-export default function SimpleFormPage({ titleId, instructionsId, children }) {
+export default function SimpleFormPage({
+  titleId,
+  instructionsId,
+  children,
+}) {
   return (
     <div
       style={{
-        margin: '0px auto 200px',
-        width: 300,
-        maxWidth: 851,
         paddingTop: 120,
-        position: 'relative',
         minHeight: '100vh',
       }}
     >
-      <Typography
-        variant="h3"
-        component="h3"
-        style={{ padding: '16px 0 8px 16px' }}
+      <Paper
+        style={{
+          margin: '0px auto 200px',
+          width: 360,
+          maxWidth: '90%',
+          position: 'relative',
+          padding: '40px 16px 20px 16px',
+        }}
       >
-        <FormattedMessage id={titleId} />
-      </Typography>
-      <Typography
-        variant="subtitle2"
-        style={{ padding: '0 16px 8px 16px', maxWidth: 460 }}
-      >
-        <FormattedMessage id={instructionsId} />
-      </Typography>
-      {children}
+        <ResponsiveText
+          variant="h2"
+          style={{ paddingBottom: 8 }}
+        >
+          <FormattedMessage id={titleId} />
+        </ResponsiveText>
+        <Typography
+          variant="subtitle2"
+          style={{ maxWidth: 460 }}
+        >
+          <FormattedMessage id={instructionsId} />
+        </Typography>
+        {children}
+      </Paper>
     </div>
   );
 }

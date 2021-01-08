@@ -42,13 +42,16 @@ export default function CreateAdminUser() {
   }, []);
 
   return (
-    <SimpleFormPage titleId="CODEX_INITIALIZED" instructionsId="FIRST_STEP_CREATE_ADMIN">
+    <SimpleFormPage
+      titleId="CODEX_INITIALIZED"
+      instructionsId="FIRST_STEP_CREATE_ADMIN"
+    >
       <form>
         <Grid
           container
           spacing={2}
           direction="column"
-          style={{ padding: 16, width: 280 }}
+          style={{ padding: '16px 40px 16px 16px' }}
         >
           <Grid item>
             <FormControl
@@ -104,15 +107,19 @@ export default function CreateAdminUser() {
             </FormControl>
           </Grid>
           {error && <Alert severity="error">{error}</Alert>}
-          <Grid item style={{ position: 'relative' }}>
+          <Grid item style={{ position: 'relative', padding: '20px 12px' }}>
             <Button
               id={buttonId}
               loading={loading}
               onClick={() => {
                 if (password1 === password2) {
-                  authenticate(email, password1, '/');
+                  authenticate(email, password1, '/admin/settings');
                 } else {
-                  setError(intl.formatMessage({ id: 'PASSWORDS_DO_NOT_MATCH' }))
+                  setError(
+                    intl.formatMessage({
+                      id: 'PASSWORDS_DO_NOT_MATCH',
+                    }),
+                  );
                 }
               }}
               display="primary"

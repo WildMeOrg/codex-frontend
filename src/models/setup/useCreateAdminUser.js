@@ -26,7 +26,11 @@ export default function useLogin() {
         },
       });
 
-      const createSuccessful = get(createResponse, 'data.success', false);
+      const createSuccessful = get(
+        createResponse,
+        'data.success',
+        false,
+      );
 
       if (createSuccessful) {
         const loginResponse = await axios.request({
@@ -38,7 +42,11 @@ export default function useLogin() {
           },
         });
 
-        const loginSuccessful = get(loginResponse, 'data.success', false);
+        const loginSuccessful = get(
+          loginResponse,
+          'data.success',
+          false,
+        );
 
         if (loginSuccessful) {
           window.location.href = redirect;

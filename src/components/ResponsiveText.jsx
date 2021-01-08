@@ -15,6 +15,11 @@ const sizeMap = {
     desktop: 40,
     component: 'h2',
   },
+  h3: {
+    mobile: 24,
+    desktop: 32,
+    component: 'h2',
+  },
   h5: {
     mobile: 20,
     desktop: 24,

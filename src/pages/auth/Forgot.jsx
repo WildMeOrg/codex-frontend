@@ -23,7 +23,10 @@ export default function Forgot() {
 
   if (requestSent) {
     return (
-      <SimpleFormPage titleId={titleId} instructionsId={instructionsId}>
+      <SimpleFormPage
+        titleId={titleId}
+        instructionsId={instructionsId}
+      >
         <Typography
           style={{ padding: '8px 16px 0 16px', maxWidth: 400 }}
         >
@@ -48,7 +51,7 @@ export default function Forgot() {
         container
         spacing={2}
         direction="column"
-        style={{ padding: 16, width: 280 }}
+        style={{ padding: '16px 0', width: 280 }}
       >
         <Grid item>
           <TextInput

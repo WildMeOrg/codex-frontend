@@ -42,7 +42,7 @@ export default function RequestInvitation() {
         container
         spacing={2}
         direction="column"
-        style={{ padding: 16, width: 280 }}
+        style={{ padding: '16px 0', width: 280 }}
       >
         <Grid item>
           <TextInput
