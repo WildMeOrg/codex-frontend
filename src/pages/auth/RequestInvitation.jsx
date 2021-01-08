@@ -6,7 +6,7 @@ import useDocumentTitle from '../../hooks/useDocumentTitle';
 import TextInput from '../../components/inputs/TextInput';
 import ButtonLink from '../../components/ButtonLink';
 import Button from '../../components/Button';
-import Shell from './Shell';
+import SimpleFormPage from '../../components/SimpleFormPage';
 
 export default function RequestInvitation() {
   const [email, setEmail] = useState('');
@@ -24,7 +24,7 @@ export default function RequestInvitation() {
 
   if (requestSent) {
     return (
-      <Shell titleId={titleId} instructionsId="REQUEST_SENT">
+      <SimpleFormPage titleId={titleId} instructionsId="REQUEST_SENT">
         <ButtonLink
           href="/"
           style={{ width: 280, margin: '24px 16px 16px 16px' }}
@@ -32,12 +32,12 @@ export default function RequestInvitation() {
         >
           <FormattedMessage id="RETURN_HOME" />
         </ButtonLink>
-      </Shell>
+      </SimpleFormPage>
     );
   }
 
   return (
-    <Shell titleId={titleId} instructionsId={instructionsId}>
+    <SimpleFormPage titleId={titleId} instructionsId={instructionsId}>
       <Grid
         container
         spacing={2}
@@ -97,6 +97,6 @@ export default function RequestInvitation() {
           </Typography>
         )}
       </Grid>
-    </Shell>
+    </SimpleFormPage>
   );
 }

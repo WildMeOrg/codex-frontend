@@ -5,9 +5,11 @@ import { useIntl } from 'react-intl';
 
 export default function useLogin() {
   const intl = useIntl();
-  const errorMessage = intl.formatMessage({
+  const invalidError = intl.formatMessage({
     id: 'INVALID_EMAIL_OR_PASSWORD',
   });
+
+  const serverError = intl.formatMessage({ id: 'SERVER_ERROR' });
 
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -15,7 +17,7 @@ export default function useLogin() {
   const authenticate = async (email, password, redirect = '/') => {
     try {
       setLoading(true);
-      const response = await axios.request({
+      const createResponse = await axios.request({
         url: `${__houston_url__}/api/v1/users/admin_user_initialized`,
         method: 'post',
         data: {
@@ -24,16 +26,31 @@ export default function useLogin() {
         },
       });
 
-      const successful = get(response, 'data.success', false);
+      const createSuccessful = get(createResponse, 'data.success', false);
 
-      if (successful) {
-        window.location.href = redirect;
+      if (createSuccessful) {
+        const loginResponse = await axios.request({
+          url: `${__houston_url__}/api/v1/auth/sessions`,
+          method: 'post',
+          data: {
+            email,
+            password,
+          },
+        });
+
+        const loginSuccessful = get(loginResponse, 'data.success', false);
+
+        if (loginSuccessful) {
+          window.location.href = redirect;
+        } else {
+          setError(serverError);
+        }
       } else {
-        setError(errorMessage);
+        setError(invalidError);
       }
     } catch (createAdminUserError) {
       setLoading(false);
-      setError(errorMessage);
+      setError(serverError);
       console.error('Error creating admin user');
       console.error(createAdminUserError);
     }

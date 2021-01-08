@@ -2,7 +2,7 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import Typography from '@material-ui/core/Typography';
 
-export default function Shell({ titleId, instructionsId, children }) {
+export default function SimpleFormPage({ titleId, instructionsId, children }) {
   return (
     <div
       style={{

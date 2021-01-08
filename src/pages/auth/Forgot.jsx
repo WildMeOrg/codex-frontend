@@ -7,7 +7,7 @@ import TextInput from '../../components/inputs/TextInput';
 import InlineButton from '../../components/InlineButton';
 import Link from '../../components/Link';
 import Button from '../../components/Button';
-import Shell from './Shell';
+import SimpleFormPage from '../../components/SimpleFormPage';
 
 export default function Forgot() {
   const [email, setEmail] = useState('');
@@ -23,7 +23,7 @@ export default function Forgot() {
 
   if (requestSent) {
     return (
-      <Shell titleId={titleId} instructionsId={instructionsId}>
+      <SimpleFormPage titleId={titleId} instructionsId={instructionsId}>
         <Typography
           style={{ padding: '8px 16px 0 16px', maxWidth: 400 }}
         >
@@ -38,12 +38,12 @@ export default function Forgot() {
         >
           <FormattedMessage id="TRY_AGAIN" />
         </Button>
-      </Shell>
+      </SimpleFormPage>
     );
   }
 
   return (
-    <Shell titleId={titleId} instructionsId={instructionsId}>
+    <SimpleFormPage titleId={titleId} instructionsId={instructionsId}>
       <Grid
         container
         spacing={2}
@@ -99,6 +99,6 @@ export default function Forgot() {
           </Typography>
         </Grid>
       </Grid>
-    </Shell>
+    </SimpleFormPage>
   );
 }

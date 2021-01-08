@@ -4,16 +4,15 @@ import Grid from '@material-ui/core/Grid';
 import Alert from '@material-ui/lab/Alert';
 import FormControl from '@material-ui/core/FormControl';
 import TextField from '@material-ui/core/TextField';
-import Typography from '@material-ui/core/Typography';
-import MainColumn from '../../components/MainColumn';
 import Button from '../../components/Button';
+import SimpleFormPage from '../../components/SimpleFormPage';
 
 import useCreateAdminUser from '../../models/setup/useCreateAdminUser';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 
 const buttonId = 'createAdminUser';
 
-export default function SiteSetup() {
+export default function CreateAdminUser() {
   const {
     authenticate,
     error,
@@ -22,7 +21,8 @@ export default function SiteSetup() {
   } = useCreateAdminUser();
 
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [password1, setPassword1] = useState('');
+  const [password2, setPassword2] = useState('');
 
   const intl = useIntl();
   useDocumentTitle(intl.formatMessage({ id: 'CODEX_INITIALIZED' }));
@@ -42,19 +42,7 @@ export default function SiteSetup() {
   }, []);
 
   return (
-    <MainColumn>
-      <Grid container direction="column" alignItems="center">
-        <Grid item>
-          <Typography variant="h3" component="h3">
-            Codex initialized!
-          </Typography>
-        </Grid>
-        <Grid item>
-          <Typography variant="subtitle1">
-            First step is to create an admin user.
-          </Typography>
-        </Grid>
-      </Grid>
+    <SimpleFormPage titleId="CODEX_INITIALIZED" instructionsId="FIRST_STEP_CREATE_ADMIN">
       <form>
         <Grid
           container
@@ -73,7 +61,7 @@ export default function SiteSetup() {
                 id="email"
                 onChange={e => {
                   setEmail(e.target.value);
-                  // setError(null);
+                  setError(null);
                 }}
                 label={<FormattedMessage id="EMAIL_ADDRESS" />}
               />
@@ -85,15 +73,33 @@ export default function SiteSetup() {
               style={{ width: '100%', marginBottom: 4 }}
             >
               <TextField
-                autoComplete="password"
+                autoComplete="off"
                 variant="outlined"
                 id="password"
                 type="password"
                 onChange={e => {
-                  setPassword(e.target.value);
+                  setPassword1(e.target.value);
                   setError(null);
                 }}
                 label={<FormattedMessage id="PASSWORD" />}
+              />
+            </FormControl>
+          </Grid>
+          <Grid item>
+            <FormControl
+              required
+              style={{ width: '100%', marginBottom: 4 }}
+            >
+              <TextField
+                autoComplete="off"
+                variant="outlined"
+                id="password"
+                type="password"
+                onChange={e => {
+                  setPassword2(e.target.value);
+                  setError(null);
+                }}
+                label={<FormattedMessage id="CONFIRM_PASSWORD" />}
               />
             </FormControl>
           </Grid>
@@ -103,7 +109,11 @@ export default function SiteSetup() {
               id={buttonId}
               loading={loading}
               onClick={() => {
-                authenticate(email, password);
+                if (password1 === password2) {
+                  authenticate(email, password1, '/');
+                } else {
+                  setError(intl.formatMessage({ id: 'PASSWORDS_DO_NOT_MATCH' }))
+                }
               }}
               display="primary"
             >
@@ -112,6 +122,6 @@ export default function SiteSetup() {
           </Grid>
         </Grid>
       </form>
-    </MainColumn>
+    </SimpleFormPage>
   );
 }
