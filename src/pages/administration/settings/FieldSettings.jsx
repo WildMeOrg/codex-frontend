@@ -44,15 +44,17 @@ export default function FieldSettings() {
 
   if (loading || error) return null;
 
-  const customIndividualCategories = customFieldCategories.filter(
+  const customFieldCategoriesREAL = customFieldCategories || [];
+
+  const customIndividualCategories = customFieldCategoriesREAL.filter(
     c => c.type === categoryTypes.individual,
   );
 
-  const customSightingCategories = customFieldCategories.filter(
+  const customSightingCategories = customFieldCategoriesREAL.filter(
     c => c.type === categoryTypes.sighting,
   );
 
-  const customEncounterCategories = customFieldCategories.filter(
+  const customEncounterCategories = customFieldCategoriesREAL.filter(
     c => c.type === categoryTypes.encounter,
   );
 

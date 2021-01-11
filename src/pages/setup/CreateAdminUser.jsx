@@ -51,7 +51,7 @@ export default function CreateAdminUser() {
           container
           spacing={2}
           direction="column"
-          style={{ padding: '16px 40px 16px 16px' }}
+          style={{ padding: '16px 40px 16px 0' }}
         >
           <Grid item>
             <FormControl
@@ -113,7 +113,7 @@ export default function CreateAdminUser() {
               loading={loading}
               onClick={() => {
                 if (password1 === password2) {
-                  authenticate(email, password1, '/admin/settings');
+                  authenticate(email, password1, '/');
                 } else {
                   setError(
                     intl.formatMessage({

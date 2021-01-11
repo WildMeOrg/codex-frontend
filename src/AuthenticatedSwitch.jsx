@@ -1,6 +1,6 @@
 import React from 'react';
+import { get } from 'lodash-es';
 import { Switch, Route } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import Fade from '@material-ui/core/Fade';
 import { TransitionGroup } from 'react-transition-group';
 import AuthenticatedAppHeader from './components/AuthenticatedAppHeader';
@@ -13,10 +13,10 @@ import User from './pages/user/User';
 import Users from './pages/user/Users';
 import ReportSightings from './pages/report/ReportSightings';
 import FourOhFour from './pages/fourohfour/FourOhFour';
-import { selectSiteSettings } from './modules/site/selectors';
+import useSiteSettings from './models/site/useSiteSettings';
 import SearchIndividuals from './pages/individual/SearchIndividuals';
 import SearchSightings from './pages/sighting/SearchSightings';
-import SiteSetup from './pages/administration/SiteSetup';
+import SiteSetup from './pages/setup/SiteSetup';
 import AdminActions from './pages/administration/Actions';
 import ServerStatus from './pages/administration/ServerStatus';
 import EditSiteSettings from './pages/administration/EditSiteSettings';
@@ -29,8 +29,11 @@ import Footer from './components/Footer';
 import { defaultCrossfadeDuration } from './constants/defaults';
 
 export default function AuthenticatedSwitch() {
-  const siteSettings = useSelector(selectSiteSettings);
-
+  const { data: siteSettings } = useSiteSettings();
+  // const siteNeedsSetup = get(siteSettings, ['site.needsSetup', 'value']);
+  const siteNeedsSetup = false;
+  // console.log(siteSettings);
+  
   return (
     <main>
       <AuthenticatedAppHeader />
@@ -59,7 +62,7 @@ export default function AuthenticatedSwitch() {
                     boxSizing: 'border-box',
                   }}
                 >
-                  {siteSettings.needsSetup ? (
+                  {siteNeedsSetup ? (
                     <SiteSetup />
                   ) : (
                     <Switch location={location}>
