@@ -1,4 +1,4 @@
 {
-  "houston_dev_url": "localhost:5000",
+  "houston_dev_url": "http://localhost:5000",
   "houston_prod_url": "https://houston.dyn.wildme.io"
 }

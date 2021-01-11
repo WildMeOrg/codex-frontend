@@ -69,6 +69,7 @@ function ContextualizedApp() {
   const locale = useSelector(selectLocale);
   const { data, error } = useSiteSettings();
 
+  const adminUserInitialized = get(data, 'site.adminUserInitialized');
   const primaryColor = get(data, ['site.look.themeColor', 'value']);
 
   if (error) return <SadScreen variant="serverError" />;
@@ -85,7 +86,7 @@ function ContextualizedApp() {
       >
         <BrowserRouter basename="/">
           <ScrollToTop />
-          <FrontDesk />
+          <FrontDesk adminUserInitialized={adminUserInitialized} />
         </BrowserRouter>
       </IntlProvider>
     </ThemeProvider>

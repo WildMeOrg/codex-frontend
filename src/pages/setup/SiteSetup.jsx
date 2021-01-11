@@ -18,7 +18,7 @@ export default function SiteSetup() {
         </Grid>
         <Grid item>
           <Typography variant="h3" component="h3">
-            Welcome to Wildbook!
+            Welcome to Codex!
           </Typography>
         </Grid>
         <Grid item>

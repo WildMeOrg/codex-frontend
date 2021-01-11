@@ -7,7 +7,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import TextInput from '../../components/inputs/TextInput';
 import Button from '../../components/Button';
-import Shell from './Shell';
+import SimpleFormPage from '../../components/SimpleFormPage';
 
 export default function Create({ callback }) {
   const history = useHistory();
@@ -29,7 +29,7 @@ export default function Create({ callback }) {
     errorId = 'PASSWORDS_DO_NOT_MATCH';
 
   return (
-    <Shell
+    <SimpleFormPage
       titleId="CREATE_ACCOUNT"
       instructionsId="CREATE_ACCOUNT_INSTRUCTIONS"
     >
@@ -37,7 +37,7 @@ export default function Create({ callback }) {
         container
         spacing={2}
         direction="column"
-        style={{ padding: 16, width: 280 }}
+        style={{ padding: '16px 0', width: 280 }}
       >
         <Grid item>
           <TextInput
@@ -109,6 +109,6 @@ export default function Create({ callback }) {
           </Typography>
         )}
       </Grid>
-    </Shell>
+    </SimpleFormPage>
   );
 }

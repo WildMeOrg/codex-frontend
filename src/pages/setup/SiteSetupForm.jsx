@@ -9,14 +9,7 @@ import AlertTitle from '@material-ui/lab/AlertTitle';
 import Button from '../../components/Button';
 import useSiteSettings from '../../models/site/useSiteSettings';
 import usePutSiteSettings from '../../models/site/usePutSiteSettings';
-
 import LabeledInput from '../../components/LabeledInput';
-
-const customFields = {
-  sighting: 'site.custom.customFields.Occurrence',
-  encounter: 'site.custom.customFields.Encounter',
-  individual: 'site.custom.customFields.MarkedIndividual',
-};
 
 const newSettingFields = [
   'site.name',
@@ -25,16 +18,6 @@ const newSettingFields = [
   'site.general.tagline',
   'site.general.taglineSubtitle',
   'site.general.description',
-  'site.general.testimonial',
-  'site.general.testimonialCitation',
-  'site.links.facebookLink',
-  'site.links.instagramLink',
-  'site.links.twitterLink',
-  'site.custom.regions',
-  'site.custom.customFieldCategories',
-  customFields.sighting,
-  customFields.encounter,
-  customFields.individual,
 ];
 
 function SettingInput({ customFieldCategories, schema, ...rest }) {
@@ -191,29 +174,14 @@ export default function SiteSettings({ primaryButtonId }) {
         )}
         <Button
           onClick={() => {
-            /* Prepare custom fields objects to send to backend */
-            Object.values(customFields).forEach(customFieldKey => {
-              const fields = currentValues[customFieldKey];
-              if (!fields) {
-                currentValues[customFieldKey] = { definitions: [] };
-              } else {
-                const newFields = get(fields, 'definitions', []).map(
-                  field => {
-                    const choices = get(field, ['schema', 'choices']);
-                    if (!choices) return field;
-                    return {
-                      ...field,
-                      options: choices.map(choice => choice.label),
-                    };
-                  },
-                );
-
-                currentValues[customFieldKey] = {
-                  definitions: newFields,
-                };
-              }
-            });
-            putSiteSettings(currentValues);
+            if (currentValues['site.name'] === '') {
+              setError('Site name is required.');
+            } else {
+              putSiteSettings({
+                ...currentValues,
+                'site.needsSetup': false,
+              });
+            }
           }}
           style={{ marginTop: 12 }}
           display="primary"
