@@ -55,9 +55,7 @@ export default function FieldSettings() {
     [],
   );
 
-  const customFieldCategoriesREAL = customFieldCategories || []
-
-  const categories = [...defaultCategories, ...customFieldCategoriesREAL];
+  const categories = [...defaultCategories, ...customFieldCategories];
 
   const categoryColumns = [
     {
