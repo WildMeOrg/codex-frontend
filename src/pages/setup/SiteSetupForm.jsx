@@ -99,21 +99,21 @@ export default function SiteSettings({ primaryButtonId }) {
                   </Typography>
                 </>
               ) : (
-                  <>
-                    <Skeleton
-                      variant="rect"
-                      width="40%"
-                      height={30}
-                      style={{ marginTop: 20 }}
-                    />
-                    <Skeleton
-                      variant="rect"
-                      width="100%"
-                      height={48}
-                      style={{ marginTop: 4 }}
-                    />
-                  </>
-                )}
+                <>
+                  <Skeleton
+                    variant="rect"
+                    width="40%"
+                    height={30}
+                    style={{ marginTop: 20 }}
+                  />
+                  <Skeleton
+                    variant="rect"
+                    width="100%"
+                    height={48}
+                    style={{ marginTop: 4 }}
+                  />
+                </>
+              )}
             </div>
             <div
               style={{
@@ -141,8 +141,8 @@ export default function SiteSettings({ primaryButtonId }) {
                   }}
                 />
               ) : (
-                  <Skeleton variant="rect" width={280} height={30} />
-                )}
+                <Skeleton variant="rect" width={280} height={30} />
+              )}
             </div>
           </Grid>
         );
@@ -179,7 +179,7 @@ export default function SiteSettings({ primaryButtonId }) {
             } else {
               putSiteSettings({
                 ...currentValues,
-                // 'site.needsSetup': false,
+                'site.needsSetup': false,
               });
             }
           }}

@@ -76,7 +76,8 @@ export default function Testimonial() {
             letterSpacing: '0.05em',
           }}
         >
-          {`"${testimonial}"`}
+          {`"${testimonial ||
+            'Set up your testimonial in the site settings menu.'}"`}
         </ResponsiveText>
         <ResponsiveText
           mobileStyle={{

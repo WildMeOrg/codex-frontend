@@ -28,7 +28,7 @@ export default function useLogin() {
 
       const createSuccessful = get(
         createResponse,
-        'data.success',
+        'data.initialized',
         false,
       );
 

@@ -78,7 +78,7 @@ export default function CreateAdminUser() {
               <TextField
                 autoComplete="off"
                 variant="outlined"
-                id="password"
+                id="password1"
                 type="password"
                 onChange={e => {
                   setPassword1(e.target.value);
@@ -96,7 +96,7 @@ export default function CreateAdminUser() {
               <TextField
                 autoComplete="off"
                 variant="outlined"
-                id="password"
+                id="password2"
                 type="password"
                 onChange={e => {
                   setPassword2(e.target.value);
@@ -107,7 +107,10 @@ export default function CreateAdminUser() {
             </FormControl>
           </Grid>
           {error && <Alert severity="error">{error}</Alert>}
-          <Grid item style={{ position: 'relative', padding: '20px 12px' }}>
+          <Grid
+            item
+            style={{ position: 'relative', padding: '20px 12px' }}
+          >
             <Button
               id={buttonId}
               loading={loading}

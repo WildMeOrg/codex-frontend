@@ -30,10 +30,11 @@ import { defaultCrossfadeDuration } from './constants/defaults';
 
 export default function AuthenticatedSwitch() {
   const { data: siteSettings } = useSiteSettings();
-  // const siteNeedsSetup = get(siteSettings, ['site.needsSetup', 'value']);
-  const siteNeedsSetup = false;
-  // console.log(siteSettings);
-  
+  const siteNeedsSetup = get(siteSettings, [
+    'site.needsSetup',
+    'value',
+  ]);
+
   return (
     <main>
       <AuthenticatedAppHeader />
