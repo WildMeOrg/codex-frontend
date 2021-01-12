@@ -5,9 +5,12 @@ const CopyPlugin = require('copy-webpack-plugin');
 const path = require('path');
 const fs = require('fs');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const argv = require('minimist')(process.argv.slice(2));
-
+const minimist = require('minimist');
 const config = require('../config.json');
+
+const argv = minimist(process.argv.slice(2), {
+  string: 'houston',
+});
 
 const isDev =
   (process.env && process.env.NODE_ENV === 'development') ||
@@ -17,7 +20,8 @@ const defaultHoustonUrl = isDev
   ? config.houston_dev_url
   : config.houston_prod_url;
 
-const houstonUrl = argv.houston || defaultHoustonUrl;
+const houstonUrl =
+  argv.houston === undefined ? defaultHoustonUrl : argv.houston;
 
 const globals = {
   __DEV__: isDev && !process.env.LINKED_DEV,
