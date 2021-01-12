@@ -27,8 +27,9 @@ A build can be initiated with the command `npm run build`. You can specify the U
 
 ```
 npm run build -- --houston https://houston.dyn.wildme.io
-npm run build -- --houston localhost:9999
+npm run build -- --houston http://localhost:9999
 npm start -- --houston localhost:4232
+npm run start -- --houston ""  # Use relative file paths
 ```
 
 ## Thanks
