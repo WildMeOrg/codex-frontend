@@ -25,16 +25,10 @@ export default function SimpleFormPage({
           padding: '40px 16px 20px 16px',
         }}
       >
-        <ResponsiveText
-          variant="h2"
-          style={{ paddingBottom: 8 }}
-        >
+        <ResponsiveText variant="h2" style={{ paddingBottom: 8 }}>
           <FormattedMessage id={titleId} />
         </ResponsiveText>
-        <Typography
-          variant="subtitle2"
-          style={{ maxWidth: 460 }}
-        >
+        <Typography variant="subtitle2" style={{ maxWidth: 460 }}>
           <FormattedMessage id={instructionsId} />
         </Typography>
         {children}

@@ -231,7 +231,7 @@ export default function FieldSettings() {
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          margin: '12px 0',
+          marginTop: 12,
         }}
       >
         <Typography variant="h5" component="h5">
@@ -253,7 +253,11 @@ export default function FieldSettings() {
           <FormattedMessage id="ADD_NEW" />
         </Button>
       </div>
-      <Typography variant="caption" style={{ marginBottom: 12 }}>
+      <Typography
+        component="p"
+        variant="caption"
+        style={{ marginBottom: 12 }}
+      >
         <FormattedMessage id="FIELD_CATEGORIES_DESCRIPTION" />
       </Typography>
       <DataDisplay

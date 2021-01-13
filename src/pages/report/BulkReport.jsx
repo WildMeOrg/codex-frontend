@@ -3,6 +3,7 @@ import { FormattedMessage } from 'react-intl';
 import { useSelector } from 'react-redux';
 import { get } from 'lodash-es';
 import Papa from 'papaparse';
+import { FlatfileButton } from '@flatfile/react';
 
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
@@ -21,6 +22,7 @@ import LabeledInput from '../../components/LabeledInput';
 import BigExpansionPanel from '../../components/BigExpansionPanel';
 import { selectSiteName } from '../../modules/site/selectors';
 import TermsAndConditionsDialog from './TermsAndConditionsDialog';
+import { flatfileKey } from '../../constants/apiKeys';
 
 export default function BulkReport({ onBack, files }) {
   const schema = useSelector(selectSightingSchema);
@@ -75,6 +77,37 @@ export default function BulkReport({ onBack, files }) {
         </Button>
       </Grid>
       <Grid item style={{ marginTop: 20 }}>
+        <FlatfileButton
+          devMode
+          managed
+          licenseKey={flatfileKey}
+          customer={{ userId: 'dev' }}
+          settings={{
+            title: 'Import sightings data',
+            type: 'bulk_import',
+            fields: [
+              { label: 'Species', key: 'species' },
+              { label: 'Region', key: 'region' },
+              { label: 'Latitude', key: 'lat' },
+              { label: 'Longitude', key: 'long' },
+              { label: 'Sex', key: 'sex' },
+              { label: 'Status', key: 'status' },
+              { label: 'Photographer', key: 'photographer' },
+              {
+                label: 'Photographer email',
+                key: 'photographer_email',
+              },
+            ],
+          }}
+          onData={async results => {
+            console.log(results);
+          }}
+          render={(importer, launch) => (
+            <Button display="primary" onClick={launch}>
+              Import sighting data
+            </Button>
+          )}
+        />
         <BigExpansionPanel>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
@@ -274,6 +307,7 @@ export default function BulkReport({ onBack, files }) {
           style={{ width: 200 }}
           loading={loading}
           display="primary"
+          disabled
         >
           <FormattedMessage id="REPORT_SIGHTINGS" />
         </Button>
