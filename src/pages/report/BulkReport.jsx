@@ -1,38 +1,34 @@
 import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useSelector } from 'react-redux';
-import { get } from 'lodash-es';
-import Papa from 'papaparse';
 import { FlatfileButton } from '@flatfile/react';
 
+import { useTheme } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import FormControl from '@material-ui/core/FormControl';
 import FormGroup from '@material-ui/core/FormGroup';
-import AccordionSummary from '@material-ui/core/AccordionSummary';
-import AccordionDetails from '@material-ui/core/AccordionDetails';
+import Paper from '@material-ui/core/Paper';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 import { selectSightingSchema } from '../../modules/sightings/selectors';
 import Button from '../../components/Button';
 import InlineButton from '../../components/InlineButton';
-import LabeledInput from '../../components/LabeledInput';
-import BigExpansionPanel from '../../components/BigExpansionPanel';
 import { selectSiteName } from '../../modules/site/selectors';
 import TermsAndConditionsDialog from './TermsAndConditionsDialog';
 import { flatfileKey } from '../../constants/apiKeys';
 
-export default function BulkReport({ onBack, files }) {
+export default function BulkReport({ onBack }) {
   const schema = useSelector(selectSightingSchema);
   const siteName = useSelector(selectSiteName);
+  const theme = useTheme();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [termsError, setTermsError] = useState(false);
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [acceptEmails, setAcceptEmails] = useState(false);
-  const [dataSheet, setDataSheet] = useState(null);
+  const [sightingData, setSightingData] = useState(null);
 
   const [fields, setFields] = useState(
     schema.reduce((memo, field) => {
@@ -41,25 +37,9 @@ export default function BulkReport({ onBack, files }) {
     }, {}),
   );
 
-  const enabledFields = Object.keys(fields).filter(
-    fieldKey => fields[fieldKey],
-  );
-
-  const templateContents = files.map(file => {
-    const row = { filename: get(file, 'fileName') };
-    enabledFields.forEach(fieldKey => {
-      if (fields[fieldKey]) row[fieldKey] = '';
-    });
-    return row;
-  });
-
-  const readyToGenerate =
-    fields.region || fields.location || fields.location_freeform;
-
-  const templateString =
-    files.length > 0
-      ? Papa.unparse(templateContents, { header: true })
-      : enabledFields.join(',');
+  // const enabledFields = Object.keys(fields).filter(
+  //   fieldKey => fields[fieldKey],
+  // );
 
   return (
     <>
@@ -76,176 +56,122 @@ export default function BulkReport({ onBack, files }) {
           <FormattedMessage id="BACK_TO_PHOTOS" />
         </Button>
       </Grid>
-      <Grid item style={{ marginTop: 20 }}>
-        <FlatfileButton
-          devMode
-          managed
-          licenseKey={flatfileKey}
-          customer={{ userId: 'dev' }}
-          settings={{
-            title: 'Import sightings data',
-            type: 'bulk_import',
-            fields: [
-              { label: 'Species', key: 'species' },
-              { label: 'Region', key: 'region' },
-              { label: 'Latitude', key: 'lat' },
-              { label: 'Longitude', key: 'long' },
-              { label: 'Sex', key: 'sex' },
-              { label: 'Status', key: 'status' },
-              { label: 'Photographer', key: 'photographer' },
-              {
-                label: 'Photographer email',
-                key: 'photographer_email',
-              },
-            ],
-          }}
-          onData={async results => {
-            console.log(results);
-          }}
-          render={(importer, launch) => (
-            <Button display="primary" onClick={launch}>
-              Import sighting data
-            </Button>
-          )}
-        />
-        <BigExpansionPanel>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="generate-template-panel-content"
-            id="generate-template-panel-header"
-          >
-            <Typography variant="subtitle1">
-              <FormattedMessage id="CHOOSE_FIELDS" />
-            </Typography>
-          </AccordionSummary>
-          <AccordionDetails
-            style={{ display: 'flex', flexDirection: 'column' }}
-          >
-            <Typography>
-              <FormattedMessage id="CHOOSE_FIELDS_DESCRIPTION" />
-            </Typography>
-            <FormControl component="fieldset">
-              <FormGroup>
-                {Object.keys(fields).map(fieldKey => {
-                  const fieldSchema = schema.find(
-                    f => f.name === fieldKey,
-                  );
-                  return (
-                    <FormControlLabel
-                      key={fieldKey}
-                      control={
-                        <Checkbox
-                          color="primary"
-                          checked={fields[fieldKey]}
-                          disabled={fieldSchema.required}
-                          onChange={() =>
-                            setFields({
-                              ...fields,
-                              [fieldKey]: !fields[fieldKey],
-                            })
-                          }
-                          size="small"
-                        />
+      <div style={{ marginLeft: 12 }}>
+        <Typography variant="h6" style={{ marginTop: 20 }}>
+          1. Select fields
+        </Typography>
+      </div>
+      <Paper
+        elevation={2}
+        style={{
+          marginTop: 20,
+          marginBottom: 12,
+          display: 'flex',
+          flexDirection: 'column',
+          padding: '20px 12px',
+        }}
+      >
+        <Typography variant="subtitle2" style={{ marginBottom: 12 }}>
+          <FormattedMessage id="CHOOSE_FIELDS_DESCRIPTION" />
+        </Typography>
+        <FormControl component="fieldset">
+          <FormGroup style={{ flexDirection: 'row' }}>
+            {Object.keys(fields).map(fieldKey => {
+              const fieldSchema = schema.find(
+                f => f.name === fieldKey,
+              );
+              if (fieldSchema.required) return null;
+              return (
+                <FormControlLabel
+                  key={fieldKey}
+                  style={{ width: 200 }}
+                  control={
+                    <Checkbox
+                      color="primary"
+                      checked={fields[fieldKey]}
+                      onChange={() =>
+                        setFields({
+                          ...fields,
+                          [fieldKey]: !fields[fieldKey],
+                        })
                       }
-                      label={
-                        <FormattedMessage id={fieldSchema.labelId} />
-                      }
+                      size="small"
                     />
-                  );
-                })}
-              </FormGroup>
-            </FormControl>
-          </AccordionDetails>
-        </BigExpansionPanel>
-        <BigExpansionPanel>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="generate-template-panel-content"
-            id="generate-template-panel-header"
-          >
-            <Typography variant="subtitle1">
-              <FormattedMessage id="GENERATE_TEMPLATE_LABEL" />
-            </Typography>
-          </AccordionSummary>
-          <AccordionDetails
-            style={{ display: 'flex', flexDirection: 'column' }}
-          >
-            <Typography>
-              <FormattedMessage id="GENERATE_TEMPLATE_DESCRIPTION_1" />
-            </Typography>
-            <Typography style={{ margin: '12px 0' }}>
-              <FormattedMessage id="GENERATE_TEMPLATE_DESCRIPTION_2" />
-            </Typography>
-            <Button
-              style={{ width: 300 }}
-              display="panel"
-              disabled={!readyToGenerate}
-            >
-              <a
-                style={{ textDecoration: 'unset', color: 'unset' }}
-                href={`data:text/plain;charset=utf-8,${encodeURIComponent(
-                  templateString,
-                )}`}
-                download="template.csv"
+                  }
+                  label={
+                    <FormattedMessage id={fieldSchema.labelId} />
+                  }
+                />
+              );
+            })}
+          </FormGroup>
+        </FormControl>
+      </Paper>
+
+      <Grid item style={{ marginTop: 20 }}>
+        <div style={{ marginLeft: 12 }}>
+          <Typography variant="h6" style={{ marginTop: 20 }}>
+            2. Upload data
+          </Typography>
+        </div>
+        <Paper
+          elevation={2}
+          style={{
+            marginTop: 20,
+            marginBottom: 32,
+            display: 'flex',
+            flexDirection: 'column',
+            padding: '20px 12px',
+          }}
+        >
+          <FlatfileButton
+            devMode
+            managed
+            licenseKey={flatfileKey}
+            customer={{ userId: 'dev' }}
+            settings={{
+              title: 'Import sightings data',
+              type: 'bulk_import',
+              fields: [
+                { label: 'Filename', key: 'filename' },
+                { label: 'Species', key: 'species' },
+                { label: 'Region', key: 'region' },
+                { label: 'Latitude', key: 'lat' },
+                { label: 'Longitude', key: 'long' },
+                { label: 'Sex', key: 'sex' },
+                { label: 'Status', key: 'status' },
+                { label: 'Photographer', key: 'photographer' },
+                {
+                  label: 'Photographer email',
+                  key: 'photographer_email',
+                },
+              ],
+              styleOverrides: {
+                primaryButtonColor: theme.palette.primary.main,
+              },
+            }}
+            onData={async results => {
+              setSightingData(results.data);
+            }}
+            render={(importer, launch) => (
+              <Button
+                style={{ width: 260 }}
+                display="primary"
+                onClick={launch}
               >
-                <FormattedMessage id="GENERATE_TEMPLATE" />
-              </a>
-            </Button>
-            {!readyToGenerate && (
-              <Typography
-                variant="caption"
-                color="error"
-                style={{ marginTop: 4 }}
-              >
-                <FormattedMessage id="GENERATE_DISABLED_NO_LOCATION" />
-              </Typography>
+                Import sightings data
+              </Button>
             )}
-          </AccordionDetails>
-        </BigExpansionPanel>
-        <BigExpansionPanel>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="generate-template-panel-content"
-            id="generate-template-panel-header"
-          >
-            <Typography variant="subtitle1">
-              <FormattedMessage id="UPLOAD_DATA_SHEET" />
-            </Typography>
-          </AccordionSummary>
-          <AccordionDetails
-            style={{ display: 'flex', flexDirection: 'column' }}
-          >
-            <Typography style={{ marginBottom: 12 }}>
-              <FormattedMessage id="UPLOAD_DATA_SHEET_DESCRIPTION" />
-            </Typography>
-            <LabeledInput
-              required
-              minimalLabels
-              schema={{
-                name: 'csvUpload',
-                fieldType: 'file',
-                allowedFileTypes: ['.csv'],
-                defaultValue: null,
-              }}
-              value={dataSheet}
-              onChange={uppyFile => {
-                setDataSheet(uppyFile);
-                const fileUrl = get(uppyFile, 'response.uploadURL');
-                if (fileUrl) {
-                  Papa.parse(fileUrl, {
-                    header: true,
-                    download: true,
-                    complete: testo => {
-                      console.log(testo);
-                    },
-                  });
-                }
-              }}
-              size="medium"
-              style={{ width: '100% ' }}
-            />
-          </AccordionDetails>
-        </BigExpansionPanel>
+          />
+          {sightingData ? (
+            <Typography
+              variant="body2"
+              style={{ margin: '8px 0 8px 4px' }}
+            >{`${
+              sightingData.length
+            } sightings imported.`}</Typography>
+          ) : null}
+        </Paper>
       </Grid>
       <Grid item>
         <FormControlLabel
@@ -297,6 +223,7 @@ export default function BulkReport({ onBack, files }) {
 
             if (acceptedTerms) {
               console.log('Time to report the sighting');
+              console.log(sightingData);
               setLoading(true);
               setTimeout(() => {
                 console.log('Sighting submitted');
@@ -307,7 +234,7 @@ export default function BulkReport({ onBack, files }) {
           style={{ width: 200 }}
           loading={loading}
           display="primary"
-          disabled
+          disabled={!sightingData}
         >
           <FormattedMessage id="REPORT_SIGHTINGS" />
         </Button>
