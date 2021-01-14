@@ -11,3 +11,5 @@ export const transloaditService = 'https://api2.transloadit.com';
 export const googleMapsApiKey = '';
 
 export const sentryDsn = '';
+
+export const flatfileKey = '';
