@@ -117,6 +117,7 @@
     "exifreader": "^3.12.0",
     "google-map-react": "^1.1.7",
     "history": "^4.9.0",
+    "jsonp": "^0.2.1",
     "lodash-es": "^4.17.15",
     "papaparse": "^5.2.0",
     "query-string": "^6.9.0",

@@ -12,14 +12,14 @@ import ActionIcon from '../../../components/ActionIcon';
 import categoryTypes from '../../../constants/categoryTypes';
 import {
   RegionEditor,
-  SpeciesEditor,
   RelationshipEditor,
 } from './defaultFieldComponents/Editors';
+import SpeciesEditor from './defaultFieldComponents/SpeciesEditor';
 
 const configurableFields = [
   {
     id: 'species',
-    backendPath: 'site.general.species',
+    backendPath: 'site.species',
     labelId: 'SPECIES',
     type: categoryTypes.sighting,
     Editor: SpeciesEditor,

@@ -5,36 +5,6 @@ import OptionEditor from '../OptionEditor';
 import TreeEditor from './TreeEditor';
 import ConfigureDefaultField from './ConfigureDefaultField';
 
-export function SpeciesEditor({
-  onClose,
-  onSubmit,
-  formSettings,
-  setFormSettings,
-  ...rest
-}) {
-  const speciesOptions = get(formSettings, 'species', []);
-
-  return (
-    <OptionEditor
-      open
-      onClose={onClose}
-      onSubmit={onSubmit}
-      schema={{
-        labelId: 'EDIT_SPECIES',
-        descriptionId: 'EDIT_SPECIES_DESCRIPTION',
-      }}
-      value={speciesOptions}
-      onChange={newOptions => {
-        setFormSettings({
-          ...formSettings,
-          species: newOptions,
-        });
-      }}
-      {...rest}
-    />
-  );
-}
-
 export function RelationshipEditor({
   onClose,
   onSubmit,
