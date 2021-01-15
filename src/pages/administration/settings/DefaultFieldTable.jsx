@@ -122,7 +122,6 @@ export default function DefaultFieldTable({
               });
             }
             if (editField.id === 'species') {
-              console.log(formSettings);
               putSiteSetting(
                 editField.backendPath,
                 formSettings.species,
