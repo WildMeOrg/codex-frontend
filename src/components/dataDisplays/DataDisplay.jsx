@@ -25,7 +25,8 @@ import FilterBar from '../FilterBar';
 import CollabsibleRow from './CollapsibleRow';
 import sendCsv from './sendCsv';
 
-function getCellAlignment(cellIndex) {
+function getCellAlignment(cellIndex, columnDefinition) {
+  if (columnDefinition.align) return columnDefinition.align;
   if (cellIndex === 0) return undefined;
   return 'right';
 }
@@ -40,7 +41,10 @@ export default function DataDisplay({
   initiallySelectedRow = null,
   renderExpandedRow,
   variant = 'primary',
+  idKey = 'id',
   noTitleBar,
+  paperStyles = {},
+  cellStyles = {},
   ...rest
 }) {
   const initialColumnNames = columns
@@ -187,6 +191,7 @@ export default function DataDisplay({
       <TableContainer
         component={variant === 'secondary' ? Paper : undefined}
         elevation={variant === 'secondary' ? 2 : undefined}
+        style={paperStyles}
       >
         <Table
           style={{ minWidth: 10 }}
@@ -201,7 +206,7 @@ export default function DataDisplay({
                 return (
                   <TableCell
                     key={c.name}
-                    align={getCellAlignment(i)}
+                    align={getCellAlignment(i, c)}
                     sortDirection={activeSort ? sortDirection : false}
                     style={{ whiteSpace: 'nowrap' }}
                   >
@@ -225,16 +230,17 @@ export default function DataDisplay({
           <TableBody>
             {sortedData.map(datum => (
               <CollabsibleRow
-                key={datum.id}
+                key={get(datum, idKey)}
                 onClick={() => {
-                  if (selectedRow === datum.id) {
+                  if (selectedRow === get(datum, idKey)) {
                     setSelectedRow(null);
                   } else {
-                    setSelectedRow(datum.id);
+                    setSelectedRow(get(datum, idKey));
                   }
                 }}
-                selected={selectedRow === datum.id}
+                selected={selectedRow === get(datum, idKey)}
                 datum={datum}
+                cellStyles={cellStyles}
                 columns={visibleColumns}
                 renderExpandedRow={renderExpandedRow}
               />

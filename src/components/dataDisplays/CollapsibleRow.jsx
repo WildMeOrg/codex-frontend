@@ -8,7 +8,8 @@ import DownIcon from '@material-ui/icons/KeyboardArrowDown';
 import UpIcon from '@material-ui/icons/KeyboardArrowUp';
 import Collapse from '@material-ui/core/Collapse';
 
-function getCellAlignment(cellIndex) {
+function getCellAlignment(cellIndex, columnDefinition) {
+  if (columnDefinition.align) return columnDefinition.align;
   if (cellIndex === 0) return undefined;
   return 'right';
 }
@@ -21,6 +22,7 @@ export default function CollabsibleRow({
   columns,
   datum,
   renderExpandedRow,
+  cellStyles = {},
   ...rest
 }) {
   const [open, setOpen] = useState(false);
@@ -28,7 +30,7 @@ export default function CollabsibleRow({
     <>
       <TableRow {...rest}>
         {renderExpandedRow && (
-          <TableCell style={{ borderBottom: 'none' }}>
+          <TableCell style={{ borderBottom: 'none', ...cellStyles }}>
             <IconButton
               aria-label="expand row"
               size="small"
@@ -49,9 +51,10 @@ export default function CollabsibleRow({
           return (
             <TableCell
               key={c.name}
-              align={getCellAlignment(i)}
+              align={getCellAlignment(i, c)}
               style={{
                 borderBottom: renderExpandedRow ? 'none' : undefined,
+                ...cellStyles,
               }}
             >
               {cellRenderer(cellValue, datum)}
@@ -62,7 +65,7 @@ export default function CollabsibleRow({
       {renderExpandedRow && (
         <TableRow>
           <TableCell
-            style={{ paddingBottom: 0, paddingTop: 0 }}
+            style={{ paddingBottom: 0, paddingTop: 0, ...cellStyles }}
             colSpan={columns.length + 1}
           >
             <Collapse in={open} timeout="auto" unmountOnExit>
