@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import jsonp from 'jsonp';
-import { get } from 'lodash-es';
+import { get, uniqBy } from 'lodash-es';
 
 import { formatError } from './formatters';
 
@@ -13,6 +13,7 @@ export default function useItisSearch(searchKey, maxResults = 50) {
     () => {
       const fetchData = async () => {
         try {
+          setLoading(true);
           jsonp(
             `https://www.itis.gov/ITISWebService/jsonservice/searchForAnyMatchPaged?srchKey=${searchKey}&pageSize=${maxResults}&pageNum=1&ascend=true`,
             {
@@ -35,12 +36,16 @@ export default function useItisSearch(searchKey, maxResults = 50) {
 
                 return {
                   scientificName: result.sciName,
-                  tsn: result.tsn,
+                  itisTsn: parseInt(result.tsn, 10),
                   commonNames: commonNames.filter(name => name),
                 };
               });
+              const filteredResults = uniqBy(
+                formattedResults,
+                'itisTsn',
+              );
 
-              if (response) setData(formattedResults);
+              if (response) setData(filteredResults);
               setLoading(false);
             },
           );

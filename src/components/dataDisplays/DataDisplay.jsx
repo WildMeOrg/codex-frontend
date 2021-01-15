@@ -41,6 +41,7 @@ export default function DataDisplay({
   initiallySelectedRow = null,
   renderExpandedRow,
   variant = 'primary',
+  idKey = 'id',
   noTitleBar,
   paperStyles = {},
   cellStyles = {},
@@ -229,15 +230,15 @@ export default function DataDisplay({
           <TableBody>
             {sortedData.map(datum => (
               <CollabsibleRow
-                key={datum.id}
+                key={get(datum, idKey)}
                 onClick={() => {
-                  if (selectedRow === datum.id) {
+                  if (selectedRow === get(datum, idKey)) {
                     setSelectedRow(null);
                   } else {
-                    setSelectedRow(datum.id);
+                    setSelectedRow(get(datum, idKey));
                   }
                 }}
-                selected={selectedRow === datum.id}
+                selected={selectedRow === get(datum, idKey)}
                 datum={datum}
                 cellStyles={cellStyles}
                 columns={visibleColumns}
