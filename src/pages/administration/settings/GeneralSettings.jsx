@@ -47,7 +47,11 @@ export default function GeneralSettings() {
   }, edmValues);
 
   return (
-    <Grid container direction="column" style={{ marginTop: 40 }}>
+    <Grid
+      container
+      direction="column"
+      style={{ marginTop: 20, padding: 20 }}
+    >
       {generalSettingsFields.map(settingKey => {
         const matchingSetting = get(siteSettings, [
           'data',
