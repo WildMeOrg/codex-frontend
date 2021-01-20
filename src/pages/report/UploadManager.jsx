@@ -47,7 +47,7 @@ export default function UploadManager({
       restrictions: {
         allowedFileTypes: ['.jpg', '.jpeg', '.png'],
       },
-      autoProceed: true,
+      autoProceed: false,
     });
 
     uppyInstance.use(Transloadit, {

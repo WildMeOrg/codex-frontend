@@ -68,17 +68,17 @@ const contribute = [
 const social = [
   {
     id: 'INSTAGRAM',
-    href: 'http://wiki.wildbook.org/',
+    href: 'https://www.instagram.com/wildmeorg',
     external: true,
   },
   {
     id: 'TWITTER',
-    href: 'https://twitter.com/WildbookORG',
+    href: 'https://twitter.com/WildMeOrg',
     external: true,
   },
   {
     id: 'GITHUB',
-    href: 'https://github.com/WildbookOrg/wildbook-frontend',
+    href: 'https://github.com/WildMeOrg/codex-frontend',
     external: true,
   },
 ];

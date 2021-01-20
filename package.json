@@ -1,5 +1,5 @@
 {
-  "name": "wildbook-frontend",
+  "name": "codex-frontend",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -15,15 +15,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/WildbookOrg/wildbook-frontend.git"
+    "url": "git+https://github.com/WildMeOrg/codex-frontend.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/WildbookOrg/wildbook-frontend/issues"
+    "url": "https://github.com/WildMeOrg/codex-frontend/issues"
   },
-  "homepage": "https://github.com/WildbookOrg/wildbook-frontend#readme",
+  "homepage": "https://github.com/WildMeOrg/codex-frontend#readme",
   "devDependencies": {
     "@babel/core": "^7.1.5",
     "@babel/plugin-proposal-class-properties": "^7.1.0",
