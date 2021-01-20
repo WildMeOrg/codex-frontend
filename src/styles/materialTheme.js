@@ -26,71 +26,37 @@ export default primaryColor => {
 
   return {
     palette: {
-      common: {
-        black: blackColor,
-      },
-      primary: {
-        main: primaryColor,
-      },
-      secondary: {
-        main: darkPrimaryColor,
-      },
-      paper: {
-        main: '#eeeeee',
-      },
-      text: {
-        primary: blackColor,
-      },
+      common: { black: blackColor },
+      primary: { main: primaryColor },
+      secondary: { main: darkPrimaryColor },
+      paper: { main: '#eeeeee' },
+      text: { primary: blackColor },
     },
     typography: {
       fontFamily: lato,
-      h1: {
-        fontWeight: 800,
-        letterSpacing: '0.02em',
-      },
-      h2: {
-        fontWeight: 800,
-        letterSpacing: '0.02em',
-      },
-      h5: {
-        fontWeight: 700,
-        letterSpacing: '0.04em',
-      },
+      h1: { fontWeight: 800, letterSpacing: '0.02em' },
+      h2: { fontWeight: 800, letterSpacing: '0.02em' },
+      h5: { fontWeight: 700, letterSpacing: '0.04em' },
       h6: {
         fontSize: 14,
         fontWeight: 700,
         textTransform: 'uppercase',
         letterSpacing: '0.02em',
       },
-      body1: {
-        fontWeight: 400,
-      },
-      body2: {
-        fontWeight: 400,
-        fontSize: 14,
-      },
+      body1: { fontWeight: 400 },
+      body2: { fontWeight: 400, fontSize: 14 },
       caption: {
         fontWeight: 300,
         fontSize: 14,
         letterSpacing: '0.02em',
         color: darken(blackColor, 0.5),
+        lineHeight: 1.2,
       },
-      subtitle1: {
-        fontSize: 20,
-        letterSpacing: '0.02em',
-      },
+      subtitle1: { fontSize: 20, letterSpacing: '0.02em' },
     },
     overrides: {
-      MuiTypography: {
-        colorTextSecondary: {
-          color: '#0E1014',
-        },
-      },
-      MuiFormHelperText: {
-        root: {
-          color: '#0E1014',
-        },
-      },
+      MuiTypography: { colorTextSecondary: { color: '#0E1014' } },
+      MuiFormHelperText: { root: { color: '#0E1014' } },
       MuiButton: {
         label: {
           letterSpacing: '0.02em',
@@ -102,30 +68,18 @@ export default primaryColor => {
           padding: '6px 20px',
           fontWeight: 600,
         },
-        outlined: {
-          padding: '6px 20px',
-        },
-        outlinedSizeSmall: {
-          padding: '4px 12px',
-        },
-        containedSecondary: {
-          backgroundColor: lightPrimaryColor,
-        },
+        outlined: { padding: '6px 20px' },
+        outlinedSizeSmall: { padding: '4px 12px' },
+        containedSecondary: { backgroundColor: lightPrimaryColor },
         contained: {
           backgroundColor: whiteColor,
           boxShadow: '1px 2px 6px -2px rgba(0,0,0,0.2)',
         },
       },
-      MuiTableCell: {
-        root: {
-          fontStyle: 'unset',
-        },
-      },
+      MuiTableCell: { root: { fontStyle: 'unset' } },
       MuiListItem: {
         root: {
-          '&$selected': {
-            backgroundColor: lightPrimaryColor,
-          },
+          '&$selected': { backgroundColor: lightPrimaryColor },
         },
       },
       MuiTreeItem: {

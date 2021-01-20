@@ -12,14 +12,14 @@ import ActionIcon from '../../../components/ActionIcon';
 import categoryTypes from '../../../constants/categoryTypes';
 import {
   RegionEditor,
-  SpeciesEditor,
   RelationshipEditor,
 } from './defaultFieldComponents/Editors';
+import SpeciesEditor from './defaultFieldComponents/SpeciesEditor';
 
 const configurableFields = [
   {
     id: 'species',
-    backendPath: 'site.general.species',
+    backendPath: 'site.species',
     labelId: 'SPECIES',
     type: categoryTypes.sighting,
     Editor: SpeciesEditor,
@@ -42,11 +42,7 @@ const configurableFields = [
 
 function getInitialFormState(siteSettings) {
   const regions = get(siteSettings, ['site.custom.regions', 'value']);
-  const species = get(
-    siteSettings,
-    ['site.general.species', 'value'],
-    [],
-  );
+  const species = get(siteSettings, ['site.species', 'value'], []);
   const relationships = get(
     siteSettings,
     ['site.general.relationships', 'value'],
@@ -109,6 +105,7 @@ export default function DefaultFieldTable({
     <Grid item>
       {editField && (
         <editField.Editor
+          siteSettings={siteSettings}
           formSettings={formSettings}
           setFormSettings={setFormSettings}
           onClose={() => {
@@ -120,6 +117,14 @@ export default function DefaultFieldTable({
               putSiteSetting(
                 editField.backendPath,
                 formSettings.regions,
+              ).then(success => {
+                if (success) onCloseEditor();
+              });
+            }
+            if (editField.id === 'species') {
+              putSiteSetting(
+                editField.backendPath,
+                formSettings.species,
               ).then(success => {
                 if (success) onCloseEditor();
               });

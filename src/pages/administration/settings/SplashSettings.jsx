@@ -56,7 +56,11 @@ export default function SiteSettings() {
   );
 
   return (
-    <Grid container direction="column" style={{ marginTop: 40 }}>
+    <Grid
+      container
+      direction="column"
+      style={{ marginTop: 20, padding: 20 }}
+    >
       {newSettingFields.map(settingKey => {
         const matchingSetting = get(newSiteSettings, [
           'data',
