@@ -14,15 +14,18 @@ import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import MenuIcon from '@material-ui/icons/Menu';
+import NotificationsIcon from '@material-ui/icons/Notifications';
+import AddIcon from '@material-ui/icons/Add';
 import DropDownIcon from '@material-ui/icons/ArrowDropDown';
 
 // import useSiteSettings from '../models/site/useSiteSettings';
-import Link from './Link';
-import AppDrawer from './AppDrawer';
-import BannerLogo from './BannerLogo';
-import HeaderMenu from './HeaderMenu';
-import useGetMe from '../models/users/useGetMe';
-import shane from '../assets/shane.jpg';
+import Link from '../Link';
+import AppDrawer from '../AppDrawer';
+import BannerLogo from '../BannerLogo';
+import HeaderMenu from '../HeaderMenu';
+import useGetMe from '../../models/users/useGetMe';
+import shane from '../../assets/shane.jpg';
+import HeaderButton from './HeaderButton';
 
 export default function AppHeader() {
   const theme = useTheme();
@@ -94,12 +97,6 @@ export default function AppHeader() {
         {!isSm && (
           <>
             <Typography>
-              <Link noUnderline href="/report">
-                <FormattedMessage id="REPORT_SIGHTINGS" />
-              </Link>
-            </Typography>
-
-            <Typography>
               <Link noUnderline href="/individuals">
                 <FormattedMessage id="INDIVIDUALS" />
               </Link>
@@ -119,18 +116,37 @@ export default function AppHeader() {
             alignItems: 'center',
           }}
         >
-          <Avatar
-            style={{
-              marginLeft: 8,
-              cursor: 'pointer',
-            }}
-            onClick={() => setUserMenuOpen(true)}
-            src={shane}
+          <Link
+            style={{ display: 'flex', alignItems: 'center' }}
+            href="/"
+            noUnderline
+          >
+            <Avatar
+              style={{
+                marginLeft: 8,
+                cursor: 'pointer',
+                width: 36,
+                height: 36,
+              }}
+              src={shane}
+            />
+            <Typography style={{ marginLeft: 8 }}>Bob</Typography>
+          </Link>
+          <Link href="/report">
+            <HeaderButton
+              Icon={AddIcon}
+              titleId="REPORT_SIGHTINGS"
+              style={{
+                marginLeft: 16,
+              }}
+            />
+          </Link>
+          <HeaderButton
+            Icon={NotificationsIcon}
+            titleId="NOTIFICATIONS"
+            showBadge
           />
-          <DropDownIcon
-            onClick={() => setUserMenuOpen(true)}
-            style={{ cursor: 'pointer' }}
-          />
+          <HeaderButton Icon={DropDownIcon} titleId="ACTIONS" />
           <HeaderMenu
             open={userMenuOpen}
             itemCount={isAdministrator ? 5 : 2}
