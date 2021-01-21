@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useIntl, FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import { get } from 'lodash-es';
 
 import { useTheme } from '@material-ui/core/styles';
@@ -10,8 +10,6 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import Avatar from '@material-ui/core/Avatar';
-import MenuItem from '@material-ui/core/MenuItem';
-import MenuList from '@material-ui/core/MenuList';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import MenuIcon from '@material-ui/icons/Menu';
 import NotificationsIcon from '@material-ui/icons/Notifications';
@@ -22,23 +20,28 @@ import DropDownIcon from '@material-ui/icons/ArrowDropDown';
 import Link from '../Link';
 import AppDrawer from '../AppDrawer';
 import BannerLogo from '../BannerLogo';
-import HeaderMenu from '../HeaderMenu';
 import useGetMe from '../../models/users/useGetMe';
 import shane from '../../assets/shane.jpg';
 import HeaderButton from './HeaderButton';
+import NotificationsPane from './NotificationsPane';
+import ActionsPane from './ActionsPane';
 
 export default function AppHeader() {
   const theme = useTheme();
-  const intl = useIntl();
   const { data: meData } = useGetMe();
   const isAdministrator = get(meData, 'is_admin', false);
 
   const isSm = useMediaQuery(theme.breakpoints.down('sm'));
-  const isXs = useMediaQuery(theme.breakpoints.down('xs'));
 
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [exploreOpen, setExploreOpen] = React.useState(false);
-  const [userMenuOpen, setUserMenuOpen] = React.useState(false);
+  const [userMenuAnchorEl, setUserMenuAnchorEl] = React.useState(
+    null,
+  );
+  const [
+    notificationsAnchorEl,
+    setNotificationsAnchorEl,
+  ] = React.useState(null);
 
   // const siteSettings = useSiteSettings();
 
@@ -59,11 +62,10 @@ export default function AppHeader() {
         color: theme.palette.common.white,
       }}
     >
-      {(exploreOpen || userMenuOpen) && (
+      {exploreOpen && (
         <ClickAwayListener
           onClickAway={() => {
             setExploreOpen(false);
-            setUserMenuOpen(false);
           }}
         >
           <div />
@@ -78,10 +80,7 @@ export default function AppHeader() {
         />
       )}
       <Toolbar
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-        }}
+        style={{ display: 'flex', justifyContent: 'space-between' }}
       >
         {isSm && (
           <IconButton
@@ -136,97 +135,30 @@ export default function AppHeader() {
             <HeaderButton
               Icon={AddIcon}
               titleId="REPORT_SIGHTINGS"
-              style={{
-                marginLeft: 16,
-              }}
+              style={{ marginLeft: 16 }}
             />
           </Link>
           <HeaderButton
             Icon={NotificationsIcon}
             titleId="NOTIFICATIONS"
             showBadge
+            onClick={e => setNotificationsAnchorEl(e.currentTarget)}
+            style={{ position: 'relative' }}
           />
-          <HeaderButton Icon={DropDownIcon} titleId="ACTIONS" />
-          <HeaderMenu
-            open={userMenuOpen}
-            itemCount={isAdministrator ? 5 : 2}
-            style={{ right: -8, marginTop: isXs ? 8 : 12 }}
-          >
-            <MenuList>
-              <Link href="/" noUnderline>
-                <MenuItem
-                  style={{ minHeight: 'auto' }}
-                  className="dark-menu-item"
-                >
-                  <Typography
-                    style={{ margin: '0 20px', color: 'white' }}
-                  >
-                    <FormattedMessage id="VIEW_PROFILE" />
-                  </Typography>
-                </MenuItem>
-              </Link>
-              {isAdministrator && (
-                <Link href="/admin/settings" noUnderline>
-                  <MenuItem
-                    style={{ minHeight: 'auto' }}
-                    className="dark-menu-item"
-                  >
-                    <Typography
-                      style={{ margin: '0 20px', color: 'white' }}
-                    >
-                      <FormattedMessage id="SITE_SETTINGS" />
-                    </Typography>
-                  </MenuItem>
-                </Link>
-              )}
-              {isAdministrator && (
-                <Link href="/admin/server" noUnderline>
-                  <MenuItem
-                    style={{ minHeight: 'auto' }}
-                    className="dark-menu-item"
-                  >
-                    <Typography
-                      style={{ margin: '0 20px', color: 'white' }}
-                    >
-                      <FormattedMessage id="SERVER_STATUS" />
-                    </Typography>
-                  </MenuItem>
-                </Link>
-              )}
-              {isAdministrator && (
-                <Link href="/admin/actions" noUnderline>
-                  <MenuItem
-                    style={{ minHeight: 'auto' }}
-                    className="dark-menu-item"
-                  >
-                    <Typography
-                      style={{ margin: '0 20px', color: 'white' }}
-                    >
-                      <FormattedMessage id="ADMINISTRATIVE_ACTIONS" />
-                    </Typography>
-                  </MenuItem>
-                </Link>
-              )}
-              <form
-                action={`${__houston_url__}/logout?next=/`}
-                method="POST"
-              >
-                <Typography style={{ margin: '6px 20px 6px 30px' }}>
-                  <input
-                    style={{
-                      cursor: 'pointer',
-                      border: 'unset',
-                      background: 'unset',
-                      fontWeight: 'unset',
-                      color: 'white',
-                    }}
-                    type="submit"
-                    value={intl.formatMessage({ id: 'LOG_OUT' })}
-                  />
-                </Typography>
-              </form>
-            </MenuList>
-          </HeaderMenu>
+          <NotificationsPane
+            anchorEl={notificationsAnchorEl}
+            setAnchorEl={setNotificationsAnchorEl}
+          />
+          <HeaderButton
+            onClick={e => setUserMenuAnchorEl(e.currentTarget)}
+            Icon={DropDownIcon}
+            titleId="ACTIONS"
+          />
+          <ActionsPane
+            anchorEl={userMenuAnchorEl}
+            setAnchorEl={setUserMenuAnchorEl}
+            isAdministrator={isAdministrator}
+          />
         </div>
       </Toolbar>
     </AppBar>
