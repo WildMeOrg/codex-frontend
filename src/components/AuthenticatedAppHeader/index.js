@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { FormattedMessage } from 'react-intl';
 import { get } from 'lodash-es';
 
 import { useTheme } from '@material-ui/core/styles';
@@ -31,7 +30,7 @@ export default function AppHeader() {
   const { data: meData } = useGetMe();
   const isAdministrator = get(meData, 'is_admin', false);
 
-  const isSm = useMediaQuery(theme.breakpoints.down('sm'));
+  const isXs = useMediaQuery(theme.breakpoints.down('xs'));
 
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [exploreOpen, setExploreOpen] = React.useState(false);
@@ -71,7 +70,7 @@ export default function AppHeader() {
           <div />
         </ClickAwayListener>
       )}
-      {isSm && (
+      {isXs && (
         <AppDrawer
           open={drawerOpen}
           onClose={() => setDrawerOpen(false)}
@@ -82,7 +81,7 @@ export default function AppHeader() {
       <Toolbar
         style={{ display: 'flex', justifyContent: 'space-between' }}
       >
-        {isSm && (
+        {isXs ? (
           <IconButton
             edge="start"
             color="inherit"
@@ -91,22 +90,8 @@ export default function AppHeader() {
           >
             <MenuIcon />
           </IconButton>
-        )}
-        <BannerLogo href="/" onClick={handleClick} />
-        {!isSm && (
-          <>
-            <Typography>
-              <Link noUnderline href="/individuals">
-                <FormattedMessage id="INDIVIDUALS" />
-              </Link>
-            </Typography>
-
-            <Typography>
-              <Link noUnderline href="/sightings">
-                <FormattedMessage id="SIGHTINGS" />
-              </Link>
-            </Typography>
-          </>
+        ) : (
+          <BannerLogo href="/" onClick={handleClick} />
         )}
         <div
           style={{
@@ -115,22 +100,25 @@ export default function AppHeader() {
             alignItems: 'center',
           }}
         >
-          <Link
-            style={{ display: 'flex', alignItems: 'center' }}
-            href="/"
-            noUnderline
-          >
-            <Avatar
-              style={{
-                marginLeft: 8,
-                cursor: 'pointer',
-                width: 36,
-                height: 36,
-              }}
-              src={shane}
-            />
-            <Typography style={{ marginLeft: 8 }}>Bob</Typography>
-          </Link>
+          {!isXs && (
+            <Link
+              style={{ display: 'flex', alignItems: 'center' }}
+              href="/"
+              noUnderline
+            >
+              <Avatar
+                style={{
+                  marginLeft: 8,
+                  cursor: 'pointer',
+                  width: 36,
+                  height: 36,
+                }}
+                src={shane}
+              />
+              <Typography style={{ marginLeft: 8 }}>Bob</Typography>
+            </Link>
+          )}
+
           <Link href="/report">
             <HeaderButton
               Icon={AddIcon}

@@ -74,7 +74,7 @@ export default function NotificationsPane({ anchorEl, setAnchorEl }) {
       <Grid container direction="column">
         <Grid item style={{ padding: 16 }}>
           <Typography style={{ fontWeight: 'bold' }}>
-            Notifications
+            <FormattedMessage id="NOTIFICATIONS" />
           </Typography>
         </Grid>
         {fakeData.map(task => (

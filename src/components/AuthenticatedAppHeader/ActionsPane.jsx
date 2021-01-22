@@ -1,5 +1,5 @@
 import React from 'react';
-import { useIntl, FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import { useTheme } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
@@ -52,7 +52,6 @@ export default function NotificationsPane({
   setAnchorEl,
   isAdministrator,
 }) {
-  const intl = useIntl();
   const theme = useTheme();
   return (
     <Popover
@@ -110,38 +109,36 @@ export default function NotificationsPane({
           );
         })}
         <Divider style={{ margin: '8px 16px' }} />
-        <MenuItem>
-          <form
-            action={`${__houston_url__}/logout?next=/`}
-            method="POST"
-            style={{ display: 'flex', alignItems: 'center' }}
+        <form
+          action={`${__houston_url__}/logout?next=/`}
+          method="POST"
+        >
+          <button
+            type="submit"
+            style={{
+              backgroundColor: 'unset',
+              width: '100%',
+              border: 'unset',
+            }}
           >
-            <div
-              style={{
-                padding: 12,
-                borderRadius: 1000,
-                backgroundColor: theme.palette.grey.A100,
-                color: theme.palette.grey.A400,
-                lineHeight: 0,
-              }}
-            >
-              <LogoutIcon />
-            </div>
-            <Typography style={{ margin: '0 8px 0 4px' }}>
-              <input
+            <MenuItem style={{ minHeight: 'auto' }}>
+              <div
                 style={{
-                  cursor: 'pointer',
-                  border: 'unset',
-                  background: 'unset',
-                  fontWeight: 'unset',
-                  color: theme.palette.common.black,
+                  padding: 12,
+                  borderRadius: 1000,
+                  backgroundColor: theme.palette.grey.A100,
+                  color: theme.palette.grey.A400,
+                  lineHeight: 0,
                 }}
-                type="submit"
-                value={intl.formatMessage({ id: 'LOG_OUT' })}
-              />
-            </Typography>
-          </form>
-        </MenuItem>
+              >
+                <LogoutIcon />
+              </div>
+              <Typography style={{ margin: '0 8px' }}>
+                <FormattedMessage id="LOG_OUT" />
+              </Typography>
+            </MenuItem>
+          </button>
+        </form>
       </MenuList>
     </Popover>
   );
