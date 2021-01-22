@@ -33,7 +33,7 @@ export default function BannerLogo({ href, onClick, ...rest }) {
           style={{ fill: theme.palette.primary.main, height: 52 }}
         />
         <Typography
-          variant="h4"
+          variant="h5"
           style={{
             color: theme.palette.common.white,
             margin: '0 12px 0 4px',

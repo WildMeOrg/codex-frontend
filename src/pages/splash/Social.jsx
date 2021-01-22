@@ -73,7 +73,7 @@ export default function Social() {
         )}
         <SocialButton
           Icon={GithubIcon}
-          href="https://github.com/WildbookOrg/wildbook-frontend"
+          href="https://github.com/WildMeOrg/codex-frontend"
         />
       </div>
     </div>
