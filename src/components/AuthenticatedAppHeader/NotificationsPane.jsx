@@ -72,6 +72,11 @@ export default function NotificationsPane({ anchorEl, setAnchorEl }) {
       onClose={() => setAnchorEl(null)}
     >
       <Grid container direction="column">
+        <Grid item style={{ padding: 16 }}>
+          <Typography style={{ fontWeight: 'bold' }}>
+            Notifications
+          </Typography>
+        </Grid>
         {fakeData.map(task => (
           <React.Fragment key={task.id}>
             <Grid
