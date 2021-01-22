@@ -20,7 +20,7 @@ This project uses Redux but only minimally. Not all responses from the server ne
 
 All displayed text must support translation - for this we use `react-intl`. Translation keys are verbatum English abbreviations of the displayed text in all caps. You can see some examples in `/locale/en.json`. 
 
-If you want to help translate the project, that is very much appreciated and needed, but please don't do it by manually editing files in `/locale`. Your changes will wind up getting overwritten by Transloadit.
+If you want to help translate the project, that is very much appreciated and needed, but please don't do it by manually editing files in `/locale`. Your changes will wind up getting overwritten by Lokalise.
 
 ## Conventions 
 

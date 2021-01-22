@@ -1,15 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useIntl } from 'react-intl';
 import Typography from '@material-ui/core/Typography';
-import Transloadit from '@uppy/transloadit';
 import Dashboard from '@uppy/react/lib/Dashboard';
 import Uppy from '@uppy/core';
 import '@uppy/core/dist/style.css';
 import '@uppy/dashboard/dist/style.css';
-import {
-  transloaditKey,
-  transloaditTemplateId,
-} from '../constants/apiKeys';
 
 export default function PhotoUploader({
   title,
@@ -27,21 +22,6 @@ export default function PhotoUploader({
         allowedFileTypes: ['.jpg', '.jpeg', '.png'],
       },
       autoProceed: true,
-    });
-
-    uppyInstance.use(Transloadit, {
-      service: 'https://api2.transloadit.com',
-      params: {
-        auth: { key: transloaditKey },
-        template_id: transloaditTemplateId,
-      },
-      waitForEncoding: false,
-      waitForMetadata: false,
-      importFromUploadURLs: false,
-      alwaysRunAssembly: false,
-      signature: null,
-      fields: {},
-      limit: 0,
     });
 
     uppyInstance.on('complete', result => {

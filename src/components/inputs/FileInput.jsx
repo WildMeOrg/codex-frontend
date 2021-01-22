@@ -5,15 +5,9 @@ import Typography from '@material-ui/core/Typography';
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Uppy from '@uppy/core';
-import Transloadit from '@uppy/transloadit';
 import DashboardModal from '@uppy/react/lib/DashboardModal';
 import '@uppy/core/dist/style.css';
 import '@uppy/dashboard/dist/style.css';
-import {
-  transloaditKey,
-  transloaditTemplateId,
-  transloaditService,
-} from '../../constants/apiKeys';
 import DeleteButton from '../DeleteButton';
 import Button from '../Button';
 
@@ -70,21 +64,6 @@ export default function FileInput({
         allowedFileTypes,
       },
       autoProceed: true,
-    });
-
-    uppyInstance.use(Transloadit, {
-      service: transloaditService,
-      params: {
-        auth: { key: transloaditKey },
-        template_id: transloaditTemplateId,
-      },
-      waitForEncoding: false,
-      waitForMetadata: false,
-      importFromUploadURLs: false,
-      alwaysRunAssembly: false,
-      signature: null,
-      fields: {},
-      limit: 0,
     });
 
     uppyInstance.on('complete', uppyState => {
