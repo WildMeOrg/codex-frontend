@@ -1,13 +1,11 @@
 import React from 'react';
 import { get } from 'lodash-es';
-import { FormattedMessage } from 'react-intl';
 import { useTheme } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import IdentificationIcon from '@material-ui/icons/Fingerprint';
 import CodeIcon from '@material-ui/icons/Code';
 import AnalysisIcon from '@material-ui/icons/BarChart';
-import ResponsiveText from '../../components/ResponsiveText';
+import Text from '../../components/Text';
 import useSiteSettings from '../../models/site/useSiteSettings';
 
 function Card({ Icon, titleId, descriptionId }) {
@@ -40,13 +38,13 @@ function Card({ Icon, titleId, descriptionId }) {
           style={{ fontSize: 64, color: theme.palette.common.black }}
         />
       </div>
-      <ResponsiveText
+      <Text
+        responsive
         variant="h5"
         style={{ marginTop: 40, marginBottom: 20 }}
-      >
-        <FormattedMessage id={titleId} />
-      </ResponsiveText>
-      <Typography
+        id={titleId}
+      />
+      <Text
         style={{
           color: '#818181',
           lineHeight: '25px',
@@ -54,9 +52,8 @@ function Card({ Icon, titleId, descriptionId }) {
           letterSpacing: '0.04em',
           fontWeight: 400,
         }}
-      >
-        <FormattedMessage id={descriptionId} />
-      </Typography>
+        id={descriptionId}
+      />
     </Grid>
   );
 }
@@ -83,10 +80,14 @@ export default function Trifold() {
         padding: 20,
       }}
     >
-      <ResponsiveText variant="h2" style={{ marginBottom: 48 }}>
-        <FormattedMessage id="TRIFOLD_TAGLINE" />
-      </ResponsiveText>
-      <ResponsiveText
+      <Text
+        responsive
+        variant="h2"
+        style={{ marginBottom: 48 }}
+        id="TRIFOLD_TAGLINE"
+      />
+      <Text
+        responsive
         desktopStyle={{
           fontSize: 24,
           lineHeight: '45px',
@@ -103,7 +104,7 @@ export default function Trifold() {
         }}
       >
         {siteDescription}
-      </ResponsiveText>
+      </Text>
       <Grid
         container
         justify="space-around"

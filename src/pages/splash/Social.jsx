@@ -1,6 +1,5 @@
 import React from 'react';
 import { get } from 'lodash-es';
-import { FormattedMessage } from 'react-intl';
 import { useTheme } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import FacebookIcon from '@material-ui/icons/Facebook';
@@ -8,7 +7,7 @@ import InstagramIcon from '@material-ui/icons/Instagram';
 import GithubIcon from '@material-ui/icons/GitHub';
 import TwitterIcon from '@material-ui/icons/Twitter';
 import useSiteSettings from '../../models/site/useSiteSettings';
-import ResponsiveText from '../../components/ResponsiveText';
+import Text from '../../components/Text';
 
 function SocialButton({ Icon, href }) {
   const theme = useTheme();
@@ -58,9 +57,7 @@ export default function Social() {
         justifyContent: 'center',
       }}
     >
-      <ResponsiveText variant="h5">
-        <FormattedMessage id="FOLLOW_ASK" />
-      </ResponsiveText>
+      <Text responsive variant="h5" id="FOLLOW_ASK" />
       <div style={{ margin: '0 16px' }}>
         {facebookLink && (
           <SocialButton Icon={FacebookIcon} href={facebookLink} />

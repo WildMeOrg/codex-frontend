@@ -1,7 +1,7 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import ButtonLink from '../../components/ButtonLink';
-import ResponsiveText from '../../components/ResponsiveText';
+import Text from '../../components/Text';
 
 export default function HelpAsk() {
   return (
@@ -15,10 +15,14 @@ export default function HelpAsk() {
         margin: '64px 0',
       }}
     >
-      <ResponsiveText variant="h2" style={{ margin: '12px 0' }}>
-        <FormattedMessage id="HOW_CAN_HELP" />
-      </ResponsiveText>
-      <ResponsiveText
+      <Text
+        responsive
+        variant="h2"
+        style={{ margin: '12px 0' }}
+        id="HOW_CAN_HELP"
+      />
+      <Text
+        responsive
         mobileStyle={{
           lineHeight: '30px',
           fontSize: 20,
@@ -32,9 +36,8 @@ export default function HelpAsk() {
           padding: '32px 20px 40px 32px',
           letterSpacing: '0.04em',
         }}
-      >
-        <FormattedMessage id="HOW_CAN_HELP_DESCRIPTIONS" />
-      </ResponsiveText>
+        id="HOW_CAN_HELP_DESCRIPTIONS"
+      />
       <div>
         <ButtonLink
           display="marketing"
