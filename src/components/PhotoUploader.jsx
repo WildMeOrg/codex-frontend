@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useIntl } from 'react-intl';
-import Typography from '@material-ui/core/Typography';
 import Transloadit from '@uppy/transloadit';
 import Dashboard from '@uppy/react/lib/Dashboard';
 import Uppy from '@uppy/core';
@@ -10,6 +9,8 @@ import {
   transloaditKey,
   transloaditTemplateId,
 } from '../constants/apiKeys';
+
+import Text from './Text';
 
 export default function PhotoUploader({
   title,
@@ -55,7 +56,7 @@ export default function PhotoUploader({
 
   return (
     <div>
-      <Typography variant="subtitle1">{title}</Typography>
+      <Text variant="subtitle1">{title}</Text>
       {uppy && (
         <Dashboard
           uppy={uppy}

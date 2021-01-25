@@ -3,7 +3,6 @@ import { FormattedMessage } from 'react-intl';
 import { useTheme } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Tooltip from '@material-ui/core/Tooltip';
-import Typography from '@material-ui/core/Typography';
 import Button from '../../components/Button';
 import ButtonLink from '../../components/ButtonLink';
 import Text from '../../components/Text';
@@ -41,9 +40,7 @@ export default function Status({ onMarkComplete }) {
       spacing={1}
     >
       <Grid item>
-        <Typography variant="h5">
-          <FormattedMessage id="IDENTIFYING_INDIVIDUALS" />
-        </Typography>
+        <Text variant="h5" id="IDENTIFYING_INDIVIDUALS" />
       </Grid>
       <Grid item>
         <Text

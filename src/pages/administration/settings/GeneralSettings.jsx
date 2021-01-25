@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { get, zipObject } from 'lodash-es';
 import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
 import Skeleton from '@material-ui/lab/Skeleton';
 import Alert from '@material-ui/lab/Alert';
 import AlertTitle from '@material-ui/lab/AlertTitle';
@@ -81,7 +80,7 @@ export default function GeneralSettings() {
             >
               {matchingSetting && valueIsDefined ? (
                 <>
-                  <Typography
+                  <Text
                     style={{
                       marginTop: 20,
                     }}
@@ -89,7 +88,7 @@ export default function GeneralSettings() {
                   >
                     <FormattedMessage id={matchingSetting.labelId} />
                     {matchingSetting.required && ' *'}
-                  </Typography>
+                  </Text>
                   <Text
                     style={{
                       marginTop: 4,

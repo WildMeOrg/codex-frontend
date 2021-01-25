@@ -7,10 +7,10 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
-import Typography from '@material-ui/core/Typography';
 import { useTheme } from '@material-ui/core/styles';
 
 import Button from './Button';
+import Text from './Text';
 
 export default function AnnotationEditor({
   titleId = 'EDIT_ANNOTATION',
@@ -109,9 +109,7 @@ export default function AnnotationEditor({
           {!disableDelete && (
             <div style={{ margin: '8px 0' }}>
               {confirmDelete ? (
-                <Typography>
-                  <FormattedMessage id="DELETE_ANNOTATION_CONFIRMATION" />
-                </Typography>
+                <Text id="DELETE_ANNOTATION_CONFIRMATION" />
               ) : (
                 <Button
                   onClick={() => setConfirmDelete(true)}

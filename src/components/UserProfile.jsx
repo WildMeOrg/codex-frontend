@@ -1,21 +1,23 @@
 import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { get } from 'lodash-es';
+
 import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
 import ForumIcon from '@material-ui/icons/Forum';
 import EmailIcon from '@material-ui/icons/Email';
 import LocationIcon from '@material-ui/icons/PersonPin';
 import WebIcon from '@material-ui/icons/WebAssetSharp';
+
+import userSchema, {
+  userSchemaCategories,
+} from '../constants/userSchema';
 import EntityHeader from './EntityHeader';
 import MainColumn from './MainColumn';
 import Link from './Link';
 import SadScreen from './SadScreen';
 import EncounterGallery from './EncounterGallery';
 import EditEntityModal from './EditEntityModal';
-import userSchema, {
-  userSchemaCategories,
-} from '../constants/userSchema';
+import Text from './Text';
 
 const items = [
   {
@@ -106,9 +108,9 @@ export default function UserProfile({ children, userData }) {
             return (
               <Grid key={item.key} item style={{ display: 'flex' }}>
                 <Icon color="action" style={{ marginRight: 8 }} />
-                <Typography>
+                <Text>
                   {item.render(matchingData.value)}
-                </Typography>
+                </Text>
               </Grid>
             );
           })}

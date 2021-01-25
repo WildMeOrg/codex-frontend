@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import FormControl from '@material-ui/core/FormControl';
-import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -82,7 +81,7 @@ export default function FileTypeEditor({
                 <div
                   style={{ display: 'flex', alignItems: 'center' }}
                 >
-                  <Typography variant="subtitle2" id="FILETYPE" />
+                  <Text variant="subtitle2" id="FILETYPE" />
                   {showDeleteButton && (
                     <DeleteButton
                       onClick={() => {

@@ -5,7 +5,6 @@ import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import Radio from '@material-ui/core/Radio';
-import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import InfoIcon from '@material-ui/icons/InfoOutlined';
 import Alert from '@material-ui/lab/Alert';
@@ -139,7 +138,7 @@ export default function ReportSightings({ authenticated = false }) {
                       fontSize="small"
                       style={{ marginRight: 4 }}
                     />
-                    <Typography variant="caption">
+                    <Text variant="caption">
                       <FormattedMessage id="PHOTO_OPTIMIZE_1" />
                       <Link
                         external
@@ -148,7 +147,7 @@ export default function ReportSightings({ authenticated = false }) {
                         <FormattedMessage id="PHOTO_OPTIMIZE_2" />
                       </Link>
                       <FormattedMessage id="PHOTO_OPTIMIZE_3" />
-                    </Typography>
+                    </Text>
                   </div>
                 </Grid>
               )}

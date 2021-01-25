@@ -1,8 +1,8 @@
 import React from 'react';
-import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import SettingsIcon from '@material-ui/icons/Settings';
 import Button from './Button';
+import Text from './Text';
 
 export default function Header({
   title,
@@ -21,13 +21,13 @@ export default function Header({
         alignItems: 'flex-start',
       }}
     >
-      <Typography
+      <Text
         variant="h3"
         component="h3"
         style={{ padding: '16px 0 16px 16px' }}
       >
         {title}
-      </Typography>
+      </Text>
       {showButton && (
         <Button
           onClick={onButtonClick}

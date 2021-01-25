@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useTheme } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
 import InlineButton from '../../components/InlineButton';
 import Text from '../../components/Text';
 import graphic from '../../assets/howitworks.png';
@@ -77,7 +76,7 @@ export default function HowItWorks() {
         alt="How it works"
         style={{ height: 'auto', width: 300 }}
       />
-      <Typography
+      <Text
         style={{ color: theme.palette.common.white, maxWidth: 320 }}
         id={stepMap[step].description}
       />

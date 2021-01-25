@@ -5,9 +5,9 @@ import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
-import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Link from './Link';
+import Text from './Text';
 
 export default function EncounterCard({ encounter, hideSubmitted }) {
   const {
@@ -36,48 +36,43 @@ export default function EncounterCard({ encounter, hideSubmitted }) {
                 height: 40,
               }}
             >
-              <Typography
+              <Text
                 style={{
                   textAlign: 'center',
                   marginTop: 10,
                 }}
-              >
-                <FormattedMessage id="READY_FOR_REVIEW" />
-              </Typography>
+                id="READY_FOR_REVIEW" />
             </div>
           )}
         </CardMedia>
         <CardContent>
-          <Typography variant="subtitle2">
+          <Text variant="subtitle2">
             {encounter.individualId}
-          </Typography>
+          </Text>
           <Grid container alignItems="center" justify="space-between">
             <Grid item>
-              <Typography
+              <Text
                 variant="body2"
                 color="textSecondary"
                 component="p"
-              >
-                <FormattedMessage
-                  id="PHOTO_COUNT"
-                  values={{ photoCount: parseInt(photoCount, 10) }}
-                />
-              </Typography>
+                id="PHOTO_COUNT"
+                values={{ photoCount: parseInt(photoCount, 10) }}
+              />
             </Grid>
             <Grid item>
-              <Typography
+              <Text
                 variant="body2"
                 color="textSecondary"
                 component="p"
               >
                 {format(submissionDate, 'M/dd/yy')}
-              </Typography>
+              </Text>
             </Grid>
             {!hideSubmitted && (
-              <Typography variant="caption">
+              <Text variant="caption">
                 <FormattedMessage id="SUBMITTED_BY" />
                 <Link href={`/users/${user}`}>{user}</Link>
-              </Typography>
+              </Text>
             )}
           </Grid>
         </CardContent>

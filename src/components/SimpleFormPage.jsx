@@ -1,8 +1,6 @@
 import React from 'react';
-import { FormattedMessage } from 'react-intl';
 import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
-import ResponsiveText from './ResponsiveText';
+import Text from './Text';
 
 export default function SimpleFormPage({
   titleId,
@@ -25,12 +23,8 @@ export default function SimpleFormPage({
           padding: '40px 16px 20px 16px',
         }}
       >
-        <ResponsiveText variant="h2" style={{ paddingBottom: 8 }}>
-          <FormattedMessage id={titleId} />
-        </ResponsiveText>
-        <Typography variant="subtitle2" style={{ maxWidth: 460 }}>
-          <FormattedMessage id={instructionsId} />
-        </Typography>
+        <Text responsive variant="h2" style={{ paddingBottom: 8 }} id={titleId} />
+        <Text variant="subtitle2" style={{ maxWidth: 460 }} id={instructionsId} />
         {children}
       </Paper>
     </div>

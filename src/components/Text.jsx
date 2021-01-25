@@ -9,8 +9,8 @@ function Core(props) {
   return <Typography {...rest} />;
 }
 
-export default function Text({ id, values, ...rest }) {
-  if (!id) return <Core {...rest} />;
+export default function Text({ id, values, children, ...rest }) {
+  if (!id) return <Core {...rest}>{children}</Core>;
   return (
     <Core {...rest}>
       <FormattedMessage id={id} values={values} />

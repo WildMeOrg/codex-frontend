@@ -4,10 +4,10 @@ import { useSelector } from 'react-redux';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import { selectTermsAndConditions } from '../../modules/site/selectors';
+import Text from '../../components/Text';
 
 export default function EditAvatar({ visible, onClose }) {
   const termsAndConditions = useSelector(selectTermsAndConditions);
@@ -25,11 +25,11 @@ export default function EditAvatar({ visible, onClose }) {
         </IconButton>
       </DialogTitle>
       <DialogContent style={{ marginBottom: 24 }}>
-        <Typography
+        <Text
           style={{ whiteSpace: 'pre-line', maxHeight: 400 }}
         >
           {termsAndConditions}
-        </Typography>
+        </Text>
       </DialogContent>
     </Dialog>
   );
