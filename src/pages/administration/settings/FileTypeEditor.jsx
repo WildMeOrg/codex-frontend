@@ -13,6 +13,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import TextInput from '../../../components/inputs/TextInput';
 import DeleteButton from '../../../components/DeleteButton';
 import Button from '../../../components/Button';
+import Text from '../../../components/Text';
 
 export default function FileTypeEditor({
   schema,
@@ -61,9 +62,7 @@ export default function FileTypeEditor({
         </DialogTitle>
         <DialogContent style={{ minWidth: 200 }}>
           {schema.descriptionId && (
-            <Typography style={{ marginBottom: 20 }}>
-              <FormattedMessage id={schema.descriptionId} />
-            </Typography>
+            <Text style={{ marginBottom: 20 }} id={schema.descriptionId} />
           )}
           {displayedFileTypes.map((filetype, index) => {
             const showDeleteButton = displayedFileTypes.length !== 1;
@@ -80,9 +79,7 @@ export default function FileTypeEditor({
                 <div
                   style={{ display: 'flex', alignItems: 'center' }}
                 >
-                  <Typography variant="subtitle2">
-                    <FormattedMessage id="FILETYPE" />
-                  </Typography>
+                  <Typography variant="subtitle2" id="FILETYPE" />
                   {showDeleteButton && (
                     <DeleteButton
                       onClick={() => {

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { omit } from 'lodash-es';
 
-import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -10,6 +9,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import CloseIcon from '@material-ui/icons/Close';
 
 import LabeledInput from '../../../components/LabeledInput';
+import Text from '../../../components/Text';
 
 export default function FieldDemo({
   open,
@@ -43,9 +43,7 @@ export default function FieldDemo({
         </IconButton>
       </DialogTitle>
       <DialogContent style={{ minWidth: 200 }}>
-        <Typography>
-          <FormattedMessage id="DEMO_FIELD_DESCRIPTION" />
-        </Typography>
+        <Text id="DEMO_FIELD_DESCRIPTION" />
         <div
           style={{
             padding: 30,

@@ -11,6 +11,7 @@ import useSiteSettings from '../../../models/site/useSiteSettings';
 import usePutSiteSettings from '../../../models/site/usePutSiteSettings';
 
 import LabeledInput from '../../../components/LabeledInput';
+import Text from '../../../components/Text';
 
 const customFields = {
   sighting: 'site.custom.customFields.Occurrence',
@@ -89,15 +90,12 @@ export default function GeneralSettings() {
                     <FormattedMessage id={matchingSetting.labelId} />
                     {matchingSetting.required && ' *'}
                   </Typography>
-                  <Typography
+                  <Text
                     style={{
                       marginTop: 4,
                     }}
-                  >
-                    <FormattedMessage
-                      id={matchingSetting.descriptionId}
-                    />
-                  </Typography>
+                    id={matchingSetting.descriptionId}
+                  />
                 </>
               ) : (
                 <>

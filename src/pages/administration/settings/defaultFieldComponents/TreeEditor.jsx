@@ -2,13 +2,13 @@ import React from 'react';
 import { get } from 'lodash-es';
 import { FormattedMessage } from 'react-intl';
 import { v4 as uuid } from 'uuid';
-import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import NewChildIcon from '@material-ui/icons/AddCircle';
 import TextInput from '../../../../components/inputs/TextInput';
 import DeleteButton from '../../../../components/DeleteButton';
 import Button from '../../../../components/Button';
+import Text from '../../../../components/Text';
 
 function getNewLeaf() {
   return {
@@ -130,9 +130,7 @@ export default function TreeEditor({
           alignItems: 'center',
         }}
       >
-        <Typography variant="h5">
-          <FormattedMessage id="REGION_EDITOR" />
-        </Typography>
+        <Text variant="h5" id="REGION_EDITOR" />
         <Button
           onClick={() => {
             onChange(addLeaf(value));

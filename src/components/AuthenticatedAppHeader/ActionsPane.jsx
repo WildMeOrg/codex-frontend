@@ -53,6 +53,7 @@ export default function NotificationsPane({
   isAdministrator,
 }) {
   const theme = useTheme();
+  const closePopover = () => setAnchorEl(null);
   return (
     <Popover
       open={Boolean(anchorEl)}
@@ -63,10 +64,10 @@ export default function NotificationsPane({
       PaperProps={{ style: { marginTop: -8 } }}
       transformOrigin={{ horizontal: 'right', vertical: 'top' }}
       anchorEl={anchorEl}
-      onClose={() => setAnchorEl(null)}
+      onClose={closePopover}
     >
       <MenuList style={{ minWidth: 270 }}>
-        <Link href="/" noUnderline>
+        <Link href="/" onClick={closePopover} noUnderline>
           <MenuItem style={{ minHeight: 'auto' }}>
             <Avatar style={{ height: 52, width: 52 }} src={shane} />
             <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -88,7 +89,7 @@ export default function NotificationsPane({
         {actions.map(action => {
           if (action.adminOnly && !isAdministrator) return null;
           return (
-            <Link key={action.id} href={action.href} noUnderline>
+            <Link key={action.id} href={action.href} onClick={closePopover} noUnderline>
               <MenuItem style={{ minHeight: 'auto' }}>
                 <div
                   style={{
@@ -115,6 +116,7 @@ export default function NotificationsPane({
         >
           <button
             type="submit"
+            onClick={closePopover}
             style={{
               backgroundColor: 'unset',
               width: '100%',

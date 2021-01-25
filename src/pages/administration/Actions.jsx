@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
 import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import MainColumn from '../../components/MainColumn';
 import LabeledInput from '../../components/LabeledInput';
 import Button from '../../components/Button';
+import Text from '../../components/Text';
 
 export default function AdminActions() {
   const intl = useIntl();
@@ -22,13 +22,12 @@ export default function AdminActions() {
   const [restoreEncounterId, setRestoreEncounterId] = useState('');
   return (
     <MainColumn>
-      <Typography
+      <Text
         variant="h3"
         component="h3"
         style={{ padding: '16px 0 16px 16px' }}
-      >
-        <FormattedMessage id="ADMINISTRATIVE_ACTIONS" />
-      </Typography>
+        id="ADMINISTRATIVE_ACTIONS"
+      />
       <Grid
         container
         direction="column"
@@ -36,12 +35,11 @@ export default function AdminActions() {
         style={{ paddingBottom: 40 }}
       >
         <Grid item style={{ width: '100%' }}>
-          <Typography
+          <Text
             variant="h6"
             style={{ marginTop: 20, marginLeft: 12 }}
-          >
-            <FormattedMessage id="CREATE_NEW_USER" />
-          </Typography>
+            id="CREATE_NEW_USER"
+          />
           <Paper
             elevation={2}
             style={{
@@ -52,9 +50,7 @@ export default function AdminActions() {
               flexDirection: 'column',
             }}
           >
-            <Typography>
-              <FormattedMessage id="NEW_USER_ADMIN_MESSAGE" />
-            </Typography>
+            <Text id="NEW_USER_ADMIN_MESSAGE" />
             <div style={{ display: 'flex' }}>
               <LabeledInput
                 style={{ marginRight: 12 }}
@@ -83,12 +79,11 @@ export default function AdminActions() {
           </Paper>
         </Grid>
         <Grid item style={{ width: '100%' }}>
-          <Typography
+          <Text
             variant="h6"
             style={{ marginTop: 20, marginLeft: 12 }}
-          >
-            <FormattedMessage id="DELETE_A_USER" />
-          </Typography>
+            id="DELETE_A_USER"
+          />
           <Paper
             elevation={2}
             style={{
@@ -99,9 +94,7 @@ export default function AdminActions() {
               flexDirection: 'column',
             }}
           >
-            <Typography>
-              <FormattedMessage id="DELETE_USER_INSTRUCTIONS" />
-            </Typography>
+            <Text id="DELETE_USER_INSTRUCTIONS" />
             <div style={{ display: 'flex' }}>
               <LabeledInput
                 style={{ marginRight: 12 }}
@@ -134,12 +127,11 @@ export default function AdminActions() {
         </Grid>
 
         <Grid item style={{ width: '100%' }}>
-          <Typography
+          <Text
             variant="h6"
             style={{ marginTop: 20, marginLeft: 12 }}
-          >
-            <FormattedMessage id="RESTORE_DELETED_ENCOUNTER" />
-          </Typography>
+            id="RESTORE_DELETED_ENCOUNTER"
+          />
           <Paper
             elevation={2}
             style={{
@@ -150,9 +142,7 @@ export default function AdminActions() {
               flexDirection: 'column',
             }}
           >
-            <Typography>
-              <FormattedMessage id="RESTORE_DELETED_ENCOUNTER_INSTRUCTIONS" />
-            </Typography>
+            <Text id="RESTORE_DELETED_ENCOUNTER_INSTRUCTIONS" />
             <div style={{ display: 'flex' }}>
               <LabeledInput
                 schema={{

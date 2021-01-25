@@ -7,6 +7,7 @@ import Skeleton from '@material-ui/lab/Skeleton';
 import Alert from '@material-ui/lab/Alert';
 import AlertTitle from '@material-ui/lab/AlertTitle';
 import Button from '../../../components/Button';
+import Text from '../../../components/Text';
 import useSiteSettings from '../../../models/site/useSiteSettings';
 import usePutSiteSettings from '../../../models/site/usePutSiteSettings';
 
@@ -98,15 +99,12 @@ export default function SiteSettings() {
                     <FormattedMessage id={matchingSetting.labelId} />
                     {matchingSetting.required && ' *'}
                   </Typography>
-                  <Typography
+                  <Text
                     style={{
                       marginTop: 4,
                     }}
-                  >
-                    <FormattedMessage
-                      id={matchingSetting.descriptionId}
-                    />
-                  </Typography>
+                    id={matchingSetting.descriptionId}
+                  />
                 </>
               ) : (
                 <>

@@ -8,12 +8,12 @@ import {
 import { get, round } from 'lodash-es';
 import Grid from '@material-ui/core/Grid';
 import Skeleton from '@material-ui/lab/Skeleton';
-import Typography from '@material-ui/core/Typography';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useTheme } from '@material-ui/core/styles';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import useServerStatus from '../../modules/administration/useServerStatus';
 import MainColumn from '../../components/MainColumn';
+import Text from '../../components/Text';
 import SummaryCard from './components/SummaryCard';
 import LegendItem from './components/LegendItem';
 import WaffleSquare from './components/WaffleSquare';
@@ -89,29 +89,24 @@ export default function ServerStatus() {
 
   return (
     <MainColumn>
-      <Typography
+      <Text
         variant="h3"
         component="h3"
         style={{ padding: '16px 0 16px 16px' }}
-      >
-        <FormattedMessage id="SERVER_STATUS" />
-      </Typography>
+        id="SERVER_STATUS"
+      />
       <div style={{ padding: 16, boxSizing: 'border-box' }}>
         {error ? (
-          <Typography color="error">
-            <FormattedMessage id="REQUEST_ERROR" />
-          </Typography>
+          <Text color="error" id="REQUEST_ERROR" />
         ) : (
           <>
-            <Typography
+              <Text
               variant="h5"
               component="h5"
               style={{
                 margin: '16px 0',
               }}
-            >
-              <FormattedMessage id="SERVER_LAST_HOUR" />
-            </Typography>
+                id="SERVER_LAST_HOUR" />
             <Grid
               container
               component="dl"
@@ -119,9 +114,7 @@ export default function ServerStatus() {
               style={{ marginBottom: 32 }}
             >
               {lastHour.error ? (
-                <Typography color="error">
-                  <FormattedMessage id="SERVER_LAST_HOUR_ERROR" />
-                </Typography>
+                  <Text color="error" id="SERVER_LAST_HOUR_ERROR" />
               ) : (
                 <>
                   <SummaryCard
@@ -188,15 +181,13 @@ export default function ServerStatus() {
                 </>
               )}
             </Grid>
-            <Typography
+              <Text
               variant="h5"
               component="h5"
               style={{
                 margin: '16px 0',
               }}
-            >
-              <FormattedMessage id="SERVER_ALL_JOBS" />
-            </Typography>
+                id="SERVER_ALL_JOBS" />
             <Grid
               container
               component="dl"
