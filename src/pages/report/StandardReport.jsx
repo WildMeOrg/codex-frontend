@@ -3,7 +3,6 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { useSelector } from 'react-redux';
 import { get, values } from 'lodash-es';
 
-import Typography from '@material-ui/core/Typography';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Grid from '@material-ui/core/Grid';
@@ -22,6 +21,7 @@ import usePutSighting from '../../models/sighting/usePutSighting';
 import { getLocationSuggestion } from '../../utils/exif';
 import categoryTypes from '../../constants/categoryTypes';
 import InputRow from '../../components/InputRow';
+import Text from '../../components/Text';
 import Button from '../../components/Button';
 import InlineButton from '../../components/InlineButton';
 import TermsAndConditionsDialog from './TermsAndConditionsDialog';
@@ -128,16 +128,13 @@ export default function StandardReport({
           return (
             <div key={category.name}>
               <div style={{ marginLeft: 12 }}>
-                <Typography variant="h6" style={{ marginTop: 20 }}>
-                  <FormattedMessage id={category.labelId} />
-                </Typography>
+                <Text variant="h6" style={{ marginTop: 20 }} id={category.labelId} />
                 {category.descriptionId && (
-                  <Typography
+                  <Text
                     variant="subtitle2"
                     style={{ marginBottom: 12 }}
-                  >
-                    <FormattedMessage id={category.descriptionId} />
-                  </Typography>
+                    id={category.descriptionId}
+                  />
                 )}
               </div>
               <Paper
@@ -215,9 +212,9 @@ export default function StandardReport({
           return (
             <div key={category.name}>
               <div style={{ marginLeft: 12 }}>
-                <Typography variant="h6" style={{ marginTop: 20 }}>
+                <Text variant="h6" style={{ marginTop: 20 }}>
                   {category.label}
-                </Typography>
+                </Text>
               </div>
               <Paper
                 elevation={2}

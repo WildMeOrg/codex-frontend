@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useTheme } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '../../components/Button';
 import InlineButton from '../../components/InlineButton';
+import Text from '../../components/Text';
 import MembersModal from './MembersModal';
 import InviteModal from './InviteModal';
 
@@ -37,18 +37,13 @@ export default function MembersPanel() {
       />
       <Grid container alignItems="center" justify="space-between">
         <Grid item style={{ display: 'flex' }}>
-          <Typography variant="h6">
-            <FormattedMessage id="MEMBERS" />
-          </Typography>
+          <Text variant="h6" id="MEMBERS" />
         </Grid>
         <Grid item>
           <InlineButton onClick={() => setMembersModalOpen(true)}>
-            <Typography>
-              <FormattedMessage
-                id="MEMBER_COUNT"
-                values={{ memberCount: 561 }}
-              />
-            </Typography>
+            <Text 
+              id="MEMBER_COUNT"
+              values={{ memberCount: 561 }} />
           </InlineButton>
         </Grid>
       </Grid>

@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useIntl, FormattedMessage } from 'react-intl';
+import { useIntl } from 'react-intl';
 import { get } from 'lodash-es';
-import Typography from '@material-ui/core/Typography';
 import MainColumn from '../../components/MainColumn';
 import AvatarGallery from '../../components/AvatarGallery';
 import ConfirmDelete from '../../components/ConfirmDelete';
 import Header from '../../components/Header';
+import Text from '../../components/Text';
 import { selectOrgs } from '../../modules/orgs/selectors';
 import { selectSiteName } from '../../modules/site/selectors';
 import { selectIsAdministrator } from '../../modules/app/selectors';
@@ -82,12 +82,10 @@ export default function User() {
         renderDetails={org => {
           const memberCount = get(org, 'data.members.length', null);
           return (
-            <Typography>
-              <FormattedMessage
+            <Text
                 id="MEMBER_COUNT"
                 values={{ memberCount }}
-              />
-            </Typography>
+            />
           );
         }}
       />

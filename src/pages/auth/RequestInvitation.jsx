@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
-import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import TextInput from '../../components/inputs/TextInput';

@@ -6,6 +6,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import Button from '../../components/Button';
 import ButtonLink from '../../components/ButtonLink';
+import Text from '../../components/Text';
 
 export default function Status({ onMarkComplete }) {
   const theme = useTheme();
@@ -45,15 +46,13 @@ export default function Status({ onMarkComplete }) {
         </Typography>
       </Grid>
       <Grid item>
-        <Typography
+        <Text
           style={{
             textAlign: 'center',
             maxWidth: 500,
             margin: '0 auto',
           }}
-        >
-          <FormattedMessage id="IDENTIFYING_INDIVIDUALS_DESCRIPTION" />
-        </Typography>
+          id="IDENTIFYING_INDIVIDUALS_DESCRIPTION" />
       </Grid>
       <Grid
         item
@@ -64,18 +63,15 @@ export default function Status({ onMarkComplete }) {
           margin: '12px 0 20px 0',
         }}
       >
-        <Typography
+        <Text
           variant="subtitle1"
           style={{ width: '50%', textAlign: 'right', marginRight: 4 }}
-        >
-          <FormattedMessage
-            id="PHOTOS_READY_COUNT"
-            values={{
-              finished: finishedPhotoCount,
-              total: photos.length,
-            }}
-          />
-        </Typography>
+          id="PHOTOS_READY_COUNT"
+          values={{
+            finished: finishedPhotoCount,
+            total: photos.length,
+          }}
+        />
         <Grid
           container
           spacing={1}
