@@ -84,7 +84,10 @@ export default function ReportSightings({ authenticated = false }) {
                         <FormattedMessage id="ONE_SIGHTING_ONE_INDIVIDUAL" />
                       }
                     />
-                    <Text variant="caption" id="ONE_SIGHTING_ONE_INDIVIDUAL_DESCRIPTION" />
+                    <Text
+                      variant="caption"
+                      id="ONE_SIGHTING_ONE_INDIVIDUAL_DESCRIPTION"
+                    />
                     <FormControlLabel
                       value="multiple"
                       control={<Radio />}
@@ -95,7 +98,10 @@ export default function ReportSightings({ authenticated = false }) {
                         <FormattedMessage id="ONE_SIGHTING_MULTIPLE_INDIVIDUALS" />
                       }
                     />
-                    <Text variant="caption" id="ONE_SIGHTING_MULTIPLE_INDIVIDUALS_DESCRIPTION" />
+                    <Text
+                      variant="caption"
+                      id="ONE_SIGHTING_MULTIPLE_INDIVIDUALS_DESCRIPTION"
+                    />
                     <FormControlLabel
                       value="bulk"
                       control={<Radio />}
@@ -106,7 +112,10 @@ export default function ReportSightings({ authenticated = false }) {
                         <FormattedMessage id="MULTIPLE_SIGHTINGS" />
                       }
                     />
-                    <Text variant="caption" id="MULTIPLE_SIGHTINGS_DESCRIPTION" />
+                    <Text
+                      variant="caption"
+                      id="MULTIPLE_SIGHTINGS_DESCRIPTION"
+                    />
                   </RadioGroup>
                 </FormControl>
               </Grid>

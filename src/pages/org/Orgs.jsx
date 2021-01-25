@@ -81,12 +81,7 @@ export default function User() {
         }}
         renderDetails={org => {
           const memberCount = get(org, 'data.members.length', null);
-          return (
-            <Text
-                id="MEMBER_COUNT"
-                values={{ memberCount }}
-            />
-          );
+          return <Text id="MEMBER_COUNT" values={{ memberCount }} />;
         }}
       />
     </MainColumn>

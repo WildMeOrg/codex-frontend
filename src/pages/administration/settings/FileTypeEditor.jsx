@@ -62,7 +62,10 @@ export default function FileTypeEditor({
         </DialogTitle>
         <DialogContent style={{ minWidth: 200 }}>
           {schema.descriptionId && (
-            <Text style={{ marginBottom: 20 }} id={schema.descriptionId} />
+            <Text
+              style={{ marginBottom: 20 }}
+              id={schema.descriptionId}
+            />
           )}
           {displayedFileTypes.map((filetype, index) => {
             const showDeleteButton = displayedFileTypes.length !== 1;

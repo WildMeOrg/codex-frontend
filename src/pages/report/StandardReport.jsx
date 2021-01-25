@@ -128,7 +128,11 @@ export default function StandardReport({
           return (
             <div key={category.name}>
               <div style={{ marginLeft: 12 }}>
-                <Text variant="h6" style={{ marginTop: 20 }} id={category.labelId} />
+                <Text
+                  variant="h6"
+                  style={{ marginTop: 20 }}
+                  id={category.labelId}
+                />
                 {category.descriptionId && (
                   <Text
                     variant="subtitle2"

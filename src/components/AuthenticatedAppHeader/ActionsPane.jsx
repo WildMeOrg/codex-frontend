@@ -1,8 +1,6 @@
 import React from 'react';
-import { FormattedMessage } from 'react-intl';
 import { useTheme } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
-import Typography from '@material-ui/core/Typography';
 import Popover from '@material-ui/core/Popover';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
@@ -14,6 +12,7 @@ import ServerStatusIcon from '@material-ui/icons/Dns';
 import LogoutIcon from '@material-ui/icons/ExitToApp';
 
 import Link from '../Link';
+import Text from '../Text';
 import shane from '../../assets/shane.jpg';
 
 const actions = [
@@ -71,17 +70,14 @@ export default function NotificationsPane({
           <MenuItem style={{ minHeight: 'auto' }}>
             <Avatar style={{ height: 52, width: 52 }} src={shane} />
             <div style={{ display: 'flex', flexDirection: 'column' }}>
-              <Typography
-                style={{ margin: '0 20px', fontWeight: 'bold' }}
-              >
+              <Text style={{ margin: '0 20px', fontWeight: 'bold' }}>
                 Bob Dakota
-              </Typography>
-              <Typography
+              </Text>
+              <Text
                 variant="body2"
                 style={{ margin: '0 20px' }}
-              >
-                <FormattedMessage id="VIEW_PROFILE" />
-              </Typography>
+                id="VIEW_PROFILE"
+              />
             </div>
           </MenuItem>
         </Link>
@@ -89,7 +85,12 @@ export default function NotificationsPane({
         {actions.map(action => {
           if (action.adminOnly && !isAdministrator) return null;
           return (
-            <Link key={action.id} href={action.href} onClick={closePopover} noUnderline>
+            <Link
+              key={action.id}
+              href={action.href}
+              onClick={closePopover}
+              noUnderline
+            >
               <MenuItem style={{ minHeight: 'auto' }}>
                 <div
                   style={{
@@ -102,9 +103,10 @@ export default function NotificationsPane({
                 >
                   <action.icon />
                 </div>
-                <Typography style={{ margin: '0 8px' }}>
-                  <FormattedMessage id={action.messageId} />
-                </Typography>
+                <Text
+                  style={{ margin: '0 8px' }}
+                  id={action.messageId}
+                />
               </MenuItem>
             </Link>
           );
@@ -135,9 +137,7 @@ export default function NotificationsPane({
               >
                 <LogoutIcon />
               </div>
-              <Typography style={{ margin: '0 8px' }}>
-                <FormattedMessage id="LOG_OUT" />
-              </Typography>
+              <Text style={{ margin: '0 8px' }} id="LOG_OUT" />
             </MenuItem>
           </button>
         </form>

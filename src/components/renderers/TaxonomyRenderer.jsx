@@ -1,6 +1,6 @@
 import React from 'react';
 import { get } from 'lodash-es';
-import Typography from '@material-ui/core/Typography';
+import Text from '../Text';
 
 export default function TaxonomyRenderer({ value }) {
   const scientificNames = value.map(t => get(t, 'scientificName'));
@@ -8,7 +8,7 @@ export default function TaxonomyRenderer({ value }) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column' }}>
       {scientificNames.map(name => (
-        <Typography key={name}>{name}</Typography>
+        <Text key={name}>{name}</Text>
       ))}
     </div>
   );

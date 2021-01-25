@@ -13,7 +13,7 @@ export default function Link({
   onClick,
   ...rest
 }) {
-const theme = useTheme();
+  const theme = useTheme();
 
   const styles = {
     color: disabled ? theme.palette.text.disabled : 'unset',

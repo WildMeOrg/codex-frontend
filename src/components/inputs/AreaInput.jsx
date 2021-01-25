@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -12,6 +11,7 @@ import AreaMap from './mapUtils/AreaMap';
 import DeleteButton from '../DeleteButton';
 import { defaultAreaBounds } from '../../constants/defaults';
 import Button from '../Button';
+import Text from '../Text';
 
 export default function AreaInput({
   schema,
@@ -38,9 +38,7 @@ export default function AreaInput({
       )}
       {value && (
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          <Typography>
-            <FormattedMessage id="BOUNDING_BOX_SELECTED" />
-          </Typography>
+          <Text id="BOUNDING_BOX_SELECTED" />
           <DeleteButton
             onClick={() => {
               onChange(null);

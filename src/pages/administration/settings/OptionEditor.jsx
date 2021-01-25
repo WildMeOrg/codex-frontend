@@ -43,7 +43,10 @@ export default function OptionEditor({
       </DialogTitle>
       <DialogContent style={{ minWidth: 200 }}>
         {schema.descriptionId && (
-          <Text style={{ marginBottom: 20 }} id={schema.descriptionId} />
+          <Text
+            style={{ marginBottom: 20 }}
+            id={schema.descriptionId}
+          />
         )}
         {displayedOptions.map((option, optionIndex) => {
           const otherOptions = options.filter(

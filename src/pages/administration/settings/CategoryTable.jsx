@@ -144,11 +144,14 @@ export default function FieldSettings() {
             )}
           </DialogTitle>
           <DialogContent>
-            <Text variant="caption" id={
+            <Text
+              variant="caption"
+              id={
                 dialogData.isDefault
                   ? 'DEFAULT_CATEGORY_NOT_EDITABLE'
                   : 'CATEGORY_EDIT_MESSAGE'
-              } />
+              }
+            />
             <InputRow
               labelId="LABEL"
               disabled={dialogData.isDefault}

@@ -41,9 +41,7 @@ export default function MembersPanel() {
         </Grid>
         <Grid item>
           <InlineButton onClick={() => setMembersModalOpen(true)}>
-            <Text 
-              id="MEMBER_COUNT"
-              values={{ memberCount: 561 }} />
+            <Text id="MEMBER_COUNT" values={{ memberCount: 561 }} />
           </InlineButton>
         </Grid>
       </Grid>

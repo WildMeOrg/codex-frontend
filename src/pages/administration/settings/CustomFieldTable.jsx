@@ -184,7 +184,11 @@ export default function CustomFieldTable({
           <FormattedMessage id="ADD_NEW" />
         </Button>
       </div>
-      <Text variant="caption" style={{ marginBottom: 12 }} id={descriptionId} />
+      <Text
+        variant="caption"
+        style={{ marginBottom: 12 }}
+        id={descriptionId}
+      />
       <DataDisplay
         style={{ marginTop: 8 }}
         noTitleBar

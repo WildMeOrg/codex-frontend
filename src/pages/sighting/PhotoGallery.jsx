@@ -63,8 +63,8 @@ export default function PhotoGallery({ sighting }) {
             <div style={{ display: 'flex', flexDirection: 'column' }}>
               {annotationCount === 0 && (
                 <Text
-                    id="X_ANNOTATIONS"
-                    values={{ annotationCount }}
+                  id="X_ANNOTATIONS"
+                  values={{ annotationCount }}
                 />
               )}
               {photo.annotations.map((annotation, i) => {
@@ -77,10 +77,7 @@ export default function PhotoGallery({ sighting }) {
                       justifyContent: 'space-between',
                     }}
                   >
-                    <Text
-                        id="ANNOTATION_X"
-                        values={{ x: i + 1 }}
-                    />
+                    <Text id="ANNOTATION_X" values={{ x: i + 1 }} />
                     <div>
                       <IconButton onClick={() => {}} size="small">
                         <MatchIcon />

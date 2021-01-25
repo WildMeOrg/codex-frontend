@@ -39,7 +39,11 @@ export default function Review({ setMatching }) {
         </Button>
       </Grid>
       <Grid style={{ margin: '0 auto' }} item>
-        <Text variant="h3" component="h3" id="CONFIRM_AND_SUBMIT_MATCHES" />
+        <Text
+          variant="h3"
+          component="h3"
+          id="CONFIRM_AND_SUBMIT_MATCHES"
+        />
       </Grid>
       {annotations.map((annotation, i) => (
         <Grid style={{ marginTop: 20 }} key={annotation.id} item>

@@ -76,7 +76,8 @@ export default function SearchEncounters() {
           variant="h3"
           component="h3"
           style={{ margin: '16px 0 16px 16px' }}
-          id="EXPLORE_SIGHTINGS" />
+          id="EXPLORE_SIGHTINGS"
+        />
         <SearchFilterList
           formValues={formValues}
           setFormValues={setFormValues}

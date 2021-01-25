@@ -149,10 +149,17 @@ export default function DefaultFieldTable({
           marginTop: 12,
         }}
       >
-        <Text variant="h5" component="h5" id="CONFIGURABLE_DEFAULT_FIELDS" />
-
+        <Text
+          variant="h5"
+          component="h5"
+          id="CONFIGURABLE_DEFAULT_FIELDS"
+        />
       </div>
-      <Text variant="caption" style={{ marginBottom: 12 }} id="CONFIGURABLE_DEFAULT_FIELDS_DESCRIPTION" />
+      <Text
+        variant="caption"
+        style={{ marginBottom: 12 }}
+        id="CONFIGURABLE_DEFAULT_FIELDS_DESCRIPTION"
+      />
       <DataDisplay
         style={{ marginTop: 8 }}
         noTitleBar

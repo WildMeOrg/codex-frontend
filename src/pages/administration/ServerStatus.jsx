@@ -100,13 +100,14 @@ export default function ServerStatus() {
           <Text color="error" id="REQUEST_ERROR" />
         ) : (
           <>
-              <Text
+            <Text
               variant="h5"
               component="h5"
               style={{
                 margin: '16px 0',
               }}
-                id="SERVER_LAST_HOUR" />
+              id="SERVER_LAST_HOUR"
+            />
             <Grid
               container
               component="dl"
@@ -114,7 +115,7 @@ export default function ServerStatus() {
               style={{ marginBottom: 32 }}
             >
               {lastHour.error ? (
-                  <Text color="error" id="SERVER_LAST_HOUR_ERROR" />
+                <Text color="error" id="SERVER_LAST_HOUR_ERROR" />
               ) : (
                 <>
                   <SummaryCard
@@ -181,13 +182,14 @@ export default function ServerStatus() {
                 </>
               )}
             </Grid>
-              <Text
+            <Text
               variant="h5"
               component="h5"
               style={{
                 margin: '16px 0',
               }}
-                id="SERVER_ALL_JOBS" />
+              id="SERVER_ALL_JOBS"
+            />
             <Grid
               container
               component="dl"

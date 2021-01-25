@@ -52,7 +52,8 @@ export default function Status({ onMarkComplete }) {
             maxWidth: 500,
             margin: '0 auto',
           }}
-          id="IDENTIFYING_INDIVIDUALS_DESCRIPTION" />
+          id="IDENTIFYING_INDIVIDUALS_DESCRIPTION"
+        />
       </Grid>
       <Grid
         item

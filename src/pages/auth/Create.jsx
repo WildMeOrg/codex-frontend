@@ -104,7 +104,8 @@ export default function Create({ callback }) {
             variant="caption"
             color="error"
             style={{ paddingLeft: 8 }}
-            id={errorId} />
+            id={errorId}
+          />
         )}
       </Grid>
     </SimpleFormPage>

@@ -55,7 +55,11 @@ export default function Match({ setMatching }) {
           alignItems: 'center',
         }}
       >
-        <Text variant="h3" component="h3" id="ANNOTATION_MATCH_TOOL" />
+        <Text
+          variant="h3"
+          component="h3"
+          id="ANNOTATION_MATCH_TOOL"
+        />
         <Text variant="subtitle1">Sighting S-101</Text>
       </Grid>
       <Popover

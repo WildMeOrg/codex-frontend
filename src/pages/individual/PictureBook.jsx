@@ -115,7 +115,11 @@ export default function PictureBook() {
             alignItems: 'flex-end',
           }}
         >
-          <Text variant="h2" component="h1" id="PRINTABLE_PHOTOBOOK" />
+          <Text
+            variant="h2"
+            component="h1"
+            id="PRINTABLE_PHOTOBOOK"
+          />
           <Button
             display="primary"
             size="large"

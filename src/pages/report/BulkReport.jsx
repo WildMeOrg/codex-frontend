@@ -71,7 +71,11 @@ export default function BulkReport({ onBack }) {
           padding: '20px 12px',
         }}
       >
-        <Text variant="subtitle2" style={{ marginBottom: 12 }} id="CHOOSE_FIELDS_DESCRIPTION" />
+        <Text
+          variant="subtitle2"
+          style={{ marginBottom: 12 }}
+          id="CHOOSE_FIELDS_DESCRIPTION"
+        />
         <FormControl component="fieldset">
           <FormGroup style={{ flexDirection: 'row' }}>
             {Object.keys(fields).map(fieldKey => {
@@ -165,9 +169,7 @@ export default function BulkReport({ onBack }) {
             <Text
               variant="body2"
               style={{ margin: '8px 0 8px 4px' }}
-            >{`${
-              sightingData.length
-                } sightings imported.`}</Text>
+            >{`${sightingData.length} sightings imported.`}</Text>
           ) : null}
         </Paper>
       </Grid>
@@ -238,9 +240,7 @@ export default function BulkReport({ onBack }) {
         </Button>
       </Grid>
       <Grid style={{ marginTop: 12 }} item>
-        {termsError && (
-          <Text color="error" id="TERMS_ERROR" />
-        )}
+        {termsError && <Text color="error" id="TERMS_ERROR" />}
       </Grid>
     </>
   );

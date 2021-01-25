@@ -29,14 +29,8 @@ export default function IndividualsGallery({ sighting }) {
           );
           return (
             <div>
-              <Text
-                  id="X_PHOTOS"
-                  values={{ imageCount }}
-                />
-              <Text
-                  id="SEX_IS"
-                  values={{ sex: individual.sex }}
-              />
+              <Text id="X_PHOTOS" values={{ imageCount }} />
+              <Text id="SEX_IS" values={{ sex: individual.sex }} />
               <Button
                 size="small"
                 display="panel"

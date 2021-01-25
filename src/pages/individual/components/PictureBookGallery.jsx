@@ -148,9 +148,7 @@ export default function PictureBookGallery({
     images.length === 0 ||
     (!isLoading && displayImages.length === 0)
   ) {
-    return (
-      <Text id="NO_IMAGES" />
-    );
+    return <Text id="NO_IMAGES" />;
   }
   return (
     <div
