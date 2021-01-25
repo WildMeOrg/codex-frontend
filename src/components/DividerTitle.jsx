@@ -1,7 +1,6 @@
 import React from 'react';
-import { FormattedMessage } from 'react-intl';
-import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
+import Text from './Text';
 
 export default function DividerTitle({ titleId, style = {} }) {
   return (
@@ -14,13 +13,11 @@ export default function DividerTitle({ titleId, style = {} }) {
       }}
     >
       <Divider style={{ flexGrow: 1 }} />
-      <Typography
+      <Text
         variant="h6"
         component="h6"
         style={{ margin: '0 20px' }}
-      >
-        <FormattedMessage id={titleId} />
-      </Typography>
+        id={titleId} />
       <Divider style={{ flexGrow: 1 }} />
     </div>
   );

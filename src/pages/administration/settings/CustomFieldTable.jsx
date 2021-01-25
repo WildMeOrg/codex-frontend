@@ -4,13 +4,13 @@ import { get } from 'lodash-es';
 import { v4 as uuid } from 'uuid';
 
 import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
 import AddIcon from '@material-ui/icons/Add';
 
 import usePutSiteSettings from '../../../models/site/usePutSiteSettings';
 import ActionIcon from '../../../components/ActionIcon';
 import Button from '../../../components/Button';
 import ConfirmDelete from '../../../components/ConfirmDelete';
+import Text from '../../../components/Text';
 import DataDisplay from '../../../components/dataDisplays/DataDisplay';
 import {
   mergeItemById,
@@ -161,9 +161,7 @@ export default function CustomFieldTable({
           marginTop: 12,
         }}
       >
-        <Typography variant="h5" component="h5">
-          <FormattedMessage id={titleId} />
-        </Typography>
+        <Text variant="h5" component="h5" id={titleId} />
         <Button
           size="small"
           display="panel"
@@ -186,9 +184,11 @@ export default function CustomFieldTable({
           <FormattedMessage id="ADD_NEW" />
         </Button>
       </div>
-      <Typography variant="caption" style={{ marginBottom: 12 }}>
-        <FormattedMessage id={descriptionId} />
-      </Typography>
+      <Text
+        variant="caption"
+        style={{ marginBottom: 12 }}
+        id={descriptionId}
+      />
       <DataDisplay
         style={{ marginTop: 8 }}
         noTitleBar

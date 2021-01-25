@@ -1,7 +1,7 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import Typography from '@material-ui/core/Typography';
 import LabeledInput from './LabeledInput';
+import Text from './Text';
 
 export default function InputRow({
   containerStyles = {},
@@ -39,18 +39,14 @@ export default function InputRow({
           marginBottom: 12,
         }}
       >
-        <Typography>
+        <Text>
           {labelId ? <FormattedMessage id={labelId} /> : label}
           {required && ' *'}
-        </Typography>
+        </Text>
         {showDescription && (
-          <Typography variant="caption">
-            {descriptionId ? (
-              <FormattedMessage id={descriptionId} />
-            ) : (
-              description
-            )}
-          </Typography>
+          <Text variant="caption" id={descriptionId}>
+            {description}
+          </Text>
         )}
       </div>
       {children || (

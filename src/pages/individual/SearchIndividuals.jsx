@@ -3,7 +3,6 @@ import { useIntl, FormattedMessage } from 'react-intl';
 import { useSelector } from 'react-redux';
 import Hidden from '@material-ui/core/Hidden';
 import Drawer from '@material-ui/core/Drawer';
-import Typography from '@material-ui/core/Typography';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import FilterPanel from '../../components/FilterPanel';
 import SearchFilterList from '../../components/SearchFilterList';
@@ -13,6 +12,7 @@ import {
   selectIndividualSearchSchema,
 } from '../../modules/individuals/selectors';
 import Button from '../../components/Button';
+import Text from '../../components/Text';
 import IndividualsDisplay from '../../components/dataDisplays/IndividualsDisplay';
 
 const drawerWidth = 280;
@@ -79,13 +79,12 @@ export default function SearchIndividuals() {
             margin: '0 16px 16px 16px',
           }}
         >
-          <Typography
+          <Text
             variant="h3"
             component="h3"
             style={{ margin: '16px 0' }}
-          >
-            <FormattedMessage id="EXPLORE_INDIVIDUALS" />
-          </Typography>
+            id="EXPLORE_INDIVIDUALS"
+          />
         </div>
         <SearchFilterList
           formValues={formValues}

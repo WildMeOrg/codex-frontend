@@ -8,7 +8,6 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider';
-import Typography from '@material-ui/core/Typography';
 import AddToPhotosIcon from '@material-ui/icons/AddToPhotos';
 import AdminSettingsIcon from '@material-ui/icons/Lock';
 import SightingIcon from '@material-ui/icons/PhotoCamera';
@@ -55,11 +54,7 @@ export default function AppDrawer({
     <Drawer open={open} onClose={onClose}>
       <div style={{ width: 260 }}>
         <List>
-          <Typography
-            component="h1"
-            variant="h6"
-            color="inherit"
-            noWrap
+          <div
             style={{
               fontSize: 20,
               margin: 20,
@@ -72,7 +67,7 @@ export default function AppDrawer({
                 alt="Site logo"
               />
             </Link>
-          </Typography>
+          </div>
           <Divider style={{ marginTop: 12, marginBottom: 12 }} />
           <Entry
             messageId="REPORT_SIGHTINGS"

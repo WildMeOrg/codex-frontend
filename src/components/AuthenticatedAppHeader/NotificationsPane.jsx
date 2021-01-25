@@ -1,11 +1,11 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Popover from '@material-ui/core/Popover';
 import Avatar from '@material-ui/core/Avatar';
 import Divider from '@material-ui/core/Divider';
 
+import Text from '../Text';
 import Button from '../Button';
 import shane from '../../assets/shane.jpg';
 import fluke from '../../assets/fluke.png';
@@ -73,9 +73,7 @@ export default function NotificationsPane({ anchorEl, setAnchorEl }) {
     >
       <Grid container direction="column">
         <Grid item style={{ padding: 16 }}>
-          <Typography style={{ fontWeight: 'bold' }}>
-            <FormattedMessage id="NOTIFICATIONS" />
-          </Typography>
+          <Text style={{ fontWeight: 'bold' }} id="NOTIFICATIONS" />
         </Grid>
         {fakeData.map(task => (
           <React.Fragment key={task.id}>
@@ -95,11 +93,9 @@ export default function NotificationsPane({ anchorEl, setAnchorEl }) {
                     task.ecologicalAvatar ? 'square' : 'circle'
                   }
                 />
-                <Typography
-                  style={{ maxWidth: 200, margin: '0 20px' }}
-                >
+                <Text style={{ maxWidth: 200, margin: '0 20px' }}>
                   {task.name}
-                </Typography>
+                </Text>
               </div>
               <Button style={{ maxHeight: 40 }}>
                 <FormattedMessage id="VIEW" />

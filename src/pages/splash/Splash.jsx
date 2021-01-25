@@ -10,7 +10,7 @@ import Fab from '@material-ui/core/Fab';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import { selectSiteSettings } from '../../modules/site/selectors';
 import ButtonLink from '../../components/ButtonLink';
-import ResponsiveText from '../../components/ResponsiveText';
+import Text from '../../components/Text';
 import useSiteSettings from '../../models/site/useSiteSettings';
 import poweredBy from '../../assets/powered-by.svg';
 import Trifold from './Trifold';
@@ -117,12 +117,12 @@ export default function Splash() {
             color: theme.palette.common.white,
           }}
         >
-          <ResponsiveText variant="h1">
+          <Text responsive variant="h1">
             {get(newSiteSettings, ['site.general.tagline', 'value'])}
-          </ResponsiveText>
-          <ResponsiveText variant="subtitle1">
+          </Text>
+          <Text responsive variant="subtitle1">
             Automated identification for cetaceans.
-          </ResponsiveText>
+          </Text>
           <ButtonLink
             display="marketing"
             size="large"

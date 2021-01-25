@@ -5,7 +5,6 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { get, toLower } from 'lodash-es';
 
 import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
 import Popover from '@material-ui/core/Popover';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
@@ -14,6 +13,7 @@ import LeftIcon from '@material-ui/icons/ChevronLeft';
 
 import SadScreen from '../../components/SadScreen';
 import Button from '../../components/Button';
+import Text from '../../components/Text';
 import DataDisplay from '../../components/dataDisplays/DataDisplay';
 import { selectSightings } from '../../modules/sightings/selectors';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
@@ -55,10 +55,12 @@ export default function Match({ setMatching }) {
           alignItems: 'center',
         }}
       >
-        <Typography variant="h3" component="h3">
-          <FormattedMessage id="ANNOTATION_MATCH_TOOL" />
-        </Typography>
-        <Typography variant="subtitle1">Sighting S-101</Typography>
+        <Text
+          variant="h3"
+          component="h3"
+          id="ANNOTATION_MATCH_TOOL"
+        />
+        <Text variant="subtitle1">Sighting S-101</Text>
       </Grid>
       <Popover
         id={popoverId}
@@ -129,13 +131,13 @@ export default function Match({ setMatching }) {
       </Popover>
       {pairs.map(pairId => (
         <Grid item key={pairId} style={{ marginBottom: 50 }}>
-          <Typography
+          <Text
             style={{ marginLeft: 20 }}
             variant="h5"
             component="h5"
           >
             {`${pairId}. Annotation 652`}
-          </Typography>
+          </Text>
           <Divider />
           <div
             style={{
@@ -172,14 +174,13 @@ export default function Match({ setMatching }) {
                 alignItems: 'center',
               }}
             >
-              <Typography
+              <Text
                 variant="subtitle1"
                 style={{ textDecoration: 'underline' }}
-              >
-                <FormattedMessage id="THIS_PAIR" />
-              </Typography>
-              <Typography>Hotspotter 0.52</Typography>
-              <Typography>Curvrank 0.74</Typography>
+                id="THIS_PAIR"
+              />
+              <Text>Hotspotter 0.52</Text>
+              <Text>Curvrank 0.74</Text>
               <Button display="primary" style={{ marginTop: 8 }}>
                 <FormattedMessage id="MATCH" />
               </Button>

@@ -3,9 +3,9 @@ import { useIntl, FormattedMessage } from 'react-intl';
 import { useSelector } from 'react-redux';
 import Hidden from '@material-ui/core/Hidden';
 import Drawer from '@material-ui/core/Drawer';
-import Typography from '@material-ui/core/Typography';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import Button from '../../components/Button';
+import Text from '../../components/Text';
 import FilterPanel from '../../components/FilterPanel';
 import SearchFilterList from '../../components/SearchFilterList';
 import {
@@ -72,13 +72,12 @@ export default function SearchEncounters() {
         </Drawer>
       </Hidden>
       <div style={{ marginTop: 64, width: '100%', overflow: 'auto' }}>
-        <Typography
+        <Text
           variant="h3"
           component="h3"
           style={{ margin: '16px 0 16px 16px' }}
-        >
-          <FormattedMessage id="EXPLORE_SIGHTINGS" />
-        </Typography>
+          id="EXPLORE_SIGHTINGS"
+        />
         <SearchFilterList
           formValues={formValues}
           setFormValues={setFormValues}

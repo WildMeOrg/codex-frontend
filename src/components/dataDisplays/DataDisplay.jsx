@@ -11,7 +11,6 @@ import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
 import Popper from '@material-ui/core/Popper';
 import Fade from '@material-ui/core/Fade';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -22,6 +21,7 @@ import FilterList from '@material-ui/icons/FilterList';
 import CloudDownload from '@material-ui/icons/CloudDownload';
 
 import FilterBar from '../FilterBar';
+import Text from '../Text';
 import CollabsibleRow from './CollapsibleRow';
 import sendCsv from './sendCsv';
 
@@ -131,11 +131,7 @@ export default function DataDisplay({
                         }}
                       />
                     }
-                    label={
-                      <Typography variant="body2">
-                        {c.label}
-                      </Typography>
-                    }
+                    label={<Text variant="body2">{c.label}</Text>}
                   />
                 ))}
               </Grid>
@@ -151,7 +147,7 @@ export default function DataDisplay({
           style={{ margin: '16px 0' }}
         >
           <Grid item>
-            <Typography
+            <Text
               variant={
                 variant === 'primary' ? 'subtitle1' : 'subtitle2'
               }
@@ -161,7 +157,7 @@ export default function DataDisplay({
               }}
             >
               {title}
-            </Typography>
+            </Text>
           </Grid>
           <Grid item>
             {variant === 'primary' && (

@@ -6,7 +6,7 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import TextField from '@material-ui/core/TextField';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
-import Typography from '@material-ui/core/Typography';
+import Text from '../Text';
 
 function Core({ children, required, width, style = {} }) {
   return (
@@ -50,7 +50,7 @@ export default function ComparatorInput(props) {
       width={width}
       style={{ marginTop: 12 }}
     >
-      <Typography>{getLabel(schema)}</Typography>
+      <Text>{getLabel(schema)}</Text>
       <div style={{ display: 'flex', alignItems: 'center' }}>
         <Select
           labelId={`${schema.name}-comparator-label`}

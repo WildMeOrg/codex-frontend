@@ -1,9 +1,8 @@
 import React from 'react';
 import { get } from 'lodash-es';
-import { FormattedMessage } from 'react-intl';
-import Typography from '@material-ui/core/Typography';
 import AvatarGallery from '../../components/AvatarGallery';
 import Button from '../../components/Button';
+import Text from '../../components/Text';
 
 export default function IndividualsGallery({ sighting }) {
   const individuals = sighting.encounters.map(encounter => ({
@@ -30,18 +29,8 @@ export default function IndividualsGallery({ sighting }) {
           );
           return (
             <div>
-              <Typography>
-                <FormattedMessage
-                  id="X_PHOTOS"
-                  values={{ imageCount }}
-                />
-              </Typography>
-              <Typography>
-                <FormattedMessage
-                  id="SEX_IS"
-                  values={{ sex: individual.sex }}
-                />
-              </Typography>
+              <Text id="X_PHOTOS" values={{ imageCount }} />
+              <Text id="SEX_IS" values={{ sex: individual.sex }} />
               <Button
                 size="small"
                 display="panel"

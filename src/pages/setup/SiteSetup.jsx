@@ -1,7 +1,7 @@
 import React from 'react';
 import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
 import MainColumn from '../../components/MainColumn';
+import Text from '../../components/Text';
 import newSiteImage from '../../assets/newsite.png';
 import SiteSetupForm from './SiteSetupForm';
 
@@ -17,14 +17,14 @@ export default function SiteSetup() {
           />
         </Grid>
         <Grid item>
-          <Typography variant="h3" component="h3">
+          <Text variant="h3" component="h3">
             Welcome to Codex!
-          </Typography>
+          </Text>
         </Grid>
         <Grid item>
-          <Typography variant="subtitle1">
+          <Text variant="subtitle1">
             Time to configure your new site.
-          </Typography>
+          </Text>
         </Grid>
       </Grid>
       <SiteSetupForm primaryButtonId="FINISH_SETUP" />

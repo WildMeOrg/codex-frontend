@@ -1,25 +1,16 @@
 import React from 'react';
-import { useIntl } from 'react-intl';
-
 import { useTheme } from '@material-ui/core/styles';
-
 import Badge from '@material-ui/core/Badge';
 import Tooltip from '@material-ui/core/Tooltip';
-import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
+
+import Text from '../Text';
 
 function Core({ Icon, onClick, titleId, style = {} }) {
   const theme = useTheme();
-  const intl = useIntl();
 
   return (
-    <Tooltip
-      title={
-        <Typography variant="body2">
-          {intl.formatMessage({ id: titleId })}
-        </Typography>
-      }
-    >
+    <Tooltip title={<Text variant="body2" id={titleId} />}>
       <IconButton
         onClick={onClick}
         style={{

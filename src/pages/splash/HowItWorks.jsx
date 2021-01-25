@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useTheme } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
 import InlineButton from '../../components/InlineButton';
-import ResponsiveText from '../../components/ResponsiveText';
+import Text from '../../components/Text';
 import graphic from '../../assets/howitworks.png';
 
 const stepMap = {
@@ -62,28 +61,25 @@ export default function HowItWorks() {
         padding: 50,
       }}
     >
-      <ResponsiveText
+      <Text
+        responsive
         variant="h2"
         style={{
           color: theme.palette.primary.main,
           margin: '12px 0',
         }}
-      >
-        <FormattedMessage id="HOW_IT_WORKS" />
-      </ResponsiveText>
-      <Typography variant="subtitle1">
-        <FormattedMessage id={stepMap[step].title} />
-      </Typography>
+        id="HOW_IT_WORKS"
+      />
+      <Text variant="subtitle1" id={stepMap[step].title} />
       <img
         src={stepMap[step].image}
         alt="How it works"
         style={{ height: 'auto', width: 300 }}
       />
-      <Typography
+      <Text
         style={{ color: theme.palette.common.white, maxWidth: 320 }}
-      >
-        <FormattedMessage id={stepMap[step].description} />
-      </Typography>
+        id={stepMap[step].description}
+      />
       <div style={{ marginTop: 20 }}>
         {Object.keys(stepMap).map(s => (
           <StepButton

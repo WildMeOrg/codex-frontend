@@ -1,12 +1,11 @@
 import React from 'react';
 import { useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import { FormattedMessage } from 'react-intl';
-import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import UsersIcon from '@material-ui/icons/People';
 import SightingsIcon from '@material-ui/icons/PhotoCamera';
 import IndividualsIcon from '@material-ui/icons/Fingerprint';
+import Text from '../../components/Text';
 
 const metrics = [
   {
@@ -63,7 +62,7 @@ export default function Testimonial() {
               style={{ fontSize: 52, marginRight: isSm ? 0 : 12 }}
             />
             <div style={{ textAlign: isSm ? 'center' : 'unset' }}>
-              <Typography
+              <Text
                 style={{
                   color: theme.palette.primary.main,
                   fontWeight: 800,
@@ -72,17 +71,16 @@ export default function Testimonial() {
                 }}
               >
                 {metric.count}
-              </Typography>
-              <Typography
+              </Text>
+              <Text
                 style={{
                   textTransform: 'uppercase',
                   letterSpacing: '0.02em',
                   fontSize: 14,
                   fontWeight: 400,
                 }}
-              >
-                <FormattedMessage id={metric.labelId} />
-              </Typography>
+                id={metric.labelId}
+              />
             </div>
           </Grid>
         ))}

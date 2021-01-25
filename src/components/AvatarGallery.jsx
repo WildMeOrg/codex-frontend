@@ -1,18 +1,17 @@
 import React, { useState } from 'react';
 import { get } from 'lodash-es';
-import { FormattedMessage } from 'react-intl';
-import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import MoreIcon from '@material-ui/icons/Delete';
 import BigAvatar from './BigAvatar';
 import Link from './Link';
 import FilterBar from './FilterBar';
+import Text from './Text';
 
 function Details({ entity, titleKey, renderDetails }) {
   return (
     <>
-      <Typography
+      <Text
         variant="h6"
         noWrap
         style={{
@@ -24,7 +23,7 @@ function Details({ entity, titleKey, renderDetails }) {
         title={entity[titleKey]}
       >
         {entity[titleKey]}
-      </Typography>
+      </Text>
       {renderDetails(entity)}
     </>
   );
@@ -56,12 +55,9 @@ export default function AvatarGallery({
         <FilterBar value={filter} onChange={setFilter} />
       )}
       {filteredEntities.length === 0 && (
-        <Typography style={{ marginLeft: 16 }}>
-          <FormattedMessage
-            id="FILTER_NO_MATCHES"
-            values={{ filter }}
-          />
-        </Typography>
+        <Text style={{ marginLeft: 16 }} id="FILTER_NO_MATCHES"
+        values={{ filter }}
+        />
       )}
       <Grid container spacing={6} justify={justify}>
         {filteredEntities.map(entity => (

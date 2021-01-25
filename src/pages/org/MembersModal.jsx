@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { get } from 'lodash-es';
-import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -21,6 +20,7 @@ import IconButton from '@material-ui/core/IconButton';
 import FilterBar from '../../components/FilterBar';
 import Link from '../../components/Link';
 import Button from '../../components/Button';
+import Text from '../../components/Text';
 
 const word = 'HERPADERPAFEEDMEREALDATAPLEAASEE';
 
@@ -51,15 +51,12 @@ export default function MembersModal({
       <DialogContent style={{ padding: '8px 12px' }}>
         <div>
           <FilterBar value={filter} onChange={setFilter} />
-          <Typography
+          <Text
             variant="subtitle1"
             style={{ padding: '0 16px' }}
-          >
-            <FormattedMessage
-              id="MEMBER_COUNT"
-              values={{ memberCount: 561 }}
-            />
-          </Typography>
+            id="MEMBER_COUNT"
+            values={{ memberCount: 561 }}
+          />
         </div>
         <List
           dense

@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { get, toLower } from 'lodash-es';
-import Typography from '@material-ui/core/Typography';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Paper from '@material-ui/core/Paper';
@@ -13,6 +12,7 @@ import Paper from '@material-ui/core/Paper';
 // import ContextIcon from '@material-ui/icons/NaturePeople';
 // import SubmitterIcon from '@material-ui/icons/Person';
 import MainColumn from '../../components/MainColumn';
+import Text from '../../components/Text';
 import InputRow from '../../components/InputRow';
 import DividerTitle from '../../components/DividerTitle';
 import LoadingScreen from '../../components/LoadingScreen';
@@ -88,7 +88,7 @@ export default function Sighting() {
           }}
         >
           <div>
-            <Typography variant="h4">
+            <Text variant="h4">
               {sightingDisplayDate && (
                 <FormattedMessage
                   id="ENTITY_HEADER_SIGHTING_DATE"
@@ -97,10 +97,10 @@ export default function Sighting() {
                   }}
                 />
               )}
-            </Typography>
-            <Typography variant="subtitle" style={{ marginTop: 12 }}>
+            </Text>
+            <Text variant="subtitle" style={{ marginTop: 12 }}>
               Reported by George Masterson
-            </Typography>
+            </Text>
           </div>
           <ActionIcon
             onClick={() => setEditingProfile(true)}

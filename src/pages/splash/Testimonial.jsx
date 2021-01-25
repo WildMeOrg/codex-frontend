@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import Grid from '@material-ui/core/Grid';
 
 import Button from '../../components/Button';
-import ResponsiveText from '../../components/ResponsiveText';
+import Text from '../../components/Text';
 import useSiteSettings from '../../models/site/useSiteSettings';
 import { selectSiteSettings } from '../../modules/site/selectors';
 
@@ -62,7 +62,8 @@ export default function Testimonial() {
           padding: '0 20px',
         }}
       >
-        <ResponsiveText
+        <Text
+          responsive
           mobileStyle={{
             fontSize: 20,
             lineHeight: '30px',
@@ -78,8 +79,9 @@ export default function Testimonial() {
         >
           {`"${testimonial ||
             'Set up your testimonial in the site settings menu.'}"`}
-        </ResponsiveText>
-        <ResponsiveText
+        </Text>
+        <Text
+          responsive
           mobileStyle={{
             fontSize: 18,
             lineHeight: '26px',
@@ -95,7 +97,7 @@ export default function Testimonial() {
           }}
         >
           {testimonialCitation}
-        </ResponsiveText>
+        </Text>
         <Button
           display="marketing"
           style={{

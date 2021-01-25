@@ -3,8 +3,8 @@ import { css } from '@emotion/core';
 import { useIntl } from 'react-intl';
 import parse from 'date-fns/parse';
 import Tooltip from '@material-ui/core/Tooltip';
-import Typography from '@material-ui/core/Typography';
 import { useTheme, withStyles } from '@material-ui/core/styles';
+import Text from '../../../components/Text';
 
 const LightTooltip = withStyles(theme => ({
   tooltip: {
@@ -92,12 +92,12 @@ const WaffleSquare = ({
         <dl css={waffleSquareCSS}>
           {Object.entries(formattedJobData).map(([key, value]) => (
             <div key={key}>
-              <Typography variant="body1" component="dt" gutterBottom>
+              <Text variant="body1" component="dt" gutterBottom>
                 {key}
-              </Typography>
-              <Typography variant="body1" component="dd" gutterBottom>
+              </Text>
+              <Text variant="body1" component="dd" gutterBottom>
                 {value}
-              </Typography>
+              </Text>
             </div>
           ))}
         </dl>

@@ -6,7 +6,6 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import Avatar from '@material-ui/core/Avatar';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
@@ -17,6 +16,7 @@ import DropDownIcon from '@material-ui/icons/ArrowDropDown';
 
 // import useSiteSettings from '../models/site/useSiteSettings';
 import Link from '../Link';
+import Text from '../Text';
 import AppDrawer from '../AppDrawer';
 import BannerLogo from '../BannerLogo';
 import useGetMe from '../../models/users/useGetMe';
@@ -115,7 +115,7 @@ export default function AppHeader() {
                 }}
                 src={shane}
               />
-              <Typography style={{ marginLeft: 8 }}>Bob</Typography>
+              <Text style={{ marginLeft: 8 }}>Bob</Text>
             </Link>
           )}
 

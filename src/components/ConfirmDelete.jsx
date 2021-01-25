@@ -1,6 +1,5 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import Typography from '@material-ui/core/Typography';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -8,6 +7,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import Alert from '@material-ui/lab/Alert';
 import AlertTitle from '@material-ui/lab/AlertTitle';
 import Button from './Button';
+import Text from './Text';
 
 export default function ConfirmDelete({
   open,
@@ -24,14 +24,10 @@ export default function ConfirmDelete({
         {title || <FormattedMessage id="CONFIRM_DELETE" />}
       </DialogTitle>
       <DialogContent>
-        <Typography>
-          {message || (
-            <FormattedMessage
-              id="CONFIRM_DELETE_DESCRIPTION"
-              values={{ entity: entityToDelete }}
-            />
-          )}
-        </Typography>
+        <Text id="CONFIRM_DELETE_DESCRIPTION"
+          values={{ entity: entityToDelete }}>
+          {message}
+        </Text>
         {error && (
           <Alert severity="error">
             <AlertTitle>

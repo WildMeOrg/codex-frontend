@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
-import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import EditIcon from '@material-ui/icons/Edit';
 import MatchIcon from '@material-ui/icons/AssignmentInd';
 import AvatarGallery from '../../components/AvatarGallery';
 import AnnotationEditor from '../../components/AnnotationEditor';
 import Button from '../../components/Button';
+import Text from '../../components/Text';
 
 export default function PhotoGallery({ sighting }) {
   const [activeAnnotation, setAnnotation] = useState(null);
@@ -62,12 +62,10 @@ export default function PhotoGallery({ sighting }) {
           return (
             <div style={{ display: 'flex', flexDirection: 'column' }}>
               {annotationCount === 0 && (
-                <Typography>
-                  <FormattedMessage
-                    id="X_ANNOTATIONS"
-                    values={{ annotationCount }}
-                  />
-                </Typography>
+                <Text
+                  id="X_ANNOTATIONS"
+                  values={{ annotationCount }}
+                />
               )}
               {photo.annotations.map((annotation, i) => {
                 return (
@@ -79,12 +77,7 @@ export default function PhotoGallery({ sighting }) {
                       justifyContent: 'space-between',
                     }}
                   >
-                    <Typography>
-                      <FormattedMessage
-                        id="ANNOTATION_X"
-                        values={{ x: i + 1 }}
-                      />
-                    </Typography>
+                    <Text id="ANNOTATION_X" values={{ x: i + 1 }} />
                     <div>
                       <IconButton onClick={() => {}} size="small">
                         <MatchIcon />

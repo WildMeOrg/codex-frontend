@@ -1,32 +1,28 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useTheme } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
 import MenuList from '@material-ui/core/MenuList';
 import MenuItem from '@material-ui/core/MenuItem';
 import ButtonLink from './ButtonLink';
 import Link from './Link';
 import BannerLogo from './BannerLogo';
+import Text from './Text';
 import footerMenuSchema from '../constants/footerMenu';
 
 function Menu({ labelId, schema, themeColor }) {
   return (
     <MenuList style={{ margin: '0 20px' }}>
       <MenuItem>
-        <Typography
+        <Text
           component="h6"
           variant="h6"
           style={{ color: themeColor }}
-        >
-          <FormattedMessage id={labelId} />
-        </Typography>
+          id={labelId} />
       </MenuItem>
       {schema.map(item => (
         <MenuItem key={item.id}>
           <Link href={item.href} external={item.external}>
-            <Typography>
-              <FormattedMessage id={item.id} />
-            </Typography>
+            <Text id={item.id} />
           </Link>
         </MenuItem>
       ))}
@@ -111,9 +107,7 @@ export default function Footer({ authenticated = false }) {
           justifyContent: 'center',
         }}
       >
-        <Typography variant="caption">
-          <FormattedMessage id="COPYRIGHT_LINE" />
-        </Typography>
+        <Text variant="caption" id="COPYRIGHT_LINE" />
       </div>
     </div>
   );

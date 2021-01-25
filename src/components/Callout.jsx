@@ -1,6 +1,6 @@
 import React from 'react';
 import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
+import Text from './Text';
 
 export default function Callout({
   title,
@@ -24,10 +24,10 @@ export default function Callout({
       spacing={1}
     >
       <Grid item>
-        <Typography variant="h5">{title}</Typography>
+        <Text variant="h5">{title}</Text>
       </Grid>
       <Grid item>
-        <Typography
+        <Text
           style={{
             textAlign: 'center',
             maxWidth: 500,
@@ -35,7 +35,7 @@ export default function Callout({
           }}
         >
           {description}
-        </Typography>
+        </Text>
       </Grid>
       {children}
       <Grid item style={{ display: 'flex', flexDirection: 'column' }}>

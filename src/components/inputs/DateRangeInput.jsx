@@ -1,12 +1,12 @@
 import React from 'react';
 import { get } from 'lodash-es';
 import { useIntl, FormattedMessage } from 'react-intl';
-import Typography from '@material-ui/core/Typography';
 import DateFnsUtils from '@date-io/date-fns';
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
+import Text from '../Text';
 
 export default function DateRangeInput(props) {
   const { schema, value, onChange, minimalLabels = false } = props;
@@ -31,17 +31,17 @@ export default function DateRangeInput(props) {
   return (
     <div>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
-        <Typography variant="subtitle2" style={{ marginTop: 16 }}>
+        <Text variant="subtitle2" style={{ marginTop: 16 }}>
           {getLabel(schema)}
-        </Typography>
+        </Text>
         {!minimalLabels && (
-          <Typography
+          <Text
             variant="caption"
             color="textSecondary"
             style={{ marginTop: 4 }}
           >
             {getDescription(schema)}
-          </Typography>
+          </Text>
         )}
         <KeyboardDatePicker
           disableToolbar

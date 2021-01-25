@@ -4,7 +4,6 @@ import { get } from 'lodash-es';
 import { v4 as uuid } from 'uuid';
 
 import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -19,6 +18,7 @@ import ActionIcon from '../../../components/ActionIcon';
 import InputRow from '../../../components/InputRow';
 import ConfirmDelete from '../../../components/ConfirmDelete';
 import DataDisplay from '../../../components/dataDisplays/DataDisplay';
+import Text from '../../../components/Text';
 import categoryTypes from '../../../constants/categoryTypes';
 import { defaultSightingCategories } from '../../../constants/newSightingSchema';
 import { defaultIndividualCategories } from '../../../constants/individualSchema';
@@ -144,15 +144,14 @@ export default function FieldSettings() {
             )}
           </DialogTitle>
           <DialogContent>
-            <Typography variant="caption">
-              <FormattedMessage
-                id={
-                  dialogData.isDefault
-                    ? 'DEFAULT_CATEGORY_NOT_EDITABLE'
-                    : 'CATEGORY_EDIT_MESSAGE'
-                }
-              />
-            </Typography>
+            <Text
+              variant="caption"
+              id={
+                dialogData.isDefault
+                  ? 'DEFAULT_CATEGORY_NOT_EDITABLE'
+                  : 'CATEGORY_EDIT_MESSAGE'
+              }
+            />
             <InputRow
               labelId="LABEL"
               disabled={dialogData.isDefault}
@@ -234,9 +233,7 @@ export default function FieldSettings() {
           marginTop: 12,
         }}
       >
-        <Typography variant="h5" component="h5">
-          <FormattedMessage id="FIELD_CATEGORIES" />
-        </Typography>
+        <Text variant="h5" component="h5" id="FIELD_CATEGORIES" />
         <Button
           size="small"
           display="panel"
@@ -253,13 +250,12 @@ export default function FieldSettings() {
           <FormattedMessage id="ADD_NEW" />
         </Button>
       </div>
-      <Typography
+      <Text
         component="p"
         variant="caption"
         style={{ marginBottom: 12 }}
-      >
-        <FormattedMessage id="FIELD_CATEGORIES_DESCRIPTION" />
-      </Typography>
+        id="FIELD_CATEGORIES_DESCRIPTION"
+      />
       <DataDisplay
         noTitleBar
         variant="secondary"

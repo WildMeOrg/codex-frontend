@@ -1,7 +1,7 @@
 import React from 'react';
-import Typography from '@material-ui/core/Typography';
 import { formatDate } from '../../utils/formatters';
+import Text from '../Text';
 
 export default function DateRenderer({ value }) {
-  return <Typography>{formatDate(value)}</Typography>;
+  return <Text>{formatDate(value)}</Text>;
 }
