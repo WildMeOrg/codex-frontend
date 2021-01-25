@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
 import { useHistory } from 'react-router-dom';
-import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import TextInput from '../../components/inputs/TextInput';
 import Button from '../../components/Button';
 import SimpleFormPage from '../../components/SimpleFormPage';
+import Text from '../../components/Text';
 
 export default function Create({ callback }) {
   const history = useHistory();
@@ -100,13 +100,11 @@ export default function Create({ callback }) {
           )}
         </Grid>
         {errorId && (
-          <Typography
+          <Text
             variant="caption"
             color="error"
             style={{ paddingLeft: 8 }}
-          >
-            <FormattedMessage id={errorId} />
-          </Typography>
+            id={errorId} />
         )}
       </Grid>
     </SimpleFormPage>

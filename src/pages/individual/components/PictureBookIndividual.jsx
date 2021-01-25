@@ -1,10 +1,9 @@
 import React from 'react';
 import { css } from '@emotion/core';
-import { FormattedMessage } from 'react-intl';
-import Typography from '@material-ui/core/Typography';
 import PrintablePictureBookPage from './PrintablePictureBookPage';
 import PictureBookGallery from './PictureBookGallery';
 import Link from '../../../components/Link';
+import Text from '../../../components/Text';
 
 const dataCSS = css`
   ::after {
@@ -33,20 +32,16 @@ export default function PictureBookIndividual({
 
   return (
     <PrintablePictureBookPage isVisible={isVisible}>
-      <Typography variant="h4" component="h2">
+      <Text variant="h4" component="h2">
         {alias}
-      </Typography>
+      </Text>
       <dl css={dataCSS}>
-        <Typography component="dt">
-          <FormattedMessage id="INDIVIDUAL_ID:" />
-        </Typography>
-        <Typography component="dd">
+        <Text component="dt" id="INDIVIDUAL_ID:" />
+        <Text component="dd">
           <Link href={`/individuals/${id}`}>{id}</Link>
-        </Typography>
-        <Typography component="dt">
-          <FormattedMessage id="SPECIES:" />
-        </Typography>
-        <Typography component="dd">{species}</Typography>
+        </Text>
+        <Text component="dt" id="SPECIES:" />
+        <Text component="dd">{species}</Text>
       </dl>
       <div className="gallery-container">
         <PictureBookGallery

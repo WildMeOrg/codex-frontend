@@ -9,11 +9,11 @@ function Core(props) {
   return <Typography {...rest} />;
 }
 
-export default function Text({ id, ...rest }) {
+export default function Text({ id, values, ...rest }) {
   if (!id) return <Core {...rest} />;
   return (
     <Core {...rest}>
-      <FormattedMessage id={id} />
+      <FormattedMessage id={id} values={values} />
     </Core>
   );
 }

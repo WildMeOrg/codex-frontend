@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { css } from '@emotion/core';
-import { FormattedMessage } from 'react-intl';
-import Typography from '@material-ui/core/Typography';
+import Text from '../../../components/Text';
 
 function scaleImage(image, multiplier) {
   image.width *= multiplier;
@@ -150,9 +149,7 @@ export default function PictureBookGallery({
     (!isLoading && displayImages.length === 0)
   ) {
     return (
-      <Typography>
-        <FormattedMessage id="NO_IMAGES" />
-      </Typography>
+      <Text id="NO_IMAGES" />
     );
   }
   return (

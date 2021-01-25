@@ -4,13 +4,13 @@ import { useSelector } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { get, capitalize, toLower } from 'lodash-es';
 import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
 import SexIcon from '@material-ui/icons/Nature';
 import AgeIcon from '@material-ui/icons/Height';
 import StatusIcon from '@material-ui/icons/LocalHospital';
 import EntityHeader from '../../components/EntityHeader';
 import MainColumn from '../../components/MainColumn';
 import SadScreen from '../../components/SadScreen';
+import Text from '../../components/Text';
 import EncounterGallery from '../../components/EncounterGallery';
 import EditProfile from '../../components/EditEntityModal';
 import { selectIndividuals } from '../../modules/individuals/selectors';
@@ -97,9 +97,9 @@ export default function Individual() {
             return (
               <Grid key={item.key} item style={{ display: 'flex' }}>
                 <Icon color="action" style={{ marginRight: 8 }} />
-                <Typography>
+                <Text>
                   {item.render(matchingData.value)}
-                </Typography>
+                </Text>
               </Grid>
             );
           })}

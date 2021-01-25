@@ -5,9 +5,9 @@ import { cloneDeep } from 'lodash-es';
 import { FormattedMessage } from 'react-intl';
 import { useTheme } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import Typography from '@material-ui/core/Typography';
 import { selectSearchResults } from '../../modules/individuals/selectors';
 import Button from '../../components/Button';
+import Text from '../../components/Text';
 import PrintablePictureBookPage from './components/PrintablePictureBookPage';
 import PictureBookIndividual from './components/PictureBookIndividual';
 
@@ -103,9 +103,7 @@ export default function PictureBook() {
             color="secondary"
             style={{ marginRight: 16 }}
           />
-          <Typography>
-            <FormattedMessage id="LOADING" />
-          </Typography>
+          <Text id="LOADING" />
         </div>
       )}
       <PrintablePictureBookPage isVisible={!isLoading}>
@@ -117,9 +115,7 @@ export default function PictureBook() {
             alignItems: 'flex-end',
           }}
         >
-          <Typography variant="h2" component="h1">
-            <FormattedMessage id="PRINTABLE_PHOTOBOOK" />
-          </Typography>
+          <Text variant="h2" component="h1" id="PRINTABLE_PHOTOBOOK" />
           <Button
             display="primary"
             size="large"
