@@ -23,8 +23,17 @@ export default function SimpleFormPage({
           padding: '40px 16px 20px 16px',
         }}
       >
-        <Text responsive variant="h2" style={{ paddingBottom: 8 }} id={titleId} />
-        <Text variant="subtitle2" style={{ maxWidth: 460 }} id={instructionsId} />
+        <Text
+          responsive
+          variant="h2"
+          style={{ paddingBottom: 8 }}
+          id={titleId}
+        />
+        <Text
+          variant="subtitle2"
+          style={{ maxWidth: 460 }}
+          id={instructionsId}
+        />
         {children}
       </Paper>
     </div>

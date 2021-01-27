@@ -17,7 +17,8 @@ function Menu({ labelId, schema, themeColor }) {
           component="h6"
           variant="h6"
           style={{ color: themeColor }}
-          id={labelId} />
+          id={labelId}
+        />
       </MenuItem>
       {schema.map(item => (
         <MenuItem key={item.id}>

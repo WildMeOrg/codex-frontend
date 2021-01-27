@@ -17,7 +17,8 @@ export default function DividerTitle({ titleId, style = {} }) {
         variant="h6"
         component="h6"
         style={{ margin: '0 20px' }}
-        id={titleId} />
+        id={titleId}
+      />
       <Divider style={{ flexGrow: 1 }} />
     </div>
   );

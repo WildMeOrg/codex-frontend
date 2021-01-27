@@ -12,6 +12,7 @@ export default function BigAvatar({
   size = 150,
   annotations,
   square = false,
+  admin = false,
 }) {
   const theme = useTheme();
   const [avatarHovered, setAvatarHovered] = useState(false);
@@ -36,12 +37,39 @@ export default function BigAvatar({
         src={imgSrc}
         alt={`Profile for ${name}`}
         style={{
-          width: size,
-          height: size,
+          width: size + 1,
+          height: size + 1,
           borderRadius: square ? 'unset' : '50%',
-          border: '1px solid #ccc',
+          border: `1px solid ${theme.palette.grey['400']}`,
         }}
       />
+      {admin && (
+        <svg
+          style={{
+            position: 'absolute',
+            left: 1,
+            top: 1,
+            width: size,
+            height: size,
+          }}
+        >
+          <rect
+            x={size * 0.1}
+            y={size * 0.8}
+            width={size * 0.8}
+            height={24}
+            fill={theme.palette.primary.light}
+            rx={4}
+          />
+          <SvgText
+            x={size * 0.5}
+            y={size * 0.8 + 17}
+            fill={theme.palette.common.black}
+          >
+            Admin
+          </SvgText>
+        </svg>
+      )}
       {annotations && annotations.length > 0 && (
         <svg
           style={{

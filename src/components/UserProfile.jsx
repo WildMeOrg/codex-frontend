@@ -108,9 +108,7 @@ export default function UserProfile({ children, userData }) {
             return (
               <Grid key={item.key} item style={{ display: 'flex' }}>
                 <Icon color="action" style={{ marginRight: 8 }} />
-                <Text>
-                  {item.render(matchingData.value)}
-                </Text>
+                <Text>{item.render(matchingData.value)}</Text>
               </Grid>
             );
           })}

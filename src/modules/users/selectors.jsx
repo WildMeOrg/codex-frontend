@@ -6,6 +6,7 @@ export const selectUsers = state => ({
     id: 'alice',
     profile: defaultProfile,
     editable: false,
+    admin: true,
     fields: [
       {
         name: 'affiliation',

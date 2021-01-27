@@ -24,8 +24,10 @@ export default function ConfirmDelete({
         {title || <FormattedMessage id="CONFIRM_DELETE" />}
       </DialogTitle>
       <DialogContent>
-        <Text id="CONFIRM_DELETE_DESCRIPTION"
-          values={{ entity: entityToDelete }}>
+        <Text
+          id="CONFIRM_DELETE_DESCRIPTION"
+          values={{ entity: entityToDelete }}
+        >
           {message}
         </Text>
         {error && (
