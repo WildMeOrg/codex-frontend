@@ -25,9 +25,7 @@ export default function EditAvatar({ visible, onClose }) {
         </IconButton>
       </DialogTitle>
       <DialogContent style={{ marginBottom: 24 }}>
-        <Text
-          style={{ whiteSpace: 'pre-line', maxHeight: 400 }}
-        >
+        <Text style={{ whiteSpace: 'pre-line', maxHeight: 400 }}>
           {termsAndConditions}
         </Text>
       </DialogContent>

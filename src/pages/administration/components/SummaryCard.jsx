@@ -40,7 +40,7 @@ export default function SummaryCard({
         {loading ? (
           <Skeleton variant="text" width="45%" />
         ) : (
-            <Text
+          <Text
             variant="body2"
             component="dd"
             style={{
@@ -50,7 +50,7 @@ export default function SummaryCard({
             }}
           >
             {content}
-            </Text>
+          </Text>
         )}
       </Paper>
     </Grid>

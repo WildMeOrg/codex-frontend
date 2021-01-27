@@ -25,9 +25,7 @@ export default function SearchFilterList({
   return (
     <div style={{ margin: '16px 0 0 16px' }}>
       <Text variant="subtitle1" id="ACTIVE_FILTERS" />
-      {activeFilters.length === 0 && (
-        <Text id="NO_ACTIVE_FILTERS" />
-      )}
+      {activeFilters.length === 0 && <Text id="NO_ACTIVE_FILTERS" />}
       <Grid container spacing={1}>
         {activeFilters.map(field => (
           <Grid item key={field.name}>

@@ -41,14 +41,13 @@ export default function EncounterCard({ encounter, hideSubmitted }) {
                   textAlign: 'center',
                   marginTop: 10,
                 }}
-                id="READY_FOR_REVIEW" />
+                id="READY_FOR_REVIEW"
+              />
             </div>
           )}
         </CardMedia>
         <CardContent>
-          <Text variant="subtitle2">
-            {encounter.individualId}
-          </Text>
+          <Text variant="subtitle2">{encounter.individualId}</Text>
           <Grid container alignItems="center" justify="space-between">
             <Grid item>
               <Text

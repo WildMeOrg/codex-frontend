@@ -17,7 +17,11 @@ export default function FilterPanel({
 
   return (
     <div>
-      <Text variant="h5" style={{ margin: '16px 0 16px 16px' }} id="FILTERS" />
+      <Text
+        variant="h5"
+        style={{ margin: '16px 0 16px 16px' }}
+        id="FILTERS"
+      />
       {categoryList.map(category => {
         const filtersInCategory = filters.filter(
           f => f.category === category.name,
@@ -30,9 +34,7 @@ export default function FilterPanel({
               aria-controls={`${category.name}-filter-panel-content`}
               id={`${category.name}-filter-panel-header`}
             >
-              <Text id={category.labelId}>
-                {category.label}
-              </Text>
+              <Text id={category.labelId}>{category.label}</Text>
             </AccordionSummary>
             <AccordionDetails>
               <div
