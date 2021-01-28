@@ -15,14 +15,18 @@ import EntityHeader from './EntityHeader';
 import MainColumn from './MainColumn';
 import Link from './Link';
 import SadScreen from './SadScreen';
-import EncounterGallery from './EncounterGallery';
 import EditEntityModal from './EditEntityModal';
 import Text from './Text';
 import Button from './Button';
+import MetadataCard from './cards/MetadataCard';
+import SightingsCard from './cards/SightingsCard';
+import MembersCard from './cards/MembersCard';
+import CardContainer from './cards/CardContainer';
 
 const items = [
   {
     key: 'forum_id',
+    titleId: 'PROFILE_LABEL_FORUM_ID',
     icon: ForumIcon,
     render: forumId => (
       <>
@@ -33,6 +37,7 @@ const items = [
   },
   {
     key: 'email',
+    titleId: 'PROFILE_LABEL_EMAIL',
     icon: EmailIcon,
     render: emailAddress => (
       <FormattedMessage
@@ -43,6 +48,7 @@ const items = [
   },
   {
     key: 'website',
+    titleId: 'PROFILE_LABEL_WEBSITE',
     icon: WebIcon,
     render: website => (
       <>
@@ -55,6 +61,7 @@ const items = [
   },
   {
     key: 'location',
+    titleId: 'PROFILE_LABEL_LOCATION',
     icon: LocationIcon,
     render: location => (
       <FormattedMessage
@@ -81,7 +88,7 @@ export default function UserProfile({
     );
 
   return (
-    <MainColumn>
+    <MainColumn fullWidth>
       <EditEntityModal
         open={editingProfile}
         onClose={() => setEditingProfile(false)}
@@ -129,20 +136,35 @@ export default function UserProfile({
         </Grid>
       </EntityHeader>
       {children}
-      <EncounterGallery
-        title={
-          !userData.editable ? (
-            <FormattedMessage
-              id="USERS_SIGHTINGS"
-              values={{ name: userData.name }}
-            />
-          ) : (
-            <FormattedMessage id="SIGHTINGS" />
-          )
-        }
-        encounters={userData.encounters}
-        hideSubmitted
-      />
+      <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+        <CardContainer size="small">
+          <MetadataCard metadata={items} />
+          <MembersCard
+            editable
+            members={[
+              { id: 'bob', name: 'Bob', role: 'Owner' },
+              { id: 'schom', name: 'Alice', role: 'Administrator' },
+              { id: 'alice', name: 'Steve', role: 'Member' },
+            ]}
+          />
+        </CardContainer>
+        <CardContainer>
+          <SightingsCard
+            title={
+              !userData.editable ? (
+                <FormattedMessage
+                  id="USERS_SIGHTINGS"
+                  values={{ name: userData.name }}
+                />
+              ) : (
+                <FormattedMessage id="SIGHTINGS" />
+              )
+            }
+            encounters={userData.encounters}
+            hideSubmitted
+          />
+        </CardContainer>
+      </div>
     </MainColumn>
   );
 }
