@@ -3,8 +3,8 @@ import { get } from 'lodash-es';
 import { format, parseISO } from 'date-fns';
 import { useTheme } from '@material-ui/core/styles';
 import Tooltip from '@material-ui/core/Tooltip';
-import Typography from '@material-ui/core/Typography';
 import Link from '../../../components/Link';
+import Text from '../../../components/Text';
 import useDimensions from '../../../hooks/useDimensions';
 import { getFeature } from './utils';
 
@@ -156,7 +156,7 @@ export default function AcmImage({
           marginBottom: 4,
         }}
       >
-        <Typography variant="h6">
+        <Text variant="h6">
           {displayName ? (
             <Link
               href={`https://www.flukebook.org/individuals.jsp?id=${individualId}`}
@@ -168,7 +168,7 @@ export default function AcmImage({
           ) : (
             'Unassigned'
           )}
-        </Typography>
+        </Text>
         {renderTitleButton()}
       </div>
       <Tooltip title={filename}>
@@ -227,7 +227,7 @@ export default function AcmImage({
           justifyContent: 'space-between',
         }}
       >
-        <Typography>
+        <Text>
           <Link
             external
             newTab
@@ -237,7 +237,7 @@ export default function AcmImage({
               ? `Observed ${formattedDate}`
               : 'View sighting'}
           </Link>
-        </Typography>
+        </Text>
       </div>
     </div>
   );

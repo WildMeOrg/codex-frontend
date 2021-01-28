@@ -2,14 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { get, zipObject } from 'lodash-es';
 import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
 import Skeleton from '@material-ui/lab/Skeleton';
 import Alert from '@material-ui/lab/Alert';
 import AlertTitle from '@material-ui/lab/AlertTitle';
+
 import Button from '../../../components/Button';
+import Text from '../../../components/Text';
 import useSiteSettings from '../../../models/site/useSiteSettings';
 import usePutSiteSettings from '../../../models/site/usePutSiteSettings';
-
 import LabeledInput from '../../../components/LabeledInput';
 
 const customFields = {
@@ -89,7 +89,7 @@ export default function SiteSettings() {
             >
               {matchingSetting && valueIsDefined ? (
                 <>
-                  <Typography
+                  <Text
                     style={{
                       marginTop: 20,
                     }}
@@ -97,16 +97,13 @@ export default function SiteSettings() {
                   >
                     <FormattedMessage id={matchingSetting.labelId} />
                     {matchingSetting.required && ' *'}
-                  </Typography>
-                  <Typography
+                  </Text>
+                  <Text
                     style={{
                       marginTop: 4,
                     }}
-                  >
-                    <FormattedMessage
-                      id={matchingSetting.descriptionId}
-                    />
-                  </Typography>
+                    id={matchingSetting.descriptionId}
+                  />
                 </>
               ) : (
                 <>

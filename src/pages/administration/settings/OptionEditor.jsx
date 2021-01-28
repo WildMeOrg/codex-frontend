@@ -2,7 +2,6 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { v4 as uuid } from 'uuid';
 import FormControl from '@material-ui/core/FormControl';
-import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -13,6 +12,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import TextInput from '../../../components/inputs/TextInput';
 import DeleteButton from '../../../components/DeleteButton';
 import Button from '../../../components/Button';
+import Text from '../../../components/Text';
 
 export default function OptionEditor({
   open,
@@ -43,9 +43,10 @@ export default function OptionEditor({
       </DialogTitle>
       <DialogContent style={{ minWidth: 200 }}>
         {schema.descriptionId && (
-          <Typography style={{ marginBottom: 20 }}>
-            <FormattedMessage id={schema.descriptionId} />
-          </Typography>
+          <Text
+            style={{ marginBottom: 20 }}
+            id={schema.descriptionId}
+          />
         )}
         {displayedOptions.map((option, optionIndex) => {
           const otherOptions = options.filter(
@@ -62,9 +63,7 @@ export default function OptionEditor({
               key={option.id}
             >
               <div style={{ display: 'flex', alignItems: 'center' }}>
-                <Typography variant="subtitle2">
-                  <FormattedMessage id="OPTION" />
-                </Typography>
+                <Text variant="subtitle2" id="OPTION" />
                 {showDeleteButton && (
                   <DeleteButton
                     onClick={() => onChange(otherOptions)}

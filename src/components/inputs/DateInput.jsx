@@ -1,12 +1,12 @@
 import React from 'react';
 import { get } from 'lodash-es';
 import { useIntl } from 'react-intl';
-import Typography from '@material-ui/core/Typography';
 import DateFnsUtils from '@date-io/date-fns';
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
+import Text from '../Text';
 
 export default function DateInput(props) {
   const {
@@ -55,13 +55,13 @@ export default function DateInput(props) {
             {...rest}
           />
           {!minimalLabels && (
-            <Typography
+            <Text
               variant="caption"
               color="textSecondary"
               style={{ marginTop: 4 }}
             >
               {getDescription(schema)}
-            </Typography>
+            </Text>
           )}
         </>
       </MuiPickersUtilsProvider>

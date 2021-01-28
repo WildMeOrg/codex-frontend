@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
-import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import TextInput from '../../components/inputs/TextInput';
 import ButtonLink from '../../components/ButtonLink';
 import Button from '../../components/Button';
+import Text from '../../components/Text';
 import SimpleFormPage from '../../components/SimpleFormPage';
 
 export default function RequestInvitation() {
@@ -88,13 +88,13 @@ export default function RequestInvitation() {
           </Button>
         </Grid>
         {error && (
-          <Typography
+          <Text
             variant="caption"
             color="error"
             style={{ paddingLeft: 8 }}
           >
             {error}
-          </Typography>
+          </Text>
         )}
       </Grid>
     </SimpleFormPage>

@@ -1,5 +1,5 @@
 import React from 'react';
-import Typography from '@material-ui/core/Typography';
+import Text from '../../../components/Text';
 
 export default function LegendItem({ color, label }) {
   return (
@@ -14,9 +14,9 @@ export default function LegendItem({ color, label }) {
           marginRight: 6,
         }}
       />
-      <Typography variant="body1" component="dd" display="inline">
+      <Text variant="body1" component="dd" display="inline">
         {label}
-      </Typography>
+      </Text>
     </div>
   );
 }

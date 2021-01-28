@@ -2,10 +2,10 @@ import React from 'react';
 import { get } from 'lodash-es';
 import { format } from 'date-fns';
 import { useIntl, FormattedMessage } from 'react-intl';
-import Typography from '@material-ui/core/Typography';
 import DataDisplay from './DataDisplay';
 import Link from '../Link';
 import ButtonLink from '../ButtonLink';
+import Text from '../Text';
 
 export default function SightingsDisplay({ sightings }) {
   const intl = useIntl();
@@ -101,11 +101,9 @@ export default function SightingsDisplay({ sightings }) {
             }}
           />
           <div style={{ padding: '20px 0' }}>
-            <Typography variant="subtitle1">
-              <FormattedMessage id="SIGHTING_DETAILS" />
-            </Typography>
-            <Typography>Species: Megaptera novaeangliae</Typography>
-            <Typography>Region: South Sahara</Typography>
+            <Text variant="subtitle1" id="SIGHTING_DETAILS" />
+            <Text>Species: Megaptera novaeangliae</Text>
+            <Text>Region: South Sahara</Text>
             <ButtonLink
               display="panel"
               style={{ marginTop: 16 }}

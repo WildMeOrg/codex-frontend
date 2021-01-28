@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useSelector } from 'react-redux';
 import { format } from 'date-fns';
-import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import Input from '@material-ui/core/Input';
 import InputAdornment from '@material-ui/core/InputAdornment';
@@ -19,6 +18,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import { selectSearchResults } from '../../modules/individuals/selectors';
 import DeleteButton from '../DeleteButton';
 import Button from '../Button';
+import Text from '../Text';
 
 export default function IndividualInput({
   schema,
@@ -50,7 +50,7 @@ export default function IndividualInput({
       )}
       {value && (
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          <Typography>{value}</Typography>
+          <Text>{value}</Text>
           <DeleteButton
             onClick={() => {
               onChange(null);

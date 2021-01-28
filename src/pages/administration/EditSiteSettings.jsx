@@ -1,8 +1,8 @@
 import React from 'react';
-import { useIntl, FormattedMessage } from 'react-intl';
-import Typography from '@material-ui/core/Typography';
+import { useIntl } from 'react-intl';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import MainColumn from '../../components/MainColumn';
+import Text from '../../components/Text';
 import SiteSettings from './SiteSettings';
 
 export default function SiteSetup() {
@@ -11,13 +11,12 @@ export default function SiteSetup() {
 
   return (
     <MainColumn>
-      <Typography
+      <Text
         variant="h3"
         component="h3"
         style={{ padding: '16px 0 16px 16px' }}
-      >
-        <FormattedMessage id="SITE_SETTINGS" />
-      </Typography>
+        id="SITE_SETTINGS"
+      />
       <SiteSettings primaryButtonId="SAVE_CHANGES" />
     </MainColumn>
   );

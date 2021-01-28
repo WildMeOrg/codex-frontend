@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { get } from 'lodash-es';
-import Typography from '@material-ui/core/Typography';
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Uppy from '@uppy/core';
@@ -10,6 +9,7 @@ import '@uppy/core/dist/style.css';
 import '@uppy/dashboard/dist/style.css';
 import DeleteButton from '../DeleteButton';
 import Button from '../Button';
+import Text from '../Text';
 
 function Core({ children, required, width, style = {} }) {
   return (
@@ -82,7 +82,7 @@ export default function FileInput({
 
   return (
     <Core required={required} width={width}>
-      {!minimalLabels && <Typography>{getLabel(schema)}</Typography>}
+      {!minimalLabels && <Text>{getLabel(schema)}</Text>}
       {!minimalLabels && (
         <FormHelperText style={{ marginTop: 0 }}>
           {getDescription(schema)}
@@ -115,9 +115,7 @@ export default function FileInput({
             />
           )}
           <div style={{ display: 'flex', alignItems: 'center' }}>
-            <Typography variant="caption">
-              {value.name || value}
-            </Typography>
+            <Text variant="caption">{value.name || value}</Text>
             <DeleteButton
               onClick={() => {
                 onChange(null);

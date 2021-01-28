@@ -7,6 +7,7 @@ import TextInput from '../../components/inputs/TextInput';
 import InlineButton from '../../components/InlineButton';
 import Link from '../../components/Link';
 import Button from '../../components/Button';
+import Text from '../../components/Text';
 import SimpleFormPage from '../../components/SimpleFormPage';
 
 export default function Forgot() {
@@ -27,11 +28,10 @@ export default function Forgot() {
         titleId={titleId}
         instructionsId={instructionsId}
       >
-        <Typography
+        <Text
           style={{ padding: '8px 16px 0 16px', maxWidth: 400 }}
-        >
-          <FormattedMessage id="PASSWORD_RESET_SENT" />
-        </Typography>
+          id="PASSWORD_RESET_SENT"
+        />
         <Button
           onClick={() => {
             setRequestSent(false);
@@ -78,13 +78,13 @@ export default function Forgot() {
           </Button>
         </Grid>
         {error && (
-          <Typography
+          <Text
             variant="caption"
             color="error"
             style={{ paddingLeft: 8 }}
           >
             {error}
-          </Typography>
+          </Text>
         )}
         <Grid item>
           <Typography>

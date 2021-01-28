@@ -2,13 +2,13 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { get } from 'lodash-es';
 import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
 import { useTheme } from '@material-ui/core/styles';
 
 import nature from '../assets/nature.jpg';
 import ocean from '../assets/ocean.jpeg';
 import savanna from '../assets/savanna.jpeg';
 import Link from './Link';
+import Text from './Text';
 
 const variantMap = {
   genericError: {
@@ -98,15 +98,15 @@ export default function SadScreen(props) {
             padding: 20,
           }}
         >
-          <Typography variant="h2" component="h2">
+          <Text variant="h2" component="h2">
             {renderTranslatableText('title')}
-          </Typography>
-          <Typography variant="h4">
+          </Text>
+          <Text variant="h4">
             {renderTranslatableText('subtitle')}
-          </Typography>
-          <Typography style={{ maxWidth: 400, marginTop: 16 }}>
+          </Text>
+          <Text style={{ maxWidth: 400, marginTop: 16 }}>
             {renderTranslatableText('description')}
-          </Typography>
+          </Text>
         </Paper>
       </div>
       <div
@@ -117,7 +117,7 @@ export default function SadScreen(props) {
           color: theme.palette.common.white,
         }}
       >
-        <Typography>
+        <Text>
           {'Photo by '}
           <Link external href={getProperty('artistUrl')}>
             {getProperty('artistName')}
@@ -126,7 +126,7 @@ export default function SadScreen(props) {
           <Link external href={getProperty('photoUrl')}>
             Unsplash
           </Link>
-        </Typography>
+        </Text>
       </div>
     </div>
   );

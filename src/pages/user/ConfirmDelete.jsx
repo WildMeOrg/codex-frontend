@@ -1,11 +1,11 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import Typography from '@material-ui/core/Typography';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import Button from '../../components/Button';
+import Text from '../../components/Text';
 
 export default function ConfirmDelete({
   open,
@@ -19,12 +19,7 @@ export default function ConfirmDelete({
         <FormattedMessage id="CONFIRM_DELETE" />
       </DialogTitle>
       <DialogContent>
-        <Typography>
-          <FormattedMessage
-            id="CONFIRM_DELETE_DESCRIPTION"
-            values={{ username }}
-          />
-        </Typography>
+        <Text id="CONFIRM_DELETE_DESCRIPTION" values={{ username }} />
       </DialogContent>
       <DialogActions>
         <Button display="basic" onClick={onClose}>

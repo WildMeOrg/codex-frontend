@@ -5,13 +5,13 @@ import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import Radio from '@material-ui/core/Radio';
-import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import InfoIcon from '@material-ui/icons/InfoOutlined';
 import Alert from '@material-ui/lab/Alert';
 import AlertTitle from '@material-ui/lab/AlertTitle';
 
 import MainColumn from '../../components/MainColumn';
+import Text from '../../components/Text';
 import ButtonLink from '../../components/ButtonLink';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import Link from '../../components/Link';
@@ -56,9 +56,7 @@ export default function ReportSightings({ authenticated = false }) {
         style={{ padding: '20px 16px' }}
       >
         <Grid item>
-          <Typography variant="h3" component="h3">
-            <FormattedMessage id="REPORT_SIGHTINGS" />
-          </Typography>
+          <Text variant="h3" component="h3" id="REPORT_SIGHTINGS" />
         </Grid>
         {!authenticated && (
           <Grid item style={{ marginTop: 16 }}>
@@ -99,9 +97,10 @@ export default function ReportSightings({ authenticated = false }) {
                         <FormattedMessage id="ONE_SIGHTING_ONE_INDIVIDUAL" />
                       }
                     />
-                    <Typography variant="caption">
-                      <FormattedMessage id="ONE_SIGHTING_ONE_INDIVIDUAL_DESCRIPTION" />
-                    </Typography>
+                    <Text
+                      variant="caption"
+                      id="ONE_SIGHTING_ONE_INDIVIDUAL_DESCRIPTION"
+                    />
                     <FormControlLabel
                       value="multiple"
                       control={<Radio />}
@@ -109,9 +108,10 @@ export default function ReportSightings({ authenticated = false }) {
                         <FormattedMessage id="ONE_SIGHTING_MULTIPLE_INDIVIDUALS" />
                       }
                     />
-                    <Typography variant="caption">
-                      <FormattedMessage id="ONE_SIGHTING_MULTIPLE_INDIVIDUALS_DESCRIPTION" />
-                    </Typography>
+                    <Text
+                      variant="caption"
+                      id="ONE_SIGHTING_MULTIPLE_INDIVIDUALS_DESCRIPTION"
+                    />
                     <FormControlLabel
                       value="bulk"
                       control={<Radio />}
@@ -119,9 +119,10 @@ export default function ReportSightings({ authenticated = false }) {
                         <FormattedMessage id="MULTIPLE_SIGHTINGS" />
                       }
                     />
-                    <Typography variant="caption">
-                      <FormattedMessage id="MULTIPLE_SIGHTINGS_DESCRIPTION" />
-                    </Typography>
+                    <Text
+                      variant="caption"
+                      id="MULTIPLE_SIGHTINGS_DESCRIPTION"
+                    />
                   </RadioGroup>
                 </FormControl>
               </Grid>
@@ -146,7 +147,7 @@ export default function ReportSightings({ authenticated = false }) {
                       fontSize="small"
                       style={{ marginRight: 4 }}
                     />
-                    <Typography variant="caption">
+                    <Text variant="caption">
                       <FormattedMessage id="PHOTO_OPTIMIZE_1" />
                       <Link
                         external
@@ -155,7 +156,7 @@ export default function ReportSightings({ authenticated = false }) {
                         <FormattedMessage id="PHOTO_OPTIMIZE_2" />
                       </Link>
                       <FormattedMessage id="PHOTO_OPTIMIZE_3" />
-                    </Typography>
+                    </Text>
                   </div>
                 </Grid>
               )}

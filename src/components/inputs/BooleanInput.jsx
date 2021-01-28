@@ -4,7 +4,7 @@ import { useIntl } from 'react-intl';
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Switch from '@material-ui/core/Switch';
-import Typography from '@material-ui/core/Typography';
+import Text from '../Text';
 
 function Core({ children, required, width, style = {} }) {
   return (
@@ -49,9 +49,7 @@ export default function BooleanInput({
           justifyContent: 'space-between',
         }}
       >
-        {!minimalLabels && (
-          <Typography>{getLabel(schema)}</Typography>
-        )}
+        {!minimalLabels && <Text>{getLabel(schema)}</Text>}
         <Switch
           checked={value}
           onChange={e => {

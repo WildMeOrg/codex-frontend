@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { useTheme } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
 import useDimensions from '../../hooks/useDimensions';
+import Text from '../../components/Text';
 
 function getAnnotationZoomData(annotation) {
   const largestDimension = Math.max(annotation.w, annotation.h);
@@ -76,7 +76,7 @@ export default function AnnotatedPhoto({
           marginBottom: 4,
         }}
       >
-        <Typography variant="subtitle1">{title}</Typography>
+        <Text variant="subtitle1">{title}</Text>
         {renderTitleButton()}
       </div>
       <div
@@ -140,8 +140,8 @@ export default function AnnotatedPhoto({
           justifyContent: 'space-between',
         }}
       >
-        <Typography>{locationId}</Typography>
-        <Typography>{dateString}</Typography>
+        <Text>{locationId}</Text>
+        <Text>{dateString}</Text>
       </div>
     </div>
   );

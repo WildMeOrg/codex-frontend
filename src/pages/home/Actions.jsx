@@ -1,15 +1,13 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import ButtonLink from '../../components/ButtonLink';
+import Text from '../../components/Text';
 
 export default function Actions() {
   return (
     <div style={{ margin: 12 }}>
-      <Typography variant="subtitle1">
-        <FormattedMessage id="ACTIONS" />
-      </Typography>
+      <Text variant="subtitle1" id="ACTIONS" />
 
       <Grid container spacing={1}>
         <Grid style={{ margin: 4 }} item>

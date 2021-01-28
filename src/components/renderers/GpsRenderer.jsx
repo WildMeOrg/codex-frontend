@@ -1,11 +1,11 @@
 import React from 'react';
-import Typography from '@material-ui/core/Typography';
+import Text from '../Text';
 
 export default function GpsRenderer({ value }) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column' }}>
-      <Typography>{value[0]}</Typography>
-      <Typography>{value[1]}</Typography>
+      <Text>{value[0]}</Text>
+      <Text>{value[1]}</Text>
     </div>
   );
 }

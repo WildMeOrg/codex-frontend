@@ -2,8 +2,8 @@ import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Skeleton from '@material-ui/lab/Skeleton';
-import Typography from '@material-ui/core/Typography';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
+import Text from '../../../components/Text';
 
 export default function SummaryCard({
   title,
@@ -24,7 +24,7 @@ export default function SummaryCard({
           boxSizing: 'border-box',
         }}
       >
-        <Typography
+        <Text
           variant="body1"
           component="dt"
           gutterBottom
@@ -36,11 +36,11 @@ export default function SummaryCard({
           }}
         >
           {title}
-        </Typography>
+        </Text>
         {loading ? (
           <Skeleton variant="text" width="45%" />
         ) : (
-          <Typography
+          <Text
             variant="body2"
             component="dd"
             style={{
@@ -50,7 +50,7 @@ export default function SummaryCard({
             }}
           >
             {content}
-          </Typography>
+          </Text>
         )}
       </Paper>
     </Grid>

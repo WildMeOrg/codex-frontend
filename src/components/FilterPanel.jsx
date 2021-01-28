@@ -1,12 +1,11 @@
 import React from 'react';
-import { FormattedMessage } from 'react-intl';
 import { values } from 'lodash-es';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
-import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import LabeledInput from './LabeledInput';
+import Text from './Text';
 
 export default function FilterPanel({
   categories,
@@ -18,9 +17,11 @@ export default function FilterPanel({
 
   return (
     <div>
-      <Typography variant="h5" style={{ margin: '16px 0 16px 16px' }}>
-        <FormattedMessage id="FILTERS" />
-      </Typography>
+      <Text
+        variant="h5"
+        style={{ margin: '16px 0 16px 16px' }}
+        id="FILTERS"
+      />
       {categoryList.map(category => {
         const filtersInCategory = filters.filter(
           f => f.category === category.name,
@@ -33,13 +34,7 @@ export default function FilterPanel({
               aria-controls={`${category.name}-filter-panel-content`}
               id={`${category.name}-filter-panel-header`}
             >
-              <Typography>
-                {category.labelId ? (
-                  <FormattedMessage id={category.labelId} />
-                ) : (
-                  category.label
-                )}
-              </Typography>
+              <Text id={category.labelId}>{category.label}</Text>
             </AccordionSummary>
             <AccordionDetails>
               <div

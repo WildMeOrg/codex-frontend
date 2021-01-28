@@ -1,10 +1,10 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import Typography from '@material-ui/core/Typography';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useTheme } from '@material-ui/core/styles';
 import MainColumn from '../../components/MainColumn';
 import ButtonLink from '../../components/ButtonLink';
+import Text from '../../components/Text';
 
 export default function LargeScreenRequired() {
   const theme = useTheme();
@@ -23,18 +23,16 @@ export default function LargeScreenRequired() {
       }}
     >
       <MainColumn style={{ width: 300 }}>
-        <Typography
+        <Text
           variant="h5"
           component="h5"
           style={{ padding: '16px 0 8px 16px' }}
-        >
-          <FormattedMessage id="LARGE_SCREEN_REQUIRED" />
-        </Typography>
-        <Typography
+          id="LARGE_SCREEN_REQUIRED"
+        />
+        <Text
           style={{ padding: '0 16px 8px 16px', maxWidth: 460 }}
-        >
-          <FormattedMessage id="LARGE_SCREEN_MESSAGE" />
-        </Typography>
+          id="LARGE_SCREEN_MESSAGE"
+        />
         <ButtonLink
           href="/"
           display="primary"

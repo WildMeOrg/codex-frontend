@@ -1,11 +1,11 @@
 import React from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
 import { useSelector } from 'react-redux';
-import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import MainColumn from '../../components/MainColumn';
 import ButtonLink from '../../components/ButtonLink';
+import Text from '../../components/Text';
 import { selectSiteName } from '../../modules/site/selectors';
 
 export default function Welcome() {
@@ -21,22 +21,18 @@ export default function Welcome() {
         maxWidth: 500,
       }}
     >
-      <Typography
+      <Text
         variant="h3"
         component="h3"
         style={{ padding: '16px 0 8px 16px' }}
-      >
-        <FormattedMessage
-          id="WELCOME_TO_SITENAME"
-          values={{ siteName }}
-        />
-      </Typography>
-      <Typography
+        id="WELCOME_TO_SITENAME"
+        values={{ siteName }}
+      />
+      <Text
         variant="body1"
         style={{ padding: '0 16px 8px 16px', maxWidth: 400 }}
-      >
-        <FormattedMessage id="ACCOUNT_CREATION_SUCCESS" />
-      </Typography>
+        id="ACCOUNT_CREATION_SUCCESS"
+      />
       <Grid
         container
         spacing={2}

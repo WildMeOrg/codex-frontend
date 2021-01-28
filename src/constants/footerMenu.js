@@ -27,6 +27,11 @@ const accountAuthenticated = [
     href: '/orgs',
     external: false,
   },
+  {
+    id: 'PROJECTS',
+    href: '/projects',
+    external: false,
+  },
 ];
 
 const resources = [
@@ -68,17 +73,25 @@ const contribute = [
 const social = [
   {
     id: 'INSTAGRAM',
-    href: 'http://wiki.wildbook.org/',
+    href: 'https://www.instagram.com/wildmeorg',
+    customHref: 'site.links.instagramLink',
     external: true,
   },
   {
     id: 'TWITTER',
-    href: 'https://twitter.com/WildbookORG',
+    href: 'https://twitter.com/WildMeOrg',
+    customHref: 'site.links.twitterLink',
+    external: true,
+  },
+  {
+    id: 'FACEBOOK',
+    href: 'https://facebook.com/WildMeOrg',
+    customHref: 'site.links.facebookLink',
     external: true,
   },
   {
     id: 'GITHUB',
-    href: 'https://github.com/WildbookOrg/wildbook-frontend',
+    href: 'https://github.com/WildMeOrg/codex-frontend',
     external: true,
   },
 ];

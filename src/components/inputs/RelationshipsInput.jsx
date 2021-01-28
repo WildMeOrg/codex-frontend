@@ -6,10 +6,10 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
-import Typography from '@material-ui/core/Typography';
 import IndividualInput from './IndividualInput';
 import DeleteButton from '../DeleteButton';
 import Button from '../Button';
+import Text from '../Text';
 
 export default function RelationshipsInput({
   schema,
@@ -37,9 +37,7 @@ export default function RelationshipsInput({
             key={relationship.id}
           >
             <div style={{ display: 'flex', alignItems: 'center' }}>
-              <Typography variant="subtitle2">
-                <FormattedMessage id="RELATIONSHIP" />
-              </Typography>
+              <Text variant="subtitle2" id="RELATIONSHIP" />
               <DeleteButton
                 onClick={() => onChange(otherRelationships)}
               />

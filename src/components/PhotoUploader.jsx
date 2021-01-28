@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useIntl } from 'react-intl';
-import Typography from '@material-ui/core/Typography';
 import Dashboard from '@uppy/react/lib/Dashboard';
 import Uppy from '@uppy/core';
 import '@uppy/core/dist/style.css';
 import '@uppy/dashboard/dist/style.css';
+import Text from './Text';
 
 export default function PhotoUploader({
   title,
@@ -35,7 +35,7 @@ export default function PhotoUploader({
 
   return (
     <div>
-      <Typography variant="subtitle1">{title}</Typography>
+      <Text variant="subtitle1">{title}</Text>
       {uppy && (
         <Dashboard
           uppy={uppy}

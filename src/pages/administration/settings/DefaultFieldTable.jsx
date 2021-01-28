@@ -3,12 +3,12 @@ import { useIntl, FormattedMessage } from 'react-intl';
 import { get } from 'lodash-es';
 
 import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
 import Alert from '@material-ui/lab/Alert';
 
 import usePutSiteSettings from '../../../models/site/usePutSiteSettings';
 import DataDisplay from '../../../components/dataDisplays/DataDisplay';
 import ActionIcon from '../../../components/ActionIcon';
+import Text from '../../../components/Text';
 import categoryTypes from '../../../constants/categoryTypes';
 import {
   RegionEditor,
@@ -149,13 +149,17 @@ export default function DefaultFieldTable({
           marginTop: 12,
         }}
       >
-        <Typography variant="h5" component="h5">
-          <FormattedMessage id="CONFIGURABLE_DEFAULT_FIELDS" />
-        </Typography>
+        <Text
+          variant="h5"
+          component="h5"
+          id="CONFIGURABLE_DEFAULT_FIELDS"
+        />
       </div>
-      <Typography variant="caption" style={{ marginBottom: 12 }}>
-        <FormattedMessage id="CONFIGURABLE_DEFAULT_FIELDS_DESCRIPTION" />
-      </Typography>
+      <Text
+        variant="caption"
+        style={{ marginBottom: 12 }}
+        id="CONFIGURABLE_DEFAULT_FIELDS_DESCRIPTION"
+      />
       <DataDisplay
         style={{ marginTop: 8 }}
         noTitleBar

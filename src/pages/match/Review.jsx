@@ -1,13 +1,13 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Divider from '@material-ui/core/Divider';
 
 import fluke from '../../assets/fluke.png';
 import fluke2 from '../../assets/cascade.jpg';
 import Button from '../../components/Button';
+import Text from '../../components/Text';
 import AnnotatedPhoto from './AnnotatedPhoto';
 
 export default function Review({ setMatching }) {
@@ -39,13 +39,15 @@ export default function Review({ setMatching }) {
         </Button>
       </Grid>
       <Grid style={{ margin: '0 auto' }} item>
-        <Typography variant="h3" component="h3">
-          <FormattedMessage id="CONFIRM_AND_SUBMIT_MATCHES" />
-        </Typography>
+        <Text
+          variant="h3"
+          component="h3"
+          id="CONFIRM_AND_SUBMIT_MATCHES"
+        />
       </Grid>
       {annotations.map((annotation, i) => (
         <Grid style={{ marginTop: 20 }} key={annotation.id} item>
-          <Typography
+          <Text
             component="h5"
             variant="h5"
             style={{ marginBottom: 12 }}
@@ -53,7 +55,7 @@ export default function Review({ setMatching }) {
             {`${i + 1}. Matching annotation ${annotation.id} to ${
               annotation.candidateMatch
             }`}
-          </Typography>
+          </Text>
           <Divider />
           <div
             style={{

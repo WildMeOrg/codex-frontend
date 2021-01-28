@@ -5,7 +5,6 @@ import { FlatfileButton } from '@flatfile/react';
 
 import { useTheme } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
 import FormControl from '@material-ui/core/FormControl';
 import FormGroup from '@material-ui/core/FormGroup';
 import Paper from '@material-ui/core/Paper';
@@ -14,6 +13,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 
 import { selectSightingSchema } from '../../modules/sightings/selectors';
 import Button from '../../components/Button';
+import Text from '../../components/Text';
 import InlineButton from '../../components/InlineButton';
 import { selectSiteName } from '../../modules/site/selectors';
 import TermsAndConditionsDialog from './TermsAndConditionsDialog';
@@ -57,9 +57,9 @@ export default function BulkReport({ onBack }) {
         </Button>
       </Grid>
       <div style={{ marginLeft: 12 }}>
-        <Typography variant="h6" style={{ marginTop: 20 }}>
+        <Text variant="h6" style={{ marginTop: 20 }}>
           1. Select fields
-        </Typography>
+        </Text>
       </div>
       <Paper
         elevation={2}
@@ -71,9 +71,11 @@ export default function BulkReport({ onBack }) {
           padding: '20px 12px',
         }}
       >
-        <Typography variant="subtitle2" style={{ marginBottom: 12 }}>
-          <FormattedMessage id="CHOOSE_FIELDS_DESCRIPTION" />
-        </Typography>
+        <Text
+          variant="subtitle2"
+          style={{ marginBottom: 12 }}
+          id="CHOOSE_FIELDS_DESCRIPTION"
+        />
         <FormControl component="fieldset">
           <FormGroup style={{ flexDirection: 'row' }}>
             {Object.keys(fields).map(fieldKey => {
@@ -110,9 +112,9 @@ export default function BulkReport({ onBack }) {
 
       <Grid item style={{ marginTop: 20 }}>
         <div style={{ marginLeft: 12 }}>
-          <Typography variant="h6" style={{ marginTop: 20 }}>
+          <Text variant="h6" style={{ marginTop: 20 }}>
             2. Upload data
-          </Typography>
+          </Text>
         </div>
         <Paper
           elevation={2}
@@ -164,12 +166,10 @@ export default function BulkReport({ onBack }) {
             )}
           />
           {sightingData ? (
-            <Typography
+            <Text
               variant="body2"
               style={{ margin: '8px 0 8px 4px' }}
-            >{`${
-              sightingData.length
-            } sightings imported.`}</Typography>
+            >{`${sightingData.length} sightings imported.`}</Text>
           ) : null}
         </Paper>
       </Grid>
@@ -240,11 +240,7 @@ export default function BulkReport({ onBack }) {
         </Button>
       </Grid>
       <Grid style={{ marginTop: 12 }} item>
-        {termsError && (
-          <Typography color="error">
-            <FormattedMessage id="TERMS_ERROR" />
-          </Typography>
-        )}
+        {termsError && <Text color="error" id="TERMS_ERROR" />}
       </Grid>
     </>
   );

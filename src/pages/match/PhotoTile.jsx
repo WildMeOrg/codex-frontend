@@ -1,13 +1,13 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
 import FullscreenIcon from '@material-ui/icons/Fullscreen';
 
 import Button from '../../components/Button';
+import Text from '../../components/Text';
 import { openFullscreen } from '../../utils/fullscreen';
 
 export default function PhotoTile({
@@ -36,7 +36,7 @@ export default function PhotoTile({
             <FormattedMessage id="PREVIOUS_SMALL_BUTTON" />
           </Button>
         )}
-        <Typography variant="h6">{title}</Typography>
+        <Text variant="h6">{title}</Text>
         {!hideButtons && (
           <Button size="small" onClick={onNext}>
             <FormattedMessage id="NEXT_SMALL_BUTTON" />

@@ -9,7 +9,6 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
 import Chip from '@material-ui/core/Chip';
-import Typography from '@material-ui/core/Typography';
 import Tooltip from '@material-ui/core/Tooltip';
 import Alert from '@material-ui/lab/Alert';
 import AlertTitle from '@material-ui/lab/AlertTitle';
@@ -21,6 +20,7 @@ import StarIcon from '@material-ui/icons/Star';
 
 import DataDisplay from '../../../../components/dataDisplays/DataDisplay';
 import Button from '../../../../components/Button';
+import Text from '../../../../components/Text';
 import useItisSearch from '../../../../utils/useItisSearch';
 
 export default function SpeciesEditor({
@@ -56,7 +56,7 @@ export default function SpeciesEditor({
           );
 
           return (
-            <Typography
+            <Text
               variant="body2"
               style={{
                 fontStyle: 'italic',
@@ -66,7 +66,7 @@ export default function SpeciesEditor({
             >
               {suggested && <StarIcon style={{ marginRight: 4 }} />}
               {scientificName}
-            </Typography>
+            </Text>
           );
         },
       },
@@ -187,13 +187,12 @@ export default function SpeciesEditor({
           data={searchResults || suggestedValues}
           idKey="itisTsn"
         />
-        <Typography
+        <Text
           component="p"
           variant="caption"
           style={{ margin: '8px 4px' }}
-        >
-          <FormattedMessage id="STAR_EXPLANATION" />
-        </Typography>
+          id="STAR_EXPLANATION"
+        />
       </DialogContent>
       <DialogActions style={{ padding: '0px 24px 24px 24px' }}>
         <Button display="primary" onClick={onSubmit}>

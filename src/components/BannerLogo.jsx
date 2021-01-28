@@ -1,11 +1,11 @@
 import React from 'react';
 import { get } from 'lodash-es';
 import { useTheme } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
 import InlineButton from './InlineButton';
 import Link from './Link';
 import InstanceLogo from './svg/InstanceLogo';
 import useSiteSettings from '../models/site/useSiteSettings';
+import Text from './Text';
 
 export default function BannerLogo({ href, onClick, ...rest }) {
   const { data: siteSettings, loading, error } = useSiteSettings();
@@ -32,15 +32,15 @@ export default function BannerLogo({ href, onClick, ...rest }) {
         <InstanceLogo
           style={{ fill: theme.palette.primary.main, height: 52 }}
         />
-        <Typography
-          variant="h4"
+        <Text
+          variant="h5"
           style={{
             color: theme.palette.common.white,
             margin: '0 12px 0 4px',
           }}
         >
           {siteName}
-        </Typography>
+        </Text>
       </div>
     </Container>
   );

@@ -1,10 +1,10 @@
 import React from 'react';
-import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import SettingsIcon from '@material-ui/icons/Settings';
 import BigAvatar from './BigAvatar';
+import Text from './Text';
 
 export default function EntityHeader({
   imgSrc,
@@ -13,6 +13,7 @@ export default function EntityHeader({
   children,
   square = false,
   onSettingsClick,
+  renderOptions,
 }) {
   return (
     <>
@@ -49,7 +50,7 @@ export default function EntityHeader({
               justifyContent: 'space-between',
             }}
           >
-            <Typography
+            <Text
               variant="h4"
               component="h4"
               style={{
@@ -60,15 +61,18 @@ export default function EntityHeader({
               }}
             >
               {name}
-            </Typography>
-            {editable && (
-              <IconButton
-                aria-label="Edit settings and profile"
-                onClick={onSettingsClick}
-              >
-                <SettingsIcon fontSize="large" />
-              </IconButton>
-            )}
+            </Text>
+            <div>
+              {editable && (
+                <IconButton
+                  aria-label="Edit settings and profile"
+                  onClick={onSettingsClick}
+                >
+                  <SettingsIcon fontSize="large" />
+                </IconButton>
+              )}
+              {renderOptions}
+            </div>
           </div>
           <div style={{ marginLeft: 4, marginTop: 4 }}>
             {children}

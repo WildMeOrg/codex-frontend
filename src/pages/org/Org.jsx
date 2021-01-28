@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { get, toLower } from 'lodash-es';
-import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import WebIcon from '@material-ui/icons/Web';
 import DescriptionIcon from '@material-ui/icons/Description';
@@ -13,6 +12,7 @@ import SadScreen from '../../components/SadScreen';
 import EditEntityModal from '../../components/EditEntityModal';
 import EncounterGallery from '../../components/EncounterGallery';
 import Link from '../../components/Link';
+import Text from '../../components/Text';
 import { selectOrgs } from '../../modules/orgs/selectors';
 import orgSchema, {
   orgSchemaCategories,
@@ -88,9 +88,7 @@ export default function Org() {
             return (
               <Grid key={item.key} item style={{ display: 'flex' }}>
                 <Icon color="action" style={{ marginRight: 8 }} />
-                <Typography>
-                  {item.render(matchingData.value)}
-                </Typography>
+                <Text>{item.render(matchingData.value)}</Text>
               </Grid>
             );
           })}

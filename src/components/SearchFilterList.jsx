@@ -1,9 +1,9 @@
 import React from 'react';
-import { useIntl, FormattedMessage } from 'react-intl';
+import { useIntl } from 'react-intl';
 import { get, isEqual } from 'lodash-es';
 import Chip from '@material-ui/core/Chip';
 import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
+import Text from './Text';
 
 export default function SearchFilterList({
   formValues,
@@ -24,14 +24,8 @@ export default function SearchFilterList({
 
   return (
     <div style={{ margin: '16px 0 0 16px' }}>
-      <Typography variant="subtitle1">
-        <FormattedMessage id="ACTIVE_FILTERS" />
-      </Typography>
-      {activeFilters.length === 0 && (
-        <Typography>
-          <FormattedMessage id="NO_ACTIVE_FILTERS" />
-        </Typography>
-      )}
+      <Text variant="subtitle1" id="ACTIVE_FILTERS" />
+      {activeFilters.length === 0 && <Text id="NO_ACTIVE_FILTERS" />}
       <Grid container spacing={1}>
         {activeFilters.map(field => (
           <Grid item key={field.name}>

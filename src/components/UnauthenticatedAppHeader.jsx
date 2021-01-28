@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { FormattedMessage } from 'react-intl';
 
 import { useTheme } from '@material-ui/core/styles';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import Typography from '@material-ui/core/Typography';
 import DropDownIcon from '@material-ui/icons/ArrowDropDown';
 
 import HeaderMenu from './HeaderMenu';
 import Link from './Link';
 import InlineButton from './InlineButton';
 import BannerLogo from './BannerLogo';
+import Text from './Text';
 
 const languages = ['English', 'Español', 'Deutch'];
 const activeLanguage = 'English';
@@ -110,7 +109,7 @@ export default function UnauthenticatedAppHeader({
                   style={{ width: '100%' }}
                 >
                   <MenuItem className="dark-menu-item">
-                    <Typography>{language}</Typography>
+                    <Text>{language}</Text>
                   </MenuItem>
                 </InlineButton>
               ))}
@@ -126,9 +125,7 @@ export default function UnauthenticatedAppHeader({
           }}
           href="/login"
         >
-          <Typography>
-            <FormattedMessage id="LOG_IN" />
-          </Typography>
+          <Text id="LOG_IN" />
         </Link>
       </div>
     </div>

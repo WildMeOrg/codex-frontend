@@ -3,7 +3,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
-import Typography from '@material-ui/core/Typography';
+import Text from '../Text';
 
 function Core({ children, required, width, style = {} }) {
   return (
@@ -39,8 +39,8 @@ export default function SpeciesInput({
         {choices.map(option => (
           <MenuItem value={option.id} key={option.id}>
             <div style={{ display: 'flex', flexDirection: 'column' }}>
-              <Typography>{option.scientificName}</Typography>
-              <Typography
+              <Text>{option.scientificName}</Text>
+              <Text
                 variant="body2"
                 style={{
                   fontStyle: 'italic',
@@ -51,7 +51,7 @@ export default function SpeciesInput({
                 }}
               >
                 {option.commonNames.join(', ')}
-              </Typography>
+              </Text>
             </div>
           </MenuItem>
         ))}
