@@ -80,6 +80,8 @@
   "IDENTIFIED_INDIVIDUALS": "Identified individuals",
   "CREATE_NEW_USER": "Create new user",
   "SUBMISSION_ERROR": "Submission error",
+  "ASSET_PROCESSING_ERROR": "Asset processing error",
+  "ASSET_PROCESSING_ERROR_DESCRIPTION": "The server failed to process your photographs.",
   "MUST_LOG_IN": "You must log in to access the requested page.",
   "BACK_TO_MATCHES": "Back to matches",
   "CONFIRM_AND_SUBMIT_MATCHES": "Confirm and submit matches",

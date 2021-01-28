@@ -109,7 +109,6 @@
     "@uppy/drag-drop": "^1.4.10",
     "@uppy/react": "^1.5.0",
     "@uppy/status-bar": "^1.6.3",
-    "@uppy/transloadit": "^1.5.5",
     "@uppy/tus": "^1.5.7",
     "bboxjs": "^1.0.0",
     "clsx": "^1.1.0",

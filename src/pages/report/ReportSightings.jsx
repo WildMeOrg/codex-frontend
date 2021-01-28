@@ -16,6 +16,7 @@ import ButtonLink from '../../components/ButtonLink';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import Link from '../../components/Link';
 import Button from '../../components/Button';
+import useSubmission from '../../models/submission/useSubmission';
 import StandardReport from './StandardReport';
 import BulkReport from './BulkReport';
 import UploadManager from './UploadManager';
@@ -23,6 +24,15 @@ import UploadManager from './UploadManager';
 export default function ReportSightings({ authenticated = false }) {
   const intl = useIntl();
   useDocumentTitle(intl.formatMessage({ id: 'REPORT_SIGHTINGS' }));
+
+  const {
+    createSubmission,
+    submitSubmission,
+    submissionGuid,
+    loading,
+    error,
+    setError,
+  } = useSubmission('Test upload', 'Oh yeaah');
   const [mode, setMode] = useState('');
   const [files, setFiles] = useState([]);
   const [exifData, setExifData] = useState([]);
@@ -30,6 +40,12 @@ export default function ReportSightings({ authenticated = false }) {
   const noImages = mode !== '' && files.length === 0;
 
   const onBack = () => setReporting(false);
+  const radioClick = e => {
+    if (e.target.value) {
+      setMode(e.target.value);
+      if (!submissionGuid) createSubmission();
+    }
+  };
 
   return (
     <MainColumn style={{ display: 'flex', justifyContent: 'center' }}>
@@ -72,13 +88,11 @@ export default function ReportSightings({ authenticated = false }) {
                     aria-label="sharing"
                     name="sharing"
                     value={mode}
+                    onClick={radioClick}
                   >
                     <FormControlLabel
                       value="one"
                       control={<Radio />}
-                      onClick={e => {
-                        if (e.target.value) setMode(e.target.value);
-                      }}
                       label={
                         <FormattedMessage id="ONE_SIGHTING_ONE_INDIVIDUAL" />
                       }
@@ -90,9 +104,6 @@ export default function ReportSightings({ authenticated = false }) {
                     <FormControlLabel
                       value="multiple"
                       control={<Radio />}
-                      onClick={e => {
-                        if (e.target.value) setMode(e.target.value);
-                      }}
                       label={
                         <FormattedMessage id="ONE_SIGHTING_MULTIPLE_INDIVIDUALS" />
                       }
@@ -104,9 +115,6 @@ export default function ReportSightings({ authenticated = false }) {
                     <FormControlLabel
                       value="bulk"
                       control={<Radio />}
-                      onClick={e => {
-                        if (e.target.value) setMode(e.target.value);
-                      }}
                       label={
                         <FormattedMessage id="MULTIPLE_SIGHTINGS" />
                       }
@@ -126,6 +134,7 @@ export default function ReportSightings({ authenticated = false }) {
                     setExifData={setExifData}
                     files={files}
                     setFiles={setFiles}
+                    submissionGuid={submissionGuid}
                   />
                   <div
                     style={{
@@ -152,11 +161,29 @@ export default function ReportSightings({ authenticated = false }) {
                 </Grid>
               )}
 
+              {error && (
+                <Grid item style={{ marginTop: 16 }}>
+                  <Alert
+                    onClose={() => setError(null)}
+                    severity="error"
+                  >
+                    <AlertTitle>
+                      <FormattedMessage id="ASSET_PROCESSING_ERROR" />
+                    </AlertTitle>
+                    <FormattedMessage id="ASSET_PROCESSING_ERROR_DESCRIPTION" />
+                  </Alert>
+                </Grid>
+              )}
+
               <Grid item>
                 <Button
-                  display={noImages ? 'subtle' : 'primary'}
+                  display="primary"
                   disabled={!mode}
-                  onClick={() => setReporting(true)}
+                  loading={loading}
+                  onClick={async () => {
+                    await submitSubmission();
+                    setReporting(true);
+                  }}
                   style={{ marginTop: 16 }}
                 >
                   <FormattedMessage

@@ -2,29 +2,22 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { get } from 'lodash-es';
 import Uppy from '@uppy/core';
-import Transloadit from '@uppy/transloadit';
-import DragDrop from '@uppy/react/lib/DragDrop';
-import StatusBar from '@uppy/react/lib/StatusBar';
-import IconButton from '@material-ui/core/IconButton';
-import Grid from '@material-ui/core/Grid';
-import CloseIcon from '@material-ui/icons/Cancel';
-import {
-  transloaditKey,
-  transloaditTemplateId,
-  transloaditService,
-} from '../../constants/apiKeys';
-import { getExifData } from '../../utils/exif';
+import Tus from '@uppy/tus';
+import Dashboard from '@uppy/react/lib/Dashboard';
+import Skeleton from '@material-ui/lab/Skeleton';
 import Cropper from './Cropper';
 
 import '@uppy/core/dist/style.css';
-import '@uppy/drag-drop/dist/style.css';
-import '@uppy/status-bar/dist/style.css';
+import '@uppy/dashboard/dist/style.css';
+
+const dashboardWidth = 600;
+const dashboardHeight = 400;
 
 export default function UploadManager({
   files,
   setFiles,
   exifData,
-  setExifData,
+  submissionGuid,
 }) {
   const intl = useIntl();
   const currentExifData = useRef();
@@ -41,50 +34,40 @@ export default function UploadManager({
   const fileRef = useRef([]);
   fileRef.current = files;
 
-  useEffect(() => {
-    const uppyInstance = Uppy({
-      meta: { type: 'test' },
-      restrictions: {
-        allowedFileTypes: ['.jpg', '.jpeg', '.png'],
-      },
-      autoProceed: false,
-    });
+  useEffect(
+    () => {
+      let uppyInstance;
+      if (submissionGuid) {
+        uppyInstance = Uppy({
+          meta: { type: 'Report sightings image upload' },
+          restrictions: {
+            allowedFileTypes: ['.jpg', '.jpeg', '.png'],
+          },
+          autoProceed: false,
+        });
 
-    uppyInstance.use(Transloadit, {
-      service: transloaditService,
-      params: {
-        auth: { key: transloaditKey },
-        template_id: transloaditTemplateId,
-      },
-      waitForEncoding: false,
-      waitForMetadata: false,
-      importFromUploadURLs: false,
-      alwaysRunAssembly: false,
-      signature: null,
-      fields: {},
-      limit: 0,
-    });
+        uppyInstance.use(Tus, {
+          endpoint: `${__houston_url__}/api/v1/submissions/tus`,
+          headers: {
+            'x-houston-submission-id': submissionGuid,
+          },
+        });
 
-    uppyInstance.on('complete', uppyState => {
-      const uploadObjects = get(uppyState, 'successful', []);
-      const newFiles = uploadObjects.map(upload => ({
-        filePath: get(upload, 'response.uploadURL'),
-        fileName: get(upload, 'name'),
-        croppedImage: null,
-      }));
-      const newFileList = [...fileRef.current, ...newFiles];
-      setFiles(newFileList);
+        uppyInstance.on('complete', uppyState => {
+          const uploadObjects = get(uppyState, 'successful', []);
+          console.log(`Uploaded ${uploadObjects.length} objects`);
+          console.log(uploadObjects);
+        });
 
-      const newFilePaths = newFiles.map(file => file.filePath);
-      getExifData(newFilePaths, newExifData => {
-        setExifData([...currentExifData.current, ...newExifData]);
-      });
-    });
+        setUppy(uppyInstance);
+      }
 
-    setUppy(uppyInstance);
-
-    return () => uppyInstance.close();
-  }, []);
+      return () => {
+        if (uppyInstance) uppyInstance.close();
+      };
+    },
+    [submissionGuid],
+  );
 
   return (
     <div>
@@ -106,28 +89,20 @@ export default function UploadManager({
           }}
         />
       )}
-      {uppy && (
-        <div style={{ marginBottom: 12, width: 400 }}>
-          <DragDrop
+      {uppy ? (
+        <div style={{ marginBottom: 32, maxWidth: dashboardWidth }}>
+          <Dashboard
             uppy={uppy}
-            height={300}
             note={intl.formatMessage({ id: 'UPPY_IMAGE_NOTE' })}
+            showLinkToFileUploadResult={false}
+            showProgressDetails
+            height={dashboardHeight}
             locale={{
               strings: {
                 dropHereOr: intl.formatMessage({
                   id: 'UPPY_DROP_IMAGES',
                 }),
                 browse: intl.formatMessage({ id: 'UPPY_BROWSE' }),
-              },
-            }}
-          />
-          <div style={{ height: 24 }} />
-          <StatusBar
-            uppy={uppy}
-            hideAfterFinish={false}
-            showProgressDetails
-            locale={{
-              strings: {
                 uploading: intl.formatMessage({
                   id: 'UPPY_UPLOADING',
                 }),
@@ -172,54 +147,16 @@ export default function UploadManager({
             }}
           />
         </div>
+      ) : (
+        <Skeleton
+          variant="rect"
+          style={{
+            width: '100%',
+            maxWidth: dashboardWidth,
+            height: dashboardHeight,
+          }}
+        />
       )}
-      <Grid container spacing={3}>
-        {files.map((file, i) => (
-          <Grid
-            item
-            key={file.filePath}
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              position: 'relative',
-            }}
-          >
-            <img
-              src={file.croppedImage || file.filePath}
-              width={200}
-              alt={`Uploaded media #${i + 1}`}
-            />
-            <svg
-              style={{
-                position: 'absolute',
-                top: -4,
-                right: -4,
-                zIndex: 1001,
-              }}
-              width={24}
-              height={24}
-            >
-              <circle cx={12} cy={12} r={13} fill="white" />
-            </svg>
-            <IconButton
-              style={{
-                position: 'absolute',
-                top: -16,
-                right: -16,
-                zIndex: 1001,
-              }}
-              onClick={() => {
-                const newFileList = files.filter(
-                  f => f.filePath !== file.filePath,
-                );
-                setFiles(newFileList);
-              }}
-            >
-              <CloseIcon />
-            </IconButton>
-          </Grid>
-        ))}
-      </Grid>
     </div>
   );
 }
