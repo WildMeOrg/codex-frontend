@@ -27,6 +27,11 @@ const accountAuthenticated = [
     href: '/orgs',
     external: false,
   },
+  {
+    id: 'PROJECTS',
+    href: '/projects',
+    external: false,
+  },
 ];
 
 const resources = [
@@ -69,11 +74,19 @@ const social = [
   {
     id: 'INSTAGRAM',
     href: 'https://www.instagram.com/wildmeorg',
+    customHref: 'site.links.instagramLink',
     external: true,
   },
   {
     id: 'TWITTER',
     href: 'https://twitter.com/WildMeOrg',
+    customHref: 'site.links.twitterLink',
+    external: true,
+  },
+  {
+    id: 'FACEBOOK',
+    href: 'https://facebook.com/WildMeOrg',
+    customHref: 'site.links.facebookLink',
     external: true,
   },
   {

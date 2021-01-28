@@ -13,7 +13,7 @@ export default function Home() {
   useDocumentTitle(intl.formatMessage({ id: 'HOME' }));
 
   return (
-    <UserProfile userData={users.bob}>
+    <UserProfile userData={users.bob} noCollaborate>
       <Actions />
     </UserProfile>
   );

@@ -18,6 +18,7 @@ import SadScreen from './SadScreen';
 import EncounterGallery from './EncounterGallery';
 import EditEntityModal from './EditEntityModal';
 import Text from './Text';
+import Button from './Button';
 
 const items = [
   {
@@ -64,7 +65,11 @@ const items = [
   },
 ];
 
-export default function UserProfile({ children, userData }) {
+export default function UserProfile({
+  children,
+  userData,
+  noCollaborate = false,
+}) {
   const [editingProfile, setEditingProfile] = useState(false);
 
   if (!userData)
@@ -89,6 +94,15 @@ export default function UserProfile({ children, userData }) {
         imgSrc={userData.profile}
         editable={userData.editable}
         onSettingsClick={() => setEditingProfile(true)}
+        renderOptions={
+          noCollaborate ? (
+            undefined
+          ) : (
+            <Button>
+              <FormattedMessage id="ADD_COLLABORATOR" />
+            </Button>
+          )
+        }
       >
         <Grid container direction="column" spacing={1}>
           {items.map(item => {

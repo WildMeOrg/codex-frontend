@@ -128,6 +128,7 @@ export default function GeneralSettings() {
                     descriptionId: matchingSetting.descriptionId,
                     fieldType: matchingSetting.displayType,
                   }}
+                  disabled={!matchingSetting.settable}
                   minimalLabels
                   value={currentValues[settingKey]}
                   onChange={value => {
