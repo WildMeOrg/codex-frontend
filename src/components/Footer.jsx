@@ -1,15 +1,19 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
+import { get } from 'lodash-es';
 import { useTheme } from '@material-ui/core/styles';
 import MenuList from '@material-ui/core/MenuList';
 import MenuItem from '@material-ui/core/MenuItem';
+
+import footerMenuSchema from '../constants/footerMenu';
+import useSiteSettings from '../models/site/useSiteSettings';
 import ButtonLink from './ButtonLink';
 import Link from './Link';
 import BannerLogo from './BannerLogo';
 import Text from './Text';
-import footerMenuSchema from '../constants/footerMenu';
 
 function Menu({ labelId, schema, themeColor }) {
+  const { data } = useSiteSettings();
   return (
     <MenuList style={{ margin: '0 20px' }}>
       <MenuItem>
@@ -22,7 +26,10 @@ function Menu({ labelId, schema, themeColor }) {
       </MenuItem>
       {schema.map(item => (
         <MenuItem key={item.id}>
-          <Link href={item.href} external={item.external}>
+          <Link
+            href={get(data, [item.customHref, 'value']) || item.href}
+            external={item.external}
+          >
             <Text id={item.id} />
           </Link>
         </MenuItem>

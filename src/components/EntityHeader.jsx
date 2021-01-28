@@ -13,6 +13,7 @@ export default function EntityHeader({
   children,
   square = false,
   onSettingsClick,
+  renderOptions,
 }) {
   return (
     <>
@@ -61,14 +62,17 @@ export default function EntityHeader({
             >
               {name}
             </Text>
-            {editable && (
-              <IconButton
-                aria-label="Edit settings and profile"
-                onClick={onSettingsClick}
-              >
-                <SettingsIcon fontSize="large" />
-              </IconButton>
-            )}
+            <div>
+              {editable && (
+                <IconButton
+                  aria-label="Edit settings and profile"
+                  onClick={onSettingsClick}
+                >
+                  <SettingsIcon fontSize="large" />
+                </IconButton>
+              )}
+              {renderOptions}
+            </div>
           </div>
           <div style={{ marginLeft: 4, marginTop: 4 }}>
             {children}
