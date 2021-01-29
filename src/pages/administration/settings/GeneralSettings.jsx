@@ -22,6 +22,7 @@ const generalSettingsFields = [
   'site.name',
   'site.private',
   'site.look.themeColor',
+  'site.general.photoGuidelinesUrl',
   'site.links.facebookLink',
   'site.links.instagramLink',
   'site.links.twitterLink',
