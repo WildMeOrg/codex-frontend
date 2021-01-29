@@ -11,11 +11,6 @@ export default function Actions() {
 
       <Grid container spacing={1}>
         <Grid style={{ margin: 4 }} item>
-          <ButtonLink href="/report">
-            <FormattedMessage id="REPORT_SIGHTINGS" />
-          </ButtonLink>
-        </Grid>
-        <Grid style={{ margin: 4 }} item>
           <ButtonLink href="/users/bob">
             <FormattedMessage id="VIEW_PUBLIC_PROFILE" />
           </ButtonLink>

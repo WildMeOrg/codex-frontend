@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { get } from 'lodash-es';
 
-import Grid from '@material-ui/core/Grid';
 import ForumIcon from '@material-ui/icons/Forum';
 import EmailIcon from '@material-ui/icons/Email';
 import LocationIcon from '@material-ui/icons/PersonPin';
@@ -26,49 +25,45 @@ import CardContainer from './cards/CardContainer';
 const items = [
   {
     key: 'forum_id',
+    id: 'forum_id',
     titleId: 'PROFILE_LABEL_FORUM_ID',
     icon: ForumIcon,
-    render: forumId => (
-      <>
-        <FormattedMessage id="PROFILE_LABEL_FORUM_ID" />
-        <Link href="google.com">{forumId}</Link>
-      </>
+    renderValue: forumId => (
+      <Link
+        external
+        href={`https://community.wildbook.org/u/${forumId}/summary`}
+      >
+        {forumId}
+      </Link>
     ),
   },
   {
     key: 'email',
+    id: 'email',
     titleId: 'PROFILE_LABEL_EMAIL',
     icon: EmailIcon,
-    render: emailAddress => (
-      <FormattedMessage
-        id="PROFILE_LABEL_EMAIL"
-        values={{ emailAddress }}
-      />
+    renderValue: emailAddress => (
+      <Link external href={`mailto://${emailAddress}`}>
+        {emailAddress}
+      </Link>
     ),
   },
   {
     key: 'website',
+    id: 'website',
     titleId: 'PROFILE_LABEL_WEBSITE',
     icon: WebIcon,
-    render: website => (
-      <>
-        <FormattedMessage id="PROFILE_LABEL_WEBSITE" />
-        <Link external href={website}>
-          {website}
-        </Link>
-      </>
+    renderValue: website => (
+      <Link external href={website}>
+        {website}
+      </Link>
     ),
   },
   {
     key: 'location',
+    id: 'location',
     titleId: 'PROFILE_LABEL_LOCATION',
     icon: LocationIcon,
-    render: location => (
-      <FormattedMessage
-        id="PROFILE_LABEL_LOCATION"
-        values={{ location }}
-      />
-    ),
   },
 ];
 
@@ -87,6 +82,22 @@ export default function UserProfile({
       />
     );
 
+  const metadataItems = items.map(item => {
+    const matchingData = userData.fields.find(
+      field => field.name === item.key,
+    );
+    const matchingSchemaObject = userSchema.find(
+      schemaObject => schemaObject.name === item.key,
+    );
+    const fieldValue = get(matchingData, 'value', null);
+    return {
+      ...item,
+      value: fieldValue,
+      valueMatchesDefault:
+        matchingSchemaObject.defaultValue === fieldValue,
+    };
+  });
+
   return (
     <MainColumn fullWidth>
       <EditEntityModal
@@ -97,6 +108,7 @@ export default function UserProfile({
         categories={userSchemaCategories}
       />
       <EntityHeader
+        admin={userData.admin}
         name={userData.name}
         imgSrc={userData.profile}
         editable={userData.editable}
@@ -111,34 +123,15 @@ export default function UserProfile({
           )
         }
       >
-        <Grid container direction="column" spacing={1}>
-          {items.map(item => {
-            const matchingData = userData.fields.find(
-              field => field.name === item.key,
-            );
-            const matchingSchemaObject = userSchema.find(
-              schemaObject => schemaObject.name === item.key,
-            );
-            const fieldValue = get(matchingData, 'value', null);
-            if (!matchingData || !matchingSchemaObject) return null;
-            if (matchingSchemaObject.defaultValue === fieldValue)
-              return null;
-
-            const Icon = item.icon;
-
-            return (
-              <Grid key={item.key} item style={{ display: 'flex' }}>
-                <Icon color="action" style={{ marginRight: 8 }} />
-                <Text>{item.render(matchingData.value)}</Text>
-              </Grid>
-            );
-          })}
-        </Grid>
+        <Text variant="subtitle2">User since December 2014</Text>
       </EntityHeader>
       {children}
       <div style={{ display: 'flex', flexWrap: 'wrap' }}>
         <CardContainer size="small">
-          <MetadataCard metadata={items} />
+          <MetadataCard
+            editable={userData.editable}
+            metadata={metadataItems}
+          />
           <MembersCard
             editable
             members={[

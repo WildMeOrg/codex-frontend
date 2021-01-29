@@ -7,6 +7,7 @@ import BigAvatar from './BigAvatar';
 import Text from './Text';
 
 export default function EntityHeader({
+  admin = false,
   imgSrc,
   name,
   editable,
@@ -20,7 +21,6 @@ export default function EntityHeader({
       <Grid container>
         <Grid
           style={{
-            marginTop: 12,
             marginLeft: 12,
             padding: '24px 0 0 0',
           }}
@@ -31,6 +31,7 @@ export default function EntityHeader({
             editable={editable}
             name={name}
             square={square}
+            admin={admin}
           />
         </Grid>
         <Grid
@@ -79,7 +80,7 @@ export default function EntityHeader({
           </div>
         </Grid>
       </Grid>
-      <Divider style={{ marginTop: 12 }} />
+      <Divider style={{ marginTop: 24, marginBottom: 12 }} />
     </>
   );
 }

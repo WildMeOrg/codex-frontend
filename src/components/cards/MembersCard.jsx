@@ -8,6 +8,7 @@ import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import AddIcon from '@material-ui/icons/Add';
 import MoreIcon from '@material-ui/icons/MoreVert';
+import Text from '../Text';
 import Card from './Card';
 
 export default function MembersCard({
@@ -38,7 +39,15 @@ export default function MembersCard({
             </ListItemAvatar>
             <ListItemText
               primary={member.name}
-              secondary={member.role}
+              secondary={
+                <Text
+                  component="span"
+                  variant="body2"
+                  style={{ fontStyle: 'italic' }}
+                >
+                  {member.role}
+                </Text>
+              }
             />
             <ListItemSecondaryAction>
               <MoreIcon />

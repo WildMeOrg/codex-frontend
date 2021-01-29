@@ -10,7 +10,7 @@ export default function({
 }) {
   const theme = useTheme();
   const isSm = useMediaQuery(theme.breakpoints.down('sm'));
-  const marginTop = isSm ? 56 : 64;
+  const marginTop = isSm ? 56 : 72;
 
   return (
     <div
@@ -18,7 +18,7 @@ export default function({
         margin: `${marginTop}px auto 200px auto`,
         width: '100%',
         position: 'relative',
-        maxWidth: fullWidth ? 'unset' : 851,
+        maxWidth: fullWidth ? 905 : 851,
         ...style,
       }}
       {...rest}
