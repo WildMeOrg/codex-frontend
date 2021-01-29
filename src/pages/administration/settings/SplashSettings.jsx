@@ -22,8 +22,11 @@ const newSettingFields = [
   'site.general.tagline',
   'site.general.taglineSubtitle',
   'site.general.description',
-  'site.general.testimonial',
-  'site.general.testimonialCitation',
+  'site.general.customCardLine1',
+  'site.general.customCardLine2',
+  'site.general.customCardButtonText',
+  'site.general.helpDescription',
+  'site.general.donationButtonUrl',
 ];
 
 function SettingInput({ customFieldCategories, schema, ...rest }) {
@@ -31,7 +34,7 @@ function SettingInput({ customFieldCategories, schema, ...rest }) {
 }
 
 export default function SiteSettings() {
-  const newSiteSettings = useSiteSettings();
+  const siteSettings = useSiteSettings();
   const {
     putSiteSettings,
     error,
@@ -43,14 +46,14 @@ export default function SiteSettings() {
   const [currentValues, setCurrentValues] = useState(null);
 
   const edmValues = newSettingFields.map(fieldKey =>
-    get(newSiteSettings, ['data', fieldKey, 'value']),
+    get(siteSettings, ['data', fieldKey, 'value']),
   );
   useEffect(() => {
     setCurrentValues(zipObject(newSettingFields, edmValues));
   }, edmValues);
 
   const customFieldCategories = get(
-    newSiteSettings,
+    siteSettings,
     ['data', 'site.custom.customFieldCategories', 'value'],
     [],
   );
@@ -62,7 +65,7 @@ export default function SiteSettings() {
       style={{ marginTop: 20, padding: 20 }}
     >
       {newSettingFields.map(settingKey => {
-        const matchingSetting = get(newSiteSettings, [
+        const matchingSetting = get(siteSettings, [
           'data',
           settingKey,
         ]);

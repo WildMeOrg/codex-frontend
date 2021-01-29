@@ -121,7 +121,10 @@ export default function Splash() {
             {get(newSiteSettings, ['site.general.tagline', 'value'])}
           </Text>
           <Text responsive variant="subtitle1">
-            Automated identification for cetaceans.
+            {get(newSiteSettings, [
+              'site.general.taglineSubtitle',
+              'value',
+            ])}
           </Text>
           <ButtonLink
             display="marketing"

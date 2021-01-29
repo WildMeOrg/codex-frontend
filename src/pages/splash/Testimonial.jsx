@@ -1,31 +1,22 @@
 import React from 'react';
 import { get } from 'lodash-es';
-import { useSelector } from 'react-redux';
 import Grid from '@material-ui/core/Grid';
 
 import Button from '../../components/Button';
 import Text from '../../components/Text';
 import useSiteSettings from '../../models/site/useSiteSettings';
-import { selectSiteSettings } from '../../modules/site/selectors';
 
 const imageSize = '25vw';
 
-export default function Testimonial() {
-  const oldSiteSettings = useSelector(selectSiteSettings);
+export default function CustomCard() {
   const { data: siteSettings, loading, error } = useSiteSettings();
 
-  const testimonial = get(
-    siteSettings,
-    ['site.general.testimonial', 'value'],
-    '',
-  );
-  const testimonialCitation = get(
-    siteSettings,
-    ['site.general.testimonialCitation', 'value'],
-    '',
-  );
-
   if (loading || error) return null;
+
+  const buttonUrl = get(siteSettings, [
+    'site.general.customCardButtonUrl',
+    'value',
+  ]);
 
   return (
     <Grid
@@ -41,9 +32,8 @@ export default function Testimonial() {
       <Grid item style={{ marginBottom: 40 }}>
         <div
           style={{
-            backgroundImage: `url(${
-              oldSiteSettings.testimonialAuthorImage
-            })`,
+            backgroundImage:
+              'url(https://images-na.ssl-images-amazon.com/images/I/71h5dWJt+XL.jpg)',
             borderRadius: 1000,
             backgroundSize: 'cover',
             float: 'right',
@@ -77,8 +67,11 @@ export default function Testimonial() {
             letterSpacing: '0.05em',
           }}
         >
-          {`"${testimonial ||
-            'Set up your testimonial in the site settings menu.'}"`}
+          {get(
+            siteSettings,
+            ['site.general.customCardLine1', 'value'],
+            '',
+          )}
         </Text>
         <Text
           responsive
@@ -96,16 +89,27 @@ export default function Testimonial() {
             fontWeight: 'bold',
           }}
         >
-          {testimonialCitation}
+          {get(
+            siteSettings,
+            ['site.general.customCardLine2', 'value'],
+            '',
+          )}
         </Text>
-        <Button
-          display="marketing"
-          style={{
-            marginTop: 52,
-          }}
-        >
-          See contributors
-        </Button>
+        {buttonUrl && (
+          <Button
+            display="marketing"
+            style={{
+              marginTop: 52,
+            }}
+            href={buttonUrl}
+          >
+            {get(
+              siteSettings,
+              ['site.general.customCardButtonText', 'value'],
+              '',
+            )}
+          </Button>
+        )}
       </Grid>
     </Grid>
   );

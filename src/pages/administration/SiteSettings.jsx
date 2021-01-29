@@ -12,7 +12,7 @@ export default function AdminActions() {
   const intl = useIntl();
   useDocumentTitle(intl.formatMessage({ id: 'SITE_SETTINGS' }));
 
-  const [activeTab, setActiveTab] = useState('fields');
+  const [activeTab, setActiveTab] = useState('general');
   return (
     <div style={{ marginTop: 20 }}>
       <Tabs
