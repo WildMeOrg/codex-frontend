@@ -24,13 +24,14 @@ import shane from '../../assets/shane.jpg';
 import HeaderButton from './HeaderButton';
 import NotificationsPane from './NotificationsPane';
 import ActionsPane from './ActionsPane';
+import NavTabs from './NavTabs';
 
 export default function AppHeader() {
   const theme = useTheme();
   const { data: meData } = useGetMe();
   const isAdministrator = get(meData, 'is_admin', false);
 
-  const isXs = useMediaQuery(theme.breakpoints.down('xs'));
+  const isSm = useMediaQuery(theme.breakpoints.down('sm'));
 
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [exploreOpen, setExploreOpen] = React.useState(false);
@@ -70,7 +71,7 @@ export default function AppHeader() {
           <div />
         </ClickAwayListener>
       )}
-      {isXs && (
+      {isSm && (
         <AppDrawer
           open={drawerOpen}
           onClose={() => setDrawerOpen(false)}
@@ -81,7 +82,7 @@ export default function AppHeader() {
       <Toolbar
         style={{ display: 'flex', justifyContent: 'space-between' }}
       >
-        {isXs ? (
+        {isSm ? (
           <IconButton
             edge="start"
             color="inherit"
@@ -91,8 +92,12 @@ export default function AppHeader() {
             <MenuIcon />
           </IconButton>
         ) : (
-          <BannerLogo href="/" onClick={handleClick} />
+          <>
+            <BannerLogo href="/" onClick={handleClick} />
+            <NavTabs />
+          </>
         )}
+
         <div
           style={{
             position: 'relative',
@@ -100,7 +105,7 @@ export default function AppHeader() {
             alignItems: 'center',
           }}
         >
-          {!isXs && (
+          {!isSm && (
             <Link
               style={{ display: 'flex', alignItems: 'center' }}
               href="/"

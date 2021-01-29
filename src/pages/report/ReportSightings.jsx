@@ -39,7 +39,10 @@ export default function ReportSightings({ authenticated = false }) {
   const [reporting, setReporting] = useState(false);
   const noImages = mode !== '' && files.length === 0;
 
-  const onBack = () => setReporting(false);
+  const onBack = () => {
+    window.scrollTo(0, 0);
+    setReporting(false);
+  };
   const radioClick = e => {
     if (e.target.value) {
       setMode(e.target.value);
@@ -182,6 +185,7 @@ export default function ReportSightings({ authenticated = false }) {
                   loading={loading}
                   onClick={async () => {
                     await submitSubmission();
+                    window.scrollTo(0, 0);
                     setReporting(true);
                   }}
                   style={{ marginTop: 16 }}
