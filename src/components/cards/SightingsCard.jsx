@@ -1,5 +1,9 @@
 import React from 'react';
 import { format } from 'date-fns';
+import { useTheme } from '@material-ui/core/styles';
+import IconButton from '@material-ui/core/IconButton';
+import ViewList from '@material-ui/icons/ViewList';
+import ViewMap from '@material-ui/icons/Language';
 import DataDisplay from '../dataDisplays/DataDisplay';
 import Link from '../Link';
 import Card from './Card';
@@ -10,9 +14,27 @@ export default function SightingsCard({
   encounters,
   hideIndividual,
 }) {
+  const theme = useTheme();
   return (
-    <Card title={title} titleId={titleId}>
+    <Card
+      title={title}
+      titleId={titleId}
+      renderActions={
+        <div>
+          <IconButton
+            style={{ color: theme.palette.primary.main }}
+            aria-label="View list"
+          >
+            <ViewList />
+          </IconButton>
+          <IconButton aria-label="View chart">
+            <ViewMap />
+          </IconButton>
+        </div>
+      }
+    >
       <DataDisplay
+        noTitleBar
         columns={[
           {
             name: 'id',

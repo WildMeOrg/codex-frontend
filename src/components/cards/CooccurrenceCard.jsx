@@ -12,6 +12,7 @@ export default function CooccurrenceCard({
   return (
     <Card title={title} titleId={titleId}>
       <DataDisplay
+        noTitleBar
         columns={[
           {
             name: 'individual',
