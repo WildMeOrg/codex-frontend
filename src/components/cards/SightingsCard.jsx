@@ -57,7 +57,6 @@ export default function SightingsCard({
           },
         ]}
         data={encounters}
-        title={title}
       />
     </Card>
   );

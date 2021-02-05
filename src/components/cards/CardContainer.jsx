@@ -31,7 +31,13 @@ export default function CardContainer({ size = 'medium', children }) {
     <Grid
       container
       spacing={2}
-      style={{ maxWidth: '100%', width, margin }}
+      align="start"
+      style={{
+        maxWidth: '100%',
+        width,
+        margin,
+        height: 'fit-content',
+      }}
     >
       {children}
     </Grid>

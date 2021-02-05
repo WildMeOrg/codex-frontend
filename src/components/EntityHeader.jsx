@@ -1,8 +1,6 @@
 import React from 'react';
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
-import IconButton from '@material-ui/core/IconButton';
-import SettingsIcon from '@material-ui/icons/Settings';
 import BigAvatar from './BigAvatar';
 import Text from './Text';
 
@@ -13,7 +11,6 @@ export default function EntityHeader({
   editable,
   children,
   square = false,
-  onSettingsClick,
   renderOptions,
 }) {
   return (
@@ -63,17 +60,7 @@ export default function EntityHeader({
             >
               {name}
             </Text>
-            <div>
-              {editable && (
-                <IconButton
-                  aria-label="Edit settings and profile"
-                  onClick={onSettingsClick}
-                >
-                  <SettingsIcon fontSize="large" />
-                </IconButton>
-              )}
-              {renderOptions}
-            </div>
+            <div>{renderOptions}</div>
           </div>
           <div style={{ marginLeft: 4, marginTop: 4 }}>
             {children}
