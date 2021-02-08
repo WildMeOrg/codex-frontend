@@ -37,10 +37,9 @@ module.exports = {
   target: 'web',
   entry: { main: resolve(rootDir, 'src', 'index.jsx') },
   output: {
-    filename: isDev ? 'bundle.js' : '[name].[contenthash:8].js',
-    chunkFilename: isDev
-      ? '[name].chunk.js'
-      : '[name].[contenthash:8].chunk.js',
+    hashDigestLength: 8,
+    filename: '[name].bundle.js',
+    chunkFilename: '[name].[chunkhash].chunk.js',
     publicPath: '/',
     path: devdist,
   },
@@ -126,6 +125,9 @@ module.exports = {
     },
   },
   plugins: [
+    new webpack.ProvidePlugin({
+      process: 'process/browser',
+    }),
     new HtmlWebpackPlugin({
       templateContent: `
           <!DOCTYPE html>

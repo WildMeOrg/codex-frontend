@@ -16,6 +16,7 @@
     "semi": 2,
     "react/prop-types": 0,
     "react/jsx-filename-extension": 0,
+    "react/jsx-props-no-spreading": 0,
     "react/destructuring-assignment": 0,
     "react/forbid-prop-types": 0,
     "react/jsx-wrap-multilines": 0,

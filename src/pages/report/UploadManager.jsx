@@ -57,6 +57,7 @@ export default function UploadManager({
           const uploadObjects = get(uppyState, 'successful', []);
           console.log(`Uploaded ${uploadObjects.length} objects`);
           console.log(uploadObjects);
+          setFiles([...files, uploadObjects]);
         });
 
         setUppy(uppyInstance);

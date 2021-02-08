@@ -8,6 +8,10 @@ import Button from '../Button';
 import Card from './Card';
 import Text from '../Text';
 import SvgText from '../SvgText';
+import FemaleIcon from '../icons/FemaleIcon';
+import MaleIcon from '../icons/MaleIcon';
+import SexUnsureIcon from '../icons/SexUnsureIcon';
+import { ListItemIcon } from '@material-ui/core';
 
 const linkLength = 35;
 
@@ -17,7 +21,22 @@ const colorMap = {
   Friend: '#8da0cb',
 };
 
-function Node({ x, y, fill, title, subtitle, linkColor, size = 8 }) {
+const sexIconMap = {
+  Male: MaleIcon,
+  Female: FemaleIcon,
+  Unsure: SexUnsureIcon,
+};
+
+function Node({
+  x,
+  y,
+  fill,
+  title,
+  subtitle,
+  linkColor,
+  Icon,
+  size = 8,
+}) {
   const theme = useTheme();
   const linkStroke = linkColor || theme.palette.grey['900'];
   return (
@@ -38,6 +57,7 @@ function Node({ x, y, fill, title, subtitle, linkColor, size = 8 }) {
         stroke={linkStroke}
         strokeWidth={0.5}
       />
+      {Icon && <Icon x={x} y={y} />}
       <SvgText x={x} y={subtitle ? y - 0.5 : y + 1} fontSize="3">
         {title}
       </SvgText>
@@ -95,6 +115,8 @@ export default function RelationshipsCard({
                 0.5 * Math.PI;
               const x = Math.sin(currentAngle) * linkLength + 50;
               const y = Math.cos(currentAngle) * linkLength + 50;
+
+              const Icon = sexIconMap[relationship.sex];
               return (
                 <Node
                   title={relationship.individual}
@@ -102,6 +124,7 @@ export default function RelationshipsCard({
                   x={x}
                   y={y}
                   fill={colorMap[relationship.type]}
+                  Icon={Icon}
                 />
               );
             })}
