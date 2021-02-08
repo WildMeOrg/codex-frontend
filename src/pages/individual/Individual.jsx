@@ -2,45 +2,49 @@ import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
-import { get, capitalize, toLower } from 'lodash-es';
-import Grid from '@material-ui/core/Grid';
+import { capitalize, toLower } from 'lodash-es';
 import SexIcon from '@material-ui/icons/Nature';
 import AgeIcon from '@material-ui/icons/Height';
 import StatusIcon from '@material-ui/icons/LocalHospital';
 import EntityHeader from '../../components/EntityHeader';
 import MainColumn from '../../components/MainColumn';
 import SadScreen from '../../components/SadScreen';
-import Text from '../../components/Text';
-import EncounterGallery from '../../components/EncounterGallery';
+import Button from '../../components/Button';
 import EditProfile from '../../components/EditEntityModal';
+import CardContainer from '../../components/cards/CardContainer';
+import SightingsCard from '../../components/cards/SightingsCard';
+import MetadataCard from '../../components/cards/MetadataCard';
+import GalleryCard from '../../components/cards/GalleryCard';
+import RelationshipsCard from '../../components/cards/RelationshipsCard';
+import CooccurrenceCard from '../../components/cards/CooccurrenceCard';
 import { selectIndividuals } from '../../modules/individuals/selectors';
 import { selectSpeciesFields } from '../../modules/site/selectors';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
+import fakeAssets from './fakeAssets';
+import fakeCoocs from './fakeCoocs';
+import fakeRelationships from './fakeRelationships';
 
 const items = [
   {
     key: 'sex',
+    id: 'sex',
     icon: SexIcon,
-    render: sex => (
-      <FormattedMessage id="PROFILE_LABEL_SEX" values={{ sex }} />
-    ),
+    value: 'Male',
+    titleId: 'PROFILE_LABEL_SEX',
   },
   {
     key: 'age',
+    id: 'age',
     icon: AgeIcon,
-    render: age => (
-      <FormattedMessage id="PROFILE_LABEL_AGE" values={{ age }} />
-    ),
+    value: 42,
+    titleId: 'PROFILE_LABEL_AGE',
   },
   {
+    id: 'status',
     key: 'status',
     icon: StatusIcon,
-    render: status => (
-      <FormattedMessage
-        id="PROFILE_LABEL_STATUS"
-        values={{ status }}
-      />
-    ),
+    value: 'Alive',
+    titleId: 'PROFILE_LABEL_STATUS',
   },
 ];
 
@@ -65,7 +69,7 @@ export default function Individual() {
   const fieldSchema = speciesFields[individual.species];
 
   return (
-    <MainColumn>
+    <MainColumn fullWidth>
       <EditProfile
         open={editingProfile}
         onClose={() => setEditingProfile(false)}
@@ -74,45 +78,33 @@ export default function Individual() {
       />
       <EntityHeader
         name={individual.name}
-        imgSrc={individual.profile}
-        editable={individual.editable}
-        onSettingsClick={() => setEditingProfile(true)}
+        imgSrc="https://mediaproxy.salon.com/width/1200/https://media.salon.com/2001/05/shrek.jpg"
+        renderOptions={<Button display="primary">SUBSCRIBE</Button>}
       >
-        <Grid container direction="column" spacing={1}>
-          {items.map(item => {
-            const matchingData = individual.fields.find(
-              field => field.name === item.key,
-            );
-            const matchingSchemaObject = fieldSchema.find(
-              schemaObject => schemaObject.name === item.key,
-            );
-
-            const fieldValue = get(matchingData, 'value', null);
-            if (!matchingData || !matchingSchemaObject) return null;
-            if (matchingSchemaObject.defaultValue === fieldValue)
-              return null;
-
-            const Icon = item.icon;
-
-            return (
-              <Grid key={item.key} item style={{ display: 'flex' }}>
-                <Icon color="action" style={{ marginRight: 8 }} />
-                <Text>{item.render(matchingData.value)}</Text>
-              </Grid>
-            );
-          })}
-        </Grid>
+        Also known as Teddles, T3289-K, and Tweeb.
       </EntityHeader>
-      <EncounterGallery
-        hideIndividual
-        title={
-          <FormattedMessage
-            id="SIGHTINGS_OF"
-            values={{ name: individual.name }}
+      <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+        <CardContainer size="small">
+          <GalleryCard title="Photos of Teddy" assets={fakeAssets} />
+          <MetadataCard editable metadata={items} />
+        </CardContainer>
+        <CardContainer>
+          <SightingsCard
+            title={
+              <FormattedMessage
+                id="SIGHTINGS_OF"
+                values={{ name: individual.name }}
+              />
+            }
+            encounters={individual.encounters}
           />
-        }
-        encounters={individual.encounters}
-      />
+          <RelationshipsCard
+            title="Relationships"
+            relationships={fakeRelationships}
+          />
+          <CooccurrenceCard data={fakeCoocs} />
+        </CardContainer>
+      </div>
     </MainColumn>
   );
 }

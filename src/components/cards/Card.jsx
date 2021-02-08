@@ -10,7 +10,10 @@ export default function Card({
   children,
 }) {
   return (
-    <Grid item style={{ flex: 'auto', flexBasis: '100%' }}>
+    <Grid
+      item
+      style={{ flex: 'auto', flexBasis: '100%', width: '100%' }}
+    >
       <Paper
         style={{
           padding: 16,
