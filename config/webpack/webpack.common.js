@@ -47,6 +47,12 @@ module.exports = {
   module: {
     rules: [
       {
+        test: /\.m?js/,
+        resolve: {
+          fullySpecified: false,
+        },
+      },
+      {
         test: /\.(js|mjs|jsx|ts|tsx)$/,
         include: path.resolve(rootDir, 'src'),
         use: {
@@ -165,9 +171,4 @@ module.exports = {
       ],
     }),
   ],
-  node: {
-    fs: 'empty',
-    module: 'empty',
-    tls: 'empty',
-  },
 };
