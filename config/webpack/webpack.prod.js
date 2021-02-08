@@ -22,8 +22,6 @@ module.exports = merge(common, {
     publicPath: '/',
   },
   optimization: {
-    minimizer: [
-      new TerserPlugin({ parallel: true, sourceMap: true }),
-    ],
+    minimizer: [new TerserPlugin()],
   },
 });
