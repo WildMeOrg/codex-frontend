@@ -29,6 +29,14 @@ export default function CooccurrenceCard({
           },
           {
             name: 'lastSeen',
+            label: 'First seen together',
+            options: {
+              customBodyRender: value => format(value, 'MMM d, yyyy'),
+              getStringValue: value => format(value, 'MMM d, yyyy'),
+            },
+          },
+          {
+            name: 'lastSeen',
             label: 'Last seen together',
             options: {
               customBodyRender: value => format(value, 'MMM d, yyyy'),

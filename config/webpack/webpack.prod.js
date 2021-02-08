@@ -5,7 +5,6 @@ const merge = require('webpack-merge');
 const TerserPlugin = require('terser-webpack-plugin');
 
 const common = require('./webpack.common.js');
-// const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const rootDir = resolve(__dirname, '../../');
 const dist = path.resolve(rootDir, 'dist');
@@ -23,8 +22,6 @@ module.exports = merge(common, {
     publicPath: '/',
   },
   optimization: {
-    minimizer: [
-      new TerserPlugin({ parallel: true, sourceMap: true }),
-    ],
+    minimizer: [new TerserPlugin()],
   },
 });
