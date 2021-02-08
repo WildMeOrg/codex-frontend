@@ -65,15 +65,7 @@ module.exports = {
         test: /\.css$/,
         exclude: /\.module\.css$/,
         sideEffects: true,
-        use: [
-          {
-            loader: MiniCssExtractPlugin.loader,
-            options: {
-              hmr: isDev,
-            },
-          },
-          'css-loader',
-        ],
+        use: [MiniCssExtractPlugin.loader, 'css-loader'],
       },
       {
         test: /\.(gif|jpg|jpeg|png|webm)$/,
@@ -85,7 +77,7 @@ module.exports = {
       },
       {
         test: /\.svg$/,
-        use: ['@svgr/webpack', 'file-loader'],
+        use: ['file-loader', '@svgr/webpack'],
       },
       {
         test: /\.(woff|woff2|ttf|eot)$/,
