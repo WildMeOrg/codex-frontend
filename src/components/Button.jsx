@@ -9,6 +9,7 @@ export default function CustomButton({
   loading = false,
   style,
   disabled,
+  size,
   ...rest
 }) {
   let variant = undefined; // eslint-disable-line

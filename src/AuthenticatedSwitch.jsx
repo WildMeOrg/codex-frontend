@@ -9,6 +9,8 @@ import PictureBook from './pages/individual/PictureBook';
 import Sighting from './pages/sighting/Sighting';
 import Org from './pages/org/Org';
 import Orgs from './pages/org/Orgs';
+import Project from './pages/projects/Project';
+import Projects from './pages/projects/Projects';
 import User from './pages/user/User';
 import Users from './pages/user/Users';
 import ReportSightings from './pages/report/ReportSightings';
@@ -96,6 +98,12 @@ export default function AuthenticatedSwitch() {
                       </Route>
                       <Route path="/orgs">
                         <Orgs />
+                      </Route>
+                      <Route path="/projects/:id">
+                        <Project />
+                      </Route>
+                      <Route path="/projects">
+                        <Projects />
                       </Route>
                       <Route path="/report">
                         <ReportSightings authenticated />

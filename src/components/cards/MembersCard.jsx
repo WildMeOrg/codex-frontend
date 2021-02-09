@@ -5,8 +5,6 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import Avatar from '@material-ui/core/Avatar';
-import IconButton from '@material-ui/core/IconButton';
-import AddIcon from '@material-ui/icons/Add';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import Text from '../Text';
 import Card from './Card';
@@ -15,21 +13,13 @@ export default function MembersCard({
   title,
   titleId = 'MEMBERS',
   members,
-  editable = false,
+  renderActions,
 }) {
   return (
     <Card
       title={title}
       titleId={titleId}
-      renderActions={
-        editable ? (
-          <IconButton size="small" aria-label="Add member">
-            <AddIcon />
-          </IconButton>
-        ) : (
-          undefined
-        )
-      }
+      renderActions={renderActions}
     >
       <List>
         {members.map(member => (

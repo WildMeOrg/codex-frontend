@@ -1,66 +1,52 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
-import { toLower } from 'lodash-es';
 import WebIcon from '@material-ui/icons/Web';
+import IdIcon from '@material-ui/icons/Fingerprint';
 import EntityHeader from '../../components/EntityHeader';
 import MainColumn from '../../components/MainColumn';
 import SadScreen from '../../components/SadScreen';
-import EditEntityModal from '../../components/EditEntityModal';
 import Link from '../../components/Link';
 import Text from '../../components/Text';
 import CardContainer from '../../components/cards/CardContainer';
 import SightingsCard from '../../components/cards/SightingsCard';
 import MembersCard from '../../components/cards/MembersCard';
 import MetadataCard from '../../components/cards/MetadataCard';
-import { selectOrgs } from '../../modules/orgs/selectors';
-import orgSchema, {
-  orgSchemaCategories,
-} from '../../constants/orgSchema';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import EditMembersButton from './EditMembersButton';
+import fakeProjects from './fakeProjects';
 
-export default function Org() {
+const noaa = fakeProjects[0];
+
+export default function Project() {
   const { id } = useParams();
   useDocumentTitle(id);
 
-  // fetch data for Id...
-  const orgs = useSelector(selectOrgs);
-  const [editingProfile, setEditingProfile] = useState(false);
-
-  const org = orgs[toLower(id)];
-  if (!org)
+  const project = noaa;
+  if (!project)
     return (
-      <SadScreen variant="notFoundOcean" subtitleId="ORG_NOT_FOUND" />
+      <SadScreen
+        variant="notFoundOcean"
+        subtitleId="PROJECT_NOT_FOUND"
+      />
     );
 
   return (
     <MainColumn fullWidth>
-      <EditEntityModal
-        open={editingProfile}
-        onClose={() => setEditingProfile(false)}
-        fieldValues={org.fields}
-        fieldSchema={orgSchema}
-        categories={orgSchemaCategories}
-      />
       <EntityHeader
         square
-        name={org.name}
-        imgSrc={org.profile}
-        editable={org.editable}
-        onSettingsClick={() => setEditingProfile(true)}
+        name={project.name}
+        imgSrc={project.profile}
       >
         <Text>
-          NOAA is an agency that enriches life through science. Our
-          reach goes from the surface of the sun to the depths of the
-          ocean floor as we work to keep the public informed of the
-          changing environment around them.
+          The NOAA project contains all sightings from within
+          NOAA-controlled waters.
         </Text>
       </EntityHeader>
       <div style={{ display: 'flex', flexWrap: 'wrap' }}>
         <CardContainer size="small">
           <MetadataCard
+            editable
             titleId="PROFILE"
             metadata={[
               {
@@ -73,6 +59,12 @@ export default function Org() {
                     {value}
                   </Link>
                 ),
+              },
+              {
+                id: 'pid',
+                icon: IdIcon,
+                titleId: 'PROJECT_ID',
+                value: 'NOAA',
               },
             ]}
           />
@@ -105,7 +97,7 @@ export default function Org() {
         <CardContainer>
           <SightingsCard
             title={<FormattedMessage id="SIGHTINGS" />}
-            encounters={org.encounters}
+            encounters={project.encounters}
           />
         </CardContainer>
       </div>

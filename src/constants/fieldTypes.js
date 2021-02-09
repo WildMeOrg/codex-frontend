@@ -23,6 +23,7 @@ const fieldTypes = {
   optioneditor: 'optioneditor', // used only in admin panel
   filetypeeditor: 'filetypeeditor', // used only in admin panel
   categorylist: 'categoryList', // used only in admin panel
+  projectId: 'projectId', // used only in admin panel
 };
 
 const backendTypes = {
