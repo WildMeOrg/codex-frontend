@@ -5,13 +5,13 @@
   "main": "index.js",
   "scripts": {
     "start": "run-script-os",
-    "start:default": "NODE_ENV=development webpack serve --config ./config/webpack/webpack.dev.js",
-    "start:win32": "$env:NODE_ENV=\"development\" & webpack serve --config ./config/webpack/webpack.dev.js",
+    "start:default": "NODE_ENV=development webpack serve --config ./config/webpack/webpack.common.js",
+    "start:win32": "$env:NODE_ENV=\"development\" & webpack serve --config ./config/webpack/webpack.common.js",
     "lint": "./node_modules/.bin/eslint --fix \"src/**/*.{js,jsx}\"",
     "format": "./node_modules/.bin/prettier --write \"src/**/*.{js,jsx}\"",
     "test": "echo \"Error: no test specified\" && exit 1",
     "clean": "rm -rf dist",
-    "build": "npm run clean && NODE_ENV=production webpack --config ./config/webpack/webpack.prod.js"
+    "build": "npm run clean && NODE_ENV=production webpack --config ./config/webpack/webpack.common.js"
   },
   "repository": {
     "type": "git",

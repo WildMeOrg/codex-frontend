@@ -1,8 +1,6 @@
 const webpack = require('webpack');
-const merge = require('webpack-merge');
-const common = require('./webpack.common.js');
 
-module.exports = merge(common, {
+module.exports = {
   mode: 'development',
   devtool: 'source-map',
   devServer: {
@@ -15,7 +13,5 @@ module.exports = merge(common, {
     port: 3000,
     writeToDisk: true,
   },
-  plugins: [
-    new webpack.HotModuleReplacementPlugin(),
-  ],
-});
+  plugins: [new webpack.HotModuleReplacementPlugin()],
+};
