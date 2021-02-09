@@ -9,14 +9,12 @@ import Header from '../../components/Header';
 import Text from '../../components/Text';
 import { selectIsAdministrator } from '../../modules/app/selectors';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
-import CreateOrg from './CreateProject';
+import CreateProject from './CreateProject';
 import fakeProjects from './fakeProjects';
 
 export default function Projects() {
   const intl = useIntl();
-  const pageTitle = intl.formatMessage(
-    { id: 'PROJECTS_PAGE_TITLE' },
-  );
+  const pageTitle = intl.formatMessage({ id: 'PROJECTS_PAGE_TITLE' });
   useDocumentTitle(pageTitle, false);
 
   const isAdministrator = useSelector(selectIsAdministrator);
@@ -44,10 +42,10 @@ export default function Projects() {
         open={Boolean(projectToDelete)}
         entityToDelete={deleteOrganizationName}
       />
-      <CreateOrg
+      <CreateProject
         open={creatingProject}
-        onCreateUser={newUser => {
-          console.log(newUser);
+        onCreateProject={newProject => {
+          console.log(newProject);
         }}
         onClose={() => setCreatingProject(false)}
       />

@@ -15,6 +15,7 @@ import DateRangeInput from './DateRangeInput';
 import RelationshipsInput from './RelationshipsInput';
 import ColorInput from './ColorInput';
 import CategoryListInput from './CategoryListInput';
+import ProjectIdInput from './ProjectIdInput';
 
 const inputMap = {
   [fieldTypes.color]: ColorInput,
@@ -37,6 +38,7 @@ const inputMap = {
   [fieldTypes.integer]: TextInput,
   [fieldTypes.float]: TextInput,
   [fieldTypes.categorylist]: CategoryListInput,
+  [fieldTypes.projectId]: ProjectIdInput,
 };
 
 export default inputMap;

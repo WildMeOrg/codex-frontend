@@ -25,7 +25,10 @@ export default function Project() {
   const project = noaa;
   if (!project)
     return (
-      <SadScreen variant="notFoundOcean" subtitleId="PROJECT_NOT_FOUND" />
+      <SadScreen
+        variant="notFoundOcean"
+        subtitleId="PROJECT_NOT_FOUND"
+      />
     );
 
   return (
@@ -36,7 +39,8 @@ export default function Project() {
         imgSrc={project.profile}
       >
         <Text>
-          The NOAA project contains all sightings from within NOAA-controlled waters.
+          The NOAA project contains all sightings from within
+          NOAA-controlled waters.
         </Text>
       </EntityHeader>
       <div style={{ display: 'flex', flexWrap: 'wrap' }}>
