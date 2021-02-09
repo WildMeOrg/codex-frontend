@@ -1,15 +1,12 @@
 // const webpack = require("webpack");
 const { resolve } = require('path');
 const path = require('path');
-const merge = require('webpack-merge');
 const TerserPlugin = require('terser-webpack-plugin');
-
-const common = require('./webpack.common.js');
 
 const rootDir = resolve(__dirname, '../../');
 const dist = path.resolve(rootDir, 'dist');
 
-module.exports = merge(common, {
+module.exports = {
   mode: 'production',
   devtool: 'source-map',
   entry: {
@@ -24,4 +21,4 @@ module.exports = merge(common, {
   optimization: {
     minimizer: [new TerserPlugin()],
   },
-});
+};

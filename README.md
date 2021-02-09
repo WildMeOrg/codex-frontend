@@ -26,10 +26,9 @@ The development environment is mostly used on OSX but should work on Windows as 
 A build can be initiated with the command `npm run build`. You can specify the URL for Houston in `/config/config.json` or as a command line argument. Here are some examples:
 
 ```
-npm run build -- -- houston https://houston.dyn.wildme.io
-npm run build -- -- houston http://localhost:9999
-npm start -- -- houston localhost:4232
-npm run start -- -- houston ""  # Use relative file paths
+npm run build -- --env=houston=https://houston.dyn.wildme.io
+npm run build -- --env=houston=http://localhost:9999
+npm run build -- --env=houston=relative // use relative file paths for API requests
 ```
 
 ## Thanks
