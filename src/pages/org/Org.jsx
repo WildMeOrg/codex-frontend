@@ -2,43 +2,24 @@ import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
-import { get, toLower } from 'lodash-es';
-import Grid from '@material-ui/core/Grid';
+import { toLower } from 'lodash-es';
 import WebIcon from '@material-ui/icons/Web';
-import DescriptionIcon from '@material-ui/icons/Description';
 import EntityHeader from '../../components/EntityHeader';
 import MainColumn from '../../components/MainColumn';
 import SadScreen from '../../components/SadScreen';
 import EditEntityModal from '../../components/EditEntityModal';
-import EncounterGallery from '../../components/EncounterGallery';
 import Link from '../../components/Link';
 import Text from '../../components/Text';
+import CardContainer from '../../components/cards/CardContainer';
+import SightingsCard from '../../components/cards/SightingsCard';
+import MembersCard from '../../components/cards/MembersCard';
+import MetadataCard from '../../components/cards/MetadataCard';
 import { selectOrgs } from '../../modules/orgs/selectors';
 import orgSchema, {
   orgSchemaCategories,
 } from '../../constants/orgSchema';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
-import MembersPanel from './MembersPanel';
-
-const items = [
-  {
-    key: 'description',
-    icon: DescriptionIcon,
-    render: description => description,
-  },
-  {
-    key: 'website',
-    icon: WebIcon,
-    render: website => (
-      <>
-        <FormattedMessage id="PROFILE_LABEL_WEBSITE" />
-        <Link external href={website}>
-          {website}
-        </Link>
-      </>
-    ),
-  },
-];
+import EditMembersButton from './EditMembersButton';
 
 export default function Org() {
   const { id } = useParams();
@@ -55,7 +36,7 @@ export default function Org() {
     );
 
   return (
-    <MainColumn>
+    <MainColumn fullWidth>
       <EditEntityModal
         open={editingProfile}
         onClose={() => setEditingProfile(false)}
@@ -70,35 +51,64 @@ export default function Org() {
         editable={org.editable}
         onSettingsClick={() => setEditingProfile(true)}
       >
-        <Grid container direction="column" spacing={1}>
-          {items.map(item => {
-            const matchingData = org.fields.find(
-              field => field.name === item.key,
-            );
-            const matchingSchemaObject = orgSchema.find(
-              schemaObject => schemaObject.name === item.key,
-            );
-            const fieldValue = get(matchingData, 'value', null);
-            if (!matchingData || !matchingSchemaObject) return null;
-            if (matchingSchemaObject.defaultValue === fieldValue)
-              return null;
-
-            const Icon = item.icon;
-
-            return (
-              <Grid key={item.key} item style={{ display: 'flex' }}>
-                <Icon color="action" style={{ marginRight: 8 }} />
-                <Text>{item.render(matchingData.value)}</Text>
-              </Grid>
-            );
-          })}
-        </Grid>
+        <Text>
+          NOAA is an agency that enriches life through science. Our
+          reach goes from the surface of the sun to the depths of the
+          ocean floor as we work to keep the public informed of the
+          changing environment around them.
+        </Text>
       </EntityHeader>
-      <MembersPanel />
-      <EncounterGallery
-        title={<FormattedMessage id="SIGHTINGS" />}
-        encounters={org.encounters}
-      />
+      <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+        <CardContainer size="small">
+          <MetadataCard
+            titleId="PROFILE"
+            metadata={[
+              {
+                id: 'website',
+                icon: WebIcon,
+                titleId: 'PROFILE_LABEL_WEBSITE',
+                value: 'https://www.noaa.gov/',
+                renderValue: value => (
+                  <Link external href={value}>
+                    {value}
+                  </Link>
+                ),
+              },
+            ]}
+          />
+          <MembersCard
+            renderActions={<EditMembersButton />}
+            members={[
+              {
+                id: 'joe',
+                name: 'Joe Blasio',
+                role: 'Adminstrator',
+              },
+              {
+                id: 'sam',
+                name: 'Samantha Kvork',
+                role: 'Adminstrator',
+              },
+              {
+                id: 'jam',
+                name: 'Jam Blvork',
+                role: 'Member',
+              },
+              {
+                id: 'som',
+                name: 'Sommelia',
+                role: 'Member',
+              },
+            ]}
+          />
+        </CardContainer>
+        <CardContainer>
+          <SightingsCard
+            title={<FormattedMessage id="SIGHTINGS" />}
+            encounters={org.encounters}
+          />
+        </CardContainer>
+      </div>
     </MainColumn>
   );
 }

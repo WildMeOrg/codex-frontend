@@ -28,6 +28,7 @@ export default function MembersModal({
   open,
   onClose = Function.prototype,
   onSaveChanges = Function.prototype,
+  setInviteModalOpen,
 }) {
   const [changes, setChanges] = useState({});
   const [filter, setFilter] = useState('');
@@ -50,7 +51,26 @@ export default function MembersModal({
       </DialogTitle>
       <DialogContent style={{ padding: '8px 12px' }}>
         <div>
-          <FilterBar value={filter} onChange={setFilter} />
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              marginRight: 16,
+            }}
+          >
+            <FilterBar value={filter} onChange={setFilter} />
+            <Button
+              size="small"
+              display="panel"
+              onClick={() => {
+                onClose();
+                setInviteModalOpen(true);
+              }}
+            >
+              <FormattedMessage id="ADD_MEMBERS" />
+            </Button>
+          </div>
           <Text
             variant="subtitle1"
             style={{ padding: '0 16px' }}
@@ -121,11 +141,14 @@ export default function MembersModal({
                           setChanges(newChanges);
                         }}
                       >
+                        <MenuItem value="member">
+                          <FormattedMessage id="MEMBER" />
+                        </MenuItem>
                         <MenuItem value="moderator">
                           <FormattedMessage id="MODERATOR" />
                         </MenuItem>
-                        <MenuItem value="member">
-                          <FormattedMessage id="MEMBER" />
+                        <MenuItem value="administrator">
+                          <FormattedMessage id="ADMINISTRATOR" />
                         </MenuItem>
                       </Select>
                       <IconButton
