@@ -8,10 +8,9 @@ import Button from '../Button';
 import Card from './Card';
 import Text from '../Text';
 import SvgText from '../SvgText';
-import FemaleIcon from '../icons/FemaleIcon';
-import MaleIcon from '../icons/MaleIcon';
-import SexUnsureIcon from '../icons/SexUnsureIcon';
-import { ListItemIcon } from '@material-ui/core';
+import FemaleIcon from '../svg/FemaleIcon';
+import MaleIcon from '../svg/MaleIcon';
+import SexUnsureIcon from '../svg/SexUnsureIcon';
 
 const linkLength = 35;
 
@@ -39,6 +38,8 @@ function Node({
 }) {
   const theme = useTheme();
   const linkStroke = linkColor || theme.palette.grey['900'];
+
+  console.log(Icon);
   return (
     <g>
       <line
@@ -57,12 +58,16 @@ function Node({
         stroke={linkStroke}
         strokeWidth={0.5}
       />
-      {Icon && <Icon x={x} y={y} />}
-      <SvgText x={x} y={subtitle ? y - 0.5 : y + 1} fontSize="3">
+      {Icon && (
+        <Icon
+          style={{ transform: `translate(${x}px, ${y - 5.5}px)` }}
+        />
+      )}
+      <SvgText x={x} y={subtitle ? y + 2.5 : y + 1} fontSize="2.75">
         {title}
       </SvgText>
       {subtitle && (
-        <SvgText x={x} y={y + 2.5} fontSize="2">
+        <SvgText x={x} y={y + 5.5} fontSize="2">
           {subtitle}
         </SvgText>
       )}
