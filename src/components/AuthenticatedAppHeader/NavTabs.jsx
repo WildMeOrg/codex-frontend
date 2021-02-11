@@ -8,8 +8,8 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import Switch from '@material-ui/core/Switch';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
 import IconButton from '@material-ui/core/IconButton';
 import Avatar from '@material-ui/core/Avatar';
 import Popover from '@material-ui/core/Popover';
@@ -85,12 +85,30 @@ function ProjectsButton({ titleId }) {
           },
         }}
       >
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <Text style={{ marginBottom: 4, fontWeight: 'bold' }}>Your projects</Text>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
+        >
+          <Text style={{ marginBottom: 4, fontWeight: 'bold' }}>
+            Your projects
+          </Text>
           <IconButton size="small">
             <AddIcon />
           </IconButton>
         </div>
+
+        <Select
+          value="abc"
+          style={{ width: '100%', margin: '12px 0 4px 0' }}
+        >
+          {fakeProjects.map(project => (
+            <MenuItem value={project.id}>{project.name}</MenuItem>
+          ))}
+        </Select>
+
         <List
           dense
           style={{ width: 260, height: 210, overflow: 'scroll' }}
@@ -105,27 +123,24 @@ function ProjectsButton({ titleId }) {
                     : theme.palette.grey['100'],
                 }}
               >
-                <ListItemAvatar>
-                  <Avatar variant="square">A</Avatar>
-                </ListItemAvatar>
                 <ListItemText
-                  primary={<Link href="/projects/noaa">{project.name}</Link>}
+                  primary={
+                    <Link href="/projects/noaa">{project.name}</Link>
+                  }
                   secondary={
                     <Text variant="caption">{project.pid}</Text>
                   }
                 />
-                <ListItemSecondaryAction>
-                  <Switch
-                    edge="end"
-                    onChange={() => setSelectedProject(project.id)}
-                    checked={selected}
-                  />
-                </ListItemSecondaryAction>
               </ListItem>
             );
           })}
         </List>
-        <ButtonLink onClick={handleClose} href="/projects" display="basic" style={{ margin: '4px 0 12px' }}>
+        <ButtonLink
+          onClick={handleClose}
+          href="/projects"
+          display="basic"
+          style={{ margin: '4px 0 12px' }}
+        >
           View all projects
         </ButtonLink>
       </Popover>
@@ -180,13 +195,24 @@ function EntityButton({ titleId, entities, noAvatar }) {
           },
         }}
       >
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <Text style={{ marginBottom: 4, fontWeight: 'bold' }}>{title}</Text>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
+        >
+          <Text style={{ marginBottom: 4, fontWeight: 'bold' }}>
+            {title}
+          </Text>
           <IconButton size="small">
             <AddIcon />
           </IconButton>
         </div>
-        <FilterBar value="" style={{ with: 160, margin: '12px 0 4px 0' }} />
+        <FilterBar
+          value=""
+          style={{ with: 160, margin: '12px 0 4px 0' }}
+        />
         <List
           dense
           style={{ width: 260, height: 210, overflow: 'scroll' }}
@@ -199,12 +225,16 @@ function EntityButton({ titleId, entities, noAvatar }) {
                 }}
               >
                 {!noAvatar && (
-                <ListItemAvatar>
-                <Avatar>A</Avatar>
-              </ListItemAvatar>
+                  <ListItemAvatar>
+                    <Avatar>A</Avatar>
+                  </ListItemAvatar>
                 )}
                 <ListItemText
-                  primary={<Link href="/individuals/teddy">{entity.name}</Link>}
+                  primary={
+                    <Link href="/individuals/teddy">
+                      {entity.name}
+                    </Link>
+                  }
                   secondary={
                     <Text variant="caption">{entity.pid}</Text>
                   }
@@ -213,7 +243,12 @@ function EntityButton({ titleId, entities, noAvatar }) {
             );
           })}
         </List>
-        <ButtonLink onClick={handleClose} href="/individuals" display="primary" style={{ margin: '8px 0 12px' }}>
+        <ButtonLink
+          onClick={handleClose}
+          href="/individuals"
+          display="primary"
+          style={{ margin: '8px 0 12px' }}
+        >
           {`Explore ${title}`}
         </ButtonLink>
       </Popover>

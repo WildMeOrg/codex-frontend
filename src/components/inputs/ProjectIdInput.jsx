@@ -22,6 +22,9 @@ function ProjectIdInput(props) {
 
   const intl = useIntl();
 
+  let label = intl.formatMessage({ id: 'PROJECT_ID' });
+  if (required) label = `${label} *`;
+
   const htmlValue =
     value === null || value === undefined ? '' : value;
 
@@ -29,7 +32,7 @@ function ProjectIdInput(props) {
     <Core schema={schema} required={required} width={width}>
       <TextField
         id={schema.name}
-        label={intl.formatMessage({ id: 'PROJECT_ID' })}
+        label={label}
         onChange={e => {
           const inputValue = e.target.value;
           const transformedValue = inputValue.toUpperCase();

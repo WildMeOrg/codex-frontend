@@ -1,12 +1,10 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
-import WebIcon from '@material-ui/icons/Web';
 import IdIcon from '@material-ui/icons/Fingerprint';
 import EntityHeader from '../../components/EntityHeader';
 import MainColumn from '../../components/MainColumn';
 import SadScreen from '../../components/SadScreen';
-import Link from '../../components/Link';
 import Text from '../../components/Text';
 import CardContainer from '../../components/cards/CardContainer';
 import SightingsCard from '../../components/cards/SightingsCard';
@@ -34,6 +32,7 @@ export default function Project() {
   return (
     <MainColumn fullWidth>
       <EntityHeader
+        noAvatar
         square
         name={project.name}
         imgSrc={project.profile}
@@ -50,17 +49,6 @@ export default function Project() {
             titleId="PROFILE"
             metadata={[
               {
-                id: 'website',
-                icon: WebIcon,
-                titleId: 'PROFILE_LABEL_WEBSITE',
-                value: 'https://www.noaa.gov/',
-                renderValue: value => (
-                  <Link external href={value}>
-                    {value}
-                  </Link>
-                ),
-              },
-              {
                 id: 'pid',
                 icon: IdIcon,
                 titleId: 'PROJECT_ID',
@@ -74,12 +62,12 @@ export default function Project() {
               {
                 id: 'joe',
                 name: 'Joe Blasio',
-                role: 'Adminstrator',
+                role: 'Member',
               },
               {
                 id: 'sam',
                 name: 'Samantha Kvork',
-                role: 'Adminstrator',
+                role: 'Owner',
               },
               {
                 id: 'jam',

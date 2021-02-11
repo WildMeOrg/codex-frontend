@@ -6,8 +6,6 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogActions from '@material-ui/core/DialogActions';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -21,6 +19,7 @@ import FilterBar from '../../components/FilterBar';
 import Link from '../../components/Link';
 import Button from '../../components/Button';
 import Text from '../../components/Text';
+import InputRow from '../../components/InputRow';
 
 const word = 'HERPADERPAFEEDMEREALDATAPLEAASEE';
 
@@ -32,6 +31,7 @@ export default function MembersModal({
 }) {
   const [changes, setChanges] = useState({});
   const [filter, setFilter] = useState('');
+  const [owner, setOwner] = useState(0);
 
   return (
     <Dialog
@@ -51,6 +51,16 @@ export default function MembersModal({
       </DialogTitle>
       <DialogContent style={{ padding: '8px 12px' }}>
         <div>
+          <InputRow
+            label="Project owner"
+            schema={{
+              label: 'Project owner',
+              displayType: 'select',
+              choices: word.split('').map((character, i) => ({ label: character, value: i })),
+            }}
+            value={owner}
+          />
+
           <div
             style={{
               display: 'flex',
@@ -88,13 +98,9 @@ export default function MembersModal({
           }}
         >
           {word.split('').map((character, i) => {
-            const role = i < 3 ? 'moderator' : 'member';
+            const role = i === 3 ? 'owner' : 'member';
             const roleTranslateId =
-              role === 'moderator' ? 'MODERATOR' : 'MEMBER';
-            const newRole =
-              get(changes, [i, 'action']) === 'CHANGE_ROLE'
-                ? changes[i].value
-                : role;
+              role === 'owner' ? 'OWNER' : 'MEMBER';
             const deletedUser =
               get(changes, [i, 'action']) === 'DELETE';
 
@@ -124,43 +130,15 @@ export default function MembersModal({
                       <UndoIcon />
                     </IconButton>
                   ) : (
-                    <>
-                      <Select
-                        value={newRole}
-                        onChange={event => {
-                          const newChanges = { ...changes };
-                          const newValue = event.target.value;
-                          if (newValue === role) {
-                            delete newChanges[i];
-                          } else {
-                            newChanges[i] = {
-                              action: 'CHANGE_ROLE',
-                              value: newValue,
-                            };
-                          }
-                          setChanges(newChanges);
-                        }}
-                      >
-                        <MenuItem value="member">
-                          <FormattedMessage id="MEMBER" />
-                        </MenuItem>
-                        <MenuItem value="moderator">
-                          <FormattedMessage id="MODERATOR" />
-                        </MenuItem>
-                        <MenuItem value="administrator">
-                          <FormattedMessage id="ADMINISTRATOR" />
-                        </MenuItem>
-                      </Select>
-                      <IconButton
-                        onClick={() => {
-                          const newChanges = { ...changes };
-                          newChanges[i] = { action: 'DELETE' };
-                          setChanges(newChanges);
-                        }}
-                      >
-                        <DeleteIcon />
-                      </IconButton>
-                    </>
+                    <IconButton
+                      onClick={() => {
+                        const newChanges = { ...changes };
+                        newChanges[i] = { action: 'DELETE' };
+                        setChanges(newChanges);
+                      }}
+                    >
+                      <DeleteIcon />
+                    </IconButton>
                   )}
                 </ListItemSecondaryAction>
               </ListItem>

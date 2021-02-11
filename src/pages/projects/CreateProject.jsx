@@ -86,6 +86,7 @@ export default function CreateProject({
                       [field.name]: newFieldValue,
                     })
                   }
+                  required={Boolean(field.required)}
                 />
               </Grid>
             );

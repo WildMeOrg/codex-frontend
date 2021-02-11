@@ -1,32 +1,27 @@
 export default [
   {
-    id: 'abc',
-    name: 'June 12, 2020',
-    pid: 'Bermuda Coast',
-  },
-  {
     id: 'def',
-    name: 'June 8, 2020',
-    pid: 'Coaba Coast',
+    pid: 'June 8, 2020',
+    name: 'Coaba Coast',
   },
   {
     id: 'gef',
-    name: 'June 8, 2020',
-    pid: 'Digglet Coast',
+    pid: 'June 8, 2020',
+    name: 'Digglet Coast',
   },
   {
     id: 'eas',
-    name: 'June 8, 2020',
-    pid: 'Bermuda Wavespren',
+    pid: 'June 8, 2020',
+    name: 'Bermuda Wavespren',
   },
   {
     id: 'cwx',
-    name: 'August 5, 2019',
-    pid: 'Coaba Coast',
+    pid: 'August 5, 2019',
+    name: 'Coaba Coast',
   },
   {
     id: 'css',
-    name: 'June 4, 2020',
-    pid: 'Coaba Coast',
+    pid: 'June 4, 2020',
+    name: 'Coaba Coast',
   },
 ];

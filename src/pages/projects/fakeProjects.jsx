@@ -6,6 +6,8 @@ export default [
     id: 'noaa',
     editable: true,
     profile: defaultProfile,
+    owner: 'Joe Dimassio',
+    pid: 'NOA',
     fields: [
       {
         name: 'description',

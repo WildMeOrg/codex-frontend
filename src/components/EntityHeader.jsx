@@ -9,6 +9,7 @@ export default function EntityHeader({
   imgSrc,
   name,
   editable,
+  noAvatar = false,
   children,
   square = false,
   renderOptions,
@@ -23,13 +24,17 @@ export default function EntityHeader({
           }}
           item
         >
-          <BigAvatar
-            imgSrc={imgSrc}
-            editable={editable}
-            name={name}
-            square={square}
-            admin={admin}
-          />
+          {noAvatar ? (
+            <div style={{ width: 4, height: 151 }} />
+          ) : (
+            <BigAvatar
+              imgSrc={imgSrc}
+              editable={editable}
+              name={name}
+              square={square}
+              admin={admin}
+            />
+          )}
         </Grid>
         <Grid
           item
@@ -55,7 +60,7 @@ export default function EntityHeader({
                 whiteSpace: 'nowrap',
                 textOverflow: 'ellipsis',
                 overflow: 'hidden',
-                maxWidth: '80%',
+                maxWidth: noAvatar ? '100%' : '80%',
               }}
             >
               {name}

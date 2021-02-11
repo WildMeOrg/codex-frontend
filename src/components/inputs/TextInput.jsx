@@ -30,9 +30,14 @@ function TextInput(props) {
   const intl = useIntl();
 
   function getLabel(object) {
-    if (object.labelId)
-      return intl.formatMessage({ id: object.labelId });
-    return get(object, 'label', undefined);
+    let label = null;
+    if (object.labelId) {
+      label = intl.formatMessage({ id: object.labelId });
+    } else {
+      label = get(object, 'label', undefined);
+    }
+    if (required) label = `${label} *`;
+    return label;
   }
 
   function getDescription(object) {
