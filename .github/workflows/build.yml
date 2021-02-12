@@ -1,0 +1,44 @@
+name: Build
+on:
+  schedule:
+    - cron: '0 0 * * *' # Every day at midnight
+  push:
+  pull_request:
+    paths:
+      - '.github/workflows/build.yml'
+      # Build when a fundamental package change has occured
+      - 'package.json'
+
+jobs:
+  build:
+    name: Build the frontend releasable package
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2.1.4
+        with:
+          node-version: '15.x'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Copy template api keys file
+        run: cp src/constants/apiKeysTemplate.js src/constants/apiKeys.js
+
+      - name: Compile build
+        run: npm run build -- --env=houston=relative
+
+      - name: Package the build
+        run: |
+          mv dist codex-frontend
+          tar -czvf codex-frontend.tar.gz codex-frontend/
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: codex-frontend
+          path: codex-frontend.tar.gz
+          # default:
+          # retention-days: 90
