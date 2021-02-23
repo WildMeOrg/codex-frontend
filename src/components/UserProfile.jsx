@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { get } from 'lodash-es';
 
+// import IconButton from '@material-ui/core/IconButton';
 import ForumIcon from '@material-ui/icons/Forum';
 import EmailIcon from '@material-ui/icons/Email';
 import LocationIcon from '@material-ui/icons/PersonPin';
+// import AddIcon from '@material-ui/icons/Add';
 import WebIcon from '@material-ui/icons/WebAssetSharp';
 
 import userSchema, {
@@ -19,7 +21,7 @@ import Text from './Text';
 import Button from './Button';
 import MetadataCard from './cards/MetadataCard';
 import SightingsCard from './cards/SightingsCard';
-import MembersCard from './cards/MembersCard';
+// import UserProjectCard from './cards/UserProjectCard';
 import CardContainer from './cards/CardContainer';
 
 const items = [
@@ -132,14 +134,14 @@ export default function UserProfile({
             editable={userData.editable}
             metadata={metadataItems}
           />
-          <MembersCard
-            editable
-            members={[
-              { id: 'bob', name: 'Bob', role: 'Owner' },
-              { id: 'schom', name: 'Alice', role: 'Administrator' },
-              { id: 'alice', name: 'Steve', role: 'Member' },
+          {/* <UserProjectCard
+            renderActions={<IconButton><AddIcon /></IconButton>}
+            projects={[
+              { id: 'bob', name: 'NOAA Capricorn', count: 22, href: '/projects/noaa' },
+              { id: 'suz', name: 'Project Exodia', count: 14, href: '/projects/noaa' },
+              { id: 'zfeq', name: 'Turtle Kingdom LLC', count: 153, href: '/projects/noaa' },
             ]}
-          />
+          /> */}
         </CardContainer>
         <CardContainer>
           <SightingsCard

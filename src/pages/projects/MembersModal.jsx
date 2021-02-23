@@ -56,7 +56,10 @@ export default function MembersModal({
             schema={{
               label: 'Project owner',
               displayType: 'select',
-              choices: word.split('').map((character, i) => ({ label: character, value: i })),
+              choices: word.split('').map((character, i) => ({
+                label: character,
+                value: i,
+              })),
             }}
             value={owner}
           />
