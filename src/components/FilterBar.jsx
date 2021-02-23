@@ -8,13 +8,14 @@ export default function FilterBar({
   onChange,
   value,
   width = 260,
+  style,
   ...rest
 }) {
   const intl = useIntl();
   const placeholder = intl.formatMessage({ id: 'SEARCH' });
   return (
     <Input
-      style={{ margin: '16px 0 20px 16px', width }}
+      style={{ margin: '16px 0 20px 16px', width, ...style }}
       placeholder={placeholder}
       value={value}
       onChange={e => onChange(e.target.value)}

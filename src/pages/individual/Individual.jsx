@@ -3,6 +3,8 @@ import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { capitalize, toLower } from 'lodash-es';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 import SexIcon from '@material-ui/icons/Nature';
 import AgeIcon from '@material-ui/icons/Height';
 import StatusIcon from '@material-ui/icons/LocalHospital';
@@ -11,6 +13,7 @@ import MainColumn from '../../components/MainColumn';
 import SadScreen from '../../components/SadScreen';
 import Button from '../../components/Button';
 import EditProfile from '../../components/EditEntityModal';
+import Text from '../../components/Text';
 import CardContainer from '../../components/cards/CardContainer';
 import SightingsCard from '../../components/cards/SightingsCard';
 import MetadataCard from '../../components/cards/MetadataCard';
@@ -50,6 +53,15 @@ const items = [
 
 export default function Individual() {
   const { id } = useParams();
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handleClick = event => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   // fetch data for Id...
   const individuals = useSelector(selectIndividuals);
@@ -81,7 +93,34 @@ export default function Individual() {
         imgSrc="https://mediaproxy.salon.com/width/1200/https://media.salon.com/2001/05/shrek.jpg"
         renderOptions={<Button display="primary">SUBSCRIBE</Button>}
       >
-        Also known as Teddles, T3289-K, and Tweeb.
+        <Text>Also known as Teddles, T3289-K, and Tweeb.</Text>
+        <Button
+          onClick={handleClick}
+          style={{ marginTop: 8 }}
+          display="subtle"
+          size="small"
+        >
+          Add to project
+        </Button>
+        <Menu
+          elevation={0}
+          keepMounted
+          open={Boolean(anchorEl)}
+          anchorEl={anchorEl}
+          onClose={handleClose}
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'right',
+          }}
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'left',
+          }}
+        >
+          <MenuItem>Project 1</MenuItem>
+          <MenuItem>Project 2</MenuItem>
+          <MenuItem>Project 3</MenuItem>
+        </Menu>
       </EntityHeader>
       <div style={{ display: 'flex', flexWrap: 'wrap' }}>
         <CardContainer size="small">

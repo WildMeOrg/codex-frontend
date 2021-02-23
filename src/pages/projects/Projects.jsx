@@ -3,10 +3,10 @@ import { useSelector } from 'react-redux';
 import { useIntl } from 'react-intl';
 import { get } from 'lodash-es';
 import MainColumn from '../../components/MainColumn';
-import AvatarGallery from '../../components/AvatarGallery';
 import ConfirmDelete from '../../components/ConfirmDelete';
 import Header from '../../components/Header';
-import Text from '../../components/Text';
+import Link from '../../components/Link';
+import DataDisplay from '../../components/dataDisplays/DataDisplay';
 import { selectIsAdministrator } from '../../modules/app/selectors';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import CreateProject from './CreateProject';
@@ -27,7 +27,7 @@ export default function Projects() {
     'Unknown org',
   );
 
-  const displayProjecs = [
+  const displayProjects = [
     ...fakeProjects,
     ...fakeProjects,
     ...fakeProjects,
@@ -55,18 +55,27 @@ export default function Projects() {
         buttonText={intl.formatMessage({ id: 'CREATE_PROJECT' })}
         onButtonClick={() => setCreatingProject(true)}
       />
-      <AvatarGallery
-        square
-        entities={displayProjecs}
-        getHref={entity => `/projects/${entity.id}`}
-        canDelete={isAdministrator}
-        onDelete={entity => {
-          setProjectToDelete(entity);
-        }}
-        renderDetails={org => {
-          const memberCount = get(org, 'data.members.length', null);
-          return <Text id="MEMBER_COUNT" values={{ memberCount }} />;
-        }}
+      <DataDisplay
+        columns={[
+          {
+            name: 'name',
+            label: 'Project',
+            options: {
+              customBodyRender: value => (
+                <Link href={`/projects/${value}`}>{value}</Link>
+              ),
+            },
+          },
+          {
+            name: 'pid',
+            label: 'Project ID',
+          },
+          {
+            name: 'owner',
+            label: 'Owner',
+          },
+        ]}
+        data={displayProjects}
       />
     </MainColumn>
   );

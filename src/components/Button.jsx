@@ -69,6 +69,7 @@ export default function CustomButton({
       variant={variant}
       disabled={disabled}
       style={{ ...roleStyles, ...style }}
+      size={size}
       {...rest}
     >
       {loading ? (
