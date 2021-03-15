@@ -15,9 +15,9 @@ const dashboardHeight = 400;
 
 export default function UploadManager({
   files,
+  assetSubmissionId,
   setFiles,
   exifData,
-  submissionGuid,
 }) {
   const intl = useIntl();
   const currentExifData = useRef();
@@ -34,41 +34,33 @@ export default function UploadManager({
   const fileRef = useRef([]);
   fileRef.current = files;
 
-  useEffect(
-    () => {
-      let uppyInstance;
-      if (submissionGuid) {
-        uppyInstance = Uppy({
-          meta: { type: 'Report sightings image upload' },
-          restrictions: {
-            allowedFileTypes: ['.jpg', '.jpeg', '.png'],
-          },
-          autoProceed: false,
-        });
+  useEffect(() => {
+    const uppyInstance = Uppy({
+      meta: { type: 'Report sightings image upload' },
+      restrictions: {
+        allowedFileTypes: ['.jpg', '.jpeg', '.png'],
+      },
+      autoProceed: false,
+    });
 
-        uppyInstance.use(Tus, {
-          endpoint: `${__houston_url__}/api/v1/submissions/tus`,
-          headers: {
-            'x-houston-submission-id': submissionGuid,
-          },
-        });
+    uppyInstance.use(Tus, {
+      endpoint: `${__houston_url__}/api/v1/submissions/tus`,
+      headers: {
+        'x-tus-transaction-id': assetSubmissionId,
+      },
+    });
 
-        uppyInstance.on('complete', uppyState => {
-          const uploadObjects = get(uppyState, 'successful', []);
-          console.log(`Uploaded ${uploadObjects.length} objects`);
-          console.log(uploadObjects);
-          setFiles([...files, uploadObjects]);
-        });
+    uppyInstance.on('complete', uppyState => {
+      const uploadObjects = get(uppyState, 'successful', []);
+      console.log(`Uploaded ${uploadObjects.length} objects`);
+      console.log(uploadObjects);
+      setFiles([...files, uploadObjects]);
+    });
 
-        setUppy(uppyInstance);
-      }
+    setUppy(uppyInstance);
 
-      return () => {
-        if (uppyInstance) uppyInstance.close();
-      };
-    },
-    [submissionGuid],
-  );
+    return uppyInstance.close;
+  }, []);
 
   return (
     <div>
