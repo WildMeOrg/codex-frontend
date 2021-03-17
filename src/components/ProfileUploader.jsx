@@ -1,30 +1,48 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useIntl } from 'react-intl';
+import { get } from 'lodash-es';
+import { v4 as uuid } from 'uuid';
+
 import Dashboard from '@uppy/react/lib/Dashboard';
 import Uppy from '@uppy/core';
+import Tus from '@uppy/tus';
 import '@uppy/core/dist/style.css';
 import '@uppy/dashboard/dist/style.css';
+
 import Text from './Text';
 
-export default function PhotoUploader({
+export default function ProfileUploader({
   title,
   onComplete,
-  maxFiles,
 }) {
   const intl = useIntl();
   const [uppy, setUppy] = useState(null);
+  const assetSubmissionId = useMemo(uuid, []);
 
   useEffect(() => {
     const uppyInstance = Uppy({
       meta: { type: 'test' },
       restrictions: {
-        maxNumberOfFiles: maxFiles || 10,
+        maxNumberOfFiles: 1,
         allowedFileTypes: ['.jpg', '.jpeg', '.png'],
       },
       autoProceed: true,
     });
 
-    uppyInstance.on('complete', result => {
+    uppyInstance.use(Tus, {
+      endpoint: `${__houston_url__}/api/v1/submissions/tus`,
+      headers: {
+        'x-tus-transaction-id': assetSubmissionId,
+      },
+    });
+
+    uppyInstance.on('complete', uppyState => {
+      const uploadObjects = get(uppyState, 'successful', []);
+      const assetReferences = uploadObjects.map(o => ({
+        path: o.name,
+        transactionId: assetSubmissionId,
+      }));
+      const result = assetReferences.length > 0 ? assetReferences[0] : null;
       onComplete(result);
     });
 
