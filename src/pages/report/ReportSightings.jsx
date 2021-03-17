@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
+import { v4 as uuid } from 'uuid';
 
 import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -16,7 +17,6 @@ import ButtonLink from '../../components/ButtonLink';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import Link from '../../components/Link';
 import Button from '../../components/Button';
-import useSubmission from '../../models/submission/useSubmission';
 import StandardReport from './StandardReport';
 import BulkReport from './BulkReport';
 import UploadManager from './UploadManager';
@@ -25,14 +25,7 @@ export default function ReportSightings({ authenticated = false }) {
   const intl = useIntl();
   useDocumentTitle(intl.formatMessage({ id: 'REPORT_SIGHTINGS' }));
 
-  const {
-    createSubmission,
-    submitSubmission,
-    submissionGuid,
-    loading,
-    error,
-    setError,
-  } = useSubmission('Test upload', 'Oh yeaah');
+  const assetSubmissionId = useMemo(uuid, []);
   const [mode, setMode] = useState('');
   const [files, setFiles] = useState([]);
   const [exifData, setExifData] = useState([]);
@@ -46,7 +39,6 @@ export default function ReportSightings({ authenticated = false }) {
   const radioClick = e => {
     if (e.target.value) {
       setMode(e.target.value);
-      if (!submissionGuid) createSubmission();
     }
   };
 
@@ -133,11 +125,11 @@ export default function ReportSightings({ authenticated = false }) {
               {mode !== '' && (
                 <Grid item style={{ marginTop: 20 }}>
                   <UploadManager
+                    assetSubmissionId={assetSubmissionId}
                     exifData={exifData}
                     setExifData={setExifData}
                     files={files}
                     setFiles={setFiles}
-                    submissionGuid={submissionGuid}
                   />
                   <div
                     style={{
@@ -164,27 +156,11 @@ export default function ReportSightings({ authenticated = false }) {
                 </Grid>
               )}
 
-              {error && (
-                <Grid item style={{ marginTop: 16 }}>
-                  <Alert
-                    onClose={() => setError(null)}
-                    severity="error"
-                  >
-                    <AlertTitle>
-                      <FormattedMessage id="ASSET_PROCESSING_ERROR" />
-                    </AlertTitle>
-                    <FormattedMessage id="ASSET_PROCESSING_ERROR_DESCRIPTION" />
-                  </Alert>
-                </Grid>
-              )}
-
               <Grid item>
                 <Button
                   display="primary"
                   disabled={!mode}
-                  loading={loading}
                   onClick={async () => {
-                    await submitSubmission();
                     window.scrollTo(0, 0);
                     setReporting(true);
                   }}
@@ -203,6 +179,7 @@ export default function ReportSightings({ authenticated = false }) {
           )}
           {reporting && ['one', 'multiple'].includes(mode) && (
             <StandardReport
+              assetReferences={files}
               exifData={exifData}
               onBack={onBack}
               variant={mode}
