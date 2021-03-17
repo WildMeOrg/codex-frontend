@@ -40,7 +40,7 @@ export default function UploadManager({
       restrictions: {
         allowedFileTypes: ['.jpg', '.jpeg', '.png'],
       },
-      autoProceed: false,
+      autoProceed: true,
     });
 
     uppyInstance.use(Tus, {
@@ -52,14 +52,18 @@ export default function UploadManager({
 
     uppyInstance.on('complete', uppyState => {
       const uploadObjects = get(uppyState, 'successful', []);
-      console.log(`Uploaded ${uploadObjects.length} objects`);
-      console.log(uploadObjects);
-      setFiles([...files, uploadObjects]);
+      const assetReferences = uploadObjects.map(o => ({
+        path: o.name,
+        transactionId: assetSubmissionId,
+      }));
+      setFiles([...files, ...assetReferences]);
     });
 
     setUppy(uppyInstance);
 
-    return uppyInstance.close;
+    return () => {
+      if (uppyInstance) uppyInstance.close();
+    };
   }, []);
 
   return (

@@ -179,6 +179,7 @@ export default function ReportSightings({ authenticated = false }) {
           )}
           {reporting && ['one', 'multiple'].includes(mode) && (
             <StandardReport
+              assetReferences={files}
               exifData={exifData}
               onBack={onBack}
               variant={mode}

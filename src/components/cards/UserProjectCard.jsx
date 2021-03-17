@@ -22,7 +22,9 @@ export default function UserProjectCard({
         {projects.map(project => (
           <ListItem key={project.id}>
             <ListItemText
-              primary={<Link href={project.href}>{project.name}</Link>}
+              primary={
+                <Link href={project.href}>{project.name}</Link>
+              }
               secondary={
                 <Text
                   component="span"

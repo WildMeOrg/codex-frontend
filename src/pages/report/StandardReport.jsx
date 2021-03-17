@@ -40,6 +40,7 @@ function getCustomFields(siteSettings, property) {
 }
 
 export default function StandardReport({
+  assetReferences,
   exifData,
   variant,
   onBack,
@@ -341,11 +342,11 @@ export default function StandardReport({
 
             if (nextIncompleteFields.length === 0 && acceptedTerms) {
               putSighting({
-                decimalLatitude: 4.572030525741444,
-                startTime: '2020-10-22T16:42:43.369Z',
-                endTime: '2020-10-23T16:50:07.609Z',
-                submissionContentReferences: [],
-                submissions: [],
+                encounters: [
+                  {
+                    assetReferences,
+                  },
+                ],
               });
             }
           }}
