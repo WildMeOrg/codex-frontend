@@ -16,7 +16,7 @@ export default function SimpleFormPage({
     >
       <Paper
         style={{
-          margin: '0px auto 200px',
+          margin: '0px auto 120px',
           width: 360,
           maxWidth: '90%',
           position: 'relative',

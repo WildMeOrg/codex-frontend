@@ -11,10 +11,7 @@ import '@uppy/dashboard/dist/style.css';
 
 import Text from './Text';
 
-export default function ProfileUploader({
-  title,
-  onComplete,
-}) {
+export default function ProfileUploader({ title, onComplete }) {
   const intl = useIntl();
   const [uppy, setUppy] = useState(null);
   const assetSubmissionId = useMemo(uuid, []);
@@ -42,7 +39,8 @@ export default function ProfileUploader({
         path: o.name,
         transactionId: assetSubmissionId,
       }));
-      const result = assetReferences.length > 0 ? assetReferences[0] : null;
+      const result =
+        assetReferences.length > 0 ? assetReferences[0] : null;
       onComplete(result);
     });
 

@@ -27,6 +27,7 @@
   "STAR_EXPLANATION": "Stars indicate that Codex provides a detection and identification pipeline for a given species.",
   "SCIENTIFIC_NAME": "Scientific name",
   "COMMON_NAMES": "Common names",
+  "ERROR_UPDATING_PROFILE": "Profile update error",
   "ADD": "Add",
   "VALUE": "Value",
   "SIGHTING_START": "Sighting start",

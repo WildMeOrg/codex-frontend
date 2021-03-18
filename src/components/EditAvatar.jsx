@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { get, replace } from 'lodash-es';
+import { get } from 'lodash-es';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import Alert from '@material-ui/lab/Alert';
+import AlertTitle from '@material-ui/lab/AlertTitle';
 import ReactCrop from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
 
@@ -26,21 +28,30 @@ export default function EditAvatar({ visible, onClose, square }) {
     loading,
     error,
     setError,
-    success,
-    setSuccess,
   } = usePatchUser('5d9ac656-426b-40bf-a7a1-99ffe52f8786');
 
-  const imageSrc = get(profileAsset, 'later-we-will-derive-asset-url', null);
+  const imageSrc = get(
+    profileAsset,
+    'later-we-will-derive-asset-url',
+    null,
+  );
 
   async function submitProfilePhoto() {
-    const response = await replaceUserProperty('/profile_fileupload_guid', profileAsset);
-    // submit data and wait for response...
-    console.log(response);
-    onClose();
+    const successful = await replaceUserProperty(
+      '/profile_fileupload_guid',
+      profileAsset,
+    );
+    if (successful) onClose();
   }
 
   return (
-    <Dialog open={visible} onClose={onClose}>
+    <Dialog
+      open={visible}
+      onClose={() => {
+        if (error) setError(null);
+        onClose();
+      }}
+    >
       <DialogTitle onClose={onClose}>
         <FormattedMessage
           id={choosingPhoto ? 'CHOOSE_PHOTO' : 'CROP_PHOTO'}
@@ -51,9 +62,7 @@ export default function EditAvatar({ visible, onClose, square }) {
       </DialogTitle>
       <DialogContent>
         {choosingPhoto && (
-          <ProfileUploader
-            onComplete={setProfileAsset}
-          />
+          <ProfileUploader onComplete={setProfileAsset} />
         )}
         {!choosingPhoto && (
           <ReactCrop
@@ -63,6 +72,14 @@ export default function EditAvatar({ visible, onClose, square }) {
             onChange={c => setCrop(c)}
             circularCrop={!square}
           />
+        )}
+        {error && (
+          <Alert severity="error">
+            <AlertTitle>
+              <FormattedMessage id="ERROR_UPDATING_PROFILE" />
+            </AlertTitle>
+            {error}
+          </Alert>
         )}
       </DialogContent>
       <DialogActions

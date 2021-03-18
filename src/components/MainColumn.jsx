@@ -15,7 +15,7 @@ export default function({
   return (
     <div
       style={{
-        margin: `${marginTop}px auto 200px auto`,
+        margin: `${marginTop}px auto 120px auto`,
         width: '100%',
         position: 'relative',
         maxWidth: fullWidth ? 905 : 851,

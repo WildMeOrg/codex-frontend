@@ -15,14 +15,16 @@ export default function usePatchUser(userId) {
         url: `${__houston_url__}/api/v1/users/${userId}`,
         withCredentials: true,
         method: 'patch',
-        data: [{
-          op: 'replace',
-          path,
-          value,
-        }],
+        data: [
+          {
+            op: 'replace',
+            path,
+            value,
+          },
+        ],
       });
-      console.log(patchResponse);
-      const successful = get(patchResponse, ['data', 'success'], false);
+      const responseStatus = get(patchResponse, 'status');
+      const successful = responseStatus === 200;
       if (successful) {
         setLoading(false);
         setSuccess(true);
