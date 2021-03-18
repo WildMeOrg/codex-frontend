@@ -5,23 +5,53 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import Alert from '@material-ui/lab/Alert';
+import AlertTitle from '@material-ui/lab/AlertTitle';
 import ReactCrop from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
 
+import usePatchUser from '../models/users/usePatchUser';
 import Button from './Button';
-import PhotoUploader from './PhotoUploader';
+import ProfileUploader from './ProfileUploader';
 
 export default function EditAvatar({ visible, onClose, square }) {
   const [choosingPhoto, setChoosingPhoto] = useState(true);
-  const [imageSrc, setImageSrc] = useState(null);
+  const [profileAsset, setProfileAsset] = useState(null);
   const [crop, setCrop] = useState({
     unit: '%',
     width: 300,
     aspect: 1,
   });
 
+  const {
+    replaceUserProperty,
+    loading,
+    error,
+    setError,
+  } = usePatchUser('5d9ac656-426b-40bf-a7a1-99ffe52f8786');
+
+  const imageSrc = get(
+    profileAsset,
+    'later-we-will-derive-asset-url',
+    null,
+  );
+
+  async function submitProfilePhoto() {
+    const successful = await replaceUserProperty(
+      '/profile_fileupload_guid',
+      profileAsset,
+    );
+    if (successful) onClose();
+  }
+
   return (
-    <Dialog open={visible} onClose={onClose}>
+    <Dialog
+      open={visible}
+      onClose={() => {
+        if (error) setError(null);
+        onClose();
+      }}
+    >
       <DialogTitle onClose={onClose}>
         <FormattedMessage
           id={choosingPhoto ? 'CHOOSE_PHOTO' : 'CROP_PHOTO'}
@@ -32,14 +62,7 @@ export default function EditAvatar({ visible, onClose, square }) {
       </DialogTitle>
       <DialogContent>
         {choosingPhoto && (
-          <PhotoUploader
-            onComplete={result => {
-              setImageSrc(
-                get(result, 'successful.0.uploadURL', null),
-              );
-            }}
-            maxFiles={1}
-          />
+          <ProfileUploader onComplete={setProfileAsset} />
         )}
         {!choosingPhoto && (
           <ReactCrop
@@ -50,13 +73,21 @@ export default function EditAvatar({ visible, onClose, square }) {
             circularCrop={!square}
           />
         )}
+        {error && (
+          <Alert severity="error">
+            <AlertTitle>
+              <FormattedMessage id="ERROR_UPDATING_PROFILE" />
+            </AlertTitle>
+            {error}
+          </Alert>
+        )}
       </DialogContent>
       <DialogActions
         style={{ marginTop: 32, padding: '0px 24px 24px 24px' }}
       >
         {choosingPhoto && (
           <Button
-            disabled={!imageSrc}
+            disabled={!profileAsset}
             onClick={() => {
               setChoosingPhoto(false);
             }}
@@ -76,13 +107,11 @@ export default function EditAvatar({ visible, onClose, square }) {
             </Button>
             <Button
               display="primary"
-              onClick={() => {
-                // submit data and wait for response...
-                onClose();
-              }}
+              onClick={submitProfilePhoto}
               autoFocus
+              loading={loading}
             >
-              <FormattedMessage id="SAVE" defaultMessage="Save" />
+              <FormattedMessage id="SAVE" />
             </Button>
           </>
         )}
