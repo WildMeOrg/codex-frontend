@@ -21,6 +21,33 @@ npm start
 
 The development environment is mostly used on OSX but should work on Windows as well. Use Powershell or edit the `npm start:win32` command to set `NODE_ENV` using the appropriate syntax for your preferred shell.
 
+Unfortunately, the frontend isn't very useful without a backend. To run the frontend in its proper context, you need to [install Docker](https://docs.docker.com/get-docker/), clone [Houston](https://github.com/WildMeOrg/houston), and edit `deploy/codex/docker-compose.yml`. Modify the `dev-frontend` image to point to your local copy of the code in the following manner:
+
+```
+dev-frontend:
+  ...
+  volumes:
+    - ./dev-frontend/docker-entrypoint.sh:/docker-entrypoint.sh
+    - ../../_frontend:/code     <---- delete this line!
+    - /location/of/codex-frontend:/code <----- add this line!
+```
+
+After that you should be able to run the following commands:
+```
+cd deploy/codex
+docker-compose pull
+docker-compose up
+```
+
+Note: `docker-compose pull` takes a very long time to finish the first time around! But when it's all done you should be able to see the frontend on `localhost:84`. If you see a 502 nginx error instead, you may need to increase the amount of memory available to Docker. 6GB memory and 2GB swap works for me.
+
+The following commands are helpful when developing in this manner:
+
+ - `docker-compose up -d`: Run all containers in daemon mode, so you don't see all the logs running together.
+ - `docker-compose restart <image>`: Restart a particular docker image (remember these are listed in `docker-compose.yml`).
+ - `docker-compose logs -f <image>`: Show logs for a particular image.
+ - `docker-compose down`: Stop all images.
+
 ## Configuration and build
 
 A build can be initiated with the command `npm run build`. You can specify the URL for Houston in `/config/config.json` or as a command line argument. Here are some examples:
