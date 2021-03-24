@@ -36,13 +36,11 @@ export default function LatLongInput({
 
   const onClose = () => setModalOpen(false);
 
-  const inputWidth = 0.5 * width;
-
   return (
     <div>
-      <div style={{ display: 'flex' }}>
+      <div style={{ display: 'flex', flexDirection: 'column' }}>
         <TextInput
-          width={inputWidth}
+          width={width}
           style={{ marginRight: 0.5 * inputMargin }}
           value={currentLatitudeString}
           onChange={newLat => {
@@ -51,7 +49,7 @@ export default function LatLongInput({
           schema={{ labelId: 'LATITUDE', fieldType: 'float' }}
         />
         <TextInput
-          width={inputWidth}
+          width={width}
           value={currentLongitudeString}
           style={{ marginLeft: 0.5 * inputMargin }}
           onChange={newLng => {
@@ -63,6 +61,7 @@ export default function LatLongInput({
       <Button
         size="small"
         onClick={() => setModalOpen(true)}
+        style={{ marginTop: 4 }}
         {...rest}
       >
         <FormattedMessage id="CHOOSE_ON_MAP" />

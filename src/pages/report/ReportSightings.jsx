@@ -48,7 +48,7 @@ export default function ReportSightings({ authenticated = false }) {
         container
         direction="column"
         spacing={2}
-        style={{ padding: '20px 16px' }}
+        style={{ padding: '20px 6vw' }}
       >
         <Grid item>
           <Text variant="h3" component="h3" id="REPORT_SIGHTINGS" />

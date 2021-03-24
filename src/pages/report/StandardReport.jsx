@@ -13,10 +13,8 @@ import ExifIcon from '@material-ui/icons/FlashOn';
 
 import useSiteSettings from '../../models/site/useSiteSettings';
 import {
-  selectSightingSchema,
   selectSightingCategories,
 } from '../../modules/sightings/selectors';
-import { selectSiteName } from '../../modules/site/selectors';
 import usePutSighting from '../../models/sighting/usePutSighting';
 import { getLocationSuggestion } from '../../utils/exif';
 import categoryTypes from '../../constants/categoryTypes';
@@ -25,6 +23,8 @@ import Text from '../../components/Text';
 import Button from '../../components/Button';
 import InlineButton from '../../components/InlineButton';
 import TermsAndConditionsDialog from './TermsAndConditionsDialog';
+import deriveReportSightingSchema from './utils/deriveReportSightingSchema';
+import prepareReport from './utils/prepareReport';
 
 function getCustomFields(siteSettings, property) {
   return get(
@@ -70,10 +70,10 @@ export default function StandardReport({
     ...customIndividualFields,
     ...customSightingFields,
   ];
+  const siteName = get(siteSettings, ['data', 'site.name', 'value'], '<site-name>');
 
   const categories = useSelector(selectSightingCategories);
-  const schema = useSelector(selectSightingSchema);
-  const siteName = useSelector(selectSiteName);
+  const schema = deriveReportSightingSchema(siteSettings);
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [exifButtonClicked, setExifButtonClicked] = useState(false);
   const [acceptEmails, setAcceptEmails] = useState(false);
@@ -96,6 +96,8 @@ export default function StandardReport({
 
   const showErrorAlertBox =
     incompleteFields.length > 0 || termsError || putError;
+
+  console.log(formValues);
 
   return (
     <>
@@ -145,12 +147,12 @@ export default function StandardReport({
               <Paper
                 elevation={2}
                 style={{
-                  marginTop: 20,
+                  marginTop: 12,
                   marginBottom: 12,
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'center',
-                  padding: '0px 12px',
+                  padding: '0px 12px 20px 12px',
                 }}
               >
                 {showExifData && (
@@ -340,14 +342,35 @@ export default function StandardReport({
             // check that terms and conditions were accepted
             setTermsError(!acceptedTerms);
 
-            if (nextIncompleteFields.length === 0 && acceptedTerms) {
-              putSighting({
-                encounters: [
-                  {
-                    assetReferences,
-                  },
-                ],
-              });
+            if (true) {
+            // if (nextIncompleteFields.length === 0 && acceptedTerms) {
+              const report = prepareReport(variant === 'one', formValues, {});
+              console.log(report);
+              putSighting(report);
+              // putSighting({
+              //   startTime: "2020-01-01T16:20:10+03:00",
+              //   endTime: "2020-02-01T16:20:10+03:00",
+              //   distance: 100.1,
+              //   bearing: 0.123,
+              //   behavior: 'hangin',
+              //   decimalLatitude: 0.001,
+              //   decimalLongitude: 0.001,
+              //   locationId: 'location-id-0',
+              //   verbatimLocality: 'placeville',
+              //   encounters: [
+              //     {
+              //       // assetReferences,
+              //       assetReferences: [],
+              //       time: '2021-21-05T00:01:59+03:00',
+              //       behavior: 'sleeping',
+              //       lifeStage: 'youthful',
+              //       sex: 'male',
+              //       locationId: 'somelocation',
+              //       decimalLatitude: 0.002,
+              //       decimalLongitude: 0.021,
+              //     },
+              //   ],
+              // });
             }
           }}
           style={{ width: 200 }}

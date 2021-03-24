@@ -47,6 +47,7 @@ export default function TreeViewInput(props) {
   }
 
   function renderLevel(leaves) {
+    if (!leaves || leaves.length === 0) return null;
     return leaves.map(leaf => (
       <TreeItem key={leaf.id} nodeId={leaf.id} label={leaf.name}>
         {leaf.locationID && renderLevel(leaf.locationID)}
