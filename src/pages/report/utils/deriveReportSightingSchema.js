@@ -22,24 +22,37 @@ const defaultCategories = {
 };
 
 export default function deriveReportSightingSchema(siteSettings) {
+  const customFieldCategories = get(
+    siteSettings,
+    ['data', 'site.custom.customFieldCategories', 'value'],
+    [],
+  );
+  // const categories = [...defaultCategories, customFieldCategories.filter(c => c.type === 'Sighting')];
   const categories = defaultCategories;
-  const regionChoices = get(siteSettings, ['data', 'site.custom.regions', 'value', 'locationID'], []);
 
-  const backendSpecies = get(siteSettings, ['data', 'site.species', 'suggestedValues'], []);
-  const speciesOptions = backendSpecies.map(s => ({ label: s.scientificName, value: s.itisTsn }));
-  const speciesOptionsWithNone = [...speciesOptions, { label: 'None', value: null }];
+  const customFields = get(
+    siteSettings,
+    ['data', 'site.custom.customFields.Occurrence', 'value'],
+    [],
+  );
+
+  const regionChoices = get(
+    siteSettings,
+    ['data', 'site.custom.regions', 'value', 'locationID'],
+    [],
+  );
 
   return [
-    {
-      name: 'species',
-      labelId: 'SPECIES_DETECTION_MODEL',
-      descriptionId: 'SPECIES_DETECTION_MODEL_DESCRIPTION',
-      category: categories.general.name,
-      fieldType: fieldTypes.multiselect,
-      choices: speciesOptionsWithNone,
-      required: true,
-      defaultValue: [],
-    },
+    // {
+    //   name: 'speciesDetectionModel',
+    //   labelId: 'SPECIES_DETECTION_MODEL',
+    //   descriptionId: 'SPECIES_DETECTION_MODEL_DESCRIPTION',
+    //   category: categories.general.name,
+    //   fieldType: fieldTypes.multiselect,
+    //   choices: fill this out!,
+    //   required: true,
+    //   defaultValue: [],
+    // },
     {
       name: 'locationId',
       labelId: 'REGION',
@@ -47,7 +60,7 @@ export default function deriveReportSightingSchema(siteSettings) {
       fieldType: fieldTypes.treeview,
       multiselect: false,
       choices: regionChoices,
-      defaultValue: [],
+      defaultValue: '',
     },
     {
       name: 'gps',
@@ -91,13 +104,14 @@ export default function deriveReportSightingSchema(siteSettings) {
       defaultValue: '',
     },
     {
-      name: 'notes',
+      name: 'comments',
       labelId: 'NOTES',
       category: categories.sightingDetails.name,
       fieldType: fieldTypes.longstring,
       required: false,
       defaultValue: '',
     },
+    // ...customFields,
     // {
     //   name: 'sightingContext',
     //   labelId: 'SIGHTING_CONTEXT',

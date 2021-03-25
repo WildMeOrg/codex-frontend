@@ -44,7 +44,11 @@ export default function InputRow({
           {required && ' *'}
         </Text>
         {showDescription && (
-          <Text variant="caption" style={{ maxWidth: '80%' }} id={descriptionId}>
+          <Text
+            variant="caption"
+            style={{ maxWidth: '80%' }}
+            id={descriptionId}
+          >
             {description}
           </Text>
         )}

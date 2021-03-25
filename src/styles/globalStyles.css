@@ -1,3 +1,7 @@
 .dark-menu-item:hover {
   background-color: #4c4c4c !important;
 }
+
+.MuiAccordion-root.Mui-expanded {
+  margin: 1px 0 !important;
+}

@@ -153,5 +153,5 @@ export default function deriveReportEncounterSchema(siteSettings) {
     //   ],
     //   defaultValue: [],
     // },
-  ]
+  ];
 }

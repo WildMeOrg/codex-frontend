@@ -10,20 +10,26 @@ import Grid from '@material-ui/core/Grid';
 import InfoIcon from '@material-ui/icons/InfoOutlined';
 import Alert from '@material-ui/lab/Alert';
 import AlertTitle from '@material-ui/lab/AlertTitle';
+import { useTheme } from '@material-ui/core/styles';
 
 import MainColumn from '../../components/MainColumn';
 import Text from '../../components/Text';
 import ButtonLink from '../../components/ButtonLink';
+import OneIndividualIcon from '../../components/icons/OneIndividualIcon';
+import MultipleIndividualsIcon from '../../components/icons/MultipleIndividualsIcon';
+import MultipleSightingsIcon from '../../components/icons/MultipleSightingsIcon';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import Link from '../../components/Link';
 import Button from '../../components/Button';
 import StandardReport from './StandardReport';
 import BulkReport from './BulkReport';
 import UploadManager from './UploadManager';
+import ChoiceCard from './ChoiceCard';
 
 export default function ReportSightings({ authenticated = false }) {
   const intl = useIntl();
   useDocumentTitle(intl.formatMessage({ id: 'REPORT_SIGHTINGS' }));
+  const theme = useTheme();
 
   const assetSubmissionId = useMemo(uuid, []);
   const [mode, setMode] = useState('');
@@ -75,6 +81,52 @@ export default function ReportSightings({ authenticated = false }) {
           </Grid>
         )}
         <Grid item container direction="column">
+          <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+            <ChoiceCard
+              renderIcon={() => (
+                <OneIndividualIcon
+                  color={theme.palette.primary.main}
+                  width={160}
+                  height={160}
+                />
+              )}
+              labelId="ONE_SIGHTING_MULTIPLE_INDIVIDUALS"
+              descriptionId="ONE_SIGHTING_MULTIPLE_INDIVIDUALS_DESCRIPTION"
+              onClick={() => {
+                console.log('holla!!');
+              }}
+            />
+
+            <ChoiceCard
+              renderIcon={() => (
+                <MultipleIndividualsIcon
+                  color={theme.palette.primary.main}
+                  width={160}
+                  height={160}
+                />
+              )}
+              labelId="ONE_SIGHTING_ONE_INDIVIDUAL"
+              descriptionId="ONE_SIGHTING_ONE_INDIVIDUAL_DESCRIPTION"
+              onClick={() => {
+                console.log('holla!!');
+              }}
+            />
+
+            <ChoiceCard
+              renderIcon={() => (
+                <MultipleSightingsIcon
+                  color={theme.palette.primary.main}
+                  width={160}
+                  height={160}
+                />
+              )}
+              labelId="MULTIPLE_SIGHTINGS"
+              descriptionId="MULTIPLE_SIGHTINGS_DESCRIPTION"
+              onClick={() => {
+                console.log('holla!!');
+              }}
+            />
+          </div>
           {!reporting && (
             <>
               <Grid item>

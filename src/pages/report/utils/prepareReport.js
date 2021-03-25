@@ -1,16 +1,19 @@
 import { get } from 'lodash-es';
 
-export default function prepareReport(oneEncounter, sightingData, encounterData) {
+export default function prepareReport(
+  oneEncounter,
+  sightingData,
+  encounterData,
+) {
   let encounter = {
     ...encounterData,
   };
-  
+
   if (oneEncounter) {
     encounter = {
       ...encounterData,
       decimalLatitude: sightingData.gps[0],
       decimalLongitude: sightingData.gps[1],
-
     };
     if (!get(sightingData, 'endTime')) {
       encounter.time = sightingData.startTime;

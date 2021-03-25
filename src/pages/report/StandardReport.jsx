@@ -12,9 +12,7 @@ import AlertTitle from '@material-ui/lab/AlertTitle';
 import ExifIcon from '@material-ui/icons/FlashOn';
 
 import useSiteSettings from '../../models/site/useSiteSettings';
-import {
-  selectSightingCategories,
-} from '../../modules/sightings/selectors';
+import { selectSightingCategories } from '../../modules/sightings/selectors';
 import usePutSighting from '../../models/sighting/usePutSighting';
 import { getLocationSuggestion } from '../../utils/exif';
 import categoryTypes from '../../constants/categoryTypes';
@@ -70,7 +68,11 @@ export default function StandardReport({
     ...customIndividualFields,
     ...customSightingFields,
   ];
-  const siteName = get(siteSettings, ['data', 'site.name', 'value'], '<site-name>');
+  const siteName = get(
+    siteSettings,
+    ['data', 'site.name', 'value'],
+    '<site-name>',
+  );
 
   const categories = useSelector(selectSightingCategories);
   const schema = deriveReportSightingSchema(siteSettings);
@@ -98,6 +100,7 @@ export default function StandardReport({
     incompleteFields.length > 0 || termsError || putError;
 
   console.log(formValues);
+  console.log(prepareReport(variant === 'one', formValues, {}));
 
   return (
     <>
@@ -343,8 +346,12 @@ export default function StandardReport({
             setTermsError(!acceptedTerms);
 
             if (true) {
-            // if (nextIncompleteFields.length === 0 && acceptedTerms) {
-              const report = prepareReport(variant === 'one', formValues, {});
+              // if (nextIncompleteFields.length === 0 && acceptedTerms) {
+              const report = prepareReport(
+                variant === 'one',
+                formValues,
+                {},
+              );
               console.log(report);
               putSighting(report);
               // putSighting({

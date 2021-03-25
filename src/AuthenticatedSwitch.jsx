@@ -14,6 +14,7 @@ import Orgs from './pages/org/Orgs';
 import User from './pages/user/User';
 import Users from './pages/user/Users';
 import ReportSightings from './pages/report/ReportSightings';
+import ReportSplash from './pages/report/ReportSplash';
 import FourOhFour from './pages/fourohfour/FourOhFour';
 import useSiteSettings from './models/site/useSiteSettings';
 import SearchIndividuals from './pages/individual/SearchIndividuals';
@@ -106,7 +107,7 @@ export default function AuthenticatedSwitch() {
                         <Projects />
                       </Route> */}
                       <Route path="/report">
-                        <ReportSightings authenticated />
+                        <ReportSplash authenticated />
                       </Route>
                       <Route path="/admin/actions">
                         <AdminActions />
