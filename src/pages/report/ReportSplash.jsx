@@ -1,18 +1,12 @@
-import React, { useState, useMemo } from 'react';
+import React from 'react';
 import { useIntl } from 'react-intl';
-import { v4 as uuid } from 'uuid';
 
 import { useTheme } from '@material-ui/core/styles';
 
-import MainColumn from '../../components/MainColumn';
-import Text from '../../components/Text';
-import ButtonLink from '../../components/ButtonLink';
 import OneIndividualIcon from '../../components/icons/OneIndividualIcon';
 import MultipleIndividualsIcon from '../../components/icons/MultipleIndividualsIcon';
 import MultipleSightingsIcon from '../../components/icons/MultipleSightingsIcon';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
-import Link from '../../components/Link';
-import Button from '../../components/Button';
 import ChoiceCard from './ChoiceCard';
 import ReportSightingsPage from './ReportSightingsPage';
 

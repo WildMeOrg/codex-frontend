@@ -10,12 +10,21 @@ import Text from '../../components/Text';
 import ButtonLink from '../../components/ButtonLink';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 
-export default function ReportSightingsPage({ authenticated = false, children }) {
+export default function ReportSightingsPage({
+  authenticated = false,
+  children,
+}) {
   const intl = useIntl();
   useDocumentTitle(intl.formatMessage({ id: 'REPORT_SIGHTINGS' }));
 
   return (
-    <MainColumn style={{ display: 'flex', justifyContent: 'center', maxWidth: 1000 }}>
+    <MainColumn
+      style={{
+        display: 'flex',
+        justifyContent: 'center',
+        maxWidth: 1000,
+      }}
+    >
       <Grid
         container
         direction="column"

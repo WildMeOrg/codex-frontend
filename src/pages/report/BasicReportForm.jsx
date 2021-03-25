@@ -41,7 +41,6 @@ export default function StandardReport({
   assetReferences,
   exifData,
   variant,
-  onBack,
 }) {
   const intl = useIntl();
   const siteSettings = useSiteSettings();
@@ -108,15 +107,6 @@ export default function StandardReport({
         visible={dialogOpen}
         onClose={() => setDialogOpen(false)}
       />
-      <Grid item>
-        <Button
-          onClick={onBack}
-          style={{ marginTop: 8 }}
-          display="back"
-        >
-          <FormattedMessage id="BACK_TO_PHOTOS" />
-        </Button>
-      </Grid>
       <Grid item>
         {categoryList.map(category => {
           const inputsInCategory = schema.filter(

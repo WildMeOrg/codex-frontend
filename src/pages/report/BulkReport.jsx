@@ -19,7 +19,7 @@ import { selectSiteName } from '../../modules/site/selectors';
 import TermsAndConditionsDialog from './TermsAndConditionsDialog';
 import { flatfileKey } from '../../constants/apiKeys';
 
-export default function BulkReport({ onBack }) {
+export default function BulkReport() {
   const schema = useSelector(selectSightingSchema);
   const siteName = useSelector(selectSiteName);
   const theme = useTheme();
@@ -47,15 +47,6 @@ export default function BulkReport({ onBack }) {
         visible={dialogOpen}
         onClose={() => setDialogOpen(false)}
       />
-      <Grid item>
-        <Button
-          onClick={onBack}
-          style={{ marginTop: 8 }}
-          display="back"
-        >
-          <FormattedMessage id="BACK_TO_PHOTOS" />
-        </Button>
-      </Grid>
       <div style={{ marginLeft: 12 }}>
         <Text variant="h6" style={{ marginTop: 20 }}>
           1. Select fields

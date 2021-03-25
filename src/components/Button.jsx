@@ -22,6 +22,10 @@ export default function CustomButton({
         size="small"
         startIcon={<BackIcon />}
         disabled={disabled}
+        style={{
+          padding: '4px 16px',
+          ...style,
+        }}
         {...rest}
       >
         {children}
