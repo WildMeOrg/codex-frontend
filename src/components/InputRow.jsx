@@ -37,6 +37,7 @@ export default function InputRow({
           minWidth: 200,
           maxWidth: 400,
           marginBottom: 12,
+          width: '100%',
         }}
       >
         <Text>

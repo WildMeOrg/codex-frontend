@@ -74,8 +74,7 @@ export default function StandardReport({
     '<site-name>',
   );
 
-  const categories = useSelector(selectSightingCategories);
-  const schema = deriveReportSightingSchema(siteSettings);
+  const {sightingSchema, sightingCategories } = deriveReportSightingSchema(siteSettings);
   const encounterSchema = deriveReportEncounterSchema(siteSettings);
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [exifButtonClicked, setExifButtonClicked] = useState(false);
@@ -83,10 +82,10 @@ export default function StandardReport({
   const [dialogOpen, setDialogOpen] = useState(false);
   const [incompleteFields, setIncompleteFields] = useState([]);
   const [termsError, setTermsError] = useState(false);
-  const categoryList = values(categories);
+  const categoryList = values(sightingCategories);
 
   const [formValues, setFormValues] = useState(
-    schema.reduce((memo, field) => {
+    sightingSchema.reduce((memo, field) => {
       memo[field.name] = field.defaultValue;
       return memo;
     }, {}),
@@ -100,6 +99,8 @@ export default function StandardReport({
   const showErrorAlertBox =
     incompleteFields.length > 0 || termsError || putError;
 
+  console.log(sightingCategories);
+  console.log(sightingSchema);
   console.log(formValues);
   console.log(prepareReport(variant === 'one', formValues, {}));
 
@@ -111,7 +112,7 @@ export default function StandardReport({
       />
       <Grid item>
         {categoryList.map(category => {
-          const inputsInCategory = schema.filter(
+          const inputsInCategory = sightingSchema.filter(
             f => f.category === category.name,
           );
 
@@ -327,7 +328,7 @@ export default function StandardReport({
         <Button
           onClick={() => {
             // check that required fields are complete
-            const nextIncompleteFields = schema.filter(
+            const nextIncompleteFields = sightingSchema.filter(
               field =>
                 field.required &&
                 field.defaultValue === formValues[field.name],

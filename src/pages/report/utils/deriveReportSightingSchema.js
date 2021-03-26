@@ -1,7 +1,7 @@
 import { get } from 'lodash-es';
 import fieldTypes from '../../../constants/fieldTypes';
 
-const defaultCategories = {
+const defaultSightingCategories = {
   general: {
     name: 'general',
     labelId: 'GENERAL',
@@ -28,7 +28,7 @@ export default function deriveReportSightingSchema(siteSettings) {
     [],
   );
   // const categories = [...defaultCategories, customFieldCategories.filter(c => c.type === 'Sighting')];
-  const categories = defaultCategories;
+  const sightingCategories = defaultSightingCategories;
 
   const customFields = get(
     siteSettings,
@@ -42,7 +42,7 @@ export default function deriveReportSightingSchema(siteSettings) {
     [],
   );
 
-  return [
+  const sightingSchema = [
     // {
     //   name: 'speciesDetectionModel',
     //   labelId: 'SPECIES_DETECTION_MODEL',
@@ -56,7 +56,7 @@ export default function deriveReportSightingSchema(siteSettings) {
     {
       name: 'locationId',
       labelId: 'REGION',
-      category: categories.location.name,
+      category: sightingCategories.location.name,
       fieldType: fieldTypes.treeview,
       multiselect: false,
       choices: regionChoices,
@@ -66,7 +66,7 @@ export default function deriveReportSightingSchema(siteSettings) {
       name: 'gps',
       labelId: 'EXACT_LOCATION',
       descriptionId: 'LOCATION_DESCRIPTION',
-      category: categories.location.name,
+      category: sightingCategories.location.name,
       fieldType: fieldTypes.latlong,
       defaultValue: [null, null],
     },
@@ -74,14 +74,14 @@ export default function deriveReportSightingSchema(siteSettings) {
       name: 'verbatimLocality',
       labelId: 'LOCATION_FREEFORM',
       descriptionId: 'LOCATION_FREEFORM_DESCRIPTION',
-      category: categories.location.name,
+      category: sightingCategories.location.name,
       fieldType: fieldTypes.string,
       defaultValue: '',
     },
     {
       name: 'startTime',
       labelId: 'SIGHTING_START_TIME',
-      category: categories.general.name,
+      category: sightingCategories.general.name,
       fieldType: fieldTypes.date,
       required: true,
       defaultValue: null,
@@ -90,7 +90,7 @@ export default function deriveReportSightingSchema(siteSettings) {
       name: 'endTime',
       labelId: 'SIGHTING_END_TIME',
       descriptionId: 'SIGHTING_END_TIME_DESCRIPTION',
-      category: categories.general.name,
+      category: sightingCategories.general.name,
       fieldType: fieldTypes.date,
       required: false,
       defaultValue: null,
@@ -98,7 +98,7 @@ export default function deriveReportSightingSchema(siteSettings) {
     {
       name: 'behavior',
       labelId: 'BEHAVIOR',
-      category: categories.sightingDetails.name,
+      category: sightingCategories.sightingDetails.name,
       fieldType: fieldTypes.string,
       required: false,
       defaultValue: '',
@@ -106,7 +106,7 @@ export default function deriveReportSightingSchema(siteSettings) {
     {
       name: 'comments',
       labelId: 'NOTES',
-      category: categories.sightingDetails.name,
+      category: sightingCategories.sightingDetails.name,
       fieldType: fieldTypes.longstring,
       required: false,
       defaultValue: '',
@@ -115,7 +115,7 @@ export default function deriveReportSightingSchema(siteSettings) {
     // {
     //   name: 'sightingContext',
     //   labelId: 'SIGHTING_CONTEXT',
-    //   category: categories.general.name,
+    //   category: sightingCategories.general.name,
     //   fieldType: fieldTypes.select,
     //   required: true,
     //   choices: [
@@ -138,7 +138,7 @@ export default function deriveReportSightingSchema(siteSettings) {
     //   name: 'autoMatch',
     //   labelId: 'AUTO_MATCH',
     //   descriptionId: 'AUTO_MATCH_DESCRIPTION',
-    //   category: categories.animal.name,
+    //   category: sightingCategories.animal.name,
     //   fieldType: fieldTypes.individual,
     //   defaultValue: null,
     // },
@@ -146,23 +146,25 @@ export default function deriveReportSightingSchema(siteSettings) {
     //   name: 'photographer',
     //   labelId: 'PHOTOGRAPHER',
     //   descriptionId: 'PHOTOGRAPHER_DESCRIPTION',
-    //   category: categories.sightingDetails.name,
+    //   category: sightingCategories.sightingDetails.name,
     //   fieldType: fieldTypes.string,
     //   defaultValue: '',
     // },
     // {
     //   name: 'photographerEmail',
     //   labelId: 'PHOTOGRAPHER_EMAIL',
-    //   category: categories.sightingDetails.name,
+    //   category: sightingCategories.sightingDetails.name,
     //   fieldType: fieldTypes.string,
     //   defaultValue: '',
     // },
     // {
     //   name: 'additionalMedia',
     //   labelId: 'ADDITIONAL_MEDIA',
-    //   category: categories.general.name,
+    //   category: sightingCategories.general.name,
     //   fieldType: fieldTypes.file,
     //   defaultValue: null,
     // },
   ];
+
+  return { sightingSchema, sightingCategories };
 }
