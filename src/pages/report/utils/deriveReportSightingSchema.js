@@ -96,6 +96,15 @@ export default function deriveReportSightingSchema(siteSettings) {
       defaultValue: null,
     },
     {
+      name: 'verbatimEventDate',
+      labelId: 'SIGHTING_END_TIME',
+      descriptionId: 'SIGHTING_END_TIME_DESCRIPTION',
+      category: sightingCategories.general.name,
+      fieldType: fieldTypes.string,
+      required: false,
+      defaultValue: '',
+    },
+    {
       name: 'behavior',
       labelId: 'BEHAVIOR',
       category: sightingCategories.sightingDetails.name,

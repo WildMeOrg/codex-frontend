@@ -1,8 +1,14 @@
 import React from 'react';
+import { v4 as uuid } from 'uuid';
 import {
   darken,
   lighten,
 } from '@material-ui/core/styles/colorManipulator';
+
+const paint1Id = `radial1-${uuid()}`;
+const paint2Id = `radial2-${uuid()}`;
+const paint3Id = `radial3-${uuid()}`;
+const filterId = `shadow-${uuid()}`;
 
 export default function MultipleIndividualsIcon({ color, ...rest }) {
   const darkColor = darken(color, 0.3);
@@ -15,15 +21,31 @@ export default function MultipleIndividualsIcon({ color, ...rest }) {
       xmlns="http://www.w3.org/2000/svg"
       {...rest}
     >
-      <g filter="url(#filter0_d)">
+      <g filter={`url(#${filterId})`}>
         <circle
           cx="43.5"
           cy="69.5"
           r="29.5"
-          fill="url(#paint0_radial)"
+          fill={`url(#${paint1Id})`}
         />
       </g>
-      <g filter="url(#filter0_d)">
+      <g filter={`url(#${filterId})`}>
+        <circle
+          cx="104.5"
+          cy="116.5"
+          r="29.5"
+          fill={`url(#${paint2Id})`}
+        />
+      </g>
+      <g filter={`url(#${filterId})`}>
+        <circle
+          cx="117.5"
+          cy="44.5"
+          r="29.5"
+          fill={`url(#${paint3Id})`}
+        />
+      </g>
+      <g filter={`url(#${filterId})`}>
         <circle
           cx="39.6268"
           cy="55.7934"
@@ -32,7 +54,7 @@ export default function MultipleIndividualsIcon({ color, ...rest }) {
           fill="white"
         />
       </g>
-      <g filter="url(#filter0_d)">
+      <g filter={`url(#${filterId})`}>
         <circle
           cx="29.7928"
           cy="72.8252"
@@ -41,7 +63,7 @@ export default function MultipleIndividualsIcon({ color, ...rest }) {
           fill="white"
         />
       </g>
-      <g filter="url(#filter0_d)">
+      <g filter={`url(#${filterId})`}>
         <circle
           cx="56.658"
           cy="65.6264"
@@ -50,7 +72,7 @@ export default function MultipleIndividualsIcon({ color, ...rest }) {
           fill="white"
         />
       </g>
-      <g filter="url(#filter0_d)">
+      <g filter={`url(#${filterId})`}>
         <circle
           cx="46.825"
           cy="82.6587"
@@ -59,26 +81,10 @@ export default function MultipleIndividualsIcon({ color, ...rest }) {
           fill="white"
         />
       </g>
-      <g filter="url(#filter0_d)">
-        <circle
-          cx="104.5"
-          cy="116.5"
-          r="29.5"
-          fill="url(#paint1_radial)"
-        />
-      </g>
-      <g filter="url(#filter0_d)">
+      <g filter={`url(#${filterId})`}>
         <circle cx="105" cy="117" r="5" fill="white" />
       </g>
-      <g filter="url(#filter0_d)">
-        <circle
-          cx="117.5"
-          cy="44.5"
-          r="29.5"
-          fill="url(#paint2_radial)"
-        />
-      </g>
-      <g filter="url(#filter0_d)">
+      <g filter={`url(#${filterId})`}>
         <circle
           cx="111.931"
           cy="35.3314"
@@ -87,7 +93,7 @@ export default function MultipleIndividualsIcon({ color, ...rest }) {
           fill="white"
         />
       </g>
-      <g filter="url(#filter0_d)">
+      <g filter={`url(#${filterId})`}>
         <circle
           cx="111.358"
           cy="54.0047"
@@ -96,7 +102,7 @@ export default function MultipleIndividualsIcon({ color, ...rest }) {
           fill="white"
         />
       </g>
-      <g filter="url(#filter0_d)">
+      <g filter={`url(#${filterId})`}>
         <circle
           cx="127.079"
           cy="44.9276"
@@ -107,11 +113,11 @@ export default function MultipleIndividualsIcon({ color, ...rest }) {
       </g>
       <defs>
         <filter
-          id="filter0_d"
-          x="21"
-          y="25"
-          width="119"
-          height="119"
+          id={filterId}
+          x="0"
+          y="0"
+          width="160"
+          height="160"
           filterUnits="userSpaceOnUse"
           colorInterpolationFilters="sRGB"
         >
@@ -140,7 +146,7 @@ export default function MultipleIndividualsIcon({ color, ...rest }) {
           />
         </filter>
         <radialGradient
-          id="paint0_radial"
+          id={paint1Id}
           cx="0"
           cy="0"
           r="1"
@@ -151,7 +157,7 @@ export default function MultipleIndividualsIcon({ color, ...rest }) {
           <stop offset="1" stopColor={darkColor} />
         </radialGradient>
         <radialGradient
-          id="paint1_radial"
+          id={paint2Id}
           cx="0"
           cy="0"
           r="1"
@@ -162,7 +168,7 @@ export default function MultipleIndividualsIcon({ color, ...rest }) {
           <stop offset="1" stopColor={darkColor} />
         </radialGradient>
         <radialGradient
-          id="paint2_radial"
+          id={paint3Id}
           cx="0"
           cy="0"
           r="1"

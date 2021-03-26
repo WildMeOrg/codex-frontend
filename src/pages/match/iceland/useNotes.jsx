@@ -17,9 +17,10 @@ export default function useNotes(key) {
       const fetchData = async () => {
         try {
           await sleep(400);
-          const response = await axios(
-            'https://nextgen.dev-wildbook.org/api/v0/UserValue/notes',
-          );
+          const response = await axios({
+            url: 'https://nextgen.dev-wildbook.org/api/v0/UserValue/notes',
+            withCredentials: true,
+          });
           setData(get(response, ['data', 'response'], {}));
           setLoading(false);
           setError(false);

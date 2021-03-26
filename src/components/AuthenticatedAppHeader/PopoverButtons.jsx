@@ -255,7 +255,7 @@ function EntityButton({ titleId, entities, noAvatar, exploreHref }) {
   );
 }
 
-export default function NavTabs() {
+export default function PopoverButtons() {
   return (
     <div style={{ display: 'flex' }}>
       <EntityButton
