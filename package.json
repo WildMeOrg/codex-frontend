@@ -103,6 +103,7 @@
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.56",
     "@material-ui/pickers": "^3.2.10",
+    "@material-ui/utils": "=5.0.0-alpha.27",
     "@sentry/react": "^5.26.0",
     "@svgr/webpack": "^4.3.3",
     "@uppy/core": "^1.9.0",
