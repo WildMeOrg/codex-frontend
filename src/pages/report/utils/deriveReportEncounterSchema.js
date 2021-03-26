@@ -12,8 +12,15 @@ const defaultCategories = {
 export default function deriveReportEncounterSchema(siteSettings) {
   const categories = defaultCategories;
 
-  const species = get(siteSettings, ['data', 'site.species', 'value'], []);
-  const speciesOptions = species.map(s => ({ label: s.scientificName, value: s.id }))
+  const species = get(
+    siteSettings,
+    ['data', 'site.species', 'value'],
+    [],
+  );
+  const speciesOptions = species.map(s => ({
+    label: s.scientificName,
+    value: s.id,
+  }));
 
   return [
     {

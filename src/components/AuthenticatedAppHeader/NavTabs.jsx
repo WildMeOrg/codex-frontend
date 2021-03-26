@@ -163,7 +163,11 @@ function EntityButton({ titleId, entities, noAvatar, exploreHref }) {
         aria-describedby={id}
         display="primary"
         onClick={handleClick}
-        style={{ backgroundColor: theme.palette.grey.A100, color: theme.palette.grey.A400, marginLeft: 8 }}
+        style={{
+          backgroundColor: theme.palette.grey.A100,
+          color: theme.palette.grey.A400,
+          marginLeft: 8,
+        }}
         endIcon={<DropDownIcon />}
       >
         {title}
@@ -210,35 +214,33 @@ function EntityButton({ titleId, entities, noAvatar, exploreHref }) {
           dense
           style={{ width: 260, height: 210, overflow: 'scroll' }}
         >
-          {entities.map(entity => {
-            return (
-              <ListItem
-                style={{
-                  background: theme.palette.grey['100'],
-                }}
-                key={entity.id}
-              >
-                {!noAvatar && (
-                  <ListItemAvatar>
-                    <Avatar>A</Avatar>
-                  </ListItemAvatar>
-                )}
-                <ListItemText
-                  primary={
-                    <Link
-                      onClick={handleClose}
-                      href="/individuals/teddy"
-                    >
-                      {entity.name}
-                    </Link>
-                  }
-                  secondary={
-                    <Text variant="caption">{entity.pid}</Text>
-                  }
-                />
-              </ListItem>
-            );
-          })}
+          {entities.map(entity => (
+            <ListItem
+              style={{
+                background: theme.palette.grey['100'],
+              }}
+              key={entity.id}
+            >
+              {!noAvatar && (
+                <ListItemAvatar>
+                  <Avatar>A</Avatar>
+                </ListItemAvatar>
+              )}
+              <ListItemText
+                primary={
+                  <Link
+                    onClick={handleClose}
+                    href="/individuals/teddy"
+                  >
+                    {entity.name}
+                  </Link>
+                }
+                secondary={
+                  <Text variant="caption">{entity.pid}</Text>
+                }
+              />
+            </ListItem>
+          ))}
         </List>
         <ButtonLink
           onClick={handleClose}

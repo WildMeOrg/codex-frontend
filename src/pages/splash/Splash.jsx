@@ -12,7 +12,7 @@ import { selectSiteSettings } from '../../modules/site/selectors';
 import ButtonLink from '../../components/ButtonLink';
 import Text from '../../components/Text';
 import useSiteSettings from '../../models/site/useSiteSettings';
-import poweredBy from '../../assets/powered-by.svg';
+import poweredBy from '../../assets/powered-by.png';
 import Trifold from './Trifold';
 import HowItWorks from './HowItWorks';
 import Testimonial from './Testimonial';
@@ -150,7 +150,7 @@ export default function Splash() {
         >
           <img
             src={poweredBy}
-            style={{ width: 300 }}
+            style={{ width: 240 }}
             alt="Powered by Wild Me Codex"
           />
         </a>
