@@ -41,6 +41,9 @@ export default function DateInput(props) {
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           <KeyboardDatePicker
+            disableToolbar
+            variant="inline"
+            autoOk
             format="MM/dd/yyyy"
             margin="normal"
             id={`${getLabel(schema)}-date-input`}
@@ -54,6 +57,7 @@ export default function DateInput(props) {
             {...rest}
           />
           <KeyboardTimePicker
+            variant="inline"
             margin="normal"
             id={`${getLabel(schema)}-time-input`}
             label={intl.formatMessage({ id: 'SELECT_TIME' })}

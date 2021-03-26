@@ -12,8 +12,6 @@ import LatLngMap from './mapUtils/LatLngMap';
 import TextInput from './TextInput';
 import Button from '../Button';
 
-const inputMargin = 8;
-
 export default function LatLongInput({
   schema,
   value,
@@ -41,7 +39,6 @@ export default function LatLongInput({
       <div style={{ display: 'flex', flexDirection: 'column' }}>
         <TextInput
           width={width}
-          style={{ marginRight: 0.5 * inputMargin }}
           value={currentLatitudeString}
           onChange={newLat => {
             onChange([parseFloat(newLat), currentLongitude]);
@@ -51,7 +48,6 @@ export default function LatLongInput({
         <TextInput
           width={width}
           value={currentLongitudeString}
-          style={{ marginLeft: 0.5 * inputMargin }}
           onChange={newLng => {
             onChange([currentLatitude, parseFloat(newLng)]);
           }}

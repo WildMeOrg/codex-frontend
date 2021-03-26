@@ -1,3 +1,4 @@
+import { get } from 'lodash-es';
 import fieldTypes from '../../../constants/fieldTypes';
 
 const defaultCategories = {
@@ -10,46 +11,26 @@ const defaultCategories = {
 
 export default function deriveReportEncounterSchema(siteSettings) {
   const categories = defaultCategories;
+
+  const species = get(siteSettings, ['data', 'site.species', 'value'], []);
+  const speciesOptions = species.map(s => ({ label: s.scientificName, value: s.id }))
+
   return [
     {
       name: 'taxonomy',
       labelId: 'SPECIES',
-      category: categories.general.name,
+      category: categories.animal.name,
       fieldType: fieldTypes.select,
-      choices: [
-        {
-          value: 'delphinae',
-          label: 'Delphinidae',
-        },
-        {
-          value: 'grampus-griseus',
-          label: 'Grampus Griseus',
-        },
-        {
-          value: 'kogia-sima',
-          label: 'Kogia Sima',
-        },
-        {
-          value: 'Unknown',
-          label: 'Unknown',
-        },
-      ],
-      required: true,
+      choices: speciesOptions,
+      required: false,
       defaultValue: '',
-    },
-    {
-      name: 'startTime',
-      labelId: 'SIGHTING_START_TIME',
-      category: categories.general.name,
-      fieldType: fieldTypes.date,
-      required: true,
-      defaultValue: null,
     },
     {
       name: 'sex',
       labelId: 'SEX',
       category: categories.animal.name,
       fieldType: fieldTypes.select,
+      required: false,
       choices: [
         {
           value: 'male',
@@ -68,14 +49,6 @@ export default function deriveReportEncounterSchema(siteSettings) {
           labelId: 'UNKNOWN',
         },
       ],
-      defaultValue: '',
-    },
-    {
-      name: 'behavior',
-      labelId: 'BEHAVIOR',
-      category: categories.animal.name,
-      fieldType: fieldTypes.string,
-      required: false,
       defaultValue: '',
     },
     {

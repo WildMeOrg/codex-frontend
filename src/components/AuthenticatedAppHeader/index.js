@@ -92,10 +92,10 @@ export default function AppHeader() {
             <MenuIcon />
           </IconButton>
         ) : (
-          <>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
             <BannerLogo href="/" onClick={handleClick} />
             <NavTabs />
-          </>
+          </div>
         )}
 
         <div

@@ -22,6 +22,7 @@ import Button from '../../components/Button';
 import InlineButton from '../../components/InlineButton';
 import TermsAndConditionsDialog from './TermsAndConditionsDialog';
 import deriveReportSightingSchema from './utils/deriveReportSightingSchema';
+import deriveReportEncounterSchema from './utils/deriveReportEncounterSchema';
 import prepareReport from './utils/prepareReport';
 
 function getCustomFields(siteSettings, property) {
@@ -75,6 +76,7 @@ export default function StandardReport({
 
   const categories = useSelector(selectSightingCategories);
   const schema = deriveReportSightingSchema(siteSettings);
+  const encounterSchema = deriveReportEncounterSchema(siteSettings);
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [exifButtonClicked, setExifButtonClicked] = useState(false);
   const [acceptEmails, setAcceptEmails] = useState(false);

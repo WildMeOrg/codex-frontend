@@ -385,7 +385,7 @@
   "CALF_OF": "calf of",
   "IN_A_FAMILY_WITH": "in a family with",
   "IN_A_GROUP_WITH": "in a group with",
-  "LOCATION_CATEGORY_DESCRIPTION": "At least one location field is required for successful submission.",
+  "LOCATION_CATEGORY_DESCRIPTION": "At least one location field is required to complete a report.",
   "FLUKEBOOK_IS_AN_INSTANCE_OF": "Flukebook is an instance of ",
   "CREATED_BY_THE_FOLKS_AT": ", open source software created by the folks at ",
   "CONTACT": "Contact",
