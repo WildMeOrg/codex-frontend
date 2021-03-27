@@ -81,6 +81,7 @@ export default function deriveReportSightingSchema(siteSettings) {
     {
       name: 'startTime',
       labelId: 'SIGHTING_START_TIME',
+      descriptionId: 'SIGHTING_START_TIME_DESCRIPTION',
       category: sightingCategories.general.name,
       fieldType: fieldTypes.date,
       required: true,
@@ -97,8 +98,8 @@ export default function deriveReportSightingSchema(siteSettings) {
     },
     {
       name: 'verbatimEventDate',
-      labelId: 'SIGHTING_END_TIME',
-      descriptionId: 'SIGHTING_END_TIME_DESCRIPTION',
+      labelId: 'SIGHTING_VERBATIM_TIME',
+      descriptionId: 'SIGHTING_VERBATIM_TIME_DESCRIPTION',
       category: sightingCategories.general.name,
       fieldType: fieldTypes.string,
       required: false,

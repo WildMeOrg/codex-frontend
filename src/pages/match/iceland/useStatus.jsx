@@ -18,7 +18,8 @@ export default function useStatus(key) {
         try {
           await sleep(400);
           const response = await axios({
-            url: 'https://nextgen.dev-wildbook.org/api/v0/UserValue/notes/api/v0/UserValue/iceland',
+            url:
+              'https://nextgen.dev-wildbook.org/api/v0/UserValue/notes/api/v0/UserValue/iceland',
             withCredentials: true,
           });
           setData(get(response, ['data', 'response'], {}));

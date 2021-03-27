@@ -1,6 +1,5 @@
 import React, { useMemo, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { useSelector } from 'react-redux';
 import { get, values } from 'lodash-es';
 
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -12,7 +11,6 @@ import AlertTitle from '@material-ui/lab/AlertTitle';
 import ExifIcon from '@material-ui/icons/FlashOn';
 
 import useSiteSettings from '../../models/site/useSiteSettings';
-import { selectSightingCategories } from '../../modules/sightings/selectors';
 import usePutSighting from '../../models/sighting/usePutSighting';
 import { getLocationSuggestion } from '../../utils/exif';
 import categoryTypes from '../../constants/categoryTypes';
@@ -20,22 +18,19 @@ import InputRow from '../../components/InputRow';
 import Text from '../../components/Text';
 import Button from '../../components/Button';
 import InlineButton from '../../components/InlineButton';
+import FieldCollections from './FieldCollections';
 import TermsAndConditionsDialog from './TermsAndConditionsDialog';
 import deriveReportSightingSchema from './utils/deriveReportSightingSchema';
 import deriveReportEncounterSchema from './utils/deriveReportEncounterSchema';
 import prepareReport from './utils/prepareReport';
+import { deriveCustomFieldSchema } from './utils/customFieldUtils';
 
-function getCustomFields(siteSettings, property) {
-  return get(
-    siteSettings,
-    [
-      'data',
-      `site.custom.customFields.${property}`,
-      'value',
-      'definitions',
-    ],
-    [],
-  );
+function getInitialFormValues(schema, fieldKey) {
+  return schema.reduce((memo, field) => {
+    const valueKey = get(field, fieldKey);
+    memo[valueKey] = get(field, 'defaultValue');
+    return memo;
+  }, {});
 }
 
 export default function StandardReport({
@@ -46,50 +41,51 @@ export default function StandardReport({
   const intl = useIntl();
   const siteSettings = useSiteSettings();
   const { loading, error: putError, putSighting } = usePutSighting();
-  const customFieldCategories = get(
-    siteSettings,
-    ['data', 'site.custom.customFieldCategories', 'value'],
-    [],
-  );
-  const customEncounterFields = getCustomFields(
-    siteSettings,
-    'Encounter',
-  );
-  const customIndividualFields = getCustomFields(
-    siteSettings,
-    'MarkedIndividual',
-  );
-  const customSightingFields = getCustomFields(
-    siteSettings,
-    'Occurrence',
-  );
-  const customFields = [
-    ...customEncounterFields,
-    ...customIndividualFields,
-    ...customSightingFields,
-  ];
+
   const siteName = get(
     siteSettings,
     ['data', 'site.name', 'value'],
     '<site-name>',
   );
 
-  const {sightingSchema, sightingCategories } = deriveReportSightingSchema(siteSettings);
-  const encounterSchema = deriveReportEncounterSchema(siteSettings);
+  const {
+    schema: customEncounterSchema,
+    categories: customEncounterCategories,
+  } = deriveCustomFieldSchema(siteSettings, 'Encounter', 'Encounter');
+  const {
+    schema: customSightingSchema,
+    categories: customSightingCategories,
+  } = deriveCustomFieldSchema(siteSettings, 'Occurrence', 'Sighting');
+  const {
+    sightingSchema,
+    sightingCategories,
+  } = deriveReportSightingSchema(siteSettings);
+  const {
+    encounterSchema,
+    encounterCategories,
+  } = deriveReportEncounterSchema(siteSettings);
+
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [exifButtonClicked, setExifButtonClicked] = useState(false);
   const [acceptEmails, setAcceptEmails] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [incompleteFields, setIncompleteFields] = useState([]);
   const [termsError, setTermsError] = useState(false);
-  const categoryList = values(sightingCategories);
 
-  const [formValues, setFormValues] = useState(
-    sightingSchema.reduce((memo, field) => {
-      memo[field.name] = field.defaultValue;
-      return memo;
-    }, {}),
+  const [sightingFormValues, setSightingFormValues] = useState(
+    getInitialFormValues(sightingSchema, 'name'),
   );
+  const [
+    customSightingFormValues,
+    setCustomSightingFormValues,
+  ] = useState(getInitialFormValues(customSightingSchema, 'id'));
+  const [encounterFormValues, setEncounterFormValues] = useState(
+    getInitialFormValues(encounterSchema, 'name'),
+  );
+  const [
+    customEncounterFormValues,
+    setCustomEncounterFormValues,
+  ] = useState(getInitialFormValues(customEncounterSchema, 'id'));
 
   const locationSuggestion = useMemo(
     () => getLocationSuggestion(exifData),
@@ -99,10 +95,9 @@ export default function StandardReport({
   const showErrorAlertBox =
     incompleteFields.length > 0 || termsError || putError;
 
-  console.log(sightingCategories);
-  console.log(sightingSchema);
-  console.log(formValues);
-  console.log(prepareReport(variant === 'one', formValues, {}));
+  console.log('here');
+
+  console.log(customSightingFormValues);
 
   return (
     <>
@@ -110,146 +105,38 @@ export default function StandardReport({
         visible={dialogOpen}
         onClose={() => setDialogOpen(false)}
       />
-      <Grid item>
-        {categoryList.map(category => {
-          const inputsInCategory = sightingSchema.filter(
-            f => f.category === category.name,
-          );
-
-          if (variant === 'multiple' && category.individualFields)
-            return null;
-
-          const showExifData =
-            category.name === 'location' &&
-            locationSuggestion &&
-            !exifButtonClicked;
-
-          return (
-            <div key={category.name}>
-              <div style={{ marginLeft: 12 }}>
-                <Text
-                  variant="h6"
-                  style={{ marginTop: 20 }}
-                  id={category.labelId}
-                />
-                {category.descriptionId && (
-                  <Text
-                    variant="subtitle2"
-                    style={{ marginBottom: 12 }}
-                    id={category.descriptionId}
-                  />
-                )}
-              </div>
-              <Paper
-                elevation={2}
-                style={{
-                  marginTop: 12,
-                  marginBottom: 12,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  padding: '0px 12px 20px 12px',
-                }}
-              >
-                {showExifData && (
-                  <Alert
-                    style={{ marginTop: 24 }}
-                    icon={<ExifIcon />}
-                    action={
-                      <Button
-                        display="panel"
-                        size="small"
-                        onClick={() => {
-                          setFormValues({
-                            ...formValues,
-                            location: locationSuggestion,
-                          });
-                          setExifButtonClicked(true);
-                        }}
-                      >
-                        <FormattedMessage id="AUTOFILL_FIELDS" />
-                      </Button>
-                    }
-                  >
-                    <AlertTitle>
-                      <FormattedMessage id="IMAGE_METADATA_DETECTED" />
-                    </AlertTitle>
-                    <FormattedMessage id="LOCATION_METADATA_DETECTED" />
-                  </Alert>
-                )}
-                {inputsInCategory.map(input => (
-                  <InputRow
-                    key={`${category.name} - ${input.name}`}
-                    labelId={input.labelId}
-                    descriptionId={input.descriptionId}
-                    required={input.required}
-                    schema={input}
-                    value={formValues[input.name]}
-                    onChange={value => {
-                      setFormValues({
-                        ...formValues,
-                        [input.name]: value,
-                      });
-                    }}
-                  />
-                ))}
-              </Paper>
-            </div>
-          );
-        })}
-      </Grid>
-      <Grid item>
-        {customFieldCategories.map(category => {
-          const inputsInCategory = customFields.filter(
-            customField =>
-              get(customField, ['schema', 'category']) ===
-              category.id,
-          );
-
-          if (
-            variant === 'multiple' &&
-            category.type === categoryTypes.individual
-          )
-            return null;
-
-          return (
-            <div key={category.name}>
-              <div style={{ marginLeft: 12 }}>
-                <Text variant="h6" style={{ marginTop: 20 }}>
-                  {category.label}
-                </Text>
-              </div>
-              <Paper
-                elevation={2}
-                style={{
-                  marginTop: 20,
-                  marginBottom: 12,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                }}
-              >
-                {inputsInCategory.map(input => (
-                  <InputRow
-                    key={`${category.id} - ${input.name}`}
-                    label={get(input, ['schema', 'label'])}
-                    description={get(input, [
-                      'schema',
-                      'description',
-                    ])}
-                    required={input.required}
-                    schema={input.schema}
-                    value={null}
-                    onChange={value => {
-                      console.log(value);
-                    }}
-                  />
-                ))}
-              </Paper>
-            </div>
-          );
-        })}
-      </Grid>
+      <FieldCollections
+        formValues={sightingFormValues}
+        setFormValues={setSightingFormValues}
+        categories={sightingCategories}
+        fieldSchema={sightingSchema}
+        fieldKey="name"
+      />
+      <FieldCollections
+        formValues={customSightingFormValues}
+        setFormValues={setCustomSightingFormValues}
+        categories={customSightingCategories}
+        fieldSchema={customSightingSchema}
+        fieldKey="id"
+      />
+      {variant === 'one' && (
+        <>
+          <FieldCollections
+            formValues={encounterFormValues}
+            setFormValues={setEncounterFormValues}
+            categories={customSightingCategories}
+            fieldSchema={encounterSchema}
+            fieldKey="name"
+          />
+          <FieldCollections
+            formValues={customEncounterFormValues}
+            setFormValues={setCustomEncounterFormValues}
+            categories={customEncounterCategories}
+            fieldSchema={customEncounterSchema}
+            fieldKey="id"
+          />
+        </>
+      )}
       <Grid item style={{ marginTop: 30 }}>
         <FormControlLabel
           control={
@@ -328,50 +215,26 @@ export default function StandardReport({
         <Button
           onClick={() => {
             // check that required fields are complete
-            const nextIncompleteFields = sightingSchema.filter(
-              field =>
-                field.required &&
-                field.defaultValue === formValues[field.name],
-            );
-            setIncompleteFields(nextIncompleteFields);
+            // const nextIncompleteFields = sightingSchema.filter(
+            //   field =>
+            //     field.required &&
+            //     field.defaultValue === formValues[field.name],
+            // );
+            // setIncompleteFields(nextIncompleteFields);
 
-            // check that terms and conditions were accepted
-            setTermsError(!acceptedTerms);
+            // // check that terms and conditions were accepted
+            // setTermsError(!acceptedTerms);
 
-            if (true) {
-              // if (nextIncompleteFields.length === 0 && acceptedTerms) {
-              const report = prepareReport(
-                variant === 'one',
-                formValues,
-                {},
-              );
-              console.log(report);
-              putSighting(report);
-              // putSighting({
-              //   startTime: "2020-01-01T16:20:10+03:00",
-              //   endTime: "2020-02-01T16:20:10+03:00",
-              //   distance: 100.1,
-              //   bearing: 0.123,
-              //   behavior: 'hangin',
-              //   decimalLatitude: 0.001,
-              //   decimalLongitude: 0.001,
-              //   locationId: 'location-id-0',
-              //   verbatimLocality: 'placeville',
-              //   encounters: [
-              //     {
-              //       // assetReferences,
-              //       assetReferences: [],
-              //       time: '2021-21-05T00:01:59+03:00',
-              //       behavior: 'sleeping',
-              //       lifeStage: 'youthful',
-              //       sex: 'male',
-              //       locationId: 'somelocation',
-              //       decimalLatitude: 0.002,
-              //       decimalLongitude: 0.021,
-              //     },
-              //   ],
-              // });
-            }
+            // if (true) {
+            //   // if (nextIncompleteFields.length === 0 && acceptedTerms) {
+            //   const report = prepareReport(
+            //     variant === 'one',
+            //     formValues,
+            //     {},
+            //   );
+            //   console.log(report);
+            //   putSighting(report);
+            // }
           }}
           style={{ width: 200 }}
           loading={loading}

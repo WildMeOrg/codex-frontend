@@ -22,7 +22,7 @@ export default function deriveReportEncounterSchema(siteSettings) {
     value: s.id,
   }));
 
-  return [
+  const encounterSchema = [
     {
       name: 'taxonomy',
       labelId: 'SPECIES',
@@ -66,28 +66,6 @@ export default function deriveReportEncounterSchema(siteSettings) {
       required: false,
       defaultValue: '',
     },
-    // {
-    //   name: 'status',
-    //   labelId: 'STATUS',
-    //   descriptionId: 'STATUS_SIGHTING_DESCRIPTION',
-    //   category: categories.animal.name,
-    //   fieldType: fieldTypes.select,
-    //   choices: [
-    //     {
-    //       value: 'alive',
-    //       labelId: 'ALIVE',
-    //     },
-    //     {
-    //       value: 'dead',
-    //       labelId: 'DEAD',
-    //     },
-    //     {
-    //       value: 'unknown',
-    //       labelId: 'UNKNOWN',
-    //     },
-    //   ],
-    //   defaultValue: '',
-    // },
     // {
     //   name: 'autoMatch',
     //   labelId: 'AUTO_MATCH',
@@ -134,4 +112,6 @@ export default function deriveReportEncounterSchema(siteSettings) {
     //   defaultValue: [],
     // },
   ];
+
+  return { encounterSchema, encounterCategories: categories };
 }
