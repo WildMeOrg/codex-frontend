@@ -13,7 +13,9 @@ import Orgs from './pages/org/Orgs';
 // import Projects from './pages/projects/Projects';
 import User from './pages/user/User';
 import Users from './pages/user/Users';
-import ReportSightings from './pages/report/ReportSightings';
+import ReportBasic from './pages/report/ReportBasic';
+import ReportBulk from './pages/report/ReportBulk';
+import ReportSplash from './pages/report/ReportSplash';
 import FourOhFour from './pages/fourohfour/FourOhFour';
 import useSiteSettings from './models/site/useSiteSettings';
 import SearchIndividuals from './pages/individual/SearchIndividuals';
@@ -105,8 +107,20 @@ export default function AuthenticatedSwitch() {
                       <Route path="/projects">
                         <Projects />
                       </Route> */}
+                      <Route path="/report/bulk">
+                        <ReportBulk authenticated />
+                      </Route>
+                      <Route path="/report/one">
+                        <ReportBasic authenticated variant="one" />
+                      </Route>
+                      <Route path="/report/several">
+                        <ReportBasic
+                          authenticated
+                          variant="several"
+                        />
+                      </Route>
                       <Route path="/report">
-                        <ReportSightings authenticated />
+                        <ReportSplash authenticated />
                       </Route>
                       <Route path="/admin/actions">
                         <AdminActions />

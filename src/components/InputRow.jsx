@@ -22,7 +22,7 @@ export default function InputRow({
         display: 'flex',
         flexWrap: 'wrap',
         justifyContent: 'space-between',
-        alignItems: 'center',
+        alignItems: 'flex-start',
         padding: 12,
         width: '100%',
         containerStyles,
@@ -37,6 +37,7 @@ export default function InputRow({
           minWidth: 200,
           maxWidth: 400,
           marginBottom: 12,
+          width: 'max-content',
         }}
       >
         <Text>
@@ -44,7 +45,11 @@ export default function InputRow({
           {required && ' *'}
         </Text>
         {showDescription && (
-          <Text variant="caption" id={descriptionId}>
+          <Text
+            variant="caption"
+            style={{ maxWidth: '80%' }}
+            id={descriptionId}
+          >
             {description}
           </Text>
         )}

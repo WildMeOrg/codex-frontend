@@ -24,7 +24,7 @@ import shane from '../../assets/shane.jpg';
 import HeaderButton from './HeaderButton';
 import NotificationsPane from './NotificationsPane';
 import ActionsPane from './ActionsPane';
-import NavTabs from './NavTabs';
+import PopoverButtons from './PopoverButtons';
 
 export default function AppHeader() {
   const theme = useTheme();
@@ -92,10 +92,10 @@ export default function AppHeader() {
             <MenuIcon />
           </IconButton>
         ) : (
-          <>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
             <BannerLogo href="/" onClick={handleClick} />
-            <NavTabs />
-          </>
+            <PopoverButtons />
+          </div>
         )}
 
         <div

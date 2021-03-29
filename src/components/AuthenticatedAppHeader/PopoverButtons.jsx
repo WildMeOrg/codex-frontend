@@ -1,9 +1,7 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
-import { useLocation } from 'react-router-dom';
 
 import { useTheme } from '@material-ui/core/styles';
-import Tabs from '@material-ui/core/Tabs';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -15,6 +13,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Avatar from '@material-ui/core/Avatar';
 import Popover from '@material-ui/core/Popover';
 // import ProjectsIcon from '@material-ui/icons/GroupWork';
+import DropDownIcon from '@material-ui/icons/ArrowDropDown';
 import SightingsIcon from '@material-ui/icons/PhotoCamera';
 import AddIcon from '@material-ui/icons/Add';
 
@@ -27,16 +26,6 @@ import Link from '../Link';
 // import fakeProjects from './fakeProjects';
 import fakeIndividuals from './fakeIndividuals';
 import fakeSightings from './fakeSightings';
-
-function getTabValueFromLocation(location) {
-  if (!location) return false;
-  if (location.pathname === '/') return 'home';
-  if (location.pathname.includes('/individuals'))
-    return 'individuals';
-  if (location.pathname.includes('/sightings')) return 'sightings';
-  if (location.pathname.includes('/projects')) return 'projects';
-  return false;
-}
 
 // function ProjectsButton({ titleId }) {
 //   const intl = useIntl();
@@ -151,7 +140,7 @@ function getTabValueFromLocation(location) {
 //   );
 // }
 
-function EntityButton({ titleId, entities, noAvatar }) {
+function EntityButton({ titleId, entities, noAvatar, exploreHref }) {
   const intl = useIntl();
   const theme = useTheme();
   const title = intl.formatMessage({ id: titleId });
@@ -172,9 +161,14 @@ function EntityButton({ titleId, entities, noAvatar }) {
     <div>
       <Button
         aria-describedby={id}
-        display="basic"
+        display="primary"
         onClick={handleClick}
-        style={{ color: theme.palette.grey['100'] }}
+        style={{
+          backgroundColor: theme.palette.grey.A100,
+          color: theme.palette.grey.A400,
+          marginLeft: 8,
+        }}
+        endIcon={<DropDownIcon />}
       >
         {title}
       </Button>
@@ -220,38 +214,37 @@ function EntityButton({ titleId, entities, noAvatar }) {
           dense
           style={{ width: 260, height: 210, overflow: 'scroll' }}
         >
-          {entities.map(entity => {
-            return (
-              <ListItem
-                style={{
-                  background: theme.palette.grey['100'],
-                }}
-              >
-                {!noAvatar && (
-                  <ListItemAvatar>
-                    <Avatar>A</Avatar>
-                  </ListItemAvatar>
-                )}
-                <ListItemText
-                  primary={
-                    <Link
-                      onClick={handleClose}
-                      href="/individuals/teddy"
-                    >
-                      {entity.name}
-                    </Link>
-                  }
-                  secondary={
-                    <Text variant="caption">{entity.pid}</Text>
-                  }
-                />
-              </ListItem>
-            );
-          })}
+          {entities.map(entity => (
+            <ListItem
+              style={{
+                background: theme.palette.grey['100'],
+              }}
+              key={entity.id}
+            >
+              {!noAvatar && (
+                <ListItemAvatar>
+                  <Avatar>A</Avatar>
+                </ListItemAvatar>
+              )}
+              <ListItemText
+                primary={
+                  <Link
+                    onClick={handleClose}
+                    href="/individuals/teddy"
+                  >
+                    {entity.name}
+                  </Link>
+                }
+                secondary={
+                  <Text variant="caption">{entity.pid}</Text>
+                }
+              />
+            </ListItem>
+          ))}
         </List>
         <ButtonLink
           onClick={handleClose}
-          href="/individuals"
+          href={exploreHref}
           display="primary"
           style={{ margin: '8px 0 12px' }}
         >
@@ -262,20 +255,19 @@ function EntityButton({ titleId, entities, noAvatar }) {
   );
 }
 
-export default function NavTabs() {
-  const location = useLocation();
+export default function PopoverButtons() {
   return (
-    <Tabs value={getTabValueFromLocation(location)}>
+    <div style={{ display: 'flex' }}>
       <EntityButton
         titleId="INDIVIDUALS"
-        href="/individuals"
+        exploreHref="/individuals"
         Icon={IndividualIcon}
         value="individuals"
         entities={fakeIndividuals}
       />
       <EntityButton
         titleId="SIGHTINGS"
-        href="/sightings"
+        exploreHref="/sightings"
         Icon={SightingsIcon}
         value="sightings"
         entities={fakeSightings}
@@ -287,6 +279,6 @@ export default function NavTabs() {
         Icon={ProjectsIcon}
         value="projects"
       /> */}
-    </Tabs>
+    </div>
   );
 }

@@ -5,6 +5,7 @@ import DateFnsUtils from '@date-io/date-fns';
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
+  KeyboardTimePicker,
 } from '@material-ui/pickers';
 import Text from '../Text';
 
@@ -38,21 +39,34 @@ export default function DateInput(props) {
   return (
     <div>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
-        <>
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
           <KeyboardDatePicker
             disableToolbar
             variant="inline"
+            autoOk
             format="MM/dd/yyyy"
             margin="normal"
             id={`${getLabel(schema)}-date-input`}
-            label={getLabel(schema)}
+            label={intl.formatMessage({ id: 'SELECT_DATE' })}
             value={value}
             onChange={onChange}
             style={{ margin: 0, width }}
             KeyboardButtonProps={{
-              'aria-label': `${getLabel(schema)} input`,
+              'aria-label': intl.formatMessage({ id: 'CHANGE_DATE' }),
             }}
             {...rest}
+          />
+          <KeyboardTimePicker
+            variant="inline"
+            margin="normal"
+            id={`${getLabel(schema)}-time-input`}
+            label={intl.formatMessage({ id: 'SELECT_TIME' })}
+            value={value}
+            onChange={onChange}
+            KeyboardButtonProps={{
+              'aria-label': intl.formatMessage({ id: 'CHANGE_TIME' }),
+            }}
+            style={{ width }}
           />
           {!minimalLabels && (
             <Text
@@ -63,7 +77,7 @@ export default function DateInput(props) {
               {getDescription(schema)}
             </Text>
           )}
-        </>
+        </div>
       </MuiPickersUtilsProvider>
     </div>
   );

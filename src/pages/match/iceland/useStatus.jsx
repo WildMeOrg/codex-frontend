@@ -17,9 +17,11 @@ export default function useStatus(key) {
       const fetchData = async () => {
         try {
           await sleep(400);
-          const response = await axios(
-            'https://nextgen.dev-wildbook.org/api/v0/UserValue/notes/api/v0/UserValue/iceland',
-          );
+          const response = await axios({
+            url:
+              'https://nextgen.dev-wildbook.org/api/v0/UserValue/notes/api/v0/UserValue/iceland',
+            withCredentials: true,
+          });
           setData(get(response, ['data', 'response'], {}));
           setLoading(false);
           setError(false);
