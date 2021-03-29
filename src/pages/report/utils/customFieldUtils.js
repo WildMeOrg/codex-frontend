@@ -19,7 +19,6 @@ export function deriveCustomFieldSchema(
   categoryPath,
 ) {
   const customFields = getCustomFields(siteSettings, fieldPath);
-  console.log(siteSettings);
   const allCategories = get(
     siteSettings,
     ['data', 'site.custom.customFieldCategories', 'value'],

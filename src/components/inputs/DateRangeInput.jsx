@@ -29,19 +29,21 @@ export default function DateRangeInput(props) {
    * which messes up display if this component is a flex child. */
 
   return (
-    <div>
+    <div style={{ display: 'flex', flexDirection: 'column' }}>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
-        <Text variant="subtitle2" style={{ marginTop: 16 }}>
-          {getLabel(schema)}
-        </Text>
         {!minimalLabels && (
-          <Text
-            variant="caption"
-            color="textSecondary"
-            style={{ marginTop: 4 }}
-          >
-            {getDescription(schema)}
-          </Text>
+          <>
+            <Text variant="subtitle2" style={{ marginTop: 16 }}>
+              {getLabel(schema)}
+            </Text>
+            <Text
+              variant="caption"
+              color="textSecondary"
+              style={{ marginTop: 4 }}
+            >
+              {getDescription(schema)}
+            </Text>
+          </>
         )}
         <KeyboardDatePicker
           disableToolbar
@@ -50,9 +52,9 @@ export default function DateRangeInput(props) {
           margin="normal"
           id={`${getLabel(schema)}-start-date`}
           label={<FormattedMessage id="START_DATE" />}
-          value={value[0]}
+          value={get(value, 0)}
           onChange={nextStartDate => {
-            onChange([nextStartDate, value[1]]);
+            onChange([nextStartDate, get(value, 1)]);
           }}
           style={{ margin: 0 }}
           KeyboardButtonProps={{
@@ -66,11 +68,10 @@ export default function DateRangeInput(props) {
           margin="normal"
           id={`${getLabel(schema)}-end-date`}
           label={<FormattedMessage id="END_DATE" />}
-          value={value[1]}
+          value={get(value, 1)}
           onChange={nextEndDate => {
-            onChange([value[0], nextEndDate]);
+            onChange([get(value, 0), nextEndDate]);
           }}
-          style={{ margin: 0 }}
           KeyboardButtonProps={{
             'aria-label': `Change ${getLabel(schema)} end date`,
           }}

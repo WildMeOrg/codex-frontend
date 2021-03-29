@@ -52,25 +52,28 @@ export default function FieldCollections({
             padding: '0px 12px 20px 12px',
           }}
         >
-          {inputsInCategory.map(input => (
-            <InputRow
-              key={`${category.name} - ${input.name}`}
-              labelId={input.labelId}
-              label={input.label}
-              descriptionId={input.descriptionId}
-              description={input.description}
-              required={input.required}
-              schema={input}
-              value={formValues[input.name]}
-              onChange={value => {
-                const valueKey = get(input, fieldKey);
-                setFormValues({
-                  ...formValues,
-                  [valueKey]: value,
-                });
-              }}
-            />
-          ))}
+          {inputsInCategory.map(input => {
+            const valueKey = get(input, fieldKey);
+
+            return (
+              <InputRow
+                key={`${category.name} - ${input.name}`}
+                labelId={input.labelId}
+                label={input.label}
+                descriptionId={input.descriptionId}
+                description={input.description}
+                required={input.required}
+                schema={input}
+                value={formValues[valueKey]}
+                onChange={value => {
+                  setFormValues({
+                    ...formValues,
+                    [valueKey]: value,
+                  });
+                }}
+              />
+            );
+          })}
         </Paper>
       </Grid>
     );

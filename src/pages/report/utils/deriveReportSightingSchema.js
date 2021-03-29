@@ -22,19 +22,7 @@ const defaultSightingCategories = {
 };
 
 export default function deriveReportSightingSchema(siteSettings) {
-  const customFieldCategories = get(
-    siteSettings,
-    ['data', 'site.custom.customFieldCategories', 'value'],
-    [],
-  );
-  // const categories = [...defaultCategories, customFieldCategories.filter(c => c.type === 'Sighting')];
   const sightingCategories = defaultSightingCategories;
-
-  const customFields = get(
-    siteSettings,
-    ['data', 'site.custom.customFields.Occurrence', 'value'],
-    [],
-  );
 
   const regionChoices = get(
     siteSettings,
@@ -54,28 +42,25 @@ export default function deriveReportSightingSchema(siteSettings) {
     //   defaultValue: [],
     // },
     {
-      name: 'locationId',
-      labelId: 'REGION',
-      category: sightingCategories.location.name,
-      fieldType: fieldTypes.treeview,
-      multiselect: false,
-      choices: regionChoices,
-      defaultValue: '',
-    },
-    {
-      name: 'gps',
-      labelId: 'EXACT_LOCATION',
-      descriptionId: 'LOCATION_DESCRIPTION',
-      category: sightingCategories.location.name,
-      fieldType: fieldTypes.latlong,
-      defaultValue: [null, null],
-    },
-    {
-      name: 'verbatimLocality',
-      labelId: 'LOCATION_FREEFORM',
-      descriptionId: 'LOCATION_FREEFORM_DESCRIPTION',
-      category: sightingCategories.location.name,
-      fieldType: fieldTypes.string,
+      name: 'context',
+      labelId: 'SIGHTING_CONTEXT',
+      category: sightingCategories.general.name,
+      fieldType: fieldTypes.select,
+      required: true,
+      choices: [
+        {
+          value: 'research-effort',
+          labelId: 'RESEARCH_EFFORT',
+        },
+        {
+          value: 'wildlife-tour',
+          labelId: 'WILDLIFE_TOUR',
+        },
+        {
+          value: 'opportunistic-sighting',
+          labelId: 'OPPORTUNISTIC_SIGHTING',
+        },
+      ],
       defaultValue: '',
     },
     {
@@ -106,6 +91,31 @@ export default function deriveReportSightingSchema(siteSettings) {
       defaultValue: '',
     },
     {
+      name: 'locationId',
+      labelId: 'REGION',
+      category: sightingCategories.location.name,
+      fieldType: fieldTypes.treeview,
+      multiselect: false,
+      choices: regionChoices,
+      defaultValue: '',
+    },
+    {
+      name: 'gps',
+      labelId: 'EXACT_LOCATION',
+      descriptionId: 'LOCATION_DESCRIPTION',
+      category: sightingCategories.location.name,
+      fieldType: fieldTypes.latlong,
+      defaultValue: [null, null],
+    },
+    {
+      name: 'verbatimLocality',
+      labelId: 'LOCATION_FREEFORM',
+      descriptionId: 'LOCATION_FREEFORM_DESCRIPTION',
+      category: sightingCategories.location.name,
+      fieldType: fieldTypes.string,
+      defaultValue: '',
+    },
+    {
       name: 'behavior',
       labelId: 'BEHAVIOR',
       category: sightingCategories.sightingDetails.name,
@@ -121,29 +131,6 @@ export default function deriveReportSightingSchema(siteSettings) {
       required: false,
       defaultValue: '',
     },
-    // ...customFields,
-    // {
-    //   name: 'sightingContext',
-    //   labelId: 'SIGHTING_CONTEXT',
-    //   category: sightingCategories.general.name,
-    //   fieldType: fieldTypes.select,
-    //   required: true,
-    //   choices: [
-    //     {
-    //       value: 'research-effort',
-    //       labelId: 'RESEARCH_EFFORT',
-    //     },
-    //     {
-    //       value: 'wildlife-tour',
-    //       labelId: 'WILDLIFE_TOUR',
-    //     },
-    //     {
-    //       value: 'opportunistic-sighting',
-    //       labelId: 'OPPORTUNISTIC_SIGHTING',
-    //     },
-    //   ],
-    //   defaultValue: '',
-    // },
     // {
     //   name: 'autoMatch',
     //   labelId: 'AUTO_MATCH',

@@ -1,21 +1,17 @@
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { get, values } from 'lodash-es';
+import { get } from 'lodash-es';
 
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
 import Alert from '@material-ui/lab/Alert';
 import AlertTitle from '@material-ui/lab/AlertTitle';
-import ExifIcon from '@material-ui/icons/FlashOn';
+// import ExifIcon from '@material-ui/icons/FlashOn';
 
 import useSiteSettings from '../../models/site/useSiteSettings';
 import usePutSighting from '../../models/sighting/usePutSighting';
-import { getLocationSuggestion } from '../../utils/exif';
-import categoryTypes from '../../constants/categoryTypes';
-import InputRow from '../../components/InputRow';
-import Text from '../../components/Text';
+// import { getLocationSuggestion } from '../../utils/exif';
 import Button from '../../components/Button';
 import InlineButton from '../../components/InlineButton';
 import FieldCollections from './FieldCollections';
@@ -34,8 +30,8 @@ function getInitialFormValues(schema, fieldKey) {
 }
 
 export default function StandardReport({
-  assetReferences,
-  exifData,
+  // assetReferences,
+  // exifData,
   variant,
 }) {
   const intl = useIntl();
@@ -66,7 +62,7 @@ export default function StandardReport({
   } = deriveReportEncounterSchema(siteSettings);
 
   const [acceptedTerms, setAcceptedTerms] = useState(false);
-  const [exifButtonClicked, setExifButtonClicked] = useState(false);
+  // const [exifButtonClicked, setExifButtonClicked] = useState(false);
   const [acceptEmails, setAcceptEmails] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [incompleteFields, setIncompleteFields] = useState([]);
@@ -87,17 +83,13 @@ export default function StandardReport({
     setCustomEncounterFormValues,
   ] = useState(getInitialFormValues(customEncounterSchema, 'id'));
 
-  const locationSuggestion = useMemo(
-    () => getLocationSuggestion(exifData),
-    [exifData],
-  );
+  // const locationSuggestion = useMemo(
+  //   () => getLocationSuggestion(exifData),
+  //   [exifData],
+  // );
 
   const showErrorAlertBox =
     incompleteFields.length > 0 || termsError || putError;
-
-  console.log('here');
-
-  console.log(customSightingFormValues);
 
   return (
     <>
@@ -124,7 +116,7 @@ export default function StandardReport({
           <FieldCollections
             formValues={encounterFormValues}
             setFormValues={setEncounterFormValues}
-            categories={customSightingCategories}
+            categories={encounterCategories}
             fieldSchema={encounterSchema}
             fieldKey="name"
           />
@@ -215,26 +207,29 @@ export default function StandardReport({
         <Button
           onClick={() => {
             // check that required fields are complete
-            // const nextIncompleteFields = sightingSchema.filter(
-            //   field =>
-            //     field.required &&
-            //     field.defaultValue === formValues[field.name],
-            // );
-            // setIncompleteFields(nextIncompleteFields);
-
-            // // check that terms and conditions were accepted
-            // setTermsError(!acceptedTerms);
-
-            // if (true) {
-            //   // if (nextIncompleteFields.length === 0 && acceptedTerms) {
-            //   const report = prepareReport(
-            //     variant === 'one',
-            //     formValues,
-            //     {},
-            //   );
-            //   console.log(report);
-            //   putSighting(report);
-            // }
+            const nextIncompleteFields = sightingSchema.filter(
+              field =>
+                field.required &&
+                field.defaultValue === sightingFormValues[field.name],
+            );
+            setIncompleteFields(nextIncompleteFields);
+            // check that terms and conditions were accepted
+            setTermsError(!acceptedTerms);
+            if (nextIncompleteFields.length === 0 && acceptedTerms) {
+              const report =
+                variant === 'one'
+                  ? prepareReport(
+                      sightingFormValues,
+                      customSightingFormValues,
+                      encounterFormValues,
+                      customEncounterFormValues,
+                    )
+                  : prepareReport(
+                      sightingFormValues,
+                      customSightingFormValues,
+                    );
+              putSighting(report);
+            }
           }}
           style={{ width: 200 }}
           loading={loading}
