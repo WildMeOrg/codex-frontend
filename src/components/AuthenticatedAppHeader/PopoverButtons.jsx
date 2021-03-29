@@ -1,5 +1,5 @@
 import React from 'react';
-import { useIntl } from 'react-intl';
+import { useIntl, FormattedMessage } from 'react-intl';
 
 import { useTheme } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
@@ -140,7 +140,13 @@ import fakeSightings from './fakeSightings';
 //   );
 // }
 
-function EntityButton({ titleId, entities, noAvatar, exploreHref }) {
+function EntityButton({
+  titleId,
+  entities,
+  noAvatar,
+  exploreHref,
+  exploreButtonId,
+}) {
   const intl = useIntl();
   const theme = useTheme();
   const title = intl.formatMessage({ id: titleId });
@@ -248,7 +254,7 @@ function EntityButton({ titleId, entities, noAvatar, exploreHref }) {
           display="primary"
           style={{ margin: '8px 0 12px' }}
         >
-          {`Explore ${title}`}
+          <FormattedMessage id={exploreButtonId} />
         </ButtonLink>
       </Popover>
     </div>
@@ -260,6 +266,7 @@ export default function PopoverButtons() {
     <div style={{ display: 'flex' }}>
       <EntityButton
         titleId="INDIVIDUALS"
+        exploreButtonId="EXPLORE_INDIVIDUALS"
         exploreHref="/individuals"
         Icon={IndividualIcon}
         value="individuals"
@@ -267,6 +274,7 @@ export default function PopoverButtons() {
       />
       <EntityButton
         titleId="SIGHTINGS"
+        exploreButtonId="EXPLORE_SIGHTINGS"
         exploreHref="/sightings"
         Icon={SightingsIcon}
         value="sightings"
