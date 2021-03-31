@@ -13,19 +13,20 @@ export default function User({ userId }) {
   useDocumentTitle(capitalize(displayedUserId));
   const users = useSelector(selectUsers);
 
-  const { data, loading, error } = useGetUser(
+  const { data, loading, refresh } = useGetUser(
     '5d9ac656-426b-40bf-a7a1-99ffe52f8786',
   );
 
   const imageSrc = get(data, ['profile_fileupload', 'src']);
   const imageGuid = get(data, ['profile_fileupload', 'guid']);
-  console.log(data);
 
   return (
     <UserProfile
       userData={users[toLower(displayedUserId)]}
       imageSrc={imageSrc}
       imageGuid={imageGuid}
+      userDataLoading={loading}
+      refreshUserData={refresh}
     />
   );
 }

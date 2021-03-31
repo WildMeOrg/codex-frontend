@@ -1,6 +1,8 @@
 import React from 'react';
+import { useTheme } from '@material-ui/core/styles';
 
 import Button from '../Button';
+import Text from '../Text';
 import StandardDialog from '../StandardDialog';
 
 export default function SplashDialog({
@@ -10,6 +12,7 @@ export default function SplashDialog({
   onReplace,
   onRemove,
 }) {
+  const theme = useTheme();
   return (
     <StandardDialog
       open={open}
@@ -28,21 +31,21 @@ export default function SplashDialog({
           display="primary"
           style={{ margin: '4px 0' }}
         >
-          Replace photo
+          <Text id="REPLACE_PHOTO" />
         </Button>
         <Button
           onClick={onCrop}
           display="secondary"
           style={{ margin: '4px 0' }}
         >
-          Crop photo
+          <Text id="CROP_PHOTO" />
         </Button>
         <Button
           onClick={onRemove}
           display="basic"
-          style={{ margin: '4px 0', color: 'red' }}
+          style={{ margin: '4px 0', color: theme.palette.error.main }}
         >
-          Remove photo
+          <Text id="REMOVE_PHOTO" />
         </Button>
       </div>
     </StandardDialog>

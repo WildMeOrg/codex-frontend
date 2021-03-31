@@ -1,20 +1,14 @@
 import React from 'react';
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
-import BigAvatar from './BigAvatar';
 import Text from './Text';
 
 export default function EntityHeader({
-  admin = false,
-  imageSrc,
-  imageGuid,
   name,
-  editable,
   noAvatar = false,
   children,
-  square = false,
   renderOptions,
-  renderAvatar = Function.prototype,
+  renderAvatar,
 }) {
   return (
     <>
@@ -26,19 +20,7 @@ export default function EntityHeader({
           }}
           item
         >
-          {renderAvatar()}
-          {noAvatar ? (
-            <div style={{ width: 4, height: 151 }} />
-          ) : (
-            <BigAvatar
-              imageSrc={imageSrc}
-              imageGuid={imageGuid}
-              editable={editable}
-              name={name}
-              square={square}
-              admin={admin}
-            />
-          )}
+          {renderAvatar}
         </Grid>
         <Grid
           item

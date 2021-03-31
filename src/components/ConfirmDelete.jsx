@@ -33,7 +33,7 @@ export default function ConfirmDelete({
         {error && (
           <Alert severity="error">
             <AlertTitle>
-              <FormattedMessage id="SUBMISSION_ERROR" />
+              <FormattedMessage id="SERVER_ERROR" />
             </AlertTitle>
             {error}
           </Alert>

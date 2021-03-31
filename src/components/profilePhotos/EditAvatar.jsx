@@ -5,6 +5,7 @@ import 'react-image-crop/dist/ReactCrop.css';
 import SplashDialog from './SplashDialog';
 import CropDialog from './CropDialog';
 import UploadDialog from './UploadDialog';
+import RemoveDialog from './RemoveDialog';
 
 export default function EditAvatar({
   visible,
@@ -12,9 +13,11 @@ export default function EditAvatar({
   square,
   imageSrc,
   imageGuid,
+  refreshUserData,
 }) {
   const [cropping, setCropping] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [removing, setRemoving] = useState(false);
 
   // const {
   //   data: userData,
@@ -30,10 +33,12 @@ export default function EditAvatar({
         onClose={onClose}
         onCrop={() => setCropping(true)}
         onReplace={() => setUploading(true)}
+        onRemove={() => setRemoving(true)}
       />
       <CropDialog
         open={cropping}
         onClose={() => {
+          refreshUserData();
           setCropping(false);
           onClose();
         }}
@@ -44,8 +49,17 @@ export default function EditAvatar({
       <UploadDialog
         open={uploading}
         onClose={() => {
+          refreshUserData();
           setUploading(false);
           setCropping(true);
+        }}
+      />
+      <RemoveDialog
+        open={removing}
+        onClose={() => {
+          refreshUserData();
+          setRemoving(false);
+          onClose();
         }}
       />
     </>

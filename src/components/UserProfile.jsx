@@ -12,7 +12,8 @@ import WebIcon from '@material-ui/icons/WebAssetSharp';
 import userSchema, {
   userSchemaCategories,
 } from '../constants/userSchema';
-import EntityHeader from './EntityHeader';
+import EntityHeaderNew from './EntityHeaderNew';
+import BigAvatar from './BigAvatar';
 import MainColumn from './MainColumn';
 import Link from './Link';
 import SadScreen from './SadScreen';
@@ -23,6 +24,7 @@ import MetadataCard from './cards/MetadataCard';
 import SightingsCard from './cards/SightingsCard';
 // import UserProjectCard from './cards/UserProjectCard';
 import CardContainer from './cards/CardContainer';
+import defaultProfilePhoto from '../assets/defaultProfile.jpg';
 
 const items = [
   {
@@ -74,6 +76,8 @@ export default function UserProfile({
   userData,
   imageSrc,
   imageGuid,
+  userDataLoading,
+  refreshUserData,
   noCollaborate = false,
 }) {
   const [editingProfile, setEditingProfile] = useState(false);
@@ -111,13 +115,21 @@ export default function UserProfile({
         fieldSchema={userSchema}
         categories={userSchemaCategories}
       />
-      <EntityHeader
-        admin={userData.admin}
+      <EntityHeaderNew
         name={userData.name}
-        imageSrc={imageSrc}
-        imageGuid={imageGuid}
         editable={userData.editable}
         onSettingsClick={() => setEditingProfile(true)}
+        renderAvatar={
+          <BigAvatar
+            imageGuid={imageGuid}
+            imageSrc={imageSrc || defaultProfilePhoto}
+            editable
+            name={userData.name}
+            admin={userData.admin}
+            refreshUserData={refreshUserData}
+            userDataLoading={userDataLoading}
+          />
+        }
         renderOptions={
           noCollaborate ? (
             undefined
@@ -129,7 +141,7 @@ export default function UserProfile({
         }
       >
         <Text variant="subtitle2">User since December 2014</Text>
-      </EntityHeader>
+      </EntityHeaderNew>
       {children}
       <div style={{ display: 'flex', flexWrap: 'wrap' }}>
         <CardContainer size="small">

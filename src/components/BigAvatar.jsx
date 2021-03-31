@@ -8,6 +8,8 @@ import EditAvatar from './profilePhotos/EditAvatar';
 export default function BigAvatar({
   imageSrc,
   imageGuid,
+  refreshUserData,
+  userDataLoading,
   name,
   editable,
   size = 150,
@@ -35,17 +37,30 @@ export default function BigAvatar({
         visible={editingAvatar}
         square={square}
         onClose={() => setEditingAvatar(false)}
+        refreshUserData={refreshUserData}
+        userDataLoading={userDataLoading}
       />
-      <img
-        src={imageSrc}
-        alt={`Profile for ${name}`}
-        style={{
-          width: size + 1,
-          height: size + 1,
-          borderRadius: square ? 'unset' : '50%',
-          border: `1px solid ${theme.palette.grey['400']}`,
-        }}
-      />
+      {userDataLoading ? (
+        <div
+          style={{
+            width: size + 1,
+            height: size + 1,
+            borderRadius: square ? 'unset' : '50%',
+            border: `1px solid ${theme.palette.grey['400']}`,
+          }}
+        />
+      ) : (
+        <img
+          src={imageSrc}
+          alt={`Profile for ${name}`}
+          style={{
+            width: size + 1,
+            height: size + 1,
+            borderRadius: square ? 'unset' : '50%',
+            border: `1px solid ${theme.palette.grey['400']}`,
+          }}
+        />
+      )}
       {admin && (
         <svg
           style={{
