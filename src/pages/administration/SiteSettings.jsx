@@ -8,7 +8,7 @@ import GeneralSettings from './settings/GeneralSettings';
 import SplashSettings from './settings/SplashSettings';
 import FieldSettings from './settings/FieldSettings';
 
-export default function AdminActions() {
+export default function SiteSettings() {
   const intl = useIntl();
   useDocumentTitle(intl.formatMessage({ id: 'SITE_SETTINGS' }));
 

@@ -20,7 +20,6 @@ export default function useGetUser(userId) {
             url: `${__houston_url__}/api/v1/users/${userId}`,
             method: 'get',
           });
-          console.log(response);
           const responseData = get(response, 'data');
           setData(responseData);
           setLoading(false);
