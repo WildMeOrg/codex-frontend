@@ -3,10 +3,11 @@ import { FormattedMessage } from 'react-intl';
 import { get } from 'lodash-es';
 import { useTheme } from '@material-ui/core/styles';
 import SvgText from './SvgText';
-import EditAvatar from './EditAvatar';
+import EditAvatar from './profilePhotos/EditAvatar';
 
 export default function BigAvatar({
-  imgSrc,
+  imageSrc,
+  imageGuid,
   name,
   editable,
   size = 150,
@@ -29,12 +30,14 @@ export default function BigAvatar({
       }}
     >
       <EditAvatar
+        imageSrc={imageSrc}
+        imageGuid={imageGuid}
         visible={editingAvatar}
         square={square}
         onClose={() => setEditingAvatar(false)}
       />
       <img
-        src={imgSrc}
+        src={imageSrc}
         alt={`Profile for ${name}`}
         style={{
           width: size + 1,

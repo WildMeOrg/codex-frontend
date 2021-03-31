@@ -6,7 +6,8 @@ import Text from './Text';
 
 export default function EntityHeader({
   admin = false,
-  imgSrc,
+  imageSrc,
+  imageGuid,
   name,
   editable,
   noAvatar = false,
@@ -28,7 +29,8 @@ export default function EntityHeader({
             <div style={{ width: 4, height: 151 }} />
           ) : (
             <BigAvatar
-              imgSrc={imgSrc}
+              imageSrc={imageSrc}
+              imageGuid={imageGuid}
               editable={editable}
               name={name}
               square={square}

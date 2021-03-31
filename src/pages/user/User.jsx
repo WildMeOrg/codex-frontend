@@ -1,9 +1,9 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { capitalize, toLower } from 'lodash-es';
+import { get, capitalize, toLower } from 'lodash-es';
 import { selectUsers } from '../../modules/users/selectors';
-// import useGetUser from '../../models/users/useGetUser';
+import useGetUser from '../../models/users/useGetUser';
 import UserProfile from '../../components/UserProfile';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 
@@ -13,8 +13,19 @@ export default function User({ userId }) {
   useDocumentTitle(capitalize(displayedUserId));
   const users = useSelector(selectUsers);
 
-  // const { data, loading, error } = useGetUser(id);
-  // console.log(data, loading, error);
+  const { data, loading, error } = useGetUser(
+    '5d9ac656-426b-40bf-a7a1-99ffe52f8786',
+  );
 
-  return <UserProfile userData={users[toLower(displayedUserId)]} />;
+  const imageSrc = get(data, ['profile_fileupload', 'src']);
+  const imageGuid = get(data, ['profile_fileupload', 'guid']);
+  console.log(data);
+
+  return (
+    <UserProfile
+      userData={users[toLower(displayedUserId)]}
+      imageSrc={imageSrc}
+      imageGuid={imageGuid}
+    />
+  );
 }

@@ -72,6 +72,8 @@ const items = [
 export default function UserProfile({
   children,
   userData,
+  imageSrc,
+  imageGuid,
   noCollaborate = false,
 }) {
   const [editingProfile, setEditingProfile] = useState(false);
@@ -112,7 +114,8 @@ export default function UserProfile({
       <EntityHeader
         admin={userData.admin}
         name={userData.name}
-        imgSrc={userData.profile}
+        imageSrc={imageSrc}
+        imageGuid={imageGuid}
         editable={userData.editable}
         onSettingsClick={() => setEditingProfile(true)}
         renderOptions={

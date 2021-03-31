@@ -14,6 +14,7 @@ export default function useGetMe(userId) {
           url: `${__houston_url__}/api/v1/users/${userId}`,
           method: 'get',
         });
+        console.log(response);
         const responseData = get(response, 'data');
         setData(responseData);
         setLoading(false);
@@ -28,5 +29,5 @@ export default function useGetMe(userId) {
     getMe();
   }, []);
 
-  return { data, loading, error };
+  return { data, loading, error, setError };
 }
