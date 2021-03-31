@@ -1,17 +1,14 @@
 import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
-import IconButton from '@material-ui/core/IconButton';
-import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import FormHelperText from '@material-ui/core/FormHelperText';
-import CloseIcon from '@material-ui/icons/Close';
 import AreaMap from './mapUtils/AreaMap';
 import DeleteButton from '../DeleteButton';
 import { defaultAreaBounds } from '../../constants/defaults';
 import Button from '../Button';
 import Text from '../Text';
+import StandardDialog from '../StandardDialog';
 
 export default function AreaInput({
   schema,
@@ -51,17 +48,11 @@ export default function AreaInput({
           <FormattedMessage id={schema.descriptionId} />
         </FormHelperText>
       )}
-      <Dialog open={modalOpen} onClose={onClose}>
-        <DialogTitle onClose={onClose}>
-          <FormattedMessage id="SELECT_BOUNDING_BOX" />
-          <IconButton
-            style={{ position: 'absolute', top: 8, right: 16 }}
-            aria-label="close"
-            onClick={onClose}
-          >
-            <CloseIcon />
-          </IconButton>
-        </DialogTitle>
+      <StandardDialog
+        open={modalOpen}
+        onClose={onClose}
+        titleId="SELECT_BOUNDING_BOX"
+      >
         <DialogContent style={{ marginBottom: 24 }}>
           <AreaMap
             startBounds={value}
@@ -87,7 +78,7 @@ export default function AreaInput({
             <FormattedMessage id="CONFIRM" />
           </Button>
         </DialogActions>
-      </Dialog>
+      </StandardDialog>
     </div>
   );
 }

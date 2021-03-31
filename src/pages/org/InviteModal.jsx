@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
 import Avatar from '@material-ui/core/Avatar';
-import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogActions from '@material-ui/core/DialogActions';
 import Input from '@material-ui/core/Input';
 import InputAdornment from '@material-ui/core/InputAdornment';
@@ -13,12 +11,12 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import CloseIcon from '@material-ui/icons/Close';
 import IconButton from '@material-ui/core/IconButton';
 import SearchIcon from '@material-ui/icons/Search';
 import NavigateIcon from '@material-ui/icons/Visibility';
 import Link from '../../components/Link';
 import Button from '../../components/Button';
+import StandardDialog from '../../components/StandardDialog';
 import BooleanInput from '../../components/inputs/BooleanInput';
 
 const word = 'HERPADERPAFEEDMEREALDATAPLEAASEE';
@@ -34,21 +32,12 @@ export default function MembersModal({
   const [filter, setFilter] = useState('');
 
   return (
-    <Dialog
+    <StandardDialog
       open={open}
       onClose={onClose}
       PaperProps={{ style: { width: 600, height: 600 } }}
+      titleId="SEND_INVITATION"
     >
-      <DialogTitle onClose={onClose}>
-        <FormattedMessage id="SEND_INVITATION" />
-        <IconButton
-          style={{ position: 'absolute', top: 8, right: 16 }}
-          aria-label="close"
-          onClick={onClose}
-        >
-          <CloseIcon />
-        </IconButton>
-      </DialogTitle>
       <DialogContent
         style={{ padding: '8px 12px', overflowX: 'hidden' }}
       >
@@ -134,6 +123,6 @@ export default function MembersModal({
           <FormattedMessage id="SEND_INVITATION" />
         </Button>
       </DialogActions>
-    </Dialog>
+    </StandardDialog>
   );
 }

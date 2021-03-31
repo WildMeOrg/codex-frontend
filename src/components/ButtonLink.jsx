@@ -11,16 +11,14 @@ export default function ButtonLink({
   ...rest
 }) {
   return (
-    <Button {...rest}>
-      <Link
-        noUnderline
-        href={href}
-        external={external}
-        newTab={newTab}
-        {...linkProps}
-      >
-        {children}
-      </Link>
-    </Button>
+    <Link
+      noUnderline
+      href={href}
+      external={external}
+      newTab={newTab}
+      {...linkProps}
+    >
+      <Button {...rest}>{children}</Button>
+    </Link>
   );
 }

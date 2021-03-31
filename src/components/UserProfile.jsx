@@ -12,7 +12,8 @@ import WebIcon from '@material-ui/icons/WebAssetSharp';
 import userSchema, {
   userSchemaCategories,
 } from '../constants/userSchema';
-import EntityHeader from './EntityHeader';
+import EntityHeaderNew from './EntityHeaderNew';
+import BigAvatar from './profilePhotos/BigAvatar';
 import MainColumn from './MainColumn';
 import Link from './Link';
 import SadScreen from './SadScreen';
@@ -72,6 +73,10 @@ const items = [
 export default function UserProfile({
   children,
   userData,
+  imageSrc,
+  imageGuid,
+  userDataLoading,
+  refreshUserData,
   noCollaborate = false,
 }) {
   const [editingProfile, setEditingProfile] = useState(false);
@@ -109,12 +114,21 @@ export default function UserProfile({
         fieldSchema={userSchema}
         categories={userSchemaCategories}
       />
-      <EntityHeader
-        admin={userData.admin}
+      <EntityHeaderNew
         name={userData.name}
-        imgSrc={userData.profile}
         editable={userData.editable}
         onSettingsClick={() => setEditingProfile(true)}
+        renderAvatar={
+          <BigAvatar
+            imageGuid={imageGuid}
+            imageSrc={imageSrc}
+            editable
+            name={userData.name}
+            admin={userData.admin}
+            refreshUserData={refreshUserData}
+            userDataLoading={userDataLoading}
+          />
+        }
         renderOptions={
           noCollaborate ? (
             undefined
@@ -126,7 +140,7 @@ export default function UserProfile({
         }
       >
         <Text variant="subtitle2">User since December 2014</Text>
-      </EntityHeader>
+      </EntityHeaderNew>
       {children}
       <div style={{ display: 'flex', flexWrap: 'wrap' }}>
         <CardContainer size="small">

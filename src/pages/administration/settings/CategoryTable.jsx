@@ -4,8 +4,6 @@ import { get } from 'lodash-es';
 import { v4 as uuid } from 'uuid';
 
 import Grid from '@material-ui/core/Grid';
-import Dialog from '@material-ui/core/Dialog';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import Alert from '@material-ui/lab/Alert';
@@ -19,6 +17,7 @@ import InputRow from '../../../components/InputRow';
 import ConfirmDelete from '../../../components/ConfirmDelete';
 import DataDisplay from '../../../components/dataDisplays/DataDisplay';
 import Text from '../../../components/Text';
+import StandardDialog from '../../../components/StandardDialog';
 import categoryTypes from '../../../constants/categoryTypes';
 import { defaultSightingCategories } from '../../../constants/newSightingSchema';
 import { defaultIndividualCategories } from '../../../constants/individualSchema';
@@ -135,14 +134,14 @@ export default function FieldSettings() {
         }}
       />
       {dialogData && (
-        <Dialog size="md" open onClose={onCloseCategoryDialog}>
-          <DialogTitle>
-            {dialogData.isDefault ? (
-              <FormattedMessage id="VIEW_CATEGORY" />
-            ) : (
-              <FormattedMessage id="EDIT_CATEGORY" />
-            )}
-          </DialogTitle>
+        <StandardDialog
+          titleId={
+            dialogData.isDefault ? 'VIEW_CATEGORY' : 'EDIT_CATEGORY'
+          }
+          size="md"
+          open
+          onClose={onCloseCategoryDialog}
+        >
           <DialogContent>
             <Text
               variant="caption"
@@ -223,7 +222,7 @@ export default function FieldSettings() {
               </>
             )}
           </DialogActions>
-        </Dialog>
+        </StandardDialog>
       )}
       <div
         style={{

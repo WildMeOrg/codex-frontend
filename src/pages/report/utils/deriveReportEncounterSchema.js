@@ -1,4 +1,4 @@
-import { get } from 'lodash-es';
+import { get, startCase } from 'lodash-es';
 import fieldTypes from '../../../constants/fieldTypes';
 
 const defaultCategories = {
@@ -17,10 +17,16 @@ export default function deriveReportEncounterSchema(siteSettings) {
     ['data', 'site.species', 'value'],
     [],
   );
-  const speciesOptions = species.map(s => ({
-    label: s.scientificName,
-    value: s.id,
-  }));
+  const speciesOptions = species.map(s => {
+    const mainCommonName = startCase(get(s, ['commonNames', 0]));
+    const speciesLabel = mainCommonName
+      ? `${mainCommonName} (${s.scientificName})`
+      : s.scientificName;
+    return {
+      label: speciesLabel,
+      value: s.id,
+    };
+  });
 
   const encounterSchema = [
     {

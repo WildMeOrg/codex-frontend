@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import Grid from '@material-ui/core/Grid';
-import Dialog from '@material-ui/core/Dialog';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import LabeledInput from '../../components/LabeledInput';
 import Button from '../../components/Button';
+import StandardDialog from '../../components/StandardDialog';
 import projectSchema from '../../constants/projectSchema';
 
 // https://lowrey.me/test-if-a-string-is-alphanumeric-in-javascript/
@@ -58,10 +57,11 @@ export default function CreateProject({
   }
 
   return (
-    <Dialog open={open} onClose={closeAndEmptyForm}>
-      <DialogTitle>
-        <FormattedMessage id="CREATE_A_PROJECT" />
-      </DialogTitle>
+    <StandardDialog
+      titleId="CREATE_A_PROJECT"
+      open={open}
+      onClose={closeAndEmptyForm}
+    >
       <DialogContent>
         <Grid
           container
@@ -104,6 +104,6 @@ export default function CreateProject({
           <FormattedMessage id="CREATE" />
         </Button>
       </DialogActions>
-    </Dialog>
+    </StandardDialog>
   );
 }

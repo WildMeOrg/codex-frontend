@@ -1,13 +1,12 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import Dialog from '@material-ui/core/Dialog';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import Alert from '@material-ui/lab/Alert';
 import AlertTitle from '@material-ui/lab/AlertTitle';
 import Button from './Button';
 import Text from './Text';
+import StandardDialog from './StandardDialog';
 
 export default function ConfirmDelete({
   open,
@@ -16,13 +15,14 @@ export default function ConfirmDelete({
   entityToDelete,
   message,
   error,
-  title,
+  titleId,
 }) {
   return (
-    <Dialog open={open} onClose={onClose}>
-      <DialogTitle>
-        {title || <FormattedMessage id="CONFIRM_DELETE" />}
-      </DialogTitle>
+    <StandardDialog
+      open={open}
+      onClose={onClose}
+      titleId={titleId || 'CONFIRM_DELETE'}
+    >
       <DialogContent>
         <Text
           id="CONFIRM_DELETE_DESCRIPTION"
@@ -33,7 +33,7 @@ export default function ConfirmDelete({
         {error && (
           <Alert severity="error">
             <AlertTitle>
-              <FormattedMessage id="SUBMISSION_ERROR" />
+              <FormattedMessage id="SERVER_ERROR" />
             </AlertTitle>
             {error}
           </Alert>
@@ -47,6 +47,6 @@ export default function ConfirmDelete({
           <FormattedMessage id="DELETE" />
         </Button>
       </DialogActions>
-    </Dialog>
+    </StandardDialog>
   );
 }

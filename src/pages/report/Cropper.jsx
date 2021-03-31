@@ -1,13 +1,11 @@
 import React, { useCallback, useRef, useState } from 'react';
 import { get } from 'lodash-es';
-import { FormattedMessage } from 'react-intl';
-import Dialog from '@material-ui/core/Dialog';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import { useTheme } from '@material-ui/core/styles';
 import BboxAnnotator from 'bboxjs';
 import Button from '../../components/Button';
+import StandardDialog from '../../components/StandardDialog';
 
 export default function Cropper({ imgSrc, onClose, setCrop }) {
   const [rect, setRect] = useState({});
@@ -120,10 +118,7 @@ export default function Cropper({ imgSrc, onClose, setCrop }) {
   }
 
   return (
-    <Dialog open onClose={onClose}>
-      <DialogTitle onClose={onClose}>
-        <FormattedMessage id="CROP_PHOTO" />
-      </DialogTitle>
+    <StandardDialog open onClose={onClose} titleId="CROP_PHOTO">
       <DialogContent>
         <div style={{ width: 400, padding: '0 40px' }}>
           <div
@@ -145,6 +140,6 @@ export default function Cropper({ imgSrc, onClose, setCrop }) {
           Save
         </Button>
       </DialogActions>
-    </Dialog>
+    </StandardDialog>
   );
 }

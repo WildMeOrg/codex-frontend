@@ -31,16 +31,16 @@ export default function deriveReportSightingSchema(siteSettings) {
   );
 
   const sightingSchema = [
-    // {
-    //   name: 'speciesDetectionModel',
-    //   labelId: 'SPECIES_DETECTION_MODEL',
-    //   descriptionId: 'SPECIES_DETECTION_MODEL_DESCRIPTION',
-    //   category: categories.general.name,
-    //   fieldType: fieldTypes.multiselect,
-    //   choices: fill this out!,
-    //   required: true,
-    //   defaultValue: [],
-    // },
+    {
+      name: 'speciesDetectionModel',
+      labelId: 'SPECIES_DETECTION_MODEL',
+      descriptionId: 'SPECIES_DETECTION_MODEL_DESCRIPTION',
+      category: sightingCategories.general.name,
+      fieldType: fieldTypes.select,
+      choices: [{ value: 'None', label: 'None' }],
+      required: true,
+      defaultValue: '',
+    },
     {
       name: 'context',
       labelId: 'SIGHTING_CONTEXT',

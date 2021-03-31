@@ -1,18 +1,15 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import IconButton from '@material-ui/core/IconButton';
-import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogActions from '@material-ui/core/DialogActions';
-import CloseIcon from '@material-ui/icons/Close';
 import Alert from '@material-ui/lab/Alert';
 import AlertTitle from '@material-ui/lab/AlertTitle';
 
 import DefaultRenderer from '../../components/renderers/DefaultRenderer';
 import InputRow from '../../components/InputRow';
 import Button from '../../components/Button';
+import StandardDialog from '../../components/StandardDialog';
 
 export default function EditSightingMetadata({
   open,
@@ -21,24 +18,14 @@ export default function EditSightingMetadata({
   onSubmit,
   error,
 }) {
-  console.log(metadata);
   return (
-    <Dialog
+    <StandardDialog
       PaperProps={{ style: { width: 800 } }}
       maxWidth="lg"
       open={open}
       onClose={onClose}
+      titleId="EDIT_SIGHTING_METADATA"
     >
-      <DialogTitle onClose={onClose}>
-        <FormattedMessage id="EDIT_SIGHTING_METADATA" />
-        <IconButton
-          style={{ position: 'absolute', top: 8, right: 16 }}
-          aria-label="close"
-          onClick={onClose}
-        >
-          <CloseIcon />
-        </IconButton>
-      </DialogTitle>
       <DialogContent style={{ minWidth: 200 }}>
         {metadata &&
           metadata.map(field => {
@@ -86,6 +73,6 @@ export default function EditSightingMetadata({
           <FormattedMessage id="SAVE" />
         </Button>
       </DialogActions>
-    </Dialog>
+    </StandardDialog>
   );
 }

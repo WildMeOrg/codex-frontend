@@ -2,17 +2,14 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { v4 as uuid } from 'uuid';
 import FormControl from '@material-ui/core/FormControl';
-import IconButton from '@material-ui/core/IconButton';
-import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import CloseIcon from '@material-ui/icons/Close';
 
 import TextInput from '../../../components/inputs/TextInput';
 import DeleteButton from '../../../components/DeleteButton';
 import Button from '../../../components/Button';
 import Text from '../../../components/Text';
+import StandardDialog from '../../../components/StandardDialog';
 
 export default function OptionEditor({
   open,
@@ -30,17 +27,11 @@ export default function OptionEditor({
     options.length > 0 ? options : [{ label: '', value: '', id: 6 }];
 
   return (
-    <Dialog open={open} onClose={onClose}>
-      <DialogTitle onClose={onClose}>
-        <FormattedMessage id={schema.labelId || 'OPTION_EDITOR'} />
-        <IconButton
-          style={{ position: 'absolute', top: 8, right: 16 }}
-          aria-label="close"
-          onClick={onClose}
-        >
-          <CloseIcon />
-        </IconButton>
-      </DialogTitle>
+    <StandardDialog
+      open={open}
+      onClose={onClose}
+      titleId={schema.labelId || 'OPTION_EDITOR'}
+    >
       <DialogContent style={{ minWidth: 200 }}>
         {schema.descriptionId && (
           <Text
@@ -135,6 +126,6 @@ export default function OptionEditor({
           <FormattedMessage id="FINISH" />
         </Button>
       </DialogActions>
-    </Dialog>
+    </StandardDialog>
   );
 }

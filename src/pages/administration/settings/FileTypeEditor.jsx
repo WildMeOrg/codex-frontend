@@ -2,17 +2,14 @@ import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import FormControl from '@material-ui/core/FormControl';
-import IconButton from '@material-ui/core/IconButton';
-import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import CloseIcon from '@material-ui/icons/Close';
 
 import TextInput from '../../../components/inputs/TextInput';
 import DeleteButton from '../../../components/DeleteButton';
 import Button from '../../../components/Button';
 import Text from '../../../components/Text';
+import StandardDialog from '../../../components/StandardDialog';
 
 export default function FileTypeEditor({
   schema,
@@ -48,17 +45,11 @@ export default function FileTypeEditor({
           />
         </Button>
       </div>
-      <Dialog open={modalOpen} onClose={onClose}>
-        <DialogTitle onClose={onClose}>
-          <FormattedMessage id="ALLOWED_FILETYPES_EDITOR" />
-          <IconButton
-            style={{ position: 'absolute', top: 8, right: 16 }}
-            aria-label="close"
-            onClick={onClose}
-          >
-            <CloseIcon />
-          </IconButton>
-        </DialogTitle>
+      <StandardDialog
+        open={modalOpen}
+        onClose={onClose}
+        titleId="ALLOWED_FILETYPES_EDITOR"
+      >
         <DialogContent style={{ minWidth: 200 }}>
           {schema.descriptionId && (
             <Text
@@ -137,7 +128,7 @@ export default function FileTypeEditor({
             <FormattedMessage id="FINISH" />
           </Button>
         </DialogActions>
-      </Dialog>
+      </StandardDialog>
     </div>
   );
 }

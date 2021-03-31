@@ -2,11 +2,15 @@ import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { get } from 'lodash-es';
 import { useTheme } from '@material-ui/core/styles';
-import SvgText from './SvgText';
+import SvgText from '../SvgText';
 import EditAvatar from './EditAvatar';
+import defaultProfilePhoto from '../../assets/defaultProfile.jpg';
 
 export default function BigAvatar({
-  imgSrc,
+  imageSrc,
+  imageGuid,
+  refreshUserData,
+  userDataLoading,
   name,
   editable,
   size = 150,
@@ -29,20 +33,35 @@ export default function BigAvatar({
       }}
     >
       <EditAvatar
+        imageSrc={imageSrc}
+        imageGuid={imageGuid}
         visible={editingAvatar}
         square={square}
         onClose={() => setEditingAvatar(false)}
+        refreshUserData={refreshUserData}
+        userDataLoading={userDataLoading}
       />
-      <img
-        src={imgSrc}
-        alt={`Profile for ${name}`}
-        style={{
-          width: size + 1,
-          height: size + 1,
-          borderRadius: square ? 'unset' : '50%',
-          border: `1px solid ${theme.palette.grey['400']}`,
-        }}
-      />
+      {userDataLoading ? (
+        <div
+          style={{
+            width: size + 1,
+            height: size + 1,
+            borderRadius: square ? 'unset' : '50%',
+            border: `1px solid ${theme.palette.grey['400']}`,
+          }}
+        />
+      ) : (
+        <img
+          src={imageSrc || defaultProfilePhoto}
+          alt={`Profile for ${name}`}
+          style={{
+            width: size + 1,
+            height: size + 1,
+            borderRadius: square ? 'unset' : '50%',
+            border: `1px solid ${theme.palette.grey['400']}`,
+          }}
+        />
+      )}
       {admin && (
         <svg
           style={{

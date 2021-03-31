@@ -1,16 +1,13 @@
 import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { get } from 'lodash-es';
-import IconButton from '@material-ui/core/IconButton';
-import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import FormHelperText from '@material-ui/core/FormHelperText';
-import CloseIcon from '@material-ui/icons/Close';
 import LatLngMap from './mapUtils/LatLngMap';
 import TextInput from './TextInput';
 import Button from '../Button';
+import StandardDialog from '../StandardDialog';
 
 export default function LatLongInput({
   schema,
@@ -67,17 +64,11 @@ export default function LatLongInput({
           <FormattedMessage id={schema.descriptionId} />
         </FormHelperText>
       )}
-      <Dialog open={modalOpen} onClose={onClose}>
-        <DialogTitle onClose={onClose}>
-          <FormattedMessage id="SELECT_LOCATION" />
-          <IconButton
-            style={{ position: 'absolute', top: 8, right: 16 }}
-            aria-label="close"
-            onClick={onClose}
-          >
-            <CloseIcon />
-          </IconButton>
-        </DialogTitle>
+      <StandardDialog
+        open={modalOpen}
+        onClose={onClose}
+        titleId="SELECT_LOCATION"
+      >
         <DialogContent style={{ marginBottom: 24 }}>
           <LatLngMap
             onChange={clickedPoint => setMapLatLng(clickedPoint)}
@@ -102,7 +93,7 @@ export default function LatLongInput({
             <FormattedMessage id="CONFIRM" />
           </Button>
         </DialogActions>
-      </Dialog>
+      </StandardDialog>
     </div>
   );
 }

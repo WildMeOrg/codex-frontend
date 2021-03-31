@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import Grid from '@material-ui/core/Grid';
-import Dialog from '@material-ui/core/Dialog';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import Button from '../../components/Button';
 import LabeledInput from '../../components/LabeledInput';
+import StandardDialog from '../../components/StandardDialog';
 import userSchema from '../../constants/userSchema';
 
 const schemas = userSchema.filter(
@@ -26,10 +25,11 @@ export default function CreateUser({ open, onClose, onCreateUser }) {
   };
 
   return (
-    <Dialog open={open} onClose={closeAndEmptyForm}>
-      <DialogTitle>
-        <FormattedMessage id="CREATE_USER" />
-      </DialogTitle>
+    <StandardDialog
+      open={open}
+      onClose={closeAndEmptyForm}
+      titleId="CREATE_USER"
+    >
       <DialogContent>
         <Grid
           container
@@ -65,6 +65,6 @@ export default function CreateUser({ open, onClose, onCreateUser }) {
           <FormattedMessage id="CREATE_USER" />
         </Button>
       </DialogActions>
-    </Dialog>
+    </StandardDialog>
   );
 }

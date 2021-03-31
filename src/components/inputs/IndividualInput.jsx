@@ -2,23 +2,22 @@ import React, { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useSelector } from 'react-redux';
 import { format } from 'date-fns';
-import IconButton from '@material-ui/core/IconButton';
+
 import Input from '@material-ui/core/Input';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import FormHelperText from '@material-ui/core/FormHelperText';
-import CloseIcon from '@material-ui/icons/Close';
 import SearchIcon from '@material-ui/icons/Search';
+
 import { selectSearchResults } from '../../modules/individuals/selectors';
 import DeleteButton from '../DeleteButton';
 import Button from '../Button';
 import Text from '../Text';
+import StandardDialog from '../StandardDialog';
 
 export default function IndividualInput({
   schema,
@@ -63,17 +62,11 @@ export default function IndividualInput({
           <FormattedMessage id={schema.descriptionId} />
         </FormHelperText>
       )}
-      <Dialog open={modalOpen} onClose={onClose}>
-        <DialogTitle onClose={onClose}>
-          <FormattedMessage id="SELECT_INDIVIDUAL" />
-          <IconButton
-            style={{ position: 'absolute', top: 8, right: 16 }}
-            aria-label="close"
-            onClick={onClose}
-          >
-            <CloseIcon />
-          </IconButton>
-        </DialogTitle>
+      <StandardDialog
+        open={modalOpen}
+        onClose={onClose}
+        titleId="SELECT_INDIVIDUAL"
+      >
         <DialogContent style={{ marginBottom: 24 }}>
           <Input
             style={{ margin: '16px 0 20px 16px', width: 260 }}
@@ -149,7 +142,7 @@ export default function IndividualInput({
             <FormattedMessage id="CONFIRM" />
           </Button>
         </DialogActions>
-      </Dialog>
+      </StandardDialog>
     </div>
   );
 }
