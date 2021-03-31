@@ -51,7 +51,10 @@ export default function CropDialog({
         },
       },
     );
-    if (successful) onClose();
+    if (successful) {
+      onClose();
+      window.location.reload();
+    }
   }
 
   return (
@@ -64,21 +67,23 @@ export default function CropDialog({
       titleId="CROP_PROFILE_PHOTO"
     >
       <DialogContent>
-        <ReactCrop
-          src={imageSrc}
-          crop={crop}
-          imageStyle={{ width: 300 }}
-          onChange={c => setCrop(c)}
-          circularCrop={!square}
-          onImageLoaded={image => {
-            setImageData({
-              loadedWidth: image.width,
-              loadedHeight: image.height,
-              naturalWidth: image.naturalWidth,
-              naturalHeight: image.naturalHeight,
-            });
-          }}
-        />
+        {imageSrc && (
+          <ReactCrop
+            src={imageSrc}
+            crop={crop}
+            imageStyle={{ width: 300 }}
+            onChange={c => setCrop(c)}
+            circularCrop={!square}
+            onImageLoaded={image => {
+              setImageData({
+                loadedWidth: image.width,
+                loadedHeight: image.height,
+                naturalWidth: image.naturalWidth,
+                naturalHeight: image.naturalHeight,
+              });
+            }}
+          />
+        )}
         {replaceError && (
           <Alert severity="error">
             <AlertTitle>

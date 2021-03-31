@@ -1,7 +1,7 @@
 import React from 'react';
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
-import BigAvatar from './BigAvatar';
+import BigAvatar from './profilePhotos/BigAvatar';
 import Text from './Text';
 
 export default function EntityHeader({

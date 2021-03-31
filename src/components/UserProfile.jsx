@@ -13,7 +13,7 @@ import userSchema, {
   userSchemaCategories,
 } from '../constants/userSchema';
 import EntityHeaderNew from './EntityHeaderNew';
-import BigAvatar from './BigAvatar';
+import BigAvatar from './profilePhotos/BigAvatar';
 import MainColumn from './MainColumn';
 import Link from './Link';
 import SadScreen from './SadScreen';
@@ -24,7 +24,6 @@ import MetadataCard from './cards/MetadataCard';
 import SightingsCard from './cards/SightingsCard';
 // import UserProjectCard from './cards/UserProjectCard';
 import CardContainer from './cards/CardContainer';
-import defaultProfilePhoto from '../assets/defaultProfile.jpg';
 
 const items = [
   {
@@ -122,7 +121,7 @@ export default function UserProfile({
         renderAvatar={
           <BigAvatar
             imageGuid={imageGuid}
-            imageSrc={imageSrc || defaultProfilePhoto}
+            imageSrc={imageSrc}
             editable
             name={userData.name}
             admin={userData.admin}

@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { get } from 'lodash-es';
 import { useTheme } from '@material-ui/core/styles';
-import SvgText from './SvgText';
-import EditAvatar from './profilePhotos/EditAvatar';
+import SvgText from '../SvgText';
+import EditAvatar from './EditAvatar';
+import defaultProfilePhoto from '../../assets/defaultProfile.jpg';
 
 export default function BigAvatar({
   imageSrc,
@@ -51,7 +52,7 @@ export default function BigAvatar({
         />
       ) : (
         <img
-          src={imageSrc}
+          src={imageSrc || defaultProfilePhoto}
           alt={`Profile for ${name}`}
           style={{
             width: size + 1,

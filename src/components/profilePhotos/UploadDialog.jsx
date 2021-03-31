@@ -27,7 +27,7 @@ export default function UploadDialog({ open, onClose }) {
       '/profile_fileupload_guid',
       profileAsset,
     );
-    if (successful) onClose();
+    if (successful) onClose(true);
   }
 
   return (
@@ -35,7 +35,7 @@ export default function UploadDialog({ open, onClose }) {
       open={open}
       onClose={() => {
         if (replaceError) setReplaceError(null);
-        onClose();
+        onClose(false);
       }}
       titleId="CHOOSE_PHOTO"
     >
@@ -57,6 +57,7 @@ export default function UploadDialog({ open, onClose }) {
           display="primary"
           onClick={submitProfilePhoto}
           autoFocus
+          disabled={!profileAsset}
           loading={replaceLoading}
         >
           <FormattedMessage id="SAVE" />
