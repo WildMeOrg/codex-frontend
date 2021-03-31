@@ -2,16 +2,13 @@ import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { get } from 'lodash-es';
 import Avatar from '@material-ui/core/Avatar';
-import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogActions from '@material-ui/core/DialogActions';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import CloseIcon from '@material-ui/icons/Close';
 import DeleteIcon from '@material-ui/icons/Delete';
 import UndoIcon from '@material-ui/icons/Undo';
 import IconButton from '@material-ui/core/IconButton';
@@ -20,6 +17,7 @@ import Link from '../../components/Link';
 import Button from '../../components/Button';
 import Text from '../../components/Text';
 import InputRow from '../../components/InputRow';
+import StandardDialog from '../../components/StandardDialog';
 
 const word = 'HERPADERPAFEEDMEREALDATAPLEAASEE';
 
@@ -34,21 +32,12 @@ export default function MembersModal({
   const [owner, setOwner] = useState(0);
 
   return (
-    <Dialog
+    <StandardDialog
       open={open}
       onClose={onClose}
       PaperProps={{ style: { width: 600, height: 600 } }}
+      titleId="MEMBERS"
     >
-      <DialogTitle onClose={onClose}>
-        <FormattedMessage id="MEMBERS" />
-        <IconButton
-          style={{ position: 'absolute', top: 8, right: 16 }}
-          aria-label="close"
-          onClick={onClose}
-        >
-          <CloseIcon />
-        </IconButton>
-      </DialogTitle>
       <DialogContent style={{ padding: '8px 12px' }}>
         <div>
           <InputRow
@@ -162,6 +151,6 @@ export default function MembersModal({
           </Button>
         </DialogActions>
       )}
-    </Dialog>
+    </StandardDialog>
   );
 }

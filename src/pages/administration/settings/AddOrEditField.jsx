@@ -2,18 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { get } from 'lodash-es';
 
-import IconButton from '@material-ui/core/IconButton';
-import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogActions from '@material-ui/core/DialogActions';
-import CloseIcon from '@material-ui/icons/Close';
 import Alert from '@material-ui/lab/Alert';
 import AlertTitle from '@material-ui/lab/AlertTitle';
 
 import BooleanInput from '../../../components/inputs/BooleanInput';
 import Button from '../../../components/Button';
 import InputRow from '../../../components/InputRow';
+import StandardDialog from '../../../components/StandardDialog';
 import { fieldTypeChoices } from '../../../constants/fieldTypes';
 
 import OptionEditorButton from './OptionEditorButton';
@@ -55,24 +52,13 @@ export default function EditField({
   const configuration = get(displayTypeSchema, 'configuration', []);
 
   return (
-    <Dialog
+    <StandardDialog
       PaperProps={{ style: { width: 800 } }}
       maxWidth="lg"
       open={open}
       onClose={onClose}
+      titleId={newField ? 'ADD_FIELD' : 'EDIT_FIELD'}
     >
-      <DialogTitle onClose={onClose}>
-        <FormattedMessage
-          id={newField ? 'ADD_FIELD' : 'EDIT_FIELD'}
-        />
-        <IconButton
-          style={{ position: 'absolute', top: 8, right: 16 }}
-          aria-label="close"
-          onClick={onClose}
-        >
-          <CloseIcon />
-        </IconButton>
-      </DialogTitle>
       <DialogContent style={{ minWidth: 200 }}>
         <InputRow
           labelId="FIELD_VALUE"
@@ -209,6 +195,6 @@ export default function EditField({
           <FormattedMessage id="SAVE" />
         </Button>
       </DialogActions>
-    </Dialog>
+    </StandardDialog>
   );
 }

@@ -3,14 +3,13 @@ import { get } from 'lodash-es';
 import { FormattedMessage } from 'react-intl';
 import BboxAnnotator from 'bboxjs';
 
-import Dialog from '@material-ui/core/Dialog';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import { useTheme } from '@material-ui/core/styles';
 
 import Button from './Button';
 import Text from './Text';
+import StandardDialog from './StandardDialog';
 
 export default function AnnotationEditor({
   titleId = 'EDIT_ANNOTATION',
@@ -95,10 +94,7 @@ export default function AnnotationEditor({
   }, []);
 
   return (
-    <Dialog open onClose={onClose}>
-      <DialogTitle onClose={onClose}>
-        <FormattedMessage id={titleId} />
-      </DialogTitle>
+    <StandardDialog open onClose={onClose} titleId={titleId}>
       <DialogContent>
         <div style={{ width: 400, padding: '0 40px' }}>
           <div
@@ -130,6 +126,6 @@ export default function AnnotationEditor({
           <FormattedMessage id="SAVE" />
         </Button>
       </DialogActions>
-    </Dialog>
+    </StandardDialog>
   );
 }

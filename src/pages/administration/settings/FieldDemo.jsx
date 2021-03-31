@@ -1,13 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { FormattedMessage } from 'react-intl';
 import { omit } from 'lodash-es';
 
-import IconButton from '@material-ui/core/IconButton';
-import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import CloseIcon from '@material-ui/icons/Close';
 
+import StandardDialog from '../../../components/StandardDialog';
 import LabeledInput from '../../../components/LabeledInput';
 import Text from '../../../components/Text';
 
@@ -31,17 +27,11 @@ export default function FieldDemo({
     : fieldProps;
 
   return (
-    <Dialog open={open} onClose={onClose}>
-      <DialogTitle onClose={onClose}>
-        <FormattedMessage id="CUSTOM_FIELD_DEMO" />
-        <IconButton
-          style={{ position: 'absolute', top: 8, right: 16 }}
-          aria-label="close"
-          onClick={onClose}
-        >
-          <CloseIcon />
-        </IconButton>
-      </DialogTitle>
+    <StandardDialog
+      open={open}
+      onClose={onClose}
+      titleId="CUSTOM_FIELD_DEMO"
+    >
       <DialogContent style={{ minWidth: 200 }}>
         <Text id="DEMO_FIELD_DESCRIPTION" />
         <div
@@ -60,6 +50,6 @@ export default function FieldDemo({
           )}
         </div>
       </DialogContent>
-    </Dialog>
+    </StandardDialog>
   );
 }

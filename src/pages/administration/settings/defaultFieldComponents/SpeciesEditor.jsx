@@ -2,10 +2,8 @@ import React, { useState } from 'react';
 import { get } from 'lodash-es';
 import { useIntl, FormattedMessage } from 'react-intl';
 
-import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
 import Chip from '@material-ui/core/Chip';
@@ -15,12 +13,12 @@ import AlertTitle from '@material-ui/lab/AlertTitle';
 import SearchIcon from '@material-ui/icons/Search';
 import AddIcon from '@material-ui/icons/AddCircle';
 import CheckIcon from '@material-ui/icons/Check';
-import CloseIcon from '@material-ui/icons/Close';
 import StarIcon from '@material-ui/icons/Star';
 
 import DataDisplay from '../../../../components/dataDisplays/DataDisplay';
 import Button from '../../../../components/Button';
 import Text from '../../../../components/Text';
+import StandardDialog from '../../../../components/StandardDialog';
 import useItisSearch from '../../../../utils/useItisSearch';
 
 export default function SpeciesEditor({
@@ -111,17 +109,7 @@ export default function SpeciesEditor({
   ];
 
   return (
-    <Dialog open onClose={onClose}>
-      <DialogTitle onClose={onClose}>
-        <FormattedMessage id="EDIT_SPECIES" />
-        <IconButton
-          style={{ position: 'absolute', top: 8, right: 16 }}
-          aria-label="close"
-          onClick={onClose}
-        >
-          <CloseIcon />
-        </IconButton>
-      </DialogTitle>
+    <StandardDialog open onClose={onClose} titleId="EDIT_SPECIES">
       <DialogContent style={{ minWidth: 200 }}>
         <div style={{ marginBottom: 24 }}>
           {currentSpecies.map(s => (
@@ -199,6 +187,6 @@ export default function SpeciesEditor({
           <FormattedMessage id="FINISH" />
         </Button>
       </DialogActions>
-    </Dialog>
+    </StandardDialog>
   );
 }

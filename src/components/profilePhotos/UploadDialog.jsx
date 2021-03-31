@@ -12,10 +12,7 @@ import Button from '../Button';
 import StandardDialog from '../StandardDialog';
 import ProfileUploader from '../ProfileUploader';
 
-export default function UploadDialog({
-  open,
-  onClose,
-}) {
+export default function UploadDialog({ open, onClose }) {
   const [profileAsset, setProfileAsset] = useState(null);
 
   const {

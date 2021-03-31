@@ -34,8 +34,10 @@ export default function CropDialog({
   } = usePatchUser('5d9ac656-426b-40bf-a7a1-99ffe52f8786');
 
   async function cropProfilePhoto() {
-    const transformX = x => (x * imageData.naturalWidth / imageData.loadedWidth);
-    const transformY = y => (y * imageData.naturalHeight / imageData.loadedHeight);
+    const transformX = x =>
+      (x * imageData.naturalWidth) / imageData.loadedWidth;
+    const transformY = y =>
+      (y * imageData.naturalHeight) / imageData.loadedHeight;
 
     const successful = await replaceUserProperty(
       '/profile_fileupload_guid',
@@ -86,9 +88,7 @@ export default function CropDialog({
           </Alert>
         )}
       </DialogContent>
-      <DialogActions
-        style={{ padding: '0px 24px 24px 24px' }}
-      >
+      <DialogActions style={{ padding: '0px 24px 24px 24px' }}>
         <Button
           display="primary"
           onClick={cropProfilePhoto}
