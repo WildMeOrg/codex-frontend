@@ -5,7 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import Popover from '@material-ui/core/Popover';
 import MoreIcon from '@material-ui/icons/MoreVert';
-import BigAvatar from './BigAvatar';
+import BigAvatar from './profilePhotos/BigAvatar';
 import Link from './Link';
 import Text from './Text';
 import InlineButton from './InlineButton';

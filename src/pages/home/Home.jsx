@@ -1,7 +1,9 @@
 import React from 'react';
+import { get } from 'lodash-es';
 import { useIntl } from 'react-intl';
 import { useSelector } from 'react-redux';
 import { selectUsers } from '../../modules/users/selectors';
+import useGetMe from '../../models/users/useGetMe';
 import UserProfile from '../../components/UserProfile';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import Actions from './Actions';
@@ -12,8 +14,20 @@ export default function Home() {
 
   useDocumentTitle(intl.formatMessage({ id: 'HOME' }));
 
+  const { data, loading, refresh } = useGetMe();
+
+  const imageSrc = get(data, ['profile_fileupload', 'src']);
+  const imageGuid = get(data, ['profile_fileupload', 'guid']);
+
   return (
-    <UserProfile userData={users.bob} noCollaborate>
+    <UserProfile
+      userData={users.bob}
+      imageSrc={imageSrc}
+      imageGuid={imageGuid}
+      userDataLoading={loading}
+      refreshUserData={refresh}
+      noCollaborate
+    >
       <Actions />
     </UserProfile>
   );

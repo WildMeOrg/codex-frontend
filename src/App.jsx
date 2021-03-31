@@ -49,6 +49,9 @@ function reducer(state, action) {
   if (type === 'SET_SITE_SETTINGS_NEEDS_FETCH') {
     return { ...state, siteSettingsNeedsFetch: data };
   }
+  if (type === 'SET_SITE_SETTINGS_SCHEMA_NEEDS_FETCH') {
+    return { ...state, siteSettingsSchemaNeedsFetch: data };
+  }
   if (type === 'SET_SITE_SETTINGS_SCHEMA') {
     return { ...state, siteSettingsSchema: data };
   }
