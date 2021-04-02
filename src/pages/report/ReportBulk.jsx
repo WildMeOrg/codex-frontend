@@ -72,7 +72,7 @@ export default function ReportBasic({ authenticated }) {
                 <FormattedMessage id="PHOTO_OPTIMIZE_1" />
                 <Link
                   external
-                  href="http://wiki.wildbook.org/en/researchers/photography"
+                  href="https://docs.wildme.org/docs/researchers/photography_guidelines"
                 >
                   <FormattedMessage id="PHOTO_OPTIMIZE_2" />
                 </Link>

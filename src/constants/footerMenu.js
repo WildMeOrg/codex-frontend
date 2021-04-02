@@ -37,17 +37,17 @@ const accountAuthenticated = [
 const resources = [
   {
     id: 'DOCUMENTATION',
-    href: 'http://wiki.wildbook.org/',
+    href: 'https://docs.wildme.org/',
     external: true,
   },
   {
     id: 'COMMUNITY_FORUMS',
-    href: 'https://community.wildbook.org/',
+    href: 'https://community.wildme.org/',
     external: true,
   },
   {
     id: 'LEGAL',
-    href: 'http://wiki.wildbook.org/en/legal',
+    href: 'https://www.wildme.org/#/legal',
     external: true,
   },
 ];
@@ -65,7 +65,7 @@ const contribute = [
   },
   {
     id: 'DONATE',
-    href: 'https://www.wildme.org/donate/',
+    href: 'https://wildme.org/#/donate',
     external: true,
   },
 ];
