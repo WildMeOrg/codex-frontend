@@ -35,6 +35,7 @@ const inputMap = {
   [fieldTypes.relationships]: RelationshipsInput,
   [fieldTypes.string]: TextInput,
   [fieldTypes.longstring]: TextInput,
+  [fieldTypes.password]: TextInput,
   [fieldTypes.integer]: TextInput,
   [fieldTypes.float]: TextInput,
   [fieldTypes.categorylist]: CategoryListInput,

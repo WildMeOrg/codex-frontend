@@ -11,7 +11,6 @@ import { selectUsers } from '../../modules/users/selectors';
 import { selectSiteName } from '../../modules/site/selectors';
 import { selectIsAdministrator } from '../../modules/app/selectors';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
-import CreateUser from './CreateUser';
 
 export default function Users() {
   const intl = useIntl();
@@ -25,7 +24,6 @@ export default function Users() {
   const users = useSelector(selectUsers);
   const isAdministrator = useSelector(selectIsAdministrator);
 
-  const [creatingUser, setCreatingUser] = useState(false);
   const [userToDelete, setUserToDelete] = useState(null);
   const deleteUsername = get(userToDelete, 'name', 'Unknown user');
 
@@ -54,18 +52,11 @@ export default function Users() {
         open={Boolean(userToDelete)}
         entityToDelete={deleteUsername}
       />
-      <CreateUser
-        open={creatingUser}
-        onCreateUser={newUser => {
-          console.log(newUser);
-        }}
-        onClose={() => setCreatingUser(false)}
-      />
       <Header
         title={pageTitle}
-        showButton={isAdministrator}
+        showButtonLink={isAdministrator}
+        buttonLinkHref="/create/user"
         buttonText={intl.formatMessage({ id: 'CREATE_USER' })}
-        onButtonClick={() => setCreatingUser(true)}
       />
       <AvatarGallery
         entities={fakeUsers}

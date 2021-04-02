@@ -17,6 +17,7 @@ export const defaultIndividualFields = [
     labelId: 'SEX',
     category: categoryIds.individualprofile,
     fieldType: fieldTypes.select,
+    requiredForIndividualCreation: true,
     choices: [
       {
         value: 'male',
@@ -43,6 +44,7 @@ export const defaultIndividualFields = [
     descriptionId: 'STATUS_SIGHTING_DESCRIPTION',
     category: categoryIds.individualprofile,
     fieldType: fieldTypes.select,
+    requiredForIndividualCreation: true,
     choices: [
       {
         value: 'alive',
@@ -63,6 +65,7 @@ export const defaultIndividualFields = [
     name: 'individual',
     labelId: 'AUTO_MATCH',
     descriptionId: 'AUTO_MATCH_DESCRIPTION',
+    requiredForIndividualCreation: false,
     category: categoryIds.individualprofile,
     fieldType: fieldTypes.individual,
     defaultValue: null,

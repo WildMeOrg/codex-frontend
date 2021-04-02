@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import Grid from '@material-ui/core/Grid';
 import CreatePage from '../../components/CreatePage';
 import InputRow from '../../components/InputRow';
-import userSchema from '../../constants/userSchema';
+import { defaultIndividualFields } from '../../constants/individualSchema';
 
-const schemas = userSchema.filter(
-  field => field.requiredForUserCreation,
+const createFields = defaultIndividualFields.filter(
+  f => f.requiredForIndividualCreation,
 );
 
-export default function CreateUser() {
-  const initialState = schemas.reduce((memo, field) => {
+export default function CreateIndividual() {
+  const initialState = createFields.reduce((memo, field) => {
     memo[field.name] = field.defaultValue;
     return memo;
   }, {});
@@ -18,7 +18,7 @@ export default function CreateUser() {
 
   return (
     <CreatePage
-      ctaId="CREATE_USER"
+      ctaId="CREATE_INDIVIDUAL"
       onCreate={() => console.log(formState)}
     >
       <Grid
@@ -28,7 +28,7 @@ export default function CreateUser() {
         component="form"
         direction="column"
       >
-        {schemas.map(field => (
+        {createFields.map(field => (
           <Grid item key={field.label || field.labelId}>
             <InputRow
               label={field.label}
