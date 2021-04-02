@@ -5,6 +5,7 @@ import Fade from '@material-ui/core/Fade';
 import { TransitionGroup } from 'react-transition-group';
 import AuthenticatedAppHeader from './components/AuthenticatedAppHeader';
 import Individual from './pages/individual/Individual';
+import CreateIndividual from './pages/individual/CreateIndividual';
 import PictureBook from './pages/individual/PictureBook';
 import Sighting from './pages/sighting/Sighting';
 import Org from './pages/org/Org';
@@ -81,6 +82,9 @@ export default function AuthenticatedSwitch() {
                       </Route>
                       <Route path="/individuals">
                         <SearchIndividuals />
+                      </Route>
+                      <Route path="/create/individual">
+                        <CreateIndividual />
                       </Route>
                       <Route path="/match/:id">
                         <MatchReview />

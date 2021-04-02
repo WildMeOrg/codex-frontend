@@ -550,6 +550,7 @@
   "WELCOME": "Welcome",
   "SIGHTING_STATUS": "Sighting status",
   "CREATE_USER": "Create user",
+  "CREATE_INDIVIDUAL": "Create individual",
   "CREATE_ORG": "Create organization",
   "COLLABORATION_MODE": "Collaboration mode",
   "CONTROL_MEMBER_SETTINGS": "Control member settings",
