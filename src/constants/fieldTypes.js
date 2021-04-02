@@ -2,6 +2,7 @@
 const fieldTypes = {
   string: 'string',
   longstring: 'longstring',
+  password: 'password',
   float: 'float',
   feetmeters: 'feetmeters', // float represents meters, but GUI supports feet
   individual: 'individual', // string (individual ID)

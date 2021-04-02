@@ -146,6 +146,7 @@ function EntityButton({
   noAvatar,
   exploreHref,
   exploreButtonId,
+  createHref,
 }) {
   const intl = useIntl();
   const theme = useTheme();
@@ -208,9 +209,11 @@ function EntityButton({
           <Text style={{ marginBottom: 4, fontWeight: 'bold' }}>
             {title}
           </Text>
-          <IconButton onClick={handleClose} size="small">
-            <AddIcon />
-          </IconButton>
+          <Link href={createHref}>
+            <IconButton onClick={handleClose} size="small">
+              <AddIcon />
+            </IconButton>
+          </Link>
         </div>
         <FilterBar
           value=""
@@ -268,6 +271,7 @@ export default function PopoverButtons() {
         titleId="INDIVIDUALS"
         exploreButtonId="EXPLORE_INDIVIDUALS"
         exploreHref="/individuals"
+        createHref="/create/individual"
         Icon={IndividualIcon}
         value="individuals"
         entities={fakeIndividuals}
@@ -276,6 +280,7 @@ export default function PopoverButtons() {
         titleId="SIGHTINGS"
         exploreButtonId="EXPLORE_SIGHTINGS"
         exploreHref="/sightings"
+        createHref="/report"
         Icon={SightingsIcon}
         value="sightings"
         entities={fakeSightings}

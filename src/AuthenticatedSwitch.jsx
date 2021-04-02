@@ -9,10 +9,12 @@ import PictureBook from './pages/individual/PictureBook';
 import Sighting from './pages/sighting/Sighting';
 import Org from './pages/org/Org';
 import Orgs from './pages/org/Orgs';
+import CreateOrg from './pages/org/CreateOrg';
 // import Project from './pages/projects/Project';
 // import Projects from './pages/projects/Projects';
 import User from './pages/user/User';
 import Users from './pages/user/Users';
+import CreateUser from './pages/user/CreateUser';
 import ReportBasic from './pages/report/ReportBasic';
 import ReportBulk from './pages/report/ReportBulk';
 import ReportSplash from './pages/report/ReportSplash';
@@ -94,6 +96,12 @@ export default function AuthenticatedSwitch() {
                       </Route>
                       <Route path="/users">
                         <Users />
+                      </Route>
+                      <Route path="/create/user">
+                        <CreateUser />
+                      </Route>
+                      <Route path="/create/org">
+                        <CreateOrg />
                       </Route>
                       <Route path="/orgs/:id">
                         <Org />

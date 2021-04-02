@@ -11,7 +11,6 @@ import { selectOrgs } from '../../modules/orgs/selectors';
 import { selectSiteName } from '../../modules/site/selectors';
 import { selectIsAdministrator } from '../../modules/app/selectors';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
-import CreateOrg from './CreateOrg';
 
 export default function User() {
   const intl = useIntl();
@@ -25,7 +24,6 @@ export default function User() {
   const orgs = useSelector(selectOrgs);
   const isAdministrator = useSelector(selectIsAdministrator);
 
-  const [creatingOrg, setCreatingOrg] = useState(false);
   const [orgToDelete, setOrgToDelete] = useState(null);
   const deleteOrganizationName = get(
     orgToDelete,
@@ -58,18 +56,11 @@ export default function User() {
         open={Boolean(orgToDelete)}
         entityToDelete={deleteOrganizationName}
       />
-      <CreateOrg
-        open={creatingOrg}
-        onCreateUser={newUser => {
-          console.log(newUser);
-        }}
-        onClose={() => setCreatingOrg(false)}
-      />
       <Header
         title={pageTitle}
-        showButton={isAdministrator}
+        showButtonLink={isAdministrator}
         buttonText={intl.formatMessage({ id: 'CREATE_ORG' })}
-        onButtonClick={() => setCreatingOrg(true)}
+        buttonLinkHref="/create/org"
       />
       <AvatarGallery
         square
