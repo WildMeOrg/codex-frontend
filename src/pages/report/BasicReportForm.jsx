@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { get } from 'lodash-es';
+import { useHistory } from 'react-router-dom';
 
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -35,6 +36,7 @@ export default function StandardReport({
   variant,
 }) {
   const intl = useIntl();
+  const history = useHistory();
   const siteSettings = useSiteSettings();
   const { loading, error: putError, putSighting } = usePutSighting();
 
@@ -205,7 +207,7 @@ export default function StandardReport({
         }}
       >
         <Button
-          onClick={() => {
+          onClick={async () => {
             // check that required fields are complete
             const nextIncompleteFields = sightingSchema.filter(
               field =>
@@ -228,7 +230,10 @@ export default function StandardReport({
                       sightingFormValues,
                       customSightingFormValues,
                     );
-              putSighting(report);
+              const newSightingId = await putSighting(report);
+              if (newSightingId) {
+                history.push(`/sightings/${newSightingId}`);
+              }
             }
           }}
           style={{ width: 200 }}
