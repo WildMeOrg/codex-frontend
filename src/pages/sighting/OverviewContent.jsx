@@ -19,7 +19,9 @@ export default function OverviewContent({ sightingData }) {
     [get(sightingData, 'version')],
   );
 
-  console.log(mergedFields)
+  console.log(mergedFields);
+
+  console.log(sightingData);
 
   return (
     <CardContainer>
@@ -29,7 +31,11 @@ export default function OverviewContent({ sightingData }) {
         onSubmit={() => setEditing(false)}
         error={null}
       />
-      <MetadataCard editable metadata={mergedFields} onEdit={() => setEditing(true)} />
+      <MetadataCard
+        editable
+        metadata={mergedFields}
+        onEdit={() => setEditing(true)}
+      />
     </CardContainer>
   );
 }

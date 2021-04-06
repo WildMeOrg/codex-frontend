@@ -3,6 +3,7 @@ import { get } from 'lodash-es';
 
 import DateRenderer from '../../../components/renderers/DateRenderer';
 import GpsRenderer from '../../../components/renderers/GpsRenderer';
+import LocationIdRenderer from '../../../components/renderers/LocationIdRenderer';
 // import TaxonomyRenderer from '../../../components/renderers/TaxonomyRenderer';
 
 import DateInput from '../../../components/inputs/DateInput';
@@ -11,6 +12,12 @@ import TextInput from '../../../components/inputs/TextInput';
 import LocationIdInput from '../../../components/inputs/LocationIdInput';
 
 const metadataDefinitions = [
+  {
+    id: 'context',
+    titleId: 'SIGHTING_CONTEXT',
+    getData: data => get(data, 'context'),
+    editable: true,
+  },
   {
     id: 'startTime',
     titleId: 'SIGHTING_START',
@@ -59,16 +66,18 @@ const metadataDefinitions = [
     id: 'locationId',
     titleId: 'REGION',
     getData: data => get(data, 'locationId'),
+    renderValue: value => <LocationIdRenderer value={value} />,
     editor: LocationIdInput,
     editable: true,
   },
   {
     id: 'gps',
     titleId: 'EXACT_LOCATION',
-    getData: data => [
-      get(data, 'decimalLatitude'),
-      get(data, 'decimalLongitude'),
-    ],
+    getData: data => {
+      const lat = get(data, 'decimalLatitude');
+      const long = get(data, 'decimalLongitude');
+      return lat && long ? [lat, long] : null;
+    },
     renderValue: value => <GpsRenderer value={value} />,
     editor: LatLongInput,
     editable: true,

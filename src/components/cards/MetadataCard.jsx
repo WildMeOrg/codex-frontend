@@ -21,7 +21,11 @@ export default function MetadataCard({
       titleId={titleId}
       renderActions={
         editable ? (
-          <IconButton onClick={onEdit} size="small" aria-label="Edit metadata">
+          <IconButton
+            onClick={onEdit}
+            size="small"
+            aria-label="Edit metadata"
+          >
             <EditIcon />
           </IconButton>
         ) : (
@@ -32,12 +36,13 @@ export default function MetadataCard({
       <List dense>
         {metadata.map(datum => {
           const value = datum.value || datum.defaultValue;
+          if (!value) return null;
           return (
             <ListItem key={datum.id}>
               {datum.icon && (
-              <ListItemIcon style={{ minWidth: 36 }}>
-                <datum.icon />
-              </ListItemIcon>
+                <ListItemIcon style={{ minWidth: 36 }}>
+                  <datum.icon />
+                </ListItemIcon>
               )}
               <ListItemText
                 primary={
@@ -48,11 +53,13 @@ export default function MetadataCard({
                   />
                 }
                 secondary={
-                  <Text component="span" variant="body2">
-                    {datum.renderValue
-                      ? datum.renderValue(value)
-                      : value}
-                  </Text>
+                  datum.renderValue ? (
+                    datum.renderValue(value)
+                  ) : (
+                    <Text component="span" variant="body2">
+                      {value}
+                    </Text>
+                  )
                 }
               />
             </ListItem>

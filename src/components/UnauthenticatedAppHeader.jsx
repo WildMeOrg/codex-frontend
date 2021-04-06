@@ -64,9 +64,9 @@ export default function UnauthenticatedAppHeader({
       }}
     >
       <BannerLogo
-        href={siteNameScrolls ? '/' : 'unset'}
+        href={siteNameScrolls ? undefined : '/'}
         onClick={
-          siteNameScrolls ? () => window.scrollTo(0, 0) : 'unset'
+          siteNameScrolls ? () => window.scrollTo(0, 0) : undefined
         }
       />
       <div style={{ display: 'flex' }}>
