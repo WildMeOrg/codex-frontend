@@ -4,6 +4,7 @@ import { useTheme } from '@material-ui/core/styles';
 import InlineButton from '../../components/InlineButton';
 import Text from '../../components/Text';
 import Step1 from './svg/Step1';
+import Step2 from './svg/Step2';
 import Step3 from './svg/Step3';
 import Step4 from './svg/Step4';
 
@@ -16,7 +17,7 @@ const stepMap = {
   2: {
     title: 'HOW_IT_WORKS_STEP_2_TITLE',
     description: 'HOW_IT_WORKS_STEP_2_DESCRIPTION',
-    component: Step1,
+    component: Step2,
   },
   3: {
     title: 'HOW_IT_WORKS_STEP_3_TITLE',
@@ -80,7 +81,12 @@ export default function HowItWorks() {
         style={{ height: 'auto', width: 300 }}
       />
       <Text
-        style={{ color: theme.palette.common.white, maxWidth: 320 }}
+        style={{
+          color: theme.palette.common.white,
+          maxWidth: 400,
+          marginTop: 12,
+          minHeight: 80,
+        }}
         id={stepMap[step].description}
       />
       <div style={{ marginTop: 20 }}>

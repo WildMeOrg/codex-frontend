@@ -31,7 +31,7 @@ function getInitialFormValues(schema, fieldKey) {
 }
 
 export default function StandardReport({
-  // assetReferences,
+  assetReferences,
   // exifData,
   variant,
 }) {
@@ -45,6 +45,8 @@ export default function StandardReport({
     ['data', 'site.name', 'value'],
     '<site-name>',
   );
+
+  console.log(assetReferences);
 
   const {
     schema: customEncounterSchema,
@@ -223,12 +225,14 @@ export default function StandardReport({
                   ? prepareReport(
                       sightingFormValues,
                       customSightingFormValues,
+                      assetReferences,
                       encounterFormValues,
                       customEncounterFormValues,
                     )
                   : prepareReport(
                       sightingFormValues,
                       customSightingFormValues,
+                      assetReferences,
                     );
               const newSightingId = await putSighting(report);
               if (newSightingId) {

@@ -56,6 +56,9 @@ export default function UploadManager({
         path: o.name,
         transactionId: assetSubmissionId,
       }));
+      // todo: files not getting updated because it's inside of useeffect
+      // console.log(files, assetReferences);
+      // console.log([...files, ...assetReferences]);
       setFiles([...files, ...assetReferences]);
     });
 

@@ -3,6 +3,7 @@ import { get } from 'lodash-es';
 
 import CardContainer from '../../components/cards/CardContainer';
 import MetadataCard from '../../components/cards/MetadataCard';
+import GpsCard from '../../components/cards/GpsCard';
 import MetadataDefinitions from './constants/MetadataDefinitions';
 import EditSightingMetadata from './EditSightingMetadata';
 
@@ -21,9 +22,8 @@ export default function OverviewContent({ sightingData }) {
 
   const editableFields = mergedFields.filter(f => f.editable);
 
-  console.log(mergedFields);
-
-  console.log(sightingData);
+  const gpsField = mergedFields.find(field => field.id === 'gps');
+  const gps = gpsField && get(gpsField, 'value');
 
   return (
     <CardContainer>
@@ -39,6 +39,7 @@ export default function OverviewContent({ sightingData }) {
         metadata={mergedFields}
         onEdit={() => setEditing(true)}
       />
+      {gps && <GpsCard lat={gps[0]} lng={gps[1]} />}
     </CardContainer>
   );
 }
