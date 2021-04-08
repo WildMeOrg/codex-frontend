@@ -19,6 +19,8 @@ export default function OverviewContent({ sightingData }) {
     [get(sightingData, 'version')],
   );
 
+  const editableFields = mergedFields.filter(f => f.editable);
+
   console.log(mergedFields);
 
   console.log(sightingData);
@@ -29,6 +31,7 @@ export default function OverviewContent({ sightingData }) {
         open={editing}
         onClose={() => setEditing(false)}
         onSubmit={() => setEditing(false)}
+        metadata={editableFields}
         error={null}
       />
       <MetadataCard

@@ -232,7 +232,7 @@ export default function StandardReport({
                     );
               const newSightingId = await putSighting(report);
               if (newSightingId) {
-                history.push(`/sightings/${newSightingId}`);
+                history.push(`/report/success/${newSightingId}`);
               }
             }
           }}

@@ -30,8 +30,6 @@ export default function Sighting() {
   const { id } = useParams();
   const { data, loading, error } = useSighting(id);
 
-
-
   // fetch data for Id...
   const sightings = useSelector(selectSightings);
   useDocumentTitle(`Sighting ${id}`);

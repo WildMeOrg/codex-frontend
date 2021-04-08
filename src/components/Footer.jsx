@@ -69,7 +69,7 @@ export default function Footer({ authenticated = false }) {
         <ButtonLink
           href="https://community.wildbook.org/"
           external
-          display="marketing"
+          display="primary"
         >
           <FormattedMessage id="COMMUNITY_FORUMS" />
         </ButtonLink>

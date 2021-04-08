@@ -18,6 +18,7 @@ import Users from './pages/user/Users';
 import CreateUser from './pages/user/CreateUser';
 import ReportBasic from './pages/report/ReportBasic';
 import ReportBulk from './pages/report/ReportBulk';
+import ReportSuccess from './pages/report/Success';
 import ReportSplash from './pages/report/ReportSplash';
 import FourOhFour from './pages/fourohfour/FourOhFour';
 import useSiteSettings from './models/site/useSiteSettings';
@@ -130,6 +131,9 @@ export default function AuthenticatedSwitch() {
                           authenticated
                           variant="several"
                         />
+                      </Route>
+                      <Route path="/report/success/:id">
+                        <ReportSuccess authenticated />
                       </Route>
                       <Route path="/report">
                         <ReportSplash authenticated />
