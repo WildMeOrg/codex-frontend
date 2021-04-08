@@ -11,7 +11,9 @@ import Text from '../../components/Text';
 export default function ReportSuccess({ authenticated }) {
   const { id } = useParams();
   const intl = useIntl();
-  useDocumentTitle(intl.formatMessage({ id: 'REPORT_SUCCESS_TITLE' }));
+  useDocumentTitle(
+    intl.formatMessage({ id: 'REPORT_SUCCESS_TITLE' }),
+  );
 
   return (
     <MainColumn

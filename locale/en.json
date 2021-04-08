@@ -544,7 +544,7 @@
   "PHOTO_OPTIMIZE_2": "optimize your photos",
   "PHOTO_OPTIMIZE_3": " for identification.",
   "HOW_IT_WORKS_STEP_1_TITLE": "Phase 1: Data Collection",
-  "HOW_IT_WORKS_STEP_1_DESCRIPTION": "Researchers and citizen scientists obvserve wildlife, collecting photos and other data.",
+  "HOW_IT_WORKS_STEP_1_DESCRIPTION": "Researchers and citizen scientists observe wildlife, collecting photos and other data.",
   "HOW_IT_WORKS_STEP_2_TITLE": "Phase 2: Detection",
   "HOW_IT_WORKS_STEP_2_DESCRIPTION": "Codex uses computer vision algorithm to identify individuals. We call each animal-photo pair an annotation.",
   "HOW_IT_WORKS_STEP_3_TITLE": "Phase 3: Identification",
