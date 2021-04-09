@@ -3,28 +3,31 @@ import { FormattedMessage } from 'react-intl';
 import { useTheme } from '@material-ui/core/styles';
 import InlineButton from '../../components/InlineButton';
 import Text from '../../components/Text';
-import graphic from '../../assets/howitworks.png';
+import Step1 from './svg/Step1';
+import Step2 from './svg/Step2';
+import Step3 from './svg/Step3';
+import Step4 from './svg/Step4';
 
 const stepMap = {
   1: {
     title: 'HOW_IT_WORKS_STEP_1_TITLE',
     description: 'HOW_IT_WORKS_STEP_1_DESCRIPTION',
-    image: graphic,
+    component: Step1,
   },
   2: {
     title: 'HOW_IT_WORKS_STEP_2_TITLE',
     description: 'HOW_IT_WORKS_STEP_2_DESCRIPTION',
-    image: graphic,
+    component: Step2,
   },
   3: {
     title: 'HOW_IT_WORKS_STEP_3_TITLE',
     description: 'HOW_IT_WORKS_STEP_3_DESCRIPTION',
-    image: graphic,
+    component: Step3,
   },
   4: {
     title: 'HOW_IT_WORKS_STEP_4_TITLE',
     description: 'HOW_IT_WORKS_STEP_4_DESCRIPTION',
-    image: graphic,
+    component: Step4,
   },
 };
 
@@ -47,6 +50,8 @@ function StepButton({ translationId, step, setStep, active }) {
 export default function HowItWorks() {
   const theme = useTheme();
   const [step, setStep] = useState('1');
+
+  const CurrentGraphic = stepMap[step].component;
 
   return (
     <div
@@ -71,13 +76,17 @@ export default function HowItWorks() {
         id="HOW_IT_WORKS"
       />
       <Text variant="subtitle1" id={stepMap[step].title} />
-      <img
-        src={stepMap[step].image}
-        alt="How it works"
+      <CurrentGraphic
+        color={theme.palette.primary.main}
         style={{ height: 'auto', width: 300 }}
       />
       <Text
-        style={{ color: theme.palette.common.white, maxWidth: 320 }}
+        style={{
+          color: theme.palette.common.white,
+          maxWidth: 400,
+          marginTop: 12,
+          minHeight: 80,
+        }}
         id={stepMap[step].description}
       />
       <div style={{ marginTop: 20 }}>

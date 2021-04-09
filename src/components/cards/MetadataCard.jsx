@@ -13,6 +13,7 @@ export default function MetadataCard({
   titleId = 'METADATA',
   metadata,
   editable = false,
+  onEdit,
 }) {
   return (
     <Card
@@ -20,7 +21,11 @@ export default function MetadataCard({
       titleId={titleId}
       renderActions={
         editable ? (
-          <IconButton size="small" aria-label="Edit metadata">
+          <IconButton
+            onClick={onEdit}
+            size="small"
+            aria-label="Edit metadata"
+          >
             <EditIcon />
           </IconButton>
         ) : (
@@ -29,29 +34,37 @@ export default function MetadataCard({
       }
     >
       <List dense>
-        {metadata.map(datum => (
-          <ListItem key={datum.id}>
-            <ListItemIcon style={{ minWidth: 36 }}>
-              <datum.icon />
-            </ListItemIcon>
-            <ListItemText
-              primary={
-                <Text
-                  component="span"
-                  variant="caption"
-                  id={datum.titleId}
-                />
-              }
-              secondary={
-                <Text component="span" variant="body2">
-                  {datum.renderValue
-                    ? datum.renderValue(datum.value)
-                    : datum.value}
-                </Text>
-              }
-            />
-          </ListItem>
-        ))}
+        {metadata.map(datum => {
+          const value = datum.value || datum.defaultValue;
+          if (!value) return null;
+          return (
+            <ListItem key={datum.id}>
+              {datum.icon && (
+                <ListItemIcon style={{ minWidth: 36 }}>
+                  <datum.icon />
+                </ListItemIcon>
+              )}
+              <ListItemText
+                primary={
+                  <Text
+                    component="span"
+                    variant="caption"
+                    id={datum.titleId}
+                  />
+                }
+                secondary={
+                  datum.renderValue ? (
+                    datum.renderValue(value)
+                  ) : (
+                    <Text component="span" variant="body2">
+                      {value}
+                    </Text>
+                  )
+                }
+              />
+            </ListItem>
+          );
+        })}
       </List>
     </Card>
   );

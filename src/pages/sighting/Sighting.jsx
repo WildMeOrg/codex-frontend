@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
@@ -13,46 +13,28 @@ import Paper from '@material-ui/core/Paper';
 // import SubmitterIcon from '@material-ui/icons/Person';
 import MainColumn from '../../components/MainColumn';
 import Text from '../../components/Text';
-import InputRow from '../../components/InputRow';
 import DividerTitle from '../../components/DividerTitle';
 import LoadingScreen from '../../components/LoadingScreen';
-import ActionIcon from '../../components/ActionIcon';
 import SadScreen from '../../components/SadScreen';
-import DefaultRenderer from '../../components/renderers/DefaultRenderer';
 import { selectSightings } from '../../modules/sightings/selectors';
 import useSighting from '../../models/sighting/useSighting';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import { formatDate } from '../../utils/formatters';
 import Status from './Status';
-import AnnotationsGallery from './AnnotationsGallery';
-import IndividualsGallery from './IndividualsGallery';
-import PhotoGallery from './PhotoGallery';
-import EditSightingMetadata from './EditSightingMetadata';
-import MetadataDefinitions from './constants/MetadataDefinitions';
+// import AnnotationsGallery from './AnnotationsGallery';
+// import IndividualsGallery from './IndividualsGallery';
+// import PhotoGallery from './PhotoGallery';
+import OverviewContent from './OverviewContent';
 
 export default function Sighting() {
   const { id } = useParams();
-  const { data, loading, error } = useSighting(
-    '01c049ce-a936-4c51-bd41-4ba0c39c20ff',
-  );
-
-  const mergedFields = useMemo(
-    () => {
-      if (!data) return null;
-      return MetadataDefinitions.map(metadatum => ({
-        ...metadatum,
-        value: metadatum.getData(data),
-      }));
-    },
-    [get(data, 'version')],
-  );
+  const { data, loading, error } = useSighting(id);
 
   // fetch data for Id...
   const sightings = useSelector(selectSightings);
   useDocumentTitle(`Sighting ${id}`);
-  const [editingProfile, setEditingProfile] = useState(false);
 
-  const activeTab = window.location.hash || '#individuals';
+  const activeTab = window.location.hash || '#overview';
 
   const sighting = sightings.find(e => toLower(e.id) === toLower(id));
   const is404 = false;
@@ -66,7 +48,7 @@ export default function Sighting() {
       />
     );
   if (error) return <SadScreen variant="genericError" />;
-  if (!sighting)
+  if (!data)
     return (
       <SadScreen
         variant="notFoundOcean"
@@ -74,8 +56,9 @@ export default function Sighting() {
       />
     );
 
-  const sightingDisplayDate =
-    get(data, ['startTime']) || get(data, ['endTime']);
+  console.log(data);
+  const sightingDisplayDate = get(data, ['startTime']);
+  // const encounters = get(data, ['encounters'], []);
 
   return (
     <MainColumn>
@@ -88,47 +71,21 @@ export default function Sighting() {
           }}
         >
           <div>
-            <Text variant="h4">
-              {sightingDisplayDate && (
-                <FormattedMessage
-                  id="ENTITY_HEADER_SIGHTING_DATE"
-                  values={{
-                    date: formatDate(sightingDisplayDate, true),
-                  }}
-                />
-              )}
-            </Text>
-            <Text variant="subtitle" style={{ marginTop: 12 }}>
+            <Text
+              variant="h4"
+              id="ENTITY_HEADER_SIGHTING_DATE"
+              values={{
+                date: formatDate(sightingDisplayDate, true),
+              }}
+            />
+            <Text variant="subtitle2" style={{ marginTop: 12 }}>
               Reported by George Masterson
             </Text>
           </div>
-          <ActionIcon
-            onClick={() => setEditingProfile(true)}
-            variant="edit"
-          />
         </div>
         <DividerTitle titleId="STATUS" />
         <Status />
-        <DividerTitle titleId="METADATA" />
-
-        {mergedFields &&
-          mergedFields.map(field => {
-            if (!field.value) return null;
-            const Renderer = field.renderer || DefaultRenderer;
-            return (
-              <InputRow labelId={field.labelId} key={field.id}>
-                <Renderer value={field.value} />
-              </InputRow>
-            );
-          })}
       </Paper>
-      <EditSightingMetadata
-        open={editingProfile}
-        onClose={() => setEditingProfile(false)}
-        onSubmit={() => setEditingProfile(false)}
-        error={null}
-        metadata={mergedFields}
-      />
       <Tabs
         value={activeTab.replace('#', '')}
         onChange={(_, newValue) => {
@@ -136,6 +93,10 @@ export default function Sighting() {
         }}
         style={{ margin: '32px 0 20px' }}
       >
+        <Tab
+          label={<FormattedMessage id="OVERVIEW" />}
+          value="overview"
+        />
         <Tab
           label={<FormattedMessage id="INDIVIDUALS" />}
           value="individuals"
@@ -149,15 +110,18 @@ export default function Sighting() {
           value="photographs"
         />
       </Tabs>
-      {activeTab === '#individuals' && (
-        <IndividualsGallery sighting={sighting} />
+      {activeTab === '#overview' && (
+        <OverviewContent sightingData={data} />
+      )}
+      {/* {activeTab === '#individuals' && (
+        <IndividualsGallery sighting={encounters} />
       )}
       {activeTab === '#annotations' && (
         <AnnotationsGallery sighting={sighting} />
       )}
       {activeTab === '#photographs' && (
         <PhotoGallery sighting={sighting} />
-      )}
+      )} */}
     </MainColumn>
   );
 }

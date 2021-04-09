@@ -13,19 +13,15 @@ export default function useSighting(sightingId) {
       const fetchSightingData = async () => {
         try {
           const response = await axios.request({
-            url: `${__houston_url__}/api/v0/org.ecocean.Occurrence/${sightingId}?detail-org.ecocean.Occurrence=max`,
+            url: `${__houston_url__}/api/v1/sightings/${sightingId}`,
             method: 'get',
           });
 
-          const successful = get(
-            response,
-            ['data', 'success'],
-            false,
-          );
+          const successful = get(response, ['status']) === 200;
           if (!successful) setError(formatError(response));
 
           setLoading(false);
-          setSightingData(get(response, ['data', 'result']));
+          setSightingData(get(response, ['data']));
         } catch (fetchError) {
           console.error(`Error fetching sighting ${sightingId}`);
           console.error(fetchError);

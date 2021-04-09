@@ -18,20 +18,21 @@ export default function usePutSighting() {
         data,
       });
       const successful = get(response, ['data', 'success'], false);
+      const newSightingId = get(response, ['data', 'result', 'id']);
       if (successful) {
         dispatch(setSightingsNeedsFetch(true));
         setSuccess(true);
         setError(null);
-        return true;
+        return newSightingId;
       }
 
       setError(formatError(response));
       setSuccess(false);
-      return false;
+      return null;
     } catch (postError) {
       setError(formatError(postError));
       setSuccess(false);
-      return false;
+      return null;
     }
   };
 

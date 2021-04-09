@@ -1,6 +1,4 @@
 import React from 'react';
-import { useTheme } from '@material-ui/core/styles';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 export default function({
   children,
@@ -8,9 +6,7 @@ export default function({
   fullWidth = false,
   ...rest
 }) {
-  const theme = useTheme();
-  const isSm = useMediaQuery(theme.breakpoints.down('sm'));
-  const marginTop = isSm ? 56 : 72;
+  const marginTop = 64;
 
   return (
     <div

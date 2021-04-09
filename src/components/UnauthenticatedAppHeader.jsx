@@ -60,13 +60,13 @@ export default function UnauthenticatedAppHeader({
         transition:
           'background-color .5s cubic-bezier(.165,.84,.44,1)',
         willChange: topTransparency ? 'background-color' : 'unset',
-        padding: 40,
+        padding: '0 40px',
       }}
     >
       <BannerLogo
-        href={siteNameScrolls ? '/' : 'unset'}
+        href={siteNameScrolls ? undefined : '/'}
         onClick={
-          siteNameScrolls ? () => window.scrollTo(0, 0) : 'unset'
+          siteNameScrolls ? () => window.scrollTo(0, 0) : undefined
         }
       />
       <div style={{ display: 'flex' }}>

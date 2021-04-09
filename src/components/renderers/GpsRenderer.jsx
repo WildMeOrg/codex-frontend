@@ -3,9 +3,13 @@ import Text from '../Text';
 
 export default function GpsRenderer({ value }) {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column' }}>
-      <Text>{value[0]}</Text>
-      <Text>{value[1]}</Text>
-    </div>
+    <span style={{ display: 'flex', flexDirection: 'column' }}>
+      <Text component="span" variant="body2">{`Decimal latitude: ${
+        value[0]
+      }`}</Text>
+      <Text component="span" variant="body2">{`Decimal longitude: ${
+        value[1]
+      }`}</Text>
+    </span>
   );
 }

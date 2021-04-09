@@ -33,7 +33,7 @@ export default function EditSightingMetadata({
             if (!field.editor) {
               const Renderer = field.renderer || DefaultRenderer;
               return (
-                <InputRow labelId={field.labelId} key={field.id}>
+                <InputRow labelId={field.titleId} key={field.id}>
                   <Renderer value={field.value} />
                 </InputRow>
               );

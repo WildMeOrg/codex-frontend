@@ -1,6 +1,7 @@
 export default function prepareReport(
   sightingData,
   customSightingData,
+  assetReferences,
   encounterData,
   customEncounterData,
 ) {
@@ -13,6 +14,7 @@ export default function prepareReport(
     locationId: sightingData.locationId,
     verbatimLocality: sightingData.verbatimLocality,
     customFields: customEncounterData,
+    assetReferences,
   };
 
   if (!sightingData.endTime) encounter.time = sightingData.startTime;

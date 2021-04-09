@@ -40,7 +40,7 @@ export default function LatLongInput({
           onChange={newLat => {
             onChange([parseFloat(newLat), currentLongitude]);
           }}
-          schema={{ labelId: 'LATITUDE', fieldType: 'float' }}
+          schema={{ labelId: 'DECIMAL_LATITUDE', fieldType: 'float' }}
         />
         <TextInput
           width={width}
@@ -48,7 +48,10 @@ export default function LatLongInput({
           onChange={newLng => {
             onChange([currentLatitude, parseFloat(newLng)]);
           }}
-          schema={{ labelId: 'LONGITUDE', fieldType: 'float' }}
+          schema={{
+            labelId: 'DECIMAL_LONGITUDE',
+            fieldType: 'float',
+          }}
         />
       </div>
       <Button

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { get } from 'lodash-es';
+import { useHistory } from 'react-router-dom';
 
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -30,11 +31,12 @@ function getInitialFormValues(schema, fieldKey) {
 }
 
 export default function StandardReport({
-  // assetReferences,
+  assetReferences,
   // exifData,
   variant,
 }) {
   const intl = useIntl();
+  const history = useHistory();
   const siteSettings = useSiteSettings();
   const { loading, error: putError, putSighting } = usePutSighting();
 
@@ -43,6 +45,8 @@ export default function StandardReport({
     ['data', 'site.name', 'value'],
     '<site-name>',
   );
+
+  console.log(assetReferences);
 
   const {
     schema: customEncounterSchema,
@@ -205,7 +209,7 @@ export default function StandardReport({
         }}
       >
         <Button
-          onClick={() => {
+          onClick={async () => {
             // check that required fields are complete
             const nextIncompleteFields = sightingSchema.filter(
               field =>
@@ -221,14 +225,19 @@ export default function StandardReport({
                   ? prepareReport(
                       sightingFormValues,
                       customSightingFormValues,
+                      assetReferences,
                       encounterFormValues,
                       customEncounterFormValues,
                     )
                   : prepareReport(
                       sightingFormValues,
                       customSightingFormValues,
+                      assetReferences,
                     );
-              putSighting(report);
+              const newSightingId = await putSighting(report);
+              if (newSightingId) {
+                history.push(`/report/success/${newSightingId}`);
+              }
             }
           }}
           style={{ width: 200 }}
