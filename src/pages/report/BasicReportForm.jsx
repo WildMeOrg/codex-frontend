@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { get } from 'lodash-es';
 import { useHistory } from 'react-router-dom';
+import { addHours, isWithinInterval, isAfter } from 'date-fns';
 
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -14,6 +15,7 @@ import useSiteSettings from '../../models/site/useSiteSettings';
 import usePutSighting from '../../models/sighting/usePutSighting';
 // import { getLocationSuggestion } from '../../utils/exif';
 import Button from '../../components/Button';
+import Text from '../../components/Text';
 import InlineButton from '../../components/InlineButton';
 import FieldCollections from './FieldCollections';
 import TermsAndConditionsDialog from './TermsAndConditionsDialog';
@@ -71,6 +73,9 @@ export default function StandardReport({
   const [dialogOpen, setDialogOpen] = useState(false);
   const [incompleteFields, setIncompleteFields] = useState([]);
   const [termsError, setTermsError] = useState(false);
+  const [dateOrderError, setDateOrderError] = useState(false);
+  const [dateDurationError, setDateDurationError] = useState(false);
+  const [locationFieldError, setLocationFieldError] = useState(false);
 
   const [sightingFormValues, setSightingFormValues] = useState(
     getInitialFormValues(sightingSchema, 'name'),
@@ -92,8 +97,15 @@ export default function StandardReport({
   //   [exifData],
   // );
 
+  console.log(sightingFormValues);
+
   const showErrorAlertBox =
-    incompleteFields.length > 0 || termsError || putError;
+    incompleteFields.length > 0 ||
+    termsError ||
+    putError ||
+    locationFieldError ||
+    dateDurationError ||
+    dateOrderError;
 
   return (
     <>
@@ -142,7 +154,7 @@ export default function StandardReport({
             />
           }
           label={
-            <FormattedMessage
+            <Text
               id="ONE_SIGHTING_EMAIL_CONSENT"
               values={{ siteName }}
             />
@@ -159,11 +171,11 @@ export default function StandardReport({
           }
           label={
             <span>
-              <FormattedMessage id="TERMS_CHECKBOX_1" />
+              <Text variant="span" id="TERMS_CHECKBOX_1" />
               <InlineButton onClick={() => setDialogOpen(true)}>
-                <FormattedMessage id="TERMS_CHECKBOX_2" />
+                <Text variant="span" id="TERMS_CHECKBOX_2" />
               </InlineButton>
-              <FormattedMessage id="END_OF_SENTENCE" />
+              <Text variant="span" id="END_OF_SENTENCE" />
             </span>
           }
         />
@@ -172,22 +184,26 @@ export default function StandardReport({
         <Grid item style={{ marginBottom: 12 }}>
           <Alert severity="error">
             <AlertTitle>
-              <FormattedMessage id="SUBMISSION_ERROR" />
+              <Text id="SUBMISSION_ERROR" />
             </AlertTitle>
-            {putError && (
-              <p style={{ margin: '4px 0' }}>{putError}</p>
+            {dateOrderError && (
+              <Text variant="body2" id="DATE_ORDER_ERROR" />
             )}
-            {termsError && (
-              <p style={{ margin: '4px 0' }}>
-                <FormattedMessage id="TERMS_ERROR" />
-              </p>
+            {dateDurationError && (
+              <Text variant="body2" id="DATE_DURATION_ERROR" />
+            )}
+            {putError && <Text variant="body2">{putError}</Text>}
+            {termsError && <Text variant="body2" id="TERMS_ERROR" />}
+            {locationFieldError && (
+              <Text variant="body2" id="LOCATION_FIELD_ERROR" />
             )}
             {incompleteFields.map(incompleteField => (
               <p
                 style={{ margin: '4px 0' }}
                 key={incompleteField.name}
               >
-                <FormattedMessage
+                <Text
+                  variant="body2"
                   id="INCOMPLETE_FIELD"
                   values={{
                     fieldName: intl.formatMessage({
@@ -217,9 +233,49 @@ export default function StandardReport({
                 field.defaultValue === sightingFormValues[field.name],
             );
             setIncompleteFields(nextIncompleteFields);
+
             // check that terms and conditions were accepted
             setTermsError(!acceptedTerms);
-            if (nextIncompleteFields.length === 0 && acceptedTerms) {
+
+            let startTimeAfterEndTime = false;
+            let durationAcceptable = true;
+            // check that startTime is before endTime and duration < 24hrs
+            if (
+              sightingFormValues.startTime &&
+              sightingFormValues.endTime
+            ) {
+              startTimeAfterEndTime = isAfter(
+                sightingFormValues.startTime,
+                sightingFormValues.endTime,
+              );
+              setDateOrderError(startTimeAfterEndTime);
+
+              if (!startTimeAfterEndTime)
+                durationAcceptable = isWithinInterval(
+                  sightingFormValues.endTime,
+                  {
+                    start: sightingFormValues.startTime,
+                    end: addHours(sightingFormValues.startTime, 24),
+                  },
+                );
+              setDateDurationError(!durationAcceptable);
+            }
+
+            // check that at least one location field is present
+            const oneLocationFieldPresent =
+              sightingFormValues.locationId ||
+              sightingFormValues.verbatimLocality ||
+              get(sightingFormValues, ['gps', 0]);
+            setLocationFieldError(!oneLocationFieldPresent);
+
+            const formValid =
+              nextIncompleteFields.length === 0 &&
+              acceptedTerms &&
+              durationAcceptable &&
+              oneLocationFieldPresent &&
+              !startTimeAfterEndTime;
+
+            if (formValid) {
               const report =
                 variant === 'one'
                   ? prepareReport(

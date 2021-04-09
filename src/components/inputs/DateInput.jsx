@@ -2,6 +2,7 @@ import React from 'react';
 import { get } from 'lodash-es';
 import { useIntl } from 'react-intl';
 import DateFnsUtils from '@date-io/date-fns';
+import { getHours, setHours, getMinutes, setMinutes } from 'date-fns';
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
@@ -42,6 +43,7 @@ export default function DateInput(props) {
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           <KeyboardDatePicker
             disableToolbar
+            disableFuture
             variant="inline"
             autoOk
             format="MM/dd/yyyy"
@@ -49,7 +51,14 @@ export default function DateInput(props) {
             id={`${getLabel(schema)}-date-input`}
             label={intl.formatMessage({ id: 'SELECT_DATE' })}
             value={value}
-            onChange={onChange}
+            onChange={newDate => {
+              // Default to 12:00pm, leave hours and minutes unchanged if they are already set.
+              const hours = value ? getHours(value) : 12;
+              const minutes = value ? getMinutes(value) : 0;
+              newDate = setHours(newDate, hours);
+              newDate = setMinutes(newDate, minutes);
+              onChange(newDate);
+            }}
             style={{ margin: 0, width }}
             KeyboardButtonProps={{
               'aria-label': intl.formatMessage({ id: 'CHANGE_DATE' }),

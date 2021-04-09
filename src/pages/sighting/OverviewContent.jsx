@@ -26,7 +26,7 @@ export default function OverviewContent({ sightingData }) {
   const gps = gpsField && get(gpsField, 'value');
 
   return (
-    <CardContainer>
+    <div style={{ display: 'flex', flexWrap: 'wrap' }}>
       <EditSightingMetadata
         open={editing}
         onClose={() => setEditing(false)}
@@ -34,12 +34,18 @@ export default function OverviewContent({ sightingData }) {
         metadata={editableFields}
         error={null}
       />
-      <MetadataCard
-        editable
-        metadata={mergedFields}
-        onEdit={() => setEditing(true)}
-      />
-      {gps && <GpsCard lat={gps[0]} lng={gps[1]} />}
-    </CardContainer>
+      <CardContainer size="small">
+        <MetadataCard
+          editable
+          metadata={mergedFields}
+          onEdit={() => setEditing(true)}
+        />
+      </CardContainer>
+      {gps && (
+        <CardContainer>
+          <GpsCard lat={gps[0]} lng={gps[1]} />
+        </CardContainer>
+      )}
+    </div>
   );
 }
