@@ -24,7 +24,7 @@ export default function Step3({ color, ...rest }) {
               fill="#666"
             />
           </g>
-          <g opacity={0.55}>
+          <g>
             <path
               d="M27.67,21.18H38.82V25H31.39v7.62H27.68Z"
               fill={color}
@@ -61,132 +61,154 @@ export default function Step3({ color, ...rest }) {
             height="98.89"
             transform="translate(106.38 109.69) scale(0.95)"
             xlinkHref="#New_Symbol"
+            opacity={0.75}
           />
           <use
             width="90.2"
             height="98.89"
             transform="translate(61.5 151.9) scale(0.95)"
             xlinkHref="#New_Symbol"
+            opacity={0.75}
           />
           <use
             width="90.2"
             height="98.89"
             transform="translate(121.61 175.82) scale(0.95)"
             xlinkHref="#New_Symbol"
+            opacity={0.75}
           />
           <use
             width="90.2"
             height="98.89"
             transform="translate(87.06 218.55) scale(0.95)"
             xlinkHref="#New_Symbol"
+            opacity={0.75}
           />
           <use
             width="90.2"
             height="98.89"
             transform="translate(138.58 303.19) scale(0.95)"
             xlinkHref="#New_Symbol"
+            opacity={0.75}
           />
           <use
             width="90.2"
             height="98.89"
             transform="translate(192.55 344.28) scale(0.95)"
             xlinkHref="#New_Symbol"
+            opacity={0.75}
           />
           <use
             width="90.2"
             height="98.89"
             transform="translate(198.78 284.89) scale(0.95)"
             xlinkHref="#New_Symbol"
+            opacity={0.75}
           />
           <use
             width="90.2"
             height="98.89"
             transform="translate(250.2 310.55) scale(0.95)"
             xlinkHref="#New_Symbol"
+            opacity={0.75}
           />
           <use
             width="90.2"
             height="98.89"
             transform="translate(139.6 101.61) scale(0.95)"
             xlinkHref="#New_Symbol"
+            opacity={0.75}
           />
           <use
             width="90.2"
             height="98.89"
             transform="translate(226.18 248.44) scale(0.95)"
             xlinkHref="#New_Symbol"
+            opacity={0.75}
           />
           <use
             width="90.2"
             height="98.89"
             transform="translate(284.24 259.28) scale(0.95)"
             xlinkHref="#New_Symbol"
+            opacity={0.75}
           />
           <use
             width="90.2"
             height="98.89"
             transform="translate(173.1 93.25) scale(0.95)"
             xlinkHref="#New_Symbol"
+            opacity={0.75}
           />
           <use
             width="90.2"
             height="98.89"
             transform="translate(253.24 212.03) scale(0.95)"
             xlinkHref="#New_Symbol"
+            opacity={0.75}
           />
           <use
             width="90.2"
             height="98.89"
             transform="translate(316.21 232.67) scale(0.95)"
             xlinkHref="#New_Symbol"
+            opacity={0.75}
           />
           <use
             width="90.2"
             height="98.89"
             transform="translate(206.33 84.62) scale(0.95)"
             xlinkHref="#New_Symbol"
+            opacity={0.75}
           />
           <use
             width="90.2"
             height="98.89"
             transform="translate(255.19 76.43) scale(0.95)"
             xlinkHref="#New_Symbol"
+            opacity={0.75}
           />
           <use
             width="90.2"
             height="98.89"
             transform="translate(280.44 175.74) scale(0.95)"
             xlinkHref="#New_Symbol"
+            opacity={0.75}
           />
           <use
             width="90.2"
             height="98.89"
             transform="translate(339.11 177.68) scale(0.95)"
             xlinkHref="#New_Symbol"
+            opacity={0.75}
           />
           <use
             width="90.2"
             height="98.89"
             transform="translate(353.73 112.57) scale(0.95)"
             xlinkHref="#New_Symbol"
+            opacity={0.75}
           />
           <use
             width="90.2"
             height="98.89"
             transform="translate(307.73 139.4) scale(0.95)"
             xlinkHref="#New_Symbol"
+            opacity={0.75}
           />
           <use
             width="90.2"
             height="98.89"
             transform="translate(316.11 67.44) scale(0.95)"
             xlinkHref="#New_Symbol"
+            opacity={0.75}
           />
           <use
             width="90.2"
             height="98.89"
             transform="translate(362.01 58.75) scale(0.95)"
             xlinkHref="#New_Symbol"
+            opacity={0.75}
           />
         </g>
         <g id="Matched">
