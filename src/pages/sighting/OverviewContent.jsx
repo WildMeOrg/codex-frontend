@@ -41,7 +41,11 @@ export default function OverviewContent({ sightingData }) {
           onEdit={() => setEditing(true)}
         />
       </CardContainer>
-      {gps && <CardContainer><GpsCard lat={gps[0]} lng={gps[1]} /></CardContainer>}
+      {gps && (
+        <CardContainer>
+          <GpsCard lat={gps[0]} lng={gps[1]} />
+        </CardContainer>
+      )}
     </div>
   );
 }
