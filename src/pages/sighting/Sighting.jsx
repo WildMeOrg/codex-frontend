@@ -61,7 +61,7 @@ export default function Sighting() {
   // const encounters = get(data, ['encounters'], []);
 
   return (
-    <MainColumn>
+    <MainColumn fullWidth>
       <Paper style={{ padding: 30, marginTop: 100 }}>
         <div
           style={{
