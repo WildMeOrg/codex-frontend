@@ -48,8 +48,6 @@ export default function StandardReport({
     '<site-name>',
   );
 
-  console.log(assetReferences);
-
   const {
     schema: customEncounterSchema,
     categories: customEncounterCategories,
@@ -96,8 +94,6 @@ export default function StandardReport({
   //   () => getLocationSuggestion(exifData),
   //   [exifData],
   // );
-
-  console.log(sightingFormValues);
 
   const showErrorAlertBox =
     incompleteFields.length > 0 ||
