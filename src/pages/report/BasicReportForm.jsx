@@ -32,7 +32,7 @@ function getInitialFormValues(schema, fieldKey) {
   }, {});
 }
 
-export default function StandardReport({
+export default function BasicReportForm({
   assetReferences,
   // exifData,
   variant,
