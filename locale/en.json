@@ -257,7 +257,7 @@
   "FIELD_VALUE_DESCRIPTION": "How data will be stored in databases and appear in data exports. Database fields cannot contain spaces or special characters.",
   "SELECT_OBJECT": "Select {object}",
   "EDIT_OBJECT": "Edit {object}",
-  "LOG_IN": "Log in",
+  "LOG_IN": "Login",
   "RETURN_HOME": "Return home",
   "CONFIRM_PASSWORD": "Confirm password",
   "PASSWORDS_DO_NOT_MATCH": "Passwords do not match.",

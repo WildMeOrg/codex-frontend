@@ -46,14 +46,14 @@ export default function DateInput(props) {
             disableFuture
             variant="inline"
             autoOk
-            format="MM/dd/yyyy"
+            format="yyyy-MM-dd" // US: MM/dd/yyyy
             margin="normal"
             id={`${getLabel(schema)}-date-input`}
             label={intl.formatMessage({ id: 'SELECT_DATE' })}
             value={value}
             onChange={newDate => {
               // Default to 12:00pm, leave hours and minutes unchanged if they are already set.
-              const hours = value ? getHours(value) : 12;
+              const hours = value ? getHours(value) : 0;
               const minutes = value ? getMinutes(value) : 0;
               newDate = setHours(newDate, hours);
               newDate = setMinutes(newDate, minutes);
@@ -68,6 +68,7 @@ export default function DateInput(props) {
           <KeyboardTimePicker
             variant="inline"
             margin="normal"
+            format="HH:mm" // default for US
             id={`${getLabel(schema)}-time-input`}
             label={intl.formatMessage({ id: 'SELECT_TIME' })}
             value={value}
