@@ -1,9 +1,11 @@
 import React from 'react';
+import { FormattedMessage } from 'react-intl';
+import { useTheme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import BackIcon from '@material-ui/icons/KeyboardBackspace';
 
-export default function CustomButton({
+function Core({
   children,
   display = 'panel',
   loading = false,
@@ -12,6 +14,8 @@ export default function CustomButton({
   size,
   ...rest
 }) {
+  const theme = useTheme();
+
   let variant = undefined; // eslint-disable-line
   let color = undefined; // eslint-disable-line
   let roleStyles = {};
@@ -62,6 +66,12 @@ export default function CustomButton({
     color = 'primary';
   }
 
+  if (display === 'secondary') {
+    roleStyles = {
+      color: theme.palette.text.primary,
+    };
+  }
+
   if (disabled) {
     delete roleStyles.backgroundColor;
     delete roleStyles.color;
@@ -82,5 +92,19 @@ export default function CustomButton({
         children
       )}
     </Button>
+  );
+}
+
+export default function CustomButton({
+  id,
+  values,
+  children,
+  ...rest
+}) {
+  if (!id) return <Core {...rest}>{children}</Core>;
+  return (
+    <Core {...rest}>
+      <FormattedMessage id={id} values={values} />
+    </Core>
   );
 }

@@ -337,6 +337,7 @@
   "DEATH_DATE_RANGE": "Death date",
   "DEATH_DATE_RANGE_DESCRIPTION": "Date of death within the specified date range.",
   "NAME_CONTAINS": "Name",
+  "SUBSCRIBE": "Subscribe",
   "NAME_CONTAINS_DESCRIPTION": "Name or ID contains the specified substring (not case sensitive).",
   "HAS_MEDIA": "Includes media",
   "HAS_MEDIA_ENCOUNTERS_DESCRIPTION": "Sightings with at least one photograph or video.",

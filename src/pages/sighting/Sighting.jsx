@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { FormattedMessage } from 'react-intl';
+import { useIntl, FormattedMessage } from 'react-intl';
 import { get, toLower } from 'lodash-es';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -12,10 +12,10 @@ import Paper from '@material-ui/core/Paper';
 // import ContextIcon from '@material-ui/icons/NaturePeople';
 // import SubmitterIcon from '@material-ui/icons/Person';
 import MainColumn from '../../components/MainColumn';
-import Text from '../../components/Text';
-import DividerTitle from '../../components/DividerTitle';
 import LoadingScreen from '../../components/LoadingScreen';
 import SadScreen from '../../components/SadScreen';
+import Button from '../../components/Button';
+import EntityHeaderNew from '../../components/EntityHeaderNew';
 import { selectSightings } from '../../modules/sightings/selectors';
 import useSighting from '../../models/sighting/useSighting';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
@@ -28,6 +28,7 @@ import OverviewContent from './OverviewContent';
 
 export default function Sighting() {
   const { id } = useParams();
+  const intl = useIntl();
   const { data, loading, error } = useSighting(id);
 
   // fetch data for Id...
@@ -62,28 +63,16 @@ export default function Sighting() {
 
   return (
     <MainColumn fullWidth>
+      <EntityHeaderNew
+        noAvatar
+        name={intl.formatMessage({ id: 'ENTITY_HEADER_SIGHTING_DATE' }, {
+          date: formatDate(sightingDisplayDate, true),
+        })}
+        renderOptions={<Button id="SUBSCRIBE" />}
+      >
+          Reported by George Masterson
+      </EntityHeaderNew>
       <Paper style={{ padding: 30, marginTop: 100 }}>
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'flex-start',
-          }}
-        >
-          <div>
-            <Text
-              variant="h4"
-              id="ENTITY_HEADER_SIGHTING_DATE"
-              values={{
-                date: formatDate(sightingDisplayDate, true),
-              }}
-            />
-            <Text variant="subtitle2" style={{ marginTop: 12 }}>
-              Reported by George Masterson
-            </Text>
-          </div>
-        </div>
-        <DividerTitle titleId="STATUS" />
         <Status />
       </Paper>
       <Tabs

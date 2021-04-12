@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { useIntl, FormattedMessage } from 'react-intl';
+import { useIntl } from 'react-intl';
 import Grid from '@material-ui/core/Grid';
 
 import useDocumentTitle from '../../hooks/useDocumentTitle';
@@ -45,9 +45,8 @@ export default function ReportSuccess({ authenticated }) {
             style={{ width: '100%' }}
             display="primary"
             href="/"
-          >
-            <FormattedMessage id="RETURN_HOME" />
-          </ButtonLink>
+            id="RETURN_HOME"
+          />
         </Grid>
         <Grid item style={{ position: 'relative' }}>
           <ButtonLink
@@ -56,9 +55,8 @@ export default function ReportSuccess({ authenticated }) {
             }}
             display="secondary"
             href="/report"
-          >
-            <FormattedMessage id="REPORT_ANOTHER_SIGHTING" />
-          </ButtonLink>
+            id="REPORT_ANOTHER_SIGHTING"
+          />
         </Grid>
         {authenticated && (
           <Grid item style={{ position: 'relative' }}>
@@ -68,9 +66,8 @@ export default function ReportSuccess({ authenticated }) {
               }}
               display="tertiary"
               href={`/sightings/${id}`}
-            >
-              <FormattedMessage id="VIEW_SIGHTING" />
-            </ButtonLink>
+              id="VIEW_SIGHTING"
+            />
           </Grid>
         )}
       </Grid>
