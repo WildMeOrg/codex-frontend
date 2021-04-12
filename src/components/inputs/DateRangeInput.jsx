@@ -48,7 +48,7 @@ export default function DateRangeInput(props) {
         <KeyboardDatePicker
           disableToolbar
           variant="inline"
-          format="MM/dd/yyyy"
+          format="yyyy-MM-dd" // US: MM/dd/yyyy
           margin="normal"
           id={`${getLabel(schema)}-start-date`}
           label={<FormattedMessage id="START_DATE" />}
@@ -64,7 +64,7 @@ export default function DateRangeInput(props) {
         <KeyboardDatePicker
           disableToolbar
           variant="inline"
-          format="MM/dd/yyyy"
+          format="yyyy-MM-dd" // US: MM/dd/yyyy
           margin="normal"
           id={`${getLabel(schema)}-end-date`}
           label={<FormattedMessage id="END_DATE" />}
