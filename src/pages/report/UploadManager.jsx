@@ -56,10 +56,15 @@ export default function UploadManager({
         path: o.name,
         transactionId: assetSubmissionId,
       }));
-      // todo: files not getting updated because it's inside of useeffect
-      // console.log(files, assetReferences);
-      // console.log([...files, ...assetReferences]);
-      setFiles([...files, ...assetReferences]);
+
+      setFiles([...fileRef.current, ...assetReferences]);
+    });
+
+    uppyInstance.on('file-removed', file => {
+      const newFiles = fileRef.current.filter(
+        f => f.path !== file.name,
+      );
+      setFiles(newFiles);
     });
 
     setUppy(uppyInstance);
@@ -96,6 +101,8 @@ export default function UploadManager({
             note={intl.formatMessage({ id: 'UPPY_IMAGE_NOTE' })}
             showLinkToFileUploadResult={false}
             showProgressDetails
+            showRemoveButtonAfterComplete
+            doneButtonHandler={null}
             height={dashboardHeight}
             locale={{
               strings: {
