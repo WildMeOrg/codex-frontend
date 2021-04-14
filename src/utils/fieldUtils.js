@@ -132,8 +132,9 @@ export function createCustomFieldSchema(houstonSchema) {
     'name',
   ]);
   const copiedSchemaFields = pick(houstonSchema.schema, [
-    'description',
     'label',
+    'description',
+    'choices',
   ]);
   const fieldType = get(houstonSchema, ['schema', 'displayType']);
   const fieldTypeProperties = get(componentMap, fieldType, {});
@@ -142,14 +143,18 @@ export function createCustomFieldSchema(houstonSchema) {
     ...copiedFields,
     ...copiedSchemaFields,
     ...fieldTypeProperties,
+    getValue: (schema, backendObject) =>
+      get(
+        backendObject,
+        ['customFields', schema.id],
+        get(schema, 'defaultValue', null),
+      ),
   };
 
   const defaultValue = get(houstonSchema, 'default');
   if (defaultValue) {
     properSchema.defaultValue = defaultValue;
   }
-
-  // need to copy choices
 
   return properSchema;
 }

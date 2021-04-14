@@ -5,3 +5,7 @@
 .MuiAccordion-root.Mui-expanded {
   margin: 1px 0 !important;
 }
+
+.MuiTimelineItem-missingOppositeContent:before {
+  flex: unset !important;
+}

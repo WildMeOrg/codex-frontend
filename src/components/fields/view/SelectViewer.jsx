@@ -4,12 +4,14 @@ import Text from '../../Text';
 
 export default function SelectViewer({
   value,
-  choices,
+  schema,
   lookupKey = 'value',
   labelKey = 'label',
   labelIdKey = 'labelId',
   defaultLabel = 'Option label not found',
 }) {
+  const { choices } = schema;
+
   const selectedOption = choices.find(
     choice => choice[lookupKey] === value,
   );

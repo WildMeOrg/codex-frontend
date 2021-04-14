@@ -4,6 +4,7 @@ import { get } from 'lodash-es';
 import CardContainer from '../../components/cards/CardContainer';
 import MetadataCard from '../../components/cards/MetadataCardNew';
 import GpsCard from '../../components/cards/GpsCard';
+import StatusCard from './StatusCard';
 import EditSightingMetadata from './EditSightingMetadata';
 
 export default function OverviewContent({ metadata }) {
@@ -32,6 +33,7 @@ export default function OverviewContent({ metadata }) {
       </CardContainer>
       {gps && (
         <CardContainer>
+          <StatusCard />
           <GpsCard lat={gps[0]} lng={gps[1]} />
         </CardContainer>
       )}

@@ -97,13 +97,19 @@ function Core({
 
 export default function CustomButton({
   id,
+  domId = undefined,
   values,
   children,
   ...rest
 }) {
-  if (!id) return <Core {...rest}>{children}</Core>;
+  if (!id)
+    return (
+      <Core id={domId} {...rest}>
+        {children}
+      </Core>
+    );
   return (
-    <Core {...rest}>
+    <Core id={domId} {...rest}>
       <FormattedMessage id={id} values={values} />
     </Core>
   );

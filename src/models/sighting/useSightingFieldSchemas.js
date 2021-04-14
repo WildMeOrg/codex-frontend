@@ -2,7 +2,10 @@ import { get } from 'lodash-es';
 
 import useSiteSettings from '../site/useSiteSettings';
 import fieldTypes from '../../constants/fieldTypesNew';
-import { createFieldSchema } from '../../utils/fieldUtils';
+import {
+  createFieldSchema,
+  createCustomFieldSchema,
+} from '../../utils/fieldUtils';
 
 const defaultSightingCategories = {
   general: {
@@ -23,8 +26,6 @@ const defaultSightingCategories = {
     individualFields: false,
   },
 };
-
-/* Todo: Derive components from fieldtype automatically */
 
 export default function useSightingFieldSchemas() {
   const { data, loading, error } = useSiteSettings();
@@ -51,17 +52,21 @@ export default function useSightingFieldSchemas() {
     },
   ];
 
+  const customFields = get(
+    data,
+    ['site.custom.customFields.Occurrence', 'value', 'definitions'],
+    [],
+  );
+  const customFieldSchemas = customFields.map(
+    createCustomFieldSchema,
+  );
+
   return [
     createFieldSchema(fieldTypes.select, {
       name: 'context',
       labelId: 'SIGHTING_CONTEXT',
       category: defaultSightingCategories.general.name,
-      viewComponentProps: {
-        choices: contextChoices,
-      },
-      editComponentProps: {
-        choices: contextChoices,
-      },
+      choices: contextChoices,
     }),
     createFieldSchema(fieldTypes.date, {
       name: 'startTime',
@@ -77,12 +82,7 @@ export default function useSightingFieldSchemas() {
       name: 'locationId',
       labelId: 'REGION',
       category: defaultSightingCategories.location.name,
-      viewComponentProps: {
-        choices: regionChoices,
-      },
-      editComponentProps: {
-        choices: regionChoices,
-      },
+      choices: regionChoices,
     }),
     createFieldSchema(fieldTypes.latlong, {
       name: 'gps',
@@ -100,11 +100,6 @@ export default function useSightingFieldSchemas() {
       category: defaultSightingCategories.location.name,
     }),
     createFieldSchema(fieldTypes.string, {
-      name: 'bearing',
-      labelId: 'BEARING',
-      category: defaultSightingCategories.details.name,
-    }),
-    createFieldSchema(fieldTypes.string, {
       name: 'behavior',
       labelId: 'BEHAVIOR',
       category: defaultSightingCategories.details.name,
@@ -114,5 +109,6 @@ export default function useSightingFieldSchemas() {
       labelId: 'NOTES',
       category: defaultSightingCategories.details.name,
     }),
+    ...customFieldSchemas,
   ];
 }

@@ -21,7 +21,6 @@ import useSighting from '../../models/sighting/useSighting';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import useSightingFieldSchemas from '../../models/sighting/useSightingFieldSchemas';
 import { formatDate } from '../../utils/formatters';
-import Status from './Status';
 // import AnnotationsGallery from './AnnotationsGallery';
 // import IndividualsGallery from './IndividualsGallery';
 // import PhotoGallery from './PhotoGallery';
@@ -41,12 +40,10 @@ export default function Sighting() {
   const metadata = useMemo(
     () => {
       if (!data || !fieldSchemas) return null;
-      return fieldSchemas.map(schema => {
-        return {
-          ...schema,
-          value: schema.getValue(schema, data),
-        };
-      });
+      return fieldSchemas.map(schema => ({
+        ...schema,
+        value: schema.getValue(schema, data),
+      }));
     },
     [data, fieldSchemas],
   );

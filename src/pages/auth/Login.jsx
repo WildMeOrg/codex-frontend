@@ -108,15 +108,14 @@ export default function Login({ showBanner, redirect = '/' }) {
           {error && <Alert severity="error">{error}</Alert>}
           <Grid item style={{ position: 'relative' }}>
             <Button
-              id={buttonId}
+              domId={buttonId}
               loading={loading}
               onClick={() => {
                 authenticate(email, password, redirect);
               }}
               display="primary"
-            >
-              <FormattedMessage id="LOG_IN" />
-            </Button>
+              id="LOG_IN"
+            />
           </Grid>
         </Grid>
         <Typography>

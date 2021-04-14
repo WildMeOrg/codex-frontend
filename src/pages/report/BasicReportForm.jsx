@@ -167,11 +167,11 @@ export default function BasicReportForm({
           }
           label={
             <span>
-              <Text variant="span" id="TERMS_CHECKBOX_1" />
+              <Text component="span" id="TERMS_CHECKBOX_1" />
               <InlineButton onClick={() => setDialogOpen(true)}>
-                <Text variant="span" id="TERMS_CHECKBOX_2" />
+                <Text component="span" id="TERMS_CHECKBOX_2" />
               </InlineButton>
-              <Text variant="span" id="END_OF_SENTENCE" />
+              <Text component="span" id="END_OF_SENTENCE" />
             </span>
           }
         />
