@@ -17,16 +17,18 @@ export default function OverviewContent({ metadata }) {
 
   return (
     <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-      {/* <EditSightingMetadata
-        open={editing}
-        onClose={() => setEditing(false)}
-        onSubmit={() => setEditing(false)}
-        metadata={editableFields}
-        error={null}
-      /> */}
+      {metadata ? (
+        <EditSightingMetadata
+          open={editing}
+          onClose={() => setEditing(false)}
+          onSubmit={() => setEditing(false)}
+          metadata={editableFields}
+          error={null}
+        />
+      ) : null}
       <CardContainer size="small">
         <MetadataCard
-          editable
+          editable={Boolean(metadata)}
           metadata={metadata}
           onEdit={() => setEditing(true)}
         />

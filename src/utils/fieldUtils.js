@@ -1,5 +1,6 @@
 import { get, pick } from 'lodash-es';
 import fieldTypes from '../constants/fieldTypesNew';
+
 import DefaultViewer from '../components/fields/view/DefaultViewer';
 import LatLongViewer from '../components/fields/view/LatLongViewer';
 import SelectViewer from '../components/fields/view/SelectViewer';
@@ -8,6 +9,8 @@ import DateViewer from '../components/fields/view/DateViewer';
 import DateRangeViewer from '../components/fields/view/DateRangeViewer';
 import FloatViewer from '../components/fields/view/FloatViewer';
 
+import TextEditor from '../components/fields/edit/TextEditor';
+
 export const prototypeFieldSchema = {
   getValue: (schema, backendObject) =>
     get(
@@ -15,6 +18,7 @@ export const prototypeFieldSchema = {
       [schema.name],
       get(schema, 'defaultValue', null),
     ),
+  customField: false,
   defaultValue: null,
   icon: null,
   required: false,
@@ -33,25 +37,38 @@ const componentMap = {
   [fieldTypes.string]: {
     defaultValue: '',
     viewComponent: DefaultViewer,
-    editComponent: null,
+    editComponent: TextEditor,
+    editComponentProps: {
+      variant: 'string',
+    },
     filterComponent: null,
   },
   [fieldTypes.longstring]: {
     defaultValue: '',
     viewComponent: DefaultViewer, // may need to truncate
-    editComponent: null,
+    editComponent: TextEditor,
+    editComponentProps: {
+      variant: 'longstring',
+    },
     filterComponent: null,
   },
   [fieldTypes.float]: {
     defaultValue: null,
     viewComponent: FloatViewer,
-    editComponent: null,
+
+    editComponent: TextEditor,
+    editComponentProps: {
+      variant: 'float',
+    },
     filterComponent: null,
   },
   [fieldTypes.integer]: {
     defaultValue: null,
     viewComponent: DefaultViewer,
-    editComponent: null,
+    editComponent: TextEditor,
+    editComponentProps: {
+      variant: 'integer',
+    },
     filterComponent: null,
   },
   [fieldTypes.feetmeters]: {
@@ -143,6 +160,7 @@ export function createCustomFieldSchema(houstonSchema) {
     ...copiedFields,
     ...copiedSchemaFields,
     ...fieldTypeProperties,
+    customField: true,
     getValue: (schema, backendObject) =>
       get(
         backendObject,

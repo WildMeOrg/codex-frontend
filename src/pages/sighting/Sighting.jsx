@@ -5,7 +5,6 @@ import { useIntl, FormattedMessage } from 'react-intl';
 import { get, toLower } from 'lodash-es';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import Paper from '@material-ui/core/Paper';
 
 // import SpeciesIcon from '@material-ui/icons/Category';
 // import RegionIcon from '@material-ui/icons/MyLocation';
@@ -90,9 +89,6 @@ export default function Sighting() {
       >
         Reported by George Masterson
       </EntityHeaderNew>
-      {/* <Paper style={{ padding: 30, marginTop: 100 }}>
-        <Status />
-      </Paper> */}
       <Tabs
         value={activeTab.replace('#', '')}
         onChange={(_, newValue) => {
