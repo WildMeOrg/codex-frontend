@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useIntl, FormattedMessage } from 'react-intl';
@@ -19,6 +19,7 @@ import EntityHeaderNew from '../../components/EntityHeaderNew';
 import { selectSightings } from '../../modules/sightings/selectors';
 import useSighting from '../../models/sighting/useSighting';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
+import useSightingFieldSchemas from '../../models/sighting/useSightingFieldSchemas';
 import { formatDate } from '../../utils/formatters';
 import Status from './Status';
 // import AnnotationsGallery from './AnnotationsGallery';
@@ -30,6 +31,25 @@ export default function Sighting() {
   const { id } = useParams();
   const intl = useIntl();
   const { data, loading, error } = useSighting(id);
+  const fieldSchemas = useSightingFieldSchemas();
+
+  /*
+    known issue: if data or fieldschemas change values
+    or properties this may not update
+    switch to data.version?
+  */
+  const metadata = useMemo(
+    () => {
+      if (!data || !fieldSchemas) return null;
+      return fieldSchemas.map(schema => {
+        return {
+          ...schema,
+          value: schema.getValue(schema, data),
+        };
+      });
+    },
+    [data, fieldSchemas],
+  );
 
   // fetch data for Id...
   const sightings = useSelector(selectSightings);
@@ -37,7 +57,6 @@ export default function Sighting() {
 
   const activeTab = window.location.hash || '#overview';
 
-  const sighting = sightings.find(e => toLower(e.id) === toLower(id));
   const is404 = false;
 
   if (loading) return <LoadingScreen />;
@@ -57,7 +76,6 @@ export default function Sighting() {
       />
     );
 
-  console.log(data);
   const sightingDisplayDate = get(data, ['startTime']);
   // const encounters = get(data, ['encounters'], []);
 
@@ -65,16 +83,19 @@ export default function Sighting() {
     <MainColumn fullWidth>
       <EntityHeaderNew
         noAvatar
-        name={intl.formatMessage({ id: 'ENTITY_HEADER_SIGHTING_DATE' }, {
-          date: formatDate(sightingDisplayDate, true),
-        })}
+        name={intl.formatMessage(
+          { id: 'ENTITY_HEADER_SIGHTING_DATE' },
+          {
+            date: formatDate(sightingDisplayDate, true),
+          },
+        )}
         renderOptions={<Button id="SUBSCRIBE" />}
       >
-          Reported by George Masterson
+        Reported by George Masterson
       </EntityHeaderNew>
-      <Paper style={{ padding: 30, marginTop: 100 }}>
+      {/* <Paper style={{ padding: 30, marginTop: 100 }}>
         <Status />
-      </Paper>
+      </Paper> */}
       <Tabs
         value={activeTab.replace('#', '')}
         onChange={(_, newValue) => {
@@ -100,7 +121,7 @@ export default function Sighting() {
         />
       </Tabs>
       {activeTab === '#overview' && (
-        <OverviewContent sightingData={data} />
+        <OverviewContent metadata={metadata} />
       )}
       {/* {activeTab === '#individuals' && (
         <IndividualsGallery sighting={encounters} />
