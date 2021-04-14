@@ -10,6 +10,8 @@ import DateRangeViewer from '../components/fields/view/DateRangeViewer';
 import FloatViewer from '../components/fields/view/FloatViewer';
 
 import TextEditor from '../components/fields/edit/TextEditor';
+import SelectionEditor from '../components/fields/edit/SelectionEditor';
+import LatLongEditor from '../components/fields/edit/LatLongEditor';
 
 export const prototypeFieldSchema = {
   getValue: (schema, backendObject) =>
@@ -80,7 +82,7 @@ const componentMap = {
   [fieldTypes.latlong]: {
     defaultValue: [null, null],
     viewComponent: LatLongViewer,
-    editComponent: null,
+    editComponent: LatLongEditor,
     filterComponent: null,
   },
   [fieldTypes.area]: {
@@ -104,13 +106,19 @@ const componentMap = {
   [fieldTypes.select]: {
     defaultValue: '',
     viewComponent: SelectViewer,
-    editComponent: null,
+    editComponent: SelectionEditor,
+    editComponentProps: {
+      variant: 'one',
+    },
     filterComponent: null,
   },
   [fieldTypes.multiselect]: {
     defaultValue: [],
     viewComponent: MultiSelectViewer,
-    editComponent: null,
+    editComponent: SelectionEditor,
+    editComponentProps: {
+      variant: 'multiple',
+    },
     filterComponent: null,
   },
   [fieldTypes.boolean]: {

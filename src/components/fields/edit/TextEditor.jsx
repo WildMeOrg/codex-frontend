@@ -18,6 +18,7 @@ function TextInput(props) {
 
   const label = useLabel(schema);
   const description = useDescription(schema);
+  const showDescription = !minimalLabels && description;
 
   const isNumberInput = ['float', 'integer'].includes(variant);
   const type = isNumberInput ? 'number' : undefined;
@@ -44,9 +45,9 @@ function TextInput(props) {
         value={htmlValue}
         {...rest}
       />
-      {!minimalLabels && (
+      {showDescription ? (
         <FormHelperText>{description}</FormHelperText>
-      )}
+      ) : null}
     </FormCore>
   );
 }

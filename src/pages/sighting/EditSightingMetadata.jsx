@@ -56,15 +56,18 @@ export default function EditSightingMetadata({
       <DialogContent style={{ minWidth: 200 }}>
         {metadata.map(field => {
           if (!field.editable) return null;
-          if (!field.editComponent) return null;
+          if (!field.editComponent) return null; // temporary stopgap
           const value = field.customField
             ? customFieldValues[field.id]
             : defaultFieldValues[field.name];
+
+          const fieldProps = field.editComponentProps || {};
 
           return (
             <InputRow schema={field} key={field.id || field.name}>
               <field.editComponent
                 schema={field}
+                {...fieldProps}
                 value={value}
                 onChange={newValue => {
                   if (field.customField) {

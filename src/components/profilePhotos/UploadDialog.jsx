@@ -20,7 +20,7 @@ export default function UploadDialog({ open, onClose }) {
     loading: replaceLoading,
     error: replaceError,
     setError: setReplaceError,
-  } = usePatchUser('5d9ac656-426b-40bf-a7a1-99ffe52f8786');
+  } = usePatchUser('0689edaf-208b-4c8a-9e67-93432e05170c');
 
   async function submitProfilePhoto() {
     const successful = await replaceUserProperty(
@@ -42,7 +42,7 @@ export default function UploadDialog({ open, onClose }) {
       <DialogContent>
         <ProfileUploader onComplete={setProfileAsset} />
         {replaceError && (
-          <Alert severity="error">
+          <Alert style={{ marginTop: 20 }} severity="error">
             <AlertTitle>
               <FormattedMessage id="ERROR_UPDATING_PROFILE" />
             </AlertTitle>

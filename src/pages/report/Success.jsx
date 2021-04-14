@@ -40,36 +40,36 @@ export default function ReportSuccess({ authenticated }) {
         direction="column"
         style={{ padding: 16, maxWidth: 340 }}
       >
-        <Grid item style={{ position: 'relative' }}>
-          <ButtonLink
-            style={{ width: '100%' }}
-            display="primary"
-            href="/"
-            id="RETURN_HOME"
-          />
-        </Grid>
-        <Grid item style={{ position: 'relative' }}>
-          <ButtonLink
-            style={{
-              width: '100%',
-            }}
-            display="secondary"
-            href="/report"
-            id="REPORT_ANOTHER_SIGHTING"
-          />
-        </Grid>
         {authenticated && (
           <Grid item style={{ position: 'relative' }}>
             <ButtonLink
               style={{
                 width: '100%',
               }}
-              display="tertiary"
+              display="primary"
               href={`/sightings/${id}`}
               id="VIEW_SIGHTING"
             />
           </Grid>
         )}
+        <Grid item style={{ position: 'relative' }}>
+          <ButtonLink
+            style={{
+              width: '100%',
+            }}
+            display={authenticated ? 'secondary' : 'primary'}
+            href="/report"
+            id="REPORT_ANOTHER_SIGHTING"
+          />
+        </Grid>
+        <Grid item style={{ position: 'relative' }}>
+          <ButtonLink
+            style={{ width: '100%' }}
+            display={authenticated ? 'tertiary' : 'secondary'}
+            href="/"
+            id="RETURN_HOME"
+          />
+        </Grid>
       </Grid>
     </MainColumn>
   );
