@@ -1,39 +1,38 @@
 import React from 'react';
-import { get } from 'lodash-es';
 import { useIntl } from 'react-intl';
 import DateFnsUtils from '@date-io/date-fns';
-import { getHours, setHours, getMinutes, setMinutes } from 'date-fns';
+import {
+  parseISO,
+  getHours,
+  setHours,
+  getMinutes,
+  setMinutes,
+} from 'date-fns';
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
   KeyboardTimePicker,
 } from '@material-ui/pickers';
-import Text from '../Text';
+import Text from '../../Text';
+import useLabel from '../../../hooks/useLabel';
+import useDescription from '../../../hooks/useDescription';
 
-export default function DateInput(props) {
+export default function DateEditor(props) {
   const {
     schema,
-    required,
     value,
     onChange,
-    width,
+    width = 280,
     minimalLabels = false,
     ...rest
   } = props;
+  const label = useLabel(schema);
+  const description = useDescription(schema);
+  const showDescription = !minimalLabels && description;
 
   const intl = useIntl();
-
-  function getLabel(object) {
-    if (object.labelId)
-      return intl.formatMessage({ id: object.labelId });
-    return get(object, 'label', 'Missing label');
-  }
-
-  function getDescription(object) {
-    if (object.descriptionId)
-      return intl.formatMessage({ id: object.descriptionId });
-    return get(object, 'description', '');
-  }
+  const dateValue =
+    typeof value === 'string' ? parseISO(value) : value;
 
   /* Note: the wrapper div is there because MuiPicker creates two child elements,
    * which messes up display if this component is a flex child. */
@@ -48,18 +47,15 @@ export default function DateInput(props) {
             autoOk
             format="yyyy-MM-dd" // US: MM/dd/yyyy
             margin="normal"
-            id={`${getLabel(schema)}-date-input`}
+            id={`${label}-date-input`}
             label={intl.formatMessage({ id: 'SELECT_DATE' })}
-            value={value}
+            value={dateValue}
             onChange={newDate => {
               // Default to 12:00pm, leave hours and minutes unchanged if they are already set.
-              console.log(typeof value);
-
-              const hours = value ? getHours(value) : 0;
-              const minutes = value ? getMinutes(value) : 0;
+              const hours = value ? getHours(dateValue) : 0;
+              const minutes = value ? getMinutes(dateValue) : 0;
               newDate = setHours(newDate, hours);
               newDate = setMinutes(newDate, minutes);
-              console.log(newDate);
               onChange(newDate);
             }}
             style={{ margin: 0, width }}
@@ -72,24 +68,24 @@ export default function DateInput(props) {
             variant="inline"
             margin="normal"
             format="HH:mm" // default for US
-            id={`${getLabel(schema)}-time-input`}
+            id={`${label}-time-input`}
             label={intl.formatMessage({ id: 'SELECT_TIME' })}
-            value={value}
+            value={dateValue}
             onChange={onChange}
             KeyboardButtonProps={{
               'aria-label': intl.formatMessage({ id: 'CHANGE_TIME' }),
             }}
             style={{ width }}
           />
-          {!minimalLabels && (
+          {showDescription ? (
             <Text
               variant="caption"
               color="textSecondary"
               style={{ marginTop: 4 }}
             >
-              {getDescription(schema)}
+              {description}
             </Text>
-          )}
+          ) : null}
         </div>
       </MuiPickersUtilsProvider>
     </div>

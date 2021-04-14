@@ -1,15 +1,17 @@
 import React from 'react';
-import { round } from 'lodash-es';
+import { get, round } from 'lodash-es';
 import Text from '../../Text';
 
 export default function LatLongViewer({ value }) {
+  const lat = get(value, 0, null);
+  const lng = get(value, 0, null);
   return (
     <span style={{ display: 'flex', flexDirection: 'column' }}>
       <Text component="span" variant="body2">
-        {`Decimal latitude: ${round(value[0], 3)}...`}
+        {`Decimal latitude: ${round(lat, 3)}...`}
       </Text>
       <Text component="span" variant="body2">
-        {`Decimal longitude: ${round(value[1], 3)}...`}
+        {`Decimal longitude: ${round(lng, 3)}...`}
       </Text>
     </span>
   );

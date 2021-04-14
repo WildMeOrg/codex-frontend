@@ -61,6 +61,7 @@ export default function MetadataCard({
                     secondary={
                       <field.viewComponent
                         value={field.value}
+                        choices={field.choices}
                         schema={field}
                         {...viewComponentProps}
                       />

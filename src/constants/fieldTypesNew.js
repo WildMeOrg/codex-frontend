@@ -7,7 +7,6 @@ const fieldTypes = {
   feetmeters: 'feetmeters', // float represents meters, but GUI supports feet
   file: 'file',
   latlong: 'latlong', // [float, float] defines [lat, lng]
-  area: 'area', // { north: float, east: float, south: float, west: float } defines a geographic bounding box
   date: 'date',
   daterange: 'daterange', // [date, date]
   select: 'select', // string

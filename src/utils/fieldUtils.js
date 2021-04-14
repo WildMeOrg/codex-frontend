@@ -8,10 +8,15 @@ import MultiSelectViewer from '../components/fields/view/MultiSelectViewer';
 import DateViewer from '../components/fields/view/DateViewer';
 import DateRangeViewer from '../components/fields/view/DateRangeViewer';
 import FloatViewer from '../components/fields/view/FloatViewer';
+import LocationIdViewer from '../components/fields/view/LocationIdViewer';
 
 import TextEditor from '../components/fields/edit/TextEditor';
 import SelectionEditor from '../components/fields/edit/SelectionEditor';
 import LatLongEditor from '../components/fields/edit/LatLongEditor';
+import DateEditor from '../components/fields/edit/DateEditor';
+import DateRangeEditor from '../components/fields/edit/DateRangeEditor';
+import BooleanEditor from '../components/fields/edit/BooleanEditor';
+import LocationIdEditor from '../components/fields/edit/LocationIdEditor';
 
 export const prototypeFieldSchema = {
   getValue: (schema, backendObject) =>
@@ -85,22 +90,16 @@ const componentMap = {
     editComponent: LatLongEditor,
     filterComponent: null,
   },
-  [fieldTypes.area]: {
-    defaultValue: null,
-    viewComponent: DefaultViewer,
-    editComponent: null,
-    filterComponent: null,
-  },
   [fieldTypes.date]: {
     defaultValue: null,
     viewComponent: DateViewer,
-    editComponent: null,
+    editComponent: DateEditor,
     filterComponent: null,
   },
   [fieldTypes.daterange]: {
     defaultValue: [null, null],
     viewComponent: DateRangeViewer,
-    editComponent: null,
+    editComponent: DateRangeEditor,
     filterComponent: null,
   },
   [fieldTypes.select]: {
@@ -127,13 +126,13 @@ const componentMap = {
     viewComponentProps: {
       defaultLabel: 'Value not set',
     },
-    editComponent: null,
+    editComponent: BooleanEditor,
     filterComponent: null,
   },
   [fieldTypes.locationId]: {
     defaultValue: '',
-    viewComponent: DefaultViewer,
-    editComponent: null,
+    viewComponent: LocationIdViewer,
+    editComponent: LocationIdEditor,
     filterComponent: null,
   },
   [fieldTypes.individual]: {
