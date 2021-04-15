@@ -53,13 +53,10 @@ export default function DateInput(props) {
             value={value}
             onChange={newDate => {
               // Default to 12:00pm, leave hours and minutes unchanged if they are already set.
-              console.log(typeof value);
-
               const hours = value ? getHours(value) : 0;
               const minutes = value ? getMinutes(value) : 0;
               newDate = setHours(newDate, hours);
               newDate = setMinutes(newDate, minutes);
-              console.log(newDate);
               onChange(newDate);
             }}
             style={{ margin: 0, width }}

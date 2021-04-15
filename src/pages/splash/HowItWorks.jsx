@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useTheme } from '@material-ui/core/styles';
+import IconButton from '@material-ui/core/IconButton';
+import BackIcon from '@material-ui/icons/ChevronLeft';
+import ForwardIcon from '@material-ui/icons/ChevronRight';
 import InlineButton from '../../components/InlineButton';
 import Text from '../../components/Text';
 import Step1 from './svg/Step1';
@@ -30,6 +33,25 @@ const stepMap = {
     component: Step4,
   },
 };
+
+function ArrowButton({ onClick, disabled, Icon }) {
+  const theme = useTheme();
+
+  return (
+    <IconButton
+      onClick={onClick}
+      disabled={disabled}
+      style={{
+        color: disabled
+          ? 'rgba(255, 255, 255, 0.26)'
+          : theme.palette.common.white,
+        height: 'min-content',
+      }}
+    >
+      <Icon fontSize="large" />
+    </IconButton>
+  );
+}
 
 function StepButton({ translationId, step, setStep, active }) {
   return (
@@ -76,10 +98,30 @@ export default function HowItWorks() {
         id="HOW_IT_WORKS"
       />
       <Text variant="subtitle1" id={stepMap[step].title} />
-      <CurrentGraphic
-        color={theme.palette.primary.main}
-        style={{ height: 'auto', width: 300 }}
-      />
+      <div style={{ display: 'flex', alignItems: 'center' }}>
+        <ArrowButton
+          onClick={() => {
+            const currentStep = parseInt(step, 10);
+            const nextStep = currentStep - 1;
+            setStep(`${nextStep}`);
+          }}
+          disabled={step === '1'}
+          Icon={BackIcon}
+        />
+        <CurrentGraphic
+          color={theme.palette.primary.main}
+          style={{ height: 'auto', width: 300 }}
+        />
+        <ArrowButton
+          onClick={() => {
+            const currentStep = parseInt(step, 10);
+            const nextStep = currentStep + 1;
+            setStep(`${nextStep}`);
+          }}
+          disabled={step === '4'}
+          Icon={ForwardIcon}
+        />
+      </div>
       <Text
         style={{
           color: theme.palette.common.white,
