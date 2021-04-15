@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useIntl, FormattedMessage } from 'react-intl';
-import { get, toLower } from 'lodash-es';
+import { get } from 'lodash-es';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 
@@ -114,7 +114,7 @@ export default function Sighting() {
         />
       </Tabs>
       {activeTab === '#overview' && (
-        <OverviewContent metadata={metadata} />
+        <OverviewContent metadata={metadata} sightingId={id} />
       )}
       {/* {activeTab === '#individuals' && (
         <IndividualsGallery sighting={encounters} />

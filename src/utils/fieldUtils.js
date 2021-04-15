@@ -28,6 +28,7 @@ export const prototypeFieldSchema = {
   customField: false,
   defaultValue: null,
   icon: null,
+  choices: null,
   required: false,
   editable: true,
   editComponent: null,

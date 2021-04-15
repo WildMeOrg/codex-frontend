@@ -7,6 +7,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import Alert from '@material-ui/lab/Alert';
 import AlertTitle from '@material-ui/lab/AlertTitle';
 
+import usePatchSighting from '../../models/sighting/usePatchSighting';
 import InputRow from '../../components/fields/edit/InputRowNew';
 import Button from '../../components/Button';
 import StandardDialog from '../../components/StandardDialog';
@@ -25,11 +26,17 @@ function getInitialFormValues(schema, fieldKey) {
 
 export default function EditSightingMetadata({
   open,
+  sightingId,
   metadata,
   onClose,
-  onSubmit,
-  error,
 }) {
+  const {
+    updateProperties,
+    loading,
+    error,
+    setError,
+  } = usePatchSighting(sightingId);
+
   const defaultFieldMetadata = metadata.filter(
     field => !field.customField,
   );
@@ -100,7 +107,15 @@ export default function EditSightingMetadata({
       </DialogContent>
       <DialogActions style={{ padding: '0px 24px 24px 24px' }}>
         <Button display="basic" onClick={onClose} id="CANCEL" />
-        <Button display="primary" onClick={onSubmit} id="SAVE" />
+        <Button
+          display="primary"
+          onClick={async () => {
+            const result = updateProperties(defaultFieldValues);
+            console.log(result);
+            onClose();
+          }}
+          id="SAVE"
+        />
       </DialogActions>
     </StandardDialog>
   );
