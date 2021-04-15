@@ -7,7 +7,11 @@ import GpsCard from '../../components/cards/GpsCard';
 import StatusCard from './StatusCard';
 import EditSightingMetadata from './EditSightingMetadata';
 
-export default function OverviewContent({ sightingId, metadata, refreshSightingData }) {
+export default function OverviewContent({
+  sightingId,
+  metadata,
+  refreshSightingData,
+}) {
   const [editing, setEditing] = useState(false);
 
   const editableFields = metadata.filter(field => field.editable);

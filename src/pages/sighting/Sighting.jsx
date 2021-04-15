@@ -28,7 +28,12 @@ import OverviewContent from './OverviewContent';
 export default function Sighting() {
   const { id } = useParams();
   const intl = useIntl();
-  const { data, loading, error, refresh: refreshSightingData } = useSighting(id);
+  const {
+    data,
+    loading,
+    error,
+    refresh: refreshSightingData,
+  } = useSighting(id);
   const fieldSchemas = useSightingFieldSchemas();
 
   /*
@@ -114,7 +119,11 @@ export default function Sighting() {
         />
       </Tabs>
       {activeTab === '#overview' && (
-        <OverviewContent metadata={metadata} sightingId={id} refreshSightingData={refreshSightingData} />
+        <OverviewContent
+          metadata={metadata}
+          sightingId={id}
+          refreshSightingData={refreshSightingData}
+        />
       )}
       {/* {activeTab === '#individuals' && (
         <IndividualsGallery sighting={encounters} />
