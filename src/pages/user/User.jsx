@@ -14,7 +14,7 @@ export default function User({ userId }) {
   const users = useSelector(selectUsers);
 
   const { data, loading, refresh } = useGetUser(
-    '5d9ac656-426b-40bf-a7a1-99ffe52f8786',
+    '0689edaf-208b-4c8a-9e67-93432e05170c',
   );
 
   const imageSrc = get(data, ['profile_fileupload', 'src']);

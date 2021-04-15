@@ -17,7 +17,7 @@ export default function RemoveDialog({ open, onClose }) {
     loading,
     error,
     setError,
-  } = usePatchUser('5d9ac656-426b-40bf-a7a1-99ffe52f8786');
+  } = usePatchUser('0689edaf-208b-4c8a-9e67-93432e05170c');
 
   const onCloseDialog = () => {
     if (error) setError(null);

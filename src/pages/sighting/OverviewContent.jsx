@@ -1,48 +1,41 @@
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import { get } from 'lodash-es';
 
 import CardContainer from '../../components/cards/CardContainer';
-import MetadataCard from '../../components/cards/MetadataCard';
+import MetadataCard from '../../components/cards/MetadataCardNew';
 import GpsCard from '../../components/cards/GpsCard';
-import MetadataDefinitions from './constants/MetadataDefinitions';
+import StatusCard from './StatusCard';
 import EditSightingMetadata from './EditSightingMetadata';
 
-export default function OverviewContent({ sightingData }) {
+export default function OverviewContent({ sightingId, metadata, refreshSightingData }) {
   const [editing, setEditing] = useState(false);
-  const mergedFields = useMemo(
-    () => {
-      if (!sightingData) return null;
-      return MetadataDefinitions.map(metadatum => ({
-        ...metadatum,
-        value: metadatum.getData(sightingData),
-      }));
-    },
-    [get(sightingData, 'version')],
-  );
 
-  const editableFields = mergedFields.filter(f => f.editable);
+  const editableFields = metadata.filter(field => field.editable);
 
-  const gpsField = mergedFields.find(field => field.id === 'gps');
+  const gpsField = metadata.find(field => field.name === 'gps');
   const gps = gpsField && get(gpsField, 'value');
 
   return (
     <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-      <EditSightingMetadata
-        open={editing}
-        onClose={() => setEditing(false)}
-        onSubmit={() => setEditing(false)}
-        metadata={editableFields}
-        error={null}
-      />
+      {metadata ? (
+        <EditSightingMetadata
+          open={editing}
+          sightingId={sightingId}
+          onClose={() => setEditing(false)}
+          metadata={editableFields}
+          refreshSightingData={refreshSightingData}
+        />
+      ) : null}
       <CardContainer size="small">
         <MetadataCard
-          editable
-          metadata={mergedFields}
+          editable={Boolean(metadata)}
+          metadata={metadata}
           onEdit={() => setEditing(true)}
         />
       </CardContainer>
       {gps && (
         <CardContainer>
+          <StatusCard />
           <GpsCard lat={gps[0]} lng={gps[1]} />
         </CardContainer>
       )}

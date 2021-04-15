@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { useIntl, FormattedMessage } from 'react-intl';
+import { useIntl } from 'react-intl';
 import Grid from '@material-ui/core/Grid';
 
 import useDocumentTitle from '../../hooks/useDocumentTitle';
@@ -40,39 +40,36 @@ export default function ReportSuccess({ authenticated }) {
         direction="column"
         style={{ padding: 16, maxWidth: 340 }}
       >
-        <Grid item style={{ position: 'relative' }}>
-          <ButtonLink
-            style={{ width: '100%' }}
-            display="primary"
-            href="/"
-          >
-            <FormattedMessage id="RETURN_HOME" />
-          </ButtonLink>
-        </Grid>
-        <Grid item style={{ position: 'relative' }}>
-          <ButtonLink
-            style={{
-              width: '100%',
-            }}
-            display="secondary"
-            href="/report"
-          >
-            <FormattedMessage id="REPORT_ANOTHER_SIGHTING" />
-          </ButtonLink>
-        </Grid>
         {authenticated && (
           <Grid item style={{ position: 'relative' }}>
             <ButtonLink
               style={{
                 width: '100%',
               }}
-              display="tertiary"
+              display="primary"
               href={`/sightings/${id}`}
-            >
-              <FormattedMessage id="VIEW_SIGHTING" />
-            </ButtonLink>
+              id="VIEW_SIGHTING"
+            />
           </Grid>
         )}
+        <Grid item style={{ position: 'relative' }}>
+          <ButtonLink
+            style={{
+              width: '100%',
+            }}
+            display={authenticated ? 'secondary' : 'primary'}
+            href="/report"
+            id="REPORT_ANOTHER_SIGHTING"
+          />
+        </Grid>
+        <Grid item style={{ position: 'relative' }}>
+          <ButtonLink
+            style={{ width: '100%' }}
+            display={authenticated ? 'tertiary' : 'secondary'}
+            href="/"
+            id="RETURN_HOME"
+          />
+        </Grid>
       </Grid>
     </MainColumn>
   );

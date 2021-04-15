@@ -1,26 +1,25 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { FormattedMessage } from 'react-intl';
-import { get, toLower } from 'lodash-es';
+import { useIntl, FormattedMessage } from 'react-intl';
+import { get } from 'lodash-es';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import Paper from '@material-ui/core/Paper';
 
 // import SpeciesIcon from '@material-ui/icons/Category';
 // import RegionIcon from '@material-ui/icons/MyLocation';
 // import ContextIcon from '@material-ui/icons/NaturePeople';
 // import SubmitterIcon from '@material-ui/icons/Person';
 import MainColumn from '../../components/MainColumn';
-import Text from '../../components/Text';
-import DividerTitle from '../../components/DividerTitle';
 import LoadingScreen from '../../components/LoadingScreen';
 import SadScreen from '../../components/SadScreen';
+import Button from '../../components/Button';
+import EntityHeaderNew from '../../components/EntityHeaderNew';
 import { selectSightings } from '../../modules/sightings/selectors';
 import useSighting from '../../models/sighting/useSighting';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
+import useSightingFieldSchemas from '../../models/sighting/useSightingFieldSchemas';
 import { formatDate } from '../../utils/formatters';
-import Status from './Status';
 // import AnnotationsGallery from './AnnotationsGallery';
 // import IndividualsGallery from './IndividualsGallery';
 // import PhotoGallery from './PhotoGallery';
@@ -28,7 +27,25 @@ import OverviewContent from './OverviewContent';
 
 export default function Sighting() {
   const { id } = useParams();
-  const { data, loading, error } = useSighting(id);
+  const intl = useIntl();
+  const { data, loading, error, refresh: refreshSightingData } = useSighting(id);
+  const fieldSchemas = useSightingFieldSchemas();
+
+  /*
+    known issue: if data or fieldschemas change values
+    or properties this may not update
+    switch to data.version?
+  */
+  const metadata = useMemo(
+    () => {
+      if (!data || !fieldSchemas) return null;
+      return fieldSchemas.map(schema => ({
+        ...schema,
+        value: schema.getValue(schema, data),
+      }));
+    },
+    [data, fieldSchemas],
+  );
 
   // fetch data for Id...
   const sightings = useSelector(selectSightings);
@@ -36,7 +53,6 @@ export default function Sighting() {
 
   const activeTab = window.location.hash || '#overview';
 
-  const sighting = sightings.find(e => toLower(e.id) === toLower(id));
   const is404 = false;
 
   if (loading) return <LoadingScreen />;
@@ -56,36 +72,23 @@ export default function Sighting() {
       />
     );
 
-  console.log(data);
   const sightingDisplayDate = get(data, ['startTime']);
   // const encounters = get(data, ['encounters'], []);
 
   return (
     <MainColumn fullWidth>
-      <Paper style={{ padding: 30, marginTop: 100 }}>
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'flex-start',
-          }}
-        >
-          <div>
-            <Text
-              variant="h4"
-              id="ENTITY_HEADER_SIGHTING_DATE"
-              values={{
-                date: formatDate(sightingDisplayDate, true),
-              }}
-            />
-            <Text variant="subtitle2" style={{ marginTop: 12 }}>
-              Reported by George Masterson
-            </Text>
-          </div>
-        </div>
-        <DividerTitle titleId="STATUS" />
-        <Status />
-      </Paper>
+      <EntityHeaderNew
+        noAvatar
+        name={intl.formatMessage(
+          { id: 'ENTITY_HEADER_SIGHTING_DATE' },
+          {
+            date: formatDate(sightingDisplayDate, true),
+          },
+        )}
+        renderOptions={<Button id="SUBSCRIBE" />}
+      >
+        Reported by George Masterson
+      </EntityHeaderNew>
       <Tabs
         value={activeTab.replace('#', '')}
         onChange={(_, newValue) => {
@@ -111,7 +114,7 @@ export default function Sighting() {
         />
       </Tabs>
       {activeTab === '#overview' && (
-        <OverviewContent sightingData={data} />
+        <OverviewContent metadata={metadata} sightingId={id} refreshSightingData={refreshSightingData} />
       )}
       {/* {activeTab === '#individuals' && (
         <IndividualsGallery sighting={encounters} />

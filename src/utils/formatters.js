@@ -2,7 +2,7 @@ import { get, round } from 'lodash-es';
 import { format } from 'date-fns';
 
 export const formatDate = (input, fancy) => {
-  const formatter = fancy ? 'PP' : 'Pp';
+  const formatter = fancy ? 'PP' : 'yyyy-MM-dd HH:mm';
   try {
     const jsDate =
       typeof input === 'string' ? new Date(input) : input;

@@ -60,11 +60,13 @@ export default function UploadManager({
       setFiles([...fileRef.current, ...assetReferences]);
     });
 
-    uppyInstance.on('file-removed', file => {
-      const newFiles = fileRef.current.filter(
-        f => f.path !== file.name,
-      );
-      setFiles(newFiles);
+    uppyInstance.on('file-removed', (file, reason) => {
+      if (reason === 'removed-by-user') {
+        const newFiles = fileRef.current.filter(
+          f => f.path !== file.name,
+        );
+        setFiles(newFiles);
+      }
     });
 
     setUppy(uppyInstance);
