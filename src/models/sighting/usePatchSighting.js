@@ -18,7 +18,7 @@ export default function usePatchSighting(sightingId) {
       );
       dictionaryCopy.decimalLongitude = get(
         dictionaryCopy,
-        ['gps', 0],
+        ['gps', 1],
         null,
       );
       delete dictionaryCopy.gps;

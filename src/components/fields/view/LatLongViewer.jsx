@@ -4,7 +4,7 @@ import Text from '../../Text';
 
 export default function LatLongViewer({ value }) {
   const lat = get(value, 0, null);
-  const lng = get(value, 0, null);
+  const lng = get(value, 1, null);
   return (
     <span style={{ display: 'flex', flexDirection: 'column' }}>
       <Text component="span" variant="body2">

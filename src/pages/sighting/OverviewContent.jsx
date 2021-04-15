@@ -7,7 +7,7 @@ import GpsCard from '../../components/cards/GpsCard';
 import StatusCard from './StatusCard';
 import EditSightingMetadata from './EditSightingMetadata';
 
-export default function OverviewContent({ sightingId, metadata }) {
+export default function OverviewContent({ sightingId, metadata, refreshSightingData }) {
   const [editing, setEditing] = useState(false);
 
   const editableFields = metadata.filter(field => field.editable);
@@ -23,6 +23,7 @@ export default function OverviewContent({ sightingId, metadata }) {
           sightingId={sightingId}
           onClose={() => setEditing(false)}
           metadata={editableFields}
+          refreshSightingData={refreshSightingData}
         />
       ) : null}
       <CardContainer size="small">

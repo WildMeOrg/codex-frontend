@@ -29,6 +29,7 @@ export default function EditSightingMetadata({
   sightingId,
   metadata,
   onClose,
+  refreshSightingData,
 }) {
   const {
     updateProperties,
@@ -121,7 +122,10 @@ export default function EditSightingMetadata({
             const successfulUpdate = await updateProperties(
               defaultFieldValues,
             );
-            if (successfulUpdate) onClose();
+            if (successfulUpdate) {
+              refreshSightingData();
+              onClose();
+            }
           }}
           id="SAVE"
         />

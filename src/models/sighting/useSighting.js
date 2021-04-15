@@ -7,6 +7,11 @@ export default function useSighting(sightingId) {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [sightingData, setSightingData] = useState(null);
+  const [refreshCount, setRefreshCount] = useState(0);
+
+  function refresh() {
+    setRefreshCount(refreshCount + 1);
+  }
 
   useEffect(
     () => {
@@ -32,8 +37,8 @@ export default function useSighting(sightingId) {
 
       fetchSightingData();
     },
-    [sightingId],
+    [sightingId, refreshCount],
   );
 
-  return { data: sightingData, loading, error };
+  return { data: sightingData, loading, error, refresh };
 }

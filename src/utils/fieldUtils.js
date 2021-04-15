@@ -17,6 +17,9 @@ import DateEditor from '../components/fields/edit/DateEditor';
 import DateRangeEditor from '../components/fields/edit/DateRangeEditor';
 import BooleanEditor from '../components/fields/edit/BooleanEditor';
 import LocationIdEditor from '../components/fields/edit/LocationIdEditor';
+import IndividualEditor from '../components/fields/edit/IndividualEditor';
+import RelationshipsEditor from '../components/fields/edit/RelationshipsEditor';
+import FeetMetersEditor from '../components/fields/edit/FeetMetersEditor';
 
 export const prototypeFieldSchema = {
   getValue: (schema, backendObject) =>
@@ -82,7 +85,7 @@ const componentMap = {
   [fieldTypes.feetmeters]: {
     defaultValue: null,
     viewComponent: FloatViewer,
-    editComponent: null,
+    editComponent: FeetMetersEditor,
     filterComponent: null,
   },
   [fieldTypes.latlong]: {
@@ -139,13 +142,13 @@ const componentMap = {
   [fieldTypes.individual]: {
     defaultValue: null,
     viewComponent: DefaultViewer,
-    editComponent: null,
+    editComponent: IndividualEditor,
     filterComponent: null,
   },
   [fieldTypes.relationships]: {
     defaultValue: [],
     viewComponent: DefaultViewer,
-    editComponent: null,
+    editComponent: RelationshipsEditor,
     filterComponent: null,
   },
 };
