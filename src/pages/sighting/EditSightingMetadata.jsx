@@ -106,13 +106,22 @@ export default function EditSightingMetadata({
         )}
       </DialogContent>
       <DialogActions style={{ padding: '0px 24px 24px 24px' }}>
-        <Button display="basic" onClick={onClose} id="CANCEL" />
         <Button
+          display="basic"
+          onClick={() => {
+            setError(null);
+            onClose();
+          }}
+          id="CANCEL"
+        />
+        <Button
+          loading={loading}
           display="primary"
           onClick={async () => {
-            const result = updateProperties(defaultFieldValues);
-            console.log(result);
-            onClose();
+            const successfulUpdate = await updateProperties(
+              defaultFieldValues,
+            );
+            if (successfulUpdate) onClose();
           }}
           id="SAVE"
         />

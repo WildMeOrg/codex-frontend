@@ -9,13 +9,31 @@ export default function usePatchSighting(sightingId) {
   const [success, setSuccess] = useState(false);
 
   const updateProperties = async dictionary => {
-    const operations = Object.keys(dictionary).map(propertyKey => ({
-      op: 'add',
-      path: propertyKey,
-      value: dictionary[propertyKey],
-    }));
+    const dictionaryCopy = { ...dictionary };
+    if ('gps' in dictionaryCopy) {
+      dictionaryCopy.decimalLatitude = get(
+        dictionaryCopy,
+        ['gps', 0],
+        null,
+      );
+      dictionaryCopy.decimalLongitude = get(
+        dictionaryCopy,
+        ['gps', 0],
+        null,
+      );
+      delete dictionaryCopy.gps;
+    }
+    delete dictionaryCopy.comments;
+    delete dictionaryCopy.verbatimLocality;
+    delete dictionaryCopy.behavior;
 
-    console.log(operations);
+    const operations = Object.keys(dictionaryCopy).map(
+      propertyKey => ({
+        op: 'add',
+        path: `/${propertyKey}`,
+        value: dictionaryCopy[propertyKey],
+      }),
+    );
 
     try {
       setLoading(true);
