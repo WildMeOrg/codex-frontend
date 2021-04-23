@@ -38,7 +38,7 @@ export default function ActionIcon({ variant, labelId, ...rest }) {
 
   return (
     <Tooltip title={label}>
-      <IconButton aria-label={label} {...rest}>
+      <IconButton style={{ padding: 4 }} aria-label={label} {...rest}>
         <config.component />
       </IconButton>
     </Tooltip>

@@ -90,7 +90,7 @@ export default function NotificationsPane({ anchorEl, setAnchorEl }) {
                 <Avatar
                   src={task.userAvatar || task.ecologicalAvatar}
                   variant={
-                    task.ecologicalAvatar ? 'square' : 'circle'
+                    task.ecologicalAvatar ? 'square' : 'circular'
                   }
                 />
                 <Text style={{ maxWidth: 200, margin: '0 20px' }}>

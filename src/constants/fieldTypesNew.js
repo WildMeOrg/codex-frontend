@@ -17,4 +17,126 @@ const fieldTypes = {
   relationships: 'relationships', // { targetIndividualId: string, direction: enum, type: enum, id: int }
 };
 
+const backendTypes = {
+  string: 'string',
+  integer: 'integer',
+  double: 'double',
+  long: 'long',
+  date: 'date',
+  boolean: 'boolean',
+  url: 'url',
+  uuid: 'uuid',
+  image: 'image',
+  video: 'video',
+  color: 'color',
+  geo: 'geo',
+  json: 'json',
+  individual: 'individual',
+  encounter: 'encounter',
+  customFields: 'customFields',
+  locationIds: 'locationIds',
+  taxonomy: 'taxonomy',
+};
+
+export const fieldTypeInfo = {
+  [fieldTypes.string]: {
+    labelId: 'STRING',
+    value: fieldTypes.string,
+    backendType: backendTypes.string,
+    backendMultiple: false,
+    canProvideDefaultValue: true,
+  },
+  [fieldTypes.longstring]: {
+    labelId: 'LONG_STRING',
+    value: fieldTypes.longstring,
+    backendType: backendTypes.string,
+    backendMultiple: false,
+    canProvideDefaultValue: true,
+  },
+  [fieldTypes.float]: {
+    labelId: 'FLOAT_LABEL',
+    value: fieldTypes.float,
+    backendType: backendTypes.double,
+    backendMultiple: false,
+    canProvideDefaultValue: true,
+  },
+  [fieldTypes.feetmeters]: {
+    labelId: 'FEET_METERS_SELECTOR',
+    value: fieldTypes.feetmeters,
+    backendType: backendTypes.double,
+    backendMultiple: false,
+    canProvideDefaultValue: false,
+  },
+  [fieldTypes.individual]: {
+    labelId: 'INDIVIDUAL_SELECTOR',
+    value: fieldTypes.individual,
+    backendType: backendTypes.individual,
+    backendMultiple: false,
+    canProvideDefaultValue: false,
+  },
+  [fieldTypes.relationships]: {
+    labelId: 'RELATIONSHIPS_SELECTOR',
+    value: fieldTypes.relationships,
+    backendType: backendTypes.string,
+    backendMultiple: true,
+    canProvideDefaultValue: false,
+  },
+  [fieldTypes.integer]: {
+    labelId: 'INTEGER_LABEL',
+    value: fieldTypes.integer,
+    backendType: backendTypes.integer,
+    backendMultiple: false,
+    canProvideDefaultValue: true,
+  },
+  [fieldTypes.file]: {
+    labelId: 'FILE_UPLOADER',
+    value: fieldTypes.file,
+    backendType: backendTypes.string,
+    backendMultiple: false,
+    canProvideDefaultValue: false,
+  },
+  [fieldTypes.latlong]: {
+    labelId: 'LAT_LONG_SELECTOR',
+    value: fieldTypes.latlong,
+    backendType: backendTypes.geo,
+    backendMultiple: false,
+    canProvideDefaultValue: false,
+  },
+  [fieldTypes.date]: {
+    labelId: 'DATE_PICKER',
+    value: fieldTypes.date,
+    backendType: backendTypes.date,
+    backendMultiple: false,
+    canProvideDefaultValue: true,
+  },
+  [fieldTypes.daterange]: {
+    labelId: 'DATE_RANGE_PICKER',
+    value: fieldTypes.daterange,
+    backendType: backendTypes.string,
+    backendMultiple: true,
+    canProvideDefaultValue: true,
+  },
+  [fieldTypes.select]: {
+    labelId: 'DROPDOWN',
+    value: fieldTypes.select,
+    backendType: backendTypes.string,
+    backendMultiple: false,
+    canProvideDefaultValue: true,
+  },
+  [fieldTypes.multiselect]: {
+    labelId: 'MULTI_SELECT_DROPDOWN',
+    value: fieldTypes.multiselect,
+    backendType: backendTypes.string,
+    backendMultiple: true,
+    canProvideDefaultValue: true,
+  },
+  [fieldTypes.boolean]: {
+    labelId: 'BOOLEAN',
+    value: fieldTypes.boolean,
+    backendType: backendTypes.boolean,
+    backendMultiple: false,
+    canProvideDefaultValue: true,
+  },
+};
+
 export default fieldTypes;

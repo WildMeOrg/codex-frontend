@@ -112,7 +112,8 @@ export default function CreateAdminUser() {
             style={{ position: 'relative', padding: '20px 12px' }}
           >
             <Button
-              id={buttonId}
+              domId={buttonId}
+              id="CREATE_USER"
               loading={loading}
               onClick={() => {
                 if (password1 === password2) {
@@ -126,9 +127,7 @@ export default function CreateAdminUser() {
                 }
               }}
               display="primary"
-            >
-              <FormattedMessage id="CREATE_USER" />
-            </Button>
+            />
           </Grid>
         </Grid>
       </form>

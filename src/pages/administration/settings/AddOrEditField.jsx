@@ -49,6 +49,11 @@ export default function EditField({
   const displayTypeSchema = fieldTypeChoices.find(
     f => get(field, ['schema', 'displayType']) === f.value,
   );
+
+  console.log(fieldTypeChoices);
+  console.log(field);
+  console.log(displayTypeSchema);
+
   const configuration = get(displayTypeSchema, 'configuration', []);
 
   return (
@@ -60,6 +65,14 @@ export default function EditField({
       titleId={newField ? 'ADD_FIELD' : 'EDIT_FIELD'}
     >
       <DialogContent style={{ minWidth: 200 }}>
+        <InputRow labelId="FIELD_TYPE">
+          <FieldTypeSelector
+            field={editedField}
+            onChange={nextField => {
+              setEditedField(nextField);
+            }}
+          />
+        </InputRow>
         <InputRow
           labelId="FIELD_VALUE"
           descriptionId="FIELD_VALUE_DESCRIPTION"
@@ -87,7 +100,7 @@ export default function EditField({
             labelId: 'LABEL',
             displayType: 'string',
           }}
-          value={get(editedField, ['schema', 'label'], '')}
+          value={get(editedField, 'label', '')}
         />
         <InputRow
           labelId="DESCRIPTION"
@@ -100,7 +113,7 @@ export default function EditField({
             labelId: 'DESCRIPTION',
             displayType: 'longstring',
           }}
-          value={get(editedField, ['schema', 'description'], '')}
+          value={get(editedField, 'description', '')}
         />
         <InputRow
           labelId="REQUIRED"
@@ -113,19 +126,11 @@ export default function EditField({
           }}
           value={get(editedField, 'required', false)}
         />
-        <InputRow labelId="FIELD_TYPE">
-          <FieldTypeSelector
-            field={editedField}
-            onChange={nextField => {
-              setEditedField(nextField);
-            }}
-          />
-        </InputRow>
         <InputRow
           labelId="CATEGORY"
           onChange={newCategory => {
             setEditedField(
-              updateSchema(editedField, 'category', newCategory),
+              updateSchema(editedField, 'categoryId', newCategory),
             );
           }}
           schema={{
@@ -136,7 +141,7 @@ export default function EditField({
               value: c.id,
             })),
           }}
-          value={get(editedField, ['schema', 'category'], '')}
+          value={get(editedField, 'categoryId', '')}
         />
         {configuration.map(configurableProperty => {
           let ConfigurationInput = OptionEditorButton;

@@ -12,7 +12,8 @@ export default function SiteSettings() {
   const intl = useIntl();
   useDocumentTitle(intl.formatMessage({ id: 'SITE_SETTINGS' }));
 
-  const [activeTab, setActiveTab] = useState('general');
+  // const [activeTab, setActiveTab] = useState('general');
+  const [activeTab, setActiveTab] = useState('fields');
   return (
     <div style={{ marginTop: 20 }}>
       <Tabs

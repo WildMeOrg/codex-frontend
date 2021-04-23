@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
 import { get } from 'lodash-es';
 import { v4 as uuid } from 'uuid';
@@ -16,7 +16,8 @@ import {
   mergeItemById,
   removeItemById,
 } from '../../../utils/manipulators';
-import { fieldTypeChoices } from '../../../constants/fieldTypes';
+import { fieldTypeInfo } from '../../../constants/fieldTypesNew';
+import { createCustomFieldSchema } from '../../../utils/fieldUtils';
 
 import FieldDemo from './FieldDemo';
 import AddOrEditField from './AddOrEditField';
@@ -28,6 +29,23 @@ export default function CustomFieldTable({
   titleId,
   settingName,
 }) {
+  const fieldSchemas = fields.map(houstonSchema => {
+    const frontendSchema = createCustomFieldSchema(houstonSchema);
+    const typeLabelId = get(fieldTypeInfo, [
+      frontendSchema.fieldType,
+      'labelId',
+    ]);
+    const category = categories.find(
+      c => c.id === frontendSchema.categoryId,
+    );
+    return {
+      ...frontendSchema,
+      typeLabelId,
+      categoryLabel: get(category, 'label', ''),
+      houstonSchema,
+    };
+  });
+
   const intl = useIntl();
   const [deleteField, setDeleteField] = useState(null);
   const [editField, setEditField] = useState(null);
@@ -40,67 +58,57 @@ export default function CustomFieldTable({
   const putFields = definitions =>
     putSiteSetting(settingName, { definitions });
 
-  const tableColumns = [
-    {
-      name: 'schema.label',
-      label: intl.formatMessage({ id: 'LABEL' }),
-    },
-    {
-      name: 'name',
-      label: intl.formatMessage({ id: 'VALUE' }),
-    },
-    {
-      name: 'schema.displayType',
-      label: intl.formatMessage({ id: 'FIELD_TYPE' }),
-    },
-    {
-      name: 'schema.category',
-      label: intl.formatMessage({ id: 'CATEGORY' }),
-      options: {
-        customBodyRender: categoryId => {
-          const category = categories.find(c => c.id === categoryId);
-          return get(category, 'label', '');
+  const tableColumns = useMemo(() => {
+    return [
+      {
+        name: 'label',
+        label: intl.formatMessage({ id: 'LABEL' }),
+      },
+      {
+        name: 'name',
+        label: intl.formatMessage({ id: 'VALUE' }),
+      },
+      {
+        name: 'typeLabelId',
+        label: intl.formatMessage({ id: 'FIELD_TYPE' }),
+        options: {
+          customBodyRender: labelId => (
+            <Text variant="body2" id={labelId} />
+          ),
         },
       },
-    },
-    {
-      name: 'actions',
-      label: intl.formatMessage({ id: 'ACTIONS' }),
-      options: {
-        customBodyRender: (_, field) => (
-          <div>
-            <ActionIcon
-              variant="view"
-              labelId="PREVIEW"
-              onClick={() => {
-                const fieldDisplayType = get(field, [
-                  'schema',
-                  'displayType',
-                ]);
-
-                const displayTypeSchema = fieldTypeChoices.find(
-                  schema => fieldDisplayType === schema.value,
-                );
-
-                setPreviewInitialValue(
-                  get(displayTypeSchema, 'defaultValue'),
-                );
-                setPreviewField(field);
-              }}
-            />
-            <ActionIcon
-              variant="edit"
-              onClick={() => setEditField(field)}
-            />
-            <ActionIcon
-              variant="delete"
-              onClick={() => setDeleteField(field)}
-            />
-          </div>
-        ),
+      {
+        name: 'categoryLabel',
+        label: intl.formatMessage({ id: 'CATEGORY' }),
       },
-    },
-  ];
+      {
+        name: 'actions',
+        label: intl.formatMessage({ id: 'ACTIONS' }),
+        options: {
+          customBodyRender: (_, field) => (
+            <div style={{ display: 'flex' }}>
+              <ActionIcon
+                variant="view"
+                labelId="PREVIEW"
+                onClick={() => {
+                  setPreviewInitialValue(field.defaultValue);
+                  setPreviewField(field);
+                }}
+              />
+              <ActionIcon
+                variant="edit"
+                onClick={() => setEditField(field)}
+              />
+              <ActionIcon
+                variant="delete"
+                onClick={() => setDeleteField(field)}
+              />
+            </div>
+          ),
+        },
+      },
+    ];
+  }, []);
 
   const onCloseConfirmDelete = () => {
     if (error) setError(null);
@@ -138,14 +146,9 @@ export default function CustomFieldTable({
       <ConfirmDelete
         open={Boolean(deleteField)}
         onClose={onCloseConfirmDelete}
-        title={<FormattedMessage id="DELETE_FIELD" />}
+        titleId="DELETE_FIELD"
         error={error}
-        message={
-          <FormattedMessage
-            id="CONFIRM_DELETE_FIELD"
-            values={{ field: get(deleteField, 'name') }}
-          />
-        }
+        entityToDelete={get(deleteField, 'name')}
         onDelete={() => {
           const newFields = removeItemById(deleteField, fields);
           putFields(newFields).then(requestSuccessful => {
@@ -163,6 +166,7 @@ export default function CustomFieldTable({
       >
         <Text variant="h5" component="h5" id={titleId} />
         <Button
+          id="ADD_NEW"
           size="small"
           display="panel"
           startIcon={<AddIcon />}
@@ -173,6 +177,7 @@ export default function CustomFieldTable({
                 label: '',
                 description: '',
               },
+              default: null,
               name: '',
               multiple: false,
               required: false,
@@ -180,9 +185,7 @@ export default function CustomFieldTable({
               timeCreated: Date.now(),
             })
           }
-        >
-          <FormattedMessage id="ADD_NEW" />
-        </Button>
+        />
       </div>
       <Text
         variant="caption"
@@ -194,7 +197,7 @@ export default function CustomFieldTable({
         noTitleBar
         variant="secondary"
         columns={tableColumns}
-        data={fields}
+        data={fieldSchemas}
       />
     </Grid>
   );
