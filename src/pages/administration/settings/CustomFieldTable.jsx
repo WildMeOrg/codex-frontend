@@ -1,21 +1,19 @@
 import React, { useMemo, useState } from 'react';
-import { useIntl, FormattedMessage } from 'react-intl';
+import { useIntl } from 'react-intl';
 import { get } from 'lodash-es';
 import { v4 as uuid } from 'uuid';
 
 import Grid from '@material-ui/core/Grid';
 import AddIcon from '@material-ui/icons/Add';
 
+import useRemoveCustomField from '../../../models/site/useRemoveCustomField';
 import usePutSiteSettings from '../../../models/site/usePutSiteSettings';
 import ActionIcon from '../../../components/ActionIcon';
 import Button from '../../../components/Button';
 import ConfirmDelete from '../../../components/ConfirmDelete';
 import Text from '../../../components/Text';
 import DataDisplay from '../../../components/dataDisplays/DataDisplay';
-import {
-  mergeItemById,
-  removeItemById,
-} from '../../../utils/manipulators';
+import { mergeItemById } from '../../../utils/manipulators';
 import { fieldTypeInfo } from '../../../constants/fieldTypesNew';
 import { createCustomFieldSchema } from '../../../utils/fieldUtils';
 
@@ -54,12 +52,13 @@ export default function CustomFieldTable({
     null,
   );
   const { putSiteSetting, error, setError } = usePutSiteSettings();
+  const { removeCustomField } = useRemoveCustomField();
 
   const putFields = definitions =>
     putSiteSetting(settingName, { definitions });
 
-  const tableColumns = useMemo(() => {
-    return [
+  const tableColumns = useMemo(
+    () => [
       {
         name: 'label',
         label: intl.formatMessage({ id: 'LABEL' }),
@@ -107,8 +106,9 @@ export default function CustomFieldTable({
           ),
         },
       },
-    ];
-  }, []);
+    ],
+    [],
+  );
 
   const onCloseConfirmDelete = () => {
     if (error) setError(null);
@@ -149,11 +149,12 @@ export default function CustomFieldTable({
         titleId="DELETE_FIELD"
         error={error}
         entityToDelete={get(deleteField, 'name')}
-        onDelete={() => {
-          const newFields = removeItemById(deleteField, fields);
-          putFields(newFields).then(requestSuccessful => {
-            if (requestSuccessful) onCloseConfirmDelete();
-          });
+        onDelete={async () => {
+          const deleteResult = await removeCustomField(
+            settingName,
+            deleteField.id,
+          );
+          if (deleteResult) onCloseConfirmDelete();
         }}
       />
       <div

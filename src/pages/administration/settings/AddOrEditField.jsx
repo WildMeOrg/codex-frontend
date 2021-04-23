@@ -50,10 +50,6 @@ export default function EditField({
     f => get(field, ['schema', 'displayType']) === f.value,
   );
 
-  console.log(fieldTypeChoices);
-  console.log(field);
-  console.log(displayTypeSchema);
-
   const configuration = get(displayTypeSchema, 'configuration', []);
 
   return (
