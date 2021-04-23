@@ -28,6 +28,7 @@ import { formatDate } from '../../utils/formatters';
 // import IndividualsGallery from './IndividualsGallery';
 // import PhotoGallery from './PhotoGallery';
 import OverviewContent from './OverviewContent';
+import SightingHistoryDialog from './SightingHistoryDialog';
 
 export default function Sighting() {
   const { id } = useParams();
@@ -60,6 +61,7 @@ export default function Sighting() {
   const sightings = useSelector(selectSightings);
   useDocumentTitle(`Sighting ${id}`);
 
+  const [historyOpen, setHistoryOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleClick = event => {
@@ -96,6 +98,10 @@ export default function Sighting() {
 
   return (
     <MainColumn fullWidth>
+      <SightingHistoryDialog
+        open={historyOpen}
+        onClose={() => setHistoryOpen(false)}
+      />
       <EntityHeaderNew
         noAvatar
         name={intl.formatMessage(
@@ -122,8 +128,13 @@ export default function Sighting() {
               open={Boolean(anchorEl)}
               onClose={handleClose}
             >
-              <MenuItem>View history</MenuItem>
-              <MenuItem>Delete sighting</MenuItem>
+              <MenuItem onClick={() => {
+                setHistoryOpen(true);
+                handleClose();
+              }}>
+                View history
+              </MenuItem>
+              <MenuItem onClick={handleClose}>Delete sighting</MenuItem>
             </Menu>
           </div>
         }
