@@ -51,8 +51,18 @@ export default function CustomFieldTable({
   const [previewInitialValue, setPreviewInitialValue] = useState(
     null,
   );
-  const { putSiteSetting, error, setError } = usePutSiteSettings();
-  const { removeCustomField } = useRemoveCustomField();
+  const {
+    putSiteSetting,
+    error: putSiteSettingError,
+    setError: setPutSiteSettingError,
+  } = usePutSiteSettings();
+  const {
+    removeCustomField,
+    needsForce,
+    setNeedsForce,
+    error: removeCustomFieldError,
+    setError: setRemoveCustomFieldError,
+  } = useRemoveCustomField();
 
   const putFields = definitions =>
     putSiteSetting(settingName, { definitions });
@@ -111,12 +121,13 @@ export default function CustomFieldTable({
   );
 
   const onCloseConfirmDelete = () => {
-    if (error) setError(null);
+    if (removeCustomFieldError) setRemoveCustomFieldError(null);
+    if (needsForce) setNeedsForce(false);
     setDeleteField(null);
   };
 
   const onCloseEditField = () => {
-    if (error) setError(null);
+    if (putSiteSettingError) setPutSiteSettingError(null);
     setEditField(null);
   };
 
@@ -127,7 +138,7 @@ export default function CustomFieldTable({
         open={Boolean(editField)}
         onClose={onCloseEditField}
         field={editField}
-        error={error}
+        error={putSiteSettingError}
         categories={categories}
         onSubmit={editedField => {
           const newFields = mergeItemById(editedField, fields);
@@ -147,12 +158,14 @@ export default function CustomFieldTable({
         open={Boolean(deleteField)}
         onClose={onCloseConfirmDelete}
         titleId="DELETE_FIELD"
-        error={error}
+        messageId="CONFIRM_DELETE_CUSTOM_FIELD_DESCRIPTION"
+        error={removeCustomFieldError}
         entityToDelete={get(deleteField, 'name')}
         onDelete={async () => {
           const deleteResult = await removeCustomField(
             settingName,
             deleteField.id,
+            needsForce,
           );
           if (deleteResult) onCloseConfirmDelete();
         }}

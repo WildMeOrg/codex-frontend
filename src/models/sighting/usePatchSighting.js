@@ -23,9 +23,6 @@ export default function usePatchSighting(sightingId) {
       );
       delete dictionaryCopy.gps;
     }
-    delete dictionaryCopy.comments;
-    delete dictionaryCopy.verbatimLocality;
-    delete dictionaryCopy.behavior;
 
     const operations = Object.keys(dictionaryCopy).map(
       propertyKey => ({

@@ -80,7 +80,7 @@ const changesByDay = [
     {
       user: 'schmitizen',
       time: subHours(Date.now(), 142),
-      event: 'Reported sighting',
+      event: 'Sighting reported',
       data: {
         anonymousReport: false,
         sex: '',

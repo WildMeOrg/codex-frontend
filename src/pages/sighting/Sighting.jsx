@@ -128,13 +128,17 @@ export default function Sighting() {
               open={Boolean(anchorEl)}
               onClose={handleClose}
             >
-              <MenuItem onClick={() => {
-                setHistoryOpen(true);
-                handleClose();
-              }}>
+              <MenuItem
+                onClick={() => {
+                  setHistoryOpen(true);
+                  handleClose();
+                }}
+              >
                 View history
               </MenuItem>
-              <MenuItem onClick={handleClose}>Delete sighting</MenuItem>
+              <MenuItem onClick={handleClose}>
+                Delete sighting
+              </MenuItem>
             </Menu>
           </div>
         }

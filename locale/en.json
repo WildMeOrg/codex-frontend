@@ -572,6 +572,7 @@
   "CONFIRM_DELETE": "Confirm delete",
   "CONFIRM_DELETE_CATEGORY": "Are you sure you want to remove the category \"{category}\"? The fields associated with the category will not be deleted.",
   "CONFIRM_DELETE_DESCRIPTION": "Are you sure you want to delete \"{entity}\"? All data associated with \"{entity}\" will be deleted. This action cannot be undone.",
+  "CONFIRM_DELETE_CUSTOM_FIELD_DESCRIPTION": "Are you sure you want to delete \"{entity}\"? This action cannot be undone.",
   "SUBMITTER_NAME": "Submitter name",
   "SUBMITTER_NAME_DESCRIPTION": "Submitter's name or email address contains the specified substring (this field is not case sensitive).",
   "UPLOAD_NEW": "Upload new",

@@ -1,12 +1,15 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import axios from 'axios';
 import { get } from 'lodash-es';
+import { AppContext, setSiteSettingsNeedsFetch } from '../../context';
 import { formatError } from '../../utils/formatters';
 
 export default function useRemoveCustomField() {
+  const { dispatch } = useContext(AppContext);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
+  const [needsForce, setNeedsForce] = useState(false);
 
   const removeCustomField = async (
     settingSpecifier,
@@ -29,7 +32,10 @@ export default function useRemoveCustomField() {
       });
       const responseStatus = get(patchResponse, 'status');
       const successful = responseStatus === 200;
+      setNeedsForce(false);
+
       if (successful) {
+        dispatch(setSiteSettingsNeedsFetch(true));
         setLoading(false);
         setSuccess(true);
         setError(null);
@@ -40,9 +46,23 @@ export default function useRemoveCustomField() {
       setSuccess(false);
       return false;
     } catch (patchError) {
-      console.log(patchError);
+      const errorCode = get(patchError, ['response', 'status']);
+      if (errorCode === 602) {
+        const recordCount = get(patchError, [
+          'response',
+          'data',
+          'numValues',
+        ]);
+        setNeedsForce(true);
+        setError(
+          `There is data associated with this field. If you continue, ${recordCount} record(s) will be deleted. Are you sure you wish to proceed?`,
+        );
+      } else {
+        setNeedsForce(false);
+        setError(formatError(patchError));
+      }
+
       setLoading(false);
-      setError(formatError(patchError));
       setSuccess(false);
       return false;
     }
@@ -51,6 +71,8 @@ export default function useRemoveCustomField() {
   return {
     removeCustomField,
     loading,
+    needsForce,
+    setNeedsForce,
     error,
     setError,
     success,
