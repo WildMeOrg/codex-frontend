@@ -44,7 +44,7 @@ export default function UploadManager({
     });
 
     uppyInstance.use(Tus, {
-      endpoint: `${__houston_url__}/api/v1/submissions/tus`,
+      endpoint: `${__houston_url__}/api/v1/asset_groups/tus`,
       headers: {
         'x-tus-transaction-id': assetSubmissionId,
       },
