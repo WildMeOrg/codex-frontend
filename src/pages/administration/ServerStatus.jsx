@@ -112,14 +112,14 @@ export default function ServerStatus() {
             <Text>
               {`Houston version: ${get(
                 siteInfo,
-                'version',
+                ['houston', 'version'],
                 'Unknown',
               )}`}
             </Text>
             <Text>
               {`Houston git hash: ${get(
                 siteInfo,
-                'git_version',
+                ['houston', 'git_version'],
                 'Unknown',
               )}`}
             </Text>
