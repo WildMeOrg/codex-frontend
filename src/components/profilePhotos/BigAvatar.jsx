@@ -9,6 +9,7 @@ import defaultProfilePhoto from '../../assets/defaultProfile.jpg';
 export default function BigAvatar({
   imageSrc,
   imageGuid,
+  userId,
   refreshUserData,
   userDataLoading,
   name,
@@ -33,6 +34,7 @@ export default function BigAvatar({
       }}
     >
       <EditAvatar
+        userId={userId}
         imageSrc={imageSrc}
         imageGuid={imageGuid}
         visible={editingAvatar}

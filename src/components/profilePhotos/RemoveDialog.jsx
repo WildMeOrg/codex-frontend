@@ -11,13 +11,13 @@ import StandardDialog from '../StandardDialog';
 import Text from '../Text';
 import Button from '../Button';
 
-export default function RemoveDialog({ open, onClose }) {
+export default function RemoveDialog({ open, onClose, userId }) {
   const {
     removeUserProperty,
     loading,
     error,
     setError,
-  } = usePatchUser('0689edaf-208b-4c8a-9e67-93432e05170c');
+  } = usePatchUser(userId);
 
   const onCloseDialog = () => {
     if (error) setError(null);
