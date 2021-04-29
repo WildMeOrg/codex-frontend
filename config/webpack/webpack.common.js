@@ -25,8 +25,6 @@ const extraConfig = isDev ? devConfig : prodConfig;
 
 // no entry specified - only things that would be the same between each app
 module.exports = env => {
-  console.log(env);
-
   let houstonUrl = defaultHoustonUrl;
   if (env && env.houston) houstonUrl = env.houston;
   if (houstonUrl === 'relative') houstonUrl = '';

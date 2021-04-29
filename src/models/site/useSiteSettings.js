@@ -37,7 +37,6 @@ export default function useSiteSettings() {
     () => {
       const fetchData = async () => {
         try {
-          console.log('got here');
           const schemaPacket = await axios({
             url: `${__houston_url__}/api/v1/configurationDefinition/default/__bundle_setup`,
             timeout: 2000,
@@ -46,7 +45,6 @@ export default function useSiteSettings() {
           dispatch(
             setSiteSettingsSchema(getAxiosResponse(schemaPacket)),
           );
-          console.log('reached the end');
           setSchemaLoading(false);
         } catch (fetchError) {
           setError(formatError(fetchError));
