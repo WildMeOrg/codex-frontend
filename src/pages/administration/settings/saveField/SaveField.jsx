@@ -27,6 +27,8 @@ import Button from '../../../../components/Button';
 import MetadataCard from '../../../../components/cards/MetadataCardNew';
 import InputRow from '../../../../components/fields/edit/InputRowNew';
 import customFieldTypes from '../constants/customFieldTypes';
+import getTypeCategories from './getTypeCategories';
+import OptionEditorButton from './OptionEditorButton';
 
 const inputWidth = 280;
 
@@ -47,21 +49,22 @@ export default function SaveField() {
 
   useEffect(
     () => {
-      if (!data) return null;
+      if (!data) return undefined;
       if (newField) {
         setFormData({
+          id: uuid(),
+          timeCreated: Date.now(),
+          required: false,
+          name: 'field_name',
+          type: fieldTypeInfo.string.backendType,
+          default: fieldTypeInfo.string.initialDefaultValue,
+          multiple: fieldTypeInfo.string.backendMultiple,
+          categoryId: '',
           schema: {
             displayType: fieldTypeInfo.string.value,
             label: 'Field label',
             description: 'Field description',
           },
-          default: fieldTypeInfo.string.initialDefaultValue,
-          name: 'field_name',
-          multiple: fieldTypeInfo.string.backendMultiple,
-          required: false,
-          type: fieldTypeInfo.string.backendType,
-          id: uuid(),
-          timeCreated: Date.now(),
         });
       } else {
         const backendFieldType = get(customFieldTypes, [
@@ -83,7 +86,7 @@ export default function SaveField() {
           setLookupFieldError(true);
         }
       }
-      return null;
+      return undefined;
     },
     [data],
   );
@@ -97,6 +100,12 @@ export default function SaveField() {
     [fieldType, 'canProvideDefaultValue'],
     false,
   );
+
+  const showOptionButton = Boolean(
+    get(formData, ['schema', 'choices']),
+  );
+
+  const categoryOptions = getTypeCategories(data, type);
 
   return (
     <MainColumn
@@ -180,6 +189,16 @@ export default function SaveField() {
                     nextFormData.default = nextInitialDefault;
                   }
 
+                  const fieldTypesWithChoices = [
+                    fieldTypeInfo.select.value,
+                    fieldTypeInfo.select.value,
+                  ];
+                  if (fieldTypesWithChoices.includes(nextFieldType)) {
+                    nextFormData.schema.choices = [];
+                  } else {
+                    delete nextFormData.schema.choices;
+                  }
+
                   setFormData(nextFormData);
                 }}
                 value={get(formData, ['schema', 'displayType'], '')}
@@ -256,6 +275,46 @@ export default function SaveField() {
               />
             </FormControl>
           </Grid>
+          <Grid item>
+            <FormControl
+              style={{ width: inputWidth, marginBottom: 4 }}
+            >
+              <InputLabel>
+                <FormattedMessage id="CATEGORY" />
+              </InputLabel>
+              <Select
+                id="category"
+                disabled={disableForm}
+                onChange={e =>
+                  setFormData({
+                    ...formData,
+                    categoryId: e.target.value,
+                  })
+                }
+                value={get(formData, ['categoryId'], '')}
+              >
+                {Object.values(categoryOptions).map(cat => (
+                  <MenuItem key={cat.id} value={cat.id}>
+                    {cat.label}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
+          {showOptionButton ? (
+            <OptionEditorButton
+              value={get(formData, ['schema', 'choices'], [])}
+              onChange={nextChoices =>
+                setFormData({
+                  ...formData,
+                  schema: {
+                    ...formData.schema,
+                    choices: nextChoices,
+                  },
+                })
+              }
+            />
+          ) : null}
           {defaultEditable ? (
             <Grid item>
               <fieldSchema.editComponent

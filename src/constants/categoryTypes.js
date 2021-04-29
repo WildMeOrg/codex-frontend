@@ -1,5 +1,5 @@
 export default {
-  sighting: 'Sighting',
-  individual: 'Individual',
-  encounter: 'Encounter',
+  sighting: 'sighting',
+  individual: 'individual',
+  encounter: 'encounter',
 };
