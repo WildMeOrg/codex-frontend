@@ -73,6 +73,7 @@ const items = [
 export default function UserProfile({
   children,
   userData,
+  userId,
   imageSrc,
   imageGuid,
   userDataLoading,
@@ -120,9 +121,10 @@ export default function UserProfile({
         onSettingsClick={() => setEditingProfile(true)}
         renderAvatar={
           <BigAvatar
+            editable
+            userId={userId}
             imageGuid={imageGuid}
             imageSrc={imageSrc}
-            editable
             name={userData.name}
             admin={userData.admin}
             refreshUserData={refreshUserData}

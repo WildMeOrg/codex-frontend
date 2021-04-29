@@ -28,6 +28,7 @@ import SiteSetup from './pages/setup/SiteSetup';
 import AdminActions from './pages/administration/Actions';
 import ServerStatus from './pages/administration/ServerStatus';
 import EditSiteSettings from './pages/administration/EditSiteSettings';
+import SaveCustomField from './pages/administration/settings/saveField/SaveField';
 import MatchReview from './pages/match/MatchReview';
 import FlagsOnly from './pages/match/iceland/FlagsOnly';
 import Iceland from './pages/match/iceland/Iceland';
@@ -143,6 +144,9 @@ export default function AuthenticatedSwitch() {
                       </Route>
                       <Route path="/admin/server">
                         <ServerStatus />
+                      </Route>
+                      <Route path="/admin/settings/save-custom-field/:type?/:id?">
+                        <SaveCustomField />
                       </Route>
                       <Route path="/admin/settings">
                         <EditSiteSettings />

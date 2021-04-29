@@ -47,7 +47,7 @@ export default function Login({ showBanner, redirect = '/' }) {
       instructionsId="LOG_IN_INSTRUCTIONS"
     >
       {showBanner && (
-        <Alert severity="warning">
+        <Alert style={{ marginTop: 12 }} severity="warning">
           <FormattedMessage id="MUST_LOG_IN" />
         </Alert>
       )}

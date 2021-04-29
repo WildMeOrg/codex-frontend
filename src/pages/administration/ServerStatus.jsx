@@ -10,6 +10,7 @@ import Grid from '@material-ui/core/Grid';
 import Skeleton from '@material-ui/lab/Skeleton';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useTheme } from '@material-ui/core/styles';
+import useGetSiteInfo from '../../models/site/useGetSiteInfo';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import useServerStatus from '../../modules/administration/useServerStatus';
 import MainColumn from '../../components/MainColumn';
@@ -60,6 +61,10 @@ const categoryData = {
 export default function ServerStatus() {
   const theme = useTheme();
   const isXs = useMediaQuery(theme.breakpoints.only('xs'));
+  const {
+    data: siteInfo,
+    loading: siteInfoLoading,
+  } = useGetSiteInfo();
 
   const intl = useIntl();
   useDocumentTitle(intl.formatMessage({ id: 'SERVER_STATUS' }));
@@ -96,6 +101,31 @@ export default function ServerStatus() {
         id="SERVER_STATUS"
       />
       <div style={{ padding: 16, boxSizing: 'border-box' }}>
+        <Text variant="h5">Versions</Text>
+        {siteInfoLoading ? (
+          <>
+            <Skeleton width={200} />
+            <Skeleton width={300} />
+          </>
+        ) : (
+          <>
+            <Text>
+              {`Houston version: ${get(
+                siteInfo,
+                ['houston', 'version'],
+                'Unknown',
+              )}`}
+            </Text>
+            <Text>
+              {`Houston git hash: ${get(
+                siteInfo,
+                ['houston', 'git_version'],
+                'Unknown',
+              )}`}
+            </Text>
+          </>
+        )}
+
         {error ? (
           <Text color="error" id="REQUEST_ERROR" />
         ) : (

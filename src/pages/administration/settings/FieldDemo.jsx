@@ -1,11 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { omit } from 'lodash-es';
-
 import DialogContent from '@material-ui/core/DialogContent';
-
 import StandardDialog from '../../../components/StandardDialog';
-import LabeledInput from '../../../components/LabeledInput';
 import Text from '../../../components/Text';
+
+function Editor({ schema, value, onChange }) {
+  const componentProps = schema.editComponentProps || {};
+
+  return (
+    <schema.editComponent
+      schema={schema}
+      value={value}
+      onChange={onChange}
+      {...componentProps}
+    />
+  );
+}
 
 export default function FieldDemo({
   open,
@@ -21,10 +30,6 @@ export default function FieldDemo({
     },
     [initialValue],
   );
-
-  const newFieldProps = fieldProps
-    ? omit(fieldProps, ['timeCreated'])
-    : fieldProps;
 
   return (
     <StandardDialog
@@ -42,10 +47,10 @@ export default function FieldDemo({
           }}
         >
           {open && fieldProps && (
-            <LabeledInput
+            <Editor
+              schema={fieldProps}
               value={demoFieldValue}
               onChange={newValue => setDemoFieldValue(newValue)}
-              {...newFieldProps}
             />
           )}
         </div>

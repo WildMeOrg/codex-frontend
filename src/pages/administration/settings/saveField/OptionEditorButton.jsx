@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import Button from '../../../components/Button';
+import Button from '../../../../components/Button';
 import OptionEditor from './OptionEditor';
 
 export default function OptionEditorButton({ value, ...rest }) {

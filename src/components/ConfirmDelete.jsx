@@ -13,6 +13,7 @@ export default function ConfirmDelete({
   onClose,
   onDelete,
   entityToDelete,
+  messageId,
   message,
   error,
   titleId,
@@ -25,13 +26,16 @@ export default function ConfirmDelete({
     >
       <DialogContent>
         <Text
-          id="CONFIRM_DELETE_DESCRIPTION"
+          id={messageId || 'CONFIRM_DELETE_DESCRIPTION'}
           values={{ entity: entityToDelete }}
         >
           {message}
         </Text>
         {error && (
-          <Alert severity="error">
+          <Alert
+            style={{ marginTop: 16, marginBottom: 8 }}
+            severity="error"
+          >
             <AlertTitle>
               <FormattedMessage id="SERVER_ERROR" />
             </AlertTitle>

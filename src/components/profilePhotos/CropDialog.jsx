@@ -18,6 +18,7 @@ export default function CropDialog({
   square,
   imageSrc,
   imageGuid,
+  userId,
 }) {
   const [crop, setCrop] = useState({
     unit: 'px',
@@ -31,7 +32,7 @@ export default function CropDialog({
     loading: replaceLoading,
     error: replaceError,
     setError: setReplaceError,
-  } = usePatchUser('0689edaf-208b-4c8a-9e67-93432e05170c');
+  } = usePatchUser(userId);
 
   async function cropProfilePhoto() {
     const transformX = x =>

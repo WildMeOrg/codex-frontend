@@ -1,25 +1,21 @@
-import React, { useState } from 'react';
-import { useIntl, FormattedMessage } from 'react-intl';
+import React, { useMemo, useState } from 'react';
+import { useIntl } from 'react-intl';
 import { get } from 'lodash-es';
-import { v4 as uuid } from 'uuid';
 
 import Grid from '@material-ui/core/Grid';
 import AddIcon from '@material-ui/icons/Add';
 
-import usePutSiteSettings from '../../../models/site/usePutSiteSettings';
+import useRemoveCustomField from '../../../models/site/useRemoveCustomField';
 import ActionIcon from '../../../components/ActionIcon';
-import Button from '../../../components/Button';
+import ButtonLink from '../../../components/ButtonLink';
 import ConfirmDelete from '../../../components/ConfirmDelete';
 import Text from '../../../components/Text';
 import DataDisplay from '../../../components/dataDisplays/DataDisplay';
-import {
-  mergeItemById,
-  removeItemById,
-} from '../../../utils/manipulators';
-import { fieldTypeChoices } from '../../../constants/fieldTypes';
+import { fieldTypeInfo } from '../../../constants/fieldTypesNew';
+import { createCustomFieldSchema } from '../../../utils/fieldUtils';
 
 import FieldDemo from './FieldDemo';
-import AddOrEditField from './AddOrEditField';
+import customFieldTypes from './constants/customFieldTypes';
 
 export default function CustomFieldTable({
   categories,
@@ -28,107 +24,106 @@ export default function CustomFieldTable({
   titleId,
   settingName,
 }) {
+  const fieldSchemas = fields.map(houstonSchema => {
+    const frontendSchema = createCustomFieldSchema(houstonSchema);
+
+    const typeLabelId = get(fieldTypeInfo, [
+      frontendSchema.fieldType,
+      'labelId',
+    ]);
+    const category = categories.find(
+      c => c.id === frontendSchema.categoryId,
+    );
+    return {
+      ...frontendSchema,
+      typeLabelId,
+      categoryLabel: get(category, 'label', ''),
+      houstonSchema,
+    };
+  });
+
   const intl = useIntl();
   const [deleteField, setDeleteField] = useState(null);
-  const [editField, setEditField] = useState(null);
   const [previewField, setPreviewField] = useState(null);
   const [previewInitialValue, setPreviewInitialValue] = useState(
     null,
   );
-  const { putSiteSetting, error, setError } = usePutSiteSettings();
+  const {
+    removeCustomField,
+    needsForce,
+    setNeedsForce,
+    error: removeCustomFieldError,
+    setError: setRemoveCustomFieldError,
+  } = useRemoveCustomField();
 
-  const putFields = definitions =>
-    putSiteSetting(settingName, { definitions });
+  const fieldTypeDefinition = Object.values(customFieldTypes).find(
+    type => type.backendPath === settingName,
+  );
+  const fieldTypeName = fieldTypeDefinition.name;
 
-  const tableColumns = [
-    {
-      name: 'schema.label',
-      label: intl.formatMessage({ id: 'LABEL' }),
-    },
-    {
-      name: 'name',
-      label: intl.formatMessage({ id: 'VALUE' }),
-    },
-    {
-      name: 'schema.displayType',
-      label: intl.formatMessage({ id: 'FIELD_TYPE' }),
-    },
-    {
-      name: 'schema.category',
-      label: intl.formatMessage({ id: 'CATEGORY' }),
-      options: {
-        customBodyRender: categoryId => {
-          const category = categories.find(c => c.id === categoryId);
-          return get(category, 'label', '');
+  const tableColumns = useMemo(
+    () => [
+      {
+        name: 'label',
+        label: intl.formatMessage({ id: 'LABEL' }),
+      },
+      {
+        name: 'name',
+        label: intl.formatMessage({ id: 'VALUE' }),
+      },
+      {
+        name: 'typeLabelId',
+        label: intl.formatMessage({ id: 'FIELD_TYPE' }),
+        options: {
+          customBodyRender: labelId => (
+            <Text variant="body2" id={labelId} />
+          ),
         },
       },
-    },
-    {
-      name: 'actions',
-      label: intl.formatMessage({ id: 'ACTIONS' }),
-      options: {
-        customBodyRender: (_, field) => (
-          <div>
-            <ActionIcon
-              variant="view"
-              labelId="PREVIEW"
-              onClick={() => {
-                const fieldDisplayType = get(field, [
-                  'schema',
-                  'displayType',
-                ]);
-
-                const displayTypeSchema = fieldTypeChoices.find(
-                  schema => fieldDisplayType === schema.value,
-                );
-
-                setPreviewInitialValue(
-                  get(displayTypeSchema, 'defaultValue'),
-                );
-                setPreviewField(field);
-              }}
-            />
-            <ActionIcon
-              variant="edit"
-              onClick={() => setEditField(field)}
-            />
-            <ActionIcon
-              variant="delete"
-              onClick={() => setDeleteField(field)}
-            />
-          </div>
-        ),
+      {
+        name: 'categoryLabel',
+        label: intl.formatMessage({ id: 'CATEGORY' }),
       },
-    },
-  ];
+      {
+        name: 'actions',
+        label: intl.formatMessage({ id: 'ACTIONS' }),
+        options: {
+          customBodyRender: (_, field) => (
+            <div>
+              <ActionIcon
+                variant="view"
+                labelId="PREVIEW"
+                onClick={() => {
+                  setPreviewInitialValue(field.defaultValue);
+                  setPreviewField(field);
+                }}
+              />
+              <ActionIcon
+                variant="edit"
+                href={`/admin/settings/save-custom-field/${fieldTypeName}/${
+                  field.id
+                }`}
+              />
+              <ActionIcon
+                variant="delete"
+                onClick={() => setDeleteField(field)}
+              />
+            </div>
+          ),
+        },
+      },
+    ],
+    [],
+  );
 
   const onCloseConfirmDelete = () => {
-    if (error) setError(null);
+    if (removeCustomFieldError) setRemoveCustomFieldError(null);
+    if (needsForce) setNeedsForce(false);
     setDeleteField(null);
-  };
-
-  const onCloseEditField = () => {
-    if (error) setError(null);
-    setEditField(null);
   };
 
   return (
     <Grid item>
-      <AddOrEditField
-        newField={get(editField, 'name') === ''}
-        open={Boolean(editField)}
-        onClose={onCloseEditField}
-        field={editField}
-        error={error}
-        categories={categories}
-        onSubmit={editedField => {
-          const newFields = mergeItemById(editedField, fields);
-
-          putFields(newFields).then(requestSuccessful => {
-            if (requestSuccessful) onCloseEditField();
-          });
-        }}
-      />
       <FieldDemo
         open={Boolean(previewField)}
         onClose={() => setPreviewField(null)}
@@ -138,19 +133,17 @@ export default function CustomFieldTable({
       <ConfirmDelete
         open={Boolean(deleteField)}
         onClose={onCloseConfirmDelete}
-        title={<FormattedMessage id="DELETE_FIELD" />}
-        error={error}
-        message={
-          <FormattedMessage
-            id="CONFIRM_DELETE_FIELD"
-            values={{ field: get(deleteField, 'name') }}
-          />
-        }
-        onDelete={() => {
-          const newFields = removeItemById(deleteField, fields);
-          putFields(newFields).then(requestSuccessful => {
-            if (requestSuccessful) onCloseConfirmDelete();
-          });
+        titleId="DELETE_FIELD"
+        messageId="CONFIRM_DELETE_CUSTOM_FIELD_DESCRIPTION"
+        error={removeCustomFieldError}
+        entityToDelete={get(deleteField, 'name')}
+        onDelete={async () => {
+          const deleteResult = await removeCustomField(
+            settingName,
+            deleteField.id,
+            needsForce,
+          );
+          if (deleteResult) onCloseConfirmDelete();
         }}
       />
       <div
@@ -162,27 +155,13 @@ export default function CustomFieldTable({
         }}
       >
         <Text variant="h5" component="h5" id={titleId} />
-        <Button
+        <ButtonLink
+          id="ADD_NEW"
           size="small"
           display="panel"
           startIcon={<AddIcon />}
-          onClick={() =>
-            setEditField({
-              schema: {
-                displayType: '',
-                label: '',
-                description: '',
-              },
-              name: '',
-              multiple: false,
-              required: false,
-              id: uuid(),
-              timeCreated: Date.now(),
-            })
-          }
-        >
-          <FormattedMessage id="ADD_NEW" />
-        </Button>
+          href={`/admin/settings/save-custom-field/${fieldTypeName}`}
+        />
       </div>
       <Text
         variant="caption"
@@ -194,7 +173,7 @@ export default function CustomFieldTable({
         noTitleBar
         variant="secondary"
         columns={tableColumns}
-        data={fields}
+        data={fieldSchemas}
       />
     </Grid>
   );

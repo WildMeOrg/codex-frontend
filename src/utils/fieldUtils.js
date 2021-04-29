@@ -29,6 +29,9 @@ export const prototypeFieldSchema = {
       get(schema, 'defaultValue', null),
     ),
   customField: false,
+  category: null,
+  categoryId: null,
+  fieldType: null,
   defaultValue: null,
   icon: null,
   choices: null,
@@ -44,9 +47,11 @@ export const prototypeFieldSchema = {
   viewComponentProps: {},
 };
 
+// add file component
 const componentMap = {
   [fieldTypes.string]: {
     defaultValue: '',
+    fieldType: fieldTypes.string,
     viewComponent: DefaultViewer,
     editComponent: TextEditor,
     editComponentProps: {
@@ -56,6 +61,7 @@ const componentMap = {
   },
   [fieldTypes.longstring]: {
     defaultValue: '',
+    fieldType: fieldTypes.longstring,
     viewComponent: DefaultViewer, // may need to truncate
     editComponent: TextEditor,
     editComponentProps: {
@@ -65,8 +71,8 @@ const componentMap = {
   },
   [fieldTypes.float]: {
     defaultValue: null,
+    fieldType: fieldTypes.float,
     viewComponent: FloatViewer,
-
     editComponent: TextEditor,
     editComponentProps: {
       variant: 'float',
@@ -75,6 +81,7 @@ const componentMap = {
   },
   [fieldTypes.integer]: {
     defaultValue: null,
+    fieldType: fieldTypes.integer,
     viewComponent: DefaultViewer,
     editComponent: TextEditor,
     editComponentProps: {
@@ -84,30 +91,35 @@ const componentMap = {
   },
   [fieldTypes.feetmeters]: {
     defaultValue: null,
+    fieldType: fieldTypes.feetmeters,
     viewComponent: FloatViewer,
     editComponent: FeetMetersEditor,
     filterComponent: null,
   },
   [fieldTypes.latlong]: {
     defaultValue: [null, null],
+    fieldType: fieldTypes.latlong,
     viewComponent: LatLongViewer,
     editComponent: LatLongEditor,
     filterComponent: null,
   },
   [fieldTypes.date]: {
     defaultValue: null,
+    fieldType: fieldTypes.date,
     viewComponent: DateViewer,
     editComponent: DateEditor,
     filterComponent: null,
   },
   [fieldTypes.daterange]: {
     defaultValue: [null, null],
+    fieldType: fieldTypes.daterange,
     viewComponent: DateRangeViewer,
     editComponent: DateRangeEditor,
     filterComponent: null,
   },
   [fieldTypes.select]: {
     defaultValue: '',
+    fieldType: fieldTypes.select,
     viewComponent: SelectViewer,
     editComponent: SelectionEditor,
     editComponentProps: {
@@ -117,6 +129,7 @@ const componentMap = {
   },
   [fieldTypes.multiselect]: {
     defaultValue: [],
+    fieldType: fieldTypes.multiselect,
     viewComponent: MultiSelectViewer,
     editComponent: SelectionEditor,
     editComponentProps: {
@@ -126,6 +139,7 @@ const componentMap = {
   },
   [fieldTypes.boolean]: {
     defaultValue: null,
+    fieldType: fieldTypes.boolean,
     viewComponent: DefaultViewer,
     viewComponentProps: {
       defaultLabel: 'Value not set',
@@ -135,18 +149,21 @@ const componentMap = {
   },
   [fieldTypes.locationId]: {
     defaultValue: '',
+    fieldType: fieldTypes.locationId,
     viewComponent: LocationIdViewer,
     editComponent: LocationIdEditor,
     filterComponent: null,
   },
   [fieldTypes.individual]: {
     defaultValue: null,
+    fieldType: fieldTypes.individual,
     viewComponent: DefaultViewer,
     editComponent: IndividualEditor,
     filterComponent: null,
   },
   [fieldTypes.relationships]: {
     defaultValue: [],
+    fieldType: fieldTypes.relationships,
     viewComponent: DefaultViewer,
     editComponent: RelationshipsEditor,
     filterComponent: null,
@@ -171,6 +188,7 @@ export function createCustomFieldSchema(houstonSchema) {
     ...copiedFields,
     ...copiedSchemaFields,
     ...fieldTypeProperties,
+    categoryId: get(houstonSchema, ['schema', 'category']),
     customField: true,
     getValue: (schema, backendObject) =>
       get(

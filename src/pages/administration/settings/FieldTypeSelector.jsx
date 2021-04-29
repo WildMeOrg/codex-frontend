@@ -6,10 +6,37 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 
-import {
-  fieldTypeChoices,
-  customFieldCategories,
-} from '../../../constants/fieldTypes';
+import { fieldTypeChoices } from '../../../constants/fieldTypes';
+import fieldTypes, {
+  fieldTypeInfo,
+} from '../../../constants/fieldTypesNew';
+
+const fieldTypeCategories = [
+  {
+    labelId: 'BASIC_INPUTS',
+    fields: [
+      fieldTypes.boolean,
+      fieldTypes.date,
+      fieldTypes.string,
+      fieldTypes.longstring,
+      fieldTypes.float,
+      fieldTypes.integer,
+    ],
+  },
+  {
+    labelId: 'SPECIAL_INPUTS',
+    fields: [
+      fieldTypes.daterange,
+      fieldTypes.select,
+      fieldTypes.multiselect,
+      fieldTypes.file,
+      fieldTypes.individual,
+      fieldTypes.latlong,
+      fieldTypes.relationships,
+      fieldTypes.feetmeters,
+    ],
+  },
+];
 
 export default function FieldTypeSelector({ onChange, field }) {
   const intl = useIntl();
@@ -26,9 +53,7 @@ export default function FieldTypeSelector({ onChange, field }) {
         value={get(field, ['schema', 'displayType'], '')}
         onChange={e => {
           const newType = e.target.value;
-          const newFieldTypeSpecifier = fieldTypeChoices.find(
-            f => newType === f.value,
-          );
+          const newFieldTypeSpecifier = fieldTypeInfo[newType];
 
           const newField = {
             ...field,
@@ -54,7 +79,7 @@ export default function FieldTypeSelector({ onChange, field }) {
           onChange(newField);
         }}
       >
-        {customFieldCategories.map(category => (
+        {fieldTypeCategories.map(category => (
           <optgroup
             label={intl.formatMessage({
               id: category.labelId,
@@ -62,9 +87,7 @@ export default function FieldTypeSelector({ onChange, field }) {
             key={category.labelId}
           >
             {category.fields.map(categoryField => {
-              const option = fieldTypeChoices.find(
-                f => f.value === categoryField,
-              );
+              const option = fieldTypeInfo[categoryField];
               return (
                 <option value={option.value} key={option.value}>
                   {intl.formatMessage({

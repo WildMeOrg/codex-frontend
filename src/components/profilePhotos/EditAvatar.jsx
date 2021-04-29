@@ -13,6 +13,7 @@ export default function EditAvatar({
   imageSrc,
   imageGuid,
   refreshUserData,
+  userId,
 }) {
   const [cropping, setCropping] = useState(false);
   const [uploading, setUploading] = useState(false);
@@ -38,6 +39,7 @@ export default function EditAvatar({
       />
       <CropDialog
         open={cropping}
+        userId={userId}
         onClose={() => {
           refreshUserData();
           setCropping(false);
@@ -47,6 +49,7 @@ export default function EditAvatar({
         imageGuid={imageGuid}
       />
       <UploadDialog
+        userId={userId}
         open={(visible && !imageSrc) || uploading}
         onClose={uploadOccurred => {
           if (uploadOccurred) {
@@ -58,6 +61,7 @@ export default function EditAvatar({
         }}
       />
       <RemoveDialog
+        userId={userId}
         open={removing}
         onClose={() => {
           refreshUserData();

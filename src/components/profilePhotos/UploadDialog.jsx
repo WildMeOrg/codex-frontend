@@ -12,7 +12,7 @@ import Button from '../Button';
 import StandardDialog from '../StandardDialog';
 import ProfileUploader from '../ProfileUploader';
 
-export default function UploadDialog({ open, onClose }) {
+export default function UploadDialog({ open, onClose, userId }) {
   const [profileAsset, setProfileAsset] = useState(null);
 
   const {
@@ -20,7 +20,7 @@ export default function UploadDialog({ open, onClose }) {
     loading: replaceLoading,
     error: replaceError,
     setError: setReplaceError,
-  } = usePatchUser('0689edaf-208b-4c8a-9e67-93432e05170c');
+  } = usePatchUser(userId);
 
   async function submitProfilePhoto() {
     const successful = await replaceUserProperty(

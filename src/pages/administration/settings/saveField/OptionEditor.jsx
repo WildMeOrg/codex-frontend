@@ -5,21 +5,18 @@ import FormControl from '@material-ui/core/FormControl';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 
-import TextInput from '../../../components/inputs/TextInput';
-import DeleteButton from '../../../components/DeleteButton';
-import Button from '../../../components/Button';
-import Text from '../../../components/Text';
-import StandardDialog from '../../../components/StandardDialog';
+import TextInput from '../../../../components/inputs/TextInput';
+import DeleteButton from '../../../../components/DeleteButton';
+import Button from '../../../../components/Button';
+import Text from '../../../../components/Text';
+import StandardDialog from '../../../../components/StandardDialog';
 
 export default function OptionEditor({
   open,
   onClose,
   onSubmit,
-  schema,
   value,
   onChange,
-  minimalLabels = false, // eslint-disable-line no-unused-vars
-  children,
   ...rest
 }) {
   const options = value || [];
@@ -30,15 +27,9 @@ export default function OptionEditor({
     <StandardDialog
       open={open}
       onClose={onClose}
-      titleId={schema.labelId || 'OPTION_EDITOR'}
+      titleId="OPTION_EDITOR"
     >
       <DialogContent style={{ minWidth: 200 }}>
-        {schema.descriptionId && (
-          <Text
-            style={{ marginBottom: 20 }}
-            id={schema.descriptionId}
-          />
-        )}
         {displayedOptions.map((option, optionIndex) => {
           const otherOptions = options.filter(
             o => o.id !== option.id,
@@ -119,7 +110,6 @@ export default function OptionEditor({
             }
           />
         </Button>
-        {children}
       </DialogContent>
       <DialogActions style={{ padding: '0px 24px 24px 24px' }}>
         <Button display="primary" onClick={onSubmit}>

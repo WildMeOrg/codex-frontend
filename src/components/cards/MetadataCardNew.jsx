@@ -15,6 +15,7 @@ export default function MetadataCard({
   titleId = 'METADATA',
   metadata,
   editable = false,
+  showDefaultValues = false,
   onEdit,
 }) {
   return (
@@ -38,7 +39,11 @@ export default function MetadataCard({
       <List dense>
         {metadata
           ? metadata.map(field => {
-              if (field.value === field.defaultValue) return null;
+              if (
+                !showDefaultValues &&
+                field.value === field.defaultValue
+              )
+                return null;
               const viewComponentProps =
                 field.viewComponentProps || {};
               return (

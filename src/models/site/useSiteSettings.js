@@ -28,8 +28,9 @@ export default function useSiteSettings() {
     siteSettingsNeedsFetch,
   );
   const [schemaLoading, setSchemaLoading] = useState(
-    siteSettingsNeedsFetch,
+    siteSettingsSchemaNeedsFetch,
   );
+
   const loading = settingsLoading || schemaLoading;
 
   useEffect(

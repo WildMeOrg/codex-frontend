@@ -18,10 +18,12 @@ export default function Home() {
 
   const imageSrc = get(data, ['profile_fileupload', 'src']);
   const imageGuid = get(data, ['profile_fileupload', 'guid']);
+  const userId = get(data, 'guid');
 
   return (
     <UserProfile
       userData={users.bob}
+      userId={userId}
       imageSrc={imageSrc}
       imageGuid={imageGuid}
       userDataLoading={loading}

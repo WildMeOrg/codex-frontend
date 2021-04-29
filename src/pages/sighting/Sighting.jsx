@@ -1,10 +1,14 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useIntl, FormattedMessage } from 'react-intl';
 import { get } from 'lodash-es';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
+import IconButton from '@material-ui/core/IconButton';
+import MoreIcon from '@material-ui/icons/MoreHoriz';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 
 // import SpeciesIcon from '@material-ui/icons/Category';
 // import RegionIcon from '@material-ui/icons/MyLocation';
@@ -24,6 +28,7 @@ import { formatDate } from '../../utils/formatters';
 // import IndividualsGallery from './IndividualsGallery';
 // import PhotoGallery from './PhotoGallery';
 import OverviewContent from './OverviewContent';
+import SightingHistoryDialog from './SightingHistoryDialog';
 
 export default function Sighting() {
   const { id } = useParams();
@@ -56,6 +61,17 @@ export default function Sighting() {
   const sightings = useSelector(selectSightings);
   useDocumentTitle(`Sighting ${id}`);
 
+  const [historyOpen, setHistoryOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleClick = event => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   const activeTab = window.location.hash || '#overview';
 
   const is404 = false;
@@ -82,6 +98,10 @@ export default function Sighting() {
 
   return (
     <MainColumn fullWidth>
+      <SightingHistoryDialog
+        open={historyOpen}
+        onClose={() => setHistoryOpen(false)}
+      />
       <EntityHeaderNew
         noAvatar
         name={intl.formatMessage(
@@ -90,7 +110,38 @@ export default function Sighting() {
             date: formatDate(sightingDisplayDate, true),
           },
         )}
-        renderOptions={<Button id="SUBSCRIBE" />}
+        renderOptions={
+          <div>
+            <Button id="SUBSCRIBE" display="primary" />
+            <IconButton
+              aria-controls="sighting-actions"
+              aria-haspopup="true"
+              onClick={handleClick}
+              style={{ marginLeft: 4 }}
+            >
+              <MoreIcon />
+            </IconButton>
+            <Menu
+              id="sighting-actions-menu"
+              anchorEl={anchorEl}
+              keepMounted
+              open={Boolean(anchorEl)}
+              onClose={handleClose}
+            >
+              <MenuItem
+                onClick={() => {
+                  setHistoryOpen(true);
+                  handleClose();
+                }}
+              >
+                View history
+              </MenuItem>
+              <MenuItem onClick={handleClose}>
+                Delete sighting
+              </MenuItem>
+            </Menu>
+          </div>
+        }
       >
         Reported by George Masterson
       </EntityHeaderNew>
