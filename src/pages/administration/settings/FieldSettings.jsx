@@ -61,7 +61,7 @@ export default function FieldSettings() {
       container
       direction="column"
       spacing={3}
-      style={{ marginTop: 20, padding: 20 }}
+      style={{ padding: 20 }}
     >
       <DefaultFieldTable
         siteSettings={siteSettings}

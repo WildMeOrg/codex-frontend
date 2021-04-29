@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
 import { v4 as uuid } from 'uuid';
 import { get } from 'lodash-es';
@@ -18,6 +18,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Alert from '@material-ui/lab/Alert';
 import AlertTitle from '@material-ui/lab/AlertTitle';
 
+import usePutSiteSettings from '../../../../models/site/usePutSiteSettings';
 import { createCustomFieldSchema } from '../../../../utils/fieldUtils';
 import { fieldTypeInfo } from '../../../../constants/fieldTypesNew';
 import useSiteSettings from '../../../../models/site/useSiteSettings';
@@ -26,6 +27,7 @@ import Text from '../../../../components/Text';
 import Button from '../../../../components/Button';
 import MetadataCard from '../../../../components/cards/MetadataCardNew';
 import InputRow from '../../../../components/fields/edit/InputRowNew';
+import { mergeItemById } from '../../../../utils/manipulators';
 import customFieldTypes from '../constants/customFieldTypes';
 import getTypeCategories from './getTypeCategories';
 import OptionEditorButton from './OptionEditorButton';
@@ -36,14 +38,22 @@ export default function SaveField() {
   const [formData, setFormData] = useState(null);
   const [lookupFieldError, setLookupFieldError] = useState(false);
   const { id, type } = useParams();
+  const history = useHistory();
   const {
     data,
     loading,
     error: fetchSiteSettingsError,
   } = useSiteSettings();
+
+  const {
+    putSiteSetting,
+    error: putSiteSettingError,
+    setError: setPutSiteSettingError,
+  } = usePutSiteSettings();
+
   const newField = !id;
 
-  const error = lookupFieldError || fetchSiteSettingsError;
+  const loadingError = lookupFieldError || fetchSiteSettingsError;
   const disableForm =
     loading || lookupFieldError || fetchSiteSettingsError;
 
@@ -59,11 +69,11 @@ export default function SaveField() {
           type: fieldTypeInfo.string.backendType,
           default: fieldTypeInfo.string.initialDefaultValue,
           multiple: fieldTypeInfo.string.backendMultiple,
-          categoryId: '',
           schema: {
             displayType: fieldTypeInfo.string.value,
             label: 'Field label',
             description: 'Field description',
+            category: null,
           },
         });
       } else {
@@ -127,7 +137,7 @@ export default function SaveField() {
           container
           direction="column"
           spacing={2}
-          style={{ padding: '0 16px' }}
+          style={{ padding: '0 16px', marginBottom: 48 }}
         >
           <Grid item>
             <FormControl
@@ -161,7 +171,7 @@ export default function SaveField() {
               </InputLabel>
               <Select
                 id="name"
-                disabled={disableForm}
+                disabled={disableForm || !newField}
                 onChange={e => {
                   const nextFieldType = e.target.value;
                   const nextBackendFieldType =
@@ -212,6 +222,9 @@ export default function SaveField() {
                   </MenuItem>
                 ))}
               </Select>
+              <FormHelperText>
+                <FormattedMessage id="CANNOT_EDIT_CUSTOM_FIELD_TYPE" />
+              </FormHelperText>
             </FormControl>
           </Grid>
           <Grid item>
@@ -288,10 +301,13 @@ export default function SaveField() {
                 onChange={e =>
                   setFormData({
                     ...formData,
-                    categoryId: e.target.value,
+                    schema: {
+                      ...formData.schema,
+                      category: e.target.value,
+                    },
                   })
                 }
-                value={get(formData, ['categoryId'], '')}
+                value={get(formData, ['schema', 'category'], '')}
               >
                 {Object.values(categoryOptions).map(cat => (
                   <MenuItem key={cat.id} value={cat.id}>
@@ -345,7 +361,7 @@ export default function SaveField() {
             id={newField ? 'NEW_CUSTOM_FIELD' : 'EDIT_CUSTOM_FIELD'}
           />
         </Grid>
-        {error ? (
+        {loadingError ? (
           <Grid item>
             <Alert severity="error" style={{ marginTop: 20 }}>
               <AlertTitle>
@@ -408,11 +424,45 @@ export default function SaveField() {
                 />
               ) : null}
             </Grid>
+            {putSiteSettingError ? (
+              <Grid item>
+                <Alert severity="error" style={{ marginBottom: 20 }}>
+                  <AlertTitle>
+                    <FormattedMessage id="SUBMISSION_ERROR" />
+                  </AlertTitle>
+                  {putSiteSettingError}
+                </Alert>
+              </Grid>
+            ) : null}
             <Grid item>
               <Button
                 id="SAVE_FIELD"
                 display="primary"
-                onClick={Function.prototype}
+                onClick={async () => {
+                  if (putSiteSettingError)
+                    setPutSiteSettingError(null);
+
+                  const backendFieldType = get(customFieldTypes, [
+                    type,
+                    'backendPath',
+                  ]);
+                  const fieldsInType = get(
+                    data,
+                    [backendFieldType, 'value', 'definitions'],
+                    [],
+                  );
+
+                  const newFields = mergeItemById(
+                    formData,
+                    fieldsInType,
+                  );
+
+                  const putSuccessful = await putSiteSetting(
+                    backendFieldType,
+                    { definitions: newFields },
+                  );
+                  if (putSuccessful) history.push('/admin/settings');
+                }}
               />
             </Grid>
           </>

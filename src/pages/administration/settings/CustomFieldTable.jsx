@@ -6,18 +6,15 @@ import Grid from '@material-ui/core/Grid';
 import AddIcon from '@material-ui/icons/Add';
 
 import useRemoveCustomField from '../../../models/site/useRemoveCustomField';
-import usePutSiteSettings from '../../../models/site/usePutSiteSettings';
 import ActionIcon from '../../../components/ActionIcon';
 import ButtonLink from '../../../components/ButtonLink';
 import ConfirmDelete from '../../../components/ConfirmDelete';
 import Text from '../../../components/Text';
 import DataDisplay from '../../../components/dataDisplays/DataDisplay';
-import { mergeItemById } from '../../../utils/manipulators';
 import { fieldTypeInfo } from '../../../constants/fieldTypesNew';
 import { createCustomFieldSchema } from '../../../utils/fieldUtils';
 
 import FieldDemo from './FieldDemo';
-import AddOrEditField from './AddOrEditField';
 import customFieldTypes from './constants/customFieldTypes';
 
 export default function CustomFieldTable({
@@ -29,6 +26,7 @@ export default function CustomFieldTable({
 }) {
   const fieldSchemas = fields.map(houstonSchema => {
     const frontendSchema = createCustomFieldSchema(houstonSchema);
+
     const typeLabelId = get(fieldTypeInfo, [
       frontendSchema.fieldType,
       'labelId',
@@ -46,16 +44,10 @@ export default function CustomFieldTable({
 
   const intl = useIntl();
   const [deleteField, setDeleteField] = useState(null);
-  const [editField, setEditField] = useState(null);
   const [previewField, setPreviewField] = useState(null);
   const [previewInitialValue, setPreviewInitialValue] = useState(
     null,
   );
-  const {
-    putSiteSetting,
-    error: putSiteSettingError,
-    setError: setPutSiteSettingError,
-  } = usePutSiteSettings();
   const {
     removeCustomField,
     needsForce,
@@ -63,9 +55,6 @@ export default function CustomFieldTable({
     error: removeCustomFieldError,
     setError: setRemoveCustomFieldError,
   } = useRemoveCustomField();
-
-  const putFields = definitions =>
-    putSiteSetting(settingName, { definitions });
 
   const fieldTypeDefinition = Object.values(customFieldTypes).find(
     type => type.backendPath === settingName,
@@ -100,7 +89,7 @@ export default function CustomFieldTable({
         label: intl.formatMessage({ id: 'ACTIONS' }),
         options: {
           customBodyRender: (_, field) => (
-            <div style={{ display: 'flex' }}>
+            <div>
               <ActionIcon
                 variant="view"
                 labelId="PREVIEW"
@@ -133,28 +122,8 @@ export default function CustomFieldTable({
     setDeleteField(null);
   };
 
-  const onCloseEditField = () => {
-    if (putSiteSettingError) setPutSiteSettingError(null);
-    setEditField(null);
-  };
-
   return (
     <Grid item>
-      <AddOrEditField
-        newField={get(editField, 'name') === ''}
-        open={Boolean(editField)}
-        onClose={onCloseEditField}
-        field={editField}
-        error={putSiteSettingError}
-        categories={categories}
-        onSubmit={editedField => {
-          const newFields = mergeItemById(editedField, fields);
-
-          putFields(newFields).then(requestSuccessful => {
-            if (requestSuccessful) onCloseEditField();
-          });
-        }}
-      />
       <FieldDemo
         open={Boolean(previewField)}
         onClose={() => setPreviewField(null)}
@@ -192,21 +161,6 @@ export default function CustomFieldTable({
           display="panel"
           startIcon={<AddIcon />}
           href={`/admin/settings/save-custom-field/${fieldTypeName}`}
-          // onClick={() =>
-          //   setEditField({
-          //     schema: {
-          //       displayType: '',
-          //       label: '',
-          //       description: '',
-          //     },
-          //     default: null,
-          //     name: '',
-          //     multiple: false,
-          //     required: false,
-          //     id: uuid(),
-          //     timeCreated: Date.now(),
-          //   })
-          // }
         />
       </div>
       <Text

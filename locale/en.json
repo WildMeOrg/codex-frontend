@@ -61,6 +61,7 @@
   "AN_ERROR_OCCURRED": "An error occurred",
   "FETCH_SITE_SETTINGS_ERROR": "Site settings could not be fetched. There may be a problem with the server.",
   "CUSTOM_INDIVIDUAL_FIELDS": "Custom individual fields",
+  "CANNOT_EDIT_CUSTOM_FIELD_TYPE": "Custom field types cannot be edited.",
   "CUSTOM_SIGHTING_FIELDS": "Custom sighting fields",
   "CUSTOM_ENCOUNTER_FIELDS": "Custom encounter fields",
   "CUSTOM_INDIVIDUAL_FIELDS_DESCRIPTION": "Individual fields appear once for each matched individual.",
