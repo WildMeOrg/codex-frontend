@@ -45,6 +45,8 @@ export const fieldTypeInfo = {
     backendType: backendTypes.string,
     backendMultiple: false,
     canProvideDefaultValue: true,
+    initialDefaultValue: '',
+    exampleValue: 'Value appears here',
   },
   [fieldTypes.longstring]: {
     labelId: 'LONG_STRING',
@@ -52,6 +54,8 @@ export const fieldTypeInfo = {
     backendType: backendTypes.string,
     backendMultiple: false,
     canProvideDefaultValue: true,
+    initialDefaultValue: '',
+    exampleValue: 'Value appears here',
   },
   [fieldTypes.float]: {
     labelId: 'FLOAT_LABEL',
@@ -59,6 +63,8 @@ export const fieldTypeInfo = {
     backendType: backendTypes.double,
     backendMultiple: false,
     canProvideDefaultValue: true,
+    initialDefaultValue: null,
+    exampleValue: 12.3,
   },
   [fieldTypes.feetmeters]: {
     labelId: 'FEET_METERS_SELECTOR',
@@ -66,6 +72,7 @@ export const fieldTypeInfo = {
     backendType: backendTypes.double,
     backendMultiple: false,
     canProvideDefaultValue: false,
+    exampleValue: 12.3,
   },
   [fieldTypes.individual]: {
     labelId: 'INDIVIDUAL_SELECTOR',
@@ -73,6 +80,7 @@ export const fieldTypeInfo = {
     backendType: backendTypes.individual,
     backendMultiple: false,
     canProvideDefaultValue: false,
+    exampleValue: null,
   },
   [fieldTypes.relationships]: {
     labelId: 'RELATIONSHIPS_SELECTOR',
@@ -80,6 +88,7 @@ export const fieldTypeInfo = {
     backendType: backendTypes.string,
     backendMultiple: true,
     canProvideDefaultValue: false,
+    exampleValue: null,
   },
   [fieldTypes.integer]: {
     labelId: 'INTEGER_LABEL',
@@ -87,6 +96,8 @@ export const fieldTypeInfo = {
     backendType: backendTypes.integer,
     backendMultiple: false,
     canProvideDefaultValue: true,
+    initialDefaultValue: null,
+    exampleValue: 12,
   },
   [fieldTypes.file]: {
     labelId: 'FILE_UPLOADER',
@@ -94,6 +105,7 @@ export const fieldTypeInfo = {
     backendType: backendTypes.string,
     backendMultiple: false,
     canProvideDefaultValue: false,
+    exampleValue: null,
   },
   [fieldTypes.latlong]: {
     labelId: 'LAT_LONG_SELECTOR',
@@ -101,6 +113,7 @@ export const fieldTypeInfo = {
     backendType: backendTypes.geo,
     backendMultiple: false,
     canProvideDefaultValue: false,
+    exampleValue: [-18.308787827355395, 68.45715332031247],
   },
   [fieldTypes.date]: {
     labelId: 'DATE_PICKER',
@@ -108,6 +121,8 @@ export const fieldTypeInfo = {
     backendType: backendTypes.date,
     backendMultiple: false,
     canProvideDefaultValue: true,
+    initialDefaultValue: null,
+    exampleValue: Date.now(),
   },
   [fieldTypes.daterange]: {
     labelId: 'DATE_RANGE_PICKER',
@@ -115,6 +130,8 @@ export const fieldTypeInfo = {
     backendType: backendTypes.string,
     backendMultiple: true,
     canProvideDefaultValue: true,
+    initialDefaultValue: [null, null],
+    exampleValue: [Date.now(), Date.now()],
   },
   [fieldTypes.select]: {
     labelId: 'DROPDOWN',
@@ -122,6 +139,8 @@ export const fieldTypeInfo = {
     backendType: backendTypes.string,
     backendMultiple: false,
     canProvideDefaultValue: true,
+    initialDefaultValue: '',
+    exampleValue: 'Value appears here',
   },
   [fieldTypes.multiselect]: {
     labelId: 'MULTI_SELECT_DROPDOWN',
@@ -129,6 +148,8 @@ export const fieldTypeInfo = {
     backendType: backendTypes.string,
     backendMultiple: true,
     canProvideDefaultValue: true,
+    initialDefaultValue: [],
+    exampleValue: ['Value 1', 'Value 2'],
   },
   [fieldTypes.boolean]: {
     labelId: 'BOOLEAN',
@@ -136,6 +157,8 @@ export const fieldTypeInfo = {
     backendType: backendTypes.boolean,
     backendMultiple: false,
     canProvideDefaultValue: true,
+    initialDefaultValue: false,
+    exampleValue: true,
   },
 };
 

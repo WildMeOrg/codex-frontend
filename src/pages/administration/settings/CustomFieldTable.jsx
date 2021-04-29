@@ -1,7 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { get } from 'lodash-es';
-import { v4 as uuid } from 'uuid';
 
 import Grid from '@material-ui/core/Grid';
 import AddIcon from '@material-ui/icons/Add';
@@ -9,7 +8,7 @@ import AddIcon from '@material-ui/icons/Add';
 import useRemoveCustomField from '../../../models/site/useRemoveCustomField';
 import usePutSiteSettings from '../../../models/site/usePutSiteSettings';
 import ActionIcon from '../../../components/ActionIcon';
-import Button from '../../../components/Button';
+import ButtonLink from '../../../components/ButtonLink';
 import ConfirmDelete from '../../../components/ConfirmDelete';
 import Text from '../../../components/Text';
 import DataDisplay from '../../../components/dataDisplays/DataDisplay';
@@ -19,6 +18,7 @@ import { createCustomFieldSchema } from '../../../utils/fieldUtils';
 
 import FieldDemo from './FieldDemo';
 import AddOrEditField from './AddOrEditField';
+import customFieldTypes from './constants/customFieldTypes';
 
 export default function CustomFieldTable({
   categories,
@@ -67,6 +67,11 @@ export default function CustomFieldTable({
   const putFields = definitions =>
     putSiteSetting(settingName, { definitions });
 
+  const fieldTypeDefinition = Object.values(customFieldTypes).find(
+    type => type.backendPath === settingName,
+  );
+  const fieldTypeName = fieldTypeDefinition.name;
+
   const tableColumns = useMemo(
     () => [
       {
@@ -106,7 +111,9 @@ export default function CustomFieldTable({
               />
               <ActionIcon
                 variant="edit"
-                onClick={() => setEditField(field)}
+                href={`/admin/settings/save-custom-field/${fieldTypeName}/${
+                  field.id
+                }`}
               />
               <ActionIcon
                 variant="delete"
@@ -179,26 +186,27 @@ export default function CustomFieldTable({
         }}
       >
         <Text variant="h5" component="h5" id={titleId} />
-        <Button
+        <ButtonLink
           id="ADD_NEW"
           size="small"
           display="panel"
           startIcon={<AddIcon />}
-          onClick={() =>
-            setEditField({
-              schema: {
-                displayType: '',
-                label: '',
-                description: '',
-              },
-              default: null,
-              name: '',
-              multiple: false,
-              required: false,
-              id: uuid(),
-              timeCreated: Date.now(),
-            })
-          }
+          href={`/admin/settings/save-custom-field/${fieldTypeName}`}
+          // onClick={() =>
+          //   setEditField({
+          //     schema: {
+          //       displayType: '',
+          //       label: '',
+          //       description: '',
+          //     },
+          //     default: null,
+          //     name: '',
+          //     multiple: false,
+          //     required: false,
+          //     id: uuid(),
+          //     timeCreated: Date.now(),
+          //   })
+          // }
         />
       </div>
       <Text
