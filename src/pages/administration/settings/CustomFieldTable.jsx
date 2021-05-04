@@ -3,6 +3,7 @@ import { useIntl } from 'react-intl';
 import { get } from 'lodash-es';
 
 import Grid from '@material-ui/core/Grid';
+import Tooltip from '@material-ui/core/Tooltip';
 import AddIcon from '@material-ui/icons/Add';
 
 import useRemoveCustomField from '../../../models/site/useRemoveCustomField';
@@ -41,6 +42,9 @@ export default function CustomFieldTable({
       houstonSchema,
     };
   });
+
+  console.log(categories);
+  console.log(settingName);
 
   const intl = useIntl();
   const [deleteField, setDeleteField] = useState(null);
@@ -122,6 +126,11 @@ export default function CustomFieldTable({
     setDeleteField(null);
   };
 
+  const addButtonDisabled = categories.length === 0;
+  const addButtonTooltipId = addButtonDisabled
+    ? 'NEW_CUSTOM_FIELD_CATEGORY_REQUIRED'
+    : 'ADD_NEW_CUSTOM_FIELD';
+
   return (
     <Grid item>
       <FieldDemo
@@ -155,13 +164,21 @@ export default function CustomFieldTable({
         }}
       >
         <Text variant="h5" component="h5" id={titleId} />
-        <ButtonLink
-          id="ADD_NEW"
-          size="small"
-          display="panel"
-          startIcon={<AddIcon />}
-          href={`/admin/settings/save-custom-field/${fieldTypeName}`}
-        />
+        <Tooltip
+          placement="bottom-end"
+          title={intl.formatMessage({ id: addButtonTooltipId })}
+        >
+          <span>
+            <ButtonLink
+              id="ADD_NEW"
+              size="small"
+              display="panel"
+              startIcon={<AddIcon />}
+              disabled={addButtonDisabled}
+              href={`/admin/settings/save-custom-field/${fieldTypeName}`}
+            />
+          </span>
+        </Tooltip>
       </div>
       <Text
         variant="caption"

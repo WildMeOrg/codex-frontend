@@ -14,7 +14,6 @@ export default function prepareReport(
     locationId: sightingData.locationId,
     verbatimLocality: sightingData.verbatimLocality,
     customFields: customEncounterData,
-    assetReferences,
   };
 
   if (!sightingData.endTime) encounter.time = sightingData.startTime;
@@ -30,6 +29,7 @@ export default function prepareReport(
 
   const report = {
     ...sightingData,
+    assetReferences,
     decimalLatitude: sightingData.gps[0],
     decimalLongitude: sightingData.gps[1],
     encounters: [encounter],

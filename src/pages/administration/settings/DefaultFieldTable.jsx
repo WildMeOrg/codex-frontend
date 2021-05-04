@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
-import { get } from 'lodash-es';
+import { get, capitalize } from 'lodash-es';
 
 import Grid from '@material-ui/core/Grid';
 import Alert from '@material-ui/lab/Alert';
@@ -79,6 +79,11 @@ export default function DefaultFieldTable({
     {
       name: 'type',
       label: intl.formatMessage({ id: 'TYPE' }),
+      options: {
+        customBodyRender: type => (
+          <Text variant="body2">{capitalize(type)}</Text>
+        ),
+      },
     },
     {
       name: 'actions',

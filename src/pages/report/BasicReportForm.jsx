@@ -51,11 +51,11 @@ export default function BasicReportForm({
   const {
     schema: customEncounterSchema,
     categories: customEncounterCategories,
-  } = deriveCustomFieldSchema(siteSettings, 'Encounter', 'Encounter');
+  } = deriveCustomFieldSchema(siteSettings, 'Encounter', 'encounter');
   const {
     schema: customSightingSchema,
     categories: customSightingCategories,
-  } = deriveCustomFieldSchema(siteSettings, 'Occurrence', 'Sighting');
+  } = deriveCustomFieldSchema(siteSettings, 'Occurrence', 'sighting');
   const {
     sightingSchema,
     sightingCategories,
@@ -89,6 +89,9 @@ export default function BasicReportForm({
     customEncounterFormValues,
     setCustomEncounterFormValues,
   ] = useState(getInitialFormValues(customEncounterSchema, 'id'));
+
+  console.log(customSightingSchema);
+  console.log(customSightingCategories);
 
   // const locationSuggestion = useMemo(
   //   () => getLocationSuggestion(exifData),
