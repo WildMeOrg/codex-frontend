@@ -34,10 +34,8 @@ export default function InputRow({
           display: 'flex',
           flexDirection: 'column',
           marginTop: 20,
-          minWidth: 200,
-          maxWidth: 400,
           marginBottom: 12,
-          width: 'max-content',
+          width: 400,
         }}
       >
         <Text>

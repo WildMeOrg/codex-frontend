@@ -7,6 +7,7 @@ import MainColumn from '../../components/MainColumn';
 import Header from '../../components/Header';
 import Text from '../../components/Text';
 import ConfirmDelete from '../../components/ConfirmDelete';
+import useGetUsers from '../../models/users/useGetUsers';
 import { selectUsers } from '../../modules/users/selectors';
 import { selectSiteName } from '../../modules/site/selectors';
 import { selectIsAdministrator } from '../../modules/app/selectors';
@@ -21,6 +22,9 @@ export default function Users() {
   );
   useDocumentTitle(pageTitle, false);
 
+  const stuff = useGetUsers();
+  console.log(stuff);
+
   const users = useSelector(selectUsers);
   const isAdministrator = useSelector(selectIsAdministrator);
 
@@ -29,20 +33,7 @@ export default function Users() {
 
   const flatUsers = Object.values(users);
 
-  const fakeUsers = [
-    ...flatUsers,
-    ...flatUsers,
-    ...flatUsers,
-    ...flatUsers,
-    ...flatUsers,
-    ...flatUsers,
-    ...flatUsers,
-    ...flatUsers,
-    ...flatUsers,
-    ...flatUsers,
-    ...flatUsers,
-    ...flatUsers,
-  ];
+  const fakeUsers = [...flatUsers];
 
   return (
     <MainColumn>

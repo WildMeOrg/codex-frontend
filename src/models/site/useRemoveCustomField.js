@@ -55,7 +55,7 @@ export default function useRemoveCustomField() {
         ]);
         setNeedsForce(true);
         setError(
-          `There is data associated with this field. If you continue, ${recordCount} record(s) will be deleted. Are you sure you wish to proceed?`,
+          `This field has been used to store data. If you delete the field, all data that was stored in the field will be deleted. Are you sure you want to delete ${recordCount} record(s)?`,
         );
       } else {
         setNeedsForce(false);

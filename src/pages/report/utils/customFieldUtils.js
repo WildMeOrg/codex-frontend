@@ -31,7 +31,7 @@ export function deriveCustomFieldSchema(
     const result = {
       ...get(customField, 'schema', {}),
       fieldType: get(customField, ['schema', 'displayType']),
-      defaultValue: get(customField, 'defaultValue', null),
+      defaultValue: get(customField, 'default', null),
       ...customField,
     };
 
