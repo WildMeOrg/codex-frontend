@@ -17,6 +17,7 @@
   "IDENTIFICATION_PIPELINE_STATUS": "Identification pipeline status",
   "SKY": "Sky",
   "CONFIRM_REMOVE_PROFILE_PICTURE": "Are you sure you want to remove your profile picture? This action cannot be undone.",
+  "SELECT_FEATURED_PHOTO": "Select featured photo",
   "CHANGE_PROFILE_PHOTO": "Change profile photo",
   "CHANGE_DATE": "Change date",
   "CHANGE_TIME": "Change time",

@@ -116,6 +116,7 @@ export default function SaveField() {
   );
 
   const categoryOptions = getTypeCategories(data, type);
+  const selectedCategory = get(formData, ['schema', 'category'], '');
 
   return (
     <MainColumn
@@ -292,11 +293,12 @@ export default function SaveField() {
             <FormControl
               style={{ width: inputWidth, marginBottom: 4 }}
             >
-              <InputLabel>
+              <InputLabel required>
                 <FormattedMessage id="CATEGORY" />
               </InputLabel>
               <Select
                 id="category"
+                required
                 disabled={disableForm}
                 onChange={e =>
                   setFormData({
@@ -307,7 +309,7 @@ export default function SaveField() {
                     },
                   })
                 }
-                value={get(formData, ['schema', 'category'], '')}
+                value={selectedCategory}
               >
                 {Object.values(categoryOptions).map(cat => (
                   <MenuItem key={cat.id} value={cat.id}>
@@ -438,6 +440,7 @@ export default function SaveField() {
               <Button
                 id="SAVE_FIELD"
                 display="primary"
+                disabled={!selectedCategory}
                 onClick={async () => {
                   if (putSiteSettingError)
                     setPutSiteSettingError(null);
