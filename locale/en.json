@@ -223,6 +223,8 @@
   "COPY": "Copy",
   "LONG_STRING": "Long text",
   "FLOAT_LABEL": "Number with decimals",
+  "ADD_ANNOTATION": "Add annotation",
+  "DELETE_PHOTOGRAPH": "Delete photograph",
   "ADD_FIELD": "Add field",
   "ADD_ANOTHER_FIELD": "Add another field",
   "FEET_METERS_SELECTOR": "Feet/meters selector",
