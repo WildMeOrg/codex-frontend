@@ -1,6 +1,5 @@
 import React, { useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import { useIntl, FormattedMessage } from 'react-intl';
 import { get } from 'lodash-es';
 import Tabs from '@material-ui/core/Tabs';
@@ -19,7 +18,6 @@ import LoadingScreen from '../../components/LoadingScreen';
 import SadScreen from '../../components/SadScreen';
 import Button from '../../components/Button';
 import EntityHeaderNew from '../../components/EntityHeaderNew';
-import { selectSightings } from '../../modules/sightings/selectors';
 import useSighting from '../../models/sighting/useSighting';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import useSightingFieldSchemas from '../../models/sighting/useSightingFieldSchemas';
@@ -42,8 +40,6 @@ export default function Sighting() {
   } = useSighting(id);
   const fieldSchemas = useSightingFieldSchemas();
 
-  console.log(data);
-
   /*
     known issue: if data or fieldschemas change values
     or properties this may not update
@@ -61,7 +57,6 @@ export default function Sighting() {
   );
 
   // fetch data for Id...
-  const sightings = useSelector(selectSightings);
   useDocumentTitle(`Sighting ${id}`);
 
   const [historyOpen, setHistoryOpen] = useState(false);

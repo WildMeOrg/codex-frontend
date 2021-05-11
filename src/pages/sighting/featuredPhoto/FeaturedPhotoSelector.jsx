@@ -17,7 +17,9 @@ export default function FeaturedPhotoSelector({
   currentFeaturedPhotoId,
 }) {
   const theme = useTheme();
-  const [selectedPhoto, setSelectedPhoto] = useState(null);
+  const [selectedPhoto, setSelectedPhoto] = useState(
+    currentFeaturedPhotoId,
+  );
 
   return (
     <StandardDialog
@@ -42,7 +44,7 @@ export default function FeaturedPhotoSelector({
               style={{
                 border:
                   selectedPhoto === asset.guid
-                    ? `6px solid ${theme.palette.success.main}`
+                    ? `8px solid ${theme.palette.success.main}`
                     : 'unset',
                 display: 'block',
                 width: '100%',
@@ -62,7 +64,7 @@ export default function FeaturedPhotoSelector({
           </Alert>
         )}
       </DialogContent>
-      <DialogActions style={{ padding: '0px 24px 24px 24px' }}>
+      <DialogActions style={{ padding: '12px 24px' }}>
         <Button
           display="primary"
           onClick={onClose}

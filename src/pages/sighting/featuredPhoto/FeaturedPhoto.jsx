@@ -53,6 +53,7 @@ export default function FeaturedPhoto({
           src={imageSrc || defaultProfilePhoto}
           alt="Featured asset"
           style={{
+            objectFit: 'cover',
             width: size + 1,
             height: size + 1,
             border: `1px solid ${theme.palette.grey['400']}`,
