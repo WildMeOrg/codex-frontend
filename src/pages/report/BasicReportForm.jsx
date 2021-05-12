@@ -90,9 +90,6 @@ export default function BasicReportForm({
     setCustomEncounterFormValues,
   ] = useState(getInitialFormValues(customEncounterSchema, 'id'));
 
-  console.log(customSightingSchema);
-  console.log(customSightingCategories);
-
   // const locationSuggestion = useMemo(
   //   () => getLocationSuggestion(exifData),
   //   [exifData],

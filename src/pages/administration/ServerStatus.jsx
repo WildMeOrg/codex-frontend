@@ -105,7 +105,8 @@ export default function ServerStatus() {
         {siteInfoLoading ? (
           <>
             <Skeleton width={200} />
-            <Skeleton width={300} />
+            <Skeleton width={200} />
+            <Skeleton width={200} />
           </>
         ) : (
           <>
@@ -117,15 +118,48 @@ export default function ServerStatus() {
               )}`}
             </Text>
             <Text>
-              {`Houston git hash: ${get(
+              {`ACM version: ${get(
                 siteInfo,
-                ['houston', 'git_version'],
+                ['acm', 'version'],
+                'Unknown',
+              )}`}
+            </Text>
+            <Text>
+              {`EDM build date: ${get(
+                siteInfo,
+                ['edm', 'built'],
                 'Unknown',
               )}`}
             </Text>
           </>
         )}
 
+        <Text variant="h5" style={{ marginTop: 20 }}>
+          Hashes
+        </Text>
+        {siteInfoLoading ? (
+          <>
+            <Skeleton width={300} />
+            <Skeleton width={300} />
+          </>
+        ) : (
+          <>
+            <Text>
+              {`Houston git hash: ${get(
+                siteInfo,
+                ['houston', 'git_version'],
+                'Unknown',
+              )}`}
+            </Text>
+            <Text>
+              {`EDM hash: ${get(
+                siteInfo,
+                ['edm', 'hash'],
+                'Unknown',
+              )}`}
+            </Text>
+          </>
+        )}
         {error ? (
           <Text color="error" id="REQUEST_ERROR" />
         ) : (

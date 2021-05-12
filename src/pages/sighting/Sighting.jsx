@@ -1,6 +1,5 @@
 import React, { useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import { useIntl, FormattedMessage } from 'react-intl';
 import { get } from 'lodash-es';
 import Tabs from '@material-ui/core/Tabs';
@@ -19,16 +18,16 @@ import LoadingScreen from '../../components/LoadingScreen';
 import SadScreen from '../../components/SadScreen';
 import Button from '../../components/Button';
 import EntityHeaderNew from '../../components/EntityHeaderNew';
-import { selectSightings } from '../../modules/sightings/selectors';
 import useSighting from '../../models/sighting/useSighting';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import useSightingFieldSchemas from '../../models/sighting/useSightingFieldSchemas';
 import { formatDate } from '../../utils/formatters';
 // import AnnotationsGallery from './AnnotationsGallery';
 // import IndividualsGallery from './IndividualsGallery';
-// import PhotoGallery from './PhotoGallery';
+import Photographs from './Photographs';
 import OverviewContent from './OverviewContent';
 import SightingHistoryDialog from './SightingHistoryDialog';
+import FeaturedPhoto from './featuredPhoto/FeaturedPhoto';
 
 export default function Sighting() {
   const { id } = useParams();
@@ -58,7 +57,6 @@ export default function Sighting() {
   );
 
   // fetch data for Id...
-  const sightings = useSelector(selectSightings);
   useDocumentTitle(`Sighting ${id}`);
 
   const [historyOpen, setHistoryOpen] = useState(false);
@@ -95,6 +93,7 @@ export default function Sighting() {
 
   const sightingDisplayDate = get(data, ['startTime']);
   // const encounters = get(data, ['encounters'], []);
+  const assets = get(data, 'assets', []);
 
   return (
     <MainColumn fullWidth>
@@ -103,7 +102,13 @@ export default function Sighting() {
         onClose={() => setHistoryOpen(false)}
       />
       <EntityHeaderNew
-        noAvatar
+        renderAvatar={
+          <FeaturedPhoto
+            assets={assets}
+            loading={loading}
+            editable={assets.length > 0}
+          />
+        }
         name={intl.formatMessage(
           { id: 'ENTITY_HEADER_SIGHTING_DATE' },
           {
@@ -176,15 +181,18 @@ export default function Sighting() {
           refreshSightingData={refreshSightingData}
         />
       )}
-      {/* {activeTab === '#individuals' && (
-        <IndividualsGallery sighting={encounters} />
-      )}
-      {activeTab === '#annotations' && (
-        <AnnotationsGallery sighting={sighting} />
-      )}
       {activeTab === '#photographs' && (
-        <PhotoGallery sighting={sighting} />
-      )} */}
+        <Photographs assets={assets} />
+      )}
     </MainColumn>
   );
 }
+
+/*
+
+{/* /* {activeTab === '#individuals' && (
+  <IndividualsGallery sighting={encounters} />
+)}
+{activeTab === '#annotations' && (
+  <AnnotationsGallery sighting={sighting} />
+)} */
