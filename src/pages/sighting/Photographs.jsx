@@ -1,20 +1,20 @@
 import React, { useState } from 'react';
-import { FormattedMessage } from 'react-intl';
 import { get } from 'lodash-es';
 
 import { useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
 import IconButton from '@material-ui/core/IconButton';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import Text from '../../components/Text';
+import PhotographDetail from './PhotographDetail';
+import MorePhotoMenu from './MorePhotoMenu';
 
 export default function Photographs({ assets }) {
   const theme = useTheme();
   const isSm = useMediaQuery(theme.breakpoints.down('xs'));
 
   const [anchorInfo, setAnchorInfo] = useState(null);
+  const [detailAssetIndex, setDetailAssetIndex] = useState(null);
   return (
     <div
       style={{
@@ -27,20 +27,32 @@ export default function Photographs({ assets }) {
         margin: '0 20px',
       }}
     >
-      <Menu
+      <MorePhotoMenu
         id="image-actions-menu"
         anchorEl={get(anchorInfo, 'element')}
         open={Boolean(get(anchorInfo, 'element'))}
         onClose={() => setAnchorInfo(null)}
-      >
-        <MenuItem>
-          <FormattedMessage id="ADD_ANNOTATION" />
-        </MenuItem>
-        <MenuItem>
-          <FormattedMessage id="DELETE_PHOTOGRAPH" />
-        </MenuItem>
-      </Menu>
-      {assets.map(asset => (
+      />
+      <PhotographDetail
+        open={detailAssetIndex !== null}
+        onClose={() => setDetailAssetIndex(null)}
+        asset={get(assets, detailAssetIndex)}
+        onNext={() => {
+          if (detailAssetIndex === assets.length - 1) {
+            setDetailAssetIndex(0);
+          } else {
+            setDetailAssetIndex(detailAssetIndex + 1);
+          }
+        }}
+        onPrevious={() => {
+          if (detailAssetIndex === 0) {
+            setDetailAssetIndex(assets.length - 1);
+          } else {
+            setDetailAssetIndex(detailAssetIndex - 1);
+          }
+        }}
+      />
+      {assets.map((asset, i) => (
         <div style={{ position: 'relative' }}>
           <input
             type="image"
@@ -48,7 +60,7 @@ export default function Photographs({ assets }) {
               display: 'block',
               width: '100%',
             }}
-            // onClick={() => open full screen dialog thing}
+            onClick={() => setDetailAssetIndex(i)}
             alt={asset.filename}
             src={asset.src}
           />
