@@ -1,42 +1,30 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { get } from 'lodash-es';
 
+import { useTheme } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import ChevronRight from '@material-ui/icons/ChevronRight';
 import ChevronLeft from '@material-ui/icons/ChevronLeft';
-import MoreIcon from '@material-ui/icons/MoreVert';
+// import MoreIcon from '@material-ui/icons/MoreVert';
 
 import StandardDialog from '../../components/StandardDialog';
 import Text from '../../components/Text';
+// import Button from '../../components/Button';
 import MorePhotoMenu from './MorePhotoMenu';
 
-export default function PhotographDetail({ asset, open, onPrevious, onNext, onClose }) {
-  // const openRef = useRef(open);
-  // openRef.current = open;
-  
-  // useEffect(() => {
-  //   function keyUpHandler({ key }) {
-  //     console.log(key, open, openRef.current);
-  //     if (!openRef.current) return null;
-  //     if (key === 'ArrowLeft') {
-  //       console.log('calling', onPrevious);
-  //       onPrevious();
-  //     }
-  //     if (key === 'ArrowRight') onNext();
-  //     return null;
-  //   }
-
-  //   window.addEventListener('keyup', keyUpHandler);
-  //   return () => {
-  //     window.removeEventListener('keyup', keyUpHandler);
-  //   };
-  // }, []);
-  
+export default function PhotographDetail({
+  asset,
+  open,
+  onPrevious,
+  onNext,
+  onClose,
+}) {
   const [anchorEl, setAnchorEl] = useState(null);
+  const theme = useTheme();
 
-  const handleClick = event => {
-    setAnchorEl(event.currentTarget);
-  };
+  // const handleClick = event => {
+  //   setAnchorEl(event.currentTarget);
+  // };
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -57,7 +45,7 @@ export default function PhotographDetail({ asset, open, onPrevious, onNext, onCl
           flexDirection: 'column',
         }}
       >
-        <div style={{ position: 'relative' }}>
+        <div style={{ position: 'relative', alignSelf: 'start' }}>
           <img
             style={{
               maxWidth: '100%',
@@ -72,8 +60,8 @@ export default function PhotographDetail({ asset, open, onPrevious, onNext, onCl
               position: 'absolute',
               top: '50%',
               left: 8,
-              color: 'white',
-              backgroundColor: 'rgba(0, 0, 0, 0.6)',
+              color: theme.palette.common.white,
+              backgroundColor: theme.palette.action.active,
             }}
             onClick={onPrevious}
           >
@@ -84,26 +72,30 @@ export default function PhotographDetail({ asset, open, onPrevious, onNext, onCl
               position: 'absolute',
               top: '50%',
               right: 8,
-              color: 'white',
-              backgroundColor: 'rgba(0, 0, 0, 0.6)',
+              color: theme.palette.common.white,
+              backgroundColor: theme.palette.action.active,
             }}
             onClick={onNext}
           >
             <ChevronRight />
           </IconButton>
-          <IconButton
+          {/* <IconButton
             onClick={handleClick}
             style={{
               position: 'absolute',
               top: 8,
               right: 8,
-              color: 'white',
-              backgroundColor: 'rgba(0, 0, 0, 0.6)',
+              color: theme.palette.common.white,
+              backgroundColor: theme.palette.action.active,
             }}
           >
             <MoreIcon />
-          </IconButton>
+          </IconButton> */}
         </div>
+        {/* <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Text>{get(asset, 'filename')}</Text>
+          <Button display="primary" size="small">Add annotation</Button>
+        </div> */}
         <Text>{get(asset, 'filename')}</Text>
       </div>
     </StandardDialog>

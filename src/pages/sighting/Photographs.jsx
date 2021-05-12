@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { get } from 'lodash-es';
 
 import { useTheme } from '@material-ui/core/styles';
@@ -15,6 +15,46 @@ export default function Photographs({ assets }) {
 
   const [anchorInfo, setAnchorInfo] = useState(null);
   const [detailAssetIndex, setDetailAssetIndex] = useState(null);
+
+  const effectRef = useRef(false);
+  effectRef.current = {
+    dialogOpen: detailAssetIndex !== null,
+    assets,
+    detailAssetIndex,
+  };
+
+  useEffect(() => {
+    function keyUpHandler({ key }) {
+      const openCurrent = get(effectRef, ['current', 'dialogOpen']);
+      const assetsCurrent = get(effectRef, ['current', 'assets']);
+      const indexCurrent = get(effectRef, [
+        'current',
+        'detailAssetIndex',
+      ]);
+      if (!openCurrent) return null;
+      if (key === 'ArrowRight') {
+        if (indexCurrent === assetsCurrent.length - 1) {
+          setDetailAssetIndex(0);
+        } else {
+          setDetailAssetIndex(indexCurrent + 1);
+        }
+      }
+      if (key === 'ArrowLeft') {
+        if (indexCurrent === 0) {
+          setDetailAssetIndex(assetsCurrent.length - 1);
+        } else {
+          setDetailAssetIndex(indexCurrent - 1);
+        }
+      }
+      return null;
+    }
+
+    window.addEventListener('keyup', keyUpHandler);
+    return () => {
+      window.removeEventListener('keyup', keyUpHandler);
+    };
+  }, []);
+
   return (
     <div
       style={{
@@ -53,7 +93,7 @@ export default function Photographs({ assets }) {
         }}
       />
       {assets.map((asset, i) => (
-        <div style={{ position: 'relative' }}>
+        <div key={asset.guid} style={{ position: 'relative' }}>
           <input
             type="image"
             style={{
@@ -72,7 +112,7 @@ export default function Photographs({ assets }) {
               position: 'absolute',
               top: 0,
               right: 0,
-              color: 'white',
+              color: theme.palette.common.white,
             }}
           >
             <MoreIcon />
