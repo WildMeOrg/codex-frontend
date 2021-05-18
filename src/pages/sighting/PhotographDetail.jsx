@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { get } from 'lodash-es';
 
-import { useTheme } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import ChevronRight from '@material-ui/icons/ChevronRight';
 import ChevronLeft from '@material-ui/icons/ChevronLeft';
@@ -12,6 +12,15 @@ import Text from '../../components/Text';
 // import Button from '../../components/Button';
 import MorePhotoMenu from './MorePhotoMenu';
 
+const useStyles = makeStyles({
+  photoIcon: {
+    backgroundColor: 'rgba(0, 0, 0, 0.54)',
+    '&:hover': {
+      backgroundColor: 'rgba(0, 0, 0, 0.8)',
+    },
+  },
+});
+
 export default function PhotographDetail({
   asset,
   open,
@@ -21,6 +30,7 @@ export default function PhotographDetail({
 }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const theme = useTheme();
+  const classes = useStyles();
 
   // const handleClick = event => {
   //   setAnchorEl(event.currentTarget);
@@ -56,24 +66,24 @@ export default function PhotographDetail({
             alt={get(asset, 'filename')}
           />
           <IconButton
+            className={classes.photoIcon}
             style={{
               position: 'absolute',
               top: '50%',
               left: 8,
               color: theme.palette.common.white,
-              backgroundColor: theme.palette.action.active,
             }}
             onClick={onPrevious}
           >
             <ChevronLeft />
           </IconButton>
           <IconButton
+            className={classes.photoIcon}
             style={{
               position: 'absolute',
               top: '50%',
               right: 8,
               color: theme.palette.common.white,
-              backgroundColor: theme.palette.action.active,
             }}
             onClick={onNext}
           >

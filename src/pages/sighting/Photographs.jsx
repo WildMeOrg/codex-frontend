@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { get } from 'lodash-es';
 
-import { useTheme } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import IconButton from '@material-ui/core/IconButton';
 import MoreIcon from '@material-ui/icons/MoreVert';
@@ -9,9 +9,18 @@ import Text from '../../components/Text';
 import PhotographDetail from './PhotographDetail';
 import MorePhotoMenu from './MorePhotoMenu';
 
+const useStyles = makeStyles({
+  photoIcon: {
+    '&:hover': {
+      backgroundColor: 'rgba(0, 0, 0, 0.54)',
+    },
+  },
+});
+
 export default function Photographs({ assets }) {
   const theme = useTheme();
   const isSm = useMediaQuery(theme.breakpoints.down('xs'));
+  const classes = useStyles();
 
   const [anchorInfo, setAnchorInfo] = useState(null);
   const [detailAssetIndex, setDetailAssetIndex] = useState(null);
@@ -110,10 +119,11 @@ export default function Photographs({ assets }) {
             }
             style={{
               position: 'absolute',
-              top: 0,
-              right: 0,
+              top: 4,
+              right: 4,
               color: theme.palette.common.white,
             }}
+            className={classes.photoIcon}
           >
             <MoreIcon />
           </IconButton>

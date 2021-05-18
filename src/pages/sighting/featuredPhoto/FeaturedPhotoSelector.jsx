@@ -44,7 +44,7 @@ export default function FeaturedPhotoSelector({
               style={{
                 border:
                   selectedPhoto === asset.guid
-                    ? `8px solid ${theme.palette.success.main}`
+                    ? `8px solid ${theme.palette.primary.main}`
                     : 'unset',
                 display: 'block',
                 width: '100%',
