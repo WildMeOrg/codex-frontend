@@ -57,6 +57,11 @@ export default primaryColor => {
     overrides: {
       MuiTypography: { colorTextSecondary: { color: '#0E1014' } },
       MuiFormHelperText: { root: { color: '#0E1014' } },
+      MuiAlert: {
+        action: {
+          alignItems: 'start',
+        },
+      },
       MuiButton: {
         label: {
           letterSpacing: '0.02em',
@@ -69,6 +74,7 @@ export default primaryColor => {
           fontWeight: 600,
         },
         outlined: { padding: '6px 20px' },
+        containedSizeSmall: { padding: '4px 16px' },
         outlinedSizeSmall: { padding: '4px 12px' },
         containedSecondary: { backgroundColor: lightPrimaryColor },
         contained: {

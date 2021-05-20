@@ -16,6 +16,8 @@ const dashboardHeight = 400;
 export default function UploadManager({
   files,
   assetSubmissionId,
+  onUploadStarted = Function.prototype,
+  onUploadComplete = Function.prototype,
   setFiles,
   exifData,
 }) {
@@ -50,6 +52,8 @@ export default function UploadManager({
       },
     });
 
+    uppyInstance.on('upload', onUploadStarted);
+
     uppyInstance.on('complete', uppyState => {
       const uploadObjects = get(uppyState, 'successful', []);
       const assetReferences = uploadObjects.map(o => ({
@@ -57,6 +61,7 @@ export default function UploadManager({
         transactionId: assetSubmissionId,
       }));
 
+      onUploadComplete();
       setFiles([...fileRef.current, ...assetReferences]);
     });
 

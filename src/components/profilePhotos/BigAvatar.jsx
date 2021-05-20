@@ -26,11 +26,11 @@ export default function BigAvatar({
   return (
     <div
       style={{
-        width: size,
-        height: size,
         position: 'relative',
-        borderRadius: '50%',
+        borderRadius: square ? 'unset' : '50%',
+        border: `1px solid ${theme.palette.grey['500']}`,
         cursor: editable ? 'pointer' : 'unset',
+        overflow: 'hidden',
       }}
     >
       <EditAvatar
@@ -46,10 +46,8 @@ export default function BigAvatar({
       {userDataLoading ? (
         <div
           style={{
-            width: size + 1,
-            height: size + 1,
-            borderRadius: square ? 'unset' : '50%',
-            border: `1px solid ${theme.palette.grey['400']}`,
+            width: size,
+            height: size,
           }}
         />
       ) : (
@@ -57,10 +55,9 @@ export default function BigAvatar({
           src={imageSrc || defaultProfilePhoto}
           alt={`Profile for ${name}`}
           style={{
-            width: size + 1,
-            height: size + 1,
-            borderRadius: square ? 'unset' : '50%',
-            border: `1px solid ${theme.palette.grey['400']}`,
+            width: size,
+            height: size,
+            display: 'block',
           }}
         />
       )}
@@ -68,8 +65,8 @@ export default function BigAvatar({
         <svg
           style={{
             position: 'absolute',
-            left: 1,
-            top: 1,
+            left: 0,
+            top: 0,
             width: size,
             height: size,
           }}

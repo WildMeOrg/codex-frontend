@@ -7,10 +7,10 @@ import DialogActions from '@material-ui/core/DialogActions';
 import Alert from '@material-ui/lab/Alert';
 import AlertTitle from '@material-ui/lab/AlertTitle';
 
-import usePatchSighting from '../../models/sighting/usePatchSighting';
-import InputRow from '../../components/fields/edit/InputRowNew';
-import Button from '../../components/Button';
-import StandardDialog from '../../components/StandardDialog';
+import usePatchSighting from '../../../models/sighting/usePatchSighting';
+import InputRow from '../../../components/fields/edit/InputRowNew';
+import Button from '../../../components/Button';
+import StandardDialog from '../../../components/StandardDialog';
 
 function getInitialFormValues(schema, fieldKey) {
   return schema.reduce((memo, field) => {
@@ -24,10 +24,11 @@ function getInitialFormValues(schema, fieldKey) {
   }, {});
 }
 
-export default function EditSightingMetadata({
+export default function EditEncounterMetadata({
   open,
   sightingId,
-  metadata,
+  // encounterId,
+  metadata = [],
   onClose,
   refreshSightingData,
 }) {
@@ -59,7 +60,7 @@ export default function EditSightingMetadata({
       maxWidth="lg"
       open={open}
       onClose={onClose}
-      titleId="EDIT_SIGHTING_METADATA"
+      titleId="EDIT_ENCOUNTER_METADATA"
     >
       <DialogContent style={{ minWidth: 200 }}>
         {metadata.map(field => {

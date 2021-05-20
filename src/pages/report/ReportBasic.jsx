@@ -22,6 +22,7 @@ export default function ReportBasic({
   useDocumentTitle(intl.formatMessage({ id: 'REPORT_SIGHTINGS' }));
 
   const assetSubmissionId = useMemo(uuid, []);
+  const [uploadInProgress, setUploadInProgress] = useState(false);
   const [files, setFiles] = useState([]);
   const [exifData, setExifData] = useState([]);
   const [reporting, setReporting] = useState(false);
@@ -31,6 +32,10 @@ export default function ReportBasic({
     window.scrollTo(0, 0);
     setReporting(false);
   };
+
+  let continueButtonText = 'CONTINUE';
+  if (noImages) continueButtonText = 'CONTINUE_WITHOUT_PHOTOGRAPHS';
+  if (uploadInProgress) continueButtonText = 'UPLOAD_IN_PROGRESS';
 
   return (
     <ReportSightingsPage authenticated={authenticated}>
@@ -61,6 +66,8 @@ export default function ReportBasic({
         <>
           <Grid item style={{ marginTop: 20 }}>
             <UploadManager
+              onUploadStarted={() => setUploadInProgress(true)}
+              onUploadComplete={() => setUploadInProgress(false)}
               assetSubmissionId={assetSubmissionId}
               exifData={exifData}
               setExifData={setExifData}
@@ -89,22 +96,15 @@ export default function ReportBasic({
           </Grid>
           <Grid item>
             <Button
+              id={continueButtonText}
               display="primary"
-              disabled={false}
+              disabled={uploadInProgress}
               onClick={async () => {
                 window.scrollTo(0, 0);
                 setReporting(true);
               }}
               style={{ marginTop: 16 }}
-            >
-              <FormattedMessage
-                id={
-                  noImages
-                    ? 'CONTINUE_WITHOUT_PHOTOGRAPHS'
-                    : 'CONTINUE'
-                }
-              />
-            </Button>
+            />
           </Grid>
         </>
       )}
