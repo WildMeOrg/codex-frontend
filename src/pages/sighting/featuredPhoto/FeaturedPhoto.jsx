@@ -25,10 +25,9 @@ export default function FeaturedPhoto({
   return (
     <div
       style={{
-        width: size,
-        height: size,
         position: 'relative',
-        borderRadius: '50%',
+        border: `1px solid ${theme.palette.grey['500']}`,
+        overflow: 'hidden',
         cursor: editable ? 'pointer' : 'unset',
       }}
     >
@@ -41,11 +40,8 @@ export default function FeaturedPhoto({
       {loading ? (
         <div
           style={{
-            // width: size + 1,
-            // height: size + 1,
             width: size,
             height: size,
-            border: `1px solid ${theme.palette.grey['400']}`,
           }}
         />
       ) : (
@@ -54,9 +50,9 @@ export default function FeaturedPhoto({
           alt="Featured asset"
           style={{
             objectFit: 'cover',
-            width: size + 1,
-            height: size + 1,
-            border: `1px solid ${theme.palette.grey['400']}`,
+            width: size,
+            height: size,
+            display: 'block',
           }}
         />
       )}
@@ -64,8 +60,8 @@ export default function FeaturedPhoto({
         <svg
           style={{
             position: 'absolute',
-            left: 1,
-            top: 1,
+            left: 0,
+            top: 0,
             width: size,
             height: size,
             opacity: hovered ? 1 : 0,

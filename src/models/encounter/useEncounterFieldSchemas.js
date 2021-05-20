@@ -42,7 +42,7 @@ export default function useSightingFieldSchemas() {
       getValue: (_, encounterData) => {
         const lat = get(encounterData, 'decimalLatitude');
         const long = get(encounterData, 'decimalLongitude');
-        return lat && long ? [lat, long] : null;
+        return lat && long ? [lat, long] : [null, null];
       },
     }),
     createFieldSchema(fieldTypes.string, {

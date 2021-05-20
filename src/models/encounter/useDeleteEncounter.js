@@ -8,7 +8,11 @@ export default function useDeleteEncounter() {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
 
-  const deleteEncounter = async (encounterId, forceDeleteSighting = false, forceDeleteIndividual = false) => {
+  const deleteEncounter = async (
+    encounterId,
+    forceDeleteSighting = false,
+    forceDeleteIndividual = false,
+  ) => {
     try {
       setLoading(true);
       const deleteResponse = await axios({
@@ -16,12 +20,16 @@ export default function useDeleteEncounter() {
         withCredentials: true,
         method: 'delete',
         headers: {
-          'x-allow-delete-cascade-sighting': forceDeleteSighting ? 'True' : 'False',
-          'x-allow-delete-cascade-individual': forceDeleteIndividual ? 'True' : 'False',
+          'x-allow-delete-cascade-sighting': forceDeleteSighting
+            ? 'True'
+            : 'False',
+          'x-allow-delete-cascade-individual': forceDeleteIndividual
+            ? 'True'
+            : 'False',
         },
       });
       const responseStatus = get(deleteResponse, 'status');
-      const successful = responseStatus === 200;
+      const successful = responseStatus === 204;
       if (successful) {
         setLoading(false);
         setSuccess(true);

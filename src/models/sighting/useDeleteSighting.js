@@ -8,7 +8,7 @@ export default function useDeleteEncounter() {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
 
-  const deleteSighting = async (sightingId) => {
+  const deleteSighting = async sightingId => {
     try {
       setLoading(true);
       const deleteResponse = await axios({

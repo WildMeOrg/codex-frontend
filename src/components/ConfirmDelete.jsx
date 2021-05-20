@@ -15,6 +15,7 @@ export default function ConfirmDelete({
   onClearError,
   deleteInProgress,
   entityToDelete,
+  deleteDisabled = false,
   messageId,
   message,
   error,
@@ -50,7 +51,12 @@ export default function ConfirmDelete({
         <Button display="basic" onClick={onClose}>
           <FormattedMessage id="CANCEL" />
         </Button>
-        <Button loading={deleteInProgress} display="primary" onClick={onDelete}>
+        <Button
+          disabled={deleteDisabled}
+          loading={deleteInProgress}
+          display="primary"
+          onClick={onDelete}
+        >
           <FormattedMessage id="DELETE" />
         </Button>
       </DialogActions>

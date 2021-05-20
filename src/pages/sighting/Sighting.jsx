@@ -38,6 +38,7 @@ export default function Sighting() {
     data,
     loading,
     error,
+    statusCode,
     refresh: refreshSightingData,
   } = useSighting(id);
   const fieldSchemas = useSightingFieldSchemas();
@@ -73,13 +74,12 @@ export default function Sighting() {
 
   const activeTab = window.location.hash || '#overview';
 
-  const is404 = false;
-
   if (loading) return <LoadingScreen />;
-  if (is404)
+  if (statusCode === 404)
     return (
       <SadScreen
         subtitleId="SIGHTING_NOT_FOUND"
+        descriptionId="SIGHTING_NOT_FOUND_DESCRIPTION"
         variant="genericError"
       />
     );
@@ -190,7 +190,11 @@ export default function Sighting() {
         <Photographs assets={assets} />
       )}
       {activeTab === '#individuals' && (
-        <Encounters assets={assets} sightingData={data} refreshSightingData={refreshSightingData} />
+        <Encounters
+          assets={assets}
+          sightingData={data}
+          refreshSightingData={refreshSightingData}
+        />
       )}
     </MainColumn>
   );

@@ -6,6 +6,7 @@ import { formatError } from '../../utils/formatters';
 export default function useSighting(sightingId) {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [statusCode, setStatusCode] = useState(null);
   const [sightingData, setSightingData] = useState(null);
   const [refreshCount, setRefreshCount] = useState(0);
 
@@ -22,12 +23,19 @@ export default function useSighting(sightingId) {
             method: 'get',
           });
 
-          const successful = get(response, ['status']) === 200;
+          const responseStatusCode = get(response, ['status']);
+          setStatusCode(responseStatusCode);
+          const successful = responseStatusCode === 200;
           if (!successful) setError(formatError(response));
 
           setLoading(false);
           setSightingData(get(response, ['data']));
         } catch (fetchError) {
+          const responseStatusCode = get(fetchError, [
+            'response',
+            'status',
+          ]);
+          setStatusCode(responseStatusCode);
           console.error(`Error fetching sighting ${sightingId}`);
           console.error(fetchError);
           setError(formatError(fetchError));
@@ -40,5 +48,5 @@ export default function useSighting(sightingId) {
     [sightingId, refreshCount],
   );
 
-  return { data: sightingData, loading, error, refresh };
+  return { data: sightingData, statusCode, loading, error, refresh };
 }

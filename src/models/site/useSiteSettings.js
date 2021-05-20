@@ -68,6 +68,7 @@ export default function useSiteSettings() {
           );
           const responseVersion = getResponseVersion(settingsPacket);
           const axiosResponse = getAxiosResponse(settingsPacket);
+
           if (!responseVersion || !axiosResponse)
             throw Error('Axios response was unreadable.');
           dispatch(setSiteSettingsVersion(responseVersion));
