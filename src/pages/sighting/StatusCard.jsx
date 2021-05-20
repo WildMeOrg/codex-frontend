@@ -1,4 +1,5 @@
 import React from 'react';
+import { get } from 'lodash-es';
 
 import Timeline from '@material-ui/lab/Timeline';
 import TimelineItem from '@material-ui/lab/TimelineItem';
@@ -11,10 +12,16 @@ import FinishedIcon from '@material-ui/icons/Done';
 import CurationIcon from '@material-ui/icons/FilterNone';
 import MatchingIcon from '@material-ui/icons/LowPriority';
 
+import { formatDate } from '../../utils/formatters';
 import Text from '../../components/Text';
 import Card from '../../components/cards/Card';
 
-export default function StatusCard() {
+export default function StatusCard({ sightingData }) {
+  const photoCount = get(sightingData, ['assets', 'length'], 0);
+  const dateCreated = get(sightingData, 'createdHouston');
+  const dateString = dateCreated
+    ? formatDate(dateCreated, true)
+    : 'unknown date';
   return (
     <Card titleId="IDENTIFICATION_PIPELINE_STATUS">
       <Timeline>
@@ -26,10 +33,16 @@ export default function StatusCard() {
             <TimelineConnector />
           </TimelineSeparator>
           <TimelineContent>
-            <Text variant="h6">Sighting Submission</Text>
-            <Text variant="caption">
-              17 photographs submitted on June 12, 2018.
-            </Text>
+            <Text variant="h6" id="SIGHTING_SUBMISSION" />
+            <Text
+              variant="caption"
+              id={
+                photoCount > 0
+                  ? 'SIGHTING_CREATED_WITH_ASSETS_DESCRIPTION'
+                  : 'SIGHTING_CREATED_NO_ASSETS_DESCRIPTION'
+              }
+              values={{ photoCount, date: dateString }}
+            />
           </TimelineContent>
         </TimelineItem>
         <TimelineItem style={{ minHeight: 100 }}>

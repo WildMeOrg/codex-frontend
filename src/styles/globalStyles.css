@@ -9,3 +9,7 @@
 .MuiTimelineItem-missingOppositeContent:before {
   flex: unset !important;
 }
+
+.MuiButton-containedSizeSmall {
+  padding: 4px 16px;
+}

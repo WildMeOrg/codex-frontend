@@ -4,10 +4,6 @@ import { useIntl, FormattedMessage } from 'react-intl';
 import { get } from 'lodash-es';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import IconButton from '@material-ui/core/IconButton';
-import MoreIcon from '@material-ui/icons/MoreHoriz';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
 
 // import SpeciesIcon from '@material-ui/icons/Category';
 // import RegionIcon from '@material-ui/icons/MyLocation';
@@ -17,6 +13,7 @@ import MainColumn from '../../components/MainColumn';
 import LoadingScreen from '../../components/LoadingScreen';
 import SadScreen from '../../components/SadScreen';
 import Button from '../../components/Button';
+import MoreMenu from '../../components/MoreMenu';
 import EntityHeaderNew from '../../components/EntityHeaderNew';
 import useSighting from '../../models/sighting/useSighting';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
@@ -28,6 +25,7 @@ import Photographs from './Photographs';
 import OverviewContent from './OverviewContent';
 import SightingHistoryDialog from './SightingHistoryDialog';
 import FeaturedPhoto from './featuredPhoto/FeaturedPhoto';
+import Encounters from './encounters/Encounters';
 
 export default function Sighting() {
   const { id } = useParams();
@@ -60,15 +58,6 @@ export default function Sighting() {
   useDocumentTitle(`Sighting ${id}`);
 
   const [historyOpen, setHistoryOpen] = useState(false);
-  const [anchorEl, setAnchorEl] = useState(null);
-
-  const handleClick = event => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
 
   const activeTab = window.location.hash || '#overview';
 
@@ -116,35 +105,23 @@ export default function Sighting() {
           },
         )}
         renderOptions={
-          <div>
+          <div style={{ display: 'flex' }}>
             <Button id="SUBSCRIBE" display="primary" />
-            <IconButton
-              aria-controls="sighting-actions"
-              aria-haspopup="true"
-              onClick={handleClick}
-              style={{ marginLeft: 4 }}
-            >
-              <MoreIcon />
-            </IconButton>
-            <Menu
-              id="sighting-actions-menu"
-              anchorEl={anchorEl}
-              keepMounted
-              open={Boolean(anchorEl)}
-              onClose={handleClose}
-            >
-              <MenuItem
-                onClick={() => {
-                  setHistoryOpen(true);
-                  handleClose();
-                }}
-              >
-                View history
-              </MenuItem>
-              <MenuItem onClick={handleClose}>
-                Delete sighting
-              </MenuItem>
-            </Menu>
+            <MoreMenu
+              menuId="sighting-actions"
+              items={[
+                {
+                  id: 'view-history',
+                  onClick: () => setHistoryOpen(true),
+                  label: 'View history',
+                },
+                {
+                  id: 'delete-sighting',
+                  onClick: () => {},
+                  label: 'Delete sighting',
+                },
+              ]}
+            />
           </div>
         }
       >
@@ -177,12 +154,16 @@ export default function Sighting() {
       {activeTab === '#overview' && (
         <OverviewContent
           metadata={metadata}
+          sightingData={data}
           sightingId={id}
           refreshSightingData={refreshSightingData}
         />
       )}
       {activeTab === '#photographs' && (
         <Photographs assets={assets} />
+      )}
+      {activeTab === '#individuals' && (
+        <Encounters assets={assets} sightingData={data} />
       )}
     </MainColumn>
   );

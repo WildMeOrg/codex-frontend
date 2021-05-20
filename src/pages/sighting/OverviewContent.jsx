@@ -10,6 +10,7 @@ import EditSightingMetadata from './EditSightingMetadata';
 export default function OverviewContent({
   sightingId,
   metadata,
+  sightingData,
   refreshSightingData,
 }) {
   const [editing, setEditing] = useState(false);
@@ -18,6 +19,8 @@ export default function OverviewContent({
 
   const gpsField = metadata.find(field => field.name === 'gps');
   const gps = gpsField && get(gpsField, 'value');
+
+  console.log(sightingData);
 
   return (
     <div style={{ display: 'flex', flexWrap: 'wrap' }}>
@@ -39,7 +42,7 @@ export default function OverviewContent({
       </CardContainer>
       {gps && (
         <CardContainer>
-          <StatusCard />
+          <StatusCard sightingData={sightingData} />
           <GpsCard lat={gps[0]} lng={gps[1]} />
         </CardContainer>
       )}
