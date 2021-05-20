@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import { useIntl, FormattedMessage } from 'react-intl';
 import { get } from 'lodash-es';
 import Tabs from '@material-ui/core/Tabs';
@@ -14,9 +14,11 @@ import LoadingScreen from '../../components/LoadingScreen';
 import SadScreen from '../../components/SadScreen';
 import Button from '../../components/Button';
 import MoreMenu from '../../components/MoreMenu';
+import ConfirmDelete from '../../components/ConfirmDelete';
 import EntityHeaderNew from '../../components/EntityHeaderNew';
 import useSighting from '../../models/sighting/useSighting';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
+import useDeleteSighting from '../../models/sighting/useDeleteSighting';
 import useSightingFieldSchemas from '../../models/sighting/useSightingFieldSchemas';
 import { formatDate } from '../../utils/formatters';
 // import AnnotationsGallery from './AnnotationsGallery';
@@ -29,7 +31,9 @@ import Encounters from './encounters/Encounters';
 
 export default function Sighting() {
   const { id } = useParams();
+  const history = useHistory();
   const intl = useIntl();
+
   const {
     data,
     loading,
@@ -37,6 +41,13 @@ export default function Sighting() {
     refresh: refreshSightingData,
   } = useSighting(id);
   const fieldSchemas = useSightingFieldSchemas();
+
+  const {
+    deleteSighting,
+    loading: deleteInProgress,
+    error: deleteSightingError,
+    setError: setDeleteSightingError,
+  } = useDeleteSighting();
 
   /*
     known issue: if data or fieldschemas change values
@@ -58,6 +69,7 @@ export default function Sighting() {
   useDocumentTitle(`Sighting ${id}`);
 
   const [historyOpen, setHistoryOpen] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
   const activeTab = window.location.hash || '#overview';
 
@@ -90,6 +102,21 @@ export default function Sighting() {
         open={historyOpen}
         onClose={() => setHistoryOpen(false)}
       />
+      <ConfirmDelete
+        open={deleteDialogOpen}
+        onClose={() => setDeleteDialogOpen(false)}
+        onDelete={async () => {
+          const successful = await deleteSighting(id);
+          if (successful) {
+            setHistoryOpen(false);
+            history.push('/');
+          }
+        }}
+        deleteInProgress={deleteInProgress}
+        error={deleteSightingError}
+        onClearError={() => setDeleteSightingError(null)}
+        messageId="CONFIRM_DELETE_SIGHTING_DESCRIPTION"
+      />
       <EntityHeaderNew
         renderAvatar={
           <FeaturedPhoto
@@ -117,7 +144,7 @@ export default function Sighting() {
                 },
                 {
                   id: 'delete-sighting',
-                  onClick: () => {},
+                  onClick: () => setDeleteDialogOpen(true),
                   label: 'Delete sighting',
                 },
               ]}
@@ -163,17 +190,13 @@ export default function Sighting() {
         <Photographs assets={assets} />
       )}
       {activeTab === '#individuals' && (
-        <Encounters assets={assets} sightingData={data} />
+        <Encounters assets={assets} sightingData={data} refreshSightingData={refreshSightingData} />
       )}
     </MainColumn>
   );
 }
 
 /*
-
-{/* /* {activeTab === '#individuals' && (
-  <IndividualsGallery sighting={encounters} />
-)}
 {activeTab === '#annotations' && (
   <AnnotationsGallery sighting={sighting} />
 )} */

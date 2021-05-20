@@ -52,6 +52,7 @@ export default function FeaturedPhotoSelector({
               onClick={() => setSelectedPhoto(asset.guid)}
               alt={asset.filename}
               src={asset.src}
+              key={asset.guid}
             />
           ))}
         </div>

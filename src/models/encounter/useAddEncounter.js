@@ -3,34 +3,17 @@ import axios from 'axios';
 import { get } from 'lodash-es';
 import { formatError } from '../../utils/formatters';
 
-export default function usePatchSighting() {
+export default function useAddEncounter() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
 
-  const updateProperties = async (sightingId, dictionary) => {
-    const dictionaryCopy = { ...dictionary };
-    if ('gps' in dictionaryCopy) {
-      dictionaryCopy.decimalLatitude = get(
-        dictionaryCopy,
-        ['gps', 0],
-        null,
-      );
-      dictionaryCopy.decimalLongitude = get(
-        dictionaryCopy,
-        ['gps', 1],
-        null,
-      );
-      delete dictionaryCopy.gps;
-    }
-
-    const operations = Object.keys(dictionaryCopy).map(
-      propertyKey => ({
-        op: 'replace',
-        path: `/${propertyKey}`,
-        value: dictionaryCopy[propertyKey],
-      }),
-    );
+  const addEncounter = async (sightingId, values) => {
+    const operation = {
+      op: 'add',
+      path: '/encounters',
+      value: values,
+    };
 
     try {
       setLoading(true);
@@ -38,7 +21,7 @@ export default function usePatchSighting() {
         url: `${__houston_url__}/api/v1/sightings/${sightingId}`,
         withCredentials: true,
         method: 'patch',
-        data: operations,
+        data: [operation],
       });
       const responseStatus = get(patchResponse, 'status');
       const successful = responseStatus === 200;
@@ -61,7 +44,7 @@ export default function usePatchSighting() {
   };
 
   return {
-    updateProperties,
+    addEncounter,
     loading,
     error,
     setError,

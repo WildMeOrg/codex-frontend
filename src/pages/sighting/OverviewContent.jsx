@@ -20,8 +20,6 @@ export default function OverviewContent({
   const gpsField = metadata.find(field => field.name === 'gps');
   const gps = gpsField && get(gpsField, 'value');
 
-  console.log(sightingData);
-
   return (
     <div style={{ display: 'flex', flexWrap: 'wrap' }}>
       {metadata ? (

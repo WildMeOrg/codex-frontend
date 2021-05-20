@@ -36,7 +36,7 @@ export default function EditSightingMetadata({
     loading,
     error,
     setError,
-  } = usePatchSighting(sightingId);
+  } = usePatchSighting();
 
   const defaultFieldMetadata = metadata.filter(
     field => !field.customField,
@@ -120,6 +120,7 @@ export default function EditSightingMetadata({
           display="primary"
           onClick={async () => {
             const successfulUpdate = await updateProperties(
+              sightingId,
               defaultFieldValues,
             );
             if (successfulUpdate) {

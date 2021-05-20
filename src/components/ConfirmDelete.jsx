@@ -12,6 +12,8 @@ export default function ConfirmDelete({
   open,
   onClose,
   onDelete,
+  onClearError,
+  deleteInProgress,
   entityToDelete,
   messageId,
   message,
@@ -35,6 +37,7 @@ export default function ConfirmDelete({
           <Alert
             style={{ marginTop: 16, marginBottom: 8 }}
             severity="error"
+            onClose={onClearError}
           >
             <AlertTitle>
               <FormattedMessage id="SERVER_ERROR" />
@@ -43,11 +46,11 @@ export default function ConfirmDelete({
           </Alert>
         )}
       </DialogContent>
-      <DialogActions style={{ padding: '0px 24px 24px 24px' }}>
+      <DialogActions style={{ padding: '8px 24px 24px 24px' }}>
         <Button display="basic" onClick={onClose}>
           <FormattedMessage id="CANCEL" />
         </Button>
-        <Button display="primary" onClick={onDelete}>
+        <Button loading={deleteInProgress} display="primary" onClick={onDelete}>
           <FormattedMessage id="DELETE" />
         </Button>
       </DialogActions>
