@@ -4,7 +4,7 @@ import { get } from 'lodash-es';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 
-import InputRow from '../../components/InputRow';
+import InputRow from '../../components/fields/edit/InputRowNew';
 import Text from '../../components/Text';
 
 export default function FieldCollections({
@@ -12,7 +12,6 @@ export default function FieldCollections({
   formValues,
   categories,
   fieldSchema,
-  fieldKey = 'name',
 }) {
   const categoryList = Object.values(categories);
 
@@ -53,25 +52,24 @@ export default function FieldCollections({
           }}
         >
           {inputsInCategory.map(input => {
-            const valueKey = get(input, fieldKey);
+            const valueKey = get(input, 'name');
 
             return (
               <InputRow
                 key={`${category.name} - ${input.name}`}
-                labelId={input.labelId}
-                label={input.label}
-                descriptionId={input.descriptionId}
-                description={input.description}
-                required={input.required}
                 schema={input}
-                value={formValues[valueKey]}
-                onChange={value => {
-                  setFormValues({
-                    ...formValues,
-                    [valueKey]: value,
-                  });
-                }}
-              />
+              >
+                <input.editComponent
+                  schema={input}
+                  value={formValues[valueKey]}
+                  onChange={value => {
+                    setFormValues({
+                      ...formValues,
+                      [valueKey]: value,
+                    });
+                  }}
+                />
+              </InputRow>
             );
           })}
         </Paper>

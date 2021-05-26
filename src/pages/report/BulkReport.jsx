@@ -11,7 +11,8 @@ import Paper from '@material-ui/core/Paper';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 
-import { selectSightingSchema } from '../../modules/sightings/selectors';
+import useEncounterFieldSchemas from '../../models/encounter/useEncounterFieldSchemas';
+import useSightingFieldSchemas from '../../models/sighting/useSightingFieldSchemas';
 import Button from '../../components/Button';
 import Text from '../../components/Text';
 import InlineButton from '../../components/InlineButton';
@@ -20,7 +21,6 @@ import TermsAndConditionsDialog from './TermsAndConditionsDialog';
 import { flatfileKey } from '../../constants/apiKeys';
 
 export default function BulkReport() {
-  const schema = useSelector(selectSightingSchema);
   const siteName = useSelector(selectSiteName);
   const theme = useTheme();
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -30,16 +30,11 @@ export default function BulkReport() {
   const [acceptEmails, setAcceptEmails] = useState(false);
   const [sightingData, setSightingData] = useState(null);
 
-  const [fields, setFields] = useState(
-    schema.reduce((memo, field) => {
-      memo[field.name] = Boolean(field.required);
-      return memo;
-    }, {}),
-  );
+  const encounterFields = useEncounterFieldSchemas();
+  const sightingFields = useSightingFieldSchemas();
+  const dataFields = [...encounterFields, ...sightingFields];
 
-  // const enabledFields = Object.keys(fields).filter(
-  //   fieldKey => fields[fieldKey],
-  // );
+  const [selectedFieldNames, setSelectedFieldNames] = useState([]);
 
   return (
     <>
@@ -69,31 +64,37 @@ export default function BulkReport() {
         />
         <FormControl component="fieldset">
           <FormGroup style={{ flexDirection: 'row' }}>
-            {Object.keys(fields).map(fieldKey => {
-              const fieldSchema = schema.find(
-                f => f.name === fieldKey,
+            {dataFields.map(field => {
+              if (field.required) return null;
+              const selected = selectedFieldNames.includes(
+                field.name,
               );
-              if (fieldSchema.required) return null;
               return (
                 <FormControlLabel
-                  key={fieldKey}
+                  key={field.name}
                   style={{ width: 200 }}
                   control={
                     <Checkbox
                       color="primary"
-                      checked={fields[fieldKey]}
-                      onChange={() =>
-                        setFields({
-                          ...fields,
-                          [fieldKey]: !fields[fieldKey],
-                        })
-                      }
+                      checked={selected}
+                      onChange={() => {
+                        if (selected) {
+                          setSelectedFieldNames(
+                            selectedFieldNames.filter(
+                              f => f.name !== field.name,
+                            ),
+                          );
+                        } else {
+                          setSelectedFieldNames([
+                            ...selectedFieldNames,
+                            field.name,
+                          ]);
+                        }
+                      }}
                       size="small"
                     />
                   }
-                  label={
-                    <FormattedMessage id={fieldSchema.labelId} />
-                  }
+                  label={<FormattedMessage id={field.labelId} />}
                 />
               );
             })}
@@ -157,10 +158,9 @@ export default function BulkReport() {
             )}
           />
           {sightingData ? (
-            <Text
-              variant="body2"
-              style={{ margin: '8px 0 8px 4px' }}
-            >{`${sightingData.length} sightings imported.`}</Text>
+            <Text variant="body2" style={{ margin: '8px 0 8px 4px' }}>
+              {`${sightingData.length} sightings imported.`}
+            </Text>
           ) : null}
         </Paper>
       </Grid>

@@ -7,7 +7,7 @@ import {
   createCustomFieldSchema,
 } from '../../utils/fieldUtils';
 
-const defaultSightingCategories = {
+export const defaultSightingCategories = {
   general: {
     name: 'general',
     labelId: 'GENERAL',
@@ -67,6 +67,7 @@ export default function useSightingFieldSchemas() {
       labelId: 'SIGHTING_CONTEXT',
       category: defaultSightingCategories.general.name,
       choices: contextChoices,
+      required: true,
     }),
     createFieldSchema(fieldTypes.date, {
       name: 'startTime',
@@ -76,6 +77,12 @@ export default function useSightingFieldSchemas() {
     createFieldSchema(fieldTypes.date, {
       name: 'endTime',
       labelId: 'SIGHTING_END',
+      category: defaultSightingCategories.general.name,
+    }),
+    createFieldSchema(fieldTypes.string, {
+      name: 'verbatimEventDate',
+      labelId: 'SIGHTING_VERBATIM_TIME',
+      descriptionId: 'SIGHTING_VERBATIM_TIME_DESCRIPTION',
       category: defaultSightingCategories.general.name,
     }),
     createFieldSchema(fieldTypes.locationId, {

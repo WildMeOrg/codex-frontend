@@ -13,35 +13,15 @@ export function getCustomFields(siteSettings, property) {
   );
 }
 
-export function deriveCustomFieldSchema(
+export function deriveCustomFieldCategories(
   siteSettings,
   fieldPath,
   categoryPath,
 ) {
-  const customFields = getCustomFields(siteSettings, fieldPath);
   const allCategories = get(
     siteSettings,
     ['data', 'site.custom.customFieldCategories', 'value'],
     [],
   );
-  const categories = allCategories.filter(
-    c => c.type === categoryPath,
-  );
-  const schema = customFields.map(customField => {
-    const result = {
-      ...get(customField, 'schema', {}),
-      fieldType: get(customField, ['schema', 'displayType']),
-      defaultValue: get(customField, 'default', null),
-      ...customField,
-    };
-
-    delete result.schema;
-    delete result.displayType;
-    return result;
-  });
-
-  return {
-    schema,
-    categories,
-  };
+  return allCategories.filter(c => c.type === categoryPath);
 }

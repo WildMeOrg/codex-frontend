@@ -13,20 +13,24 @@ import AlertTitle from '@material-ui/lab/AlertTitle';
 
 import useSiteSettings from '../../models/site/useSiteSettings';
 import usePutSighting from '../../models/sighting/usePutSighting';
+import useSightingFieldSchemas, {
+  defaultSightingCategories,
+} from '../../models/sighting/useSightingFieldSchemas';
+import useEncounterFieldSchemas, {
+  defaultEncounterCategories,
+} from '../../models/encounter/useEncounterFieldSchemas';
 // import { getLocationSuggestion } from '../../utils/exif';
 import Button from '../../components/Button';
 import Text from '../../components/Text';
 import InlineButton from '../../components/InlineButton';
 import FieldCollections from './FieldCollections';
 import TermsAndConditionsDialog from './TermsAndConditionsDialog';
-import deriveReportSightingSchema from './utils/deriveReportSightingSchema';
-import deriveReportEncounterSchema from './utils/deriveReportEncounterSchema';
 import prepareReport from './utils/prepareReport';
-import { deriveCustomFieldSchema } from './utils/customFieldUtils';
+import { deriveCustomFieldCategories } from './utils/customFieldUtils';
 
-function getInitialFormValues(schema, fieldKey) {
+function getInitialFormValues(schema) {
   return schema.reduce((memo, field) => {
-    const valueKey = get(field, fieldKey);
+    const valueKey = get(field, 'name');
     memo[valueKey] = get(field, 'defaultValue');
     return memo;
   }, {});
@@ -48,22 +52,35 @@ export default function BasicReportForm({
     '<site-name>',
   );
 
-  const {
-    schema: customEncounterSchema,
-    categories: customEncounterCategories,
-  } = deriveCustomFieldSchema(siteSettings, 'Encounter', 'encounter');
-  const {
-    schema: customSightingSchema,
-    categories: customSightingCategories,
-  } = deriveCustomFieldSchema(siteSettings, 'Occurrence', 'sighting');
-  const {
-    sightingSchema,
-    sightingCategories,
-  } = deriveReportSightingSchema(siteSettings);
-  const {
-    encounterSchema,
-    encounterCategories,
-  } = deriveReportEncounterSchema(siteSettings);
+  const customEncounterCategories = deriveCustomFieldCategories(
+    siteSettings,
+    'Encounter',
+    'encounter',
+  );
+  const customSightingCategories = deriveCustomFieldCategories(
+    siteSettings,
+    'Occurrence',
+    'sighting',
+  );
+
+  const sightingFieldSchemas = useSightingFieldSchemas();
+  const defaultSightingSchemas = sightingFieldSchemas.filter(
+    schema => !schema.customField,
+  );
+  const customSightingSchemas = sightingFieldSchemas.filter(
+    schema => schema.customField,
+  );
+
+  const encounterFieldSchemas = useEncounterFieldSchemas();
+  const visibleEncounterFieldSchemas = encounterFieldSchemas.filter(
+    schema => !schema.hideOnBasicReport,
+  );
+  const defaultEncounterSchemas = visibleEncounterFieldSchemas.filter(
+    schema => !schema.customField,
+  );
+  const customEncounterSchemas = visibleEncounterFieldSchemas.filter(
+    schema => schema.customField,
+  );
 
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   // const [exifButtonClicked, setExifButtonClicked] = useState(false);
@@ -76,19 +93,19 @@ export default function BasicReportForm({
   const [locationFieldError, setLocationFieldError] = useState(false);
 
   const [sightingFormValues, setSightingFormValues] = useState(
-    getInitialFormValues(sightingSchema, 'name'),
+    getInitialFormValues(defaultSightingSchemas),
   );
   const [
     customSightingFormValues,
     setCustomSightingFormValues,
-  ] = useState(getInitialFormValues(customSightingSchema, 'id'));
+  ] = useState(getInitialFormValues(customSightingSchemas));
   const [encounterFormValues, setEncounterFormValues] = useState(
-    getInitialFormValues(encounterSchema, 'name'),
+    getInitialFormValues(defaultEncounterSchemas),
   );
   const [
     customEncounterFormValues,
     setCustomEncounterFormValues,
-  ] = useState(getInitialFormValues(customEncounterSchema, 'id'));
+  ] = useState(getInitialFormValues(customEncounterSchemas));
 
   // const locationSuggestion = useMemo(
   //   () => getLocationSuggestion(exifData),
@@ -112,32 +129,28 @@ export default function BasicReportForm({
       <FieldCollections
         formValues={sightingFormValues}
         setFormValues={setSightingFormValues}
-        categories={sightingCategories}
-        fieldSchema={sightingSchema}
-        fieldKey="name"
+        categories={defaultSightingCategories}
+        fieldSchema={defaultSightingSchemas}
       />
       <FieldCollections
         formValues={customSightingFormValues}
         setFormValues={setCustomSightingFormValues}
         categories={customSightingCategories}
-        fieldSchema={customSightingSchema}
-        fieldKey="id"
+        fieldSchema={customSightingCategories}
       />
       {variant === 'one' && (
         <>
           <FieldCollections
             formValues={encounterFormValues}
             setFormValues={setEncounterFormValues}
-            categories={encounterCategories}
-            fieldSchema={encounterSchema}
-            fieldKey="name"
+            categories={defaultEncounterCategories}
+            fieldSchema={defaultEncounterSchemas}
           />
           <FieldCollections
             formValues={customEncounterFormValues}
             setFormValues={setCustomEncounterFormValues}
             categories={customEncounterCategories}
-            fieldSchema={customEncounterSchema}
-            fieldKey="id"
+            fieldSchema={customEncounterSchemas}
           />
         </>
       )}
@@ -223,7 +236,7 @@ export default function BasicReportForm({
         <Button
           onClick={async () => {
             // check that required fields are complete
-            const nextIncompleteFields = sightingSchema.filter(
+            const nextIncompleteFields = defaultSightingSchemas.filter(
               field =>
                 field.required &&
                 field.defaultValue === sightingFormValues[field.name],
