@@ -117,11 +117,7 @@ export default function useSightingFieldSchemas() {
           name: 'verbatimLocality',
           labelId: 'FREEFORM_LOCATION',
           category: defaultSightingCategories.location.name,
-        }),
-        createFieldSchema(fieldTypes.string, {
-          name: 'behavior',
-          labelId: 'BEHAVIOR',
-          category: defaultSightingCategories.details.name,
+          hideOnBulkReport: true,
         }),
         createFieldSchema(fieldTypes.longstring, {
           name: 'comments',

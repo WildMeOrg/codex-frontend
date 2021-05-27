@@ -49,7 +49,7 @@ export default function ReportBulk({ authenticated }) {
         </ButtonLink>
       )}
       {reporting ? (
-        <BulkReport files={files} />
+        <BulkReport assetReferences={files} />
       ) : (
         <>
           <Grid item style={{ marginTop: 20 }}>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { useSelector } from 'react-redux';
 import { FlatfileButton } from '@flatfile/react';
+import { get } from 'lodash-es';
 
 import { useTheme } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
@@ -10,32 +10,36 @@ import FormGroup from '@material-ui/core/FormGroup';
 import Paper from '@material-ui/core/Paper';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
+import Alert from '@material-ui/lab/Alert';
+import AlertTitle from '@material-ui/lab/AlertTitle';
 
-import useEncounterFieldSchemas from '../../models/encounter/useEncounterFieldSchemas';
-import useSightingFieldSchemas from '../../models/sighting/useSightingFieldSchemas';
+import usePostAssetGroup from '../../models/assetGroup/usePostAssetGroup';
+import { flatfileKey } from '../../constants/apiKeys';
 import Button from '../../components/Button';
 import Text from '../../components/Text';
 import InlineButton from '../../components/InlineButton';
-import { selectSiteName } from '../../modules/site/selectors';
+import prepareAssetGroup from './utils/prepareAssetGroup';
+import useBulkImportFields from './utils/useBulkImportFields';
 import TermsAndConditionsDialog from './TermsAndConditionsDialog';
-import { flatfileKey } from '../../constants/apiKeys';
 
-export default function BulkReport() {
-  const siteName = useSelector(selectSiteName);
+export default function BulkReport({ assetReferences }) {
   const theme = useTheme();
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
   const [termsError, setTermsError] = useState(false);
   const [acceptedTerms, setAcceptedTerms] = useState(false);
-  const [acceptEmails, setAcceptEmails] = useState(false);
   const [sightingData, setSightingData] = useState(null);
 
-  const encounterFields = useEncounterFieldSchemas();
-  const sightingFields = useSightingFieldSchemas();
-  const dataFields = [...encounterFields, ...sightingFields];
+  const { postAssetGroup, loading } = usePostAssetGroup();
 
-  const [selectedFieldNames, setSelectedFieldNames] = useState([]);
+  const availableFields = useBulkImportFields();
+  const [selectedFieldNames, setSelectedFieldNames] = useState(
+    availableFields.map(f => f.key),
+  );
+  const selectedFields = availableFields.filter(f =>
+    selectedFieldNames.includes(f.key),
+  );
 
+  console.log(assetReferences);
   return (
     <>
       <TermsAndConditionsDialog
@@ -64,11 +68,9 @@ export default function BulkReport() {
         />
         <FormControl component="fieldset">
           <FormGroup style={{ flexDirection: 'row' }}>
-            {dataFields.map(field => {
-              if (field.required) return null;
-              const selected = selectedFieldNames.includes(
-                field.name,
-              );
+            {availableFields.map(field => {
+              // if (field.required) return null; find flatfile analog?
+              const selected = selectedFieldNames.includes(field.key);
               return (
                 <FormControlLabel
                   key={field.name}
@@ -81,20 +83,22 @@ export default function BulkReport() {
                         if (selected) {
                           setSelectedFieldNames(
                             selectedFieldNames.filter(
-                              f => f.name !== field.name,
+                              name => name !== field.key,
                             ),
                           );
                         } else {
                           setSelectedFieldNames([
                             ...selectedFieldNames,
-                            field.name,
+                            field.key,
                           ]);
                         }
                       }}
                       size="small"
                     />
                   }
-                  label={<FormattedMessage id={field.labelId} />}
+                  label={
+                    <Text id={field.labelId}>{field.label}</Text>
+                  }
                 />
               );
             })}
@@ -124,22 +128,10 @@ export default function BulkReport() {
             licenseKey={flatfileKey}
             customer={{ userId: 'dev' }}
             settings={{
+              disableManualInput: true,
               title: 'Import sightings data',
               type: 'bulk_import',
-              fields: [
-                { label: 'Filename', key: 'filename' },
-                { label: 'Species', key: 'species' },
-                { label: 'Region', key: 'region' },
-                { label: 'Latitude', key: 'lat' },
-                { label: 'Longitude', key: 'long' },
-                { label: 'Sex', key: 'sex' },
-                { label: 'Status', key: 'status' },
-                { label: 'Photographer', key: 'photographer' },
-                {
-                  label: 'Photographer email',
-                  key: 'photographer_email',
-                },
-              ],
+              fields: selectedFields,
               styleOverrides: {
                 primaryButtonColor: theme.palette.primary.main,
               },
@@ -168,24 +160,12 @@ export default function BulkReport() {
         <FormControlLabel
           control={
             <Checkbox
-              checked={acceptEmails}
-              onChange={() => setAcceptEmails(!acceptEmails)}
-            />
-          }
-          label={
-            <FormattedMessage
-              id="BULK_SIGHTING_EMAIL_CONSENT"
-              values={{ siteName }}
-            />
-          }
-        />
-      </Grid>
-      <Grid item>
-        <FormControlLabel
-          control={
-            <Checkbox
               checked={acceptedTerms}
-              onChange={() => setAcceptedTerms(!acceptedTerms)}
+              onChange={() => {
+                setAcceptedTerms(!acceptedTerms);
+                if (!acceptedTerms && termsError)
+                  setTermsError(false);
+              }}
             />
           }
           label={
@@ -199,27 +179,46 @@ export default function BulkReport() {
           }
         />
       </Grid>
+
+      {termsError && (
+        <Grid style={{ marginTop: 12 }} item>
+          <Alert severity="error">
+            <AlertTitle>
+              <Text id="SUBMISSION_ERROR" />
+            </AlertTitle>
+            <Text variant="body2" id="TERMS_ERROR" />
+          </Alert>
+        </Grid>
+      )}
       <Grid
         item
         style={{
-          marginTop: 40,
+          marginTop: 12,
           display: 'flex',
           flexDirection: 'column',
         }}
       >
         <Button
-          onClick={() => {
+          onClick={async () => {
             // check that terms and conditions were accepted
-            setTermsError(!acceptedTerms);
-
             if (acceptedTerms) {
-              console.log('Time to report the sighting');
-              console.log(sightingData);
-              setLoading(true);
-              setTimeout(() => {
-                console.log('Sighting submitted');
-                setLoading(false);
-              }, 150000);
+              const sightings = prepareAssetGroup(
+                sightingData,
+                assetReferences,
+              );
+              const results = await postAssetGroup({
+                description: 'horpdorp',
+                bulkUpload: true,
+                speciesDetectionModel: ['None'],
+                transactionId: get(assetReferences, [
+                  0,
+                  'transactionId',
+                ]),
+                sightings,
+              });
+              console.log(results);
+            } else {
+              setTermsError(true);
             }
           }}
           style={{ width: 200 }}
@@ -229,9 +228,6 @@ export default function BulkReport() {
         >
           <FormattedMessage id="REPORT_SIGHTINGS" />
         </Button>
-      </Grid>
-      <Grid style={{ marginTop: 12 }} item>
-        {termsError && <Text color="error" id="TERMS_ERROR" />}
       </Grid>
     </>
   );
