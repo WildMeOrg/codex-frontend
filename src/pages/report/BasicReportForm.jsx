@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
+import React, { useMemo, useState } from 'react';
+import { useIntl } from 'react-intl';
 import { get } from 'lodash-es';
 import { useHistory } from 'react-router-dom';
 import { addHours, isWithinInterval, isAfter } from 'date-fns';
@@ -46,22 +46,41 @@ export default function BasicReportForm({
 }) {
   const intl = useIntl();
   const history = useHistory();
-  const siteSettings = useSiteSettings();
+  const {
+    data: siteSettingsData,
+    siteSettingsVersion,
+  } = useSiteSettings();
   const { loading, error: putError, putSighting } = usePutSighting();
 
-  const siteName = get(
-    siteSettings,
-    ['data', 'site.name', 'value'],
-    '<site-name>',
-  );
+  const {
+    siteName,
+    customEncounterCategories,
+    customSightingCategories,
+  } = useMemo(
+    () => {
+      const _siteName = get(
+        siteSettingsData,
+        ['site.name', 'value'],
+        '<site-name>',
+      );
 
-  const customEncounterCategories = deriveCustomFieldCategories(
-    siteSettings,
-    'encounter',
-  );
-  const customSightingCategories = deriveCustomFieldCategories(
-    siteSettings,
-    'sighting',
+      const _customEncounterCategories = deriveCustomFieldCategories(
+        siteSettingsData,
+        'encounter',
+      );
+
+      const _customSightingCategories = deriveCustomFieldCategories(
+        siteSettingsData,
+        'sighting',
+      );
+
+      return {
+        siteName: _siteName,
+        customEncounterCategories: _customEncounterCategories,
+        customSightingCategories: _customSightingCategories,
+      };
+    },
+    [siteSettingsData, siteSettingsVersion],
   );
 
   const sightingFieldSchemas = useSightingFieldSchemas();
@@ -93,20 +112,43 @@ export default function BasicReportForm({
   const [dateDurationError, setDateDurationError] = useState(false);
   const [locationFieldError, setLocationFieldError] = useState(false);
 
+  const {
+    initialDefaultSightingFormValues,
+    initialCustomSightingFormValues,
+    initialDefaultEncounterFormValues,
+    initialCustomEncounterFormValues,
+  } = useMemo(
+    () => ({
+      initialDefaultSightingFormValues: getInitialFormValues(
+        defaultSightingSchemas,
+      ),
+      initialCustomSightingFormValues: getInitialFormValues(
+        customSightingSchemas,
+      ),
+      initialDefaultEncounterFormValues: getInitialFormValues(
+        defaultEncounterSchemas,
+      ),
+      initialCustomEncounterFormValues: getInitialFormValues(
+        customEncounterSchemas,
+      ),
+    }),
+    [],
+  );
+
   const [sightingFormValues, setSightingFormValues] = useState(
-    getInitialFormValues(defaultSightingSchemas),
+    initialDefaultSightingFormValues,
   );
   const [
     customSightingFormValues,
     setCustomSightingFormValues,
-  ] = useState(getInitialFormValues(customSightingSchemas));
+  ] = useState(initialCustomSightingFormValues);
   const [encounterFormValues, setEncounterFormValues] = useState(
-    getInitialFormValues(defaultEncounterSchemas),
+    initialDefaultEncounterFormValues,
   );
   const [
     customEncounterFormValues,
     setCustomEncounterFormValues,
-  ] = useState(getInitialFormValues(customEncounterSchemas));
+  ] = useState(initialCustomEncounterFormValues);
 
   // const locationSuggestion = useMemo(
   //   () => getLocationSuggestion(exifData),
@@ -312,9 +354,8 @@ export default function BasicReportForm({
           style={{ width: 200 }}
           loading={loading}
           display="primary"
-        >
-          <FormattedMessage id="REPORT_SIGHTING" />
-        </Button>
+          id="REPORT_SIGHTING"
+        />
       </Grid>
     </>
   );

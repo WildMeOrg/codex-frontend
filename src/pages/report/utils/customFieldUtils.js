@@ -19,7 +19,7 @@ export function deriveCustomFieldCategories(
 ) {
   const allCategories = get(
     siteSettings,
-    ['data', 'site.custom.customFieldCategories', 'value'],
+    ['site.custom.customFieldCategories', 'value'],
     [],
   );
   return allCategories.filter(c => c.type === categoryPath);
