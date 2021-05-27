@@ -29,10 +29,6 @@ const colors = [
     labelId: 'LAVENDER',
   },
   {
-    hex: '#F1556C',
-    labelId: 'CARDINAL',
-  },
-  {
     hex: '#FECA75',
     labelId: 'PRAIRIE',
   },

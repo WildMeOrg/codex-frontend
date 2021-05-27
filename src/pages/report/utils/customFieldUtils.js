@@ -15,7 +15,6 @@ export function getCustomFields(siteSettings, property) {
 
 export function deriveCustomFieldCategories(
   siteSettings,
-  fieldPath,
   categoryPath,
 ) {
   const allCategories = get(

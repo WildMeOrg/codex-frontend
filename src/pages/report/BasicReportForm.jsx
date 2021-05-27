@@ -25,7 +25,10 @@ import Text from '../../components/Text';
 import InlineButton from '../../components/InlineButton';
 import FieldCollections from './FieldCollections';
 import TermsAndConditionsDialog from './TermsAndConditionsDialog';
-import prepareReport from './utils/prepareReport';
+import {
+  prepareBasicReport,
+  prepareReportWithEncounter,
+} from './utils/prepareReport';
 import { deriveCustomFieldCategories } from './utils/customFieldUtils';
 
 function getInitialFormValues(schema) {
@@ -54,12 +57,10 @@ export default function BasicReportForm({
 
   const customEncounterCategories = deriveCustomFieldCategories(
     siteSettings,
-    'Encounter',
     'encounter',
   );
   const customSightingCategories = deriveCustomFieldCategories(
     siteSettings,
-    'Occurrence',
     'sighting',
   );
 
@@ -136,7 +137,7 @@ export default function BasicReportForm({
         formValues={customSightingFormValues}
         setFormValues={setCustomSightingFormValues}
         categories={customSightingCategories}
-        fieldSchema={customSightingCategories}
+        fieldSchema={customSightingSchemas}
       />
       {variant === 'one' && (
         <>
@@ -287,16 +288,19 @@ export default function BasicReportForm({
             if (formValid) {
               const report =
                 variant === 'one'
-                  ? prepareReport(
+                  ? prepareReportWithEncounter(
                       sightingFormValues,
                       customSightingFormValues,
+                      customSightingSchemas,
                       assetReferences,
                       encounterFormValues,
                       customEncounterFormValues,
+                      customEncounterSchemas,
                     )
-                  : prepareReport(
+                  : prepareBasicReport(
                       sightingFormValues,
                       customSightingFormValues,
+                      customSightingSchemas,
                       assetReferences,
                     );
               const newSightingId = await putSighting(report);

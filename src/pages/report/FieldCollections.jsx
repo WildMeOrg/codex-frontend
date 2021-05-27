@@ -17,8 +17,10 @@ export default function FieldCollections({
 
   return categoryList.map(category => {
     const inputsInCategory = fieldSchema.filter(
-      f => f.category === category.name || f.category === category.id,
+      f =>
+        f.category === category.name || f.categoryId === category.id,
     );
+    if (inputsInCategory.length === 0) return null;
 
     return (
       <Grid item key={category.name || category.id}>

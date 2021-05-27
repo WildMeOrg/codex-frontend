@@ -39,7 +39,7 @@ docker-compose pull
 docker-compose up
 ```
 
-Note: `docker-compose pull` takes a very long time to finish the first time around! But when it's all done you should be able to see the frontend on `localhost:84`. If you see a 502 nginx error instead, you may need to increase the amount of memory available to Docker. 6GB memory and 2GB swap works for me.
+Note: `docker-compose pull` takes a very long time to finish the first time around! But when it's all done you should be able to see the frontend on `localhost:84`. If you see a 502 nginx error instead, you may need to increase the amount of memory available to Docker. 6GB memory and 2GB swap works for my system.
 
 The following commands are helpful when developing in this manner:
 
@@ -60,9 +60,8 @@ npm run build -- --env=houston=relative // use relative file paths for API reque
 
 ## Thanks
 
-Thanks to [Lokalise](https://lokalise.com/) for providing translation management services.
-
-Thanks to [flatfile](https://flatfile.io/) for providing data import services.
-
-Thanks to Emily Ke and Madeleine Webb for their contributions. 
+- Thanks to [Lokalise](https://lokalise.com/) for providing translation management services.
+- Thanks to [Flatfile](https://flatfile.io/) for providing data import services.
+- Thanks to Emily Ke for developing the server status screen, page transitions, and more!
+- Thanks to  Madeleine Webb for her design assistance.
 
