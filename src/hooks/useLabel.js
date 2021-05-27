@@ -1,7 +1,7 @@
 import { useIntl } from 'react-intl';
 import { get } from 'lodash-es';
 
-export default function useLabel(fieldSchema) {
+export default function useLabel(fieldSchema, noAsterisk = false) {
   const intl = useIntl();
   let label = null;
   if (fieldSchema.labelId) {
@@ -9,6 +9,6 @@ export default function useLabel(fieldSchema) {
   } else {
     label = get(fieldSchema, 'label', undefined);
   }
-  if (fieldSchema.required) label = `${label} *`;
+  if (fieldSchema.required && !noAsterisk) label = `${label} *`;
   return label;
 }

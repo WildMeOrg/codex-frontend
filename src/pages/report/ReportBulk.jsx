@@ -14,7 +14,7 @@ import BulkReport from './BulkReport';
 import UploadManager from './UploadManager';
 import ReportSightingsPage from './ReportSightingsPage';
 
-export default function ReportBasic({ authenticated }) {
+export default function ReportBulk({ authenticated }) {
   const intl = useIntl();
   useDocumentTitle(intl.formatMessage({ id: 'REPORT_SIGHTINGS' }));
 

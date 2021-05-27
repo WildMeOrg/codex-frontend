@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
+import React, { useMemo, useState } from 'react';
+import { useIntl } from 'react-intl';
 import { get } from 'lodash-es';
 import { useHistory } from 'react-router-dom';
 import { addHours, isWithinInterval, isAfter } from 'date-fns';
@@ -13,20 +13,27 @@ import AlertTitle from '@material-ui/lab/AlertTitle';
 
 import useSiteSettings from '../../models/site/useSiteSettings';
 import usePutSighting from '../../models/sighting/usePutSighting';
+import useSightingFieldSchemas, {
+  defaultSightingCategories,
+} from '../../models/sighting/useSightingFieldSchemas';
+import useEncounterFieldSchemas, {
+  defaultEncounterCategories,
+} from '../../models/encounter/useEncounterFieldSchemas';
 // import { getLocationSuggestion } from '../../utils/exif';
 import Button from '../../components/Button';
 import Text from '../../components/Text';
 import InlineButton from '../../components/InlineButton';
 import FieldCollections from './FieldCollections';
 import TermsAndConditionsDialog from './TermsAndConditionsDialog';
-import deriveReportSightingSchema from './utils/deriveReportSightingSchema';
-import deriveReportEncounterSchema from './utils/deriveReportEncounterSchema';
-import prepareReport from './utils/prepareReport';
-import { deriveCustomFieldSchema } from './utils/customFieldUtils';
+import {
+  prepareBasicReport,
+  prepareReportWithEncounter,
+} from './utils/prepareReport';
+import { deriveCustomFieldCategories } from './utils/customFieldUtils';
 
-function getInitialFormValues(schema, fieldKey) {
+function getInitialFormValues(schema) {
   return schema.reduce((memo, field) => {
-    const valueKey = get(field, fieldKey);
+    const valueKey = get(field, 'name');
     memo[valueKey] = get(field, 'defaultValue');
     return memo;
   }, {});
@@ -39,31 +46,61 @@ export default function BasicReportForm({
 }) {
   const intl = useIntl();
   const history = useHistory();
-  const siteSettings = useSiteSettings();
+  const {
+    data: siteSettingsData,
+    siteSettingsVersion,
+  } = useSiteSettings();
   const { loading, error: putError, putSighting } = usePutSighting();
 
-  const siteName = get(
-    siteSettings,
-    ['data', 'site.name', 'value'],
-    '<site-name>',
+  const {
+    siteName,
+    customEncounterCategories,
+    customSightingCategories,
+  } = useMemo(
+    () => {
+      const _siteName = get(
+        siteSettingsData,
+        ['site.name', 'value'],
+        '<site-name>',
+      );
+
+      const _customEncounterCategories = deriveCustomFieldCategories(
+        siteSettingsData,
+        'encounter',
+      );
+
+      const _customSightingCategories = deriveCustomFieldCategories(
+        siteSettingsData,
+        'sighting',
+      );
+
+      return {
+        siteName: _siteName,
+        customEncounterCategories: _customEncounterCategories,
+        customSightingCategories: _customSightingCategories,
+      };
+    },
+    [siteSettingsData, siteSettingsVersion],
   );
 
-  const {
-    schema: customEncounterSchema,
-    categories: customEncounterCategories,
-  } = deriveCustomFieldSchema(siteSettings, 'Encounter', 'encounter');
-  const {
-    schema: customSightingSchema,
-    categories: customSightingCategories,
-  } = deriveCustomFieldSchema(siteSettings, 'Occurrence', 'sighting');
-  const {
-    sightingSchema,
-    sightingCategories,
-  } = deriveReportSightingSchema(siteSettings);
-  const {
-    encounterSchema,
-    encounterCategories,
-  } = deriveReportEncounterSchema(siteSettings);
+  const sightingFieldSchemas = useSightingFieldSchemas();
+  const defaultSightingSchemas = sightingFieldSchemas.filter(
+    schema => !schema.customField,
+  );
+  const customSightingSchemas = sightingFieldSchemas.filter(
+    schema => schema.customField,
+  );
+
+  const encounterFieldSchemas = useEncounterFieldSchemas();
+  const visibleEncounterFieldSchemas = encounterFieldSchemas.filter(
+    schema => !schema.hideOnBasicReport,
+  );
+  const defaultEncounterSchemas = visibleEncounterFieldSchemas.filter(
+    schema => !schema.customField,
+  );
+  const customEncounterSchemas = visibleEncounterFieldSchemas.filter(
+    schema => schema.customField,
+  );
 
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   // const [exifButtonClicked, setExifButtonClicked] = useState(false);
@@ -75,20 +112,43 @@ export default function BasicReportForm({
   const [dateDurationError, setDateDurationError] = useState(false);
   const [locationFieldError, setLocationFieldError] = useState(false);
 
+  const {
+    initialDefaultSightingFormValues,
+    initialCustomSightingFormValues,
+    initialDefaultEncounterFormValues,
+    initialCustomEncounterFormValues,
+  } = useMemo(
+    () => ({
+      initialDefaultSightingFormValues: getInitialFormValues(
+        defaultSightingSchemas,
+      ),
+      initialCustomSightingFormValues: getInitialFormValues(
+        customSightingSchemas,
+      ),
+      initialDefaultEncounterFormValues: getInitialFormValues(
+        defaultEncounterSchemas,
+      ),
+      initialCustomEncounterFormValues: getInitialFormValues(
+        customEncounterSchemas,
+      ),
+    }),
+    [],
+  );
+
   const [sightingFormValues, setSightingFormValues] = useState(
-    getInitialFormValues(sightingSchema, 'name'),
+    initialDefaultSightingFormValues,
   );
   const [
     customSightingFormValues,
     setCustomSightingFormValues,
-  ] = useState(getInitialFormValues(customSightingSchema, 'id'));
+  ] = useState(initialCustomSightingFormValues);
   const [encounterFormValues, setEncounterFormValues] = useState(
-    getInitialFormValues(encounterSchema, 'name'),
+    initialDefaultEncounterFormValues,
   );
   const [
     customEncounterFormValues,
     setCustomEncounterFormValues,
-  ] = useState(getInitialFormValues(customEncounterSchema, 'id'));
+  ] = useState(initialCustomEncounterFormValues);
 
   // const locationSuggestion = useMemo(
   //   () => getLocationSuggestion(exifData),
@@ -112,32 +172,28 @@ export default function BasicReportForm({
       <FieldCollections
         formValues={sightingFormValues}
         setFormValues={setSightingFormValues}
-        categories={sightingCategories}
-        fieldSchema={sightingSchema}
-        fieldKey="name"
+        categories={defaultSightingCategories}
+        fieldSchema={defaultSightingSchemas}
       />
       <FieldCollections
         formValues={customSightingFormValues}
         setFormValues={setCustomSightingFormValues}
         categories={customSightingCategories}
-        fieldSchema={customSightingSchema}
-        fieldKey="id"
+        fieldSchema={customSightingSchemas}
       />
       {variant === 'one' && (
         <>
           <FieldCollections
             formValues={encounterFormValues}
             setFormValues={setEncounterFormValues}
-            categories={encounterCategories}
-            fieldSchema={encounterSchema}
-            fieldKey="name"
+            categories={defaultEncounterCategories}
+            fieldSchema={defaultEncounterSchemas}
           />
           <FieldCollections
             formValues={customEncounterFormValues}
             setFormValues={setCustomEncounterFormValues}
             categories={customEncounterCategories}
-            fieldSchema={customEncounterSchema}
-            fieldKey="id"
+            fieldSchema={customEncounterSchemas}
           />
         </>
       )}
@@ -223,7 +279,7 @@ export default function BasicReportForm({
         <Button
           onClick={async () => {
             // check that required fields are complete
-            const nextIncompleteFields = sightingSchema.filter(
+            const nextIncompleteFields = defaultSightingSchemas.filter(
               field =>
                 field.required &&
                 field.defaultValue === sightingFormValues[field.name],
@@ -274,16 +330,19 @@ export default function BasicReportForm({
             if (formValid) {
               const report =
                 variant === 'one'
-                  ? prepareReport(
+                  ? prepareReportWithEncounter(
                       sightingFormValues,
                       customSightingFormValues,
+                      customSightingSchemas,
                       assetReferences,
                       encounterFormValues,
                       customEncounterFormValues,
+                      customEncounterSchemas,
                     )
-                  : prepareReport(
+                  : prepareBasicReport(
                       sightingFormValues,
                       customSightingFormValues,
+                      customSightingSchemas,
                       assetReferences,
                     );
               const newSightingId = await putSighting(report);
@@ -295,9 +354,8 @@ export default function BasicReportForm({
           style={{ width: 200 }}
           loading={loading}
           display="primary"
-        >
-          <FormattedMessage id="REPORT_SIGHTING" />
-        </Button>
+          id="REPORT_SIGHTING"
+        />
       </Grid>
     </>
   );

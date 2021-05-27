@@ -29,7 +29,7 @@ function SelectionEditor(props) {
     return get(object, 'label', 'Missing label');
   }
 
-  const label = useLabel(schema);
+  const label = useLabel(schema, true);
   const description = useDescription(schema);
   const showDescription = !minimalLabels && description;
 

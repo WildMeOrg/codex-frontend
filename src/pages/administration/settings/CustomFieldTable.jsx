@@ -43,9 +43,6 @@ export default function CustomFieldTable({
     };
   });
 
-  console.log(categories);
-  console.log(settingName);
-
   const intl = useIntl();
   const [deleteField, setDeleteField] = useState(null);
   const [previewField, setPreviewField] = useState(null);
