@@ -214,6 +214,7 @@
   "CUSTOM_FIELD": "Custom field",
   "FIELD_TYPE": "Field type",
   "REGION_EDITOR": "Region editor",
+  "REGION_DESCRIPTION": "If no region is given, identification will not be run automatically.",
   "SELECT_USER": "Select user",
   "FIELD_LABEL": "Field label",
   "FIELD_DESCRIPTION": "Field description",

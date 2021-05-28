@@ -125,6 +125,7 @@ export default function BulkReport({ assetReferences }) {
           <FlatfileButton
             devMode
             managed
+            maxRecords={1000}
             licenseKey={flatfileKey}
             customer={{ userId: 'dev' }}
             settings={{

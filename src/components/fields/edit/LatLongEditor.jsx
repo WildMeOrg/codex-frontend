@@ -44,8 +44,9 @@ export default function LatLongEditor({
           id="gps-latitude"
           label={intl.formatMessage({ id: 'DECIMAL_LATITUDE' })}
           value={currentLatitudeString}
-          onChange={newLat => {
-            onChange([parseFloat(newLat), currentLongitude]);
+          onChange={e => {
+            const inputValue = e.target.value;
+            onChange([parseFloat(inputValue), currentLongitude]);
           }}
         />
         <TextField
@@ -53,8 +54,9 @@ export default function LatLongEditor({
           id="gps-longitude"
           label={intl.formatMessage({ id: 'DECIMAL_LONGITUDE' })}
           value={currentLongitudeString}
-          onChange={newLng => {
-            onChange([currentLatitude, parseFloat(newLng)]);
+          onChange={e => {
+            const inputValue = e.target.value;
+            onChange([currentLatitude, parseFloat(inputValue)]);
           }}
         />
       </div>
