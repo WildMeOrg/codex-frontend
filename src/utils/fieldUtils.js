@@ -54,9 +54,6 @@ const componentMap = {
     fieldType: fieldTypes.string,
     viewComponent: DefaultViewer,
     editComponent: TextEditor,
-    editComponentProps: {
-      variant: 'string',
-    },
     filterComponent: null,
   },
   [fieldTypes.longstring]: {
@@ -64,9 +61,6 @@ const componentMap = {
     fieldType: fieldTypes.longstring,
     viewComponent: DefaultViewer, // may need to truncate
     editComponent: TextEditor,
-    editComponentProps: {
-      variant: 'longstring',
-    },
     filterComponent: null,
   },
   [fieldTypes.float]: {
@@ -74,9 +68,6 @@ const componentMap = {
     fieldType: fieldTypes.float,
     viewComponent: FloatViewer,
     editComponent: TextEditor,
-    editComponentProps: {
-      variant: 'float',
-    },
     filterComponent: null,
   },
   [fieldTypes.integer]: {
@@ -84,9 +75,6 @@ const componentMap = {
     fieldType: fieldTypes.integer,
     viewComponent: DefaultViewer,
     editComponent: TextEditor,
-    editComponentProps: {
-      variant: 'integer',
-    },
     filterComponent: null,
   },
   [fieldTypes.feetmeters]: {
@@ -122,20 +110,16 @@ const componentMap = {
     fieldType: fieldTypes.select,
     viewComponent: SelectViewer,
     editComponent: SelectionEditor,
-    editComponentProps: {
-      variant: 'one',
-    },
     filterComponent: null,
+    choices: [],
   },
   [fieldTypes.multiselect]: {
     defaultValue: [],
     fieldType: fieldTypes.multiselect,
     viewComponent: MultiSelectViewer,
     editComponent: SelectionEditor,
-    editComponentProps: {
-      variant: 'multiple',
-    },
     filterComponent: null,
+    choices: [],
   },
   [fieldTypes.boolean]: {
     defaultValue: null,
@@ -181,13 +165,14 @@ export function createCustomFieldSchema(houstonSchema) {
     'description',
     'choices',
   ]);
+
   const fieldType = get(houstonSchema, ['schema', 'displayType']);
   const fieldTypeProperties = get(componentMap, fieldType, {});
   const properSchema = {
     ...prototypeFieldSchema,
+    ...fieldTypeProperties,
     ...copiedFields,
     ...copiedSchemaFields,
-    ...fieldTypeProperties,
     categoryId: get(houstonSchema, ['schema', 'category']),
     customField: true,
     getValue: (schema, backendObject) =>

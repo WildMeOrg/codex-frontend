@@ -84,11 +84,14 @@ export default function useSightingFieldSchemas() {
         createFieldSchema(fieldTypes.date, {
           name: 'startTime',
           labelId: 'SIGHTING_START',
+          descriptionId: 'SIGHTING_START_TIME_DESCRIPTION',
           category: defaultSightingCategories.general.name,
+          required: true,
         }),
         createFieldSchema(fieldTypes.date, {
           name: 'endTime',
           labelId: 'SIGHTING_END',
+          descriptionId: 'SIGHTING_END_TIME_DESCRIPTION',
           category: defaultSightingCategories.general.name,
         }),
         createFieldSchema(fieldTypes.string, {
@@ -100,28 +103,27 @@ export default function useSightingFieldSchemas() {
         createFieldSchema(fieldTypes.locationId, {
           name: 'locationId',
           labelId: 'REGION',
+          descriptionId: 'REGION_DESCRIPTION',
           category: defaultSightingCategories.location.name,
           choices: regionChoices,
+        }),
+        createFieldSchema(fieldTypes.string, {
+          name: 'verbatimLocality',
+          labelId: 'FREEFORM_LOCATION',
+          descriptionId: 'LOCATION_FREEFORM_DESCRIPTION',
+          category: defaultSightingCategories.location.name,
+          hideOnBulkReport: true,
         }),
         createFieldSchema(fieldTypes.latlong, {
           name: 'gps',
           labelId: 'EXACT_LOCATION',
+          descriptionId: 'LOCATION_DESCRIPTION',
           category: defaultSightingCategories.location.name,
           getValue: (_, sightingData) => {
             const lat = get(sightingData, 'decimalLatitude');
             const long = get(sightingData, 'decimalLongitude');
             return lat && long ? [lat, long] : [null, null];
           },
-        }),
-        createFieldSchema(fieldTypes.string, {
-          name: 'verbatimLocality',
-          labelId: 'FREEFORM_LOCATION',
-          category: defaultSightingCategories.location.name,
-        }),
-        createFieldSchema(fieldTypes.string, {
-          name: 'behavior',
-          labelId: 'BEHAVIOR',
-          category: defaultSightingCategories.details.name,
         }),
         createFieldSchema(fieldTypes.longstring, {
           name: 'comments',

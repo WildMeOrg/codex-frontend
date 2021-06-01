@@ -70,6 +70,7 @@ export default function FieldCollections({
                       [valueKey]: value,
                     });
                   }}
+                  minimalLabels
                 />
               </InputRow>
             );

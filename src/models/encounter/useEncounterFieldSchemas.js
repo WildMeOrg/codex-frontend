@@ -98,6 +98,7 @@ export default function useSightingFieldSchemas() {
           },
           hideOnBasicReport: true,
           category: defaultEncounterCategories.animal.name,
+          hideOnBulkReport: true,
         }),
         createFieldSchema(fieldTypes.string, {
           name: 'verbatimLocality',
