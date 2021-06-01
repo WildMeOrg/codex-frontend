@@ -4,19 +4,10 @@ import { useIntl } from 'react-intl';
 // import fieldTypes from '../../../constants/fieldTypesNew';
 import useEncounterFieldSchemas from '../../../models/encounter/useEncounterFieldSchemas';
 import useSightingFieldSchemas from '../../../models/sighting/useSightingFieldSchemas';
-
-/* These fields are still used in bulk import but are ommitted from the sightings schema
-   because the analogous encounter fields are used instead. */
-const sightingOmitList = [
-  'locationId',
-  'gps',
-  'verbatimLocality',
-  'startTime',
-  'endTime',
-];
-
-/* Lat and lng are treated as two separate columns here */
-const encounterOmitList = ['gps'];
+import {
+  sightingOmitList,
+  encounterOmitList,
+} from '../constants/bulkReportConstants';
 
 const floatValidator = {
   validate: 'regex_matches',
@@ -63,6 +54,14 @@ export default function useBulkImportFields() {
 
   return [
     {
+      label: intl.formatMessage({ id: 'SIGHTING_ID' }),
+      key: 'sightingId',
+    },
+    {
+      label: intl.formatMessage({ id: 'INDIVIDUAL_NAME' }),
+      key: 'individualName',
+    },
+    {
       label: intl.formatMessage({ id: 'DECIMAL_LATITUDE' }),
       key: 'decimalLatitude',
       validators: [floatValidator],
@@ -73,10 +72,6 @@ export default function useBulkImportFields() {
       validators: [floatValidator],
     },
     ...flatfileEncounterFields,
-    {
-      label: intl.formatMessage({ id: 'SIGHTING_ID' }),
-      key: 'sightingId',
-    },
     ...flatfileSightingFields,
   ];
 }

@@ -5,8 +5,6 @@ import { get } from 'lodash-es';
 
 import { useTheme } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import FormControl from '@material-ui/core/FormControl';
-import FormGroup from '@material-ui/core/FormGroup';
 import Paper from '@material-ui/core/Paper';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -20,6 +18,7 @@ import Text from '../../components/Text';
 import InlineButton from '../../components/InlineButton';
 import prepareAssetGroup from './utils/prepareAssetGroup';
 import useBulkImportFields from './utils/useBulkImportFields';
+import BulkFieldBreakdown from './BulkFieldBreakdown';
 import TermsAndConditionsDialog from './TermsAndConditionsDialog';
 
 export default function BulkReport({ assetReferences }) {
@@ -32,14 +31,7 @@ export default function BulkReport({ assetReferences }) {
   const { postAssetGroup, loading } = usePostAssetGroup();
 
   const availableFields = useBulkImportFields();
-  const [selectedFieldNames, setSelectedFieldNames] = useState(
-    availableFields.map(f => f.key),
-  );
-  const selectedFields = availableFields.filter(f =>
-    selectedFieldNames.includes(f.key),
-  );
 
-  console.log(assetReferences);
   return (
     <>
       <TermsAndConditionsDialog
@@ -48,68 +40,15 @@ export default function BulkReport({ assetReferences }) {
       />
       <div style={{ marginLeft: 12 }}>
         <Text variant="h6" style={{ marginTop: 20 }}>
-          1. Select fields
+          Review available fields
         </Text>
       </div>
-      <Paper
-        elevation={2}
-        style={{
-          marginTop: 20,
-          marginBottom: 12,
-          display: 'flex',
-          flexDirection: 'column',
-          padding: '20px 12px',
-        }}
-      >
-        <Text
-          variant="subtitle2"
-          style={{ marginBottom: 12 }}
-          id="CHOOSE_FIELDS_DESCRIPTION"
-        />
-        <FormControl component="fieldset">
-          <FormGroup style={{ flexDirection: 'row' }}>
-            {availableFields.map(field => {
-              // if (field.required) return null; find flatfile analog?
-              const selected = selectedFieldNames.includes(field.key);
-              return (
-                <FormControlLabel
-                  key={field.name}
-                  style={{ width: 200 }}
-                  control={
-                    <Checkbox
-                      color="primary"
-                      checked={selected}
-                      onChange={() => {
-                        if (selected) {
-                          setSelectedFieldNames(
-                            selectedFieldNames.filter(
-                              name => name !== field.key,
-                            ),
-                          );
-                        } else {
-                          setSelectedFieldNames([
-                            ...selectedFieldNames,
-                            field.key,
-                          ]);
-                        }
-                      }}
-                      size="small"
-                    />
-                  }
-                  label={
-                    <Text id={field.labelId}>{field.label}</Text>
-                  }
-                />
-              );
-            })}
-          </FormGroup>
-        </FormControl>
-      </Paper>
+      <BulkFieldBreakdown availableFields={availableFields} />
 
-      <Grid item style={{ marginTop: 20 }}>
+      <Grid item style={{ marginTop: 12 }}>
         <div style={{ marginLeft: 12 }}>
           <Text variant="h6" style={{ marginTop: 20 }}>
-            2. Upload data
+            Import data
           </Text>
         </div>
         <Paper
@@ -132,7 +71,7 @@ export default function BulkReport({ assetReferences }) {
               disableManualInput: true,
               title: 'Import sightings data',
               type: 'bulk_import',
-              fields: selectedFields,
+              fields: availableFields,
               styleOverrides: {
                 primaryButtonColor: theme.palette.primary.main,
               },
@@ -146,7 +85,7 @@ export default function BulkReport({ assetReferences }) {
                 display="primary"
                 onClick={launch}
               >
-                Import sightings data
+                Upload spreadsheet
               </Button>
             )}
           />

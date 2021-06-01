@@ -7,6 +7,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
 
+import fieldTypes from '../../../constants/fieldTypesNew';
 import useLabel from '../../../hooks/useLabel';
 import useDescription from '../../../hooks/useDescription';
 import FormCore from './FormCore';
@@ -18,7 +19,6 @@ function SelectionEditor(props) {
     onChange,
     width,
     minimalLabels = false,
-    variant = 'one', // one, multiple
     ...rest
   } = props;
   const intl = useIntl();
@@ -46,7 +46,7 @@ function SelectionEditor(props) {
           onChange(e.target.value);
         }}
         value={value}
-        multiple={variant === 'multiple'}
+        multiple={schema.fieldType === fieldTypes.multiselect}
         {...rest}
       >
         {choices.map(option => (

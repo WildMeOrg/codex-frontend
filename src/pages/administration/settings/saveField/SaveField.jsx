@@ -123,7 +123,7 @@ export default function SaveField() {
       style={{
         display: 'flex',
         justifyContent: 'center',
-        maxWidth: 1000,
+        maxWidth: 1120,
         margin: '64px 0 0 0', // Do not switch to margin top, needs to override default margin
       }}
     >
@@ -202,7 +202,7 @@ export default function SaveField() {
 
                   const fieldTypesWithChoices = [
                     fieldTypeInfo.select.value,
-                    fieldTypeInfo.select.value,
+                    fieldTypeInfo.multiselect.value,
                   ];
                   if (fieldTypesWithChoices.includes(nextFieldType)) {
                     nextFormData.schema.choices = [];
@@ -344,13 +344,18 @@ export default function SaveField() {
                   descriptionId: 'FIELD_DEFAULT_VALUE_DESCRIPTION',
                 }}
                 value={get(formData, 'default')}
-                onChange={nextDefaultValue =>
+                onChange={nextDefaultValue => {
                   setFormData({
                     ...formData,
                     default: nextDefaultValue,
-                  })
-                }
+                  });
+                }}
                 disabled={disableForm}
+                choices={get(
+                  formData,
+                  ['schema', 'choices'],
+                  undefined,
+                )}
               />
             </Grid>
           ) : null}
