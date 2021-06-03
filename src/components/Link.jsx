@@ -34,7 +34,8 @@ export default function Link({
     return (
       <a
         href={href}
-        target={newTab ? '_blank' : 'unset'}
+        target={newTab ? '_blank' : undefined}
+        rel={newTab ? 'noreferrer' : undefined}
         style={styles}
         onClick={onClick}
         {...rest}

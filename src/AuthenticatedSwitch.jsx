@@ -4,6 +4,7 @@ import { Switch, Route } from 'react-router-dom';
 import Fade from '@material-ui/core/Fade';
 import { TransitionGroup } from 'react-transition-group';
 import AuthenticatedAppHeader from './components/AuthenticatedAppHeader';
+import ControlPanel from './pages/controlPanel/ControlPanel';
 import Individual from './pages/individual/Individual';
 import CreateIndividual from './pages/individual/CreateIndividual';
 import PictureBook from './pages/individual/PictureBook';
@@ -76,6 +77,21 @@ export default function AuthenticatedSwitch() {
                     <SiteSetup />
                   ) : (
                     <Switch location={location}>
+                      <Route path="/admin/status">
+                        <ServerStatus />
+                      </Route>
+                      <Route path="/admin/actions">
+                        <AdminActions />
+                      </Route>
+                      <Route path="/admin/settings/save-custom-field/:type?/:id?">
+                        <SaveCustomField />
+                      </Route>
+                      <Route path="/admin/settings">
+                        <EditSiteSettings />
+                      </Route>
+                      <Route path="/admin">
+                        <ControlPanel />
+                      </Route>
                       <Route path="/individuals/picturebook">
                         <PictureBook />
                       </Route>
@@ -138,18 +154,6 @@ export default function AuthenticatedSwitch() {
                       </Route>
                       <Route path="/report">
                         <ReportSplash authenticated />
-                      </Route>
-                      <Route path="/admin/actions">
-                        <AdminActions />
-                      </Route>
-                      <Route path="/admin/server">
-                        <ServerStatus />
-                      </Route>
-                      <Route path="/admin/settings/save-custom-field/:type?/:id?">
-                        <SaveCustomField />
-                      </Route>
-                      <Route path="/admin/settings">
-                        <EditSiteSettings />
                       </Route>
                       <Route path="/iceland/flags">
                         <FlagsOnly />

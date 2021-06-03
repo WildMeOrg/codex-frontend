@@ -6,9 +6,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
 import Divider from '@material-ui/core/Divider';
 import SettingsIcon from '@material-ui/icons/Settings';
-import SiteConfigIcon from '@material-ui/icons/PermDataSetting';
-import AdministrationIcon from '@material-ui/icons/Gavel';
-import ServerStatusIcon from '@material-ui/icons/Dns';
+import ControlPanelIcon from '@material-ui/icons/PermDataSetting';
+import BulkImportIcon from '@material-ui/icons/PostAdd';
 import LogoutIcon from '@material-ui/icons/ExitToApp';
 
 import Link from '../Link';
@@ -17,32 +16,23 @@ import shane from '../../assets/shane.jpg';
 
 const actions = [
   {
+    id: 'bulk-import',
+    href: '/bulk-import',
+    messageId: 'BULK_IMPORT',
+    icon: BulkImportIcon,
+  },
+  {
     id: 'settings',
     href: '/settings',
-    adminOnly: true,
     messageId: 'SETTINGS_AND_PRIVACY',
     icon: SettingsIcon,
   },
   {
-    id: 'site-config',
-    href: '/admin/settings',
+    id: 'control-panel',
+    href: '/admin',
     adminOnly: true,
-    messageId: 'SITE_SETTINGS',
-    icon: SiteConfigIcon,
-  },
-  {
-    id: 'server-status',
-    href: '/admin/server',
-    adminOnly: true,
-    messageId: 'SERVER_STATUS',
-    icon: ServerStatusIcon,
-  },
-  {
-    id: 'administration',
-    href: '/admin/actions',
-    adminOnly: true,
-    messageId: 'ADMINISTRATIVE_ACTIONS',
-    icon: AdministrationIcon,
+    messageId: 'CONTROL_PANEL',
+    icon: ControlPanelIcon,
   },
 ];
 
