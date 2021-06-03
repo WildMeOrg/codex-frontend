@@ -7,6 +7,8 @@ import { addHours, isWithinInterval, isAfter } from 'date-fns';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Grid from '@material-ui/core/Grid';
+import FormGroup from '@material-ui/core/FormGroup';
+import Switch from '@material-ui/core/Switch';
 import Alert from '@material-ui/lab/Alert';
 import AlertTitle from '@material-ui/lab/AlertTitle';
 // import ExifIcon from '@material-ui/icons/FlashOn';
@@ -23,13 +25,13 @@ import useEncounterFieldSchemas, {
 import Button from '../../components/Button';
 import Text from '../../components/Text';
 import InlineButton from '../../components/InlineButton';
-import FieldCollections from './FieldCollections';
-import TermsAndConditionsDialog from './TermsAndConditionsDialog';
+import TermsAndConditionsDialog from '../../components/report/TermsAndConditionsDialog';
 import {
   prepareBasicReport,
   prepareReportWithEncounter,
 } from './utils/prepareReport';
 import { deriveCustomFieldCategories } from './utils/customFieldUtils';
+import FieldCollections from './FieldCollections';
 
 function getInitialFormValues(schema) {
   return schema.reduce((memo, field) => {
@@ -39,10 +41,9 @@ function getInitialFormValues(schema) {
   }, {});
 }
 
-export default function BasicReportForm({
+export default function ReportForm({
   assetReferences,
   // exifData,
-  variant,
 }) {
   const intl = useIntl();
   const history = useHistory();
@@ -51,6 +52,7 @@ export default function BasicReportForm({
     siteSettingsVersion,
   } = useSiteSettings();
   const { loading, error: putError, putSighting } = usePutSighting();
+  const [oneIndividual, setOneIndividual] = useState(false);
 
   const {
     siteName,
@@ -181,7 +183,20 @@ export default function BasicReportForm({
         categories={customSightingCategories}
         fieldSchema={customSightingSchemas}
       />
-      {variant === 'one' && (
+      <FormGroup row style={{ marginTop: 12, marginLeft: 12 }}>
+        <FormControlLabel
+          label={intl.formatMessage({
+            id: 'ONE_SIGHTING_TOGGLE_DESCRIPTION',
+          })}
+          control={
+            <Switch
+              checked={oneIndividual}
+              onChange={() => setOneIndividual(!oneIndividual)}
+            />
+          }
+        />
+      </FormGroup>
+      {oneIndividual && (
         <>
           <FieldCollections
             formValues={encounterFormValues}
@@ -328,23 +343,22 @@ export default function BasicReportForm({
               !startTimeAfterEndTime;
 
             if (formValid) {
-              const report =
-                variant === 'one'
-                  ? prepareReportWithEncounter(
-                      sightingFormValues,
-                      customSightingFormValues,
-                      customSightingSchemas,
-                      assetReferences,
-                      encounterFormValues,
-                      customEncounterFormValues,
-                      customEncounterSchemas,
-                    )
-                  : prepareBasicReport(
-                      sightingFormValues,
-                      customSightingFormValues,
-                      customSightingSchemas,
-                      assetReferences,
-                    );
+              const report = oneIndividual
+                ? prepareReportWithEncounter(
+                    sightingFormValues,
+                    customSightingFormValues,
+                    customSightingSchemas,
+                    assetReferences,
+                    encounterFormValues,
+                    customEncounterFormValues,
+                    customEncounterSchemas,
+                  )
+                : prepareBasicReport(
+                    sightingFormValues,
+                    customSightingFormValues,
+                    customSightingSchemas,
+                    assetReferences,
+                  );
               const newSightingId = await putSighting(report);
               if (newSightingId) {
                 history.push(`/report/success/${newSightingId}`);

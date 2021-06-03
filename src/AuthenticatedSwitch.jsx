@@ -24,10 +24,9 @@ import CreateOrg from './pages/org/CreateOrg';
 import User from './pages/user/User';
 import Users from './pages/user/Users';
 import CreateUser from './pages/user/CreateUser';
-import ReportBasic from './pages/report/ReportBasic';
-import ReportBulk from './pages/report/ReportBulk';
-import ReportSuccess from './pages/report/Success';
-import ReportSplash from './pages/report/ReportSplash';
+import BulkImport from './pages/bulkImport/BulkImport';
+import ReportSighting from './pages/reportSighting/ReportSighting';
+import ReportSuccess from './pages/reportSighting/Success';
 import FourOhFour from './pages/fourohfour/FourOhFour';
 import useSiteSettings from './models/site/useSiteSettings';
 import SearchIndividuals from './pages/individual/SearchIndividuals';
@@ -149,23 +148,14 @@ export default function AuthenticatedSwitch() {
                       <Route path="/projects">
                         <Projects />
                       </Route> */}
-                      <Route path="/report/bulk">
-                        <ReportBulk authenticated />
-                      </Route>
-                      <Route path="/report/one">
-                        <ReportBasic authenticated variant="one" />
-                      </Route>
-                      <Route path="/report/several">
-                        <ReportBasic
-                          authenticated
-                          variant="several"
-                        />
+                      <Route path="/bulk-import">
+                        <BulkImport />
                       </Route>
                       <Route path="/report/success/:id">
                         <ReportSuccess authenticated />
                       </Route>
                       <Route path="/report">
-                        <ReportSplash authenticated />
+                        <ReportSighting authenticated />
                       </Route>
                       <Route path="/iceland/flags">
                         <FlagsOnly />

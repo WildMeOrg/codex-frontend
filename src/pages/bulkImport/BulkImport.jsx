@@ -10,11 +10,11 @@ import useDocumentTitle from '../../hooks/useDocumentTitle';
 import Link from '../../components/Link';
 import Button from '../../components/Button';
 import ButtonLink from '../../components/ButtonLink';
-import BulkReport from './BulkReport';
-import UploadManager from './UploadManager';
-import ReportSightingsPage from './ReportSightingsPage';
+import ReportSightingsPage from '../../components/report/ReportSightingsPage';
+import UploadManager from '../../components/report/UploadManager';
+import BulkReport from './ReportForm';
 
-export default function ReportBulk({ authenticated }) {
+export default function BulkImport() {
   const intl = useIntl();
   useDocumentTitle(intl.formatMessage({ id: 'REPORT_SIGHTINGS' }));
 
@@ -30,7 +30,7 @@ export default function ReportBulk({ authenticated }) {
   };
 
   return (
-    <ReportSightingsPage authenticated={authenticated}>
+    <ReportSightingsPage titleId="BULK_IMPORT" authenticated>
       {reporting ? (
         <Button
           onClick={onBack}
