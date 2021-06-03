@@ -88,7 +88,7 @@ export default function ControlPanel() {
                     fontSize: 60,
                     fill: hovered
                       ? theme.palette.primary.light
-                      : undefined,
+                      : theme.palette.grey['800'],
                   }}
                 />
                 <Text

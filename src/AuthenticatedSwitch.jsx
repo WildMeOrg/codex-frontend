@@ -4,6 +4,13 @@ import { Switch, Route } from 'react-router-dom';
 import Fade from '@material-ui/core/Fade';
 import { TransitionGroup } from 'react-transition-group';
 import AuthenticatedAppHeader from './components/AuthenticatedAppHeader';
+import SaveCustomField from './pages/fieldManagement/settings/saveField/SaveField';
+import GeneralSettings from './pages/generalSettings/GeneralSettings';
+import ServerStatus from './pages/serverStatus/ServerStatus';
+import SplashSettings from './pages/splashSettings/SplashSettings';
+import FieldManagement from './pages/fieldManagement/FieldManagement';
+import UserManagement from './pages/userManagement/UserManagement';
+import AdminActions from './pages/adminActions/AdminActions';
 import ControlPanel from './pages/controlPanel/ControlPanel';
 import Individual from './pages/individual/Individual';
 import CreateIndividual from './pages/individual/CreateIndividual';
@@ -26,10 +33,6 @@ import useSiteSettings from './models/site/useSiteSettings';
 import SearchIndividuals from './pages/individual/SearchIndividuals';
 import SearchSightings from './pages/sighting/SearchSightings';
 import SiteSetup from './pages/setup/SiteSetup';
-import AdminActions from './pages/administration/Actions';
-import ServerStatus from './pages/administration/ServerStatus';
-import EditSiteSettings from './pages/administration/EditSiteSettings';
-import SaveCustomField from './pages/administration/settings/saveField/SaveField';
 import MatchReview from './pages/match/MatchReview';
 import FlagsOnly from './pages/match/iceland/FlagsOnly';
 import Iceland from './pages/match/iceland/Iceland';
@@ -77,17 +80,26 @@ export default function AuthenticatedSwitch() {
                     <SiteSetup />
                   ) : (
                     <Switch location={location}>
+                      <Route path="/admin/splash">
+                        <SplashSettings />
+                      </Route>
                       <Route path="/admin/status">
                         <ServerStatus />
+                      </Route>
+                      <Route path="/admin/users">
+                        <UserManagement />
                       </Route>
                       <Route path="/admin/actions">
                         <AdminActions />
                       </Route>
-                      <Route path="/admin/settings/save-custom-field/:type?/:id?">
+                      <Route path="/admin/fields/save-custom-field/:type?/:id?">
                         <SaveCustomField />
                       </Route>
+                      <Route path="/admin/fields">
+                        <FieldManagement />
+                      </Route>
                       <Route path="/admin/settings">
-                        <EditSiteSettings />
+                        <GeneralSettings />
                       </Route>
                       <Route path="/admin">
                         <ControlPanel />

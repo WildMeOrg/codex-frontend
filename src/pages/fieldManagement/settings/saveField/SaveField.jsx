@@ -469,7 +469,7 @@ export default function SaveField() {
                     backendFieldType,
                     { definitions: newFields },
                   );
-                  if (putSuccessful) history.push('/admin/settings');
+                  if (putSuccessful) history.push('/admin/fields');
                 }}
               />
             </Grid>
