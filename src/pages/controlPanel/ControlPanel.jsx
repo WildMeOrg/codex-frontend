@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useIntl } from 'react-intl';
+
 import { useTheme } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import SplashSettingsIcon from '@material-ui/icons/Home';
@@ -8,6 +10,7 @@ import SiteStatusIcon from '@material-ui/icons/Speed';
 import UserManagementIcon from '@material-ui/icons/People';
 import AdministrationIcon from '@material-ui/icons/Gavel';
 
+import useDocumentTitle from '../../hooks/useDocumentTitle';
 import MainColumn from '../../components/MainColumn';
 import Link from '../../components/Link';
 import Text from '../../components/Text';
@@ -53,6 +56,10 @@ const adminPages = [
 
 export default function ControlPanel() {
   const theme = useTheme();
+  const intl = useIntl();
+
+  const documentTitle = intl.formatMessage({ id: 'CONTROL_PANEL' });
+  useDocumentTitle(documentTitle);
   const [hoveredCard, setHoveredCard] = useState(null);
 
   return (

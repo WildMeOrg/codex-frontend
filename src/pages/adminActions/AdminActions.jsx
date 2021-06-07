@@ -6,6 +6,7 @@ import Paper from '@material-ui/core/Paper';
 
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import MainColumn from '../../components/MainColumn';
+import ButtonLink from '../../components/ButtonLink';
 import LabeledInput from '../../components/LabeledInput';
 import Button from '../../components/Button';
 import Text from '../../components/Text';
@@ -24,6 +25,12 @@ export default function AdminActions() {
         component="h3"
         style={{ padding: '16px 0 16px 16px' }}
         id="ADMINISTRATIVE_ACTIONS"
+      />
+      <ButtonLink
+        href="/admin"
+        style={{ marginTop: 8, width: 'fit-content' }}
+        display="back"
+        id="BACK"
       />
       <Grid
         container

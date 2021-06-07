@@ -9,7 +9,6 @@ import Text from '../../components/Text';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import Link from '../../components/Link';
 import Button from '../../components/Button';
-import ButtonLink from '../../components/ButtonLink';
 import ReportSightingsPage from '../../components/report/ReportSightingsPage';
 import UploadManager from '../../components/report/UploadManager';
 import BulkReport from './ReportForm';
@@ -36,17 +35,10 @@ export default function BulkImport() {
           onClick={onBack}
           style={{ marginTop: 8, width: 'fit-content' }}
           display="back"
-        >
-          <FormattedMessage id="BACK_TO_PHOTOS" />
-        </Button>
+          id="BACK_TO_PHOTOS"
+        />
       ) : (
-        <ButtonLink
-          href="/report"
-          style={{ marginTop: 8, width: 'fit-content' }}
-          display="back"
-        >
-          <FormattedMessage id="BACK_TO_SELECTION" />
-        </ButtonLink>
+        null
       )}
       {reporting ? (
         <BulkReport assetReferences={files} />
@@ -83,21 +75,18 @@ export default function BulkImport() {
           <Grid item>
             <Button
               display="primary"
+              id={
+                noImages
+                  ? 'CONTINUE_WITHOUT_PHOTOGRAPHS'
+                  : 'CONTINUE'
+              }
               disabled={false}
               onClick={async () => {
                 window.scrollTo(0, 0);
                 setReporting(true);
               }}
               style={{ marginTop: 16 }}
-            >
-              <FormattedMessage
-                id={
-                  noImages
-                    ? 'CONTINUE_WITHOUT_PHOTOGRAPHS'
-                    : 'CONTINUE'
-                }
-              />
-            </Button>
+            />
           </Grid>
         </>
       )}

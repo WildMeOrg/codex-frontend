@@ -1,14 +1,17 @@
 import React from 'react';
+import { useIntl } from 'react-intl';
 import { get } from 'lodash-es';
 import Grid from '@material-ui/core/Grid';
 
+import useDocumentTitle from '../../hooks/useDocumentTitle';
 import useSiteSettings from '../../models/site/useSiteSettings';
+import MainColumn from '../../components/MainColumn';
+import Text from '../../components/Text';
+import ButtonLink from '../../components/ButtonLink';
+import categoryTypes from '../../constants/categoryTypes';
 import CategoryTable from './settings/CategoryTable';
 import CustomFieldTable from './settings/CustomFieldTable';
 import DefaultFieldTable from './settings/DefaultFieldTable';
-import MainColumn from '../../components/MainColumn';
-import Text from '../../components/Text';
-import categoryTypes from '../../constants/categoryTypes';
 
 function getCustomFields(siteSettings, property) {
   return get(
@@ -25,6 +28,11 @@ export default function FieldManagement() {
     error,
     siteSettingsVersion,
   } = useSiteSettings();
+
+  const intl = useIntl();
+
+  const documentTitle = intl.formatMessage({ id: 'MANAGE_FIELDS' });
+  useDocumentTitle(documentTitle);
 
   const customFieldCategories = get(
     siteSettings,
@@ -65,6 +73,12 @@ export default function FieldManagement() {
         component="h3"
         style={{ padding: '16px 0 16px 16px' }}
         id="MANAGE_FIELDS"
+      />
+      <ButtonLink
+        href="/admin"
+        style={{ marginTop: 8, width: 'fit-content' }}
+        display="back"
+        id="BACK"
       />
       <Grid
         container

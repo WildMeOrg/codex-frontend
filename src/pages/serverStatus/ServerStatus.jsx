@@ -6,14 +6,17 @@ import {
   FormattedNumber,
 } from 'react-intl';
 import { get, round } from 'lodash-es';
+
 import Grid from '@material-ui/core/Grid';
 import Skeleton from '@material-ui/lab/Skeleton';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useTheme } from '@material-ui/core/styles';
+
 import useGetSiteInfo from '../../models/site/useGetSiteInfo';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import useServerStatus from '../../modules/administration/useServerStatus';
 import MainColumn from '../../components/MainColumn';
+import ButtonLink from '../../components/ButtonLink';
 import Text from '../../components/Text';
 import SummaryCard from './components/SummaryCard';
 import LegendItem from './components/LegendItem';
@@ -99,6 +102,12 @@ export default function ServerStatus() {
         component="h3"
         style={{ padding: '16px 0 16px 16px' }}
         id="SERVER_STATUS"
+      />
+      <ButtonLink
+        href="/admin"
+        style={{ marginTop: 8, width: 'fit-content' }}
+        display="back"
+        id="BACK"
       />
       <div style={{ padding: 16, boxSizing: 'border-box' }}>
         <Text variant="h5">Versions</Text>

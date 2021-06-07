@@ -23,7 +23,6 @@ export default function prepareAssetGroup(
     const sightingId = get(encounter, 'sightingId', uuid());
 
     if (!sightings[sightingId]) sightings[sightingId] = {};
-    assignIfPresent(encounter, sightings[sightingId], 'context');
     assignIfPresent(encounter, sightings[sightingId], 'locationId');
     assignIfPresent(
       encounter,

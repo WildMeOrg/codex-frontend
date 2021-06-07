@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { useIntl, FormattedMessage } from 'react-intl';
 import { get, zipObject } from 'lodash-es';
 import Grid from '@material-ui/core/Grid';
 import Skeleton from '@material-ui/lab/Skeleton';
 import Alert from '@material-ui/lab/Alert';
 import AlertTitle from '@material-ui/lab/AlertTitle';
 import Button from '../../components/Button';
+import ButtonLink from '../../components/ButtonLink';
 import useSiteSettings from '../../models/site/useSiteSettings';
 import usePutSiteSettings from '../../models/site/usePutSiteSettings';
 
+import useDocumentTitle from '../../hooks/useDocumentTitle';
 import MainColumn from '../../components/MainColumn';
 import LabeledInput from '../../components/LabeledInput';
 import Text from '../../components/Text';
@@ -39,6 +41,11 @@ export default function GeneralSettings() {
     setSuccess,
   } = usePutSiteSettings();
 
+  const intl = useIntl();
+
+  const documentTitle = intl.formatMessage({ id: 'GENERAL_SETTINGS' });
+  useDocumentTitle(documentTitle);
+
   const [currentValues, setCurrentValues] = useState(null);
 
   const edmValues = generalSettingsFields.map(fieldKey =>
@@ -54,6 +61,12 @@ export default function GeneralSettings() {
         variant="h3"
         style={{ padding: '16px 0 16px 16px' }}
         id="GENERAL_SETTINGS"
+      />
+      <ButtonLink
+        href="/admin"
+        style={{ marginTop: 8, width: 'fit-content' }}
+        display="back"
+        id="BACK"
       />
       <Grid
         container
