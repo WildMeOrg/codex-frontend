@@ -21,8 +21,16 @@ export default function prepareAssetGroup(
   const simpleAssetReferences = assetReferences.map(a => a.path);
   encounters.forEach(encounter => {
     const sightingId = get(encounter, 'sightingId', uuid());
+    const sightingAssetInput = get(encounter, 'assets', '');
+    const sightingAssets = sightingAssetInput
+      .split(',')
+      .map(a => a.trim());
+    const matchingAssets = simpleAssetReferences.filter(path =>
+      sightingAssets.includes(path),
+    );
 
     if (!sightings[sightingId]) sightings[sightingId] = {};
+    sightings[sightingId].assets = matchingAssets;
     assignIfPresent(encounter, sightings[sightingId], 'locationId');
     assignIfPresent(
       encounter,
@@ -64,9 +72,9 @@ export default function prepareAssetGroup(
 
     if (!get(sightings, [sightingId, 'encounters']))
       sightings[sightingId].encounters = [];
-    encounter.assetReferences = simpleAssetReferences;
     sightings[sightingId].encounters.push(encounter);
   });
 
+  console.log(Object.values(sightings));
   return Object.values(sightings);
 }
