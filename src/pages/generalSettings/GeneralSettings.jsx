@@ -43,7 +43,9 @@ export default function GeneralSettings() {
 
   const intl = useIntl();
 
-  const documentTitle = intl.formatMessage({ id: 'GENERAL_SETTINGS' });
+  const documentTitle = intl.formatMessage({
+    id: 'GENERAL_SETTINGS',
+  });
   useDocumentTitle(documentTitle);
 
   const [currentValues, setCurrentValues] = useState(null);

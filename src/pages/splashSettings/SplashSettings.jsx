@@ -46,7 +46,6 @@ export default function SiteSettings() {
     setSuccess,
   } = usePutSiteSettings();
 
-
   const intl = useIntl();
 
   const documentTitle = intl.formatMessage({ id: 'SPLASH_PAGE' });

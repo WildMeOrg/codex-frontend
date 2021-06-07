@@ -61,9 +61,9 @@ export default function useBulkImportFields() {
   const encounterFieldSchemas = useEncounterFieldSchemas();
   const flatfileEncounterFields = useMemo(
     () => {
-        if (!encounterFieldSchemas) return {};
-        // if (!encounterFieldSchemas || !regionOptions || !speciesOptions) return {};
-        const bulkEncounterFields = encounterFieldSchemas.filter(
+      if (!encounterFieldSchemas) return {};
+      // if (!encounterFieldSchemas || !regionOptions || !speciesOptions) return {};
+      const bulkEncounterFields = encounterFieldSchemas.filter(
         f => !encounterOmitList.includes(f.name),
       );
       return bulkEncounterFields.map(f => {

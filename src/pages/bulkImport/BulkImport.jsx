@@ -37,9 +37,7 @@ export default function BulkImport() {
           display="back"
           id="BACK_TO_PHOTOS"
         />
-      ) : (
-        null
-      )}
+      ) : null}
       {reporting ? (
         <BulkReport assetReferences={files} />
       ) : (
@@ -76,9 +74,7 @@ export default function BulkImport() {
             <Button
               display="primary"
               id={
-                noImages
-                  ? 'CONTINUE_WITHOUT_PHOTOGRAPHS'
-                  : 'CONTINUE'
+                noImages ? 'CONTINUE_WITHOUT_PHOTOGRAPHS' : 'CONTINUE'
               }
               disabled={false}
               onClick={async () => {

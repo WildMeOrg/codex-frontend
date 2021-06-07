@@ -26,11 +26,16 @@ export default function useOptions() {
         [],
       );
 
-      const speciesOptions = backendSpeciesOptions.map(o => ({
-        label: get(o, 'scientificName'),
-        value: get(o, 'id'),
-        alternates: [...get(o, 'commonNames', []), get(o, 'itisTsn')],
-      })).filter(o => o);
+      const speciesOptions = backendSpeciesOptions
+        .map(o => ({
+          label: get(o, 'scientificName'),
+          value: get(o, 'id'),
+          alternates: [
+            ...get(o, 'commonNames', []),
+            get(o, 'itisTsn'),
+          ],
+        }))
+        .filter(o => o);
 
       return { regionOptions, speciesOptions };
     },

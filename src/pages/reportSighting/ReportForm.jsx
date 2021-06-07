@@ -8,7 +8,8 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Grid from '@material-ui/core/Grid';
 import FormGroup from '@material-ui/core/FormGroup';
-import Switch from '@material-ui/core/Switch';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import Radio from '@material-ui/core/Radio';
 import Alert from '@material-ui/lab/Alert';
 import AlertTitle from '@material-ui/lab/AlertTitle';
 // import ExifIcon from '@material-ui/icons/FlashOn';
@@ -52,20 +53,13 @@ export default function ReportForm({
     siteSettingsVersion,
   } = useSiteSettings();
   const { loading, error: putError, putSighting } = usePutSighting();
-  const [oneIndividual, setOneIndividual] = useState(false);
+  const [sightingType, setSightingType] = useState(null);
 
   const {
-    siteName,
     customEncounterCategories,
     customSightingCategories,
   } = useMemo(
     () => {
-      const _siteName = get(
-        siteSettingsData,
-        ['site.name', 'value'],
-        '<site-name>',
-      );
-
       const _customEncounterCategories = deriveCustomFieldCategories(
         siteSettingsData,
         'encounter',
@@ -77,7 +71,6 @@ export default function ReportForm({
       );
 
       return {
-        siteName: _siteName,
         customEncounterCategories: _customEncounterCategories,
         customSightingCategories: _customSightingCategories,
       };
@@ -106,7 +99,6 @@ export default function ReportForm({
 
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   // const [exifButtonClicked, setExifButtonClicked] = useState(false);
-  const [acceptEmails, setAcceptEmails] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [incompleteFields, setIncompleteFields] = useState([]);
   const [termsError, setTermsError] = useState(false);
@@ -171,32 +163,47 @@ export default function ReportForm({
         visible={dialogOpen}
         onClose={() => setDialogOpen(false)}
       />
-      <FieldCollections
-        formValues={sightingFormValues}
-        setFormValues={setSightingFormValues}
-        categories={defaultSightingCategories}
-        fieldSchema={defaultSightingSchemas}
-      />
-      <FieldCollections
-        formValues={customSightingFormValues}
-        setFormValues={setCustomSightingFormValues}
-        categories={customSightingCategories}
-        fieldSchema={customSightingSchemas}
-      />
-      <FormGroup row style={{ marginTop: 12, marginLeft: 12 }}>
-        <FormControlLabel
-          label={intl.formatMessage({
-            id: 'ONE_SIGHTING_TOGGLE_DESCRIPTION',
-          })}
-          control={
-            <Switch
-              checked={oneIndividual}
-              onChange={() => setOneIndividual(!oneIndividual)}
-            />
-          }
-        />
+      <FormGroup style={{ margin: '12px 0 24px 12px' }}>
+        <Text style={{ margin: '24px 0 8px 0', fontWeight: 'bold' }} component="legend" id="SIGHTING_RADIO_QUESTION" />
+        <RadioGroup
+          aria-label="sighting-type"
+          name="sightingType"
+          value={sightingType}
+          onChange={e => setSightingType(e.target.value)}
+        >
+          <FormControlLabel
+            value="one"
+            control={<Radio />}
+            label={intl.formatMessage({
+              id: 'ONE_ANIMAL',
+            })}
+          />
+          <FormControlLabel
+            value="multiple"
+            control={<Radio />}
+            label={intl.formatMessage({
+              id: 'MULTIPLE_ANIMALS',
+            })}
+          />
+        </RadioGroup>
       </FormGroup>
-      {oneIndividual && (
+      {sightingType && (
+        <>
+          <FieldCollections
+            formValues={sightingFormValues}
+            setFormValues={setSightingFormValues}
+            categories={defaultSightingCategories}
+            fieldSchema={defaultSightingSchemas}
+          />
+          <FieldCollections
+            formValues={customSightingFormValues}
+            setFormValues={setCustomSightingFormValues}
+            categories={customSightingCategories}
+            fieldSchema={customSightingSchemas}
+          />
+        </>
+      )}
+      {sightingType === 'one' && (
         <>
           <FieldCollections
             formValues={encounterFormValues}
@@ -212,41 +219,27 @@ export default function ReportForm({
           />
         </>
       )}
-      <Grid item style={{ marginTop: 30 }}>
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={acceptEmails}
-              onChange={() => setAcceptEmails(!acceptEmails)}
-            />
-          }
-          label={
-            <Text
-              id="ONE_SIGHTING_EMAIL_CONSENT"
-              values={{ siteName }}
-            />
-          }
-        />
-      </Grid>
-      <Grid item style={{ marginBottom: 12 }}>
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={acceptedTerms}
-              onChange={() => setAcceptedTerms(!acceptedTerms)}
-            />
-          }
-          label={
-            <span>
-              <Text component="span" id="TERMS_CHECKBOX_1" />
-              <InlineButton onClick={() => setDialogOpen(true)}>
-                <Text component="span" id="TERMS_CHECKBOX_2" />
-              </InlineButton>
-              <Text component="span" id="END_OF_SENTENCE" />
-            </span>
-          }
-        />
-      </Grid>
+      {sightingType && (
+        <Grid item style={{ marginBottom: 12 }}>
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={acceptedTerms}
+                onChange={() => setAcceptedTerms(!acceptedTerms)}
+              />
+            }
+            label={
+              <span>
+                <Text component="span" id="TERMS_CHECKBOX_1" />
+                <InlineButton onClick={() => setDialogOpen(true)}>
+                  <Text component="span" id="TERMS_CHECKBOX_2" />
+                </InlineButton>
+                <Text component="span" id="END_OF_SENTENCE" />
+              </span>
+            }
+          />
+        </Grid>
+      )}
       {showErrorAlertBox && (
         <Grid item style={{ marginBottom: 12 }}>
           <Alert severity="error">
@@ -283,94 +276,98 @@ export default function ReportForm({
           </Alert>
         </Grid>
       )}
-      <Grid
-        item
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          marginTop: 12,
-        }}
-      >
-        <Button
-          onClick={async () => {
-            // check that required fields are complete
-            const nextIncompleteFields = defaultSightingSchemas.filter(
-              field =>
-                field.required &&
-                field.defaultValue === sightingFormValues[field.name],
-            );
-            setIncompleteFields(nextIncompleteFields);
-
-            // check that terms and conditions were accepted
-            setTermsError(!acceptedTerms);
-
-            let startTimeAfterEndTime = false;
-            let durationAcceptable = true;
-            // check that startTime is before endTime and duration < 24hrs
-            if (
-              sightingFormValues.startTime &&
-              sightingFormValues.endTime
-            ) {
-              startTimeAfterEndTime = isAfter(
-                sightingFormValues.startTime,
-                sightingFormValues.endTime,
-              );
-              setDateOrderError(startTimeAfterEndTime);
-
-              if (!startTimeAfterEndTime)
-                durationAcceptable = isWithinInterval(
-                  sightingFormValues.endTime,
-                  {
-                    start: sightingFormValues.startTime,
-                    end: addHours(sightingFormValues.startTime, 24),
-                  },
-                );
-              setDateDurationError(!durationAcceptable);
-            }
-
-            // check that at least one location field is present
-            const oneLocationFieldPresent =
-              sightingFormValues.locationId ||
-              sightingFormValues.verbatimLocality ||
-              get(sightingFormValues, ['gps', 0]);
-            setLocationFieldError(!oneLocationFieldPresent);
-
-            const formValid =
-              nextIncompleteFields.length === 0 &&
-              acceptedTerms &&
-              durationAcceptable &&
-              oneLocationFieldPresent &&
-              !startTimeAfterEndTime;
-
-            if (formValid) {
-              const report = oneIndividual
-                ? prepareReportWithEncounter(
-                    sightingFormValues,
-                    customSightingFormValues,
-                    customSightingSchemas,
-                    assetReferences,
-                    encounterFormValues,
-                    customEncounterFormValues,
-                    customEncounterSchemas,
-                  )
-                : prepareBasicReport(
-                    sightingFormValues,
-                    customSightingFormValues,
-                    customSightingSchemas,
-                    assetReferences,
-                  );
-              const newSightingId = await putSighting(report);
-              if (newSightingId) {
-                history.push(`/report/success/${newSightingId}`);
-              }
-            }
+      {sightingType ? (
+        <Grid
+          item
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            marginTop: 12,
           }}
-          style={{ width: 200 }}
-          loading={loading}
-          display="primary"
-          id="REPORT_SIGHTING"
-        />
-      </Grid>
+        >
+          <Button
+            onClick={async () => {
+              // check that required fields are complete
+              const nextIncompleteFields = defaultSightingSchemas.filter(
+                field =>
+                  field.required &&
+                  field.defaultValue ===
+                    sightingFormValues[field.name],
+              );
+              setIncompleteFields(nextIncompleteFields);
+
+              // check that terms and conditions were accepted
+              setTermsError(!acceptedTerms);
+
+              let startTimeAfterEndTime = false;
+              let durationAcceptable = true;
+              // check that startTime is before endTime and duration < 24hrs
+              if (
+                sightingFormValues.startTime &&
+                sightingFormValues.endTime
+              ) {
+                startTimeAfterEndTime = isAfter(
+                  sightingFormValues.startTime,
+                  sightingFormValues.endTime,
+                );
+                setDateOrderError(startTimeAfterEndTime);
+
+                if (!startTimeAfterEndTime)
+                  durationAcceptable = isWithinInterval(
+                    sightingFormValues.endTime,
+                    {
+                      start: sightingFormValues.startTime,
+                      end: addHours(sightingFormValues.startTime, 24),
+                    },
+                  );
+                setDateDurationError(!durationAcceptable);
+              }
+
+              // check that at least one location field is present
+              const oneLocationFieldPresent =
+                sightingFormValues.locationId ||
+                sightingFormValues.verbatimLocality ||
+                get(sightingFormValues, ['gps', 0]);
+              setLocationFieldError(!oneLocationFieldPresent);
+
+              const formValid =
+                nextIncompleteFields.length === 0 &&
+                acceptedTerms &&
+                durationAcceptable &&
+                oneLocationFieldPresent &&
+                !startTimeAfterEndTime;
+
+              if (formValid) {
+                const report =
+                  sightingType === 'one'
+                    ? prepareReportWithEncounter(
+                        sightingFormValues,
+                        customSightingFormValues,
+                        customSightingSchemas,
+                        assetReferences,
+                        encounterFormValues,
+                        customEncounterFormValues,
+                        customEncounterSchemas,
+                      )
+                    : prepareBasicReport(
+                        sightingFormValues,
+                        customSightingFormValues,
+                        customSightingSchemas,
+                        assetReferences,
+                      );
+                const newSightingId = await putSighting(report);
+                if (newSightingId) {
+                  history.push(`/report/success/${newSightingId}`);
+                }
+              }
+            }}
+            style={{ width: 200 }}
+            loading={loading}
+            display="primary"
+            id="REPORT_SIGHTING"
+          />
+        </Grid>
+      ) : null}
     </>
   );
 }

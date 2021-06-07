@@ -17,7 +17,7 @@ export default function ReportSighting({ authenticated }) {
   const [uploadInProgress, setUploadInProgress] = useState(false);
   const [files, setFiles] = useState([]);
   const [exifData, setExifData] = useState([]);
-  const [reporting, setReporting] = useState(true); // CHANGEME
+  const [reporting, setReporting] = useState(false);
   const noImages = files.length === 0;
 
   const onBack = () => {
