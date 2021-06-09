@@ -164,7 +164,11 @@ export default function ReportForm({
         onClose={() => setDialogOpen(false)}
       />
       <FormGroup style={{ margin: '12px 0 24px 12px' }}>
-        <Text style={{ margin: '24px 0 8px 0', fontWeight: 'bold' }} component="legend" id="SIGHTING_RADIO_QUESTION" />
+        <Text
+          style={{ margin: '24px 0 8px 0', fontWeight: 'bold' }}
+          component="legend"
+          id="SIGHTING_RADIO_QUESTION"
+        />
         <RadioGroup
           aria-label="sighting-type"
           name="sightingType"

@@ -5,20 +5,12 @@ function updateTimes(encounter) {
   const year = get(encounter, 'timeYear', 0);
   const month = get(encounter, 'timeMonth', 0);
   const day = get(encounter, 'timeDay', 1);
-  const hours = get(encounter, 'timeHours', 1);
+  const hours = get(encounter, 'timeHour', 1);
   const minutes = get(encounter, 'timeMinutes', 0);
   const seconds = get(encounter, 'timeSeconds', 0);
   const time = new Date(year, month, day, hours, minutes, seconds);
-  const newEncounter = omit(encounter, [
-    'timeYear',
-    'timeMonth',
-    'timeDay',
-    'timeHours',
-    'timeMinutes',
-    'timeSeconds',
-  ]);
   return {
-    ...newEncounter,
+    ...encounter,
     time,
   };
 }
@@ -45,7 +37,11 @@ export default function prepareAssetGroup(
     const newEncounter = updateTimes(encounter);
 
     const sightingId = get(newEncounter, 'sightingId', uuid());
-    const sightingAssetInput = get(newEncounter, 'assets', '');
+    const sightingAssetInput = get(
+      newEncounter,
+      'assetReferences',
+      '',
+    );
     const sightingAssets = sightingAssetInput
       .split(',')
       .map(a => a.trim());
@@ -54,7 +50,7 @@ export default function prepareAssetGroup(
     );
 
     if (!sightings[sightingId]) sightings[sightingId] = {};
-    sightings[sightingId].assets = matchingAssets;
+    sightings[sightingId].assetReferences = matchingAssets;
     assignIfPresent(
       newEncounter,
       sightings[sightingId],
@@ -100,9 +96,19 @@ export default function prepareAssetGroup(
 
     if (!get(sightings, [sightingId, 'encounters']))
       sightings[sightingId].encounters = [];
-    sightings[sightingId].encounters.push(newEncounter);
+
+    const finalEncounter = omit(newEncounter, [
+      'sightingId',
+      'assetReferences',
+      'timeYear',
+      'timeMonth',
+      'timeDay',
+      'timeHour',
+      'timeMinutes',
+      'timeSeconds',
+    ]);
+    sightings[sightingId].encounters.push(finalEncounter);
   });
 
-  console.log(Object.values(sightings));
   return Object.values(sightings);
 }

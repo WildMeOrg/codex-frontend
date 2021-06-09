@@ -10,6 +10,10 @@ import {
 } from '../constants/bulkReportConstants';
 import useOptions from './useOptions';
 
+const requiredValidator = {
+  validate: 'required',
+};
+
 const floatValidator = {
   validate: 'regex_matches',
   regex: '^[+-]?((\\d+(\\.\\d*)?)|(\\.\\d+))$',
@@ -36,10 +40,7 @@ const utcOffsetValidator = {
 
 export default function useBulkImportFields() {
   const intl = useIntl();
-  // const {
-  //   regionOptions,
-  //   speciesOptions,
-  // } = useOptions;
+  const { regionOptions, speciesOptions } = useOptions();
 
   const sightingFieldSchemas = useSightingFieldSchemas();
   const flatfileSightingFields = useMemo(
@@ -61,31 +62,42 @@ export default function useBulkImportFields() {
   const encounterFieldSchemas = useEncounterFieldSchemas();
   const flatfileEncounterFields = useMemo(
     () => {
-      if (!encounterFieldSchemas) return {};
-      // if (!encounterFieldSchemas || !regionOptions || !speciesOptions) return {};
+      if (!encounterFieldSchemas || !regionOptions || !speciesOptions)
+        return {};
       const bulkEncounterFields = encounterFieldSchemas.filter(
         f => !encounterOmitList.includes(f.name),
       );
       return bulkEncounterFields.map(f => {
-        // const additionalProperties = {};
-        // if (f.name === 'taxonomy') {
-        //   additionalProperties.type = 'select';
-        //   additionalProperties.options = speciesOptions;
-        // } else if (f.name === 'species') {
-        //   additionalProperties.type = 'select';
-        //   additionalProperties.options = regionOptions;
-        // }
-        // console.log(additionalProperties);
+        const additionalProperties = {};
+        if (f.name === 'taxonomy') {
+          additionalProperties.type = 'select';
+          additionalProperties.options = speciesOptions;
+        } else if (f.name === 'locationId') {
+          additionalProperties.type = 'select';
+          additionalProperties.options = regionOptions;
+          additionalProperties.validators = [
+            {
+              validate: 'required_without_all',
+              fields: [
+                'decimalLatitude',
+                'decimalLongitude',
+                'verbatimLocality',
+              ],
+              error: 'At least one location field is required.',
+            },
+          ];
+        }
+
         return {
           label: f.labelId
             ? intl.formatMessage({ id: f.labelId })
             : f.label,
           key: f.name,
-          // ...additionalProperties,
+          ...additionalProperties,
         };
       });
     },
-    [encounterFieldSchemas],
+    [encounterFieldSchemas, regionOptions, speciesOptions],
   );
 
   return [
@@ -100,22 +112,28 @@ export default function useBulkImportFields() {
     {
       label: intl.formatMessage({ id: 'DECIMAL_LATITUDE' }),
       key: 'decimalLatitude',
-      validators: [floatValidator],
+      validators: [
+        floatValidator,
+        { validate: 'required_with', fields: ['decimalLongitude'] },
+      ],
     },
     {
       label: intl.formatMessage({ id: 'DECIMAL_LONGITUDE' }),
       key: 'decimalLongitude',
-      validators: [floatValidator],
+      validators: [
+        floatValidator,
+        { validate: 'required_with', fields: ['decimalLatitude'] },
+      ],
     },
     {
       label: intl.formatMessage({ id: 'ASSETS' }),
-      key: 'assets',
+      key: 'assetReferences',
       validators: [],
     },
     {
       label: intl.formatMessage({ id: 'TIME_YEAR' }),
       key: 'timeYear',
-      validators: [positiveIntegerValidator],
+      validators: [requiredValidator, positiveIntegerValidator],
     },
     {
       label: intl.formatMessage({ id: 'TIME_MONTH' }),
