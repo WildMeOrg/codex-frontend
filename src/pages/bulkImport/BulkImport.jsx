@@ -9,12 +9,11 @@ import Text from '../../components/Text';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import Link from '../../components/Link';
 import Button from '../../components/Button';
-import ButtonLink from '../../components/ButtonLink';
-import BulkReport from './BulkReport';
-import UploadManager from './UploadManager';
-import ReportSightingsPage from './ReportSightingsPage';
+import ReportSightingsPage from '../../components/report/ReportSightingsPage';
+import UploadManager from '../../components/report/UploadManager';
+import BulkReport from './ReportForm';
 
-export default function ReportBulk({ authenticated }) {
+export default function BulkImport() {
   const intl = useIntl();
   useDocumentTitle(intl.formatMessage({ id: 'REPORT_SIGHTINGS' }));
 
@@ -30,24 +29,15 @@ export default function ReportBulk({ authenticated }) {
   };
 
   return (
-    <ReportSightingsPage authenticated={authenticated}>
+    <ReportSightingsPage titleId="BULK_IMPORT" authenticated>
       {reporting ? (
         <Button
           onClick={onBack}
           style={{ marginTop: 8, width: 'fit-content' }}
           display="back"
-        >
-          <FormattedMessage id="BACK_TO_PHOTOS" />
-        </Button>
-      ) : (
-        <ButtonLink
-          href="/report"
-          style={{ marginTop: 8, width: 'fit-content' }}
-          display="back"
-        >
-          <FormattedMessage id="BACK_TO_SELECTION" />
-        </ButtonLink>
-      )}
+          id="BACK_TO_PHOTOS"
+        />
+      ) : null}
       {reporting ? (
         <BulkReport assetReferences={files} />
       ) : (
@@ -83,21 +73,16 @@ export default function ReportBulk({ authenticated }) {
           <Grid item>
             <Button
               display="primary"
+              id={
+                noImages ? 'CONTINUE_WITHOUT_PHOTOGRAPHS' : 'CONTINUE'
+              }
               disabled={false}
               onClick={async () => {
                 window.scrollTo(0, 0);
                 setReporting(true);
               }}
               style={{ marginTop: 16 }}
-            >
-              <FormattedMessage
-                id={
-                  noImages
-                    ? 'CONTINUE_WITHOUT_PHOTOGRAPHS'
-                    : 'CONTINUE'
-                }
-              />
-            </Button>
+            />
           </Grid>
         </>
       )}

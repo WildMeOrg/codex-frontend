@@ -3,10 +3,8 @@ import { Switch, Route, useLocation } from 'react-router-dom';
 import Fade from '@material-ui/core/Fade';
 import { TransitionGroup } from 'react-transition-group';
 import UnauthenticatedAppHeader from './components/UnauthenticatedAppHeader';
-import ReportBasic from './pages/report/ReportBasic';
-import ReportBulk from './pages/report/ReportBulk';
-import ReportSplash from './pages/report/ReportSplash';
-import ReportSuccess from './pages/report/Success';
+import ReportSighting from './pages/reportSighting/ReportSighting';
+import ReportSuccess from './pages/reportSighting/Success';
 import Login from './pages/auth/Login';
 import RequestInvitation from './pages/auth/RequestInvitation';
 import Forgot from './pages/auth/Forgot';
@@ -53,20 +51,11 @@ export default function AuthenticatedSwitch() {
                   }}
                 >
                   <Switch location={location}>
-                    <Route path="/report/bulk">
-                      <ReportBulk />
-                    </Route>
-                    <Route path="/report/one">
-                      <ReportBasic variant="one" />
-                    </Route>
-                    <Route path="/report/several">
-                      <ReportBasic variant="several" />
-                    </Route>
                     <Route path="/report/success/:id">
                       <ReportSuccess />
                     </Route>
                     <Route path="/report">
-                      <ReportSplash />
+                      <ReportSighting />
                     </Route>
                     <Route path="/forgot">
                       <Forgot />

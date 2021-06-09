@@ -11,17 +11,17 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Alert from '@material-ui/lab/Alert';
 import AlertTitle from '@material-ui/lab/AlertTitle';
 
-import usePostAssetGroup from '../../models/assetGroup/usePostAssetGroup';
-import { flatfileKey } from '../../constants/apiKeys';
+import TermsAndConditionsDialog from '../../components/report/TermsAndConditionsDialog';
 import Button from '../../components/Button';
 import Text from '../../components/Text';
+import usePostAssetGroup from '../../models/assetGroup/usePostAssetGroup';
+import { flatfileKey } from '../../constants/apiKeys';
 import InlineButton from '../../components/InlineButton';
 import prepareAssetGroup from './utils/prepareAssetGroup';
 import useBulkImportFields from './utils/useBulkImportFields';
 import BulkFieldBreakdown from './BulkFieldBreakdown';
-import TermsAndConditionsDialog from './TermsAndConditionsDialog';
 
-export default function BulkReport({ assetReferences }) {
+export default function ReportForm({ assetReferences }) {
   const theme = useTheme();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [termsError, setTermsError] = useState(false);

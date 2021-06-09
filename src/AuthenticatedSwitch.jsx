@@ -4,6 +4,14 @@ import { Switch, Route } from 'react-router-dom';
 import Fade from '@material-ui/core/Fade';
 import { TransitionGroup } from 'react-transition-group';
 import AuthenticatedAppHeader from './components/AuthenticatedAppHeader';
+import SaveCustomField from './pages/fieldManagement/settings/saveField/SaveField';
+import GeneralSettings from './pages/generalSettings/GeneralSettings';
+import ServerStatus from './pages/serverStatus/ServerStatus';
+import SplashSettings from './pages/splashSettings/SplashSettings';
+import FieldManagement from './pages/fieldManagement/FieldManagement';
+import UserManagement from './pages/userManagement/UserManagement';
+import AdminActions from './pages/adminActions/AdminActions';
+import ControlPanel from './pages/controlPanel/ControlPanel';
 import Individual from './pages/individual/Individual';
 import CreateIndividual from './pages/individual/CreateIndividual';
 import PictureBook from './pages/individual/PictureBook';
@@ -16,19 +24,14 @@ import CreateOrg from './pages/org/CreateOrg';
 import User from './pages/user/User';
 import Users from './pages/user/Users';
 import CreateUser from './pages/user/CreateUser';
-import ReportBasic from './pages/report/ReportBasic';
-import ReportBulk from './pages/report/ReportBulk';
-import ReportSuccess from './pages/report/Success';
-import ReportSplash from './pages/report/ReportSplash';
+import BulkImport from './pages/bulkImport/BulkImport';
+import ReportSighting from './pages/reportSighting/ReportSighting';
+import ReportSuccess from './pages/reportSighting/Success';
 import FourOhFour from './pages/fourohfour/FourOhFour';
 import useSiteSettings from './models/site/useSiteSettings';
 import SearchIndividuals from './pages/individual/SearchIndividuals';
 import SearchSightings from './pages/sighting/SearchSightings';
 import SiteSetup from './pages/setup/SiteSetup';
-import AdminActions from './pages/administration/Actions';
-import ServerStatus from './pages/administration/ServerStatus';
-import EditSiteSettings from './pages/administration/EditSiteSettings';
-import SaveCustomField from './pages/administration/settings/saveField/SaveField';
 import MatchReview from './pages/match/MatchReview';
 import FlagsOnly from './pages/match/iceland/FlagsOnly';
 import Iceland from './pages/match/iceland/Iceland';
@@ -76,6 +79,30 @@ export default function AuthenticatedSwitch() {
                     <SiteSetup />
                   ) : (
                     <Switch location={location}>
+                      <Route path="/admin/splash">
+                        <SplashSettings />
+                      </Route>
+                      <Route path="/admin/status">
+                        <ServerStatus />
+                      </Route>
+                      <Route path="/admin/users">
+                        <UserManagement />
+                      </Route>
+                      <Route path="/admin/actions">
+                        <AdminActions />
+                      </Route>
+                      <Route path="/admin/fields/save-custom-field/:type?/:id?">
+                        <SaveCustomField />
+                      </Route>
+                      <Route path="/admin/fields">
+                        <FieldManagement />
+                      </Route>
+                      <Route path="/admin/settings">
+                        <GeneralSettings />
+                      </Route>
+                      <Route path="/admin">
+                        <ControlPanel />
+                      </Route>
                       <Route path="/individuals/picturebook">
                         <PictureBook />
                       </Route>
@@ -121,35 +148,14 @@ export default function AuthenticatedSwitch() {
                       <Route path="/projects">
                         <Projects />
                       </Route> */}
-                      <Route path="/report/bulk">
-                        <ReportBulk authenticated />
-                      </Route>
-                      <Route path="/report/one">
-                        <ReportBasic authenticated variant="one" />
-                      </Route>
-                      <Route path="/report/several">
-                        <ReportBasic
-                          authenticated
-                          variant="several"
-                        />
+                      <Route path="/bulk-import">
+                        <BulkImport />
                       </Route>
                       <Route path="/report/success/:id">
                         <ReportSuccess authenticated />
                       </Route>
                       <Route path="/report">
-                        <ReportSplash authenticated />
-                      </Route>
-                      <Route path="/admin/actions">
-                        <AdminActions />
-                      </Route>
-                      <Route path="/admin/server">
-                        <ServerStatus />
-                      </Route>
-                      <Route path="/admin/settings/save-custom-field/:type?/:id?">
-                        <SaveCustomField />
-                      </Route>
-                      <Route path="/admin/settings">
-                        <EditSiteSettings />
+                        <ReportSighting authenticated />
                       </Route>
                       <Route path="/iceland/flags">
                         <FlagsOnly />

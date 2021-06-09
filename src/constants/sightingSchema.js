@@ -62,28 +62,6 @@ export default [
     defaultValue: null,
   },
   {
-    name: 'sightingContext',
-    labelId: 'SIGHTING_CONTEXT',
-    category: sightingCategories.general.name,
-    fieldType: fieldTypes.select,
-    required: true,
-    choices: [
-      {
-        value: 'research-effort',
-        labelId: 'RESEARCH_EFFORT',
-      },
-      {
-        value: 'wildlife-tour',
-        labelId: 'WILDLIFE_TOUR',
-      },
-      {
-        value: 'opportunistic-sighting',
-        labelId: 'OPPORTUNISTIC_SIGHTING',
-      },
-    ],
-    defaultValue: '',
-  },
-  {
     name: 'sex',
     labelId: 'SEX',
     category: sightingCategories.animal.name,

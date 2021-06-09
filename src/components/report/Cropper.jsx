@@ -4,8 +4,8 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import { useTheme } from '@material-ui/core/styles';
 import BboxAnnotator from 'bboxjs';
-import Button from '../../components/Button';
-import StandardDialog from '../../components/StandardDialog';
+import Button from '../Button';
+import StandardDialog from '../StandardDialog';
 
 export default function Cropper({ imgSrc, onClose, setCrop }) {
   const [rect, setRect] = useState({});

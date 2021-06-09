@@ -31,28 +31,6 @@ export const defaultSightingFields = [
     defaultValue: null,
   },
   {
-    name: 'sightingContext',
-    labelId: 'SIGHTING_CONTEXT',
-    category: categoryIds.general,
-    fieldType: fieldTypes.select,
-    required: true,
-    choices: [
-      {
-        value: 'research-effort',
-        labelId: 'RESEARCH_EFFORT',
-      },
-      {
-        value: 'wildlife-tour',
-        labelId: 'WILDLIFE_TOUR',
-      },
-      {
-        value: 'opportunistic-sighting',
-        labelId: 'OPPORTUNISTIC_SIGHTING',
-      },
-    ],
-    defaultValue: '',
-  },
-  {
     name: 'region',
     labelId: 'REGION',
     category: categoryIds.location,

@@ -5,14 +5,20 @@ export const bulkImportCategories = {
   },
   sighting: {
     name: 'sighting',
-    fields: ['sightingId'],
+    fields: ['sightingId', 'assets'],
   },
   shared: {
     name: 'shared',
     fields: [
+      'timeYear',
+      'timeMonth',
+      'timeDay',
+      'timeHour',
+      'timeMinutes',
+      'timeSeconds',
+      'utcOffset',
       'locationId',
       'verbatimLocality',
-      'time',
       'decimalLatitude',
       'decimalLongitude',
     ],
@@ -30,7 +36,7 @@ export const sightingOmitList = [
 ];
 
 /* Lat and lng are treated as two separate columns here */
-export const encounterOmitList = ['gps'];
+export const encounterOmitList = ['gps', 'time'];
 
 export const bulkFieldSchemas = [
   {
@@ -48,5 +54,37 @@ export const bulkFieldSchemas = [
   {
     name: 'sightingId',
     labelId: 'SIGHTING_ID',
+  },
+  {
+    name: 'timeYear',
+    labelId: 'TIME_YEAR',
+  },
+  {
+    name: 'timeMonth',
+    labelId: 'TIME_MONTH',
+  },
+  {
+    name: 'timeDay',
+    labelId: 'TIME_DAY',
+  },
+  {
+    name: 'timeHour',
+    labelId: 'TIME_HOUR',
+  },
+  {
+    name: 'timeMinutes',
+    labelId: 'TIME_MINUTES',
+  },
+  {
+    name: 'timeSeconds',
+    labelId: 'TIME_SECONDS',
+  },
+  {
+    name: 'utcOffset',
+    labelId: 'TIMEZONE',
+  },
+  {
+    name: 'assets',
+    labelId: 'ASSETS',
   },
 ];

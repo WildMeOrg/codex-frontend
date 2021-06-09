@@ -127,7 +127,7 @@ export default function AppHeader() {
           <Link href="/report">
             <HeaderButton
               Icon={AddIcon}
-              titleId="REPORT_SIGHTINGS"
+              titleId="REPORT_A_SIGHTING"
               style={{ marginLeft: 16 }}
             />
           </Link>

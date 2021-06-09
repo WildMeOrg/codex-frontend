@@ -5,17 +5,18 @@ import Grid from '@material-ui/core/Grid';
 import Alert from '@material-ui/lab/Alert';
 import AlertTitle from '@material-ui/lab/AlertTitle';
 
-import MainColumn from '../../components/MainColumn';
-import Text from '../../components/Text';
-import ButtonLink from '../../components/ButtonLink';
+import MainColumn from '../MainColumn';
+import Text from '../Text';
+import ButtonLink from '../ButtonLink';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 
 export default function ReportSightingsPage({
+  titleId,
   authenticated = false,
   children,
 }) {
   const intl = useIntl();
-  useDocumentTitle(intl.formatMessage({ id: 'REPORT_SIGHTINGS' }));
+  useDocumentTitle(intl.formatMessage({ id: titleId }));
 
   return (
     <MainColumn
@@ -32,12 +33,12 @@ export default function ReportSightingsPage({
         style={{ padding: '20px 6vw' }}
       >
         <Grid item>
-          <Text variant="h3" component="h3" id="REPORT_SIGHTINGS" />
+          <Text variant="h3" id={titleId} />
         </Grid>
         {!authenticated && (
           <Grid item style={{ marginTop: 16 }}>
             <Alert
-              severity="warning"
+              severity="info"
               action={
                 <ButtonLink
                   style={{ flexShrink: 0, marginRight: 8 }}

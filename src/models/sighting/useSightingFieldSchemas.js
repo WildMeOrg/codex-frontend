@@ -45,21 +45,6 @@ export default function useSightingFieldSchemas() {
         [],
       );
 
-      const contextChoices = [
-        {
-          value: 'research-effort',
-          labelId: 'RESEARCH_EFFORT',
-        },
-        {
-          value: 'wildlife-tour',
-          labelId: 'WILDLIFE_TOUR',
-        },
-        {
-          value: 'opportunistic-sighting',
-          labelId: 'OPPORTUNISTIC_SIGHTING',
-        },
-      ];
-
       const customFields = get(
         data,
         [
@@ -74,13 +59,6 @@ export default function useSightingFieldSchemas() {
       );
 
       return [
-        createFieldSchema(fieldTypes.select, {
-          name: 'context',
-          labelId: 'SIGHTING_CONTEXT',
-          category: defaultSightingCategories.general.name,
-          choices: contextChoices,
-          required: true,
-        }),
         createFieldSchema(fieldTypes.date, {
           name: 'startTime',
           labelId: 'SIGHTING_START',

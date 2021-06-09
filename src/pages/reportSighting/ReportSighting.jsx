@@ -1,26 +1,18 @@
 import React, { useState, useMemo } from 'react';
-import { useIntl, FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import { v4 as uuid } from 'uuid';
 
 import Grid from '@material-ui/core/Grid';
 import InfoIcon from '@material-ui/icons/InfoOutlined';
 
+import UploadManager from '../../components/report/UploadManager';
+import ReportSightingsPage from '../../components/report/ReportSightingsPage';
 import Text from '../../components/Text';
-import useDocumentTitle from '../../hooks/useDocumentTitle';
 import Link from '../../components/Link';
 import Button from '../../components/Button';
-import ButtonLink from '../../components/ButtonLink';
-import BasicReportForm from './BasicReportForm';
-import UploadManager from './UploadManager';
-import ReportSightingsPage from './ReportSightingsPage';
+import ReportForm from './ReportForm';
 
-export default function ReportBasic({
-  authenticated,
-  variant = 'one',
-}) {
-  const intl = useIntl();
-  useDocumentTitle(intl.formatMessage({ id: 'REPORT_SIGHTINGS' }));
-
+export default function ReportSighting({ authenticated }) {
   const assetSubmissionId = useMemo(uuid, []);
   const [uploadInProgress, setUploadInProgress] = useState(false);
   const [files, setFiles] = useState([]);
@@ -38,7 +30,10 @@ export default function ReportBasic({
   if (uploadInProgress) continueButtonText = 'UPLOAD_IN_PROGRESS';
 
   return (
-    <ReportSightingsPage authenticated={authenticated}>
+    <ReportSightingsPage
+      titleId="REPORT_A_SIGHTING"
+      authenticated={authenticated}
+    >
       {reporting ? (
         <Button
           onClick={onBack}
@@ -47,21 +42,9 @@ export default function ReportBasic({
         >
           <FormattedMessage id="BACK_TO_PHOTOS" />
         </Button>
-      ) : (
-        <ButtonLink
-          href="/report"
-          style={{ marginTop: 8, width: 'fit-content' }}
-          display="back"
-        >
-          <FormattedMessage id="BACK_TO_SELECTION" />
-        </ButtonLink>
-      )}
+      ) : null}
       {reporting ? (
-        <BasicReportForm
-          assetReferences={files}
-          exifData={exifData}
-          variant={variant}
-        />
+        <ReportForm assetReferences={files} exifData={exifData} />
       ) : (
         <>
           <Grid item style={{ marginTop: 20 }}>
