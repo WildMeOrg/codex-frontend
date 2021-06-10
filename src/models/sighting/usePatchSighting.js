@@ -34,6 +34,7 @@ export default function usePatchSighting() {
 
     try {
       setLoading(true);
+      setError(null);
       const patchResponse = await axios({
         url: `${__houston_url__}/api/v1/sightings/${sightingId}`,
         withCredentials: true,
@@ -49,12 +50,22 @@ export default function usePatchSighting() {
         return true;
       }
 
-      setError(formatError(patchResponse));
+      const backendErrorMessage = get(patchResponse, 'message');
+      const errorMessage =
+        backendErrorMessage || formatError(patchResponse);
+      setError(errorMessage);
       setSuccess(false);
       return false;
     } catch (postError) {
+      const backendErrorMessage = get(postError, [
+        'response',
+        'data',
+        'message',
+      ]);
+      const errorMessage =
+        backendErrorMessage || formatError(postError);
       setLoading(false);
-      setError(formatError(postError));
+      setError(errorMessage);
       setSuccess(false);
       return false;
     }

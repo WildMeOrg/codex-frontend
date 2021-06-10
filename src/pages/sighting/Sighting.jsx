@@ -120,9 +120,9 @@ export default function Sighting() {
       <EntityHeaderNew
         renderAvatar={
           <FeaturedPhoto
-            assets={assets}
+            data={data}
             loading={loading}
-            editable={assets.length > 0}
+            refreshSightingData={refreshSightingData}
           />
         }
         name={intl.formatMessage(
