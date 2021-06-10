@@ -8,9 +8,9 @@ import defaultProfilePhoto from '../../../assets/defaultProfile.jpg';
 import FeaturedPhotoSelector from './FeaturedPhotoSelector';
 
 export default function FeaturedPhoto({
-  assets,
+  data,
   loading,
-  editable,
+  refreshSightingData,
   size = 150,
 }) {
   const theme = useTheme();
@@ -19,8 +19,13 @@ export default function FeaturedPhoto({
     selectingFeaturedPhoto,
     setSelectingFeaturedPhoto,
   ] = useState(false);
-  const featuredPhoto = get(assets, ['0']);
-  const imageSrc = get(featuredPhoto, 'src');
+  const assets = get(data, 'assets', []);
+  const editable = assets.length > 1;
+  const featuredPhotoGuid = get(data, ['featuredAssetGuid']);
+  const featuredPhoto = assets.find(
+    a => a.guid === featuredPhotoGuid,
+  );
+  const featuredPhotoSrc = get(featuredPhoto, 'src');
 
   return (
     <div
@@ -32,9 +37,11 @@ export default function FeaturedPhoto({
       }}
     >
       <FeaturedPhotoSelector
-        currentFeaturedPhotoId={get(featuredPhoto, 'guid')}
+        currentFeaturedPhotoId={featuredPhotoGuid}
+        sightingId={get(data, 'id')}
         assets={assets}
         open={selectingFeaturedPhoto}
+        refreshSightingData={refreshSightingData}
         onClose={() => setSelectingFeaturedPhoto(false)}
       />
       {loading ? (
@@ -46,7 +53,7 @@ export default function FeaturedPhoto({
         />
       ) : (
         <img
-          src={imageSrc || defaultProfilePhoto}
+          src={featuredPhotoSrc || defaultProfilePhoto}
           alt="Featured asset"
           style={{
             objectFit: 'cover',

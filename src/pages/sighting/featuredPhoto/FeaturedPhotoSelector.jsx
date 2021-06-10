@@ -7,6 +7,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import Alert from '@material-ui/lab/Alert';
 import AlertTitle from '@material-ui/lab/AlertTitle';
 
+import usePatchSighting from '../../../models/sighting/usePatchSighting';
 import Button from '../../../components/Button';
 import StandardDialog from '../../../components/StandardDialog';
 
@@ -14,12 +15,16 @@ export default function FeaturedPhotoSelector({
   open,
   onClose,
   assets,
+  sightingId,
   currentFeaturedPhotoId,
+  refreshSightingData,
 }) {
   const theme = useTheme();
   const [selectedPhoto, setSelectedPhoto] = useState(
     currentFeaturedPhotoId,
   );
+
+  const { updateProperties, loading, error } = usePatchSighting();
 
   return (
     <StandardDialog
@@ -56,21 +61,37 @@ export default function FeaturedPhotoSelector({
             />
           ))}
         </div>
-        {false && (
-          <Alert severity="error">
+      </DialogContent>
+      <DialogActions
+        style={{
+          padding: '12px 24px',
+          display: 'flex',
+          alignItems: 'flex-end',
+          flexDirection: 'column',
+        }}
+      >
+        {error && (
+          <Alert style={{ marginBottom: 20 }} severity="error">
             <AlertTitle>
               <FormattedMessage id="ERROR_UPDATING_PROFILE" />
             </AlertTitle>
-            Error goes here
+            {error}
           </Alert>
         )}
-      </DialogContent>
-      <DialogActions style={{ padding: '12px 24px' }}>
         <Button
           display="primary"
-          onClick={onClose}
+          onClick={async () => {
+            const successfulUpdate = await updateProperties(
+              sightingId,
+              { featuredAssetGuid: selectedPhoto },
+            );
+            if (successfulUpdate) {
+              refreshSightingData();
+              onClose();
+            }
+          }}
           autoFocus
-          // loading={replaceLoading}
+          loading={loading}
           disabled={!selectedPhoto}
           id="SAVE"
         />
