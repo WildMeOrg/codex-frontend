@@ -28,7 +28,12 @@ export default function ReportForm({ assetReferences }) {
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [sightingData, setSightingData] = useState(null);
 
-  const { postAssetGroup, loading } = usePostAssetGroup();
+  const {
+    postAssetGroup,
+    loading,
+    error: postError,
+  } = usePostAssetGroup();
+  const error = termsError || postError;
 
   const availableFields = useBulkImportFields();
 
@@ -120,13 +125,17 @@ export default function ReportForm({ assetReferences }) {
         />
       </Grid>
 
-      {termsError && (
+      {error && (
         <Grid style={{ marginTop: 12 }} item>
           <Alert severity="error">
             <AlertTitle>
               <Text id="SUBMISSION_ERROR" />
             </AlertTitle>
-            <Text variant="body2" id="TERMS_ERROR" />
+            {termsError ? (
+              <Text variant="body2" id="TERMS_ERROR" />
+            ) : (
+              postError
+            )}
           </Alert>
         </Grid>
       )}
@@ -149,7 +158,7 @@ export default function ReportForm({ assetReferences }) {
               const results = await postAssetGroup({
                 description: 'horpdorp',
                 bulkUpload: true,
-                speciesDetectionModel: ['None'],
+                speciesDetectionModel: [false],
                 transactionId: get(assetReferences, [
                   0,
                   'transactionId',
@@ -165,9 +174,8 @@ export default function ReportForm({ assetReferences }) {
           loading={loading}
           display="primary"
           disabled={!sightingData}
-        >
-          <FormattedMessage id="REPORT_SIGHTINGS" />
-        </Button>
+          id="REPORT_SIGHTINGS"
+        />
       </Grid>
     </>
   );

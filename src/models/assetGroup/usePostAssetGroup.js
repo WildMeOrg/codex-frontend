@@ -11,6 +11,7 @@ export default function usePostAssetGroup() {
   const postAssetGroup = async data => {
     try {
       setLoading(true);
+      setError(null);
       const response = await axios({
         url: `${__houston_url__}/api/v1/asset_groups/`,
         withCredentials: true,
@@ -18,8 +19,8 @@ export default function usePostAssetGroup() {
         data,
       });
       console.log(response);
-      const successful = get(response, ['data', 'success'], false);
-      const newSightingId = get(response, ['data', 'result', 'id']);
+      const successful = get(response, 'status') === 200;
+      const newSightingId = get(response, ['data', 'guid']);
       if (successful) {
         setSuccess(true);
         setError(null);
@@ -27,12 +28,23 @@ export default function usePostAssetGroup() {
         return newSightingId;
       }
 
-      setError(formatError(response));
+      const backendErrorMessage = get(response, 'passed_message');
+      const errorMessage =
+        backendErrorMessage || formatError(response);
+      setError(errorMessage);
       setSuccess(false);
       setLoading(false);
       return null;
     } catch (postError) {
-      setError(formatError(postError));
+      const backendErrorMessage = get(postError, [
+        'response',
+        'data',
+        'passed_message',
+      ]);
+      const errorMessage =
+        backendErrorMessage || formatError(postError);
+
+      setError(errorMessage);
       setSuccess(false);
       setLoading(false);
       return null;
