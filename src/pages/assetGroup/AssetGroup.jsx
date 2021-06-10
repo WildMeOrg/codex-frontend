@@ -33,8 +33,6 @@ export default function AssetGroup() {
   useDocumentTitle(`Asset group ${id}`);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
-  console.log(data);
-
   if (loading) return <LoadingScreen />;
   if (statusCode === 404)
     return (
