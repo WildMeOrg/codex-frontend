@@ -16,6 +16,7 @@ import Individual from './pages/individual/Individual';
 import CreateIndividual from './pages/individual/CreateIndividual';
 import PictureBook from './pages/individual/PictureBook';
 import Sighting from './pages/sighting/Sighting';
+import AssetGroup from './pages/assetGroup/AssetGroup';
 import Org from './pages/org/Org';
 import Orgs from './pages/org/Orgs';
 import CreateOrg from './pages/org/CreateOrg';
@@ -25,6 +26,7 @@ import User from './pages/user/User';
 import Users from './pages/user/Users';
 import CreateUser from './pages/user/CreateUser';
 import BulkImport from './pages/bulkImport/BulkImport';
+import BulkImportSuccess from './pages/bulkImport/Success';
 import ReportSighting from './pages/reportSighting/ReportSighting';
 import ReportSuccess from './pages/reportSighting/Success';
 import FourOhFour from './pages/fourohfour/FourOhFour';
@@ -115,6 +117,9 @@ export default function AuthenticatedSwitch() {
                       <Route path="/create/individual">
                         <CreateIndividual />
                       </Route>
+                      <Route path="/assetgroups/:id">
+                        <AssetGroup />
+                      </Route>
                       <Route path="/match/:id">
                         <MatchReview />
                       </Route>
@@ -148,6 +153,9 @@ export default function AuthenticatedSwitch() {
                       <Route path="/projects">
                         <Projects />
                       </Route> */}
+                      <Route path="/bulk-import/success/:id">
+                        <BulkImportSuccess />
+                      </Route>
                       <Route path="/bulk-import">
                         <BulkImport />
                       </Route>

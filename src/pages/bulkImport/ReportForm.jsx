@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { FlatfileButton } from '@flatfile/react';
 import { get } from 'lodash-es';
+import { useHistory } from 'react-router-dom';
 
 import { useTheme } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
@@ -23,6 +24,7 @@ import BulkFieldBreakdown from './BulkFieldBreakdown';
 
 export default function ReportForm({ assetReferences }) {
   const theme = useTheme();
+  const history = useHistory();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [termsError, setTermsError] = useState(false);
   const [acceptedTerms, setAcceptedTerms] = useState(false);
@@ -155,7 +157,7 @@ export default function ReportForm({ assetReferences }) {
                 sightingData,
                 assetReferences,
               );
-              const results = await postAssetGroup({
+              const assetGroupId = await postAssetGroup({
                 description: 'horpdorp',
                 bulkUpload: true,
                 speciesDetectionModel: [false],
@@ -165,7 +167,9 @@ export default function ReportForm({ assetReferences }) {
                 ]),
                 sightings,
               });
-              console.log(results);
+              if (assetGroupId) {
+                history.push(`/bulk-import/success/${assetGroupId}`);
+              }
             } else {
               setTermsError(true);
             }

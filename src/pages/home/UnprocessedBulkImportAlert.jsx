@@ -5,7 +5,7 @@ import { get } from 'lodash-es';
 import Alert from '@material-ui/lab/Alert';
 import AlertTitle from '@material-ui/lab/AlertTitle';
 
-import Button from '../../components/Button';
+import ButtonLink from '../../components/ButtonLink';
 import { formatDate } from '../../utils/formatters';
 
 export default function UnprocessedBulkImportAlert({
@@ -13,16 +13,18 @@ export default function UnprocessedBulkImportAlert({
 }) {
   const sightingCount = get(assetGroupData, ['sightings', 'length']);
   const date = get(assetGroupData, 'created');
-  const formattedDate = formatDate(date);
+  const id = get(assetGroupData, 'guid');
+  const formattedDate = formatDate(date, true);
   return (
     <Alert
       style={{ margin: '12px 16px' }}
       action={
-        <Button
+        <ButtonLink
           style={{ marginTop: 12 }}
           display="basic"
           size="small"
           id="VIEW"
+          href={`/assetgroups/${id}`}
         />
       }
       severity="info"
