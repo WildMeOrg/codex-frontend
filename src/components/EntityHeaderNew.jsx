@@ -13,15 +13,17 @@ export default function EntityHeader({
   return (
     <>
       <Grid container>
-        <Grid
-          style={{
-            marginLeft: 12,
-            padding: '24px 0 0 0',
-          }}
-          item
-        >
-          {renderAvatar}
-        </Grid>
+        {renderAvatar ? (
+          <Grid
+            style={{
+              marginLeft: 12,
+              padding: '24px 0 0 0',
+            }}
+            item
+          >
+            {renderAvatar}
+          </Grid>
+        ) : null}
         <Grid
           item
           style={{
@@ -29,7 +31,7 @@ export default function EntityHeader({
             flexGrow: 1,
             padding: '24px 12px 12px 0',
             overflow: 'hidden',
-            maxWidth: 677, // (i never said i was a role model)
+            maxWidth: renderAvatar ? 677 : undefined, // (i never said i was a role model)
           }}
         >
           <div

@@ -3,11 +3,11 @@ import axios from 'axios';
 import { get } from 'lodash-es';
 import { formatError } from '../../utils/formatters';
 
-export default function useSighting(sightingId) {
+export default function useAssetGroup(assetGroupId) {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [statusCode, setStatusCode] = useState(null);
-  const [sightingData, setSightingData] = useState(null);
+  const [data, setData] = useState(null);
   const [refreshCount, setRefreshCount] = useState(0);
 
   function refresh() {
@@ -16,10 +16,10 @@ export default function useSighting(sightingId) {
 
   useEffect(
     () => {
-      const fetchSightingData = async () => {
+      const fetchAssetGroupData = async () => {
         try {
           const response = await axios.request({
-            url: `${__houston_url__}/api/v1/sightings/${sightingId}`,
+            url: `${__houston_url__}/api/v1/asset_groups/${assetGroupId}`,
             method: 'get',
           });
 
@@ -29,24 +29,24 @@ export default function useSighting(sightingId) {
           if (!successful) setError(formatError(response));
 
           setLoading(false);
-          setSightingData(get(response, ['data']));
+          setData(get(response, ['data']));
         } catch (fetchError) {
           const responseStatusCode = get(fetchError, [
             'response',
             'status',
           ]);
           setStatusCode(responseStatusCode);
-          console.error(`Error fetching sighting ${sightingId}`);
+          console.error(`Error fetching asset group ${assetGroupId}`);
           console.error(fetchError);
           setError(formatError(fetchError));
           setLoading(false);
         }
       };
 
-      if (sightingId) fetchSightingData();
+      if (assetGroupId) fetchAssetGroupData();
     },
-    [sightingId, refreshCount],
+    [assetGroupId, refreshCount],
   );
 
-  return { data: sightingData, statusCode, loading, error, refresh };
+  return { data, statusCode, loading, error, refresh };
 }

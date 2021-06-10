@@ -108,7 +108,7 @@ export default function Sighting() {
         onDelete={async () => {
           const successful = await deleteSighting(id);
           if (successful) {
-            setHistoryOpen(false);
+            setDeleteDialogOpen(false);
             history.push('/');
           }
         }}

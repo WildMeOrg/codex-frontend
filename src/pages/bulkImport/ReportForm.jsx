@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { FlatfileButton } from '@flatfile/react';
 import { get } from 'lodash-es';
+import { useHistory } from 'react-router-dom';
 
 import { useTheme } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
@@ -23,12 +24,18 @@ import BulkFieldBreakdown from './BulkFieldBreakdown';
 
 export default function ReportForm({ assetReferences }) {
   const theme = useTheme();
+  const history = useHistory();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [termsError, setTermsError] = useState(false);
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [sightingData, setSightingData] = useState(null);
 
-  const { postAssetGroup, loading } = usePostAssetGroup();
+  const {
+    postAssetGroup,
+    loading,
+    error: postError,
+  } = usePostAssetGroup();
+  const error = termsError || postError;
 
   const availableFields = useBulkImportFields();
 
@@ -120,13 +127,17 @@ export default function ReportForm({ assetReferences }) {
         />
       </Grid>
 
-      {termsError && (
+      {error && (
         <Grid style={{ marginTop: 12 }} item>
           <Alert severity="error">
             <AlertTitle>
               <Text id="SUBMISSION_ERROR" />
             </AlertTitle>
-            <Text variant="body2" id="TERMS_ERROR" />
+            {termsError ? (
+              <Text variant="body2" id="TERMS_ERROR" />
+            ) : (
+              postError
+            )}
           </Alert>
         </Grid>
       )}
@@ -146,17 +157,19 @@ export default function ReportForm({ assetReferences }) {
                 sightingData,
                 assetReferences,
               );
-              const results = await postAssetGroup({
+              const assetGroupId = await postAssetGroup({
                 description: 'horpdorp',
                 bulkUpload: true,
-                speciesDetectionModel: ['None'],
+                speciesDetectionModel: [false],
                 transactionId: get(assetReferences, [
                   0,
                   'transactionId',
                 ]),
                 sightings,
               });
-              console.log(results);
+              if (assetGroupId) {
+                history.push(`/bulk-import/success/${assetGroupId}`);
+              }
             } else {
               setTermsError(true);
             }
@@ -165,9 +178,8 @@ export default function ReportForm({ assetReferences }) {
           loading={loading}
           display="primary"
           disabled={!sightingData}
-        >
-          <FormattedMessage id="REPORT_SIGHTINGS" />
-        </Button>
+          id="REPORT_SIGHTINGS"
+        />
       </Grid>
     </>
   );

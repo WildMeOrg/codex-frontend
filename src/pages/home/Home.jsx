@@ -4,9 +4,10 @@ import { useIntl } from 'react-intl';
 import { useSelector } from 'react-redux';
 import { selectUsers } from '../../modules/users/selectors';
 import useGetMe from '../../models/users/useGetMe';
+import useAssetGroup from '../../models/assetGroup/useAssetGroup';
 import UserProfile from '../../components/UserProfile';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
-import Actions from './Actions';
+import UnprocessedBulkImportAlert from './UnprocessedBulkImportAlert';
 
 export default function Home() {
   const intl = useIntl();
@@ -15,6 +16,13 @@ export default function Home() {
   useDocumentTitle(intl.formatMessage({ id: 'HOME' }));
 
   const { data, loading, refresh } = useGetMe();
+  const unprocessedAssetGroupId = get(data, [
+    'unprocessed_asset_groups',
+    '0',
+  ]);
+  const { data: assetGroupData } = useAssetGroup(
+    unprocessedAssetGroupId,
+  );
 
   const imageSrc = get(data, ['profile_fileupload', 'src']);
   const imageGuid = get(data, ['profile_fileupload', 'guid']);
@@ -30,7 +38,9 @@ export default function Home() {
       refreshUserData={refresh}
       noCollaborate
     >
-      <Actions />
+      {assetGroupData && (
+        <UnprocessedBulkImportAlert assetGroupData={assetGroupData} />
+      )}
     </UserProfile>
   );
 }
