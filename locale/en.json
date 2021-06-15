@@ -73,7 +73,7 @@
   "SIGHTING_TIME": "Sighting time",
   "SIGHTING_START": "Sighting start",
   "SIGHTING_END": "Sighting end",
-  "SIGHTING_RADIO_QUESTION": "How many animals were in the sighting?",
+  "SIGHTING_RADIO_QUESTION": "How many animals were in the sighting? *",
   "ONE_ANIMAL": "One animal",
   "MULTIPLE_ANIMALS": "Multiple animals",
   "TAXONOMIES": "Taxonomies",

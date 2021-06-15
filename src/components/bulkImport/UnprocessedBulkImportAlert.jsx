@@ -5,12 +5,19 @@ import { get } from 'lodash-es';
 import Alert from '@material-ui/lab/Alert';
 import AlertTitle from '@material-ui/lab/AlertTitle';
 
-import ButtonLink from '../../components/ButtonLink';
+import useAssetGroup from '../../models/assetGroup/useAssetGroup';
+import ButtonLink from '../ButtonLink';
 import { formatDate } from '../../utils/formatters';
 
 export default function UnprocessedBulkImportAlert({
-  assetGroupData,
+  unprocessedAssetGroupId,
 }) {
+  const { data: assetGroupData } = useAssetGroup(
+    unprocessedAssetGroupId,
+  );
+
+  if (!assetGroupData) return null;
+
   const sightingCount = get(assetGroupData, ['sightings', 'length']);
   const date = get(assetGroupData, 'created');
   const id = get(assetGroupData, 'guid');

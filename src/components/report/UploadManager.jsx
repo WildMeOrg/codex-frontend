@@ -20,6 +20,7 @@ export default function UploadManager({
   onUploadComplete = Function.prototype,
   setFiles,
   exifData,
+  disabled = false,
 }) {
   const intl = useIntl();
   const currentExifData = useRef();
@@ -82,7 +83,12 @@ export default function UploadManager({
   }, []);
 
   return (
-    <div>
+    <div
+      style={{
+        opacity: disabled ? 0.5 : 1,
+        pointerEvents: disabled ? 'none' : undefined,
+      }}
+    >
       {cropper.open && (
         <Cropper
           imgSrc={cropper.imgSrc}
