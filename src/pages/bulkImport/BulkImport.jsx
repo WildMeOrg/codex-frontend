@@ -1,12 +1,15 @@
 import React, { useState, useMemo } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
 import { v4 as uuid } from 'uuid';
+import { get } from 'lodash-es';
 
 import Grid from '@material-ui/core/Grid';
 import InfoIcon from '@material-ui/icons/InfoOutlined';
 
-import Text from '../../components/Text';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
+import useGetMe from '../../models/users/useGetMe';
+import UnprocessedBulkImportAlert from '../../components/bulkImport/UnprocessedBulkImportAlert';
+import Text from '../../components/Text';
 import Link from '../../components/Link';
 import Button from '../../components/Button';
 import ReportSightingsPage from '../../components/report/ReportSightingsPage';
@@ -16,6 +19,12 @@ import BulkReport from './ReportForm';
 export default function BulkImport() {
   const intl = useIntl();
   useDocumentTitle(intl.formatMessage({ id: 'REPORT_SIGHTINGS' }));
+
+  const { data: userData } = useGetMe();
+  const unprocessedAssetGroupId = get(userData, [
+    'unprocessed_asset_groups',
+    '0',
+  ]);
 
   const assetSubmissionId = useMemo(uuid, []);
   const [files, setFiles] = useState([]);
@@ -30,6 +39,11 @@ export default function BulkImport() {
 
   return (
     <ReportSightingsPage titleId="BULK_IMPORT" authenticated>
+      {unprocessedAssetGroupId && (
+        <UnprocessedBulkImportAlert
+          unprocessedAssetGroupId={unprocessedAssetGroupId}
+        />
+      )}
       {reporting ? (
         <Button
           onClick={onBack}
@@ -44,6 +58,7 @@ export default function BulkImport() {
         <>
           <Grid item style={{ marginTop: 20 }}>
             <UploadManager
+              disabled={Boolean(unprocessedAssetGroupId)}
               assetSubmissionId={assetSubmissionId}
               exifData={exifData}
               setExifData={setExifData}
@@ -76,7 +91,7 @@ export default function BulkImport() {
               id={
                 noImages ? 'CONTINUE_WITHOUT_PHOTOGRAPHS' : 'CONTINUE'
               }
-              disabled={false}
+              disabled={Boolean(unprocessedAssetGroupId)}
               onClick={async () => {
                 window.scrollTo(0, 0);
                 setReporting(true);
