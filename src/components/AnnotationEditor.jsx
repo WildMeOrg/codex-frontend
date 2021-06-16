@@ -1,6 +1,5 @@
 import React, { useCallback, useState } from 'react';
 import { get } from 'lodash-es';
-import { FormattedMessage } from 'react-intl';
 import BboxAnnotator from 'bboxjs';
 
 import DialogContent from '@material-ui/core/DialogContent';
@@ -94,12 +93,17 @@ export default function AnnotationEditor({
   }, []);
 
   return (
-    <StandardDialog open onClose={onClose} titleId={titleId}>
+    <StandardDialog
+      maxWidth="xl"
+      open
+      onClose={onClose}
+      titleId={titleId}
+    >
       <DialogContent>
-        <div style={{ width: 400, padding: '0 40px' }}>
+        <div style={{ width: 900, padding: '0 40px' }}>
           <div
             id="editor-bbox-annotator-container"
-            style={{ width: '100%', zIndex: 999 }}
+            style={{ zIndex: 999 }}
             ref={divRef}
           />
           {!disableDelete && (
@@ -110,21 +114,20 @@ export default function AnnotationEditor({
                 <Button
                   onClick={() => setConfirmDelete(true)}
                   style={{ color: 'red' }}
-                >
-                  <FormattedMessage id="DELETE_THIS_ANNOTATION" />
-                </Button>
+                  id="DELETE_THIS_ANNOTATION"
+                />
               )}
             </div>
           )}
         </div>
       </DialogContent>
       <DialogActions style={{ padding: '0px 24px 24px 24px' }}>
-        <Button display="basic" onClick={onClose}>
-          <FormattedMessage id="CANCEL" />
-        </Button>
-        <Button display="primary" onClick={() => onChange(rect)}>
-          <FormattedMessage id="SAVE" />
-        </Button>
+        <Button display="basic" onClick={onClose} id="CANCEL" />
+        <Button
+          display="primary"
+          onClick={() => onChange(rect)}
+          id="SAVE"
+        />
       </DialogActions>
     </StandardDialog>
   );

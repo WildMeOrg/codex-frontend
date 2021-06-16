@@ -9,13 +9,15 @@ export default function MorePhotoMenu({
   anchorEl,
   open,
   onClose,
+  onClickAddAnnotation = Function.prototype,
+  onClickDelete = Function.prototype,
 }) {
   return (
     <Menu id={id} anchorEl={anchorEl} open={open} onClose={onClose}>
-      <MenuItem>
+      <MenuItem onClick={onClickAddAnnotation}>
         <FormattedMessage id="ADD_ANNOTATION" />
       </MenuItem>
-      <MenuItem>
+      <MenuItem onClick={onClickDelete}>
         <FormattedMessage id="DELETE_PHOTOGRAPH" />
       </MenuItem>
     </Menu>
