@@ -5,6 +5,7 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import IconButton from '@material-ui/core/IconButton';
 import MoreIcon from '@material-ui/icons/MoreVert';
+import AnnotationCreator from '../../components/AnnotationCreator';
 import Text from '../../components/Text';
 import PhotographDetail from './PhotographDetail';
 import MorePhotoMenu from './MorePhotoMenu';
@@ -24,6 +25,7 @@ export default function Photographs({ assets }) {
 
   const [anchorInfo, setAnchorInfo] = useState(null);
   const [detailAssetIndex, setDetailAssetIndex] = useState(null);
+  const [newAnnotationAsset, setNewAnnotationAsset] = useState(null);
 
   const effectRef = useRef(false);
   effectRef.current = {
@@ -76,11 +78,20 @@ export default function Photographs({ assets }) {
         margin: '0 20px',
       }}
     >
+      {newAnnotationAsset && (
+        <AnnotationCreator
+          onClose={() => setNewAnnotationAsset(null)}
+          asset={newAnnotationAsset}
+        />
+      )}
       <MorePhotoMenu
         id="image-actions-menu"
         anchorEl={get(anchorInfo, 'element')}
         open={Boolean(get(anchorInfo, 'element'))}
         onClose={() => setAnchorInfo(null)}
+        onClickAddAnnotation={() =>
+          setNewAnnotationAsset(get(anchorInfo, 'asset'))
+        }
       />
       <PhotographDetail
         open={detailAssetIndex !== null}
