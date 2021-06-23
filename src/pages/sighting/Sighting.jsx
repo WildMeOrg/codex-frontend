@@ -23,6 +23,7 @@ import useSightingFieldSchemas from '../../models/sighting/useSightingFieldSchem
 import { formatDate } from '../../utils/formatters';
 // import AnnotationsGallery from './AnnotationsGallery';
 // import IndividualsGallery from './IndividualsGallery';
+import Annotations from './Annotations';
 import Photographs from './Photographs';
 import OverviewContent from './OverviewContent';
 import SightingHistoryDialog from './SightingHistoryDialog';
@@ -188,6 +189,12 @@ export default function Sighting() {
       )}
       {activeTab === '#photographs' && (
         <Photographs assets={assets} />
+      )}
+      {activeTab === '#annotations' && (
+        <Annotations
+          assets={assets}
+          refreshSightingData={refreshSightingData}
+        />
       )}
       {activeTab === '#individuals' && (
         <Encounters

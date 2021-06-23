@@ -14,6 +14,7 @@
   "FOREST": "Forest",
   "AQUA": "Aqua",
   "CONTROL_PANEL": "Control panel",
+  "DELETE_ANNOTATION": "Delete annotation",
   "PENDING_BULK_IMPORT": "Bulk import in progress",
   "PENDING_BULK_IMPORT_MESSAGE": "You reported {sightingCount} sightings on {date}. You must finish processing this bulk import before starting another.",
   "HISTORY": "History",
