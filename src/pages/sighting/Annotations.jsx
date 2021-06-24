@@ -8,6 +8,7 @@ import MoreIcon from '@material-ui/icons/MoreVert';
 
 import useDeleteAnnotation from '../../models/annotation/useDeleteAnnotation';
 import AnnotatedPhotograph from '../../components/AnnotatedPhotograph';
+import ConfirmDelete from '../../components/ConfirmDelete';
 import Text from '../../components/Text';
 import MoreAnnotationMenu from './MoreAnnotationMenu';
 
@@ -24,11 +25,12 @@ export default function Annotations({ assets, refreshSightingData }) {
   const isSm = useMediaQuery(theme.breakpoints.down('xs'));
   const classes = useStyles();
 
+  const [deleteId, setDeleteId] = useState(null);
   const [anchorInfo, setAnchorInfo] = useState(null);
   const {
     deleteAnnotation,
-    // loading, do something with these... modal? toast?
-    // error, confirm delete!
+    loading: deleteInProgress,
+    error: deleteAnnotationError,
   } = useDeleteAnnotation();
 
   const annotations = assets.reduce((acc, asset) => {
@@ -39,8 +41,6 @@ export default function Annotations({ assets, refreshSightingData }) {
     }));
     return [...acc, ...amendedAssetAnnotations];
   }, []);
-
-  console.log(annotations);
 
   return (
     <div
@@ -61,14 +61,28 @@ export default function Annotations({ assets, refreshSightingData }) {
         onClose={() => setAnchorInfo(null)}
         onClickEditAnnotation={() => {}}
         onClickDelete={async () => {
-          const deleteSuccessful = await deleteAnnotation(
-            get(anchorInfo, ['annotation', 'guid']),
-          );
+          const clickedAnnotationId = get(anchorInfo, [
+            'annotation',
+            'guid',
+          ]);
+          setDeleteId(clickedAnnotationId);
+          setAnchorInfo(null);
+        }}
+      />
+      <ConfirmDelete
+        open={Boolean(deleteId)}
+        onClose={() => setDeleteId(null)}
+        onDelete={async () => {
+          const deleteSuccessful = await deleteAnnotation(deleteId);
           if (deleteSuccessful) {
-            setAnchorInfo(null);
+            setDeleteId(null);
             refreshSightingData();
           }
         }}
+        deleteInProgress={deleteInProgress}
+        error={deleteAnnotationError}
+        onClearError={() => deleteAnnotationError(null)}
+        messageId="CONFIRM_DELETE_ANNOTATION_DESCRIPTION"
       />
       {annotations.map(annotation => (
         <div key={annotation.guid} style={{ position: 'relative' }}>

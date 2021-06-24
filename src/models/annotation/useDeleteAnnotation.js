@@ -16,7 +16,6 @@ export default function useDeleteAnnotation() {
         withCredentials: true,
         method: 'delete',
       });
-      console.log(deleteResponse);
       const responseStatus = get(deleteResponse, 'status');
       const successful = responseStatus === 204;
       if (successful) {
