@@ -17,6 +17,7 @@ export default function AnnotationCreator({
   titleId = 'CREATE_ANNOTATION',
   asset,
   onClose,
+  refreshSightingData,
 }) {
   const [rect, setRect] = useState({});
   const theme = useTheme();
@@ -120,7 +121,10 @@ export default function AnnotationCreator({
               coords,
               theta,
             );
-            if (newAnnotationId) onClose();
+            if (newAnnotationId) {
+              refreshSightingData();
+              onClose();
+            }
           }}
           id="SAVE"
         />

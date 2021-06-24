@@ -188,7 +188,10 @@ export default function Sighting() {
         />
       )}
       {activeTab === '#photographs' && (
-        <Photographs assets={assets} />
+        <Photographs
+          assets={assets}
+          refreshSightingData={refreshSightingData}
+        />
       )}
       {activeTab === '#annotations' && (
         <Annotations

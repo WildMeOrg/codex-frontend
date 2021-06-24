@@ -7,6 +7,7 @@ import IconButton from '@material-ui/core/IconButton';
 import MoreIcon from '@material-ui/icons/MoreVert';
 
 import useDeleteAnnotation from '../../models/annotation/useDeleteAnnotation';
+import AnnotatedPhotograph from '../../components/AnnotatedPhotograph';
 import Text from '../../components/Text';
 import MoreAnnotationMenu from './MoreAnnotationMenu';
 
@@ -40,7 +41,6 @@ export default function Annotations({ assets, refreshSightingData }) {
   }, []);
 
   console.log(annotations);
-  console.log(anchorInfo);
 
   return (
     <div
@@ -72,15 +72,10 @@ export default function Annotations({ assets, refreshSightingData }) {
       />
       {annotations.map(annotation => (
         <div key={annotation.guid} style={{ position: 'relative' }}>
-          <input
-            type="image"
-            style={{
-              display: 'block',
-              width: '100%',
-            }}
-            onClick={() => {}}
+          <AnnotatedPhotograph
             alt={annotation.filename}
             src={annotation.src}
+            annotations={[annotation]}
           />
           <IconButton
             onClick={e =>
