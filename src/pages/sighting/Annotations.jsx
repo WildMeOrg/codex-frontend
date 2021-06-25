@@ -6,8 +6,10 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import IconButton from '@material-ui/core/IconButton';
 import MoreIcon from '@material-ui/icons/MoreVert';
 
+import usePatchAnnotation from '../../models/annotation/usePatchAnnotation';
 import useDeleteAnnotation from '../../models/annotation/useDeleteAnnotation';
 import AnnotatedPhotograph from '../../components/AnnotatedPhotograph';
+import AnnotationEditor from '../../components/AnnotationEditor';
 import ConfirmDelete from '../../components/ConfirmDelete';
 import Text from '../../components/Text';
 import MoreAnnotationMenu from './MoreAnnotationMenu';
@@ -25,6 +27,7 @@ export default function Annotations({ assets, refreshSightingData }) {
   const isSm = useMediaQuery(theme.breakpoints.down('xs'));
   const classes = useStyles();
 
+  const [editId, setEditId] = useState(null);
   const [deleteId, setDeleteId] = useState(null);
   const [anchorInfo, setAnchorInfo] = useState(null);
   const {
@@ -32,6 +35,13 @@ export default function Annotations({ assets, refreshSightingData }) {
     loading: deleteInProgress,
     error: deleteAnnotationError,
   } = useDeleteAnnotation();
+
+  const {
+    updateAnnotationProperty,
+    loading: patchInProgress,
+    error: patchError,
+    setError: setAnnotationError,
+  } = usePatchAnnotation();
 
   const annotations = assets.reduce((acc, asset) => {
     const assetAnnotations = get(asset, 'annotations', []);
@@ -41,6 +51,10 @@ export default function Annotations({ assets, refreshSightingData }) {
     }));
     return [...acc, ...amendedAssetAnnotations];
   }, []);
+
+  const clickedAnnotationId = get(anchorInfo, ['annotation', 'guid']);
+
+  const editAnnotation = annotations.find(a => a.guid === editId);
 
   return (
     <div
@@ -59,16 +73,45 @@ export default function Annotations({ assets, refreshSightingData }) {
         anchorEl={get(anchorInfo, 'element')}
         open={Boolean(get(anchorInfo, 'element'))}
         onClose={() => setAnchorInfo(null)}
-        onClickEditAnnotation={() => {}}
+        onClickEditAnnotation={() => {
+          setEditId(clickedAnnotationId);
+          setAnchorInfo(null);
+        }}
         onClickDelete={async () => {
-          const clickedAnnotationId = get(anchorInfo, [
-            'annotation',
-            'guid',
-          ]);
           setDeleteId(clickedAnnotationId);
           setAnchorInfo(null);
         }}
       />
+      {editId && (
+        <AnnotationEditor
+          onClose={() => {
+            setEditId(null);
+            setAnnotationError(null);
+          }}
+          onChange={async rect => {
+            const coords = [
+              get(rect, 'percentLeft'),
+              get(rect, 'percentTop'),
+              get(rect, 'percentWidth'),
+              get(rect, 'percentHeight'),
+            ];
+            const updateSuccessful = await updateAnnotationProperty(
+              editId,
+              'bounds',
+              { rect: coords, theta: get(rect, 'theta', 0) },
+            );
+            if (updateSuccessful) {
+              setEditId(null);
+              refreshSightingData();
+            }
+          }}
+          disableDelete
+          error={patchError}
+          loading={patchInProgress}
+          imgSrc={get(editAnnotation, 'src')}
+          annotations={[editAnnotation]}
+        />
+      )}
       <ConfirmDelete
         open={Boolean(deleteId)}
         onClose={() => setDeleteId(null)}
