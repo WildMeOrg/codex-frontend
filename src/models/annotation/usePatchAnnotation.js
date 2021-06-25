@@ -30,7 +30,6 @@ export default function usePatchAnnotation() {
         method: 'patch',
         data: operations,
       });
-      console.log(patchResponse);
       const responseStatus = get(patchResponse, 'status');
       const successful = responseStatus === 200;
       if (successful) {
