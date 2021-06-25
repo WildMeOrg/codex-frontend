@@ -22,6 +22,7 @@ export default function AnnotatedPhotograph({
         const h = get(annotation, ['bounds', 'rect', '3']);
         return (
           <rect
+            key={annotation.guid}
             fill="none"
             stroke="black"
             strokeWidth={2}

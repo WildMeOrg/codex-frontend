@@ -1,9 +1,12 @@
 import React, { useCallback, useState } from 'react';
 import { get } from 'lodash-es';
 import BboxAnnotator from 'bboxjs';
+import { FormattedMessage } from 'react-intl';
 
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
+import Alert from '@material-ui/lab/Alert';
+import AlertTitle from '@material-ui/lab/AlertTitle';
 import { useTheme } from '@material-ui/core/styles';
 
 import Button from './Button';
@@ -14,8 +17,10 @@ export default function AnnotationEditor({
   titleId = 'EDIT_ANNOTATION',
   disableDelete = false,
   imgSrc,
-  onClose,
-  onChange,
+  onClose = Function.prototype,
+  onChange = Function.prototype,
+  error,
+  loading = false,
   annotations = [],
 }) {
   const [rect, setRect] = useState({});
@@ -25,7 +30,7 @@ export default function AnnotationEditor({
   const divRef = useCallback(() => {
     const bba = new BboxAnnotator(imgSrc, {
       // eslint-disable-line no-new
-      prefix: 'editor-',
+      prefix: 'editor-', // bboxjs needs this prefix!
       mode: 'rectangle',
       modes: 'rectangle',
       colors: {
@@ -75,16 +80,31 @@ export default function AnnotationEditor({
       });
     } else {
       annotations.forEach(annotation => {
+        // this works with bbox js style schemas
+        // bba.add_entry({
+        //   label: annotation.id,
+        //   percent: {
+        //     left: annotation.parameters.left,
+        //     top: annotation.parameters.top,
+        //     width: annotation.parameters.width,
+        //     height: annotation.parameters.height,
+        //   },
+        //   angles: {
+        //     theta: annotation.parameters.theta,
+        //   },
+        //   highlighted: true,
+        // });
+
         bba.add_entry({
-          label: annotation.id,
+          label: get(annotation, 'guid'),
           percent: {
-            left: annotation.parameters.left,
-            top: annotation.parameters.top,
-            width: annotation.parameters.width,
-            height: annotation.parameters.height,
+            left: get(annotation, ['bounds', 'rect', '0']),
+            top: get(annotation, ['bounds', 'rect', '1']),
+            width: get(annotation, ['bounds', 'rect', '2']),
+            height: get(annotation, ['bounds', 'rect', '3']),
           },
           angles: {
-            theta: annotation.parameters.theta,
+            theta: get(annotation, ['bounds', 'theta'], 0),
           },
           highlighted: true,
         });
@@ -121,13 +141,34 @@ export default function AnnotationEditor({
           )}
         </div>
       </DialogContent>
-      <DialogActions style={{ padding: '0px 24px 24px 24px' }}>
-        <Button display="basic" onClick={onClose} id="CANCEL" />
-        <Button
-          display="primary"
-          onClick={() => onChange(rect)}
-          id="SAVE"
-        />
+      <DialogActions
+        style={{
+          padding: '0px 24px 24px 24px',
+          display: 'flex',
+          alignItems: 'flex-end',
+          flexDirection: 'column',
+        }}
+      >
+        {error && (
+          <Alert
+            style={{ margin: '20px 0', width: '100%' }}
+            severity="error"
+          >
+            <AlertTitle>
+              <FormattedMessage id="SERVER_ERROR" />
+            </AlertTitle>
+            {error}
+          </Alert>
+        )}
+        <div>
+          <Button display="basic" onClick={onClose} id="CANCEL" />
+          <Button
+            display="primary"
+            onClick={() => onChange(rect)}
+            loading={loading}
+            id="SAVE"
+          />
+        </div>
       </DialogActions>
     </StandardDialog>
   );
