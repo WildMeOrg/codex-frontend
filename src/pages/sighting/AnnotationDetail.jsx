@@ -27,8 +27,6 @@ export default function AnnotationDetail({
 
   const { keywords: keywordOptions } = useKeywords();
 
-  console.log(keywordOptions);
-
   /* Feels weird but it's what material wants: https://material-ui.com/components/autocomplete/#controllable-states */
   const [newTagSelectValue, setNewTagSelectValue] = useState(null);
   const [newTagInputValue, setNewTagInputValue] = useState('');
@@ -104,16 +102,16 @@ export default function AnnotationDetail({
                 handleHomeEndKeys
                 selectOnFocus
                 value={newTagSelectValue}
-                onChange={(_, newValue) =>
-                  setNewTagSelectValue(newValue)
-                }
+                onChange={(_, newValue) => {
+                  setNewTagSelectValue(newValue);
+                }}
                 inputValue={newTagInputValue}
-                onInputChange={(_, newValue) =>
-                  setNewTagInputValue(newValue)
-                }
+                onInputChange={(_, newValue) => {
+                  setNewTagInputValue(newValue);
+                }}
                 disabled={addKeywordLoading}
                 options={keywordOptions || []}
-                getOptionLabel={option => option.value}
+                getOptionLabel={option => get(option, 'value', '')}
                 renderOption={option => (
                   <div
                     style={{
