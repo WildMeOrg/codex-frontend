@@ -71,6 +71,7 @@
   "TIME_MINUTES": "Time (minutes)",
   "TIME_SECONDS": "Time (seconds)",
   "TIMEZONE": "Timezone",
+  "ADD_TAG": "Add tag",
   "SIGHTING_TIME": "Sighting time",
   "SIGHTING_START": "Sighting start",
   "SIGHTING_END": "Sighting end",
