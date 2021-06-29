@@ -8,8 +8,10 @@ import AlertTitle from '@material-ui/lab/AlertTitle';
 import TextField from '@material-ui/core/TextField';
 import AddIcon from '@material-ui/icons/Add';
 
+import { getKeywordColor } from '../../utils/colorUtils';
 import StandardDialog from '../../components/StandardDialog';
 import Button from '../../components/Button';
+import useKeywords from '../../models/keyword/useKeywords';
 import useAddKeyword from '../../models/keyword/useAddKeyword';
 import Keywords from './Keywords';
 import MorePhotoMenu from './MorePhotoMenu';
@@ -18,10 +20,18 @@ export default function AnnotationDetail({
   annotation,
   open,
   onClose,
+  refreshSightingData,
 }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [addingTag, setAddingTag] = useState(false);
-  const [newTagValue, setNewTagValue] = useState('');
+
+  const { keywords: keywordOptions } = useKeywords();
+
+  console.log(keywordOptions);
+
+  /* Feels weird but it's what material wants: https://material-ui.com/components/autocomplete/#controllable-states */
+  const [newTagSelectValue, setNewTagSelectValue] = useState(null);
+  const [newTagInputValue, setNewTagInputValue] = useState('');
 
   const {
     addKeyword,
@@ -34,8 +44,15 @@ export default function AnnotationDetail({
     setAnchorEl(null);
   };
 
+  const onCloseDialog = () => {
+    onClose();
+    setAddingTag(false);
+    setNewTagInputValue('');
+    setNewTagSelectValue(null);
+  };
+
   return (
-    <StandardDialog fullScreen open={open} onClose={onClose}>
+    <StandardDialog fullScreen open={open} onClose={onCloseDialog}>
       <MorePhotoMenu
         id="detail-image-actions-menu"
         anchorEl={anchorEl}
@@ -72,20 +89,54 @@ export default function AnnotationDetail({
             {addKeywordError}
           </Alert>
         )}
-        <Keywords annotation={annotation}>
+        <Keywords
+          annotation={annotation}
+          deletable
+          refreshSightingData={refreshSightingData}
+        >
           {addingTag ? (
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <Autocomplete
                 id="tag value"
                 freeSolo
+                blurOnSelect
+                clearOnEscape
+                handleHomeEndKeys
+                selectOnFocus
+                value={newTagSelectValue}
+                onChange={(_, newValue) =>
+                  setNewTagSelectValue(newValue)
+                }
+                inputValue={newTagInputValue}
+                onInputChange={(_, newValue) =>
+                  setNewTagInputValue(newValue)
+                }
                 disabled={addKeywordLoading}
-                options={[{ label: 'hey' }]}
-                getOptionLabel={option => option.label}
+                options={keywordOptions || []}
+                getOptionLabel={option => option.value}
+                renderOption={option => (
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: 12,
+                        height: 12,
+                        marginRight: 8,
+                        borderRadius: 100,
+                        backgroundColor: getKeywordColor(option.guid),
+                      }}
+                    />
+                    <span>{option.value}</span>
+                  </div>
+                )}
                 renderInput={params => (
                   <TextField
                     {...params}
-                    onChange={e => setNewTagValue(e.target.value)}
-                    style={{ width: 200, marginRight: 8 }}
+                    style={{ width: 200, margin: '0 8px' }}
                   />
                 )}
               />
@@ -94,14 +145,28 @@ export default function AnnotationDetail({
                 size="small"
                 loading={addKeywordLoading}
                 onClick={async () => {
-                  const result = await addKeyword(
-                    get(annotation, 'guid'),
-                    null,
-                    newTagValue,
+                  const selectValue = get(newTagSelectValue, 'value');
+                  const selectKeywordId = get(
+                    newTagSelectValue,
+                    'guid',
                   );
-                  console.log(result);
+                  const matchingKeywordId =
+                    newTagInputValue === selectValue
+                      ? selectKeywordId
+                      : null;
+
+                  const successful = await addKeyword(
+                    get(annotation, 'guid'),
+                    matchingKeywordId,
+                    newTagInputValue,
+                  );
+                  if (successful) {
+                    setNewTagInputValue('');
+                    setNewTagSelectValue(null);
+                    refreshSightingData();
+                  }
                 }}
-                id="ADD"
+                id="ADD_TAG"
               />
             </div>
           ) : (

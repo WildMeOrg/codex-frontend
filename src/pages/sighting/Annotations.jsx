@@ -75,6 +75,7 @@ export default function Annotations({ assets, refreshSightingData }) {
         annotation={detailAnnotation}
         open={Boolean(detailId)}
         onClose={() => setDetailId(null)}
+        refreshSightingData={refreshSightingData}
       />
       <MoreAnnotationMenu
         id="image-actions-menu"

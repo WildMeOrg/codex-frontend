@@ -3,26 +3,17 @@ import axios from 'axios';
 import { get } from 'lodash-es';
 import { formatError } from '../../utils/formatters';
 
-export default function useAddKeyword() {
+export default function useDeleteKeyword() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
 
-  const addKeyword = async (
-    annotationId,
-    keywordGuid,
-    keywordValue,
-  ) => {
-    const payload = keywordGuid || {
-      value: keywordValue,
-      source: 'user',
-    };
-
+  const deleteKeyword = async (annotationId, keywordGuid) => {
     const operations = [
       {
-        op: 'add',
+        op: 'remove',
         path: '/keywords',
-        value: payload,
+        value: keywordGuid,
       },
     ];
 
@@ -66,7 +57,7 @@ export default function useAddKeyword() {
   };
 
   return {
-    addKeyword,
+    deleteKeyword,
     loading,
     error,
     setError,
