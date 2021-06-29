@@ -61,8 +61,7 @@ export default function Create({ callback }) {
             schema={{ labelId: 'CONFIRM_PASSWORD' }}
             value={passwordConfirmation}
             onChange={newPassword =>
-              setPasswordConfirmation(newPassword)
-            }
+              setPasswordConfirmation(newPassword)}
             variant="outlined"
             type="password"
           />

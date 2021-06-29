@@ -85,12 +85,12 @@ export default function MetadataCard({
               );
             })
           : range(6).map(i => (
-              <ListItem key={i}>
-                <ListItemText
-                  primary={<Skeleton />}
-                  secondary={<Skeleton />}
-                />
-              </ListItem>
+            <ListItem key={i}>
+              <ListItemText
+                primary={<Skeleton />}
+                secondary={<Skeleton />}
+              />
+            </ListItem>
             ))}
       </List>
       {showEditButton && (

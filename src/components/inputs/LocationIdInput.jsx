@@ -151,8 +151,7 @@ export default function LocationIdInput(props) {
                 width={textInputWidth}
                 schema={{ name: leaf.id }}
                 onChange={newName =>
-                  setNewValue(updateTree(baseValue, leaf.id, newName))
-                }
+                  setNewValue(updateTree(baseValue, leaf.id, newName))}
                 value={leaf.name}
                 InputProps={{
                   endAdornment: (

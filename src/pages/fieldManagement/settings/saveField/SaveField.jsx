@@ -152,8 +152,7 @@ export default function SaveField() {
                   setFormData({
                     ...formData,
                     name: e.target.value,
-                  })
-                }
+                  })}
                 label={<FormattedMessage id="FIELD_VALUE" />}
                 value={get(formData, 'name', '')}
               />
@@ -240,8 +239,7 @@ export default function SaveField() {
                   setFormData({
                     ...formData,
                     required: e.target.checked,
-                  })
-                }
+                  })}
               />
             </FormControl>
           </Grid>
@@ -262,8 +260,7 @@ export default function SaveField() {
                       ...formData.schema,
                       label: e.target.value,
                     },
-                  })
-                }
+                  })}
               />
             </FormControl>
           </Grid>
@@ -284,8 +281,7 @@ export default function SaveField() {
                       ...formData.schema,
                       description: e.target.value,
                     },
-                  })
-                }
+                  })}
               />
             </FormControl>
           </Grid>
@@ -307,8 +303,7 @@ export default function SaveField() {
                       ...formData.schema,
                       category: e.target.value,
                     },
-                  })
-                }
+                  })}
                 value={selectedCategory}
               >
                 {Object.values(categoryOptions).map(cat => (
@@ -329,8 +324,7 @@ export default function SaveField() {
                     ...formData.schema,
                     choices: nextChoices,
                   },
-                })
-              }
+                })}
             />
           ) : null}
           {defaultEditable ? (

@@ -18,7 +18,7 @@ export default function SiteSetup() {
         </Grid>
         <Grid item>
           <Text variant="h3" component="h3">
-            Welcome to Codex!
+            Welcome to Code Cave!
           </Text>
         </Grid>
         <Grid item>

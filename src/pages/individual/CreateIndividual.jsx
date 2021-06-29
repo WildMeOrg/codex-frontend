@@ -42,8 +42,7 @@ export default function CreateIndividual() {
                 setFormState({
                   ...formState,
                   [field.name]: newFieldValue,
-                })
-              }
+                })}
             />
           </Grid>
         ))}

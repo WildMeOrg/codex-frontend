@@ -90,8 +90,7 @@ export default function Photographs({ assets }) {
         open={Boolean(get(anchorInfo, 'element'))}
         onClose={() => setAnchorInfo(null)}
         onClickAddAnnotation={() =>
-          setNewAnnotationAsset(get(anchorInfo, 'asset'))
-        }
+          setNewAnnotationAsset(get(anchorInfo, 'asset'))}
       />
       <PhotographDetail
         open={detailAssetIndex !== null}
@@ -126,8 +125,7 @@ export default function Photographs({ assets }) {
           />
           <IconButton
             onClick={e =>
-              setAnchorInfo({ element: e.currentTarget, asset })
-            }
+              setAnchorInfo({ element: e.currentTarget, asset })}
             style={{
               position: 'absolute',
               top: 4,

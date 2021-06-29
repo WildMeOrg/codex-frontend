@@ -85,8 +85,7 @@ export default function Candidates({
             onClick={event =>
               setPopoverData({
                 element: event.currentTarget,
-              })
-            }
+              })}
           >
             <FormattedMessage id="CHANGE" />
           </Button>

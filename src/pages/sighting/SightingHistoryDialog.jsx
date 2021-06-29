@@ -172,10 +172,12 @@ export default function SightingHistoryDialog({ open, onClose }) {
                     primary={
                       <span>
                         <Link>{change.user}</Link>
-                        <span>{` at ${format(
+                        <span>
+                          {` at ${format(
                           change.time,
                           'HH:mm',
-                        )}`}</span>
+                        )}`}
+                        </span>
                       </span>
                     }
                     secondary={change.event}

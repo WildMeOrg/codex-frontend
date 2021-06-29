@@ -35,7 +35,7 @@ export default function Iceland() {
       headerName: 'Status',
       width: 180,
       renderCell: ({ value }) =>
-        statusLoading ? <Skeleton /> : value,
+        (statusLoading ? <Skeleton /> : value),
     },
     {
       field: 'acmId',
@@ -56,7 +56,7 @@ export default function Iceland() {
       headerName: 'Notes',
       width: 1200,
       renderCell: ({ value }) =>
-        notesLoading ? <Skeleton /> : value,
+        (notesLoading ? <Skeleton /> : value),
     },
   ];
 

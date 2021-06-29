@@ -146,8 +146,7 @@ export default function PictureBook() {
             setPagesLoading(prevState => ({
               ...prevState,
               [individual.id]: false,
-            }))
-          }
+            }))}
         />
       ))}
     </>

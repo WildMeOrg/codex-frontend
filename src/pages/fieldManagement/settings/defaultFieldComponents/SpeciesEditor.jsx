@@ -97,8 +97,7 @@ export default function SpeciesEditor({
                 setFormSettings({
                   ...formSettings,
                   species: [...currentSpecies, species],
-                })
-              }
+                })}
             >
               <AddIcon />
             </IconButton>

@@ -217,8 +217,7 @@ export default function Match({ setMatching }) {
                     setPopoverData({
                       element: event.currentTarget,
                       annotationId: 552,
-                    })
-                  }
+                    })}
                 >
                   <FormattedMessage id="CHANGE" />
                 </Button>
