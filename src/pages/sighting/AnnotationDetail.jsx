@@ -136,6 +136,7 @@ export default function AnnotationDetail({
                 renderInput={params => (
                   <TextField
                     {...params}
+                    autoFocus
                     style={{ width: 200, margin: '0 8px' }}
                   />
                 )}

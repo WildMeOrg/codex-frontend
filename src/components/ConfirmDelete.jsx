@@ -18,6 +18,7 @@ export default function ConfirmDelete({
   deleteDisabled = false,
   messageId,
   message,
+  errorTitleId = 'SERVER_ERROR',
   error,
   titleId,
 }) {
@@ -41,7 +42,7 @@ export default function ConfirmDelete({
             onClose={onClearError}
           >
             <AlertTitle>
-              <FormattedMessage id="SERVER_ERROR" />
+              <FormattedMessage id={errorTitleId} />
             </AlertTitle>
             {error}
           </Alert>

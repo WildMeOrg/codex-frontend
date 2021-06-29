@@ -167,7 +167,7 @@ export default function Sighting() {
           value="overview"
         />
         <Tab
-          label={<FormattedMessage id="INDIVIDUALS" />}
+          label={<FormattedMessage id="ANIMALS" />}
           value="individuals"
         />
         <Tab
