@@ -5,14 +5,21 @@ export default function AnnotatedPhotograph({
   src,
   width = 300,
   annotations = [],
+  onClick,
 }) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      style={{ width, height: width }}
+      style={{
+        width,
+        height: width,
+        cursor: 'pointer',
+        background: 'grey',
+      }}
       viewBox="0 0 100 100"
       preserveAspectRatio="xMidYMid meet"
       width={300}
+      onClick={onClick}
     >
       <image href={src} x={0} y={0} height="100%" width="100%" />
       {annotations.map(annotation => {

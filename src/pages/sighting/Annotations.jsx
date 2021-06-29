@@ -11,8 +11,9 @@ import useDeleteAnnotation from '../../models/annotation/useDeleteAnnotation';
 import AnnotatedPhotograph from '../../components/AnnotatedPhotograph';
 import AnnotationEditor from '../../components/AnnotationEditor';
 import ConfirmDelete from '../../components/ConfirmDelete';
-import Text from '../../components/Text';
+import AnnotationDetail from './AnnotationDetail';
 import MoreAnnotationMenu from './MoreAnnotationMenu';
+import Keywords from './Keywords';
 
 const useStyles = makeStyles({
   photoIcon: {
@@ -27,6 +28,7 @@ export default function Annotations({ assets, refreshSightingData }) {
   const isSm = useMediaQuery(theme.breakpoints.down('xs'));
   const classes = useStyles();
 
+  const [detailId, setDetailId] = useState(null);
   const [editId, setEditId] = useState(null);
   const [deleteId, setDeleteId] = useState(null);
   const [anchorInfo, setAnchorInfo] = useState(null);
@@ -54,6 +56,7 @@ export default function Annotations({ assets, refreshSightingData }) {
 
   const clickedAnnotationId = get(anchorInfo, ['annotation', 'guid']);
 
+  const detailAnnotation = annotations.find(a => a.guid === detailId);
   const editAnnotation = annotations.find(a => a.guid === editId);
 
   return (
@@ -68,6 +71,12 @@ export default function Annotations({ assets, refreshSightingData }) {
         margin: '0 20px',
       }}
     >
+      <AnnotationDetail
+        annotation={detailAnnotation}
+        open={Boolean(detailId)}
+        onClose={() => setDetailId(null)}
+        refreshSightingData={refreshSightingData}
+      />
       <MoreAnnotationMenu
         id="image-actions-menu"
         anchorEl={get(anchorInfo, 'element')}
@@ -133,6 +142,7 @@ export default function Annotations({ assets, refreshSightingData }) {
             alt={annotation.filename}
             src={annotation.src}
             annotations={[annotation]}
+            onClick={() => setDetailId(annotation.guid)}
           />
           <IconButton
             onClick={e =>
@@ -148,7 +158,7 @@ export default function Annotations({ assets, refreshSightingData }) {
           >
             <MoreIcon />
           </IconButton>
-          <Text variant="caption">{annotation.filename}</Text>
+          <Keywords annotation={annotation} />
         </div>
       ))}
     </div>
