@@ -42,7 +42,8 @@ export default function CreateUser() {
                 setFormState({
                   ...formState,
                   [field.name]: newFieldValue,
-                })}
+                })
+              }
             />
           </Grid>
         ))}

@@ -106,7 +106,9 @@ export default function CreateAdminUser() {
               />
             </FormControl>
           </Grid>
-          {error && <AlertWrapper severity="error" description={error} />}
+          {error && (
+            <AlertWrapper severity="error" description={error} />
+          )}
           <Grid
             item
             style={{ position: 'relative', padding: '20px 12px' }}

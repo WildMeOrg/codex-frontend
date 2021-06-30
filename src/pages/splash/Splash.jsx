@@ -60,7 +60,8 @@ export default function Splash() {
         size="small"
         color="primary"
         onClick={() =>
-          window.scroll({ top: 0, left: 0, behavior: 'smooth' })}
+          window.scroll({ top: 0, left: 0, behavior: 'smooth' })
+        }
         style={{
           zIndex: 1,
           bottom: 20,

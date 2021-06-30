@@ -155,7 +155,8 @@ export default function Encounters({
                     setEditEncounterInfo({
                       encounterId,
                       encounterMetadata,
-                    })}
+                    })
+                  }
                   metadata={encounterMetadata}
                 />
               </CardContainer>

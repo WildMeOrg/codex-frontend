@@ -71,10 +71,10 @@ export default function PhotoGallery({ sighting }) {
                 <div
                   key={annotation.id}
                   style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                    }}
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                  }}
                 >
                   <Text id="ANNOTATION_X" values={{ x: i + 1 }} />
                   <div>
@@ -84,16 +84,17 @@ export default function PhotoGallery({ sighting }) {
                     <IconButton
                       size="small"
                       onClick={() =>
-                          setAnnotation({
-                            ...annotation,
-                            imageSrc: photo.profile,
-                          })}
+                        setAnnotation({
+                          ...annotation,
+                          imageSrc: photo.profile,
+                        })
+                      }
                     >
                       <EditIcon />
                     </IconButton>
                   </div>
                 </div>
-                ))}
+              ))}
               <Button
                 onClick={() => {
                   setCreateAnnotationSource(photo.profile);

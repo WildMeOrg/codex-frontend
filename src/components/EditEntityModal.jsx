@@ -38,7 +38,8 @@ export default function({
             value={currentCategory}
             style={{ marginTop: 0 }}
             onChange={(_, newCategory) =>
-              setCurrentCategory(newCategory)}
+              setCurrentCategory(newCategory)
+            }
           >
             {categoryArray.map(category => (
               <Tab

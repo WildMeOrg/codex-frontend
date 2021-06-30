@@ -173,10 +173,7 @@ export default function SightingHistoryDialog({ open, onClose }) {
                       <span>
                         <Link>{change.user}</Link>
                         <span>
-                          {` at ${format(
-                          change.time,
-                          'HH:mm',
-                        )}`}
+                          {` at ${format(change.time, 'HH:mm')}`}
                         </span>
                       </span>
                     }

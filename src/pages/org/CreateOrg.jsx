@@ -38,7 +38,8 @@ export default function CreateOrg() {
                 setFormState({
                   ...formState,
                   [field.name]: newFieldValue,
-                })}
+                })
+              }
             />
           </Grid>
         ))}

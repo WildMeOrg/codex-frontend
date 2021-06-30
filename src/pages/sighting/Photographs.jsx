@@ -128,7 +128,8 @@ export default function Photographs({ assets, refreshSightingData }) {
           />
           <IconButton
             onClick={e =>
-              setAnchorInfo({ element: e.currentTarget, asset })}
+              setAnchorInfo({ element: e.currentTarget, asset })
+            }
             style={{
               position: 'absolute',
               top: 4,

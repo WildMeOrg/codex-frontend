@@ -56,15 +56,16 @@ export default function IndividualsGallery({ sighting }) {
               display="basic"
               style={{ marginTop: 4 }}
               onClick={() =>
-                  setAnnotation({
-                    ...annotation,
-                    imageSrc: annotation.profile,
-                  })}
+                setAnnotation({
+                  ...annotation,
+                  imageSrc: annotation.profile,
+                })
+              }
             >
               <FormattedMessage id="EDIT_ANNOTATION" />
             </Button>
           </div>
-          )}
+        )}
       />
     </div>
   );

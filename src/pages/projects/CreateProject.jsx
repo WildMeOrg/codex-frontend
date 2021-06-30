@@ -84,7 +84,8 @@ export default function CreateProject({
                     setFormState({
                       ...formState,
                       [field.name]: newFieldValue,
-                    })}
+                    })
+                  }
                   required={Boolean(field.required)}
                 />
               </Grid>

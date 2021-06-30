@@ -5,22 +5,28 @@ import Alert from '@material-ui/lab/Alert';
 import AlertTitle from '@material-ui/lab/AlertTitle';
 import Text from './Text';
 
-export default function AlertWrapper({ description = '', titleTxt, values, children, ...rest }) {
-    if (!titleTxt) {
-        return (
-          <Alert {...rest}>
-            <FormattedMessage id={description} values={values} />
-            {children}
-          </Alert>
-        );
-    }
+export default function AlertWrapper({
+  description = '',
+  titleTxt,
+  values,
+  children,
+  ...rest
+}) {
+  if (!titleTxt) {
     return (
       <Alert {...rest}>
-        <AlertTitle>
-          <Text id={titleTxt} />
-        </AlertTitle>
         <FormattedMessage id={description} values={values} />
         {children}
       </Alert>
     );
+  }
+  return (
+    <Alert {...rest}>
+      <AlertTitle>
+        <Text id={titleTxt} />
+      </AlertTitle>
+      <FormattedMessage id={description} values={values} />
+      {children}
+    </Alert>
+  );
 }

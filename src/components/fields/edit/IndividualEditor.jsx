@@ -107,7 +107,8 @@ export default function IndividualEditor({
                   <ListItem
                     button
                     onClick={() =>
-                      setSelectedIndividual(individual.id)}
+                      setSelectedIndividual(individual.id)
+                    }
                     selected={isSelected}
                   >
                     <ListItemText

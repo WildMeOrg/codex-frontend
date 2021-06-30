@@ -165,7 +165,8 @@ export default function FieldSettings() {
               }}
               value={dialogData.label || ''}
               onChange={newLabel =>
-                setDialogData({ ...dialogData, label: newLabel })}
+                setDialogData({ ...dialogData, label: newLabel })
+              }
             />
             <InputRow
               labelId="TYPE"
@@ -180,7 +181,8 @@ export default function FieldSettings() {
               }}
               value={dialogData.type || ''}
               onChange={newType =>
-                setDialogData({ ...dialogData, type: newType })}
+                setDialogData({ ...dialogData, type: newType })
+              }
             />
             {error && <Alert severity="error">{error}</Alert>}
           </DialogContent>
@@ -246,7 +248,8 @@ export default function FieldSettings() {
               label: '',
               type: null,
               timeCreated: Date.now(),
-            })}
+            })
+          }
         >
           <FormattedMessage id="ADD_NEW" />
         </Button>

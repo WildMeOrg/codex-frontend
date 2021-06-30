@@ -36,7 +36,8 @@ export default function SearchFilterList({
                 setFormValues({
                   ...formValues,
                   [field.name]: field.defaultValue,
-                })}
+                })
+              }
             />
           </Grid>
         ))}
