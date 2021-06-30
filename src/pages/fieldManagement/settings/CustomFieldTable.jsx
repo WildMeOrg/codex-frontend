@@ -140,6 +140,7 @@ export default function CustomFieldTable({
         open={Boolean(deleteField)}
         onClose={onCloseConfirmDelete}
         titleId="DELETE_FIELD"
+        errorTitleId="CONFIRMATION_NEEDED"
         messageId="CONFIRM_DELETE_CUSTOM_FIELD_DESCRIPTION"
         error={removeCustomFieldError}
         entityToDelete={get(deleteField, 'name')}

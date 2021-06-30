@@ -18,7 +18,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default function Photographs({ assets }) {
+export default function Photographs({ assets, refreshSightingData }) {
   const theme = useTheme();
   const isSm = useMediaQuery(theme.breakpoints.down('xs'));
   const classes = useStyles();
@@ -82,6 +82,7 @@ export default function Photographs({ assets }) {
         <AnnotationCreator
           onClose={() => setNewAnnotationAsset(null)}
           asset={newAnnotationAsset}
+          refreshSightingData={refreshSightingData}
         />
       )}
       <MorePhotoMenu
@@ -89,8 +90,10 @@ export default function Photographs({ assets }) {
         anchorEl={get(anchorInfo, 'element')}
         open={Boolean(get(anchorInfo, 'element'))}
         onClose={() => setAnchorInfo(null)}
-        onClickAddAnnotation={() =>
-          setNewAnnotationAsset(get(anchorInfo, 'asset'))}
+        onClickAddAnnotation={() => {
+          setAnchorInfo(null);
+          setNewAnnotationAsset(get(anchorInfo, 'asset'));
+        }}
       />
       <PhotographDetail
         open={detailAssetIndex !== null}

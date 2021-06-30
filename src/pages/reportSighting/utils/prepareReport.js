@@ -21,7 +21,14 @@ export function prepareBasicReport(
     assetReferences,
     decimalLatitude: sightingData.gps[0],
     decimalLongitude: sightingData.gps[1],
-    encounters: [],
+    encounters: [
+      {
+        decimalLatitude: sightingData.gps[0],
+        decimalLongitude: sightingData.gps[1],
+        locationId: sightingData.locationId,
+        verbatimLocality: sightingData.verbatimLocality,
+      },
+    ],
     customFields: customSightingDictionary,
   };
 
