@@ -10,6 +10,7 @@ import usePatchAnnotation from '../../models/annotation/usePatchAnnotation';
 import useDeleteAnnotation from '../../models/annotation/useDeleteAnnotation';
 import AnnotatedPhotograph from '../../components/AnnotatedPhotograph';
 import AnnotationEditor from '../../components/AnnotationEditor';
+import Text from '../../components/Text';
 import ConfirmDelete from '../../components/ConfirmDelete';
 import AnnotationDetail from './AnnotationDetail';
 import MoreAnnotationMenu from './MoreAnnotationMenu';
@@ -136,6 +137,9 @@ export default function Annotations({ assets, refreshSightingData }) {
         onClearError={() => deleteAnnotationError(null)}
         messageId="CONFIRM_DELETE_ANNOTATION_DESCRIPTION"
       />
+      {annotations.length === 0 ? (
+        <Text id="NO_ANNOTATIONS_MESSAGE" />
+      ) : null}
       {annotations.map(annotation => (
         <div key={annotation.guid} style={{ position: 'relative' }}>
           <AnnotatedPhotograph
