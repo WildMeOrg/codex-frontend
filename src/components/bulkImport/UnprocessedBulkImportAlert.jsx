@@ -31,7 +31,7 @@ export default function UnprocessedBulkImportAlert({
           display="basic"
           size="small"
           id="VIEW"
-          href={`/assetgroups/${id}`}
+          href={`/bulk-imports/${id}`}
         />
       }
       severity="info"
