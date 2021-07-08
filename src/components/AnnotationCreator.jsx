@@ -57,6 +57,8 @@ export default function AnnotationCreator({
       },
     });
 
+    bba.options.hotkeys.enabled = false;
+
     bba.add_entry({
       label: '1',
       percent: {

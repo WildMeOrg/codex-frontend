@@ -49,6 +49,8 @@ export default function Cropper({ imgSrc, onClose, setCrop }) {
       },
     });
 
+    bba.options.hotkeys.enabled = false;
+
     bba.add_entry({
       label: '1',
       percent: {

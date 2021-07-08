@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { get } from 'lodash-es';
+import React, { useState, useMemo } from 'react';
+import { differenceBy, get } from 'lodash-es';
 import { FormattedMessage } from 'react-intl';
 
 import Autocomplete from '@material-ui/lab/Autocomplete';
@@ -26,6 +26,14 @@ export default function AnnotationDetail({
   const [addingTag, setAddingTag] = useState(false);
 
   const { keywords: keywordOptions } = useKeywords();
+  const filteredKeywordOptions = useMemo(
+    () => {
+      const annotationKeywords = get(annotation, 'keywords');
+      if (!annotationKeywords || !keywordOptions) return [];
+      return differenceBy(keywordOptions, annotationKeywords, 'guid');
+    },
+    [get(annotation, 'guid'), keywordOptions],
+  );
 
   /* Feels weird but it's what material wants: https://material-ui.com/components/autocomplete/#controllable-states */
   const [newTagSelectValue, setNewTagSelectValue] = useState(null);
@@ -107,7 +115,7 @@ export default function AnnotationDetail({
                   setNewTagInputValue(newValue);
                 }}
                 disabled={addKeywordLoading}
-                options={keywordOptions || []}
+                options={filteredKeywordOptions}
                 getOptionLabel={option => get(option, 'value', '')}
                 renderOption={option => (
                   <div

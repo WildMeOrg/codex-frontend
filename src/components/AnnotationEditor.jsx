@@ -60,6 +60,8 @@ export default function AnnotationEditor({
       },
     });
 
+    bba.options.hotkeys.enabled = false;
+
     if (annotations.length === 0) {
       bba.add_entry({
         label: '1',
