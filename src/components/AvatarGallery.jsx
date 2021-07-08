@@ -13,6 +13,7 @@ export default function AvatarGallery({
   onDelete = Function.prototype,
   linkAll = true,
   avatarSize = 150,
+  idKey = 'guid',
   titleKey = 'name',
   filterKey = 'name',
   getAnnotations = entity => get(entity, 'annotations', undefined),
@@ -24,7 +25,7 @@ export default function AvatarGallery({
   const filteredEntities = entities.filter(entity =>
     entity[filterKey].toLowerCase().includes(filter.toLowerCase()),
   );
-
+  
   return (
     <>
       {entities.length > 6 && (
@@ -40,9 +41,10 @@ export default function AvatarGallery({
       <Grid container spacing={6} justify={justify}>
         {filteredEntities.map(entity => (
           <EntityCard
-            key={entity.id}
+            key={entity[idKey]}
             name={entity[titleKey]}
             imgSrc={entity.profile}
+            titleKey={titleKey}
             href={getHref(entity)}
             onDelete={() => onDelete(entity)}
             square={square}
