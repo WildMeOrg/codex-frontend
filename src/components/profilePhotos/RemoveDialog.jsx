@@ -3,8 +3,7 @@ import { FormattedMessage } from 'react-intl';
 
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
-import Alert from '@material-ui/lab/Alert';
-import AlertTitle from '@material-ui/lab/AlertTitle';
+import CustomAlert from '../Alert';
 
 import usePatchUser from '../../models/users/usePatchUser';
 import StandardDialog from '../StandardDialog';
@@ -40,12 +39,11 @@ export default function RemoveDialog({ open, onClose, userId }) {
       <DialogContent>
         <Text id="CONFIRM_REMOVE_PROFILE_PICTURE" />
         {error && (
-          <Alert severity="error">
-            <AlertTitle>
-              <FormattedMessage id="SERVER_ERROR" />
-            </AlertTitle>
-            {error}
-          </Alert>
+          <CustomAlert
+            severity="error"
+            titleId="SERVER_ERROR"
+            description={error}
+          />
         )}
       </DialogContent>
       <DialogActions style={{ padding: '0px 24px 24px 24px' }}>

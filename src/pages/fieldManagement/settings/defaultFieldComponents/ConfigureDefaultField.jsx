@@ -3,8 +3,7 @@ import { FormattedMessage } from 'react-intl';
 
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
-import Alert from '@material-ui/lab/Alert';
-import AlertTitle from '@material-ui/lab/AlertTitle';
+import CustomAlert from '../../../../components/Alert';
 
 import Button from '../../../../components/Button';
 import StandardDialog from '../../../../components/StandardDialog';
@@ -27,12 +26,11 @@ export default function EditField({
       <DialogContent style={{ minWidth: 200 }}>
         {children}
         {error && (
-          <Alert severity="error">
-            <AlertTitle>
-              <FormattedMessage id="SUBMISSION_ERROR" />
-            </AlertTitle>
-            {error}
-          </Alert>
+          <CustomAlert
+            severity="error"
+            titleId="SUBMISSION_ERROR"
+            description={error}
+          />
         )}
       </DialogContent>
       <DialogActions style={{ padding: '0px 24px 24px 24px' }}>

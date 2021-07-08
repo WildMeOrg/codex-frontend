@@ -3,9 +3,8 @@ import { get } from 'lodash-es';
 import { FormattedMessage } from 'react-intl';
 
 import AddIcon from '@material-ui/icons/Add';
-import Alert from '@material-ui/lab/Alert';
-import AlertTitle from '@material-ui/lab/AlertTitle';
 
+import CustomAlert from '../../../components/Alert';
 import CardContainer from '../../../components/cards/CardContainer';
 import MetadataCard from '../../../components/cards/MetadataCardNew';
 import Text from '../../../components/Text';
@@ -165,16 +164,13 @@ export default function Encounters({
         );
       })}
       {addEncounterError ? (
-        <Alert
+        <CustomAlert
           onClose={() => setAddEncounterError(null)}
           severity="error"
           style={{ marginTop: 20 }}
-        >
-          <AlertTitle>
-            <FormattedMessage id="AN_ERROR_OCCURRED" />
-          </AlertTitle>
-          {addEncounterError}
-        </Alert>
+          titleId="AN_ERROR_OCCURRED"
+          description={addEncounterError}
+        />
       ) : null}
       <Button
         id="ADD_CLUSTER"

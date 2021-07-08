@@ -10,7 +10,7 @@ import Grid from '@material-ui/core/Grid';
 import FormGroup from '@material-ui/core/FormGroup';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import Radio from '@material-ui/core/Radio';
-import AlertWrapper from '../../components/Alert';
+import CustomAlert from '../../components/Alert';
 // import Alert from '@material-ui/lab/Alert';
 // import AlertTitle from '@material-ui/lab/AlertTitle';
 // import ExifIcon from '@material-ui/icons/FlashOn';
@@ -247,7 +247,7 @@ export default function ReportForm({
       )}
       {showErrorAlertBox && (
         <Grid item style={{ marginBottom: 12 }}>
-          <AlertWrapper severity="error" titleTxt="SUBMISSION_ERROR">
+          <CustomAlert severity="error" titleTxt="SUBMISSION_ERROR">
             {dateOrderError && (
               <Text variant="body2" id="DATE_ORDER_ERROR" />
             )}
@@ -275,7 +275,7 @@ export default function ReportForm({
                 />
               </p>
             ))}
-          </AlertWrapper>
+          </CustomAlert>
         </Grid>
       )}
       {sightingType ? (

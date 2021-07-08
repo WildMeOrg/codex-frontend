@@ -9,8 +9,7 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import Alert from '@material-ui/lab/Alert';
-import AlertTitle from '@material-ui/lab/AlertTitle';
+import CustomAlert from '../../components/Alert';
 
 import TermsAndConditionsDialog from '../../components/report/TermsAndConditionsDialog';
 import Button from '../../components/Button';
@@ -166,16 +165,13 @@ export default function ReportForm({ assetReferences }) {
 
       {error && (
         <Grid style={{ marginTop: 12 }} item>
-          <Alert severity="error">
-            <AlertTitle>
-              <Text id="SUBMISSION_ERROR" />
-            </AlertTitle>
+          <CustomAlert severity="error" titleId="SUBMISSION_ERROR">
             {termsError ? (
               <Text variant="body2" id="TERMS_ERROR" />
             ) : (
               postError
             )}
-          </Alert>
+          </CustomAlert>
         </Grid>
       )}
       <Grid

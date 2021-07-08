@@ -4,9 +4,8 @@ import { useTheme } from '@material-ui/core/styles';
 
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import Alert from '@material-ui/lab/Alert';
-import AlertTitle from '@material-ui/lab/AlertTitle';
 
+import CustomAlert from '../../../components/Alert';
 import usePatchSighting from '../../../models/sighting/usePatchSighting';
 import Button from '../../../components/Button';
 import StandardDialog from '../../../components/StandardDialog';
@@ -71,12 +70,12 @@ export default function FeaturedPhotoSelector({
         }}
       >
         {error && (
-          <Alert style={{ marginBottom: 20 }} severity="error">
-            <AlertTitle>
-              <FormattedMessage id="ERROR_UPDATING_PROFILE" />
-            </AlertTitle>
-            {error}
-          </Alert>
+          <CustomAlert
+            style={{ marginBottom: 20 }}
+            severity="error"
+            titleId="ERROR_UPDATING_PROFILE"
+            description={error}
+          />
         )}
         <Button
           display="primary"

@@ -1,9 +1,7 @@
 import React from 'react';
-import { FormattedMessage } from 'react-intl';
 import { get } from 'lodash-es';
 
-import Alert from '@material-ui/lab/Alert';
-import AlertTitle from '@material-ui/lab/AlertTitle';
+import CustomAlert from '../Alert';
 
 import useAssetGroup from '../../models/assetGroup/useAssetGroup';
 import ButtonLink from '../ButtonLink';
@@ -23,7 +21,10 @@ export default function UnprocessedBulkImportAlert({
   const id = get(assetGroupData, 'guid');
   const formattedDate = formatDate(date, true);
   return (
-    <Alert
+    <CustomAlert
+      titleId="PENDING_BULK_IMPORT"
+      descriptionId="PENDING_BULK_IMPORT_MESSAGE"
+      descriptionValues={{ sightingCount, date: formattedDate }}
       style={{ margin: '12px 16px' }}
       action={
         <ButtonLink
@@ -35,14 +36,6 @@ export default function UnprocessedBulkImportAlert({
         />
       }
       severity="info"
-    >
-      <AlertTitle>
-        <FormattedMessage id="PENDING_BULK_IMPORT" />
-      </AlertTitle>
-      <FormattedMessage
-        id="PENDING_BULK_IMPORT_MESSAGE"
-        values={{ sightingCount, date: formattedDate }}
-      />
-    </Alert>
+    />
   );
 }

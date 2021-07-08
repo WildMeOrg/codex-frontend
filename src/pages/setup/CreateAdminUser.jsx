@@ -5,7 +5,7 @@ import FormControl from '@material-ui/core/FormControl';
 import TextField from '@material-ui/core/TextField';
 import Button from '../../components/Button';
 import SimpleFormPage from '../../components/SimpleFormPage';
-import AlertWrapper from '../../components/AlertWrapper';
+import CustomAlert from '../../components/Alert';
 
 import useCreateAdminUser from '../../models/setup/useCreateAdminUser';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
@@ -107,7 +107,7 @@ export default function CreateAdminUser() {
             </FormControl>
           </Grid>
           {error && (
-            <AlertWrapper severity="error" description={error} />
+            <CustomAlert severity="error" description={error} />
           )}
           <Grid
             item

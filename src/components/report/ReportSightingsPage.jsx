@@ -2,8 +2,7 @@ import React from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
 
 import Grid from '@material-ui/core/Grid';
-import Alert from '@material-ui/lab/Alert';
-import AlertTitle from '@material-ui/lab/AlertTitle';
+import CustomAlert from '../Alert';
 
 import MainColumn from '../MainColumn';
 import Text from '../Text';
@@ -37,8 +36,10 @@ export default function ReportSightingsPage({
         </Grid>
         {!authenticated && (
           <Grid item style={{ marginTop: 16 }}>
-            <Alert
+            <CustomAlert
               severity="info"
+              titleId="REPORTING_ANONYMOUSLY"
+              descriptionId="REPORTING_ANONYMOUSLY_WARNING"
               action={
                 <ButtonLink
                   style={{ flexShrink: 0, marginRight: 8 }}
@@ -48,12 +49,7 @@ export default function ReportSightingsPage({
                   <FormattedMessage id="LOG_IN" />
                 </ButtonLink>
               }
-            >
-              <AlertTitle>
-                <FormattedMessage id="REPORTING_ANONYMOUSLY" />
-              </AlertTitle>
-              <FormattedMessage id="REPORTING_ANONYMOUSLY_WARNING" />
-            </Alert>
+            />
           </Grid>
         )}
         <Grid item container direction="column">

@@ -2,8 +2,7 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
-import Alert from '@material-ui/lab/Alert';
-import AlertTitle from '@material-ui/lab/AlertTitle';
+import CustomAlert from './Alert';
 import Button from './Button';
 import Text from './Text';
 import StandardDialog from './StandardDialog';
@@ -36,16 +35,14 @@ export default function ConfirmDelete({
           {message}
         </Text>
         {error && (
-          <Alert
+          <CustomAlert
             style={{ marginTop: 16, marginBottom: 8 }}
             severity="error"
             onClose={onClearError}
+            titleId={errorTitleId}
           >
-            <AlertTitle>
-              <FormattedMessage id={errorTitleId} />
-            </AlertTitle>
             {error}
-          </Alert>
+          </CustomAlert>
         )}
       </DialogContent>
       <DialogActions style={{ padding: '8px 24px 24px 24px' }}>
