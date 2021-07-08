@@ -9,15 +9,16 @@ import LocationIcon from '@material-ui/icons/PersonPin';
 // import AddIcon from '@material-ui/icons/Add';
 import WebIcon from '@material-ui/icons/WebAssetSharp';
 
-import userSchema, {
-  userSchemaCategories,
-} from '../constants/userSchema';
+// import userSchema, {
+//   userSchemaCategories,
+// } from '../constants/userSchema';
+import { formatDate } from '../utils/formatters';
 import EntityHeaderNew from './EntityHeaderNew';
 import BigAvatar from './profilePhotos/BigAvatar';
 import MainColumn from './MainColumn';
 import Link from './Link';
 import SadScreen from './SadScreen';
-import EditEntityModal from './EditEntityModal';
+// import EditEntityModal from './EditEntityModal';
 import Text from './Text';
 import Button from './Button';
 import MetadataCard from './cards/MetadataCard';
@@ -25,11 +26,11 @@ import SightingsCard from './cards/SightingsCard';
 // import UserProjectCard from './cards/UserProjectCard';
 import CardContainer from './cards/CardContainer';
 
-const items = [
+const metadataSchema = [
   {
-    key: 'forum_id',
     id: 'forum_id',
     titleId: 'PROFILE_LABEL_FORUM_ID',
+    defaultValue: null,
     icon: ForumIcon,
     renderValue: forumId => (
       <Link
@@ -41,9 +42,9 @@ const items = [
     ),
   },
   {
-    key: 'email',
     id: 'email',
     titleId: 'PROFILE_LABEL_EMAIL',
+    defaultValue: null,
     icon: EmailIcon,
     renderValue: emailAddress => (
       <Link external href={`mailto://${emailAddress}`}>
@@ -52,9 +53,9 @@ const items = [
     ),
   },
   {
-    key: 'website',
     id: 'website',
     titleId: 'PROFILE_LABEL_WEBSITE',
+    defaultValue: null,
     icon: WebIcon,
     renderValue: website => (
       <Link external href={website}>
@@ -63,9 +64,9 @@ const items = [
     ),
   },
   {
-    key: 'location',
     id: 'location',
     titleId: 'PROFILE_LABEL_LOCATION',
+    defaultValue: null,
     icon: LocationIcon,
   },
 ];
@@ -74,10 +75,9 @@ export default function UserProfile({
   children,
   userData,
   userId,
-  imageSrc,
-  imageGuid,
   userDataLoading,
   refreshUserData,
+  someoneElse,
   noCollaborate = false,
 }) {
   const [editingProfile, setEditingProfile] = useState(false);
@@ -90,34 +90,34 @@ export default function UserProfile({
       />
     );
 
-  const metadataItems = items.map(item => {
-    const matchingData = userData.fields.find(
-      field => field.name === item.key,
-    );
-    const matchingSchemaObject = userSchema.find(
-      schemaObject => schemaObject.name === item.key,
-    );
-    const fieldValue = get(matchingData, 'value', null);
+
+  const imageSrc = get(userData, ['profile_fileupload', 'src']);
+  const imageGuid = get(userData, ['profile_fileupload', 'guid']);
+  const name = get(userData, 'full_name', 'Unnamed user');
+  const dateCreated = formatDate(get(userData, 'created'), true);
+
+  const metadataItems = metadataSchema.map(displaySchema => {
+    const value = get(userData, displaySchema.id);
     return {
-      ...item,
-      value: fieldValue,
+      ...displaySchema,
+      value,
       valueMatchesDefault:
-        matchingSchemaObject.defaultValue === fieldValue,
+      displaySchema.defaultValue === value,
     };
   });
 
   return (
     <MainColumn fullWidth>
-      <EditEntityModal
+      {/* <EditEntityModal
         open={editingProfile}
         onClose={() => setEditingProfile(false)}
         fieldValues={userData.fields}
         fieldSchema={userSchema}
         categories={userSchemaCategories}
-      />
+      /> */}
       <EntityHeaderNew
-        name={userData.name}
-        editable={userData.editable}
+        name={name}
+        editable // ???
         onSettingsClick={() => setEditingProfile(true)}
         renderAvatar={
           <BigAvatar
@@ -125,7 +125,7 @@ export default function UserProfile({
             userId={userId}
             imageGuid={imageGuid}
             imageSrc={imageSrc}
-            name={userData.name}
+            name={name}
             admin={userData.admin}
             refreshUserData={refreshUserData}
             userDataLoading={userDataLoading}
@@ -141,13 +141,13 @@ export default function UserProfile({
           )
         }
       >
-        <Text variant="subtitle2">User since December 2014</Text>
+        <Text variant="subtitle2" id="USER_SINCE" values={{ date: dateCreated }} />
       </EntityHeaderNew>
       {children}
       <div style={{ display: 'flex', flexWrap: 'wrap' }}>
         <CardContainer size="small">
           <MetadataCard
-            editable={userData.editable}
+            editable // ? 
             metadata={metadataItems}
           />
           {/* <UserProjectCard
@@ -162,16 +162,15 @@ export default function UserProfile({
         <CardContainer>
           <SightingsCard
             title={
-              !userData.editable ? (
+              someoneElse ? (
                 <FormattedMessage
                   id="USERS_SIGHTINGS"
-                  values={{ name: userData.name }}
+                  values={{ name }}
                 />
               ) : (
                 <FormattedMessage id="SIGHTINGS" />
               )
             }
-            encounters={userData.encounters}
             hideSubmitted
           />
         </CardContainer>

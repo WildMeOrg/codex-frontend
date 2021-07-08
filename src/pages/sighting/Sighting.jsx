@@ -16,6 +16,7 @@ import Button from '../../components/Button';
 import MoreMenu from '../../components/MoreMenu';
 import ConfirmDelete from '../../components/ConfirmDelete';
 import EntityHeaderNew from '../../components/EntityHeaderNew';
+import useAssetGroupSighting from '../../models/assetGroup/useAssetGroupSighting';
 import useSighting from '../../models/sighting/useSighting';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import useDeleteSighting from '../../models/sighting/useDeleteSighting';
@@ -30,18 +31,48 @@ import SightingHistoryDialog from './SightingHistoryDialog';
 import FeaturedPhoto from './featuredPhoto/FeaturedPhoto';
 import Encounters from './encounters/Encounters';
 
-export default function Sighting() {
+export default function Sighting({ pending = false }) {
+  const { id } = useParams();
+
+  const {
+    data: assetGroupSightingData,
+    loading: assetGroupLoading,
+    error: assetGroupError,
+    statusCode: assetGroupStatusCode,
+    refresh: refreshAssetGroupData,
+  } = useAssetGroupSighting(id);
+
+  const {
+    data: sightingData,
+    loading: sightingLoading,
+    error: sightingError,
+    statusCode: sightingStatusCode,
+    refresh: refreshSightingData,
+  } = useSighting(id);
+
+  const agSightingData = get(assetGroupSightingData, 'config');
+
+  console.log(assetGroupSightingData);
+
+  return (
+    <SightingCore
+      data={pending ? agSightingData : sightingData}
+      loading={pending ? assetGroupLoading : sightingLoading}
+      error={pending ? assetGroupError : sightingError}
+      statusCode={pending ? assetGroupStatusCode : sightingStatusCode}
+      refreshData={pending ? refreshAssetGroupData : refreshSightingData}
+      pending={pending}
+    />
+  );
+}
+
+function SightingCore({ data, loading, error, statusCode, refreshData, pending }) {
   const { id } = useParams();
   const history = useHistory();
   const intl = useIntl();
 
-  const {
-    data,
-    loading,
-    error,
-    statusCode,
-    refresh: refreshSightingData,
-  } = useSighting(id);
+  console.log(data);
+
   const fieldSchemas = useSightingFieldSchemas();
 
   const {
@@ -123,7 +154,7 @@ export default function Sighting() {
           <FeaturedPhoto
             data={data}
             loading={loading}
-            refreshSightingData={refreshSightingData}
+            refreshSightingData={refreshData}
           />
         }
         name={intl.formatMessage(
@@ -184,26 +215,26 @@ export default function Sighting() {
           metadata={metadata}
           sightingData={data}
           sightingId={id}
-          refreshSightingData={refreshSightingData}
+          refreshSightingData={refreshData}
         />
       )}
       {activeTab === '#photographs' && (
         <Photographs
           assets={assets}
-          refreshSightingData={refreshSightingData}
+          refreshSightingData={refreshData}
         />
       )}
       {activeTab === '#annotations' && (
         <Annotations
           assets={assets}
-          refreshSightingData={refreshSightingData}
+          refreshSightingData={refreshData}
         />
       )}
       {activeTab === '#individuals' && (
         <Encounters
           assets={assets}
           sightingData={data}
-          refreshSightingData={refreshSightingData}
+          refreshSightingData={refreshData}
         />
       )}
     </MainColumn>
