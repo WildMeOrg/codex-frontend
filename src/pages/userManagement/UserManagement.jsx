@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
 
-import Alert from '@material-ui/lab/Alert';
-import AlertTitle from '@material-ui/lab/AlertTitle';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 
 import useDocumentTitle from '../../hooks/useDocumentTitle';
+import CustomAlert from '../../components/Alert';
 import MainColumn from '../../components/MainColumn';
 import ButtonLink from '../../components/ButtonLink';
 import LabeledInput from '../../components/LabeledInput';
@@ -93,23 +92,20 @@ export default function UserManagement() {
               />
             </div>
             {Boolean(error) && (
-              <Alert onClose={() => setError(null)} severity="error">
-                <AlertTitle>
-                  <FormattedMessage id="SUBMISSION_ERROR" />
-                </AlertTitle>
-                {error}
-              </Alert>
+              <CustomAlert
+                onClose={() => setError(null)}
+                severity="error"
+                titleId="SUBMISSION_ERROR"
+                description={error}
+              />
             )}
             {Boolean(success) && (
-              <Alert
+              <CustomAlert
                 onClose={() => setSuccess(null)}
                 severity="success"
-              >
-                <AlertTitle>
-                  <FormattedMessage id="USER_CREATED_SUCCESSFULLY" />
-                </AlertTitle>
-                {success}
-              </Alert>
+                titleId="USER_CREATED_SUCCESSFULLY"
+                description={success}
+              />
             )}
             <div style={{ marginTop: 8 }}>
               <Button

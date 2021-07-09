@@ -3,8 +3,7 @@ import { useIntl, FormattedMessage } from 'react-intl';
 import { get, zipObject } from 'lodash-es';
 import Grid from '@material-ui/core/Grid';
 import Skeleton from '@material-ui/lab/Skeleton';
-import Alert from '@material-ui/lab/Alert';
-import AlertTitle from '@material-ui/lab/AlertTitle';
+import CustomAlert from '../../components/Alert';
 import Button from '../../components/Button';
 import ButtonLink from '../../components/ButtonLink';
 import useSiteSettings from '../../models/site/useSiteSettings';
@@ -180,23 +179,21 @@ export default function GeneralSettings() {
           }}
         >
           {Boolean(error) && (
-            <Alert onClose={() => setError(null)} severity="error">
-              <AlertTitle>
-                <FormattedMessage id="SUBMISSION_ERROR" />
-              </AlertTitle>
+            <CustomAlert
+              onClose={() => setError(null)}
+              severity="error"
+              titleId="SUBMISSION_ERROR"
+            >
               {error}
-            </Alert>
+            </CustomAlert>
           )}
           {success && (
-            <Alert
+            <CustomAlert
               onClose={() => setSuccess(false)}
               severity="success"
-            >
-              <AlertTitle>
-                <FormattedMessage id="SUCCESS" />
-              </AlertTitle>
-              <FormattedMessage id="CHANGES_SAVED" />
-            </Alert>
+              titleId="SUCCESS"
+              descriptionId="CHANGES_SAVED"
+            />
           )}
           <Button
             onClick={() => {

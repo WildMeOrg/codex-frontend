@@ -3,11 +3,10 @@ import { get } from 'lodash-es';
 import { FormattedMessage } from 'react-intl';
 
 import { useTheme } from '@material-ui/core/styles';
-import Alert from '@material-ui/lab/Alert';
-import AlertTitle from '@material-ui/lab/AlertTitle';
 import Chip from '@material-ui/core/Chip';
 import DeleteIcon from '@material-ui/icons/Cancel';
 
+import CustomAlert from '../../components/Alert';
 import useDeleteKeyword from '../../models/keyword/useDeleteKeyword';
 import { getKeywordColor } from '../../utils/colorUtils';
 
@@ -37,16 +36,13 @@ export default function Keywords({
   return (
     <div>
       {deleteError && (
-        <Alert
+        <CustomAlert
           style={{ marginTop: 16, marginBottom: 8 }}
           severity="error"
           onClose={() => setDeleteError(null)}
-        >
-          <AlertTitle>
-            <FormattedMessage id="SERVER_ERROR" />
-          </AlertTitle>
-          {deleteError}
-        </Alert>
+          titleId="SERVER_ERROR"
+          description={deleteError}
+        />
       )}
       <div
         style={{

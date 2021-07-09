@@ -7,7 +7,7 @@ import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import TextField from '@material-ui/core/TextField';
 import Switch from '@material-ui/core/Switch';
-import Alert from '@material-ui/lab/Alert';
+import CustomAlert from '../../components/Alert';
 
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import useLogin from '../../models/auth/useLogin';
@@ -47,9 +47,11 @@ export default function Login({ showBanner, redirect = '/' }) {
       instructionsId="LOG_IN_INSTRUCTIONS"
     >
       {showBanner && (
-        <Alert style={{ marginTop: 12 }} severity="warning">
-          <FormattedMessage id="MUST_LOG_IN" />
-        </Alert>
+        <CustomAlert
+          style={{ marginTop: 12 }}
+          severity="warning"
+          descriptionId="MUST_LOG_IN"
+        />
       )}
 
       <form>
@@ -105,7 +107,9 @@ export default function Login({ showBanner, redirect = '/' }) {
               />
             </FormControl>
           </Grid>
-          {error && <Alert severity="error">{error}</Alert>}
+          {error && (
+            <CustomAlert severity="error">{error}</CustomAlert>
+          )}
           <Grid item style={{ position: 'relative' }}>
             <Button
               domId={buttonId}

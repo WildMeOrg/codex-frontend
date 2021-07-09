@@ -3,10 +3,10 @@ import { differenceBy, get } from 'lodash-es';
 import { FormattedMessage } from 'react-intl';
 
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import Alert from '@material-ui/lab/Alert';
-import AlertTitle from '@material-ui/lab/AlertTitle';
 import TextField from '@material-ui/core/TextField';
 import AddIcon from '@material-ui/icons/Add';
+
+import CustomAlert from '../../components/Alert';
 
 import { getKeywordColor } from '../../utils/colorUtils';
 import StandardDialog from '../../components/StandardDialog';
@@ -84,16 +84,13 @@ export default function AnnotationDetail({
           />
         </div>
         {addKeywordError && (
-          <Alert
+          <CustomAlert
             style={{ marginTop: 16, marginBottom: 8 }}
             severity="error"
             onClose={() => setAddKeywordError(null)}
-          >
-            <AlertTitle>
-              <FormattedMessage id="SERVER_ERROR" />
-            </AlertTitle>
-            {addKeywordError}
-          </Alert>
+            titleId="SERVER_ERROR"
+            description={addKeywordError}
+          />
         )}
         <Keywords
           annotation={annotation}

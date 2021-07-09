@@ -15,8 +15,7 @@ import Switch from '@material-ui/core/Switch';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
-import Alert from '@material-ui/lab/Alert';
-import AlertTitle from '@material-ui/lab/AlertTitle';
+import CustomAlert from '../../../../components/Alert';
 
 import usePutSiteSettings from '../../../../models/site/usePutSiteSettings';
 import { createCustomFieldSchema } from '../../../../utils/fieldUtils';
@@ -370,18 +369,16 @@ export default function SaveField() {
         </Grid>
         {loadingError ? (
           <Grid item>
-            <Alert severity="error" style={{ marginTop: 20 }}>
-              <AlertTitle>
-                <FormattedMessage id="AN_ERROR_OCCURRED" />
-              </AlertTitle>
-              <FormattedMessage
-                id={
-                  fetchSiteSettingsError
-                    ? 'FETCH_SITE_SETTINGS_ERROR'
-                    : 'CUSTOM_FIELD_NOT_FOUND_ERROR'
-                }
-              />
-            </Alert>
+            <CustomAlert
+              severity="error"
+              style={{ marginTop: 20 }}
+              titleId="AN_ERROR_OCCURRED"
+              descriptionId={
+                fetchSiteSettingsError
+                  ? 'FETCH_SITE_SETTINGS_ERROR'
+                  : 'CUSTOM_FIELD_NOT_FOUND_ERROR'
+              }
+            />
           </Grid>
         ) : (
           <>
@@ -433,12 +430,12 @@ export default function SaveField() {
             </Grid>
             {putSiteSettingError ? (
               <Grid item>
-                <Alert severity="error" style={{ marginBottom: 20 }}>
-                  <AlertTitle>
-                    <FormattedMessage id="SUBMISSION_ERROR" />
-                  </AlertTitle>
-                  {putSiteSettingError}
-                </Alert>
+                <CustomAlert
+                  severity="error"
+                  style={{ marginBottom: 20 }}
+                  titleId="SUBMISSION_ERROR"
+                  description={putSiteSettingError}
+                />
               </Grid>
             ) : null}
             <Grid item>

@@ -196,8 +196,7 @@ export const selectLogos = state => {
   };
 };
 
-export const selectTermsAndConditions = state => {
-  return `The rights to images on Wildbook are held by the contributors of those images. Wild Me reserves only the right to use these images as training data for new computer vision algorithms.
+export const selectTermsAndConditions = state => `The rights to images on Wildbook are held by the contributors of those images. Wild Me reserves only the right to use these images as training data for new computer vision algorithms.
   
   The rights to images on Wildbook are held by the contributors of those images. Wild Me reserves only the right to use these images as training data for new computer vision algorithms.
   
@@ -218,4 +217,3 @@ export const selectTermsAndConditions = state => {
   The rights to images on Wildbook are held by the contributors of those images. Wild Me reserves only the right to use these images as training data for new computer vision algorithms.
   
   The rights to images on Wildbook are held by the contributors of those images. Wild Me reserves only the right to use these images as training data for new computer vision algorithms.`;
-};

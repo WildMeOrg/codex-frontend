@@ -67,36 +67,34 @@ export default function PhotoGallery({ sighting }) {
                   values={{ annotationCount }}
                 />
               )}
-              {photo.annotations.map((annotation, i) => {
-                return (
-                  <div
-                    key={annotation.id}
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                    }}
-                  >
-                    <Text id="ANNOTATION_X" values={{ x: i + 1 }} />
-                    <div>
-                      <IconButton onClick={() => {}} size="small">
-                        <MatchIcon />
-                      </IconButton>
-                      <IconButton
-                        size="small"
-                        onClick={() =>
-                          setAnnotation({
-                            ...annotation,
-                            imageSrc: photo.profile,
-                          })
-                        }
-                      >
-                        <EditIcon />
-                      </IconButton>
-                    </div>
+              {photo.annotations.map((annotation, i) => (
+                <div
+                  key={annotation.id}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                  }}
+                >
+                  <Text id="ANNOTATION_X" values={{ x: i + 1 }} />
+                  <div>
+                    <IconButton onClick={() => {}} size="small">
+                      <MatchIcon />
+                    </IconButton>
+                    <IconButton
+                      size="small"
+                      onClick={() =>
+                        setAnnotation({
+                          ...annotation,
+                          imageSrc: photo.profile,
+                        })
+                      }
+                    >
+                      <EditIcon />
+                    </IconButton>
                   </div>
-                );
-              })}
+                </div>
+              ))}
               <Button
                 onClick={() => {
                   setCreateAnnotationSource(photo.profile);

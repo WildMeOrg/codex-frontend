@@ -4,7 +4,7 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import CloseIcon from '@material-ui/icons/Close';
-import Alert from '@material-ui/lab/Alert';
+import CustomAlert from '../../../components/Alert';
 import ModalActions from './ModalActions';
 
 export default function AlertModal({
@@ -30,7 +30,7 @@ export default function AlertModal({
         </IconButton>
       </DialogTitle>
       <DialogContent style={{ marginBottom: 24 }}>
-        <Alert severity={severity} {...rest} />
+        <CustomAlert severity={severity} {...rest} />
       </DialogContent>
       <ModalActions
         notes={notes}

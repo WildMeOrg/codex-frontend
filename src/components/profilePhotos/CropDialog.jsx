@@ -3,9 +3,8 @@ import { FormattedMessage } from 'react-intl';
 
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import Alert from '@material-ui/lab/Alert';
-import AlertTitle from '@material-ui/lab/AlertTitle';
 import ReactCrop from 'react-image-crop';
+import CustomAlert from '../Alert';
 import 'react-image-crop/dist/ReactCrop.css';
 
 import usePatchUser from '../../models/users/usePatchUser';
@@ -86,12 +85,11 @@ export default function CropDialog({
           />
         )}
         {replaceError && (
-          <Alert severity="error">
-            <AlertTitle>
-              <FormattedMessage id="ERROR_UPDATING_PROFILE" />
-            </AlertTitle>
-            {replaceError}
-          </Alert>
+          <CustomAlert
+            severity="error"
+            titleId="ERROR_UPDATING_PROFILE"
+            description={replaceError}
+          />
         )}
       </DialogContent>
       <DialogActions style={{ padding: '0px 24px 24px 24px' }}>

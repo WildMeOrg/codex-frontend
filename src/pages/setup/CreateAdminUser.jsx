@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
 import Grid from '@material-ui/core/Grid';
-import Alert from '@material-ui/lab/Alert';
 import FormControl from '@material-ui/core/FormControl';
 import TextField from '@material-ui/core/TextField';
 import Button from '../../components/Button';
 import SimpleFormPage from '../../components/SimpleFormPage';
+import CustomAlert from '../../components/Alert';
 
 import useCreateAdminUser from '../../models/setup/useCreateAdminUser';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
@@ -106,7 +106,9 @@ export default function CreateAdminUser() {
               />
             </FormControl>
           </Grid>
-          {error && <Alert severity="error">{error}</Alert>}
+          {error && (
+            <CustomAlert severity="error" description={error} />
+          )}
           <Grid
             item
             style={{ position: 'relative', padding: '20px 12px' }}
