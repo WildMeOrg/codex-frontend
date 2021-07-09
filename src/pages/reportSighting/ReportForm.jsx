@@ -247,7 +247,7 @@ export default function ReportForm({
       )}
       {showErrorAlertBox && (
         <Grid item style={{ marginBottom: 12 }}>
-          <CustomAlert severity="error" titleTxt="SUBMISSION_ERROR">
+          <CustomAlert severity="error" titleId="SUBMISSION_ERROR">
             {dateOrderError && (
               <Text variant="body2" id="DATE_ORDER_ERROR" />
             )}

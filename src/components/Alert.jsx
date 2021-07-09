@@ -43,7 +43,7 @@ export default function CustomAlert({
           {titleId ? (
             <Text id={titleId} values={titleValues} />
           ) : (
-            <Text values={titleValues}>{titleTxt}</Text>
+            <Text>{titleTxt}</Text>
           )}
         </AlertTitle>
       ) : null}
