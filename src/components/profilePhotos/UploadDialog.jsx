@@ -4,8 +4,7 @@ import { FormattedMessage } from 'react-intl';
 import 'react-image-crop/dist/ReactCrop.css';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import Alert from '@material-ui/lab/Alert';
-import AlertTitle from '@material-ui/lab/AlertTitle';
+import CustomAlert from '../Alert';
 
 import usePatchUser from '../../models/users/usePatchUser';
 import Button from '../Button';
@@ -42,12 +41,12 @@ export default function UploadDialog({ open, onClose, userId }) {
       <DialogContent>
         <ProfileUploader onComplete={setProfileAsset} />
         {replaceError && (
-          <Alert style={{ marginTop: 20 }} severity="error">
-            <AlertTitle>
-              <FormattedMessage id="ERROR_UPDATING_PROFILE" />
-            </AlertTitle>
-            {replaceError}
-          </Alert>
+          <CustomAlert
+            style={{ marginTop: 20 }}
+            severity="error"
+            titleId="ERROR_UPDATING_PROFILE"
+            description={replaceError}
+          />
         )}
       </DialogContent>
       <DialogActions

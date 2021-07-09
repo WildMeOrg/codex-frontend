@@ -6,8 +6,8 @@ import { v4 as uuid } from 'uuid';
 import Grid from '@material-ui/core/Grid';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
-import Alert from '@material-ui/lab/Alert';
 import AddIcon from '@material-ui/icons/Add';
+import CustomAlert from '../../../components/Alert';
 
 import useSiteSettings from '../../../models/site/useSiteSettings';
 import usePutSiteSettings from '../../../models/site/usePutSiteSettings';
@@ -184,7 +184,9 @@ export default function FieldSettings() {
                 setDialogData({ ...dialogData, type: newType })
               }
             />
-            {error && <Alert severity="error">{error}</Alert>}
+            {error && (
+              <CustomAlert severity="error">{error}</CustomAlert>
+            )}
           </DialogContent>
           <DialogActions style={{ padding: '0px 24px 24px 24px' }}>
             {dialogData.isDefault ? (

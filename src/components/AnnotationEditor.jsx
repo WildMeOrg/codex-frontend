@@ -1,14 +1,10 @@
 import React, { useCallback, useState } from 'react';
 import { get } from 'lodash-es';
 import BboxAnnotator from 'bboxjs';
-import { FormattedMessage } from 'react-intl';
-
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
-import Alert from '@material-ui/lab/Alert';
-import AlertTitle from '@material-ui/lab/AlertTitle';
 import { useTheme } from '@material-ui/core/styles';
-
+import CustomAlert from './Alert';
 import Button from './Button';
 import Text from './Text';
 import StandardDialog from './StandardDialog';
@@ -152,15 +148,13 @@ export default function AnnotationEditor({
         }}
       >
         {error && (
-          <Alert
+          <CustomAlert
             style={{ margin: '20px 0', width: '100%' }}
             severity="error"
+            titleId="SERVER_ERROR"
           >
-            <AlertTitle>
-              <FormattedMessage id="SERVER_ERROR" />
-            </AlertTitle>
             {error}
-          </Alert>
+          </CustomAlert>
         )}
         <div>
           <Button display="basic" onClick={onClose} id="CANCEL" />

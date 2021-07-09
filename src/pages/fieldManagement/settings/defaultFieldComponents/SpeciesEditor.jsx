@@ -8,12 +8,11 @@ import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
 import Chip from '@material-ui/core/Chip';
 import Tooltip from '@material-ui/core/Tooltip';
-import Alert from '@material-ui/lab/Alert';
-import AlertTitle from '@material-ui/lab/AlertTitle';
 import SearchIcon from '@material-ui/icons/Search';
 import AddIcon from '@material-ui/icons/AddCircle';
 import CheckIcon from '@material-ui/icons/Check';
 import StarIcon from '@material-ui/icons/Star';
+import CustomAlert from '../../../../components/Alert';
 
 import DataDisplay from '../../../../components/dataDisplays/DataDisplay';
 import Button from '../../../../components/Button';
@@ -159,12 +158,7 @@ export default function SpeciesEditor({
             <FormattedMessage id="SEARCH" />
           </Button>
         </form>
-        {error && (
-          <Alert severity="error">
-            <AlertTitle>{error}</AlertTitle>
-            {error}
-          </Alert>
-        )}
+        {error && <CustomAlert severity="error">{error}</CustomAlert>}
         <DataDisplay
           cellStyles={{ padding: '0 8px 0 12px' }}
           paperStyles={{ maxHeight: 360 }}

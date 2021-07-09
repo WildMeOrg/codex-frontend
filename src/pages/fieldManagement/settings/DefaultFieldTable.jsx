@@ -3,7 +3,7 @@ import { useIntl, FormattedMessage } from 'react-intl';
 import { get, capitalize } from 'lodash-es';
 
 import Grid from '@material-ui/core/Grid';
-import Alert from '@material-ui/lab/Alert';
+import CustomAlert from '../../../components/Alert';
 
 import usePutSiteSettings from '../../../models/site/usePutSiteSettings';
 import DataDisplay from '../../../components/dataDisplays/DataDisplay';
@@ -137,12 +137,11 @@ export default function DefaultFieldTable({
           }}
         >
           {error ? (
-            <Alert
+            <CustomAlert
               style={{ margin: '20px 0 12px 0', maxWidth: 600 }}
               severity="error"
-            >
-              {error}
-            </Alert>
+              description={error}
+            />
           ) : null}
         </editField.Editor>
       )}

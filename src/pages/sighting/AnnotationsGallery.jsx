@@ -42,32 +42,30 @@ export default function IndividualsGallery({ sighting }) {
         filterKey="id"
         titleKey="id"
         justify="flex-start"
-        renderDetails={annotation => {
-          return (
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
-              <Button
-                size="small"
-                display="primary"
-                style={{ marginTop: 6 }}
-              >
-                <FormattedMessage id="MATCH_ANNOTATION" />
-              </Button>
-              <Button
-                size="small"
-                display="basic"
-                style={{ marginTop: 4 }}
-                onClick={() =>
-                  setAnnotation({
-                    ...annotation,
-                    imageSrc: annotation.profile,
-                  })
-                }
-              >
-                <FormattedMessage id="EDIT_ANNOTATION" />
-              </Button>
-            </div>
-          );
-        }}
+        renderDetails={annotation => (
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <Button
+              size="small"
+              display="primary"
+              style={{ marginTop: 6 }}
+            >
+              <FormattedMessage id="MATCH_ANNOTATION" />
+            </Button>
+            <Button
+              size="small"
+              display="basic"
+              style={{ marginTop: 4 }}
+              onClick={() =>
+                setAnnotation({
+                  ...annotation,
+                  imageSrc: annotation.profile,
+                })
+              }
+            >
+              <FormattedMessage id="EDIT_ANNOTATION" />
+            </Button>
+          </div>
+        )}
       />
     </div>
   );
