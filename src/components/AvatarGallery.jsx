@@ -25,7 +25,7 @@ export default function AvatarGallery({
   const filteredEntities = entities.filter(entity =>
     entity[filterKey].toLowerCase().includes(filter.toLowerCase()),
   );
-  
+
   return (
     <>
       {entities.length > 6 && (

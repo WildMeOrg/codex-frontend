@@ -25,14 +25,15 @@ export default function Users() {
   useDocumentTitle(pageTitle, false);
   const [userToDelete, setUserToDelete] = useState(null);
 
-
   const { data, loading, error } = useGetUsers();
   const { data: currentUserData } = useGetMe();
   if (loading) return <LoadingScreen />;
   if (error) return <SadScreen variant="genericError" />;
 
   const safeUsers = data || [];
-  const filteredUsers = safeUsers.filter(u => u.email !== 'public@localhost');
+  const filteredUsers = safeUsers.filter(
+    u => u.email !== 'public@localhost',
+  );
   const deleteUsername = get(userToDelete, 'name', 'Unknown user');
   const isAdministrator = get(currentUserData, 'is_admin', false);
 

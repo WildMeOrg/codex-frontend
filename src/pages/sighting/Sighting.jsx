@@ -60,13 +60,22 @@ export default function Sighting({ pending = false }) {
       loading={pending ? assetGroupLoading : sightingLoading}
       error={pending ? assetGroupError : sightingError}
       statusCode={pending ? assetGroupStatusCode : sightingStatusCode}
-      refreshData={pending ? refreshAssetGroupData : refreshSightingData}
+      refreshData={
+        pending ? refreshAssetGroupData : refreshSightingData
+      }
       pending={pending}
     />
   );
 }
 
-function SightingCore({ data, loading, error, statusCode, refreshData, pending }) {
+function SightingCore({
+  data,
+  loading,
+  error,
+  statusCode,
+  refreshData,
+  pending,
+}) {
   const { id } = useParams();
   const history = useHistory();
   const intl = useIntl();

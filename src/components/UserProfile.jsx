@@ -90,7 +90,6 @@ export default function UserProfile({
       />
     );
 
-
   const imageSrc = get(userData, ['profile_fileupload', 'src']);
   const imageGuid = get(userData, ['profile_fileupload', 'guid']);
   const name = get(userData, 'full_name', 'Unnamed user');
@@ -101,8 +100,7 @@ export default function UserProfile({
     return {
       ...displaySchema,
       value,
-      valueMatchesDefault:
-      displaySchema.defaultValue === value,
+      valueMatchesDefault: displaySchema.defaultValue === value,
     };
   });
 
@@ -141,13 +139,17 @@ export default function UserProfile({
           )
         }
       >
-        <Text variant="subtitle2" id="USER_SINCE" values={{ date: dateCreated }} />
+        <Text
+          variant="subtitle2"
+          id="USER_SINCE"
+          values={{ date: dateCreated }}
+        />
       </EntityHeaderNew>
       {children}
       <div style={{ display: 'flex', flexWrap: 'wrap' }}>
         <CardContainer size="small">
           <MetadataCard
-            editable // ? 
+            editable // ?
             metadata={metadataItems}
           />
           {/* <UserProjectCard
