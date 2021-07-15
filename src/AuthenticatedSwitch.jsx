@@ -117,11 +117,14 @@ export default function AuthenticatedSwitch() {
                       <Route path="/create/individual">
                         <CreateIndividual />
                       </Route>
-                      <Route path="/assetgroups/:id">
+                      <Route path="/bulk-imports/:id">
                         <AssetGroup />
                       </Route>
                       <Route path="/match/:id">
                         <MatchReview />
+                      </Route>
+                      <Route path="/pending-sightings/:id">
+                        <Sighting pending />
                       </Route>
                       <Route path="/sightings/:id">
                         <Sighting />

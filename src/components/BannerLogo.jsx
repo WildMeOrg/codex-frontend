@@ -7,7 +7,12 @@ import InstanceLogo from './svg/InstanceLogo';
 import useSiteSettings from '../models/site/useSiteSettings';
 import Text from './Text';
 
-export default function BannerLogo({ href, onClick, ...rest }) {
+export default function BannerLogo({
+  href,
+  onClick,
+  black = false,
+  ...rest
+}) {
   const { data: siteSettings, loading, error } = useSiteSettings();
   const theme = useTheme();
 
@@ -30,12 +35,18 @@ export default function BannerLogo({ href, onClick, ...rest }) {
     >
       <div style={{ display: 'flex', alignItems: 'center' }}>
         <InstanceLogo
-          style={{ fill: theme.palette.primary.main, height: 52 }}
+          style={{
+            fill: theme.palette.primary.main,
+            height: 52,
+            flexShrink: 0,
+          }}
         />
         <Text
           variant="h5"
           style={{
-            color: theme.palette.common.white,
+            color: black
+              ? theme.palette.common.black
+              : theme.palette.common.white,
             margin: '0 12px 0 4px',
           }}
         >

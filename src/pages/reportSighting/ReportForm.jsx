@@ -11,8 +11,6 @@ import FormGroup from '@material-ui/core/FormGroup';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import Radio from '@material-ui/core/Radio';
 import CustomAlert from '../../components/Alert';
-// import Alert from '@material-ui/lab/Alert';
-// import AlertTitle from '@material-ui/lab/AlertTitle';
 // import ExifIcon from '@material-ui/icons/FlashOn';
 
 import useSiteSettings from '../../models/site/useSiteSettings';

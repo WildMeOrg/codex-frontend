@@ -10,7 +10,7 @@ export const formatDate = (input, fancy) => {
     return formattedDate;
   } catch (error) {
     console.error(error);
-    return null;
+    return '';
   }
 };
 
