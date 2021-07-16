@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { get } from 'lodash-es';
-import { FormattedMessage } from 'react-intl';
 
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -76,6 +75,7 @@ export default function EditSightingMetadata({
                 schema={field}
                 {...fieldProps}
                 value={value}
+                minimalLabels
                 onChange={newValue => {
                   if (field.customField) {
                     const newFormValues = {

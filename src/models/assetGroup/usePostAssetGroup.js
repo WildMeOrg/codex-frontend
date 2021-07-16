@@ -18,7 +18,6 @@ export default function usePostAssetGroup() {
         method: 'post',
         data,
       });
-      console.log(response);
       const successful = get(response, 'status') === 200;
       const newSightingId = get(response, ['data', 'guid']);
       if (successful) {

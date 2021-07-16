@@ -39,7 +39,6 @@ function Node({
   const theme = useTheme();
   const linkStroke = linkColor || theme.palette.grey['900'];
 
-  console.log(Icon);
   return (
     <g>
       <line
