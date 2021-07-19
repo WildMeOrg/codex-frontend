@@ -4,6 +4,7 @@ import { get } from 'lodash-es';
 import { useTheme } from '@material-ui/core/styles';
 import MenuList from '@material-ui/core/MenuList';
 import MenuItem from '@material-ui/core/MenuItem';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 import footerMenuSchema from '../constants/footerMenu';
 import useSiteSettings from '../models/site/useSiteSettings';
@@ -14,8 +15,14 @@ import Text from './Text';
 
 function Menu({ labelId, schema, themeColor }) {
   const { data } = useSiteSettings();
+  const matches = useMediaQuery('(min-width: 703px) and (max-width: 900px)');
   return (
-    <MenuList class="medium-resize" style={{ margin: '0 20px' }}>
+    <MenuList
+      style={{
+      margin: '0 20px',
+      width: matches ? '300px' : 'auto',
+      }}
+    >
       <MenuItem>
         <Text
           component="h6"
