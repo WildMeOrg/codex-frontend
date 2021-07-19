@@ -15,12 +15,14 @@ import Text from './Text';
 
 function Menu({ labelId, schema, themeColor }) {
   const { data } = useSiteSettings();
-  const matches = useMediaQuery('(min-width: 703px) and (max-width: 900px)');
+  const matches = useMediaQuery(
+    '(min-width: 703px) and (max-width: 900px)',
+  );
   return (
     <MenuList
       style={{
-      margin: '0 20px',
-      width: matches ? '300px' : 'auto',
+        margin: '0 20px',
+        width: matches ? '300px' : 'auto',
       }}
     >
       <MenuItem>
