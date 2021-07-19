@@ -76,7 +76,6 @@ export default function AppHeader() {
           open={drawerOpen}
           onClose={() => setDrawerOpen(false)}
           handleClick={handleClick}
-          isAdministrator={isAdministrator}
         />
       )}
       <Toolbar

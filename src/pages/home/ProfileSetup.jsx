@@ -5,10 +5,10 @@ import { get } from 'lodash-es';
 import Grid from '@material-ui/core/Grid';
 import FormControl from '@material-ui/core/FormControl';
 import TextField from '@material-ui/core/TextField';
-import Alert from '@material-ui/lab/Alert';
 
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import usePatchUser from '../../models/users/usePatchUser';
+import CustomAlert from '../../components/Alert';
 import Text from '../../components/Text';
 import Button from '../../components/Button';
 import SimpleFormPage from '../../components/SimpleFormPage';
@@ -120,7 +120,10 @@ export default function ProfileSetup({ userData, refreshUserData }) {
             </FormControl>
           </Grid>
           {replaceError && (
-            <Alert severity="error">{replaceError}</Alert>
+            <CustomAlert
+              severity="error"
+              description={replaceError}
+            />
           )}
           <Grid item style={{ position: 'relative' }}>
             <Button

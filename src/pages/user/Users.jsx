@@ -2,15 +2,17 @@ import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useIntl } from 'react-intl';
 import { get } from 'lodash-es';
+
+import LoadingScreen from '../../components/LoadingScreen';
+import SadScreen from '../../components/SadScreen';
 import AvatarGallery from '../../components/AvatarGallery';
 import MainColumn from '../../components/MainColumn';
 import Header from '../../components/Header';
 import Text from '../../components/Text';
 import ConfirmDelete from '../../components/ConfirmDelete';
 import useGetUsers from '../../models/users/useGetUsers';
-import { selectUsers } from '../../modules/users/selectors';
+import useGetMe from '../../models/users/useGetMe';
 import { selectSiteName } from '../../modules/site/selectors';
-import { selectIsAdministrator } from '../../modules/app/selectors';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 
 export default function Users() {
@@ -21,19 +23,19 @@ export default function Users() {
     { siteName },
   );
   useDocumentTitle(pageTitle, false);
-
-  const stuff = useGetUsers();
-  console.log(stuff);
-
-  const users = useSelector(selectUsers);
-  const isAdministrator = useSelector(selectIsAdministrator);
-
   const [userToDelete, setUserToDelete] = useState(null);
+
+  const { data, loading, error } = useGetUsers();
+  const { data: currentUserData } = useGetMe();
+  if (loading) return <LoadingScreen />;
+  if (error) return <SadScreen variant="genericError" />;
+
+  const safeUsers = data || [];
+  const filteredUsers = safeUsers.filter(
+    u => u.email !== 'public@localhost',
+  );
   const deleteUsername = get(userToDelete, 'name', 'Unknown user');
-
-  const flatUsers = Object.values(users);
-
-  const fakeUsers = [...flatUsers];
+  const isAdministrator = get(currentUserData, 'is_admin', false);
 
   return (
     <MainColumn>
@@ -50,20 +52,17 @@ export default function Users() {
         buttonText={intl.formatMessage({ id: 'CREATE_USER' })}
       />
       <AvatarGallery
-        entities={fakeUsers}
-        getHref={entity => `/users/${entity.id}`}
+        entities={filteredUsers}
+        titleKey="full_name"
+        filterKey="full_name"
+        justify="flex-start"
+        getHref={entity => `/users/${entity.guid}`}
         canDelete={isAdministrator}
         onDelete={entity => {
           setUserToDelete(entity);
         }}
-        renderDetails={entities => {
-          const affiliation = get(
-            entities.fields.find(
-              field => field.name === 'affiliation',
-            ),
-            'value',
-            null,
-          );
+        renderDetails={entity => {
+          const affiliation = null;
           return affiliation ? <Text>{affiliation}</Text> : null;
         }}
       />

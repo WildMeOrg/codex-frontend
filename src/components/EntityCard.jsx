@@ -91,7 +91,6 @@ export default function EntityCard({
           {canDelete && (
             <>
               <IconButton
-                color="tertiary"
                 onClick={e => {
                   e.preventDefault();
                   handleClick(e);

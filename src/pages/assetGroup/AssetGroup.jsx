@@ -12,6 +12,7 @@ import MainColumn from '../../components/MainColumn';
 import LoadingScreen from '../../components/LoadingScreen';
 import SadScreen from '../../components/SadScreen';
 import Button from '../../components/Button';
+import Link from '../../components/Link';
 import MoreMenu from '../../components/MoreMenu';
 import ConfirmDelete from '../../components/ConfirmDelete';
 import EntityHeaderNew from '../../components/EntityHeaderNew';
@@ -37,8 +38,8 @@ export default function AssetGroup() {
   if (statusCode === 404)
     return (
       <SadScreen
-        subtitleId="ASSET_GROUP_NOT_FOUND"
-        descriptionId="ASSET_GROUP_NOT_FOUND_DESCRIPTION"
+        subtitleId="BULK_IMPORT_NOT_FOUND"
+        descriptionId="BULK_IMPORT_NOT_FOUND_DESCRIPTION"
         variant="genericError"
       />
     );
@@ -47,11 +48,14 @@ export default function AssetGroup() {
     return (
       <SadScreen
         variant="notFoundOcean"
-        subtitleId="ASSET_GROUP_NOT_FOUND"
+        subtitleId="BULK_IMPORT_NOT_FOUND"
       />
     );
 
   const dateCreated = get(data, 'created');
+  const agSightingIds = get(data, 'asset_group_sightings', []).map(
+    a => get(a, 'guid'),
+  );
 
   return (
     <MainColumn fullWidth>
@@ -68,7 +72,7 @@ export default function AssetGroup() {
         deleteInProgress={deleteInProgress}
         error={deleteSightingError}
         onClearError={() => setDeleteSightingError(null)}
-        messageId="CONFIRM_DELETE_ASSET_GROUP_DESCRIPTION"
+        messageId="CONFIRM_DELETE_BULK_IMPORT_DESCRIPTION"
       />
       <EntityHeaderNew
         // renderAvatar={
@@ -93,7 +97,9 @@ export default function AssetGroup() {
                 {
                   id: 'delete-asset-group',
                   onClick: () => setDeleteDialogOpen(true),
-                  label: 'Delete asset group',
+                  label: intl.formatMessage({
+                    id: 'DELETE_BULK_IMPORT',
+                  }),
                 },
               ]}
             />
@@ -102,6 +108,24 @@ export default function AssetGroup() {
       >
         Reported by George Masterson
       </EntityHeaderNew>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          margin: 16,
+        }}
+      >
+        {agSightingIds
+          ? agSightingIds.map(agSightingId => (
+              <Link
+                to={`/pending-sightings/${agSightingId}`}
+                key={agSightingId}
+              >
+                {agSightingId}
+              </Link>
+            ))
+          : null}
+      </div>
     </MainColumn>
   );
 }

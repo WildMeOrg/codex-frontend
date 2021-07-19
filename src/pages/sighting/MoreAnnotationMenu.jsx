@@ -9,14 +9,14 @@ export default function MoreAnnotationMenu({
   anchorEl,
   open,
   onClose,
-  onClickEditAnnotation = Function.prototype,
+  // onClickEditAnnotation = Function.prototype,
   onClickDelete = Function.prototype,
 }) {
   return (
     <Menu id={id} anchorEl={anchorEl} open={open} onClose={onClose}>
-      <MenuItem onClick={onClickEditAnnotation}>
+      {/* <MenuItem onClick={onClickEditAnnotation}>
         <FormattedMessage id="EDIT_ANNOTATION" />
-      </MenuItem>
+      </MenuItem> */}
       <MenuItem onClick={onClickDelete}>
         <FormattedMessage id="DELETE_ANNOTATION" />
       </MenuItem>
