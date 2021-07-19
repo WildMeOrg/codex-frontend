@@ -1,75 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { get } from 'lodash-es';
 
 // import IconButton from '@material-ui/core/IconButton';
-import ForumIcon from '@material-ui/icons/Forum';
-import EmailIcon from '@material-ui/icons/Email';
-import LocationIcon from '@material-ui/icons/PersonPin';
 // import AddIcon from '@material-ui/icons/Add';
-import WebIcon from '@material-ui/icons/WebAssetSharp';
 
-// import userSchema, {
-//   userSchemaCategories,
-// } from '../constants/userSchema';
+import useUserMetadataSchemas from '../models/users/useUserMetadataSchemas';
 import { formatDate } from '../utils/formatters';
 import EntityHeaderNew from './EntityHeaderNew';
 import BigAvatar from './profilePhotos/BigAvatar';
 import MainColumn from './MainColumn';
-import Link from './Link';
 import SadScreen from './SadScreen';
-// import EditEntityModal from './EditEntityModal';
+import EditUserMetadata from './EditUserMetadata';
 import Text from './Text';
 import Button from './Button';
-import MetadataCard from './cards/MetadataCard';
+import MetadataCardNew from './cards/MetadataCardNew';
 import SightingsCard from './cards/SightingsCard';
 // import UserProjectCard from './cards/UserProjectCard';
 import CardContainer from './cards/CardContainer';
-
-const metadataSchema = [
-  {
-    id: 'forum_id',
-    titleId: 'PROFILE_LABEL_FORUM_ID',
-    defaultValue: null,
-    icon: ForumIcon,
-    renderValue: forumId => (
-      <Link
-        external
-        href={`https://community.wildbook.org/u/${forumId}/summary`}
-      >
-        {forumId}
-      </Link>
-    ),
-  },
-  {
-    id: 'email',
-    titleId: 'PROFILE_LABEL_EMAIL',
-    defaultValue: null,
-    icon: EmailIcon,
-    renderValue: emailAddress => (
-      <Link external href={`mailto://${emailAddress}`}>
-        {emailAddress}
-      </Link>
-    ),
-  },
-  {
-    id: 'website',
-    titleId: 'PROFILE_LABEL_WEBSITE',
-    defaultValue: null,
-    icon: WebIcon,
-    renderValue: website => (
-      <Link external href={website}>
-        {website}
-      </Link>
-    ),
-  },
-  {
-    id: 'location',
-    titleId: 'PROFILE_LABEL_LOCATION',
-    defaultValue: null,
-    icon: LocationIcon,
-  },
-];
 
 export default function UserProfile({
   children,
@@ -81,6 +29,18 @@ export default function UserProfile({
   noCollaborate = false,
 }) {
   const [editingProfile, setEditingProfile] = useState(false);
+  const metadataSchemas = useUserMetadataSchemas();
+
+  const metadata = useMemo(
+    () => {
+      if (!userData || !metadataSchemas) return [];
+      return metadataSchemas.map(schema => ({
+        ...schema,
+        value: schema.getValue(schema, userData),
+      }));
+    },
+    [userData, metadataSchemas],
+  );
 
   if (!userData)
     return (
@@ -95,24 +55,15 @@ export default function UserProfile({
   const name = get(userData, 'full_name', 'Unnamed user');
   const dateCreated = formatDate(get(userData, 'created'), true);
 
-  const metadataItems = metadataSchema.map(displaySchema => {
-    const value = get(userData, displaySchema.id);
-    return {
-      ...displaySchema,
-      value,
-      valueMatchesDefault: displaySchema.defaultValue === value,
-    };
-  });
-
   return (
     <MainColumn fullWidth>
-      {/* <EditEntityModal
+      <EditUserMetadata
         open={editingProfile}
+        userId={userId}
+        metadata={metadata}
         onClose={() => setEditingProfile(false)}
-        fieldValues={userData.fields}
-        fieldSchema={userSchema}
-        categories={userSchemaCategories}
-      /> */}
+        refreshUserData={refreshUserData}
+      />
       <EntityHeaderNew
         name={name}
         editable // ???
@@ -148,9 +99,10 @@ export default function UserProfile({
       {children}
       <div style={{ display: 'flex', flexWrap: 'wrap' }}>
         <CardContainer size="small">
-          <MetadataCard
+          <MetadataCardNew
             editable // ?
-            metadata={metadataItems}
+            onEdit={() => setEditingProfile(true)}
+            metadata={metadata}
           />
           {/* <UserProjectCard
             renderActions={<IconButton><AddIcon /></IconButton>}

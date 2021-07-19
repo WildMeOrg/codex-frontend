@@ -1,0 +1,67 @@
+import { useMemo } from 'react';
+// import { get } from 'lodash-es';
+import ForumIcon from '@material-ui/icons/Forum';
+import EmailIcon from '@material-ui/icons/Email';
+import LocationIcon from '@material-ui/icons/PersonPin';
+import AffiliationIcon from '@material-ui/icons/AccountBalance';
+
+import useGetMe from './useGetMe';
+import fieldTypes from '../../constants/fieldTypesNew';
+import { createFieldSchema } from '../../utils/fieldUtils';
+import EmailViewer from '../../components/fields/view/EmailViewer';
+import ForumIdViewer from '../../components/fields/view/ForumIdViewer';
+
+export default function useUserMetadataSchemas() {
+  const {
+    // data: currentUserData,
+    loading,
+    error,
+  } = useGetMe();
+
+  const isAdmin = false;
+  // const isAdmin = get(currentUserData, 'is_admin', false);
+
+  const userMetadataSchemas = useMemo(
+    () => {
+      const adminFields = isAdmin
+        ? [
+            createFieldSchema(fieldTypes.string, {
+              name: 'email',
+              labelId: 'PROFILE_LABEL_EMAIL',
+              icon: EmailIcon,
+              viewComponent: EmailViewer,
+            }),
+          ]
+        : [];
+
+      return [
+        createFieldSchema(fieldTypes.string, {
+          name: 'full_name',
+          labelId: 'FULL_NAME',
+          hideInMetadataCard: true, // name already viewable on page
+        }),
+        createFieldSchema(fieldTypes.string, {
+          name: 'forum_id',
+          labelId: 'PROFILE_LABEL_FORUM_ID',
+          icon: ForumIcon,
+          viewComponent: ForumIdViewer,
+        }),
+        createFieldSchema(fieldTypes.string, {
+          name: 'affiliation',
+          labelId: 'PROFILE_LABEL_AFFILIATION',
+          icon: AffiliationIcon,
+        }),
+        createFieldSchema(fieldTypes.string, {
+          name: 'location',
+          labelId: 'PROFILE_LABEL_LOCATION',
+          icon: LocationIcon,
+        }),
+        ...adminFields,
+      ];
+    },
+    [isAdmin],
+  );
+
+  if (loading || error) return null;
+  return userMetadataSchemas;
+}

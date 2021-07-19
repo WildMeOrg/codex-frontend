@@ -27,6 +27,9 @@ export default function MetadataCard({
         JSON.stringify(field.value) !==
         JSON.stringify(field.defaultValue),
     );
+  metadataToDisplay = metadata.filter(
+    field => !field.hideInMetadataCard,
+  );
 
   const showEditButton = metadataToDisplay.length === 0 && editable;
   const showEditIcon = editable && !showEditButton;
