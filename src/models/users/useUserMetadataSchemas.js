@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-// import { get } from 'lodash-es';
+import { get } from 'lodash-es';
 import ForumIcon from '@material-ui/icons/Forum';
 import EmailIcon from '@material-ui/icons/Email';
 import LocationIcon from '@material-ui/icons/PersonPin';
@@ -12,14 +12,9 @@ import EmailViewer from '../../components/fields/view/EmailViewer';
 import ForumIdViewer from '../../components/fields/view/ForumIdViewer';
 
 export default function useUserMetadataSchemas() {
-  const {
-    // data: currentUserData,
-    loading,
-    error,
-  } = useGetMe();
+  const { data: currentUserData, loading, error } = useGetMe();
 
-  const isAdmin = false;
-  // const isAdmin = get(currentUserData, 'is_admin', false);
+  const isAdmin = get(currentUserData, 'is_admin', false);
 
   const userMetadataSchemas = useMemo(
     () => {
@@ -40,6 +35,7 @@ export default function useUserMetadataSchemas() {
           labelId: 'FULL_NAME',
           hideInMetadataCard: true, // name already viewable on page
         }),
+        ...adminFields,
         createFieldSchema(fieldTypes.string, {
           name: 'forum_id',
           labelId: 'PROFILE_LABEL_FORUM_ID',
@@ -56,7 +52,6 @@ export default function useUserMetadataSchemas() {
           labelId: 'PROFILE_LABEL_LOCATION',
           icon: LocationIcon,
         }),
-        ...adminFields,
       ];
     },
     [isAdmin],
