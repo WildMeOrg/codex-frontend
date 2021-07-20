@@ -12,6 +12,7 @@ import LabeledInput from '../../components/LabeledInput';
 import Button from '../../components/Button';
 import Text from '../../components/Text';
 import usePostUser from '../../models/users/usePostUser';
+import UserEditTable from './UserEditTable';
 
 export default function UserManagement() {
   const intl = useIntl();
@@ -131,7 +132,7 @@ export default function UserManagement() {
           <Text
             variant="h6"
             style={{ marginTop: 20, marginLeft: 12 }}
-            id="DELETE_A_USER"
+            id="EDIT_USERS"
           />
           <Paper
             elevation={2}
@@ -143,35 +144,7 @@ export default function UserManagement() {
               flexDirection: 'column',
             }}
           >
-            <Text id="DELETE_USER_INSTRUCTIONS" />
-            <div style={{ display: 'flex' }}>
-              <LabeledInput
-                style={{ marginRight: 12 }}
-                schema={{
-                  labelId: 'EMAIL_ADDRESS',
-                  displayType: 'string',
-                }}
-                value={deleteUserEmail}
-                onChange={setDeleteUserEmail}
-              />
-              <LabeledInput
-                style={{ marginLeft: 12 }}
-                schema={{
-                  labelId: 'USERNAME',
-                  displayType: 'string',
-                }}
-                value={deleteUsername}
-                onChange={setDeleteUsername}
-              />
-            </div>
-            <div style={{ marginTop: 8 }}>
-              <Button
-                display="subtle"
-                style={{ backgroundColor: '#ff171b', color: 'white' }}
-              >
-                <FormattedMessage id="DELETE_ACCOUNT" />
-              </Button>
-            </div>
+            <UserEditTable />
           </Paper>
         </Grid>
       </Grid>
