@@ -43,18 +43,32 @@ export default function usePatchUser(userId) {
     }
   };
 
-  const replaceUserProperties = async properties => {
+  const replaceUserProperties = async (
+    properties,
+    currentPassword,
+  ) => {
     try {
       setLoading(true);
+      const propertyData = properties.map(p => ({
+        op: 'replace',
+        path: get(p, 'path'),
+        value: get(p, 'value'),
+      }));
+      const currentPasswordTest = currentPassword
+        ? [
+            {
+              op: 'test',
+              path: '/current_password',
+              value: currentPassword,
+            },
+          ]
+        : [];
+
       const patchResponse = await axios({
         url: `${__houston_url__}/api/v1/users/${userId}`,
         withCredentials: true,
         method: 'patch',
-        data: properties.map(p => ({
-          op: 'replace',
-          path: get(p, 'path'),
-          value: get(p, 'value'),
-        })),
+        data: [...currentPasswordTest, ...propertyData],
       });
       const responseStatus = get(patchResponse, 'status');
       const successful = responseStatus === 200;
@@ -76,19 +90,29 @@ export default function usePatchUser(userId) {
     }
   };
 
-  const removeUserProperty = async path => {
+  const removeUserProperty = async (path, currentPassword) => {
     try {
       setLoading(true);
+      const propertyPatch = [
+        {
+          op: 'remove',
+          path,
+        },
+      ];
+      const currentPasswordTest = currentPassword
+        ? [
+            {
+              op: 'test',
+              path: '/current_password',
+              value: currentPassword,
+            },
+          ]
+        : [];
       const patchResponse = await axios({
         url: `${__houston_url__}/api/v1/users/${userId}`,
         withCredentials: true,
         method: 'patch',
-        data: [
-          {
-            op: 'remove',
-            path,
-          },
-        ],
+        data: [...currentPasswordTest, ...propertyPatch],
       });
       const responseStatus = get(patchResponse, 'status');
       const successful = responseStatus === 200;
