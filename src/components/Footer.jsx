@@ -16,7 +16,7 @@ import Text from './Text';
 function Menu({ labelId, schema, themeColor }) {
   const { data } = useSiteSettings();
   const matches = useMediaQuery(
-    '(min-width: 703px) and (max-width: 900px)',
+    '(min-width: 300px) and (max-width: 900px)',
   );
   return (
     <MenuList
