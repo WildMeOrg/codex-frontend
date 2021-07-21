@@ -18,7 +18,6 @@ const buttonId = 'saveProfile';
 export default function ProfileSetup({ userData, refreshUserData }) {
   const [noNameError, setNoNameError] = useState(false);
   const [name, setName] = useState('');
-  const [affiliation, setAffiliation] = useState('');
 
   const intl = useIntl();
 
@@ -52,11 +51,6 @@ export default function ProfileSetup({ userData, refreshUserData }) {
           value: name,
         },
       ];
-      if (affiliation)
-        properties.push({
-          path: '/affiliation',
-          value: affiliation,
-        });
       const successful = await replaceUserProperties(properties);
       if (successful) refreshUserData();
     } else {
@@ -101,21 +95,6 @@ export default function ProfileSetup({ userData, refreshUserData }) {
                 style={{ margin: '8px 4px 0 4px' }}
                 variant="caption"
                 id="FULL_NAME_DESCRIPTION"
-              />
-            </FormControl>
-          </Grid>
-          <Grid item>
-            <FormControl
-              required
-              style={{ width: '100%', marginBottom: 4 }}
-            >
-              <TextField
-                variant="outlined"
-                id="affiliation"
-                onChange={e => {
-                  setAffiliation(e.target.value);
-                }}
-                label={<FormattedMessage id="AFFILIATION" />}
               />
             </FormControl>
           </Grid>
