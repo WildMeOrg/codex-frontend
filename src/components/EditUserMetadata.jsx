@@ -155,6 +155,9 @@ export default function EditUserMetadata({
                 password,
               );
               if (successfulUpdate) {
+                setError(null);
+                setPasswordRequired(false);
+                setPassword('');
                 refreshUserData();
                 onClose();
               }
