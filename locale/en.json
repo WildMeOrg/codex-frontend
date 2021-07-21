@@ -14,6 +14,8 @@
   "FOREST": "Forest",
   "AQUA": "Aqua",
   "CONTROL_PANEL": "Control panel",
+  "PASSWORD_VERIFICATION_REQUIRED": "Password verification required",
+  "EMAIL_CHANGE_DESCRIPTION": "Changing email address is a sensitive action. You must enter your password to continue.",
   "CONFIRMATION_NEEDED": "Confirmation needed",
   "DELETE_ANNOTATION": "Delete annotation",
   "PENDING_BULK_IMPORT": "Bulk import in progress",

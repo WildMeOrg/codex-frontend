@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { get, map } from 'lodash-es';
+import { FormattedMessage } from 'react-intl';
+import { get, map, omit } from 'lodash-es';
 
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
+import FormControl from '@material-ui/core/FormControl';
+import TextField from '@material-ui/core/TextField';
 
 import CustomAlert from './Alert';
 import usePatchUser from '../models/users/usePatchUser';
@@ -34,6 +37,8 @@ export default function EditUserMetadata({
   } = usePatchUser(userId);
 
   const [fieldValues, setFieldValues] = useState({});
+  const [passwordRequired, setPasswordRequired] = useState(false);
+  const [password, setPassword] = useState('');
 
   useEffect(
     () => {
@@ -77,6 +82,30 @@ export default function EditUserMetadata({
           );
         })}
 
+        {passwordRequired && (
+          <CustomAlert
+            severity="info"
+            titleId="PASSWORD_VERIFICATION_REQUIRED"
+            descriptionId="EMAIL_CHANGE_DESCRIPTION"
+            style={{ marginBottom: 20 }}
+          >
+            <FormControl
+              required
+              style={{ width: 320, marginTop: 16 }}
+            >
+              <TextField
+                autoComplete="password"
+                variant="outlined"
+                id="password"
+                type="password"
+                onChange={e => {
+                  setPassword(e.target.value);
+                }}
+                label={<FormattedMessage id="PASSWORD" />}
+              />
+            </FormControl>
+          </CustomAlert>
+        )}
         {error && (
           <CustomAlert severity="error" titleId="SUBMISSION_ERROR">
             {error}
@@ -88,6 +117,8 @@ export default function EditUserMetadata({
           display="basic"
           onClick={() => {
             setError(null);
+            setPasswordRequired(false);
+            setPassword('');
             setFieldValues(getInitialFormValues(metadata));
             onClose();
           }}
@@ -97,17 +128,39 @@ export default function EditUserMetadata({
           loading={loading}
           display="primary"
           onClick={async () => {
-            const patchValues = map(fieldValues, (value, key) => ({
-              path: `/${key}`,
-              value,
-            }));
-
-            const successfulUpdate = await replaceUserProperties(
-              patchValues,
+            const emailMetadata = metadata.find(
+              m => m.name === 'email',
             );
-            if (successfulUpdate) {
-              refreshUserData();
-              onClose();
+            const oldEmail = get(emailMetadata, 'value', 'no-match');
+            const emailChanged =
+              get(fieldValues, 'email') !== oldEmail;
+            const passwordEntered = password !== '';
+
+            if (emailChanged && !passwordEntered) {
+              setPasswordRequired(true);
+            } else {
+              const patchFieldValues = emailChanged
+                ? fieldValues
+                : omit(fieldValues, ['email']);
+              const patchValues = map(
+                patchFieldValues,
+                (value, key) => ({
+                  path: `/${key}`,
+                  value,
+                }),
+              );
+
+              const successfulUpdate = await replaceUserProperties(
+                patchValues,
+                password,
+              );
+              if (successfulUpdate) {
+                setError(null);
+                setPasswordRequired(false);
+                setPassword('');
+                refreshUserData();
+                onClose();
+              }
             }
           }}
           id="SAVE"
