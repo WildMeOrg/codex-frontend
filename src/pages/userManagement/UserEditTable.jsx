@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useIntl, FormattedMessage } from 'react-intl';
-import { get, capitalize } from 'lodash-es';
-
+import { useIntl } from 'react-intl';
+import { get } from 'lodash-es';
 import Grid from '@material-ui/core/Grid';
 import CustomAlert from '../../components/Alert';
 
@@ -9,31 +8,32 @@ import usePutSiteSettings from '../../models/site/usePutSiteSettings';
 import DataDisplay from '../../components/dataDisplays/DataDisplay';
 import ActionIcon from '../../components/ActionIcon';
 import Text from '../../components/Text';
-import SpeciesEditor from '../fieldManagement/settings/defaultFieldComponents/SpeciesEditor'; // TODO UserEditor
+// import SpeciesEditor from '../fieldManagement/settings/defaultFieldComponents/SpeciesEditor'; // TODO UserEditor
+import useGetUsers from '../../models/users/useGetUsers';
 
-const testData = [
-  {
-    id: 'user1',
-    backendPath: 'site.species', // TODO
-    userId: 'user1',
-    fullName: 'User 1',
-    Editor: SpeciesEditor, // TODO
-  },
-  {
-    id: 'user2',
-    backendPath: 'site.custom.regions',
-    userId: 'user2',
-    fullName: 'User 2',
-    Editor: SpeciesEditor, // TODO
-  },
-  {
-    id: 'user3',
-    backendPath: 'site.general.relationships',
-    userId: 'user3',
-    fullName: 'User 3',
-    Editor: SpeciesEditor, // TODO
-  },
-];
+// const testData = [
+//   {
+//     id: 'user1',
+//     backendPath: 'site.species', // TODO
+//     userId: 'user1',
+//     fullName: 'User 1',
+//     Editor: SpeciesEditor, // TODO
+//   },
+//   {
+//     id: 'user2',
+//     backendPath: 'site.custom.regions',
+//     userId: 'user2',
+//     fullName: 'User 2',
+//     Editor: SpeciesEditor, // TODO
+//   },
+//   {
+//     id: 'user3',
+//     backendPath: 'site.general.relationships',
+//     userId: 'user3',
+//     fullName: 'User 3',
+//     Editor: SpeciesEditor, // TODO
+//   },
+// ];
 
 function getInitialFormState(siteSettings) {
   const regions = get(siteSettings, ['site.custom.regions', 'value']);
@@ -55,6 +55,12 @@ export default function DefaultFieldTable({
   const [formSettings, setFormSettings] = useState(null);
   const [editField, setEditField] = useState(null);
   const { putSiteSetting, error, setError } = usePutSiteSettings();
+  const { data, loading, error: usersError } = useGetUsers();
+  // console.log('testing userData is: ');
+  // console.log(userData);
+  if (data && !loading && data.length > 0) {
+    console.log(data);
+  }
 
   useEffect(
     () => setFormSettings(getInitialFormState(siteSettings)),
@@ -63,20 +69,20 @@ export default function DefaultFieldTable({
 
   const tableColumns = [
     {
-      name: 'userId',
-      label: intl.formatMessage({ id: 'USER' }),
+      name: 'email',
+      label: intl.formatMessage({ id: 'EMAIL_ADDRESS' }),
       options: {
-        customBodyRender: userId => (
-          <Text variant="body2">{ userId }</Text>
+        customBodyRender: email => (
+          <Text variant="body2">{ email }</Text>
         ),
       },
     },
     {
-      name: 'fullName',
+      name: 'full_name',
       label: intl.formatMessage({ id: 'FULLNAME' }),
       options: {
-        customBodyRender: fullName => (
-          <Text variant="body2">{ fullName }</Text>
+        customBodyRender: full_name => (
+          <Text variant="body2">{full_name }</Text>
         ),
       },
     },
@@ -148,13 +154,15 @@ export default function DefaultFieldTable({
           ) : null}
         </editField.Editor>
       )}
-      <DataDisplay
-        style={{ marginTop: 8 }}
-        noTitleBar
-        variant="secondary"
-        columns={tableColumns}
-        data={testData}
-      />
+      { (data && !loading && !usersError)? (
+        <DataDisplay
+          style={{ marginTop: 8 }}
+          noTitleBar
+          variant="secondary"
+          columns={tableColumns}
+          data={data}
+        />
+      ) : null}
     </Grid>
   );
 }
