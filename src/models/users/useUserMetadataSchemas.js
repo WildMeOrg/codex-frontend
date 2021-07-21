@@ -11,14 +11,16 @@ import { createFieldSchema } from '../../utils/fieldUtils';
 import EmailViewer from '../../components/fields/view/EmailViewer';
 import ForumIdViewer from '../../components/fields/view/ForumIdViewer';
 
-export default function useUserMetadataSchemas() {
+export default function useUserMetadataSchemas(displayedUserId) {
   const { data: currentUserData, loading, error } = useGetMe();
 
   const isAdmin = get(currentUserData, 'is_admin', false);
+  const isCurrentUser = get(currentUserData, 'guid') === displayedUserId;
+  const includeEmail = isAdmin || isCurrentUser;
 
   const userMetadataSchemas = useMemo(
     () => {
-      const adminFields = isAdmin
+      const adminFields = includeEmail
         ? [
             createFieldSchema(fieldTypes.string, {
               name: 'email',

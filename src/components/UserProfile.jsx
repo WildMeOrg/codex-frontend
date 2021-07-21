@@ -29,7 +29,7 @@ export default function UserProfile({
   noCollaborate = false,
 }) {
   const [editingProfile, setEditingProfile] = useState(false);
-  const metadataSchemas = useUserMetadataSchemas();
+  const metadataSchemas = useUserMetadataSchemas(userId);
 
   const metadata = useMemo(
     () => {

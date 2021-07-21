@@ -52,8 +52,6 @@ export default function Sighting({ pending = false }) {
 
   const agSightingData = get(assetGroupSightingData, 'config');
 
-  console.log(assetGroupSightingData);
-
   return (
     <SightingCore
       data={pending ? agSightingData : sightingData}
@@ -79,8 +77,6 @@ function SightingCore({
   const { id } = useParams();
   const history = useHistory();
   const intl = useIntl();
-
-  console.log(data);
 
   const fieldSchemas = useSightingFieldSchemas();
 
