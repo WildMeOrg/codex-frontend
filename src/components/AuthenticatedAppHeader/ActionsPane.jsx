@@ -30,7 +30,7 @@ const actions = [
   {
     id: 'control-panel',
     href: '/admin',
-    adminOnly: true,
+    adminOrUserManagerOnly: true,
     messageId: 'CONTROL_PANEL',
     icon: ControlPanelIcon,
   },
@@ -40,6 +40,7 @@ export default function NotificationsPane({
   anchorEl,
   setAnchorEl,
   isAdministrator,
+  isUserManager,
 }) {
   const theme = useTheme();
   const closePopover = () => setAnchorEl(null);
@@ -73,7 +74,10 @@ export default function NotificationsPane({
         </Link>
         <Divider style={{ margin: '8px 16px' }} />
         {actions.map(action => {
-          if (action.adminOnly && !isAdministrator) return null;
+          const elevatedPermissions =
+            isAdministrator || isUserManager;
+          if (action.adminOrUserManagerOnly && !elevatedPermissions)
+            return null;
           return (
             <Link
               key={action.id}

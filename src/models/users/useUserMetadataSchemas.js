@@ -15,7 +15,8 @@ export default function useUserMetadataSchemas(displayedUserId) {
   const { data: currentUserData, loading, error } = useGetMe();
 
   const isAdmin = get(currentUserData, 'is_admin', false);
-  const isCurrentUser = get(currentUserData, 'guid') === displayedUserId;
+  const isCurrentUser =
+    get(currentUserData, 'guid') === displayedUserId;
   const includeEmail = isAdmin || isCurrentUser;
 
   const userMetadataSchemas = useMemo(

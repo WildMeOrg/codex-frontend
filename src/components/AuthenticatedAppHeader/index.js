@@ -30,6 +30,7 @@ export default function AppHeader() {
   const theme = useTheme();
   const { data: meData } = useGetMe();
   const isAdministrator = get(meData, 'is_admin', false);
+  const isUserManager = get(meData, 'is_user_manager', false);
 
   const isSm = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -150,6 +151,7 @@ export default function AppHeader() {
             anchorEl={userMenuAnchorEl}
             setAnchorEl={setUserMenuAnchorEl}
             isAdministrator={isAdministrator}
+            isUserManager={isUserManager}
           />
         </div>
       </Toolbar>

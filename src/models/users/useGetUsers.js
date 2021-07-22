@@ -5,7 +5,7 @@ import { get } from 'lodash-es';
 export default function useGetUsers() {
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [refreshCount, setRefreshCount] = useState(0);
 
   function refresh() {
@@ -16,6 +16,7 @@ export default function useGetUsers() {
     () => {
       const getUsers = async (limit = 20, offset = 0) => {
         try {
+          setLoading(true);
           const response = await axios.request({
             url: `${__houston_url__}/api/v1/users/`,
             method: 'get',
