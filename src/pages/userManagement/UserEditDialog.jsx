@@ -15,29 +15,7 @@ import Button from '../../components/Button';
 import StandardDialog from '../../components/StandardDialog';
 import PasswordVerificationAlert from '../../components/PasswordVerificationAlert';
 import usePatchUser from '../../models/users/usePatchUser';
-
-const roleSchema = [
-  {
-    id: 'is_contributor',
-    titleId: 'CONTRIBUTOR',
-  },
-  {
-    id: 'is_researcher',
-    titleId: 'RESEARCHER',
-  },
-  {
-    id: 'is_user_manager',
-    titleId: 'USER_MANAGER',
-  },
-  {
-    id: 'is_exporter',
-    titleId: 'EXPORTER',
-  },
-  {
-    id: 'is_admin',
-    titleId: 'ADMINISTRATOR',
-  },
-];
+import roleSchema from './constants/roleSchema';
 
 export default function UserEditDialog({
   open,

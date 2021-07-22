@@ -307,6 +307,7 @@
   "EXPLORE_PUBLIC_DATA": "Explore public data",
   "NEW_ANNOTATION": "New Annotation",
   "ANNOTATION_X": "Annotation {x}",
+  "ROLES": "Roles",
   "X_ANNOTATIONS": "{annotationCount} {annotationCount, plural, =0 {annotations} one {annotation} other {annotations}}",
   "ONE_SIGHTING_EMAIL_CONSENT": "I would like to receive email updates about this sighting.",
   "BULK_SIGHTING_EMAIL_CONSENT": "I would like to receive email updates about these sightings.",

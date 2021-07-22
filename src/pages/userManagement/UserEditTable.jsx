@@ -8,18 +8,16 @@ import Skeleton from '@material-ui/lab/Skeleton';
 import DataDisplay from '../../components/dataDisplays/DataDisplay';
 import ActionIcon from '../../components/ActionIcon';
 import Text from '../../components/Text';
-import useGetUsers from '../../models/users/useGetUsers';
 import UserEditDialog from './UserEditDialog';
 
-export default function DefaultFieldTable() {
+export default function UserEditTable({
+  data,
+  loading,
+  usersError,
+  refreshUserData,
+}) {
   const intl = useIntl();
   const [editUser, setEditUser] = useState(null);
-  const {
-    data,
-    loading,
-    error: usersError,
-    refresh: refreshUserData,
-  } = useGetUsers();
 
   const tableColumns = [
     {
