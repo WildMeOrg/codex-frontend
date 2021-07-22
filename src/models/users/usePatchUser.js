@@ -51,8 +51,8 @@ export default function usePatchUser(userId) {
       setLoading(true);
       const propertyData = properties.map(p => ({
         op: 'replace',
-        path: get(p, 'path'),
-        value: get(p, 'value'),
+        path: get(p, 'path'), // '/is_admin'
+        value: get(p, 'value'), // 'true'
       }));
       const currentPasswordTest = currentPassword
         ? [

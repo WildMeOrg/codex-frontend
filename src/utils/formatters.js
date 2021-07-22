@@ -1,4 +1,4 @@
-import { get, round } from 'lodash-es';
+import { get, round, find } from 'lodash-es';
 import { format } from 'date-fns';
 
 export const formatDate = (input, fancy) => {
@@ -56,10 +56,20 @@ export const getElapsedTimeInWords = (
   return result;
 };
 
+const possibleErrorPaths = [
+  'response.data.message',
+  'response.data.message.details',
+  'data.message',
+  'data.message.details',
+];
+
 export const formatError = error => {
   /* You can also throw the server response from a failed Houston
    * request at this thing. */
-  const serverError = get(error, ['data', 'message', 'details']);
+  const possibleServerErrors = possibleErrorPaths.map(p =>
+    get(error, p),
+  );
+  const serverError = find(possibleServerErrors, e => e);
   const stringError = error instanceof Error && error.toString();
   const errorToPrint = serverError || stringError || error;
   return JSON.stringify(errorToPrint, null, 2);
