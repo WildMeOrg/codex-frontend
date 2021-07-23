@@ -1,4 +1,6 @@
 import React from 'react';
+import { get } from 'lodash-es';
+
 import { useTheme } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 import Popover from '@material-ui/core/Popover';
@@ -12,7 +14,7 @@ import LogoutIcon from '@material-ui/icons/ExitToApp';
 
 import Link from '../Link';
 import Text from '../Text';
-import shane from '../../assets/shane.jpg';
+import defaultProfilePhoto from '../../assets/defaultProfile.jpg';
 
 const actions = [
   {
@@ -39,11 +41,15 @@ const actions = [
 export default function NotificationsPane({
   anchorEl,
   setAnchorEl,
-  isAdministrator,
-  isUserManager,
+  userData,
 }) {
   const theme = useTheme();
   const closePopover = () => setAnchorEl(null);
+
+  const isAdministrator = get(userData, 'is_admin', false);
+  const isUserManager = get(userData, 'is_user_manager', false);
+  const name = get(userData, 'full_name', 'Unnamed user');
+
   return (
     <Popover
       open={Boolean(anchorEl)}
@@ -59,10 +65,13 @@ export default function NotificationsPane({
       <MenuList style={{ minWidth: 270 }}>
         <Link href="/" onClick={closePopover} noUnderline>
           <MenuItem style={{ minHeight: 'auto' }}>
-            <Avatar style={{ height: 52, width: 52 }} src={shane} />
+            <Avatar
+              style={{ height: 52, width: 52 }}
+              src={defaultProfilePhoto}
+            />
             <div style={{ display: 'flex', flexDirection: 'column' }}>
               <Text style={{ margin: '0 20px', fontWeight: 'bold' }}>
-                Bob Dakota
+                {name}
               </Text>
               <Text
                 variant="body2"
