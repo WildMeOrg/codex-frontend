@@ -1,8 +1,15 @@
 import React, { useState } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
+import { get } from 'lodash-es';
 
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
+import Select from '@material-ui/core/Select';
+import Chip from '@material-ui/core/Chip';
+import FormControl from '@material-ui/core/FormControl';
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
 
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import CustomAlert from '../../components/Alert';
@@ -12,6 +19,9 @@ import LabeledInput from '../../components/LabeledInput';
 import Button from '../../components/Button';
 import Text from '../../components/Text';
 import usePostUser from '../../models/users/usePostUser';
+import useGetUsers from '../../models/users/useGetUsers';
+import UserEditTable from './UserEditTable';
+import roleSchema from './constants/roleSchema';
 
 export default function UserManagement() {
   const intl = useIntl();
@@ -19,17 +29,23 @@ export default function UserManagement() {
 
   const {
     postUser,
-    error,
-    loading,
-    setError,
-    success,
-    setSuccess,
+    error: postUserError,
+    loading: postUserLoading,
+    setError: setPostUserError,
+    success: postUserSuccess,
+    setSuccess: setPostUserSuccess,
   } = usePostUser();
+
+  const {
+    data: userData,
+    loading: userDataLoading,
+    error: userDataError,
+    refresh: refreshUserData,
+  } = useGetUsers();
 
   const [newUserEmail, setNewUserEmail] = useState('');
   const [newUserPassword, setNewUserPassword] = useState('');
-  const [deleteUserEmail, setDeleteUserEmail] = useState('');
-  const [deleteUsername, setDeleteUsername] = useState('');
+  const [newUserRoles, setNewUserRoles] = useState([]);
   return (
     <MainColumn>
       <Text
@@ -70,9 +86,15 @@ export default function UserManagement() {
               id="NEW_USER_ADMIN_MESSAGE"
               style={{ marginBottom: 12 }}
             />
-            <div style={{ display: 'flex' }}>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                flexWrap: 'wrap',
+                marginRight: 20,
+              }}
+            >
               <LabeledInput
-                style={{ marginRight: 12 }}
                 schema={{
                   labelId: 'EMAIL_ADDRESS',
                   displayType: 'string',
@@ -81,7 +103,6 @@ export default function UserManagement() {
                 onChange={setNewUserEmail}
               />
               <LabeledInput
-                style={{ marginLeft: 12 }}
                 schema={{
                   labelId: 'PASSWORD',
                   displayType: 'string',
@@ -90,35 +111,85 @@ export default function UserManagement() {
                 value={newUserPassword}
                 onChange={setNewUserPassword}
               />
+              <FormControl style={{ width: 180 }}>
+                <InputLabel id="select-roles-label">
+                  <FormattedMessage id="ROLES" />
+                </InputLabel>
+                <Select
+                  id="select-roles-selector"
+                  multiple
+                  value={newUserRoles}
+                  onChange={e => {
+                    console.log(e.target.value);
+                    setNewUserRoles(e.target.value);
+                  }}
+                  input={<Input id="select-roles-input" />}
+                  renderValue={selected => (
+                    <div
+                      style={{ display: 'flex', flexWrap: 'wrap' }}
+                    >
+                      {selected.map(value => {
+                        const matchingRole = roleSchema.find(
+                          r => r.id === value,
+                        );
+                        const chipLabelId = get(
+                          matchingRole,
+                          'titleId',
+                          'ERROR',
+                        );
+                        const chipLabel = intl.formatMessage({
+                          id: chipLabelId,
+                        });
+                        return (
+                          <Chip
+                            key={value}
+                            label={chipLabel}
+                            style={{ margin: '2px 6px' }}
+                          />
+                        );
+                      })}
+                    </div>
+                  )}
+                >
+                  {roleSchema.map(role => (
+                    <MenuItem key={role.id} value={role.id}>
+                      <FormattedMessage id={role.titleId} />
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
             </div>
-            {Boolean(error) && (
+            {Boolean(postUserError) && (
               <CustomAlert
-                onClose={() => setError(null)}
+                onClose={() => setPostUserError(null)}
                 severity="error"
                 titleId="SUBMISSION_ERROR"
-                description={error}
+                description={postUserError}
               />
             )}
-            {Boolean(success) && (
+            {Boolean(postUserSuccess) && (
               <CustomAlert
-                onClose={() => setSuccess(null)}
+                onClose={() => setPostUserSuccess(null)}
                 severity="success"
                 titleId="USER_CREATED_SUCCESSFULLY"
-                description={success}
+                description={postUserSuccess}
               />
             )}
             <div style={{ marginTop: 8 }}>
               <Button
                 display="primary"
-                loading={loading}
+                loading={postUserLoading}
                 onClick={async () => {
                   const successful = await postUser(
                     newUserEmail,
                     newUserPassword,
+                    newUserRoles,
                   );
                   if (successful) {
                     setNewUserEmail('');
                     setNewUserPassword('');
+                    setNewUserRoles([]);
+                    refreshUserData();
                   }
                 }}
               >
@@ -131,7 +202,7 @@ export default function UserManagement() {
           <Text
             variant="h6"
             style={{ marginTop: 20, marginLeft: 12 }}
-            id="DELETE_A_USER"
+            id="EDIT_USERS"
           />
           <Paper
             elevation={2}
@@ -143,35 +214,12 @@ export default function UserManagement() {
               flexDirection: 'column',
             }}
           >
-            <Text id="DELETE_USER_INSTRUCTIONS" />
-            <div style={{ display: 'flex' }}>
-              <LabeledInput
-                style={{ marginRight: 12 }}
-                schema={{
-                  labelId: 'EMAIL_ADDRESS',
-                  displayType: 'string',
-                }}
-                value={deleteUserEmail}
-                onChange={setDeleteUserEmail}
-              />
-              <LabeledInput
-                style={{ marginLeft: 12 }}
-                schema={{
-                  labelId: 'USERNAME',
-                  displayType: 'string',
-                }}
-                value={deleteUsername}
-                onChange={setDeleteUsername}
-              />
-            </div>
-            <div style={{ marginTop: 8 }}>
-              <Button
-                display="subtle"
-                style={{ backgroundColor: '#ff171b', color: 'white' }}
-              >
-                <FormattedMessage id="DELETE_ACCOUNT" />
-              </Button>
-            </div>
+            <UserEditTable
+              data={userData}
+              loading={userDataLoading}
+              usersError={userDataError}
+              refreshUserData={refreshUserData}
+            />
           </Paper>
         </Grid>
       </Grid>

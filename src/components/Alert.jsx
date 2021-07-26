@@ -15,15 +15,17 @@ function Core({
   return (
     <MuiAlert {...rest}>
       {children}
-      {descriptionId ? (
-        <FormattedMessage
-          id={descriptionId}
-          values={descriptionValues}
-        />
-      ) : (
-        description
-      )}
-      {alertChildren}
+      <div style={{ display: 'flex', flexDirection: 'column' }}>
+        {descriptionId ? (
+          <FormattedMessage
+            id={descriptionId}
+            values={descriptionValues}
+          />
+        ) : (
+          description
+        )}
+        {alertChildren}
+      </div>
     </MuiAlert>
   );
 }

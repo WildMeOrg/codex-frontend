@@ -8,6 +8,8 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import DownloadIcon from '@material-ui/icons/GetApp';
 import CopyIcon from '@material-ui/icons/FileCopy';
 
+import Link from './Link';
+
 const variantMap = {
   edit: {
     labelId: 'EDIT',
@@ -31,7 +33,7 @@ const variantMap = {
   },
 };
 
-export default function ActionIcon({ variant, labelId, ...rest }) {
+function Core({ variant, labelId, ...rest }) {
   const intl = useIntl();
   const config = variantMap[variant];
   const label = intl.formatMessage({ id: labelId || config.labelId });
@@ -43,4 +45,16 @@ export default function ActionIcon({ variant, labelId, ...rest }) {
       </IconButton>
     </Tooltip>
   );
+}
+
+export default function ActionIcon({ href, linkProps, ...rest }) {
+  if (href) {
+    return (
+      <Link href={href} {...linkProps}>
+        <Core {...rest} />
+      </Link>
+    );
+  }
+
+  return <Core {...rest} />;
 }

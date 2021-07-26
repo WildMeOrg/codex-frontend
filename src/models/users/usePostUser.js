@@ -7,7 +7,7 @@ export default function usePostUser() {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
 
-  const postUser = async (email, password) => {
+  const postUser = async (email, password, roles) => {
     try {
       const response = await axios({
         url: `${__houston_url__}/api/v1/users/`,
@@ -16,6 +16,7 @@ export default function usePostUser() {
         data: {
           email,
           password,
+          roles,
         },
       });
       const successful = get(response, 'status') === 200;

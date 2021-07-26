@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { get } from 'lodash-es';
 
 import { useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
@@ -7,20 +6,17 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
-import Avatar from '@material-ui/core/Avatar';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import MenuIcon from '@material-ui/icons/Menu';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import AddIcon from '@material-ui/icons/Add';
 import DropDownIcon from '@material-ui/icons/ArrowDropDown';
+import HomeIcon from '@material-ui/icons/Home';
 
-// import useSiteSettings from '../models/site/useSiteSettings';
 import Link from '../Link';
-import Text from '../Text';
 import AppDrawer from '../AppDrawer';
 import BannerLogo from '../BannerLogo';
 import useGetMe from '../../models/users/useGetMe';
-import shane from '../../assets/shane.jpg';
 import HeaderButton from './HeaderButton';
 import NotificationsPane from './NotificationsPane';
 import ActionsPane from './ActionsPane';
@@ -29,7 +25,6 @@ import PopoverButtons from './PopoverButtons';
 export default function AppHeader() {
   const theme = useTheme();
   const { data: meData } = useGetMe();
-  const isAdministrator = get(meData, 'is_admin', false);
 
   const isSm = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -42,8 +37,6 @@ export default function AppHeader() {
     notificationsAnchorEl,
     setNotificationsAnchorEl,
   ] = React.useState(null);
-
-  // const siteSettings = useSiteSettings();
 
   const handleClick = () => {
     setDrawerOpen(false);
@@ -104,30 +97,18 @@ export default function AppHeader() {
             alignItems: 'center',
           }}
         >
-          {!isSm && (
-            <Link
-              style={{ display: 'flex', alignItems: 'center' }}
-              href="/"
-              noUnderline
-            >
-              <Avatar
-                style={{
-                  marginLeft: 8,
-                  cursor: 'pointer',
-                  width: 36,
-                  height: 36,
-                }}
-                src={shane}
-              />
-              <Text style={{ marginLeft: 8 }}>Bob</Text>
-            </Link>
-          )}
-
+          <Link href="/">
+            <HeaderButton
+              Icon={HomeIcon}
+              titleId="HOME"
+              style={{ marginLeft: 8 }}
+            />
+          </Link>
           <Link href="/report">
             <HeaderButton
               Icon={AddIcon}
               titleId="REPORT_A_SIGHTING"
-              style={{ marginLeft: 16 }}
+              style={{ marginLeft: 8 }}
             />
           </Link>
           <HeaderButton
@@ -149,7 +130,7 @@ export default function AppHeader() {
           <ActionsPane
             anchorEl={userMenuAnchorEl}
             setAnchorEl={setUserMenuAnchorEl}
-            isAdministrator={isAdministrator}
+            userData={meData}
           />
         </div>
       </Toolbar>

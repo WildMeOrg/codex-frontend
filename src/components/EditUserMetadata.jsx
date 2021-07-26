@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { FormattedMessage } from 'react-intl';
 import { get, map, omit } from 'lodash-es';
 
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
-import FormControl from '@material-ui/core/FormControl';
-import TextField from '@material-ui/core/TextField';
 
 import CustomAlert from './Alert';
 import usePatchUser from '../models/users/usePatchUser';
 import InputRow from './fields/edit/InputRowNew';
 import Button from './Button';
+import PasswordVerificationAlert from './PasswordVerificationAlert';
 import StandardDialog from './StandardDialog';
 
 function getInitialFormValues(schema) {
@@ -83,28 +81,10 @@ export default function EditUserMetadata({
         })}
 
         {passwordRequired && (
-          <CustomAlert
-            severity="info"
-            titleId="PASSWORD_VERIFICATION_REQUIRED"
+          <PasswordVerificationAlert
+            setPassword={setPassword}
             descriptionId="EMAIL_CHANGE_DESCRIPTION"
-            style={{ marginBottom: 20 }}
-          >
-            <FormControl
-              required
-              style={{ width: 320, marginTop: 16 }}
-            >
-              <TextField
-                autoComplete="password"
-                variant="outlined"
-                id="password"
-                type="password"
-                onChange={e => {
-                  setPassword(e.target.value);
-                }}
-                label={<FormattedMessage id="PASSWORD" />}
-              />
-            </FormControl>
-          </CustomAlert>
+          />
         )}
         {error && (
           <CustomAlert severity="error" titleId="SUBMISSION_ERROR">
