@@ -73,9 +73,8 @@ export default function UserDeleteDialog({
           display="primary"
           onClick={processDeletion}
           loading={loading}
-        >
-          <FormattedMessage id="DELETE" />
-        </Button>
+          id="DELETE"
+        />
       </DialogActions>
     </StandardDialog>
   );

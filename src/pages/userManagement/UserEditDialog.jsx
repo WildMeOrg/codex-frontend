@@ -148,9 +148,8 @@ export default function UserEditDialog({
           display="primary"
           onClick={saveProperties}
           loading={loading}
-        >
-          <FormattedMessage id="SAVE" />
-        </Button>
+          id="SAVE"
+        />
       </DialogActions>
     </StandardDialog>
   );
