@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useIntl } from 'react-intl';
+import { Autocomplete } from '@material-ui/lab';
+import { makeStyles } from '@material-ui/core/styles';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import TreeView from '@material-ui/lab/TreeView';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
@@ -8,8 +10,20 @@ import TreeItem from '@material-ui/lab/TreeItem';
 import useLabel from '../../../hooks/useLabel';
 import useDescription from '../../../hooks/useDescription';
 import FormCore from './FormCore';
+import TextField from '@material-ui/core/TextField';
+import { FormattedMessage } from 'react-intl';
+import Text from '../../Text';
 
-export default function TreeViewInput(props) {
+const useStyles = makeStyles((theme) => ({
+  root: {
+    width: 500,
+    '& > * + *': {
+      marginTop: theme.spacing(3),
+    },
+  },
+}));
+
+export default function LocationIdEditor(props) {
   const {
     schema,
     required,
@@ -37,6 +51,28 @@ export default function TreeViewInput(props) {
     ));
   }
 
+  function getNumDescendents(targetChoice) {
+    let result = 0;
+    if (!targetChoice.locationID) return result;
+    const childCountsArr = targetChoice.locationID.map(child => {
+      return getNumDescendents(child);
+    });
+    result = targetChoice.locationID.length + childCountsArr.reduce((a, b) => a + b, 0);
+    return result;
+  }
+
+  function collapseChoices(choices, depth) {
+    const result = choices.map(choice => {
+      if (!choice.locationID) {
+        return { depth, name: ' '.repeat(depth) + choice.name + (getNumDescendents(choice) ? '(' + getNumDescendents(choice).toString() + ')' : ''), id: choice.id };
+      }
+      const subchoices = [{ depth, name: ' '.repeat(depth) + choice.name + (getNumDescendents(choice) ? ' (' + getNumDescendents(choice).toString() + ')' : ''), id: choice.id }];
+      subchoices.push(collapseChoices(choice.locationID, depth + 1));
+      return subchoices;
+    });
+    return result.flat(100);
+  }
+
   const handleToggle = (event, toggledNodes) => {
     setExpanded(toggledNodes);
   };
@@ -51,36 +87,24 @@ export default function TreeViewInput(props) {
   };
 
   return (
-    <FormCore schema={schema} width={width}>
-      <TreeView
-        style={{ marginTop: 20 }}
-        defaultCollapseIcon={<ExpandMoreIcon />}
-        defaultExpandIcon={<ChevronRightIcon />}
-        // multiSelect={multiselect}
-        expanded={expanded}
-        selected={selected}
-        onNodeToggle={handleToggle}
-        onNodeSelect={handleSelect}
-        {...rest}
-      >
-        <TreeItem
-          nodeId="IGNORE"
-          label={intl.formatMessage(
-            { id: 'SELECT_OBJECT' },
-            { object: label },
-          )}
-        >
-          {renderLevel(schema.choices)}
-        </TreeItem>
-      </TreeView>
-      {showDescription ? (
-        <FormHelperText>{description}</FormHelperText>
-      ) : null}
-      {/* {multiselect && (
-        <FormHelperText>
-          <FormattedMessage id="SELECT_MULTIPLE_REGIONS_HINT" />
-        </FormHelperText>
-      )} */}
-    </FormCore>
+    <Autocomplete
+      multiple
+      options={collapseChoices(schema.choices, 0).map(result => result.name)}
+      renderOption={option => {
+        return (
+          <Text style={{ paddingLeft: (option.split(' ').length - option.trim().split(' ').length) * 10 }}>
+            {option}
+          </Text>
+        );
+      }}
+      renderInput={(params) => (
+        <TextField
+          {...params}
+          style={{ width: 280 }}
+          variant="standard"
+          label={<FormattedMessage id="REGION_SELECT" />}
+        />
+      )}
+    />
   );
 }
