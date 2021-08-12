@@ -143,8 +143,7 @@ export default function Annotations({ assets, refreshSightingData }) {
       {annotations.map(annotation => (
         <div key={annotation.guid} style={{ position: 'relative' }}>
           <AnnotatedPhotograph
-            alt={annotation.filename}
-            src={annotation.src}
+            assetMetadata={annotation}
             annotations={[annotation]}
             onClick={() => setDetailId(annotation.guid)}
           />
