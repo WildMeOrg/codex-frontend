@@ -138,8 +138,7 @@ export default function Photographs({ assets, refreshSightingData }) {
         {assets.map((asset, i) => (
           <div key={asset.guid} style={{ position: 'relative' }}>
             <AnnotatedPhotograph
-              alt={asset.filename}
-              src={asset.src}
+              assetMetadata={asset}
               annotations={
                 showAnnotations ? get(asset, 'annotations', []) : []
               }

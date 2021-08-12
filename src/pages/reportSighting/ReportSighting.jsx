@@ -39,9 +39,8 @@ export default function ReportSighting({ authenticated }) {
           onClick={onBack}
           style={{ marginTop: 8, width: 'fit-content' }}
           display="back"
-        >
-          <FormattedMessage id="BACK_TO_PHOTOS" />
-        </Button>
+          id="BACK_TO_PHOTOS"
+        />
       ) : null}
       {reporting ? (
         <ReportForm assetReferences={files} exifData={exifData} />

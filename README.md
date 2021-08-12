@@ -21,7 +21,7 @@ npm start
 
 The development environment is mostly used on OSX but should work on Windows as well. Use Powershell or edit the `npm start:win32` command to set `NODE_ENV` using the appropriate syntax for your preferred shell.
 
-Unfortunately, the frontend isn't very useful without a backend. To run the frontend in its proper context, you need to [install Docker](https://docs.docker.com/get-docker/), clone [Houston](https://github.com/WildMeOrg/houston), and edit `deploy/codex/docker-compose.yml`. Modify the `dev-frontend` image to point to your local copy of the code in the following manner:
+Unfortunately, the frontend isn't very useful without a backend. To run the frontend in its proper context, you need to [install Docker](https://docs.docker.com/get-docker/), clone [Houston](https://github.com/WildMeOrg/houston), and edit `docker-compose.yml`. Modify the `dev-frontend` image to point to your local copy of the code in the following manner:
 
 ```
 dev-frontend:

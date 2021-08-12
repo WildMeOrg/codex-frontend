@@ -1,25 +1,28 @@
 import React, { useEffect, useState } from 'react';
 
 import { useTheme } from '@material-ui/core/styles';
-import MenuItem from '@material-ui/core/MenuItem';
-import MenuList from '@material-ui/core/MenuList';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+// import MenuItem from '@material-ui/core/MenuItem';
+// import MenuList from '@material-ui/core/MenuList';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import DropDownIcon from '@material-ui/icons/ArrowDropDown';
+// import DropDownIcon from '@material-ui/icons/ArrowDropDown';
 
-import HeaderMenu from './HeaderMenu';
+// import HeaderMenu from './HeaderMenu';
 import Link from './Link';
-import InlineButton from './InlineButton';
+// import InlineButton from './InlineButton';
 import BannerLogo from './BannerLogo';
 import Text from './Text';
 
-const languages = ['English', 'Español', 'Deutch'];
-const activeLanguage = 'English';
+// const languages = ['English', 'Español', 'Deutch'];
+// const activeLanguage = 'English';
 
 export default function UnauthenticatedAppHeader({
   topTransparency = false,
   siteNameScrolls = false,
 }) {
   const theme = useTheme();
+  const isXs = useMediaQuery(theme.breakpoints.down('xs'));
+
   const [top, setTop] = useState(true);
   const [languageMenuOpen, setLanguageMenuOpen] = useState(false);
 
@@ -39,9 +42,9 @@ export default function UnauthenticatedAppHeader({
     };
   }, []);
 
-  const inactiveLanguages = languages.filter(
-    language => language !== activeLanguage,
-  );
+  // const inactiveLanguages = languages.filter(
+  //   language => language !== activeLanguage,
+  // );
 
   return (
     <div
@@ -60,7 +63,7 @@ export default function UnauthenticatedAppHeader({
         transition:
           'background-color .5s cubic-bezier(.165,.84,.44,1)',
         willChange: topTransparency ? 'background-color' : 'unset',
-        padding: '0 40px',
+        padding: isXs ? '0 16px' : '0 40px',
       }}
     >
       <BannerLogo
@@ -79,7 +82,7 @@ export default function UnauthenticatedAppHeader({
             <div />
           </ClickAwayListener>
         )}
-        <div
+        {/* <div
           style={{ color: theme.palette.common.white, flexShrink: 0 }}
         >
           <InlineButton
@@ -115,13 +118,14 @@ export default function UnauthenticatedAppHeader({
               ))}
             </MenuList>
           </HeaderMenu>
-        </div>
+        </div> */}
         <Link
           noUnderline
           style={{
             color: theme.palette.common.white,
             marginLeft: 20,
             flexShrink: 0,
+            letterSpacing: '0.04em',
           }}
           href="/login"
         >

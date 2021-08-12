@@ -7,6 +7,7 @@ import ChevronRight from '@material-ui/icons/ChevronRight';
 import ChevronLeft from '@material-ui/icons/ChevronLeft';
 // import MoreIcon from '@material-ui/icons/MoreVert';
 
+import AnnotatedPhotograph from '../../components/AnnotatedPhotograph';
 import StandardDialog from '../../components/StandardDialog';
 import Text from '../../components/Text';
 // import Button from '../../components/Button';
@@ -55,15 +56,18 @@ export default function PhotographDetail({
           flexDirection: 'column',
         }}
       >
-        <div style={{ position: 'relative', alignSelf: 'start' }}>
-          <img
-            style={{
-              maxWidth: '100%',
-              maxHeight: '80vh',
-              objectFit: 'contain',
-            }}
-            src={get(asset, 'src')}
-            alt={get(asset, 'filename')}
+        <div
+          style={{
+            position: 'relative',
+            alignSelf: 'start',
+            width: '100%',
+            maxHeight: '80vh',
+          }}
+        >
+          <AnnotatedPhotograph
+            assetMetadata={asset}
+            width="100%"
+            annotations={get(asset, 'annotations')}
           />
           <IconButton
             className={classes.photoIcon}

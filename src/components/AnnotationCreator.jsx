@@ -11,6 +11,11 @@ import usePostAnnotation from '../models/annotation/usePostAnnotation';
 import Button from './Button';
 import StandardDialog from './StandardDialog';
 
+function percentageToPixels(percentValue, scalar) {
+  const pixelValue = 0.01 * scalar * percentValue;
+  return Math.round(Math.max(pixelValue, 0));
+}
+
 export default function AnnotationCreator({
   titleId = 'CREATE_ANNOTATION',
   asset,
@@ -23,6 +28,8 @@ export default function AnnotationCreator({
   const { postAnnotation, loading, error } = usePostAnnotation();
 
   const imgSrc = get(asset, 'src');
+  const imageWidth = get(asset, ['dimensions', 'width']);
+  const imageHeight = get(asset, ['dimensions', 'height']);
 
   const divRef = useCallback(() => {
     const bba = new BboxAnnotator(imgSrc, {
@@ -107,10 +114,22 @@ export default function AnnotationCreator({
           onClick={async () => {
             const assetId = get(asset, 'guid');
             const coords = [
-              get(rect, 'percentLeft'),
-              get(rect, 'percentTop'),
-              get(rect, 'percentWidth'),
-              get(rect, 'percentHeight'),
+              percentageToPixels(
+                get(rect, 'percentLeft'),
+                imageWidth,
+              ),
+              percentageToPixels(
+                get(rect, 'percentTop'),
+                imageHeight,
+              ),
+              percentageToPixels(
+                get(rect, 'percentWidth'),
+                imageWidth,
+              ),
+              percentageToPixels(
+                get(rect, 'percentHeight'),
+                imageHeight,
+              ),
             ];
             const theta = get(rect, 'theta', 0);
             const newAnnotationId = await postAnnotation(
