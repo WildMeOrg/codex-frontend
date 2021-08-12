@@ -8,6 +8,45 @@ import {
   createCustomFieldSchema,
 } from '../../utils/fieldUtils';
 
+/* temporary fake species detection models */
+
+const backendModels = [
+  {
+    model_name: 'iotv0',
+    description: 'Generic turtle identifier',
+    id_algos: ['hotspotter', 'PIEv2'],
+    supported_species: [
+      {
+        common_name: 'Green Turtle',
+        sci_name: 'Chelonia mydas',
+        itis_id: 202103,
+        ia_classes: ['turtle_green', 'turtle_green+head'],
+      },
+      {
+        common_name: 'Hawksbill Turtle',
+        sci_name: 'Eretmochelys imbricata',
+        itis_id: 208666,
+        ia_classes: ['turtle_hawksbill', 'turtle_hawksbill+head'],
+      },
+    ],
+  },
+  {
+    model_name: 'fins_v1',
+    description: 'Best fin detector',
+    id_algos: ['hotspotter', 'PIEv2'],
+    supported_species: [
+      {
+        common_name: 'Bottlenose Dolphin',
+        sci_name: 'Tursiops Truncatus',
+        itis_id: 180426,
+        ia_classes: ['bottlenose'],
+      },
+    ],
+  },
+];
+
+/* delete this soon */
+
 export const defaultSightingCategories = {
   general: {
     name: 'general',
@@ -45,6 +84,30 @@ export default function useSightingFieldSchemas() {
         [],
       );
 
+      const siteSpecies = get(data, ['site.species', 'value'], []);
+      const siteItisIds = siteSpecies.map(species => species.itisTsn);
+
+      const modelChoices = backendModels.reduce((acc, model) => {
+        const siteSupportedSpecies = model.supported_species.filter(
+          species => siteItisIds.includes(species.itis_id),
+        );
+
+        if (siteSupportedSpecies.length === 0) return acc;
+
+        const speciesLabels = siteSupportedSpecies.map(
+          s => `${s.common_name} (${s.sci_name})`,
+        );
+
+        return [
+          ...acc,
+          {
+            label: model.description,
+            value: model.model_name,
+            description: speciesLabels.join(', '),
+          },
+        ];
+      }, []);
+
       const customFields = get(
         data,
         [
@@ -77,6 +140,13 @@ export default function useSightingFieldSchemas() {
           labelId: 'SIGHTING_VERBATIM_TIME',
           descriptionId: 'SIGHTING_VERBATIM_TIME_DESCRIPTION',
           category: defaultSightingCategories.general.name,
+        }),
+        createFieldSchema(fieldTypes.multiselect, {
+          name: 'speciesDetectionModel',
+          labelId: 'SPECIES_DETECTION_MODEL',
+          descriptionId: 'SPECIES_DETECTION_MODEL_DESCRIPTION',
+          category: defaultSightingCategories.general.name,
+          choices: modelChoices,
         }),
         createFieldSchema(fieldTypes.locationId, {
           name: 'locationId',

@@ -9,6 +9,7 @@ import DataDisplay from '../../components/dataDisplays/DataDisplay';
 import ActionIcon from '../../components/ActionIcon';
 import Text from '../../components/Text';
 import UserEditDialog from './UserEditDialog';
+import UserDeleteDialog from './UserDeleteDialog';
 
 export default function UserEditTable({
   data,
@@ -18,6 +19,7 @@ export default function UserEditTable({
 }) {
   const intl = useIntl();
   const [editUser, setEditUser] = useState(null);
+  const [deleteUser, setDeleteUser] = useState(null);
 
   const tableColumns = [
     {
@@ -53,7 +55,10 @@ export default function UserEditTable({
               variant="edit"
               onClick={() => setEditUser(user)}
             />
-            <ActionIcon variant="delete" onClick={() => {}} />
+            <ActionIcon
+              variant="delete"
+              onClick={() => setDeleteUser(user)}
+            />
           </div>
         ),
       },
@@ -68,6 +73,14 @@ export default function UserEditTable({
           setEditUser(null);
         }}
         userData={editUser}
+        refreshUserData={refreshUserData}
+      />
+      <UserDeleteDialog
+        open={Boolean(deleteUser)}
+        onClose={() => {
+          setDeleteUser(null);
+        }}
+        userData={deleteUser}
         refreshUserData={refreshUserData}
       />
       <DataDisplay
