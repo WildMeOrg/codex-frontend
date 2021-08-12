@@ -4,8 +4,10 @@ import MainColumn from '../../components/MainColumn';
 import Text from '../../components/Text';
 import newSiteImage from '../../assets/newsite.png';
 import SiteSetupForm from './SiteSetupForm';
+import useDocumentTitle from '../../hooks/useDocumentTitle';
 
 export default function SiteSetup() {
+  useDocumentTitle('Welcome to Codex!', false);
   return (
     <MainColumn>
       <Grid container direction="column" alignItems="center">
