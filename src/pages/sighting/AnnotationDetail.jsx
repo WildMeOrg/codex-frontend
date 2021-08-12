@@ -1,16 +1,15 @@
 import React, { useState, useMemo } from 'react';
 import { differenceBy, get } from 'lodash-es';
-import { FormattedMessage } from 'react-intl';
 
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
 import AddIcon from '@material-ui/icons/Add';
 
-import CustomAlert from '../../components/Alert';
-
 import { getKeywordColor } from '../../utils/colorUtils';
 import StandardDialog from '../../components/StandardDialog';
 import Button from '../../components/Button';
+import AnnotatedPhotograph from '../../components/AnnotatedPhotograph';
+import CustomAlert from '../../components/Alert';
 import useKeywords from '../../models/keyword/useKeywords';
 import useAddKeyword from '../../models/keyword/useAddKeyword';
 import Keywords from './Keywords';
@@ -72,15 +71,18 @@ export default function AnnotationDetail({
           flexDirection: 'column',
         }}
       >
-        <div style={{ position: 'relative', alignSelf: 'start' }}>
-          <img
-            style={{
-              maxWidth: '100%',
-              maxHeight: '80vh',
-              objectFit: 'contain',
-            }}
-            src={get(annotation, 'src')}
-            alt={get(annotation, 'filename')}
+        <div
+          style={{
+            position: 'relative',
+            alignSelf: 'start',
+            width: '100%',
+            maxHeight: '80vh',
+          }}
+        >
+          <AnnotatedPhotograph
+            assetMetadata={annotation}
+            width="100%"
+            annotations={[annotation]}
           />
         </div>
         {addKeywordError && (

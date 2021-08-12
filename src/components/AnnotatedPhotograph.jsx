@@ -44,9 +44,11 @@ export default function AnnotatedPhotograph({
         const h = get(annotation, ['bounds', 'rect', '3']);
         const theta = get(annotation, ['bounds', 'theta'], 0);
 
+        if (!annotation) return null;
+
         return (
           <rect
-            key={annotation.guid}
+            key={get(annotation, 'guid')}
             style={{
               transformBox: 'fill-box',
               transformOrigin: 'center',
