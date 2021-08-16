@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { get } from 'lodash-es';
-import { FormattedMessage } from 'react-intl';
 
 import AddIcon from '@material-ui/icons/Add';
 
@@ -17,6 +16,7 @@ import useAddEncounter from '../../../models/encounter/useAddEncounter';
 import useDeleteEncounter from '../../../models/encounter/useDeleteEncounter';
 import AnnotationsCard from './AnnotationsCard';
 import EditEncounterMetadata from './EditEncounterMetadata';
+import CreateIndividualModal from './CreateIndividualModal';
 
 export default function Encounters({
   sightingData,
@@ -36,6 +36,10 @@ export default function Encounters({
     setError: setDeleteEncounterError,
   } = useDeleteEncounter();
 
+  const [
+    createIndividualEncounterId,
+    setCreateIndividualEncounterId,
+  ] = useState(null);
   const [encounterToDelete, setEncounterToDelete] = useState(null);
   const [editEncounterInfo, setEditEncounterInfo] = useState(null);
 
@@ -64,6 +68,12 @@ export default function Encounters({
             : 'CONFIRM_DELETE_ENCOUNTER_DESCRIPTION'
         }
         deleteDisabled={encounters.length <= 1}
+      />
+
+      <CreateIndividualModal
+        encounterId={createIndividualEncounterId}
+        open={Boolean(createIndividualEncounterId)}
+        onClose={() => setCreateIndividualEncounterId(null)}
       />
 
       <EditEncounterMetadata
@@ -131,7 +141,8 @@ export default function Encounters({
                     {
                       id: 'create-new-individual',
                       label: 'Create new individual',
-                      onClick: Function.prototype,
+                      onClick: () =>
+                        setCreateIndividualEncounterId(encounterId),
                     },
                     {
                       id: 'delete-cluster',
