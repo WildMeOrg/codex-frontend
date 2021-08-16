@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import Grid from '@material-ui/core/Grid';
+
+import usePostIndividual from '../../models/individual/usePostIndividual';
 import CreatePage from '../../components/CreatePage';
 import InputRow from '../../components/InputRow';
 import { defaultIndividualFields } from '../../constants/individualSchema';
@@ -9,6 +11,8 @@ const createFields = defaultIndividualFields.filter(
 );
 
 export default function CreateIndividual() {
+  const { postIndividual } = usePostIndividual();
+
   const initialState = createFields.reduce((memo, field) => {
     memo[field.name] = field.defaultValue;
     return memo;
@@ -19,7 +23,10 @@ export default function CreateIndividual() {
   return (
     <CreatePage
       ctaId="CREATE_INDIVIDUAL"
-      onCreate={() => console.log(formState)}
+      onCreate={async () => {
+        const newIndividual = await postIndividual();
+        console.log(newIndividual);
+      }}
     >
       <Grid
         container
