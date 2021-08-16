@@ -10,6 +10,7 @@ import Tab from '@material-ui/core/Tab';
 // import ContextIcon from '@material-ui/icons/NaturePeople';
 // import SubmitterIcon from '@material-ui/icons/Person';
 import MainColumn from '../../components/MainColumn';
+import Text from '../../components/Text';
 import LoadingScreen from '../../components/LoadingScreen';
 import SadScreen from '../../components/SadScreen';
 import Button from '../../components/Button';
@@ -189,7 +190,7 @@ function SightingCore({
           </div>
         }
       >
-        Reported by George Masterson
+        <Text>Reported by George Masterson</Text>
       </EntityHeaderNew>
       <Tabs
         value={activeTab.replace('#', '')}

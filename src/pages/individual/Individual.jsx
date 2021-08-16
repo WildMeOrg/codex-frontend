@@ -1,14 +1,18 @@
 import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
-import { capitalize, toLower } from 'lodash-es';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
+import { capitalize } from 'lodash-es';
+
 import SexIcon from '@material-ui/icons/Nature';
 import AgeIcon from '@material-ui/icons/Height';
 import StatusIcon from '@material-ui/icons/LocalHospital';
-import EntityHeader from '../../components/EntityHeader';
+
+import useIndividual from '../../models/individual/useIndividual';
+import useDeleteIndividual from '../../models/individual/useDeleteIndividual';
+
+import MoreMenu from '../../components/MoreMenu';
+import EntityHeaderNew from '../../components/EntityHeaderNew';
 import MainColumn from '../../components/MainColumn';
 import SadScreen from '../../components/SadScreen';
 import Button from '../../components/Button';
@@ -18,6 +22,7 @@ import CardContainer from '../../components/cards/CardContainer';
 import SightingsCard from '../../components/cards/SightingsCard';
 import MetadataCard from '../../components/cards/MetadataCard';
 import GalleryCard from '../../components/cards/GalleryCard';
+import ConfirmDelete from '../../components/ConfirmDelete';
 import RelationshipsCard from '../../components/cards/RelationshipsCard';
 import CooccurrenceCard from '../../components/cards/CooccurrenceCard';
 import { selectIndividuals } from '../../modules/individuals/selectors';
@@ -53,23 +58,27 @@ const items = [
 
 export default function Individual() {
   const { id } = useParams();
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const { data } = useIndividual(id);
+  const history = useHistory();
 
-  const handleClick = event => {
-    setAnchorEl(event.currentTarget);
-  };
+  const {
+    deleteIndividual,
+    loading: deleteInProgress,
+    error: deleteError,
+    setError: setDeleteError,
+  } = useDeleteIndividual();
 
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  console.log(data);
 
   // fetch data for Id...
   const individuals = useSelector(selectIndividuals);
+
   const speciesFields = useSelector(selectSpeciesFields);
   useDocumentTitle(capitalize(id));
   const [editingProfile, setEditingProfile] = useState(false);
+  const [deletingIndividual, setDeletingIndividual] = useState(false);
 
-  const individual = individuals[toLower(id)];
+  const individual = individuals.teddy;
   if (!individual)
     return (
       <SadScreen
@@ -88,40 +97,47 @@ export default function Individual() {
         fieldValues={individual.fields}
         fieldSchema={fieldSchema}
       />
-      <EntityHeader
+      <ConfirmDelete
+        open={deletingIndividual}
+        onClose={() => setDeletingIndividual(false)}
+        onDelete={async () => {
+          const deleteSuccessful = await deleteIndividual(id);
+          if (deleteSuccessful) {
+            setDeletingIndividual(false);
+            history.push('/');
+          }
+        }}
+        deleteInProgress={deleteInProgress}
+        error={deleteError}
+        onClearError={() => setDeleteError(null)}
+        messageId="CONFIRM_DELETE_INDIVIDUAL"
+      />
+      <EntityHeaderNew
         name={individual.name}
-        imgSrc="https://mediaproxy.salon.com/width/1200/https://media.salon.com/2001/05/shrek.jpg"
-        renderOptions={<Button display="primary">SUBSCRIBE</Button>}
+        renderAvatar={Function.prototype}
+        renderOptions={
+          <div style={{ display: 'flex' }}>
+            <Button display="primary">SUBSCRIBE</Button>
+            <MoreMenu
+              menuId="individual-actions"
+              items={[
+                {
+                  id: 'view-history',
+                  onClick: Function.prototype,
+                  label: 'View history',
+                },
+                {
+                  id: 'delete-individual',
+                  onClick: () => setDeletingIndividual(true),
+                  label: 'Delete individual',
+                },
+              ]}
+            />
+          </div>
+        }
       >
         <Text>Also known as Teddles, T3289-K, and Tweeb.</Text>
-        <Button
-          onClick={handleClick}
-          style={{ marginTop: 8 }}
-          display="subtle"
-          size="small"
-        >
-          Add to project
-        </Button>
-        <Menu
-          elevation={0}
-          keepMounted
-          open={Boolean(anchorEl)}
-          anchorEl={anchorEl}
-          onClose={handleClose}
-          anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'right',
-          }}
-          transformOrigin={{
-            vertical: 'top',
-            horizontal: 'left',
-          }}
-        >
-          <MenuItem>Project 1</MenuItem>
-          <MenuItem>Project 2</MenuItem>
-          <MenuItem>Project 3</MenuItem>
-        </Menu>
-      </EntityHeader>
+      </EntityHeaderNew>
       <div style={{ display: 'flex', flexWrap: 'wrap' }}>
         <CardContainer size="small">
           <GalleryCard title="Photos of Teddy" assets={fakeAssets} />

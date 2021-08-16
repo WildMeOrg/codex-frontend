@@ -224,23 +224,25 @@ export default function DataDisplay({
             </TableRow>
           </TableHead>
           <TableBody>
-            {sortedData.map(datum => (
-              <CollabsibleRow
-                key={get(datum, idKey)}
-                onClick={() => {
-                  if (selectedRow === get(datum, idKey)) {
-                    setSelectedRow(null);
-                  } else {
-                    setSelectedRow(get(datum, idKey));
-                  }
-                }}
-                selected={selectedRow === get(datum, idKey)}
-                datum={datum}
-                cellStyles={cellStyles}
-                columns={visibleColumns}
-                renderExpandedRow={renderExpandedRow}
-              />
-            ))}
+            {sortedData.map(datum => {
+              return (
+                <CollabsibleRow
+                  key={get(datum, idKey)}
+                  onClick={() => {
+                    if (selectedRow === get(datum, idKey)) {
+                      setSelectedRow(null);
+                    } else {
+                      setSelectedRow(get(datum, idKey));
+                    }
+                  }}
+                  selected={selectedRow === get(datum, idKey)}
+                  datum={datum}
+                  cellStyles={cellStyles}
+                  columns={visibleColumns}
+                  renderExpandedRow={renderExpandedRow}
+                />
+              );
+            })}
           </TableBody>
         </Table>
       </TableContainer>
