@@ -14,6 +14,7 @@
   "FOREST": "Forest",
   "AQUA": "Aqua",
   "NEW_INDIVIDUAL_CREATED": "New individual created",
+  "CONFIRM_DELETE_INDIVIDUAL": "Are you sure you want to delete this individual? All associated metadata will deleted and all of the associated clusters will be orphaned.",
   "VIEW_NEW_INDIVIDUAL": "View new individual",
   "USER_DATA_ERROR": "User data could not be loaded.",
   "SENSITIVE_USER_DATA_CHANGE_DESCRIPTION": "Updating these user properties is considered a sensitive action. You must enter your password to continue.",
