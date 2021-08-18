@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useIntl } from 'react-intl';
+import { useIntl, FormattedMessage } from 'react-intl';
 import { get } from 'lodash-es';
 
 import Grid from '@material-ui/core/Grid';
@@ -10,6 +10,7 @@ import ActionIcon from '../../components/ActionIcon';
 import Text from '../../components/Text';
 import UserEditDialog from './UserEditDialog';
 import UserDeleteDialog from './UserDeleteDialog';
+import roleSchema from './constants/roleSchema';
 
 export default function UserEditTable({
   data,
@@ -41,11 +42,20 @@ export default function UserEditTable({
       },
     },
     {
+      name: 'roles',
+      label: intl.formatMessage({ id: 'ROLES' }),
+      options: {
+        customBodyRender: roles => (
+          <Text variant="body2">{roles}</Text>
+        ),
+      },
+    },
+    {
       name: 'actions',
       label: intl.formatMessage({ id: 'ACTIONS' }),
       options: {
         customBodyRender: (_, user) => (
-          <div>
+          <div style={{ display: 'flex' }}>
             <ActionIcon
               variant="view"
               href={`/users/${get(user, 'guid')}`}
@@ -65,6 +75,33 @@ export default function UserEditTable({
     },
   ];
 
+  function makePretty(word) {
+    const lowerCased = word.toLowerCase();
+    const capitalizedFirst =
+      lowerCased.charAt(0).toUpperCase() + lowerCased.slice(1);
+    return capitalizedFirst;
+  }
+
+  function getListOfRolesFromUser(userObj) {
+    const listOfRoles = [];
+    roleSchema.forEach(role => {
+      const roleId = role.id;
+      if (userObj[roleId]) {
+        const prettyRoleTitle = makePretty(role.titleId);
+        listOfRoles.push(prettyRoleTitle);
+      }
+    });
+    return listOfRoles;
+  }
+
+  // add a new property to data that's a joined and prettified list of roles to enable search/filter
+  if (data) {
+    data.map(currentUser => {
+      const currentUserRoles = getListOfRolesFromUser(currentUser);
+      currentUser.roles = currentUserRoles.join(', ');
+      return currentUserRoles;
+    });
+  }
   return (
     <Grid item>
       <UserEditDialog
@@ -85,8 +122,8 @@ export default function UserEditTable({
       />
       <DataDisplay
         idKey="guid"
+        title={<FormattedMessage id="EDIT_USERS" />}
         style={{ marginTop: 8 }}
-        noTitleBar
         variant="secondary"
         columns={tableColumns}
         data={data || []}
