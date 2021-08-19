@@ -12,6 +12,12 @@ import UserEditDialog from './UserEditDialog';
 import UserDeleteDialog from './UserDeleteDialog';
 import roleSchema from './constants/roleSchema';
 
+function makePretty(word) {
+  const lowerCased = word.toLowerCase();
+  const capitalizedFirst =
+    lowerCased.charAt(0).toUpperCase() + lowerCased.slice(1);
+  return capitalizedFirst;
+}
 export default function UserEditTable({
   data,
   loading,
@@ -45,9 +51,17 @@ export default function UserEditTable({
       name: 'roles',
       label: intl.formatMessage({ id: 'ROLES' }),
       options: {
-        customBodyRender: roles => (
-          <Text variant="body2">{roles}</Text>
-        ),
+        customBodyRender: (_, userObj) => {
+          // filter all possible roles by whether an attribute
+          // in userObj by name of currentRole.id exists
+          const rolesInCurrentUser = roleSchema.filter(
+            currentRole => userObj[currentRole.id],
+          );
+          const roleLabelInCurrentUser = rolesInCurrentUser.map(
+            currentRole => makePretty(currentRole.titleId),
+          );
+          return roleLabelInCurrentUser.join(', ');
+        },
       },
     },
     {
@@ -75,33 +89,6 @@ export default function UserEditTable({
     },
   ];
 
-  function makePretty(word) {
-    const lowerCased = word.toLowerCase();
-    const capitalizedFirst =
-      lowerCased.charAt(0).toUpperCase() + lowerCased.slice(1);
-    return capitalizedFirst;
-  }
-
-  function getListOfRolesFromUser(userObj) {
-    const listOfRoles = [];
-    roleSchema.forEach(role => {
-      const roleId = role.id;
-      if (userObj[roleId]) {
-        const prettyRoleTitle = makePretty(role.titleId);
-        listOfRoles.push(prettyRoleTitle);
-      }
-    });
-    return listOfRoles;
-  }
-
-  // add a new property to data that's a joined and prettified list of roles to enable search/filter
-  if (data) {
-    data.map(currentUser => {
-      const currentUserRoles = getListOfRolesFromUser(currentUser);
-      currentUser.roles = currentUserRoles.join(', ');
-      return currentUserRoles;
-    });
-  }
   return (
     <Grid item>
       <UserEditDialog
