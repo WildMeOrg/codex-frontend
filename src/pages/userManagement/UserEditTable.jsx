@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useIntl } from 'react-intl';
+import { useIntl, FormattedMessage } from 'react-intl';
 import { get } from 'lodash-es';
 
 import Grid from '@material-ui/core/Grid';
@@ -10,7 +10,14 @@ import ActionIcon from '../../components/ActionIcon';
 import Text from '../../components/Text';
 import UserEditDialog from './UserEditDialog';
 import UserDeleteDialog from './UserDeleteDialog';
+import roleSchema from './constants/roleSchema';
 
+function makePretty(word) {
+  const lowerCased = word.toLowerCase();
+  const capitalizedFirst =
+    lowerCased.charAt(0).toUpperCase() + lowerCased.slice(1);
+  return capitalizedFirst;
+}
 export default function UserEditTable({
   data,
   loading,
@@ -41,11 +48,28 @@ export default function UserEditTable({
       },
     },
     {
+      name: 'roles',
+      label: intl.formatMessage({ id: 'ROLES' }),
+      options: {
+        customBodyRender: (_, userObj) => {
+          // filter all possible roles by whether an attribute
+          // in userObj by name of currentRole.id exists
+          const rolesInCurrentUser = roleSchema.filter(
+            currentRole => userObj[currentRole.id],
+          );
+          const roleLabelInCurrentUser = rolesInCurrentUser.map(
+            currentRole => makePretty(currentRole.titleId),
+          );
+          return roleLabelInCurrentUser.join(', ');
+        },
+      },
+    },
+    {
       name: 'actions',
       label: intl.formatMessage({ id: 'ACTIONS' }),
       options: {
         customBodyRender: (_, user) => (
-          <div>
+          <div style={{ display: 'flex' }}>
             <ActionIcon
               variant="view"
               href={`/users/${get(user, 'guid')}`}
@@ -85,8 +109,8 @@ export default function UserEditTable({
       />
       <DataDisplay
         idKey="guid"
+        title={<FormattedMessage id="EDIT_USERS" />}
         style={{ marginTop: 8 }}
-        noTitleBar
         variant="secondary"
         columns={tableColumns}
         data={data || []}

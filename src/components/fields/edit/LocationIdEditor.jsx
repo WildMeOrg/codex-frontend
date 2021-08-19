@@ -29,7 +29,9 @@ export default function LocationIdEditor(props) {
   function collapseChoices(choices, depth) {
     const result = choices.map(choice => {
       const numDescendants = getNumDescendents(choice);
-      const numDescendantsAsString = numDescendants ? `(${numDescendants})` : '';
+      const numDescendantsAsString = numDescendants
+        ? `(${numDescendants})`
+        : '';
       if (!choice.locationID) {
         return {
           depth,
