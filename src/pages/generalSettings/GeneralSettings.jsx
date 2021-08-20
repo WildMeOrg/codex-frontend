@@ -3,16 +3,19 @@ import { useIntl, FormattedMessage } from 'react-intl';
 import { get, zipObject } from 'lodash-es';
 import Grid from '@material-ui/core/Grid';
 import Skeleton from '@material-ui/lab/Skeleton';
+
+import useSiteSettings from '../../models/site/useSiteSettings';
+import usePutSiteSettings from '../../models/site/usePutSiteSettings';
+import usePostSettingsAsset from '../../models/site/usePostSettingsAsset';
+
 import CustomAlert from '../../components/Alert';
 import Button from '../../components/Button';
 import ButtonLink from '../../components/ButtonLink';
-import useSiteSettings from '../../models/site/useSiteSettings';
-import usePutSiteSettings from '../../models/site/usePutSiteSettings';
-
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import MainColumn from '../../components/MainColumn';
 import LabeledInput from '../../components/LabeledInput';
 import Text from '../../components/Text';
+import SettingsFileUpload from '../../components/SettingsFileUpload';
 
 const customFields = {
   sighting: 'site.custom.customFields.Occurrence',
@@ -40,6 +43,11 @@ export default function GeneralSettings() {
     setSuccess,
   } = usePutSiteSettings();
 
+  const {
+    postSettingsAsset,
+    error: settingsAssetPostError,
+  } = usePostSettingsAsset();
+
   const intl = useIntl();
 
   const documentTitle = intl.formatMessage({
@@ -48,6 +56,7 @@ export default function GeneralSettings() {
   useDocumentTitle(documentTitle);
 
   const [currentValues, setCurrentValues] = useState(null);
+  const [logoPostData, setLogoPostData] = useState(null);
 
   const edmValues = generalSettingsFields.map(fieldKey =>
     get(siteSettings, ['data', fieldKey, 'value']),
@@ -117,6 +126,7 @@ export default function GeneralSettings() {
                       style={{
                         marginTop: 4,
                       }}
+                      variant="body2"
                       id={matchingSetting.descriptionId}
                     />
                   </>
@@ -169,6 +179,14 @@ export default function GeneralSettings() {
             </Grid>
           );
         })}
+        <SettingsFileUpload
+          labelId="LOGO"
+          descriptionId="LOGO_DESCRIPTION"
+          changeId="CHANGE_LOGO"
+          allowedFileTypes={['.jpg', '.jpeg', '.png']}
+          settingName="logo"
+          onSetPostData={setLogoPostData}
+        />
         <Grid
           item
           style={{
@@ -222,6 +240,7 @@ export default function GeneralSettings() {
                 }
               });
               putSiteSettings(currentValues);
+              if (logoPostData) postSettingsAsset(logoPostData);
             }}
             style={{ marginTop: 12 }}
             display="primary"

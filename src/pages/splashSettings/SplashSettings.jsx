@@ -4,15 +4,17 @@ import { get, zipObject } from 'lodash-es';
 import Grid from '@material-ui/core/Grid';
 import Skeleton from '@material-ui/lab/Skeleton';
 
-import CustomAlert from '../../components/Alert';
+import usePostSettingsAsset from '../../models/site/usePostSettingsAsset';
+import useSiteSettings from '../../models/site/useSiteSettings';
+import usePutSiteSettings from '../../models/site/usePutSiteSettings';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
+import CustomAlert from '../../components/Alert';
 import MainColumn from '../../components/MainColumn';
 import Button from '../../components/Button';
 import ButtonLink from '../../components/ButtonLink';
 import Text from '../../components/Text';
-import useSiteSettings from '../../models/site/useSiteSettings';
-import usePutSiteSettings from '../../models/site/usePutSiteSettings';
 import LabeledInput from '../../components/LabeledInput';
+import SettingsFileUpload from '../../components/SettingsFileUpload';
 
 const customFields = {
   sighting: 'site.custom.customFields.Occurrence',
@@ -45,12 +47,27 @@ export default function SiteSettings() {
     setSuccess,
   } = usePutSiteSettings();
 
+  const {
+    postSettingsAsset,
+    error: settingsAssetPostError,
+  } = usePostSettingsAsset();
+
   const intl = useIntl();
 
   const documentTitle = intl.formatMessage({ id: 'SPLASH_PAGE' });
   useDocumentTitle(documentTitle);
 
   const [currentValues, setCurrentValues] = useState(null);
+  const [splashVideoPostData, setSplashVideoPostData] = useState(
+    null,
+  );
+  const [splashImagePostData, setSplashImagePostData] = useState(
+    null,
+  );
+  const [
+    customCardImagePostData,
+    setCustomCardImagePostData,
+  ] = useState(null);
 
   const edmValues = newSettingFields.map(fieldKey =>
     get(siteSettings, ['data', fieldKey, 'value']),
@@ -126,6 +143,7 @@ export default function SiteSettings() {
                       style={{
                         marginTop: 4,
                       }}
+                      variant="body2"
                       id={matchingSetting.descriptionId}
                     />
                   </>
@@ -178,6 +196,32 @@ export default function SiteSettings() {
             </Grid>
           );
         })}
+
+        <SettingsFileUpload
+          labelId="CUSTOM_CARD_IMAGE"
+          descriptionId="CUSTOM_CARD_IMAGE_DESCRIPTION"
+          changeId="CHANGE_IMAGE"
+          allowedFileTypes={['.jpg', '.jpeg', '.png']}
+          settingName="customCardImage"
+          onSetPostData={setCustomCardImagePostData}
+        />
+        <SettingsFileUpload
+          labelId="SPLASH_IMAGE"
+          descriptionId="SPLASH_IMAGE_DESCRIPTION"
+          changeId="CHANGE_IMAGE"
+          allowedFileTypes={['.jpg', '.jpeg', '.png']}
+          settingName="splashImage"
+          onSetPostData={setSplashImagePostData}
+        />
+        <SettingsFileUpload
+          labelId="SPLASH_VIDEO"
+          descriptionId="SPLASH_VIDEO_DESCRIPTION"
+          changeId="CHANGE_VIDEO"
+          allowedFileTypes={['.webm', '.mp4']}
+          settingName="splashVideo"
+          onSetPostData={setSplashVideoPostData}
+          variant="video"
+        />
         <Grid
           item
           style={{
