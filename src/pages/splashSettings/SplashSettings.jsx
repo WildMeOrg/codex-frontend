@@ -4,15 +4,17 @@ import { get, zipObject } from 'lodash-es';
 import Grid from '@material-ui/core/Grid';
 import Skeleton from '@material-ui/lab/Skeleton';
 
-import CustomAlert from '../../components/Alert';
+import usePostSettingsAsset from '../../models/site/usePostSettingsAsset';
+import useSiteSettings from '../../models/site/useSiteSettings';
+import usePutSiteSettings from '../../models/site/usePutSiteSettings';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
+import CustomAlert from '../../components/Alert';
 import MainColumn from '../../components/MainColumn';
 import Button from '../../components/Button';
 import ButtonLink from '../../components/ButtonLink';
 import Text from '../../components/Text';
-import useSiteSettings from '../../models/site/useSiteSettings';
-import usePutSiteSettings from '../../models/site/usePutSiteSettings';
 import LabeledInput from '../../components/LabeledInput';
+import SettingsFileUpload from '../../components/SettingsFileUpload';
 
 const customFields = {
   sighting: 'site.custom.customFields.Occurrence',
@@ -21,12 +23,12 @@ const customFields = {
 };
 
 const newSettingFields = [
-  'site.general.tagline',
-  'site.general.taglineSubtitle',
-  'site.general.description',
   'site.general.customCardLine1',
   'site.general.customCardLine2',
   'site.general.customCardButtonText',
+  'site.general.tagline',
+  'site.general.taglineSubtitle',
+  'site.general.description',
   'site.general.helpDescription',
   'site.general.donationButtonUrl',
 ];
@@ -39,11 +41,16 @@ export default function SiteSettings() {
   const siteSettings = useSiteSettings();
   const {
     putSiteSettings,
-    error,
+    error: putSiteSettingsError,
     setError,
     success,
     setSuccess,
   } = usePutSiteSettings();
+
+  const {
+    postSettingsAsset,
+    error: settingsAssetPostError,
+  } = usePostSettingsAsset();
 
   const intl = useIntl();
 
@@ -51,6 +58,16 @@ export default function SiteSettings() {
   useDocumentTitle(documentTitle);
 
   const [currentValues, setCurrentValues] = useState(null);
+  const [splashVideoPostData, setSplashVideoPostData] = useState(
+    null,
+  );
+  const [splashImagePostData, setSplashImagePostData] = useState(
+    null,
+  );
+  const [
+    customCardImagePostData,
+    setCustomCardImagePostData,
+  ] = useState(null);
 
   const edmValues = newSettingFields.map(fieldKey =>
     get(siteSettings, ['data', fieldKey, 'value']),
@@ -64,6 +81,8 @@ export default function SiteSettings() {
     ['data', 'site.custom.customFieldCategories', 'value'],
     [],
   );
+
+  const error = putSiteSettingsError || settingsAssetPostError;
 
   return (
     <MainColumn>
@@ -83,6 +102,31 @@ export default function SiteSettings() {
         direction="column"
         style={{ marginTop: 20, padding: 20 }}
       >
+        <SettingsFileUpload
+          labelId="SPLASH_IMAGE"
+          descriptionId="SPLASH_IMAGE_DESCRIPTION"
+          changeId="CHANGE_IMAGE"
+          allowedFileTypes={['.jpg', '.jpeg', '.png']}
+          settingName="splashImage"
+          onSetPostData={setSplashImagePostData}
+        />
+        <SettingsFileUpload
+          labelId="SPLASH_VIDEO"
+          descriptionId="SPLASH_VIDEO_DESCRIPTION"
+          changeId="CHANGE_VIDEO"
+          allowedFileTypes={['.webm', '.mp4']}
+          settingName="splashVideo"
+          onSetPostData={setSplashVideoPostData}
+          variant="video"
+        />
+        <SettingsFileUpload
+          labelId="CUSTOM_CARD_IMAGE"
+          descriptionId="CUSTOM_CARD_IMAGE_DESCRIPTION"
+          changeId="CHANGE_IMAGE"
+          allowedFileTypes={['.jpg', '.jpeg', '.png']}
+          settingName="customCardImage"
+          onSetPostData={setCustomCardImagePostData}
+        />
         {newSettingFields.map(settingKey => {
           const matchingSetting = get(siteSettings, [
             'data',
@@ -126,6 +170,7 @@ export default function SiteSettings() {
                       style={{
                         marginTop: 4,
                       }}
+                      variant="body2"
                       id={matchingSetting.descriptionId}
                     />
                   </>
@@ -178,6 +223,7 @@ export default function SiteSettings() {
             </Grid>
           );
         })}
+
         <Grid
           item
           style={{
@@ -230,6 +276,12 @@ export default function SiteSettings() {
                 }
               });
               putSiteSettings(currentValues);
+              if (splashVideoPostData)
+                postSettingsAsset(splashVideoPostData);
+              if (splashImagePostData)
+                postSettingsAsset(splashImagePostData);
+              if (customCardImagePostData)
+                postSettingsAsset(customCardImagePostData);
             }}
             style={{ marginTop: 12 }}
             display="primary"

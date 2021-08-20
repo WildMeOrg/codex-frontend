@@ -18,6 +18,11 @@ export default function CustomCard() {
     'value',
   ]);
 
+  const imageUrl = get(siteSettings, [
+    'site.images',
+    'customCardImage',
+  ]);
+
   return (
     <Grid
       container
@@ -32,8 +37,7 @@ export default function CustomCard() {
       <Grid item style={{ marginBottom: 40 }}>
         <div
           style={{
-            backgroundImage:
-              'url(https://images-na.ssl-images-amazon.com/images/I/71h5dWJt+XL.jpg)',
+            backgroundImage: `url(${imageUrl})`,
             borderRadius: 1000,
             backgroundSize: 'cover',
             float: 'right',

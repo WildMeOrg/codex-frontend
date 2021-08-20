@@ -2,13 +2,11 @@ import React, { useEffect, useState } from 'react';
 import ReactPlayer from 'react-player';
 import { get } from 'lodash-es';
 import { useIntl, FormattedMessage } from 'react-intl';
-import { useSelector } from 'react-redux';
 import { useTheme } from '@material-ui/core/styles';
 import ScrollIcon from '@material-ui/icons/KeyboardArrowUp';
 import Fab from '@material-ui/core/Fab';
 
 import useDocumentTitle from '../../hooks/useDocumentTitle';
-import { selectSiteSettings } from '../../modules/site/selectors';
 import ButtonLink from '../../components/ButtonLink';
 import Text from '../../components/Text';
 import useSiteSettings from '../../models/site/useSiteSettings';
@@ -20,12 +18,18 @@ import Metrics from './Metrics';
 import HelpAsk from './HelpAsk';
 import Social from './Social';
 
+const mediaStyles = {
+  objectFit: 'cover',
+  objectPosition: '50% 50%',
+  width: '100%',
+  height: '100%',
+};
+
 export default function Splash() {
   const intl = useIntl();
   const theme = useTheme();
   const { data: newSiteSettings, loading, error } = useSiteSettings();
 
-  const siteSettings = useSelector(selectSiteSettings);
   const [top, setTop] = useState(true);
 
   useEffect(() => {
@@ -54,6 +58,15 @@ export default function Splash() {
 
   if (loading || error) return null;
 
+  const splashVideo = get(newSiteSettings, [
+    'site.images',
+    'splashVideo',
+  ]);
+  const splashImage = get(newSiteSettings, [
+    'site.images',
+    'splashImage',
+  ]);
+
   return (
     <div>
       <Fab
@@ -81,29 +94,33 @@ export default function Splash() {
           justifyContent: 'center',
           width: '100vw',
           height: '100vh',
+          background: 'linear-gradient(90deg, #1d8792, #259869)',
         }}
       >
-        <ReactPlayer
-          url={siteSettings.splashVideo}
-          muted
-          autoPlay
-          playing
-          width="100%"
-          height="100%"
-          style={{ filter: 'brightness(0.5)' }}
-          config={{
-            file: {
-              attributes: {
-                style: {
-                  objectFit: 'cover',
-                  objectPosition: '50% 50%',
-                  width: '100%',
-                  height: '100%',
+        {splashVideo ? (
+          <ReactPlayer
+            url={splashVideo}
+            muted
+            autoPlay
+            playing
+            width="100%"
+            height="100%"
+            style={{ filter: 'brightness(0.5)' }}
+            config={{
+              file: {
+                attributes: {
+                  style: mediaStyles,
                 },
               },
-            },
-          }}
-        />
+            }}
+          />
+        ) : (
+          <img
+            alt="Home page background"
+            src={splashImage}
+            style={mediaStyles}
+          />
+        )}
         <div
           style={{
             position: 'absolute',
