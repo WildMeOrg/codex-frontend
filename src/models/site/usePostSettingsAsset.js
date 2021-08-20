@@ -17,8 +17,6 @@ export default function usePostSettingsAsset() {
         method: 'post',
         data,
       });
-      console.log(response);
-      console.log(response.data);
       const successful = get(response, ['data', 'success'], false);
       if (successful) {
         dispatch(setSiteSettingsNeedsFetch(true));
