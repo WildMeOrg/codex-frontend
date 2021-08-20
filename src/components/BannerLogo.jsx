@@ -22,9 +22,10 @@ export default function BannerLogo({
 
   const containerProps = href || onClick ? { noUnderline: true } : {};
 
-  const siteName = get(siteSettings, ['site.name', 'value'], '');
-
   if (loading || error) return null;
+
+  const siteName = get(siteSettings, ['site.name', 'value'], '');
+  const logo = get(siteSettings, ['site.images', 'logo']);
 
   return (
     <Container
@@ -34,20 +35,28 @@ export default function BannerLogo({
       {...rest}
     >
       <div style={{ display: 'flex', alignItems: 'center' }}>
-        <InstanceLogo
-          style={{
-            fill: theme.palette.primary.main,
-            height: 52,
-            flexShrink: 0,
-          }}
-        />
+        {logo ? (
+          <img
+            alt={`Logo for ${siteName}`}
+            src={logo}
+            style={{ height: 52, flexShrink: 0 }}
+          />
+        ) : (
+          <InstanceLogo
+            style={{
+              fill: theme.palette.primary.main,
+              height: 52,
+              flexShrink: 0,
+            }}
+          />
+        )}
         <Text
           variant="h5"
           style={{
             color: black
               ? theme.palette.common.black
               : theme.palette.common.white,
-            margin: '0 12px 0 4px',
+            margin: '0 12px 0 8px',
           }}
         >
           {siteName}

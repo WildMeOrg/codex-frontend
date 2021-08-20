@@ -37,7 +37,7 @@ export default function GeneralSettings() {
   const siteSettings = useSiteSettings();
   const {
     putSiteSettings,
-    error,
+    error: putSiteSettingsError,
     setError,
     success,
     setSuccess,
@@ -64,6 +64,8 @@ export default function GeneralSettings() {
   useEffect(() => {
     setCurrentValues(zipObject(generalSettingsFields, edmValues));
   }, edmValues);
+
+  const error = putSiteSettingsError || settingsAssetPostError;
 
   return (
     <MainColumn>

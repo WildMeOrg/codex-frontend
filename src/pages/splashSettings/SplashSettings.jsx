@@ -23,12 +23,12 @@ const customFields = {
 };
 
 const newSettingFields = [
-  'site.general.tagline',
-  'site.general.taglineSubtitle',
-  'site.general.description',
   'site.general.customCardLine1',
   'site.general.customCardLine2',
   'site.general.customCardButtonText',
+  'site.general.tagline',
+  'site.general.taglineSubtitle',
+  'site.general.description',
   'site.general.helpDescription',
   'site.general.donationButtonUrl',
 ];
@@ -41,7 +41,7 @@ export default function SiteSettings() {
   const siteSettings = useSiteSettings();
   const {
     putSiteSettings,
-    error,
+    error: putSiteSettingsError,
     setError,
     success,
     setSuccess,
@@ -82,6 +82,8 @@ export default function SiteSettings() {
     [],
   );
 
+  const error = putSiteSettingsError || settingsAssetPostError;
+
   return (
     <MainColumn>
       <Text
@@ -100,6 +102,31 @@ export default function SiteSettings() {
         direction="column"
         style={{ marginTop: 20, padding: 20 }}
       >
+        <SettingsFileUpload
+          labelId="SPLASH_IMAGE"
+          descriptionId="SPLASH_IMAGE_DESCRIPTION"
+          changeId="CHANGE_IMAGE"
+          allowedFileTypes={['.jpg', '.jpeg', '.png']}
+          settingName="splashImage"
+          onSetPostData={setSplashImagePostData}
+        />
+        <SettingsFileUpload
+          labelId="SPLASH_VIDEO"
+          descriptionId="SPLASH_VIDEO_DESCRIPTION"
+          changeId="CHANGE_VIDEO"
+          allowedFileTypes={['.webm', '.mp4']}
+          settingName="splashVideo"
+          onSetPostData={setSplashVideoPostData}
+          variant="video"
+        />
+        <SettingsFileUpload
+          labelId="CUSTOM_CARD_IMAGE"
+          descriptionId="CUSTOM_CARD_IMAGE_DESCRIPTION"
+          changeId="CHANGE_IMAGE"
+          allowedFileTypes={['.jpg', '.jpeg', '.png']}
+          settingName="customCardImage"
+          onSetPostData={setCustomCardImagePostData}
+        />
         {newSettingFields.map(settingKey => {
           const matchingSetting = get(siteSettings, [
             'data',
@@ -197,31 +224,6 @@ export default function SiteSettings() {
           );
         })}
 
-        <SettingsFileUpload
-          labelId="CUSTOM_CARD_IMAGE"
-          descriptionId="CUSTOM_CARD_IMAGE_DESCRIPTION"
-          changeId="CHANGE_IMAGE"
-          allowedFileTypes={['.jpg', '.jpeg', '.png']}
-          settingName="customCardImage"
-          onSetPostData={setCustomCardImagePostData}
-        />
-        <SettingsFileUpload
-          labelId="SPLASH_IMAGE"
-          descriptionId="SPLASH_IMAGE_DESCRIPTION"
-          changeId="CHANGE_IMAGE"
-          allowedFileTypes={['.jpg', '.jpeg', '.png']}
-          settingName="splashImage"
-          onSetPostData={setSplashImagePostData}
-        />
-        <SettingsFileUpload
-          labelId="SPLASH_VIDEO"
-          descriptionId="SPLASH_VIDEO_DESCRIPTION"
-          changeId="CHANGE_VIDEO"
-          allowedFileTypes={['.webm', '.mp4']}
-          settingName="splashVideo"
-          onSetPostData={setSplashVideoPostData}
-          variant="video"
-        />
         <Grid
           item
           style={{
@@ -274,6 +276,12 @@ export default function SiteSettings() {
                 }
               });
               putSiteSettings(currentValues);
+              if (splashVideoPostData)
+                postSettingsAsset(splashVideoPostData);
+              if (splashImagePostData)
+                postSettingsAsset(splashImagePostData);
+              if (customCardImagePostData)
+                postSettingsAsset(customCardImagePostData);
             }}
             style={{ marginTop: 12 }}
             display="primary"

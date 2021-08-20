@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
-import ReactPlayer from 'react-player';
 import { get } from 'lodash-es';
+import ReactPlayer from 'react-player';
 import Uppy from '@uppy/core';
 import Tus from '@uppy/tus';
 import DashboardModal from '@uppy/react/lib/DashboardModal';
@@ -10,16 +10,18 @@ import '@uppy/dashboard/dist/style.css';
 import { v4 as uuid } from 'uuid';
 
 import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
+import VideoIcon from '@material-ui/icons/Movie';
 
 import Button from './Button';
 import useSiteSettings from '../models/site/useSiteSettings';
 import Text from './Text';
 
-function MediaViewer({ variant = 'image', url, alt }) {
+function MediaViewer({ variant = 'image', url, label }) {
   if (variant === 'image') {
     return (
       <img
-        alt={alt}
+        alt={label}
         style={{
           maxHeight: 240,
           maxWidth: 240,
@@ -29,31 +31,32 @@ function MediaViewer({ variant = 'image', url, alt }) {
         src={url}
       />
     );
-  } else if (variant === 'video') {
+  } else if (variant === 'video' && url) {
     return (
       <ReactPlayer
-        url={siteSettings.splashVideo}
+        url={url}
+        height={240}
+        width={360}
         muted
         autoPlay
         playing
-        width={240}
-        height={240}
-        // style={{ filter: 'brightness(0.5)' }}
-        // config={{
-        //   file: {
-        //     attributes: {
-        //       style: {
-        //         objectFit: 'cover',
-        //         objectPosition: '50% 50%',
-        //         width: '100%',
-        //         height: '100%',
-        //       },
-        //     },
-        //   },
-        // }}
+        controls
       />
     );
+  } else if (variant === 'video' && !url) {
+    return (
+      <Paper
+        style={{ display: 'flex', padding: 20, alignItems: 'center' }}
+      >
+        <VideoIcon style={{ marginRight: 8 }} fontSize="large" />
+        <Text variant="subtitle1">
+          {label || 'Filename unavailable'}
+        </Text>
+      </Paper>
+    );
   }
+
+  return <Text>{label}</Text>;
 }
 
 export default function SettingsFileUpload({
@@ -64,6 +67,7 @@ export default function SettingsFileUpload({
   allowedFileTypes,
   settingName,
   onSetPostData = Function.prototype,
+  maxFileSize = 10000000, // 10 MB
   variant = 'image',
 }) {
   const intl = useIntl();
@@ -71,6 +75,7 @@ export default function SettingsFileUpload({
   const [uppy, setUppy] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [previewUrl, setPreviewUrl] = useState(null);
+  const [previewText, setPreviewText] = useState(null);
   const assetSubmissionId = useMemo(uuid, []);
 
   useEffect(() => {
@@ -78,7 +83,7 @@ export default function SettingsFileUpload({
       meta: { type: settingName },
       restrictions: {
         maxNumberOfFiles: 1,
-        maxFileSize: 10000000, // 10 MB
+        maxFileSize,
         allowedFileTypes,
       },
       autoProceed: true,
@@ -93,7 +98,6 @@ export default function SettingsFileUpload({
 
     uppyInstance.on('complete', uppyState => {
       const uploadObject = get(uppyState, 'successful.0');
-      console.log(uploadObject);
       if (uploadObject) {
         onSetPostData({
           key: settingName,
@@ -101,6 +105,7 @@ export default function SettingsFileUpload({
           transactionPath: get(uploadObject, ['meta', 'name']),
         });
         setPreviewUrl(get(uploadObject, 'preview'));
+        setPreviewText(get(uploadObject, 'name'));
       }
     });
 
@@ -115,7 +120,7 @@ export default function SettingsFileUpload({
     settingName,
   ]);
 
-  const imageUrl = previewUrl || settingValue;
+  const mediaUrl = previewUrl || settingValue;
 
   const allowedFileTypeString = allowedFileTypes
     ? allowedFileTypes.join(', ')
@@ -163,12 +168,13 @@ export default function SettingsFileUpload({
           minWidth: 400,
         }}
       >
-        {imageUrl ? (
+        {mediaUrl || previewText ? (
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <MediaViewer
-              url={imageUrl}
+              url={mediaUrl}
               alt={`Uploaded ${settingName}`}
               variant={variant}
+              label={previewText}
             />
             <Button
               onClick={() => {
