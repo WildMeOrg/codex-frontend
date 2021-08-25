@@ -26,6 +26,7 @@ const newSettingFields = [
   'site.general.customCardLine1',
   'site.general.customCardLine2',
   'site.general.customCardButtonText',
+  'site.general.customCardButtonUrl',
   'site.general.tagline',
   'site.general.taglineSubtitle',
   'site.general.description',

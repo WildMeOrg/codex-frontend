@@ -13,12 +13,11 @@ import IconButton from '@material-ui/core/IconButton';
 import Avatar from '@material-ui/core/Avatar';
 import Popover from '@material-ui/core/Popover';
 // import ProjectsIcon from '@material-ui/icons/GroupWork';
-import DropDownIcon from '@material-ui/icons/ArrowDropDown';
+import SearchIcon from '@material-ui/icons/Search';
 import SightingsIcon from '@material-ui/icons/PhotoCamera';
 import AddIcon from '@material-ui/icons/Add';
 
 import FilterBar from '../FilterBar';
-import IndividualIcon from '../icons/IndividualIcon';
 import Button from '../Button';
 import ButtonLink from '../ButtonLink';
 import Text from '../Text';
@@ -26,6 +25,7 @@ import Link from '../Link';
 // import fakeProjects from './fakeProjects';
 import fakeIndividuals from './fakeIndividuals';
 import fakeSightings from './fakeSightings';
+import IndividualsButton from './IndividualsButton';
 
 // function ProjectsButton({ titleId }) {
 //   const intl = useIntl();
@@ -175,7 +175,7 @@ function EntityButton({
           color: theme.palette.grey.A400,
           marginLeft: 8,
         }}
-        endIcon={<DropDownIcon />}
+        startIcon={<SearchIcon />}
       >
         {title}
       </Button>
@@ -267,15 +267,7 @@ function EntityButton({
 export default function PopoverButtons() {
   return (
     <div style={{ display: 'flex' }}>
-      <EntityButton
-        titleId="INDIVIDUALS"
-        exploreButtonId="EXPLORE_INDIVIDUALS"
-        exploreHref="/individuals"
-        createHref="/create/individual"
-        Icon={IndividualIcon}
-        value="individuals"
-        entities={fakeIndividuals}
-      />
+      <IndividualsButton entities={fakeIndividuals} />
       <EntityButton
         titleId="SIGHTINGS"
         exploreButtonId="EXPLORE_SIGHTINGS"
