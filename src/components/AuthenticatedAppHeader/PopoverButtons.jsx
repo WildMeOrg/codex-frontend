@@ -23,7 +23,6 @@ import ButtonLink from '../ButtonLink';
 import Text from '../Text';
 import Link from '../Link';
 // import fakeProjects from './fakeProjects';
-import fakeIndividuals from './fakeIndividuals';
 import fakeSightings from './fakeSightings';
 import IndividualsButton from './IndividualsButton';
 
@@ -267,7 +266,7 @@ function EntityButton({
 export default function PopoverButtons() {
   return (
     <div style={{ display: 'flex' }}>
-      <IndividualsButton entities={fakeIndividuals} />
+      <IndividualsButton />
       <EntityButton
         titleId="SIGHTINGS"
         exploreButtonId="EXPLORE_SIGHTINGS"
