@@ -66,6 +66,7 @@ export default function Splash() {
     'site.images',
     'splashImage',
   ]);
+  const displaySplashImage = splashImage && !splashVideo;
 
   return (
     <div>
@@ -94,7 +95,7 @@ export default function Splash() {
           justifyContent: 'center',
           width: '100vw',
           height: '100vh',
-          background: 'linear-gradient(90deg, #1d8792, #259869)',
+          background: theme.palette.grey['900'],
         }}
       >
         {splashVideo ? (
@@ -114,13 +115,14 @@ export default function Splash() {
               },
             }}
           />
-        ) : (
+        ) : null}
+        {displaySplashImage ? (
           <img
             alt="Home page background"
             src={splashImage}
             style={mediaStyles}
           />
-        )}
+        ) : null}
         <div
           style={{
             position: 'absolute',

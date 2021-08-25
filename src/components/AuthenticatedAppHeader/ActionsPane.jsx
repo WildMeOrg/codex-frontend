@@ -49,6 +49,7 @@ export default function NotificationsPane({
   const isAdministrator = get(userData, 'is_admin', false);
   const isUserManager = get(userData, 'is_user_manager', false);
   const name = get(userData, 'full_name', 'Unnamed user');
+  const profileSrc = get(userData, ['profile_fileupload', 'src']);
 
   return (
     <Popover
@@ -67,7 +68,7 @@ export default function NotificationsPane({
           <MenuItem style={{ minHeight: 'auto' }}>
             <Avatar
               style={{ height: 52, width: 52 }}
-              src={defaultProfilePhoto}
+              src={profileSrc || defaultProfilePhoto}
             />
             <div style={{ display: 'flex', flexDirection: 'column' }}>
               <Text style={{ margin: '0 20px', fontWeight: 'bold' }}>

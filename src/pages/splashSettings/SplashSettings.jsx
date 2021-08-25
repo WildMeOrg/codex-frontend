@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { useIntl, FormattedMessage } from 'react-intl';
+import { useIntl } from 'react-intl';
 import { get, zipObject } from 'lodash-es';
+
 import Grid from '@material-ui/core/Grid';
-import Skeleton from '@material-ui/lab/Skeleton';
 
 import usePostSettingsAsset from '../../models/site/usePostSettingsAsset';
 import useSiteSettings from '../../models/site/useSiteSettings';
@@ -12,9 +12,10 @@ import CustomAlert from '../../components/Alert';
 import MainColumn from '../../components/MainColumn';
 import Button from '../../components/Button';
 import ButtonLink from '../../components/ButtonLink';
+import DividerTitle from '../../components/DividerTitle';
 import Text from '../../components/Text';
-import LabeledInput from '../../components/LabeledInput';
-import SettingsFileUpload from '../../components/SettingsFileUpload';
+import SettingsFileUpload from '../../components/settings/SettingsFileUpload';
+import SettingsTextInput from '../../components/settings/SettingsTextInput';
 
 const customFields = {
   sighting: 'site.custom.customFields.Occurrence',
@@ -34,23 +35,21 @@ const newSettingFields = [
   'site.general.donationButtonUrl',
 ];
 
-function SettingInput({ customFieldCategories, schema, ...rest }) {
-  return <LabeledInput schema={schema} {...rest} />;
-}
-
 export default function SiteSettings() {
   const siteSettings = useSiteSettings();
   const {
     putSiteSettings,
+    loading: formPostLoading,
     error: putSiteSettingsError,
-    setError,
-    success,
-    setSuccess,
+    success: formPostSuccess,
+    setSuccess: setFormPostSuccess,
   } = usePutSiteSettings();
 
   const {
     postSettingsAsset,
     error: settingsAssetPostError,
+    loading: assetPostLoading,
+    setSuccess: setAssetPostSuccess,
   } = usePostSettingsAsset();
 
   const intl = useIntl();
@@ -83,7 +82,9 @@ export default function SiteSettings() {
     [],
   );
 
+  const loading = assetPostLoading || formPostLoading;
   const error = putSiteSettingsError || settingsAssetPostError;
+  const success = formPostSuccess && !error && !loading;
 
   return (
     <MainColumn>
@@ -103,6 +104,21 @@ export default function SiteSettings() {
         direction="column"
         style={{ marginTop: 20, padding: 20 }}
       >
+        <DividerTitle titleId="HERO_AREA" />
+        <SettingsTextInput
+          settingKey="site.general.tagline"
+          customFieldCategories={customFieldCategories}
+          currentValues={currentValues}
+          setCurrentValues={setCurrentValues}
+          siteSettings={siteSettings}
+        />
+        <SettingsTextInput
+          settingKey="site.general.taglineSubtitle"
+          customFieldCategories={customFieldCategories}
+          currentValues={currentValues}
+          setCurrentValues={setCurrentValues}
+          siteSettings={siteSettings}
+        />
         <SettingsFileUpload
           labelId="SPLASH_IMAGE"
           descriptionId="SPLASH_IMAGE_DESCRIPTION"
@@ -120,6 +136,10 @@ export default function SiteSettings() {
           onSetPostData={setSplashVideoPostData}
           variant="video"
         />
+        <DividerTitle
+          titleId="CUSTOM_CARD_AREA"
+          style={{ marginTop: 32 }}
+        />
         <SettingsFileUpload
           labelId="CUSTOM_CARD_IMAGE"
           descriptionId="CUSTOM_CARD_IMAGE_DESCRIPTION"
@@ -128,103 +148,56 @@ export default function SiteSettings() {
           settingName="customCardImage"
           onSetPostData={setCustomCardImagePostData}
         />
-        {newSettingFields.map(settingKey => {
-          const matchingSetting = get(siteSettings, [
-            'data',
-            settingKey,
-          ]);
-          const valueIsDefined =
-            get(currentValues, settingKey, undefined) !== undefined;
-
-          return (
-            <Grid
-              key={settingKey}
-              item
-              style={{
-                display: 'flex',
-                width: '100%',
-                justifyContent: 'space-between',
-              }}
-            >
-              <div
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  width: '100%',
-                  minWidth: '35%',
-                }}
-              >
-                {matchingSetting && valueIsDefined ? (
-                  <>
-                    <Text
-                      style={{
-                        marginTop: 20,
-                      }}
-                      variant="subtitle1"
-                    >
-                      <FormattedMessage
-                        id={matchingSetting.labelId}
-                      />
-                      {matchingSetting.required && ' *'}
-                    </Text>
-                    <Text
-                      style={{
-                        marginTop: 4,
-                      }}
-                      variant="body2"
-                      id={matchingSetting.descriptionId}
-                    />
-                  </>
-                ) : (
-                  <>
-                    <Skeleton
-                      variant="rect"
-                      width="40%"
-                      height={30}
-                      style={{ marginTop: 20 }}
-                    />
-                    <Skeleton
-                      variant="rect"
-                      width="100%"
-                      height={48}
-                      style={{ marginTop: 4 }}
-                    />
-                  </>
-                )}
-              </div>
-              <div
-                style={{
-                  marginTop: 24,
-                  marginLeft: 80,
-                  width: 400,
-                  minWidth: 400,
-                }}
-              >
-                {matchingSetting && valueIsDefined ? (
-                  <SettingInput
-                    customFieldCategories={customFieldCategories}
-                    schema={{
-                      labelId: matchingSetting.labelId,
-                      descriptionId: matchingSetting.descriptionId,
-                      fieldType: matchingSetting.displayType,
-                    }}
-                    minimalLabels
-                    value={currentValues[settingKey]}
-                    onChange={value => {
-                      setCurrentValues({
-                        ...currentValues,
-                        [settingKey]: value,
-                      });
-                    }}
-                  />
-                ) : (
-                  <Skeleton variant="rect" width={280} height={30} />
-                )}
-              </div>
-            </Grid>
-          );
-        })}
-
+        <SettingsTextInput
+          settingKey="site.general.customCardLine1"
+          customFieldCategories={customFieldCategories}
+          currentValues={currentValues}
+          setCurrentValues={setCurrentValues}
+          siteSettings={siteSettings}
+        />
+        <SettingsTextInput
+          settingKey="site.general.customCardLine2"
+          customFieldCategories={customFieldCategories}
+          currentValues={currentValues}
+          setCurrentValues={setCurrentValues}
+          siteSettings={siteSettings}
+        />
+        <SettingsTextInput
+          settingKey="site.general.customCardButtonText"
+          customFieldCategories={customFieldCategories}
+          currentValues={currentValues}
+          setCurrentValues={setCurrentValues}
+          siteSettings={siteSettings}
+        />
+        <SettingsTextInput
+          settingKey="site.general.customCardButtonUrl"
+          customFieldCategories={customFieldCategories}
+          currentValues={currentValues}
+          setCurrentValues={setCurrentValues}
+          siteSettings={siteSettings}
+        />
+        <DividerTitle titleId="MISC" style={{ marginTop: 32 }} />
+        <SettingsTextInput
+          settingKey="site.general.description"
+          customFieldCategories={customFieldCategories}
+          currentValues={currentValues}
+          setCurrentValues={setCurrentValues}
+          siteSettings={siteSettings}
+        />
+        <SettingsTextInput
+          settingKey="site.general.helpDescription"
+          customFieldCategories={customFieldCategories}
+          currentValues={currentValues}
+          setCurrentValues={setCurrentValues}
+          siteSettings={siteSettings}
+        />
+        <SettingsTextInput
+          settingKey="site.general.donationButtonUrl"
+          customFieldCategories={customFieldCategories}
+          currentValues={currentValues}
+          setCurrentValues={setCurrentValues}
+          siteSettings={siteSettings}
+        />
         <Grid
           item
           style={{
@@ -236,7 +209,6 @@ export default function SiteSettings() {
         >
           {Boolean(error) && (
             <CustomAlert
-              onClose={() => setError(null)}
               severity="error"
               titleId="SUBMISSION_ERROR"
               description={error}
@@ -244,7 +216,10 @@ export default function SiteSettings() {
           )}
           {success && (
             <CustomAlert
-              onClose={() => setSuccess(false)}
+              onClose={() => {
+                setFormPostSuccess(false);
+                setAssetPostSuccess(false);
+              }}
               severity="success"
               titleId="SUCCESS"
               descriptionId="CHANGES_SAVED"
@@ -286,9 +261,9 @@ export default function SiteSettings() {
             }}
             style={{ marginTop: 12 }}
             display="primary"
-          >
-            <FormattedMessage id="SAVE_CHANGES" />
-          </Button>
+            loading={loading}
+            id="SAVE_CHANGES"
+          />
         </Grid>
       </Grid>
     </MainColumn>
