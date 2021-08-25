@@ -8,9 +8,11 @@ export default function usePutSiteSettings() {
   const { dispatch } = useContext(AppContext);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const putSiteSettings = async data => {
     try {
+      setLoading(true);
       const response = await axios({
         url: `${__houston_url__}/api/v1/configuration/default`,
         withCredentials: true,
@@ -18,6 +20,7 @@ export default function usePutSiteSettings() {
         data,
       });
       const successful = get(response, ['data', 'success'], false);
+      setLoading(false);
       if (successful) {
         dispatch(setSiteSettingsNeedsFetch(true));
         setSuccess(true);
@@ -27,6 +30,7 @@ export default function usePutSiteSettings() {
         setSuccess(false);
       }
     } catch (postError) {
+      setLoading(false);
       setError(formatError(postError));
       setSuccess(false);
     }
@@ -63,6 +67,7 @@ export default function usePutSiteSettings() {
   return {
     putSiteSettings,
     putSiteSetting,
+    loading,
     error,
     setError,
     success,

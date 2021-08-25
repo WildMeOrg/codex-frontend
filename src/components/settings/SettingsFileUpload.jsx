@@ -13,9 +13,9 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import VideoIcon from '@material-ui/icons/Movie';
 
-import Button from './Button';
-import useSiteSettings from '../models/site/useSiteSettings';
-import Text from './Text';
+import Button from '../Button';
+import useSiteSettings from '../../models/site/useSiteSettings';
+import Text from '../Text';
 
 function MediaViewer({ variant = 'image', url, label }) {
   if (variant === 'image') {
@@ -183,7 +183,7 @@ export default function SettingsFileUpload({
                 setModalOpen(true);
               }}
               id={changeId}
-              variant="subtle"
+              display="basic"
               style={{ width: 'fit-content' }}
             />
           </div>

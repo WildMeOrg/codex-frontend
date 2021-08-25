@@ -104,7 +104,7 @@ export default function Individual() {
           const deleteSuccessful = await deleteIndividual(id);
           if (deleteSuccessful) {
             setDeletingIndividual(false);
-            history.push('/');
+            history.push('/individuals');
           }
         }}
         deleteInProgress={deleteInProgress}

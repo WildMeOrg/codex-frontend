@@ -8,16 +8,19 @@ export default function usePostSettingsAsset() {
   const { dispatch } = useContext(AppContext);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const postSettingsAsset = async data => {
     try {
+      setLoading(true);
       const response = await axios({
         url: `${__houston_url__}/api/v1/site-settings/`,
         withCredentials: true,
         method: 'post',
         data,
       });
-      const successful = get(response, ['data', 'success'], false);
+      const successful = get(response, 'status') === 200;
+      setLoading(false);
       if (successful) {
         dispatch(setSiteSettingsNeedsFetch(true));
         setSuccess(true);
@@ -27,6 +30,7 @@ export default function usePostSettingsAsset() {
         setSuccess(false);
       }
     } catch (postError) {
+      setLoading(false);
       setError(formatError(postError));
       setSuccess(false);
     }
@@ -34,6 +38,7 @@ export default function usePostSettingsAsset() {
 
   return {
     postSettingsAsset,
+    loading,
     error,
     setError,
     success,
