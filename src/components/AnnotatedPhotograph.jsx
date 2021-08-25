@@ -56,7 +56,8 @@ export default function AnnotatedPhotograph({
             }}
             fill="none"
             stroke={theme.palette.common.black}
-            strokeWidth={imageWidth * 0.02}
+            strokeWidth={6}
+            vectorEffect="non-scaling-stroke"
             x={x}
             y={y}
             width={w}
