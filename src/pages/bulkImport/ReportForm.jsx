@@ -80,7 +80,6 @@ export default function ReportForm({ assetReferences }) {
   const detectionModelField = sightingFieldSchemas.find(
     schema => schema.name === 'speciesDetectionModel',
   );
-  console.log(detectionModelField);
 
   return (
     <>
