@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { get } from 'lodash-es';
 import { useHistory } from 'react-router-dom';
@@ -105,43 +105,38 @@ export default function ReportForm({
   const [dateDurationError, setDateDurationError] = useState(false);
   const [locationFieldError, setLocationFieldError] = useState(false);
 
-  const {
-    initialDefaultSightingFormValues,
-    initialCustomSightingFormValues,
-    initialDefaultEncounterFormValues,
-    initialCustomEncounterFormValues,
-  } = useMemo(
-    () => ({
-      initialDefaultSightingFormValues: getInitialFormValues(
-        defaultSightingSchemas,
-      ),
-      initialCustomSightingFormValues: getInitialFormValues(
-        customSightingSchemas,
-      ),
-      initialDefaultEncounterFormValues: getInitialFormValues(
-        defaultEncounterSchemas,
-      ),
-      initialCustomEncounterFormValues: getInitialFormValues(
-        customEncounterSchemas,
-      ),
-    }),
-    [],
-  );
-
-  const [sightingFormValues, setSightingFormValues] = useState(
-    initialDefaultSightingFormValues,
-  );
+  const [sightingFormValues, setSightingFormValues] = useState({});
   const [
     customSightingFormValues,
     setCustomSightingFormValues,
-  ] = useState(initialCustomSightingFormValues);
-  const [encounterFormValues, setEncounterFormValues] = useState(
-    initialDefaultEncounterFormValues,
-  );
+  ] = useState({});
+  const [encounterFormValues, setEncounterFormValues] = useState({});
   const [
     customEncounterFormValues,
     setCustomEncounterFormValues,
-  ] = useState(initialCustomEncounterFormValues);
+  ] = useState({});
+
+  useEffect(
+    () => {
+      const initialDefaultSightingFormValues = getInitialFormValues(
+        defaultSightingSchemas,
+      );
+      const initialCustomSightingFormValues = getInitialFormValues(
+        customSightingSchemas,
+      );
+      const initialDefaultEncounterFormValues = getInitialFormValues(
+        defaultEncounterSchemas,
+      );
+      const initialCustomEncounterFormValues = getInitialFormValues(
+        customEncounterSchemas,
+      );
+      setSightingFormValues(initialDefaultSightingFormValues);
+      setCustomSightingFormValues(initialCustomSightingFormValues);
+      setEncounterFormValues(initialDefaultEncounterFormValues);
+      setCustomEncounterFormValues(initialCustomEncounterFormValues);
+    },
+    [sightingFieldSchemas, encounterFieldSchemas],
+  );
 
   // const locationSuggestion = useMemo(
   //   () => getLocationSuggestion(exifData),
