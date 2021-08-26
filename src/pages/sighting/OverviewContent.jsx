@@ -15,9 +15,16 @@ export default function OverviewContent({
 }) {
   const [editing, setEditing] = useState(false);
 
-  const editableFields = metadata.filter(field => field.editable);
+  const viewableMetadata = metadata.filter(
+    field => !field.hideOnMetadataCard,
+  );
+  const editableFields = viewableMetadata.filter(
+    field => field.editable,
+  );
 
-  const gpsField = metadata.find(field => field.name === 'gps');
+  const gpsField = viewableMetadata.find(
+    field => field.name === 'gps',
+  );
   const gps = gpsField && get(gpsField, 'value');
 
   return (
@@ -33,8 +40,8 @@ export default function OverviewContent({
       ) : null}
       <CardContainer size="small">
         <MetadataCard
-          editable={Boolean(metadata)}
-          metadata={metadata}
+          editable={Boolean(viewableMetadata)}
+          metadata={viewableMetadata}
           onEdit={() => setEditing(true)}
         />
       </CardContainer>

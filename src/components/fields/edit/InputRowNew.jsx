@@ -20,6 +20,7 @@ export default function InputRow({
         justifyContent: 'space-between',
         alignItems: 'flex-start',
         padding: 12,
+        marginTop: 20,
         width: '100%',
         containerStyles,
       }}
@@ -29,7 +30,6 @@ export default function InputRow({
         style={{
           display: 'flex',
           flexDirection: 'column',
-          marginTop: 20,
           width: 400,
           marginBottom: 12,
         }}

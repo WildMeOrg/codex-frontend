@@ -11,14 +11,17 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import CustomAlert from '../../components/Alert';
 
+import usePostAssetGroup from '../../models/assetGroup/usePostAssetGroup';
+import useSightingFieldSchemas from '../../models/sighting/useSightingFieldSchemas';
+import prepareAssetGroup from './utils/prepareAssetGroup';
+import useBulkImportFields from './utils/useBulkImportFields';
+import { flatfileKey } from '../../constants/apiKeys';
+
+import InputRow from '../../components/fields/edit/InputRowNew';
 import TermsAndConditionsDialog from '../../components/report/TermsAndConditionsDialog';
 import Button from '../../components/Button';
 import Text from '../../components/Text';
-import usePostAssetGroup from '../../models/assetGroup/usePostAssetGroup';
-import { flatfileKey } from '../../constants/apiKeys';
 import InlineButton from '../../components/InlineButton';
-import prepareAssetGroup from './utils/prepareAssetGroup';
-import useBulkImportFields from './utils/useBulkImportFields';
 import BulkFieldBreakdown from './BulkFieldBreakdown';
 
 const minmax = {
@@ -63,6 +66,7 @@ export default function ReportForm({ assetReferences }) {
   const [termsError, setTermsError] = useState(false);
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [sightingData, setSightingData] = useState(null);
+  const [detectionModels, setDetectionModels] = useState([]);
 
   const {
     postAssetGroup,
@@ -72,6 +76,10 @@ export default function ReportForm({ assetReferences }) {
   const error = termsError || postError;
 
   const availableFields = useBulkImportFields();
+  const sightingFieldSchemas = useSightingFieldSchemas();
+  const detectionModelField = sightingFieldSchemas.find(
+    schema => schema.name === 'speciesDetectionModel',
+  );
 
   return (
     <>
@@ -127,9 +135,8 @@ export default function ReportForm({ assetReferences }) {
                 style={{ width: 260 }}
                 display="primary"
                 onClick={launch}
-              >
-                Upload spreadsheet
-              </Button>
+                id="UPLOAD_SPREADSHEET"
+              />
             )}
           />
           {sightingData ? (
@@ -137,6 +144,19 @@ export default function ReportForm({ assetReferences }) {
               {`${sightingData.length} sightings imported.`}
             </Text>
           ) : null}
+
+          {detectionModelField && (
+            <InputRow schema={detectionModelField}>
+              <detectionModelField.editComponent
+                schema={detectionModelField}
+                value={detectionModels}
+                onChange={value => {
+                  setDetectionModels(value);
+                }}
+                minimalLabels
+              />
+            </InputRow>
+          )}
         </Paper>
       </Grid>
       <Grid item>
@@ -191,9 +211,9 @@ export default function ReportForm({ assetReferences }) {
                 assetReferences,
               );
               const assetGroupId = await postAssetGroup({
-                description: 'horpdorp',
-                bulkUpload: true,
-                speciesDetectionModel: [false],
+                description: 'Bulk import from user',
+                uploadType: 'bulk',
+                speciesDetectionModel: detectionModels,
                 transactionId: get(assetReferences, [
                   0,
                   'transactionId',

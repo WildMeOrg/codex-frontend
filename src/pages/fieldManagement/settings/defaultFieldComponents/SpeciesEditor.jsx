@@ -14,11 +14,11 @@ import CheckIcon from '@material-ui/icons/Check';
 import StarIcon from '@material-ui/icons/Star';
 import CustomAlert from '../../../../components/Alert';
 
+import useItisSearch from '../../../../utils/useItisSearch';
 import DataDisplay from '../../../../components/dataDisplays/DataDisplay';
 import Button from '../../../../components/Button';
 import Text from '../../../../components/Text';
 import StandardDialog from '../../../../components/StandardDialog';
-import useItisSearch from '../../../../utils/useItisSearch';
 
 export default function SpeciesEditor({
   onClose,
@@ -30,9 +30,11 @@ export default function SpeciesEditor({
   const intl = useIntl();
   const [searchInput, setSearchInput] = useState('');
   const [searchTerm, setSearchTerm] = useState(null);
-  const { data: searchResults, loading, error } = useItisSearch(
-    searchTerm,
-  );
+  const {
+    data: searchResults,
+    loading: searchResultsLoading,
+    error: searchResultsError,
+  } = useItisSearch(searchTerm);
 
   const currentSpecies = get(formSettings, 'species', []);
   const suggestedValues = get(
@@ -151,14 +153,18 @@ export default function SpeciesEditor({
           <Button
             onClick={() => setSearchTerm(searchInput)}
             display="primary"
-            loading={loading}
+            loading={searchResultsLoading}
             style={{ marginLeft: 12 }}
             type="submit"
           >
             <FormattedMessage id="SEARCH" />
           </Button>
         </form>
-        {error && <CustomAlert severity="error">{error}</CustomAlert>}
+        {searchResultsError && (
+          <CustomAlert severity="error">
+            {searchResultsError}
+          </CustomAlert>
+        )}
         <DataDisplay
           cellStyles={{ padding: '0 8px 0 12px' }}
           paperStyles={{ maxHeight: 360 }}
