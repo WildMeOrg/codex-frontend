@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { get } from 'lodash-es';
+import useGetMe from '../models/users/useGetMe';
 
 // import IconButton from '@material-ui/core/IconButton';
 // import AddIcon from '@material-ui/icons/Add';
@@ -28,16 +29,20 @@ export default function UserProfile({
   someoneElse,
   noCollaborate = false,
 }) {
+  const { data: currentUserData } = useGetMe();
   const [editingProfile, setEditingProfile] = useState(false);
   const metadataSchemas = useUserMetadataSchemas(userId);
+  const isSelf = currentUserData.guid === userData.guid;
 
   const metadata = useMemo(
     () => {
       if (!userData || !metadataSchemas) return [];
-      return metadataSchemas.map(schema => ({
-        ...schema,
-        value: schema.getValue(schema, userData),
-      }));
+      return metadataSchemas
+        .filter(schema => schema.getValue(schema, userData) || isSelf)
+        .map(schema => ({
+          ...schema,
+          value: schema.getValue(schema, userData),
+        }));
     },
     [userData, metadataSchemas],
   );
