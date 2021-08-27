@@ -13,6 +13,7 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import Avatar from '@material-ui/core/Avatar';
 import Popover from '@material-ui/core/Popover';
 import Backdrop from '@material-ui/core/Backdrop';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import SearchIcon from '@material-ui/icons/Search';
 import ExploreIcon from '@material-ui/icons/FilterList';
 
@@ -31,6 +32,9 @@ export default function IndividualsButton() {
 
   const {
     data: searchResults,
+    loading,
+    error,
+    searchTerm: lastSearchTerm,
     queryIndividuals,
   } = useQueryIndividuals();
 
@@ -50,25 +54,28 @@ export default function IndividualsButton() {
     [searchTerm],
   );
 
-  const handleClick = event => {
-    setAnchorEl(event.currentTarget);
-  };
-
   const handleClose = () => {
     setAnchorEl(null);
   };
 
-  const mappableSearchResults = searchResults || [];
-
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
+
+  const resultsCurrent = lastSearchTerm === searchTerm;
+  const noResults = searchResults && searchResults.length === 0;
+  const mappableSearchResults = resultsCurrent
+    ? searchResults || []
+    : [];
+  const showDivider = resultsCurrent && (error || searchResults);
 
   return (
     <div>
       <Button
         aria-describedby={id}
         display="primary"
-        onClick={handleClick}
+        onClick={event => {
+          setAnchorEl(event.currentTarget);
+        }}
         style={{
           backgroundColor: theme.palette.grey.A100,
           color: theme.palette.grey.A400,
@@ -110,18 +117,44 @@ export default function IndividualsButton() {
                 <SearchIcon fontSize="small" />
               </InputAdornment>
             ),
+            endAdornment: loading ? (
+              <InputAdornment position="end">
+                <CircularProgress
+                  size={24}
+                  style={{ color: theme.palette.text.primary }}
+                />
+              </InputAdornment>
+            ) : (
+              undefined
+            ),
             disableUnderline: true,
             autoFocus: true,
             placeholder:
               'Search for an individual by name, alias, or guid',
           }}
+          value={searchTerm}
           onChange={e => {
             setSearchTerm(e.target.value);
           }}
           fullWidth
         />
-        {searchResults && <Divider />}
-        <List dense>
+        {showDivider ? <Divider /> : null}
+        {resultsCurrent && noResults && (
+          <Text
+            variant="body2"
+            style={{ padding: '16px 0 0 48px' }}
+            id="INDIVIDUAL_SEARCH_NO_RESULTS"
+            values={{ searchTerm }}
+          />
+        )}
+        {resultsCurrent && error && (
+          <Text
+            id="SEARCH_SERVER_ERROR"
+            variant="body2"
+            style={{ padding: '16px 0 0 48px' }}
+          />
+        )}
+        <List dense style={{ maxHeight: 400, overflow: 'scroll' }}>
           {mappableSearchResults.map(result => {
             const resultId = get(result, 'id');
             const nameString = `${get(result, 'name')} (${get(

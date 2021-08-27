@@ -5,12 +5,15 @@ import { formatError } from '../../utils/formatters';
 
 export default function useQueryIndividuals() {
   const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [statusCode, setStatusCode] = useState(null);
   const [response, setResponse] = useState(null);
+  const [searchTerm, setSearchTerm] = useState(null);
 
   const queryIndividuals = async queryString => {
     try {
+      setLoading(true);
+      setSearchTerm(queryString);
       const rawResponse = await axios.request({
         url: `${__houston_url__}/api/v1/search/individuals`,
         method: 'post',
@@ -25,11 +28,11 @@ export default function useQueryIndividuals() {
         },
       });
 
-      const responseStatusCode = get(response, ['status']);
+      setLoading(false);
+      const responseStatusCode = get(rawResponse, ['status']);
       setStatusCode(responseStatusCode);
       const successful = responseStatusCode === 200;
       if (!successful) setError(formatError(response));
-      setLoading(false);
 
       const hits = get(rawResponse, ['data', 'hits', 'hits'], []);
       const hitSources = hits.map(hit => get(hit, '_source'));
@@ -49,6 +52,7 @@ export default function useQueryIndividuals() {
 
   return {
     data: response,
+    searchTerm,
     queryIndividuals,
     statusCode,
     loading,
