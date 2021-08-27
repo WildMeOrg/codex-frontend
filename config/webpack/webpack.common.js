@@ -158,12 +158,7 @@ module.exports = env => {
         new CopyPlugin({
           patterns: [
             {
-              from: resolve(rootDir, 'src/houston/404.html'),
-              to: '404.html',
-            },
-            {
-              from: resolve(rootDir, 'src/houston/ocean.jpeg'),
-              to: 'ocean.jpeg',
+              from: resolve(rootDir, 'src/copy_on_build'),
             },
           ],
         }),

@@ -2,7 +2,7 @@ import React from 'react';
 import { get } from 'lodash-es';
 import Grid from '@material-ui/core/Grid';
 
-import Button from '../../components/Button';
+import ButtonLink from '../../components/ButtonLink';
 import Text from '../../components/Text';
 import useSiteSettings from '../../models/site/useSiteSettings';
 
@@ -100,19 +100,20 @@ export default function CustomCard() {
           )}
         </Text>
         {buttonUrl && (
-          <Button
+          <ButtonLink
             display="marketing"
             style={{
               marginTop: 52,
             }}
             href={buttonUrl}
+            external
           >
             {get(
               siteSettings,
               ['site.general.customCardButtonText', 'value'],
               '',
             )}
-          </Button>
+          </ButtonLink>
         )}
       </Grid>
     </Grid>
