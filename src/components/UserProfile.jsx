@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { get } from 'lodash-es';
 import useGetMe from '../models/users/useGetMe';
+import LoadingScreen from './LoadingScreen';
 
 // import IconButton from '@material-ui/core/IconButton';
 // import AddIcon from '@material-ui/icons/Add';
@@ -29,10 +30,13 @@ export default function UserProfile({
   someoneElse,
   noCollaborate = false,
 }) {
-  const { data: currentUserData } = useGetMe();
+  const { data: currentUserData, loading, error } = useGetMe();
   const [editingProfile, setEditingProfile] = useState(false);
   const metadataSchemas = useUserMetadataSchemas(userId);
-  const isSelf = currentUserData.guid === userData.guid;
+  const isSelf =
+    currentUserData && currentUserData.guid && userData && userData.guid
+      ? currentUserData.guid === userData.guid
+      : false;
 
   const metadata = useMemo(
     () => {
@@ -47,6 +51,17 @@ export default function UserProfile({
     [userData, metadataSchemas],
   );
 
+  const imageSrc = get(userData, ['profile_fileupload', 'src']);
+  const imageGuid = get(userData, ['profile_fileupload', 'guid']);
+  const name = get(userData, 'full_name', 'Unnamed user');
+  const dateCreated = formatDate(get(userData, 'created'), true);
+
+  if (loading) return <LoadingScreen />;
+  if (error) return <SadScreen
+    variant="notFoundOcean"
+    subtitleId="USER_NOT_FOUND"
+  />;
+
   if (!userData)
     return (
       <SadScreen
@@ -54,11 +69,6 @@ export default function UserProfile({
         subtitleId="USER_NOT_FOUND"
       />
     );
-
-  const imageSrc = get(userData, ['profile_fileupload', 'src']);
-  const imageGuid = get(userData, ['profile_fileupload', 'guid']);
-  const name = get(userData, 'full_name', 'Unnamed user');
-  const dateCreated = formatDate(get(userData, 'created'), true);
 
   return (
     <MainColumn fullWidth>
