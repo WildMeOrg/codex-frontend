@@ -34,13 +34,22 @@ export default function UserProfile({
   const metadata = useMemo(
     () => {
       if (!userData || !metadataSchemas) return [];
-      return metadataSchemas.map(schema => ({
-        ...schema,
-        value: schema.getValue(schema, userData),
-      }));
+      return metadataSchemas
+        .filter(
+          schema => schema.getValue(schema, userData) || !someoneElse,
+        )
+        .map(schema => ({
+          ...schema,
+          value: schema.getValue(schema, userData),
+        }));
     },
     [userData, metadataSchemas],
   );
+
+  const imageSrc = get(userData, ['profile_fileupload', 'src']);
+  const imageGuid = get(userData, ['profile_fileupload', 'guid']);
+  const name = get(userData, 'full_name', 'Unnamed user');
+  const dateCreated = formatDate(get(userData, 'created'), true);
 
   if (!userData)
     return (
@@ -49,11 +58,6 @@ export default function UserProfile({
         subtitleId="USER_NOT_FOUND"
       />
     );
-
-  const imageSrc = get(userData, ['profile_fileupload', 'src']);
-  const imageGuid = get(userData, ['profile_fileupload', 'guid']);
-  const name = get(userData, 'full_name', 'Unnamed user');
-  const dateCreated = formatDate(get(userData, 'created'), true);
 
   return (
     <MainColumn fullWidth>
