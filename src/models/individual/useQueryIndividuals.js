@@ -18,10 +18,10 @@ export default function useQueryIndividuals() {
         url: `${__houston_url__}/api/v1/search/individuals`,
         method: 'post',
         data: {
-          _source: ['alias', 'name', 'id', 'last_sighting'],
+          _source: ['alias', 'name', 'id', 'genus', 'species'],
           query: {
             query_string: {
-              query: `*${queryString}*`,
+              query: `*${queryString.toLowerCase()}*`,
               fields: ['alias', 'name', 'id'],
             },
           },

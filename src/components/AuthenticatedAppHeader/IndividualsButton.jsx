@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useIntl } from 'react-intl';
-import { get } from 'lodash-es';
+import { get, capitalize } from 'lodash-es';
 
 import { useTheme } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
@@ -17,7 +17,6 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import SearchIcon from '@material-ui/icons/Search';
 import ExploreIcon from '@material-ui/icons/FilterList';
 
-import { formatDate } from '../../utils/formatters';
 import useQueryIndividuals from '../../models/individual/useQueryIndividuals';
 import Button from '../Button';
 import Text from '../Text';
@@ -157,18 +156,21 @@ export default function IndividualsButton() {
         <List dense style={{ maxHeight: 400, overflow: 'scroll' }}>
           {mappableSearchResults.map(result => {
             const resultId = get(result, 'id');
-            const nameString = `${get(result, 'name')} (${get(
+            const aliasString = capitalize(get(result, 'alias'));
+            const nameString = `${get(
               result,
-              'alias',
-            )})`;
+              'name',
+            )} (${aliasString})`;
             const avatarLetter = get(
               result,
               'alias',
               '-',
             )[0].toUpperCase();
-            const dateString = `Last seen ${formatDate(
-              get(result, 'last_sighting'),
-              true,
+            const genusString = capitalize(get(result, 'genus', ''));
+            const speciesString = `${genusString} ${get(
+              result,
+              'species',
+              '',
             )}`;
             return (
               <ListItem key={resultId}>
@@ -187,7 +189,7 @@ export default function IndividualsButton() {
                     </Link>
                   }
                   secondary={
-                    <Text variant="caption">{dateString}</Text>
+                    <Text variant="caption">{speciesString}</Text>
                   }
                 />
               </ListItem>
