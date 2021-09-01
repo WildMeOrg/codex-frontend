@@ -27,6 +27,7 @@
   "CUSTOM_CARD_IMAGE_DESCRIPTION": "This image will be displayed with to the left of the text on your custom card. Recommended size is 800 by 800 pixels.",
   "NEW_INDIVIDUAL_CREATED": "New individual created",
   "CONFIRM_DELETE_INDIVIDUAL": "Are you sure you want to delete this individual? All associated metadata will deleted and all of the associated clusters will be orphaned.",
+  "CONFIRM_REMOVE_CLUSTER_FROM_INDIVIDUAL": "Are you sure you want to unassign this sighting?",
   "VIEW_NEW_INDIVIDUAL": "View new individual",
   "USER_DATA_ERROR": "User data could not be loaded.",
   "SENSITIVE_USER_DATA_CHANGE_DESCRIPTION": "Updating these user properties is considered a sensitive action. You must enter your password to continue.",

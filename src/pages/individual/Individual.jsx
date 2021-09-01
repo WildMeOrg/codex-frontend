@@ -77,6 +77,7 @@ export default function Individual() {
   useDocumentTitle(capitalize(id));
   const [editingProfile, setEditingProfile] = useState(false);
   const [deletingIndividual, setDeletingIndividual] = useState(false);
+  const [deleteEncounterId, setDeleteEncounterId] = useState(null);
 
   const individual = individuals.teddy;
   if (!individual)
@@ -96,6 +97,21 @@ export default function Individual() {
         onClose={() => setEditingProfile(false)}
         fieldValues={individual.fields}
         fieldSchema={fieldSchema}
+      />
+      <ConfirmDelete
+        open={Boolean(deleteEncounterId)}
+        onClose={() => setDeleteEncounterId(null)}
+        onDelete={async () => {
+          // const deleteSuccessful = await deleteIndividual(id);
+          // if (deleteSuccessful) {
+          //   setDeletingIndividual(false);
+          //   history.push('/individuals');
+          // }
+        }}
+        deleteInProgress={deleteInProgress}
+        error={deleteError}
+        onClearError={() => setDeleteError(null)}
+        messageId="CONFIRM_REMOVE_CLUSTER_FROM_INDIVIDUAL"
       />
       <ConfirmDelete
         open={deletingIndividual}
@@ -151,7 +167,10 @@ export default function Individual() {
                 values={{ name: individual.name }}
               />
             }
-            encounters={individual.encounters}
+            columns={['date', 'submitter', 'location', 'actions']}
+            onDelete={encounterId =>
+              setDeleteEncounterId(encounterId)
+            }
           />
           <RelationshipsCard
             title="Relationships"

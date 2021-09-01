@@ -145,6 +145,12 @@ export default function Encounters({
                         setCreateIndividualEncounterId(encounterId),
                     },
                     {
+                      id: 'manually-assign',
+                      label: 'Manually assign',
+                      onClick: () =>
+                        setCreateIndividualEncounterId(encounterId),
+                    },
+                    {
                       id: 'delete-cluster',
                       onClick: () =>
                         setEncounterToDelete(encounterId),
