@@ -13,7 +13,7 @@ import Card from './Card';
 
 const fakeData = [
   {
-    id: 'lkfjaoiwejflkajasd',
+    id: 'e5e51ee0-b366-47a7-8113-8aec7db8adfe',
     individualId: 'WB-102',
     profile: defaultProfile,
     user: 'Joe Smith',
@@ -108,7 +108,7 @@ const getAllColumns = onDelete => [
           <ActionIcon
             labelId="REMOVE"
             variant="delete"
-            onClick={onDelete}
+            onClick={() => onDelete(value)}
           />
         </div>
       ),

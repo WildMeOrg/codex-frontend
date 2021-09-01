@@ -10,6 +10,7 @@ import StatusIcon from '@material-ui/icons/LocalHospital';
 
 import useIndividual from '../../models/individual/useIndividual';
 import useDeleteIndividual from '../../models/individual/useDeleteIndividual';
+import usePatchIndividual from '../../models/individual/usePatchIndividual';
 
 import MoreMenu from '../../components/MoreMenu';
 import EntityHeaderNew from '../../components/EntityHeaderNew';
@@ -58,7 +59,7 @@ const items = [
 
 export default function Individual() {
   const { id } = useParams();
-  const { data } = useIndividual(id);
+  const { data, refresh } = useIndividual(id);
   const history = useHistory();
 
   const {
@@ -67,6 +68,13 @@ export default function Individual() {
     error: deleteError,
     setError: setDeleteError,
   } = useDeleteIndividual();
+
+  const {
+    removeEncounterFromIndividual,
+    loading: patchInProgress,
+    error: patchError,
+    setError: setPatchError,
+  } = usePatchIndividual();
 
   console.log(data);
 
@@ -102,15 +110,19 @@ export default function Individual() {
         open={Boolean(deleteEncounterId)}
         onClose={() => setDeleteEncounterId(null)}
         onDelete={async () => {
-          // const deleteSuccessful = await deleteIndividual(id);
-          // if (deleteSuccessful) {
-          //   setDeletingIndividual(false);
-          //   history.push('/individuals');
-          // }
+          const deleteSuccessful = await removeEncounterFromIndividual(
+            id,
+            deleteEncounterId,
+          );
+
+          if (deleteSuccessful) {
+            setDeleteEncounterId(null);
+            refresh();
+          }
         }}
-        deleteInProgress={deleteInProgress}
-        error={deleteError}
-        onClearError={() => setDeleteError(null)}
+        deleteInProgress={patchInProgress}
+        error={patchError}
+        onClearError={() => setPatchError(null)}
         messageId="CONFIRM_REMOVE_CLUSTER_FROM_INDIVIDUAL"
       />
       <ConfirmDelete
