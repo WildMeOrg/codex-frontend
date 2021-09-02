@@ -161,11 +161,8 @@ export default function IndividualsButton() {
               result,
               'name',
             )} (${aliasString})`;
-            const avatarLetter = get(
-              result,
-              'alias',
-              '-',
-            )[0].toUpperCase();
+            const alias = get(result, 'alias') || '-';
+            const avatarLetter = alias[0].toUpperCase();
             const genusString = capitalize(get(result, 'genus', ''));
             const speciesString = `${genusString} ${get(
               result,

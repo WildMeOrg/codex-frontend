@@ -1,18 +1,19 @@
 import React from 'react';
-import { format } from 'date-fns';
 import { useTheme } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import ViewList from '@material-ui/icons/ViewList';
 import ViewMap from '@material-ui/icons/Language';
+
+import { formatDate } from '../../utils/formatters';
+import defaultProfile from '../../assets/defaultProfile.jpg';
+import ActionIcon from '../ActionIcon';
 import DataDisplay from '../dataDisplays/DataDisplay';
 import Link from '../Link';
 import Card from './Card';
 
-import defaultProfile from '../../assets/defaultProfile.jpg';
-
 const fakeData = [
   {
-    id: 'lkfjaoiwejflkajasd',
+    id: 'e5e51ee0-b366-47a7-8113-8aec7db8adfe',
     individualId: 'WB-102',
     profile: defaultProfile,
     user: 'Joe Smith',
@@ -21,6 +22,7 @@ const fakeData = [
     photoCount: 14,
     matchCount: 4,
     submissionDate: Date.now(),
+    verbatimLocality: 'Kenya',
   },
   {
     id: 'csljlkdjafljsdlfjs',
@@ -32,6 +34,7 @@ const fakeData = [
     photoCount: 6,
     matchCount: 2,
     submissionDate: Date.now(),
+    verbatimLocality: 'Kenya',
   },
   {
     id: 'dfweaz',
@@ -43,6 +46,7 @@ const fakeData = [
     photoCount: 12,
     matchCount: 6,
     submissionDate: Date.now(),
+    verbatimLocality: 'Kenya',
   },
   {
     id: 'cqwe',
@@ -54,6 +58,61 @@ const fakeData = [
     photoCount: 50,
     matchCount: 1,
     submissionDate: Date.now(),
+    verbatimLocality: 'Kenya',
+  },
+];
+
+const getAllColumns = onDelete => [
+  {
+    reference: 'individual',
+    name: 'individualId',
+    label: 'Individual',
+    options: {
+      customBodyRender: value => (
+        <Link href={`/individuals/${value}`}>{value}</Link>
+      ),
+    },
+  },
+  {
+    reference: 'date',
+    name: 'submissionDate',
+    label: 'Date',
+    options: {
+      customBodyRender: value => formatDate(value, true),
+      getStringValue: value => formatDate(value, true),
+    },
+  },
+  {
+    reference: 'location',
+    name: 'verbatimLocality',
+    label: 'Location',
+  },
+  {
+    reference: 'submitter',
+    name: 'user',
+    label: 'Submitter',
+    options: {
+      customBodyRender: value => (
+        <Link href={`/users/${value}`}>{value}</Link>
+      ),
+    },
+  },
+  {
+    reference: 'actions',
+    name: 'id',
+    label: 'Actions',
+    options: {
+      customBodyRender: value => (
+        <div>
+          <ActionIcon variant="view" href={`/individuals/${value}`} />
+          <ActionIcon
+            labelId="REMOVE"
+            variant="delete"
+            onClick={() => onDelete(value)}
+          />
+        </div>
+      ),
+    },
   },
 ];
 
@@ -61,9 +120,22 @@ export default function SightingsCard({
   title,
   titleId = 'SIGHTINGS',
   encounters = fakeData,
-  hideIndividual,
+  columns = [
+    'individual',
+    'date',
+    'submitter',
+    'location',
+    'actions',
+  ],
+  onDelete,
 }) {
   const theme = useTheme();
+
+  const allColumns = getAllColumns(onDelete);
+  const filteredColumns = allColumns.filter(c =>
+    columns.includes(c.reference),
+  );
+
   return (
     <Card
       title={title}
@@ -84,49 +156,7 @@ export default function SightingsCard({
     >
       <DataDisplay
         noTitleBar
-        columns={[
-          {
-            name: 'id',
-            label: 'Sighting ID',
-            options: {
-              customBodyRender: value => (
-                <Link href={`/sightings/${value}`}>{value}</Link>
-              ),
-            },
-          },
-          {
-            name: 'individualId',
-            label: 'Individual',
-            options: {
-              customBodyRender: value => (
-                <Link href={`/individuals/${value}`}>{value}</Link>
-              ),
-              display: hideIndividual ? 'false' : 'true',
-            },
-          },
-          {
-            name: 'submissionDate',
-            label: 'Date',
-            options: {
-              customBodyRender: value => format(value, 'M/dd/yy'),
-              getStringValue: value => format(value, 'M/dd/yy'),
-            },
-          },
-          {
-            name: 'photoCount',
-            label: 'Photographs',
-          },
-          {
-            name: 'user',
-            label: 'Submitter',
-            options: {
-              customBodyRender: value => (
-                <Link href={`/users/${value}`}>{value}</Link>
-              ),
-              display: false,
-            },
-          },
-        ]}
+        columns={filteredColumns}
         data={encounters}
       />
     </Card>

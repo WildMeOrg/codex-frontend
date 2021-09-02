@@ -129,6 +129,7 @@ export default function UserProfile({
                 <FormattedMessage id="SIGHTINGS" />
               )
             }
+            columns={['individual', 'date', 'location']}
             hideSubmitted
           />
         </CardContainer>

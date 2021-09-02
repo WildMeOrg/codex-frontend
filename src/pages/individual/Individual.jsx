@@ -10,6 +10,7 @@ import StatusIcon from '@material-ui/icons/LocalHospital';
 
 import useIndividual from '../../models/individual/useIndividual';
 import useDeleteIndividual from '../../models/individual/useDeleteIndividual';
+import usePatchIndividual from '../../models/individual/usePatchIndividual';
 
 import MoreMenu from '../../components/MoreMenu';
 import EntityHeaderNew from '../../components/EntityHeaderNew';
@@ -58,7 +59,7 @@ const items = [
 
 export default function Individual() {
   const { id } = useParams();
-  const { data } = useIndividual(id);
+  const { data, refresh } = useIndividual(id);
   const history = useHistory();
 
   const {
@@ -67,6 +68,13 @@ export default function Individual() {
     error: deleteError,
     setError: setDeleteError,
   } = useDeleteIndividual();
+
+  const {
+    removeEncounterFromIndividual,
+    loading: patchInProgress,
+    error: patchError,
+    setError: setPatchError,
+  } = usePatchIndividual();
 
   console.log(data);
 
@@ -77,6 +85,7 @@ export default function Individual() {
   useDocumentTitle(capitalize(id));
   const [editingProfile, setEditingProfile] = useState(false);
   const [deletingIndividual, setDeletingIndividual] = useState(false);
+  const [deleteEncounterId, setDeleteEncounterId] = useState(null);
 
   const individual = individuals.teddy;
   if (!individual)
@@ -96,6 +105,25 @@ export default function Individual() {
         onClose={() => setEditingProfile(false)}
         fieldValues={individual.fields}
         fieldSchema={fieldSchema}
+      />
+      <ConfirmDelete
+        open={Boolean(deleteEncounterId)}
+        onClose={() => setDeleteEncounterId(null)}
+        onDelete={async () => {
+          const deleteSuccessful = await removeEncounterFromIndividual(
+            id,
+            deleteEncounterId,
+          );
+
+          if (deleteSuccessful) {
+            setDeleteEncounterId(null);
+            refresh();
+          }
+        }}
+        deleteInProgress={patchInProgress}
+        error={patchError}
+        onClearError={() => setPatchError(null)}
+        messageId="CONFIRM_REMOVE_CLUSTER_FROM_INDIVIDUAL"
       />
       <ConfirmDelete
         open={deletingIndividual}
@@ -151,7 +179,10 @@ export default function Individual() {
                 values={{ name: individual.name }}
               />
             }
-            encounters={individual.encounters}
+            columns={['date', 'submitter', 'location', 'actions']}
+            onDelete={encounterId =>
+              setDeleteEncounterId(encounterId)
+            }
           />
           <RelationshipsCard
             title="Relationships"

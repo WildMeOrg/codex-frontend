@@ -22,7 +22,7 @@ export default function AnnotatedPhotograph({
         width,
         height: width,
         cursor: 'pointer',
-        background: theme.palette.grey['500'],
+        background: theme.palette.grey['600'],
       }}
       viewBox={`0 0 ${imageWidth} ${imageHeight}`}
       preserveAspectRatio="xMidYMid meet"

@@ -9,6 +9,7 @@ import MoreIcon from '@material-ui/icons/MoreVert';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 
+import { formatFilename } from '../../utils/formatters';
 import AnnotatedPhotograph from '../../components/AnnotatedPhotograph';
 import AnnotationCreator from '../../components/AnnotationCreator';
 import Text from '../../components/Text';
@@ -158,7 +159,9 @@ export default function Photographs({ assets, refreshSightingData }) {
             >
               <MoreIcon />
             </IconButton>
-            <Text variant="caption">{asset.filename}</Text>
+            <Text variant="caption">
+              {formatFilename(asset.filename, 35)}
+            </Text>
           </div>
         ))}
       </div>

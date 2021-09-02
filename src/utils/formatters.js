@@ -1,6 +1,16 @@
 import { get, round, find } from 'lodash-es';
 import { format } from 'date-fns';
 
+export const formatFilename = (input, characterLimit = 40) => {
+  // minimum character limit is 20, otherwise this will need to be redone
+  if (!input) return '';
+  const inputLength = input.length;
+  if (inputLength < characterLimit) return input;
+  const tail = input.substring(inputLength - 10, inputLength);
+  const head = input.substring(0, characterLimit - 14);
+  return `${head}...${tail}`;
+};
+
 export const formatDate = (input, fancy) => {
   const formatter = fancy ? 'PP' : 'yyyy-MM-dd HH:mm';
   try {

@@ -17,6 +17,7 @@ import useDeleteEncounter from '../../../models/encounter/useDeleteEncounter';
 import AnnotationsCard from './AnnotationsCard';
 import EditEncounterMetadata from './EditEncounterMetadata';
 import CreateIndividualModal from './CreateIndividualModal';
+import ManuallyAssignModal from './ManuallyAssignModal';
 
 export default function Encounters({
   sightingData,
@@ -42,6 +43,7 @@ export default function Encounters({
   ] = useState(null);
   const [encounterToDelete, setEncounterToDelete] = useState(null);
   const [editEncounterInfo, setEditEncounterInfo] = useState(null);
+  const [encounterToAssign, setEncounterToAssign] = useState(null);
 
   const sightingId = get(sightingData, 'id');
 
@@ -74,6 +76,12 @@ export default function Encounters({
         encounterId={createIndividualEncounterId}
         open={Boolean(createIndividualEncounterId)}
         onClose={() => setCreateIndividualEncounterId(null)}
+      />
+
+      <ManuallyAssignModal
+        encounterId={encounterToAssign}
+        open={Boolean(encounterToAssign)}
+        onClose={() => setEncounterToAssign(null)}
       />
 
       <EditEncounterMetadata
@@ -143,6 +151,12 @@ export default function Encounters({
                       label: 'Create new individual',
                       onClick: () =>
                         setCreateIndividualEncounterId(encounterId),
+                    },
+                    {
+                      id: 'manually-assign',
+                      label: 'Manually assign',
+                      onClick: () =>
+                        setEncounterToAssign(encounterId),
                     },
                     {
                       id: 'delete-cluster',
