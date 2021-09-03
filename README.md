@@ -63,5 +63,5 @@ npm run build -- --env=houston=relative // use relative file paths for API reque
 - Thanks to [Lokalise](https://lokalise.com/) for providing translation management services.
 - Thanks to [Flatfile](https://flatfile.io/) for providing data import services.
 - Thanks to Emily Ke for developing the server status screen, page transitions, and more!
-- Thanks to  Madeleine Webb for her design assistance.
-
+- Thanks to Madeleine Webb for design assistance.
+- Thanks to Iris Shin for design assistance.
