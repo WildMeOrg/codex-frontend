@@ -1,41 +1,83 @@
 import React from 'react';
-import { format } from 'date-fns';
+import { useIntl } from 'react-intl';
+import { get, capitalize } from 'lodash-es';
+
+import { formatDate } from '../../utils/formatters';
 import DataDisplay from './DataDisplay';
 import Link from '../Link';
 import ButtonLink from '../ButtonLink';
 import Text from '../Text';
 
-export default function IndividualsDisplay({ individuals }) {
+export default function IndividualsDisplay({ individuals, ...rest }) {
+  const intl = useIntl();
   const title = `${individuals.length} matching individuals`;
 
   const columns = [
     {
-      name: 'id',
-      label: 'Individual',
+      name: 'name',
+      label: intl.formatMessage({ id: 'NAME' }),
       options: {
-        customBodyRender: value => (
-          <Link href={`/individuals/${value}`}>{value}</Link>
-        ),
-      },
-    },
-    {
-      name: 'lastSeen',
-      label: 'Last Seen',
-      options: {
-        customBodyRender: value => format(value, 'M/dd/yy'),
+        customBodyRender: (name, individual) => {
+          const id = get(individual, 'id', '');
+          return (
+            <Link href={`/individuals/${id}`}>
+              <Text variant="body2">{name}</Text>
+            </Link>
+          );
+        },
       },
     },
     {
       name: 'alias',
-      label: 'Alias',
+      label: intl.formatMessage({ id: 'ALIAS' }),
+      align: 'left',
+      options: {
+        customBodyRender: alias => (
+          <Text variant="body2">{capitalize(alias)}</Text>
+        ),
+      },
     },
     {
-      name: 'species',
-      label: 'Species',
+      name: 'last_sighting',
+      label: intl.formatMessage({ id: 'LAST_SEEN' }),
+      align: 'left',
+      options: {
+        customBodyRender: lastSightingTimestamp => (
+          <Text variant="body2">
+            {formatDate(lastSightingTimestamp)}
+          </Text>
+        ),
+      },
     },
     {
-      name: 'encounterCount',
-      label: 'Encounters',
+      name: 'speciesString',
+      label: intl.formatMessage({ id: 'SPECIES' }),
+      align: 'left',
+      options: {
+        customBodyRender: (_, individual) => {
+          const genusString = capitalize(
+            get(individual, 'genus', ''),
+          );
+          const speciesString = `${genusString} ${get(
+            individual,
+            'species',
+            '',
+          )}`;
+          return <Text variant="body2">{speciesString}</Text>;
+        },
+      },
+    },
+    {
+      name: 'encounters',
+      label: intl.formatMessage({ id: 'SIGHTINGS' }),
+      align: 'left',
+      options: {
+        customBodyRender: encounters => (
+          <Text variant="body2">
+            {get(encounters, 'length', '-')}
+          </Text>
+        ),
+      },
     },
   ];
 
@@ -85,6 +127,7 @@ export default function IndividualsDisplay({ individuals }) {
           </div>
         </div>
       )}
+      {...rest}
     />
   );
 }

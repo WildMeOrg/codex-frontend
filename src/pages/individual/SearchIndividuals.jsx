@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
-import { useIntl, FormattedMessage } from 'react-intl';
+import { useIntl } from 'react-intl';
 import { useSelector } from 'react-redux';
 import Hidden from '@material-ui/core/Hidden';
 import Drawer from '@material-ui/core/Drawer';
+
+import useFilterIndividuals from '../../models/individual/useFilterIndividuals';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import FilterPanel from '../../components/FilterPanel';
 import SearchFilterList from '../../components/SearchFilterList';
 import {
-  selectSearchResults,
   selectIndividualSearchCategories,
   selectIndividualSearchSchema,
 } from '../../modules/individuals/selectors';
@@ -16,6 +17,7 @@ import Text from '../../components/Text';
 import IndividualsDisplay from '../../components/dataDisplays/IndividualsDisplay';
 
 const drawerWidth = 280;
+const rowsPerPage = 5;
 
 const paperProps = {
   style: {
@@ -29,6 +31,14 @@ const paperProps = {
 
 export default function SearchIndividuals() {
   const intl = useIntl();
+  const [page, setPage] = useState(0);
+
+  const {
+    data: searchResults,
+    loading,
+    error,
+  } = useFilterIndividuals([], 0);
+
   const categories = useSelector(selectIndividualSearchCategories);
   const schema = useSelector(selectIndividualSearchSchema);
 
@@ -43,7 +53,6 @@ export default function SearchIndividuals() {
   useDocumentTitle(intl.formatMessage({ id: 'EXPLORE_INDIVIDUALS' }));
 
   /* not fetching from API because API is not ready */
-  const searchResults = useSelector(selectSearchResults);
 
   return (
     <div style={{ display: 'flex' }}>
@@ -95,12 +104,17 @@ export default function SearchIndividuals() {
           <Button
             style={{ margin: 16 }}
             onClick={() => setMobileDrawerOpen(true)}
-          >
-            <FormattedMessage id="SHOW_FILTERS" />
-          </Button>
+            id="SHOW_FILTERS"
+          />
         </Hidden>
         <div style={{ margin: '40px 40px 20px 16px' }}>
-          <IndividualsDisplay individuals={searchResults} />
+          <IndividualsDisplay
+            individuals={searchResults || []}
+            paginated
+            page={page}
+            onPageChange={(_, newPage) => setPage(newPage)}
+            rowsPerPage={rowsPerPage}
+          />
         </div>
       </div>
     </div>

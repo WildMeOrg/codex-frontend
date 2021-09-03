@@ -7,6 +7,8 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import TableFooter from '@material-ui/core/TableFooter';
+import TablePagination from '@material-ui/core/TablePagination';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
@@ -22,6 +24,7 @@ import CloudDownload from '@material-ui/icons/CloudDownload';
 
 import FilterBar from '../FilterBar';
 import Text from '../Text';
+import TablePaginationActions from './TablePaginationActions';
 import CollabsibleRow from './CollapsibleRow';
 import sendCsv from './sendCsv';
 
@@ -44,6 +47,10 @@ export default function DataDisplay({
   variant = 'primary',
   idKey = 'id',
   noTitleBar,
+  paginated = false,
+  page,
+  onPageChange,
+  rowsPerPage,
   paperStyles = {},
   cellStyles = {},
   ...rest
@@ -245,6 +252,20 @@ export default function DataDisplay({
               />
             ))}
           </TableBody>
+          {paginated && (
+            <TableFooter>
+              <TableRow>
+                <TablePagination
+                  page={page}
+                  count={get(data, 'length', 0)}
+                  onPageChange={onPageChange}
+                  rowsPerPage={rowsPerPage}
+                  rowsPerPageOptions={[rowsPerPage]}
+                  ActionsComponent={TablePaginationActions}
+                />
+              </TableRow>
+            </TableFooter>
+          )}
         </Table>
       </TableContainer>
     </div>
