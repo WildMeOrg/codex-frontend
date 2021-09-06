@@ -40,6 +40,7 @@ export default function UserEditTable({
     },
     {
       name: 'full_name',
+      align: 'left',
       label: intl.formatMessage({ id: 'FULLNAME' }),
       options: {
         customBodyRender: fullName => (
@@ -49,8 +50,18 @@ export default function UserEditTable({
     },
     {
       name: 'roles',
+      align: 'left',
       label: intl.formatMessage({ id: 'ROLES' }),
       options: {
+        getStringValue: (_, userObj) => {
+          const rolesInCurrentUser = roleSchema.filter(
+            currentRole => userObj[currentRole.id],
+          );
+          const roleLabelInCurrentUser = rolesInCurrentUser.map(
+            currentRole => makePretty(currentRole.titleId),
+          );
+          return roleLabelInCurrentUser.join(', ');
+        },
         customBodyRender: (_, userObj) => {
           // filter all possible roles by whether an attribute
           // in userObj by name of currentRole.id exists
@@ -68,6 +79,7 @@ export default function UserEditTable({
       name: 'actions',
       label: intl.formatMessage({ id: 'ACTIONS' }),
       options: {
+        displayInFilter: false,
         customBodyRender: (_, user) => (
           <div style={{ display: 'flex' }}>
             <ActionIcon
