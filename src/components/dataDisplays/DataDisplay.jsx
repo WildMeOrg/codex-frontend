@@ -70,9 +70,14 @@ export default function DataDisplay({
       const rawValue = get(datum, c.name, '');
       let dataValue;
       if (userSuppliedDataParser) {
-        dataValue = userSuppliedDataParser(rawValue, datum);
+        dataValue = userSuppliedDataParser(rawValue, datum)
+          .toLowerCase
+          ? userSuppliedDataParser(rawValue, datum).toLowerCase().trim()
+          : userSuppliedDataParser(rawValue, datum);
       } else {
-        dataValue = JSON.stringify(rawValue);
+        dataValue = JSON.stringify(rawValue)
+          ? JSON.stringify(rawValue).toLowerCase().trim()
+          : JSON.stringify(rawValue);
       }
       if (dataValue && dataValue.includes(filter)) match = true;
     });
