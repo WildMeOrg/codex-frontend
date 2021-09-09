@@ -10,22 +10,22 @@ export default function TablePaginationActions({
   count,
   page,
   rowsPerPage,
-  onPageChange,
+  onChangePage,
 }) {
   const handleFirstPageButtonClick = event => {
-    onPageChange(event, 0);
+    onChangePage(event, 0);
   };
 
   const handleBackButtonClick = event => {
-    onPageChange(event, page - 1);
+    onChangePage(event, page - 1);
   };
 
   const handleNextButtonClick = event => {
-    onPageChange(event, page + 1);
+    onChangePage(event, page + 1);
   };
 
   const handleLastPageButtonClick = event => {
-    onPageChange(
+    onChangePage(
       event,
       Math.max(0, Math.ceil(count / rowsPerPage) - 1),
     );
@@ -49,14 +49,14 @@ export default function TablePaginationActions({
       </IconButton>
       <IconButton
         onClick={handleNextButtonClick}
-        disabled={page >= Math.ceil(count / rowsPerPage) - 1}
+        disabled={page > Math.ceil(count / rowsPerPage) - 1}
         aria-label="next page"
       >
         <KeyboardArrowRight />
       </IconButton>
       <IconButton
         onClick={handleLastPageButtonClick}
-        disabled={page >= Math.ceil(count / rowsPerPage) - 1}
+        disabled={page > Math.ceil(count / rowsPerPage) - 1}
         aria-label="last page"
       >
         <LastPageIcon />

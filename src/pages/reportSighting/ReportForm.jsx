@@ -78,6 +78,7 @@ export default function ReportForm({
   );
 
   const sightingFieldSchemas = useSightingFieldSchemas();
+
   const defaultSightingSchemas = sightingFieldSchemas.filter(
     schema => !schema.customField,
   );

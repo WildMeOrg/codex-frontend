@@ -99,7 +99,7 @@ export default function Login({ showBanner, redirect = '/' }) {
           <Grid item>
             <FormControl
               required
-              style={{ width: 220, marginBottom: 4 }}
+              style={{ marginBottom: 4 }}
             >
               <FormControlLabel
                 control={<Switch name="remember" />}

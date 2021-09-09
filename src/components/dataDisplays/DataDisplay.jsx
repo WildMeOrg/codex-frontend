@@ -43,13 +43,14 @@ export default function DataDisplay({
   onPrint,
   initiallySelectedRow = null,
   onSelectRow = Function.prototype,
+  hideFilterSearch = false,
   renderExpandedRow,
   variant = 'primary',
   idKey = 'id',
   noTitleBar,
   paginated = false,
   page,
-  onPageChange,
+  onChangePage,
   rowsPerPage,
   paperStyles = {},
   cellStyles = {},
@@ -71,7 +72,13 @@ export default function DataDisplay({
   const [anchorEl, setAnchorEl] = useState(null);
   const filterPopperOpen = Boolean(anchorEl);
 
-  const visibleData = data.filter(datum => {
+  const startIndex = paginated ? page * rowsPerPage : 0;
+  const endIndex = paginated ? (page + 1) * rowsPerPage - 1 : Infinity;
+
+  const visibleData = data.filter((datum, index) => {
+    if (index < startIndex) return false;
+    if (index > endIndex) return false;
+
     let match = false;
     columns.forEach(c => {
       const dataParser =
@@ -79,6 +86,7 @@ export default function DataDisplay({
       const dataValue = dataParser(get(datum, c.name, ''));
       if (dataValue.includes(filter)) match = true;
     });
+
     return match;
   });
 
@@ -107,13 +115,15 @@ export default function DataDisplay({
               elevation={8}
             >
               <Grid container direction="column">
-                <FilterBar
-                  size="small"
-                  width={140}
-                  style={{ margin: '0 0 12px 0' }}
-                  value={filter}
-                  onChange={setFilter}
-                />
+                {!hideFilterSearch && (
+                  <FilterBar
+                    size="small"
+                    width={140}
+                    style={{ margin: '0 0 12px 0' }}
+                    value={filter}
+                    onChange={setFilter}
+                  />
+                )}
                 {columns.map(c => (
                   <FormControlLabel
                     key={c.name}
@@ -258,7 +268,7 @@ export default function DataDisplay({
                 <TablePagination
                   page={page}
                   count={get(data, 'length', 0)}
-                  onPageChange={onPageChange}
+                  onChangePage={onChangePage}
                   rowsPerPage={rowsPerPage}
                   rowsPerPageOptions={[rowsPerPage]}
                   ActionsComponent={TablePaginationActions}

@@ -17,7 +17,7 @@ import Text from '../../components/Text';
 import IndividualsDisplay from '../../components/dataDisplays/IndividualsDisplay';
 
 const drawerWidth = 280;
-const rowsPerPage = 5;
+const rowsPerPage = 20;
 
 const paperProps = {
   style: {
@@ -110,9 +110,10 @@ export default function SearchIndividuals() {
         <div style={{ margin: '40px 40px 20px 16px' }}>
           <IndividualsDisplay
             individuals={searchResults || []}
+            hideFilterSearch
             paginated
             page={page}
-            onPageChange={(_, newPage) => setPage(newPage)}
+            onChangePage={(_, newPage) => setPage(newPage)}
             rowsPerPage={rowsPerPage}
           />
         </div>
