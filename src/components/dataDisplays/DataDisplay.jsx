@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { get, sortBy } from 'lodash-es';
 
+import { useTheme } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -17,6 +18,8 @@ import Popper from '@material-ui/core/Popper';
 import Fade from '@material-ui/core/Fade';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Backdrop from '@material-ui/core/Backdrop';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 import Print from '@material-ui/icons/Print';
 import FilterList from '@material-ui/icons/FilterList';
@@ -48,6 +51,7 @@ export default function DataDisplay({
   variant = 'primary',
   idKey = 'id',
   noTitleBar,
+  loading,
   paginated = false,
   page,
   onChangePage,
@@ -56,6 +60,8 @@ export default function DataDisplay({
   cellStyles = {},
   ...rest
 }) {
+  const theme = useTheme();
+
   const initialColumnNames = columns
     .filter(c => get(c, 'options.display', true))
     .map(c => c.name);
@@ -73,7 +79,9 @@ export default function DataDisplay({
   const filterPopperOpen = Boolean(anchorEl);
 
   const startIndex = paginated ? page * rowsPerPage : 0;
-  const endIndex = paginated ? (page + 1) * rowsPerPage - 1 : Infinity;
+  const endIndex = paginated
+    ? (page + 1) * rowsPerPage - 1
+    : Infinity;
 
   const visibleData = data.filter((datum, index) => {
     if (index < startIndex) return false;
@@ -99,6 +107,8 @@ export default function DataDisplay({
   const visibleColumns = columns.filter(column =>
     visibleColumnNames.includes(column.name),
   );
+
+  console.log(theme);
 
   return (
     <div {...rest}>
@@ -201,6 +211,14 @@ export default function DataDisplay({
             </IconButton>
           </Grid>
         </Grid>
+      )}
+      {loading && (
+        <Backdrop
+          open={loading}
+          style={{ backgroundColor: theme.palette.action.disabled, left: 280 }}
+        >
+          <CircularProgress style={{ color: theme.palette.common.white }} />
+        </Backdrop>
       )}
       <TableContainer
         component={variant === 'secondary' ? Paper : undefined}

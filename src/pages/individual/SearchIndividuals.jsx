@@ -52,8 +52,6 @@ export default function SearchIndividuals() {
 
   useDocumentTitle(intl.formatMessage({ id: 'EXPLORE_INDIVIDUALS' }));
 
-  /* not fetching from API because API is not ready */
-
   return (
     <div style={{ display: 'flex' }}>
       <Hidden smUp>
@@ -115,6 +113,7 @@ export default function SearchIndividuals() {
             page={page}
             onChangePage={(_, newPage) => setPage(newPage)}
             rowsPerPage={rowsPerPage}
+            loading={loading}
           />
         </div>
       </div>

@@ -16,9 +16,6 @@ export default function useFilterIndividuals(filters, pageIndex) {
       const filterIndividuals = async () => {
         try {
           setLoading(true);
-          const conditions = filters.map(filter => ({
-            must: filter,
-          }));
           const rawResponse = await axios.request({
             url: `${__houston_url__}/api/v1/search/individuals`,
             method: 'post',
@@ -27,13 +24,21 @@ export default function useFilterIndividuals(filters, pageIndex) {
               size: resultsPerPage,
               query: {
                 bool: {
-                  must: {
-                    match: { alias: 'brook' },
-                    // query_string: {
-                    //   query: '*brook*',
-                    //   fields: ['alias', 'name', 'id'],
+                  filter: [
+                    // {
+                    //   range: {
+                    //     last_sighting: {
+                    //       gte: '2021-09-07T17:26:08.681537',
+                    //     },
+                    //   },
                     // },
-                  },
+                    {
+                      query_string: {
+                        query: `*bro*`,
+                        fields: ['alias', 'name', 'id'],
+                      },
+                    },
+                  ],
                 },
               },
             },

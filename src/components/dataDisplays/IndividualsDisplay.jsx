@@ -8,7 +8,11 @@ import Link from '../Link';
 import ButtonLink from '../ButtonLink';
 import Text from '../Text';
 
-export default function IndividualsDisplay({ individuals, ...rest }) {
+export default function IndividualsDisplay({
+  individuals,
+  loading,
+  ...rest
+}) {
   const intl = useIntl();
   const title = `${individuals.length} matching individuals`;
 
@@ -86,47 +90,60 @@ export default function IndividualsDisplay({ individuals, ...rest }) {
       columns={columns}
       data={individuals}
       title={title}
+      loading={loading}
       onPrint={() => {
         window.open('/individuals/picturebook', '_blank');
       }}
-      renderExpandedRow={expandedIndividual => (
-        <div style={{ display: 'flex' }}>
-          <img
-            src={expandedIndividual.profile}
-            alt="Expanded individual"
-            style={{
-              width: 200,
-              height: 160,
-              padding: 20,
-            }}
-          />
-          <div style={{ padding: '20px 0' }}>
-            <Text variant="subtitle1">Recent Activity</Text>
-            <Text>
-              Encounter with <Link href="google.com">Tanya</Link> on{' '}
-              <Link href="google.com">4/12/2019</Link>
-            </Text>
-            <Text>
-              Encounter with <Link href="google.com">Drew</Link> on{' '}
-              <Link href="google.com">4/6/2019</Link>
-            </Text>
-            <Text>
-              Encounter with <Link href="google.com">Colin</Link> on{' '}
-              <Link href="google.com">4/2/2019</Link>
-            </Text>
-            <Text>
-              Encounter with <Link href="google.com">Jasonx</Link> on{' '}
-              <Link href="google.com">3/16/2019</Link>
-            </Text>
-            <ButtonLink
-              style={{ marginTop: 16 }}
-              href={`/individuals/${expandedIndividual.id}`}
-            >
-              View Profile
-            </ButtonLink>
+      renderExpandedRow={expandedIndividual => {
+        return (
+          <div style={{ display: 'flex' }}>
+            {/* <img
+              src={expandedIndividual.profile}
+              alt="Expanded individual"
+              style={{
+                width: 200,
+                height: 160,
+                padding: 20,
+              }}
+            /> */}
+            <div style={{ padding: '20px 0' }}>
+              <Text variant="h6" style={{ marginBottom: 8 }}>
+                Recent Activity
+              </Text>
+              {expandedIndividual.encounters.map(encounter => {
+                const encounterDate = get(encounter, 'date_occurred');
+                const formattedEncounterDate = encounterDate
+                  ? formatDate(encounterDate, true)
+                  : 'unknown date';
+                const submitter = get(
+                  encounter,
+                  'submitter_id',
+                  'unknown user',
+                );
+                return (
+                  <Text variant="body2" key={encounter.id}>
+                    {`Sighting on `}
+                    <Link href={`/sightings/${encounter.id}`}>
+                      {formattedEncounterDate}
+                    </Link>
+                    {` by `}
+                    <Link href={`/users/${submitter}`}>
+                      {submitter}
+                    </Link>
+                    {'.'}
+                  </Text>
+                );
+              })}
+              <ButtonLink
+                style={{ marginTop: 16 }}
+                href={`/individuals/${expandedIndividual.id}`}
+              >
+                View Profile
+              </ButtonLink>
+            </div>
           </div>
-        </div>
-      )}
+        );
+      }}
       {...rest}
     />
   );
