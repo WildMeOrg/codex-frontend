@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { get, sortBy } from 'lodash-es';
 
-import { useTheme } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -18,8 +17,7 @@ import Popper from '@material-ui/core/Popper';
 import Fade from '@material-ui/core/Fade';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Backdrop from '@material-ui/core/Backdrop';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import LinearProgress from '@material-ui/core/LinearProgress';
 
 import Print from '@material-ui/icons/Print';
 import FilterList from '@material-ui/icons/FilterList';
@@ -60,8 +58,6 @@ export default function DataDisplay({
   cellStyles = {},
   ...rest
 }) {
-  const theme = useTheme();
-
   const initialColumnNames = columns
     .filter(c => get(c, 'options.display', true))
     .map(c => c.name);
@@ -107,8 +103,6 @@ export default function DataDisplay({
   const visibleColumns = columns.filter(column =>
     visibleColumnNames.includes(column.name),
   );
-
-  console.log(theme);
 
   return (
     <div {...rest}>
@@ -212,14 +206,6 @@ export default function DataDisplay({
           </Grid>
         </Grid>
       )}
-      {loading && (
-        <Backdrop
-          open={loading}
-          style={{ backgroundColor: theme.palette.action.disabled, left: 280 }}
-        >
-          <CircularProgress style={{ color: theme.palette.common.white }} />
-        </Backdrop>
-      )}
       <TableContainer
         component={variant === 'secondary' ? Paper : undefined}
         elevation={variant === 'secondary' ? 2 : undefined}
@@ -260,27 +246,28 @@ export default function DataDisplay({
             </TableRow>
           </TableHead>
           <TableBody>
-            {sortedData.map(datum => (
-              <CollabsibleRow
-                key={get(datum, idKey)}
-                onClick={() => {
-                  if (selectedRow === get(datum, idKey)) {
-                    setSelectedRow(null);
-                    onSelectRow(null);
-                  } else {
-                    setSelectedRow(get(datum, idKey));
-                    onSelectRow(datum);
-                  }
-                }}
-                selected={selectedRow === get(datum, idKey)}
-                datum={datum}
-                cellStyles={cellStyles}
-                columns={visibleColumns}
-                renderExpandedRow={renderExpandedRow}
-              />
-            ))}
+            {!loading &&
+              sortedData.map(datum => (
+                <CollabsibleRow
+                  key={get(datum, idKey)}
+                  onClick={() => {
+                    if (selectedRow === get(datum, idKey)) {
+                      setSelectedRow(null);
+                      onSelectRow(null);
+                    } else {
+                      setSelectedRow(get(datum, idKey));
+                      onSelectRow(datum);
+                    }
+                  }}
+                  selected={selectedRow === get(datum, idKey)}
+                  datum={datum}
+                  cellStyles={cellStyles}
+                  columns={visibleColumns}
+                  renderExpandedRow={renderExpandedRow}
+                />
+              ))}
           </TableBody>
-          {paginated && (
+          {paginated && !loading && (
             <TableFooter>
               <TableRow>
                 <TablePagination
@@ -296,6 +283,7 @@ export default function DataDisplay({
           )}
         </Table>
       </TableContainer>
+      {loading && <LinearProgress style={{ margin: '16px 32px' }} />}
     </div>
   );
 }
