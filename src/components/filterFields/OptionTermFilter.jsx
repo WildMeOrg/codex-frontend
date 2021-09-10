@@ -16,11 +16,13 @@ function SelectionEditor(props) {
     labelId,
     description,
     descriptionId,
+    filterId,
     onChange,
     queryTerm,
     choices,
     width,
     minimalLabels = false,
+    style,
     ...rest
   } = props;
   const intl = useIntl();
@@ -36,16 +38,29 @@ function SelectionEditor(props) {
   const showDescription =
     !minimalLabels && (description || descriptionId);
 
+  const translatedLabel = labelId
+    ? intl.formatMessage({ id: labelId })
+    : label;
+
   return (
-    <FormControl>
-      <InputLabel>{label}</InputLabel>
+    <FormControl style={style}>
+      <InputLabel>{translatedLabel}</InputLabel>
       <Select
         labelId={`${queryTerm}-selector-label`}
         id={`${queryTerm}-selector`}
         onChange={e => {
-          setValue(e.target.value);
+          const selectedValue = e.target.value;
+          const selectedChoice = choices.find(
+            c => c.value === selectedValue,
+          );
+          const choiceLabel = getLabel(selectedChoice);
+          setValue(selectedValue);
           onChange({
-            match: { [queryTerm]: e.target.value },
+            filterId,
+            descriptor: `${translatedLabel}: ${choiceLabel}`,
+            query: {
+              match: { [queryTerm]: selectedValue },
+            },
           });
         }}
         value={value}

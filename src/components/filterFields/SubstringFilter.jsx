@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
+import { useIntl } from 'react-intl';
+
 import FormHelperText from '@material-ui/core/FormHelperText';
 import TextField from '@material-ui/core/TextField';
 import FormControl from '@material-ui/core/FormControl';
+
+import Button from '../Button';
 
 export default function SubstringFilter(props) {
   const {
@@ -9,35 +13,57 @@ export default function SubstringFilter(props) {
     labelId,
     description,
     descriptionId,
+    filterId,
     onChange,
     queryTerms,
     width,
     minimalLabels = false,
+    style = {},
     ...rest
   } = props;
+  const intl = useIntl();
+
   const showDescription = !minimalLabels && description;
 
   const [value, setValue] = useState('');
+  const translatedLabel = labelId
+    ? intl.formatMessage({ id: labelId })
+    : label;
 
   return (
-    <FormControl>
-      <TextField
-        label={label}
-        onChange={e => {
-          setValue(e.target.value);
+    <div
+      style={{ display: 'flex', alignItems: 'flex-end', ...style }}
+    >
+      <FormControl>
+        <TextField
+          label={translatedLabel}
+          onChange={e => {
+            setValue(e.target.value);
+          }}
+          value={value}
+          {...rest}
+        />
+        {showDescription ? (
+          <FormHelperText>{description}</FormHelperText>
+        ) : null}
+      </FormControl>
+      <Button
+        id="GO"
+        onClick={() =>
           onChange({
-            query_string: {
-              query: `*${e.target.value}*`,
-              fields: queryTerms,
+            filterId,
+            descriptor: `${translatedLabel}: ${value}`,
+            query: {
+              query_string: {
+                query: `*${value.toLowerCase()}*`,
+                fields: queryTerms,
+              },
             },
-          });
-        }}
-        value={value}
-        {...rest}
+          })
+        }
+        size="small"
+        style={{ marginLeft: 8, minWidth: 48, height: 36 }}
       />
-      {showDescription ? (
-        <FormHelperText>{description}</FormHelperText>
-      ) : null}
-    </FormControl>
+    </div>
   );
 }

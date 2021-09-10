@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { set } from 'lodash-es';
-import { FormattedMessage } from 'react-intl';
-import { parseISO } from 'date-fns';
+import { useIntl, FormattedMessage } from 'react-intl';
+import { parseISO, format } from 'date-fns';
 
 import DateFnsUtils from '@date-io/date-fns';
 import {
@@ -11,21 +11,45 @@ import {
 
 import Text from '../Text';
 
-function buildQuery(queryTerm, startDate, endDate) {
+function buildQuery(queryTerm, label, filterId, startDate, endDate) {
+  const formattedStartDate = startDate
+    ? format(startDate, 'yyyy-MM-dd')
+    : null;
+  const formattedEndDate = endDate
+    ? format(endDate, 'yyyy-MM-dd')
+    : null;
+
+  let descriptor;
+  if (startDate && endDate) {
+    descriptor = `${label} between ${formattedStartDate} and ${formattedEndDate}`;
+  } else if (startDate) {
+    descriptor = `${label} after ${formattedStartDate}`;
+  } else {
+    descriptor = `${label} before ${formattedEndDate}`;
+  }
+
   const query = {
-    range: {
-      [queryTerm]: {},
+    filterId,
+    descriptor,
+    query: {
+      range: {
+        [queryTerm]: {},
+      },
     },
   };
-  const formattedStartDate = startDate
-    ? JSON.stringify(startDate)
-    : null;
-  const formattedEndDate = endDate ? JSON.stringify(endDate) : null;
 
   if (startDate)
-    set(query, ['range', queryTerm, 'gte'], formattedStartDate);
+    set(
+      query,
+      ['query', 'range', queryTerm, 'gte'],
+      formattedStartDate,
+    );
   if (endDate)
-    set(query, ['range', queryTerm, 'lte'], formattedEndDate);
+    set(
+      query,
+      ['query', 'range', queryTerm, 'lte'],
+      formattedEndDate,
+    );
   return query;
 }
 
@@ -34,10 +58,14 @@ export default function DateRangeFilter({
   labelId,
   description,
   descriptionId,
+  filterId,
   onChange,
   queryTerm,
+  style = {},
   minimalLabels = false,
 }) {
+  const intl = useIntl();
+
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
 
@@ -46,20 +74,22 @@ export default function DateRangeFilter({
   const endDateValue =
     typeof endDate === 'string' ? parseISO(endDate) : endDate;
 
+  const translatedLabel = labelId
+    ? intl.formatMessage({ id: labelId })
+    : label;
+
   /* Note: the wrapper div is there because MuiPicker creates two child elements,
    * which messes up display if this component is a flex child. */
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column' }}>
+    <div
+      style={{ display: 'flex', flexDirection: 'column', ...style }}
+    >
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
         {!minimalLabels && (
           <>
-            <Text
-              variant="subtitle2"
-              style={{ marginTop: 16 }}
-              labelId={labelId}
-            >
-              {label}
+            <Text variant="subtitle2" style={{ marginTop: 16 }}>
+              {translatedLabel}
             </Text>
             <Text
               variant="caption"
@@ -81,7 +111,15 @@ export default function DateRangeFilter({
           value={startDateValue}
           onChange={nextStartDate => {
             setStartDate(nextStartDate);
-            onChange(buildQuery(queryTerm, nextStartDate, endDate));
+            onChange(
+              buildQuery(
+                queryTerm,
+                translatedLabel,
+                filterId,
+                nextStartDate,
+                endDate,
+              ),
+            );
           }}
           style={{ margin: 0 }}
           KeyboardButtonProps={{
@@ -94,11 +132,20 @@ export default function DateRangeFilter({
           format="yyyy-MM-dd" // US: MM/dd/yyyy
           margin="normal"
           id={`${label}-end-date`}
+          style={{ marginTop: 0 }}
           label={<FormattedMessage id="END_DATE" />}
           value={endDateValue}
           onChange={nextEndDate => {
             setEndDate(nextEndDate);
-            onChange(buildQuery(queryTerm, startDate, nextEndDate));
+            onChange(
+              buildQuery(
+                queryTerm,
+                translatedLabel,
+                filterId,
+                startDate,
+                nextEndDate,
+              ),
+            );
           }}
           KeyboardButtonProps={{
             'aria-label': `Change ${label} end date`,

@@ -1,5 +1,4 @@
 import React from 'react';
-import { FormattedMessage } from 'react-intl';
 import Grid from '@material-ui/core/Grid';
 import Popover from '@material-ui/core/Popover';
 import Avatar from '@material-ui/core/Avatar';
@@ -97,9 +96,7 @@ export default function NotificationsPane({ anchorEl, setAnchorEl }) {
                   {task.name}
                 </Text>
               </div>
-              <Button style={{ maxHeight: 40 }}>
-                <FormattedMessage id="VIEW" />
-              </Button>
+              <Button style={{ maxHeight: 40 }} id="VIEW" />
             </Grid>
             <Grid item>
               <Divider />

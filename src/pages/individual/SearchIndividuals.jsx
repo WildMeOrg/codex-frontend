@@ -8,10 +8,7 @@ import useFilterIndividuals from '../../models/individual/useFilterIndividuals';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import FilterPanel from '../../components/FilterPanel';
 import SearchFilterList from '../../components/SearchFilterList';
-import {
-  selectIndividualSearchCategories,
-  selectIndividualSearchSchema,
-} from '../../modules/individuals/selectors';
+import { selectIndividualSearchSchema } from '../../modules/individuals/selectors';
 import Button from '../../components/Button';
 import Text from '../../components/Text';
 import IndividualsDisplay from '../../components/dataDisplays/IndividualsDisplay';
@@ -32,23 +29,20 @@ const paperProps = {
 export default function SearchIndividuals() {
   const intl = useIntl();
   const [page, setPage] = useState(0);
+  const [formFilters, setFormFilters] = useState([]);
+
+  const filters = formFilters.map(f => f.query);
 
   const {
     data: searchResults,
+    hitCount,
     loading,
-    error,
-  } = useFilterIndividuals([], 0);
+    updateFilters,
+  } = useFilterIndividuals(filters, 0);
 
-  const categories = useSelector(selectIndividualSearchCategories);
   const schema = useSelector(selectIndividualSearchSchema);
 
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
-  const [formValues, setFormValues] = useState(
-    schema.reduce((memo, filter) => {
-      memo[filter.name] = filter.defaultValue;
-      return memo;
-    }, {}),
-  );
 
   useDocumentTitle(intl.formatMessage({ id: 'EXPLORE_INDIVIDUALS' }));
 
@@ -63,20 +57,18 @@ export default function SearchIndividuals() {
           onClose={() => setMobileDrawerOpen(false)}
         >
           <FilterPanel
-            categories={categories}
-            filters={schema}
-            formValues={formValues}
-            setFormValues={setFormValues}
+            formFilters={formFilters}
+            setFormFilters={setFormFilters}
+            updateFilters={updateFilters}
           />
         </Drawer>
       </Hidden>
       <Hidden xsDown>
         <Drawer open variant="permanent" PaperProps={paperProps}>
           <FilterPanel
-            categories={categories}
-            filters={schema}
-            formValues={formValues}
-            setFormValues={setFormValues}
+            formFilters={formFilters}
+            setFormFilters={setFormFilters}
+            updateFilters={updateFilters}
           />
         </Drawer>
       </Hidden>
@@ -94,8 +86,9 @@ export default function SearchIndividuals() {
           />
         </div>
         <SearchFilterList
-          formValues={formValues}
-          setFormValues={setFormValues}
+          formFilters={formFilters}
+          setFormFilters={setFormFilters}
+          updateFilters={updateFilters}
           schema={schema}
         />
         <Hidden smUp>
@@ -114,6 +107,7 @@ export default function SearchIndividuals() {
             onChangePage={(_, newPage) => setPage(newPage)}
             rowsPerPage={rowsPerPage}
             loading={loading}
+            hitCount={hitCount}
           />
         </div>
       </div>

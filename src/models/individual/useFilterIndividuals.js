@@ -9,7 +9,9 @@ export default function useFilterIndividuals(filters, pageIndex) {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [statusCode, setStatusCode] = useState(null);
+  const [refreshCount, setRefreshCount] = useState(0);
   const [response, setResponse] = useState(null);
+  const [hitCount, setHitCount] = useState(null);
 
   useEffect(
     () => {
@@ -24,21 +26,7 @@ export default function useFilterIndividuals(filters, pageIndex) {
               size: resultsPerPage,
               query: {
                 bool: {
-                  filter: [
-                    // {
-                    //   range: {
-                    //     last_sighting: {
-                    //       gte: '2021-09-07T17:26:08.681537',
-                    //     },
-                    //   },
-                    // },
-                    {
-                      query_string: {
-                        query: `*bro*`,
-                        fields: ['alias', 'name', 'id'],
-                      },
-                    },
-                  ],
+                  filter: filters,
                 },
               },
             },
@@ -52,6 +40,13 @@ export default function useFilterIndividuals(filters, pageIndex) {
 
           const hits = get(rawResponse, ['data', 'hits', 'hits'], []);
           const hitSources = hits.map(hit => get(hit, '_source'));
+          const count = get(rawResponse, [
+            'data',
+            'hits',
+            'total',
+            'value',
+          ]);
+          setHitCount(count);
           setResponse(hitSources);
         } catch (fetchError) {
           const responseStatusCode = get(fetchError, [
@@ -67,13 +62,19 @@ export default function useFilterIndividuals(filters, pageIndex) {
       };
       filterIndividuals();
     },
-    [pageIndex],
+    [refreshCount, pageIndex],
   );
+
+  function updateFilters() {
+    setRefreshCount(refreshCount + 1);
+  }
 
   return {
     data: response,
+    hitCount,
     statusCode,
     loading,
     error,
+    updateFilters,
   };
 }

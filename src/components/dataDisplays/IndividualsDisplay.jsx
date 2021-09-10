@@ -11,10 +11,11 @@ import Text from '../Text';
 export default function IndividualsDisplay({
   individuals,
   loading,
+  hitCount,
   ...rest
 }) {
   const intl = useIntl();
-  const title = `${individuals.length} matching individuals`;
+  const title = hitCount ? `${hitCount} matching individuals` : '';
 
   const columns = [
     {
@@ -94,10 +95,9 @@ export default function IndividualsDisplay({
       onPrint={() => {
         window.open('/individuals/picturebook', '_blank');
       }}
-      renderExpandedRow={expandedIndividual => {
-        return (
-          <div style={{ display: 'flex' }}>
-            {/* <img
+      renderExpandedRow={expandedIndividual => (
+        <div style={{ display: 'flex' }}>
+          {/* <img
               src={expandedIndividual.profile}
               alt="Expanded individual"
               style={{
@@ -106,44 +106,43 @@ export default function IndividualsDisplay({
                 padding: 20,
               }}
             /> */}
-            <div style={{ padding: '20px 0' }}>
-              <Text variant="h6" style={{ marginBottom: 8 }}>
-                Recent Activity
-              </Text>
-              {expandedIndividual.encounters.map(encounter => {
-                const encounterDate = get(encounter, 'date_occurred');
-                const formattedEncounterDate = encounterDate
-                  ? formatDate(encounterDate, true)
-                  : 'unknown date';
-                const submitter = get(
-                  encounter,
-                  'submitter_id',
-                  'unknown user',
-                );
-                return (
-                  <Text variant="body2" key={encounter.id}>
-                    {`Sighting on `}
-                    <Link href={`/sightings/${encounter.id}`}>
-                      {formattedEncounterDate}
-                    </Link>
-                    {` by `}
-                    <Link href={`/users/${submitter}`}>
-                      {submitter}
-                    </Link>
-                    {'.'}
-                  </Text>
-                );
-              })}
-              <ButtonLink
-                style={{ marginTop: 16 }}
-                href={`/individuals/${expandedIndividual.id}`}
-              >
-                View Profile
-              </ButtonLink>
-            </div>
+          <div style={{ padding: '20px 0' }}>
+            <Text variant="h6" style={{ marginBottom: 8 }}>
+              Recent Activity
+            </Text>
+            {expandedIndividual.encounters.map(encounter => {
+              const encounterDate = get(encounter, 'date_occurred');
+              const formattedEncounterDate = encounterDate
+                ? formatDate(encounterDate, true)
+                : 'unknown date';
+              const submitter = get(
+                encounter,
+                'submitter_id',
+                'unknown user',
+              );
+              return (
+                <Text variant="body2" key={encounter.id}>
+                  {'Sighting on '}
+                  <Link href={`/sightings/${encounter.id}`}>
+                    {formattedEncounterDate}
+                  </Link>
+                  {' by '}
+                  <Link href={`/users/${submitter}`}>
+                    {submitter}
+                  </Link>
+                  .
+                </Text>
+              );
+            })}
+            <ButtonLink
+              style={{ marginTop: 16 }}
+              href={`/individuals/${expandedIndividual.id}`}
+            >
+              View Profile
+            </ButtonLink>
           </div>
-        );
-      }}
+        </div>
+      )}
       {...rest}
     />
   );
