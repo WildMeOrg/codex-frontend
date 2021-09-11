@@ -6,6 +6,7 @@ import { get } from 'lodash-es';
 // import AddIcon from '@material-ui/icons/Add';
 
 import useUserMetadataSchemas from '../models/users/useUserMetadataSchemas';
+import useRequestCollaboration from '../models/collaboration/useRequestCollaboration';
 import { formatDate } from '../utils/formatters';
 import EntityHeaderNew from './EntityHeaderNew';
 import BigAvatar from './profilePhotos/BigAvatar';
@@ -30,6 +31,12 @@ export default function UserProfile({
 }) {
   const [editingProfile, setEditingProfile] = useState(false);
   const metadataSchemas = useUserMetadataSchemas(userId);
+
+  const {
+    requestCollaboration,
+    loading,
+    error,
+  } = useRequestCollaboration();
 
   const metadata = useMemo(
     () => {
@@ -88,9 +95,13 @@ export default function UserProfile({
           noCollaborate ? (
             undefined
           ) : (
-            <Button>
-              <FormattedMessage id="ADD_COLLABORATOR" />
-            </Button>
+            <Button
+              onClick={async () => {
+                requestCollaboration(userId);
+              }}
+              loading={loading}
+              id="ADD_COLLABORATOR"
+            />
           )
         }
       >

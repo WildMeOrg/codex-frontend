@@ -7,6 +7,8 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import TableFooter from '@material-ui/core/TableFooter';
+import TablePagination from '@material-ui/core/TablePagination';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
@@ -15,6 +17,7 @@ import Popper from '@material-ui/core/Popper';
 import Fade from '@material-ui/core/Fade';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import LinearProgress from '@material-ui/core/LinearProgress';
 
 import Print from '@material-ui/icons/Print';
 import FilterList from '@material-ui/icons/FilterList';
@@ -22,6 +25,7 @@ import CloudDownload from '@material-ui/icons/CloudDownload';
 
 import FilterBar from '../FilterBar';
 import Text from '../Text';
+import TablePaginationActions from './TablePaginationActions';
 import CollabsibleRow from './CollapsibleRow';
 import sendCsv from './sendCsv';
 
@@ -40,10 +44,18 @@ export default function DataDisplay({
   onPrint,
   initiallySelectedRow = null,
   onSelectRow = Function.prototype,
+  hideFilterSearch = false,
   renderExpandedRow,
   variant = 'primary',
   idKey = 'id',
   noTitleBar,
+  loading,
+  paginated = false,
+  paginatedExternally = true, // display all data provided and let parent component(s) paginate
+  page,
+  onChangePage,
+  rowsPerPage,
+  dataCount, // in a paginated table there will be more data than provided to the data prop
   paperStyles = {},
   cellStyles = {},
   ...rest
@@ -64,7 +76,15 @@ export default function DataDisplay({
   const [anchorEl, setAnchorEl] = useState(null);
   const filterPopperOpen = Boolean(anchorEl);
 
-  const visibleData = data.filter(datum => {
+  const startIndex = paginated ? page * rowsPerPage : 0;
+  const endIndex = paginated
+    ? (page + 1) * rowsPerPage - 1
+    : Infinity;
+
+  const visibleData = data.filter((datum, index) => {
+    if (index < startIndex && !paginatedExternally) return false;
+    if (index > endIndex && !paginatedExternally) return false;
+
     let match = false;
     columns.forEach(c => {
       const userSuppliedDataParser = get(c, 'options.getStringValue');
@@ -73,15 +93,20 @@ export default function DataDisplay({
       if (userSuppliedDataParser) {
         dataValue = userSuppliedDataParser(rawValue, datum)
           .toLowerCase
-          ? userSuppliedDataParser(rawValue, datum).toLowerCase().trim()
+          ? userSuppliedDataParser(rawValue, datum)
+              .toLowerCase()
+              .trim()
           : userSuppliedDataParser(rawValue, datum);
       } else {
         dataValue = JSON.stringify(rawValue)
-          ? JSON.stringify(rawValue).toLowerCase().trim()
+          ? JSON.stringify(rawValue)
+              .toLowerCase()
+              .trim()
           : JSON.stringify(rawValue);
       }
       if (dataValue && dataValue.includes(filter)) match = true;
     });
+
     return match;
   });
 
@@ -110,13 +135,15 @@ export default function DataDisplay({
               elevation={8}
             >
               <Grid container direction="column">
-                <FilterBar
-                  size="small"
-                  width={140}
-                  style={{ margin: '0 0 12px 0' }}
-                  value={filter}
-                  onChange={setFilter}
-                />
+                {!hideFilterSearch && (
+                  <FilterBar
+                    size="small"
+                    width={140}
+                    style={{ margin: '0 0 12px 0' }}
+                    value={filter}
+                    onChange={setFilter}
+                  />
+                )}
                 {columns
                   .filter(c =>
                     get(c, 'options.displayInFilter', true),
@@ -241,28 +268,44 @@ export default function DataDisplay({
             </TableRow>
           </TableHead>
           <TableBody>
-            {sortedData.map(datum => (
-              <CollabsibleRow
-                key={get(datum, idKey)}
-                onClick={() => {
-                  if (selectedRow === get(datum, idKey)) {
-                    setSelectedRow(null);
-                    onSelectRow(null);
-                  } else {
-                    setSelectedRow(get(datum, idKey));
-                    onSelectRow(datum);
-                  }
-                }}
-                selected={selectedRow === get(datum, idKey)}
-                datum={datum}
-                cellStyles={cellStyles}
-                columns={visibleColumns}
-                renderExpandedRow={renderExpandedRow}
-              />
-            ))}
+            {!loading &&
+              sortedData.map(datum => (
+                <CollabsibleRow
+                  key={get(datum, idKey)}
+                  onClick={() => {
+                    if (selectedRow === get(datum, idKey)) {
+                      setSelectedRow(null);
+                      onSelectRow(null);
+                    } else {
+                      setSelectedRow(get(datum, idKey));
+                      onSelectRow(datum);
+                    }
+                  }}
+                  selected={selectedRow === get(datum, idKey)}
+                  datum={datum}
+                  cellStyles={cellStyles}
+                  columns={visibleColumns}
+                  renderExpandedRow={renderExpandedRow}
+                />
+              ))}
           </TableBody>
+          {paginated && !loading && (
+            <TableFooter>
+              <TableRow>
+                <TablePagination
+                  page={page}
+                  count={dataCount || get(data, 'length', 0)}
+                  onChangePage={onChangePage}
+                  rowsPerPage={rowsPerPage}
+                  rowsPerPageOptions={[rowsPerPage]}
+                  ActionsComponent={TablePaginationActions}
+                />
+              </TableRow>
+            </TableFooter>
+          )}
         </Table>
       </TableContainer>
+      {loading && <LinearProgress style={{ margin: '16px 32px' }} />}
     </div>
   );
 }

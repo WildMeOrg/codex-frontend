@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { get, capitalize } from 'lodash-es';
+import { get } from 'lodash-es';
 
 import useGetUser from '../../models/users/useGetUser';
 import UserProfile from '../../components/UserProfile';
@@ -12,7 +12,7 @@ export default function User() {
 
   const { data, loading, refresh } = useGetUser(id);
   const name = get(data, 'full_name', 'Unnamed user');
-  useDocumentTitle(capitalize(name));
+  useDocumentTitle(name);
 
   if (loading) return <LoadingScreen />;
 
