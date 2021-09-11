@@ -3,9 +3,11 @@ import axios from 'axios';
 import { get } from 'lodash-es';
 import { formatError } from '../../utils/formatters';
 
-const resultsPerPage = 5;
-
-export default function useFilterIndividuals(filters, pageIndex) {
+export default function useFilterIndividuals(
+  filters,
+  pageIndex,
+  resultsPerPage = 20,
+) {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [statusCode, setStatusCode] = useState(null);

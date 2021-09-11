@@ -94,7 +94,7 @@ export default function DateRangeFilter({
             <Text
               variant="caption"
               color="textSecondary"
-              descriptionId={descriptionId}
+              id={descriptionId}
               style={{ marginTop: 4 }}
             >
               {description}

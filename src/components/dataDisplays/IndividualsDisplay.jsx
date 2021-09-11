@@ -95,6 +95,8 @@ export default function IndividualsDisplay({
       onPrint={() => {
         window.open('/individuals/picturebook', '_blank');
       }}
+      dataCount={hitCount}
+      paginatedExternally
       renderExpandedRow={expandedIndividual => (
         <div style={{ display: 'flex' }}>
           {/* <img

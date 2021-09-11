@@ -51,9 +51,11 @@ export default function DataDisplay({
   noTitleBar,
   loading,
   paginated = false,
+  paginatedExternally = true, // display all data provided and let parent component(s) paginate
   page,
   onChangePage,
   rowsPerPage,
+  dataCount, // in a paginated table there will be more data than provided to the data prop
   paperStyles = {},
   cellStyles = {},
   ...rest
@@ -80,8 +82,8 @@ export default function DataDisplay({
     : Infinity;
 
   const visibleData = data.filter((datum, index) => {
-    if (index < startIndex) return false;
-    if (index > endIndex) return false;
+    if (index < startIndex && !paginatedExternally) return false;
+    if (index > endIndex && !paginatedExternally) return false;
 
     let match = false;
     columns.forEach(c => {
@@ -272,7 +274,7 @@ export default function DataDisplay({
               <TableRow>
                 <TablePagination
                   page={page}
-                  count={get(data, 'length', 0)}
+                  count={dataCount || get(data, 'length', 0)}
                   onChangePage={onChangePage}
                   rowsPerPage={rowsPerPage}
                   rowsPerPageOptions={[rowsPerPage]}

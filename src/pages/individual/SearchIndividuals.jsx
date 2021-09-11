@@ -14,7 +14,7 @@ import Text from '../../components/Text';
 import IndividualsDisplay from '../../components/dataDisplays/IndividualsDisplay';
 
 const drawerWidth = 280;
-const rowsPerPage = 20;
+const rowsPerPage = 10;
 
 const paperProps = {
   style: {
@@ -38,7 +38,7 @@ export default function SearchIndividuals() {
     hitCount,
     loading,
     updateFilters,
-  } = useFilterIndividuals(filters, 0);
+  } = useFilterIndividuals(filters, page, rowsPerPage);
 
   const schema = useSelector(selectIndividualSearchSchema);
 
