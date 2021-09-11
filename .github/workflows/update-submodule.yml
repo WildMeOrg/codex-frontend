@@ -1,0 +1,27 @@
+name: Update submodule
+on:
+  push:
+    branches: [ develop ]
+
+jobs:
+  update-submodule:
+    name: Update Houston's submodule to latest develop
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          repository: 'WildMeOrg/houston'
+          submodules: true
+          token: ${{ secrets.PAT_TOKEN }}
+      - run: |
+          bash -xe <<EOF
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          cd _frontend
+          git reset --hard origin/develop
+          cd ..
+          git commit -am 'Update _frontend to latest develop'
+          git show
+          git push origin HEAD
+          EOF

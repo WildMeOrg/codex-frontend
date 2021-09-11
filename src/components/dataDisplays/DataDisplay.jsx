@@ -87,10 +87,24 @@ export default function DataDisplay({
 
     let match = false;
     columns.forEach(c => {
-      const dataParser =
-        get(c, 'options.getStringValue') || JSON.stringify;
-      const dataValue = dataParser(get(datum, c.name, ''));
-      if (dataValue.includes(filter)) match = true;
+      const userSuppliedDataParser = get(c, 'options.getStringValue');
+      const rawValue = get(datum, c.name, '');
+      let dataValue;
+      if (userSuppliedDataParser) {
+        dataValue = userSuppliedDataParser(rawValue, datum)
+          .toLowerCase
+          ? userSuppliedDataParser(rawValue, datum)
+              .toLowerCase()
+              .trim()
+          : userSuppliedDataParser(rawValue, datum);
+      } else {
+        dataValue = JSON.stringify(rawValue)
+          ? JSON.stringify(rawValue)
+              .toLowerCase()
+              .trim()
+          : JSON.stringify(rawValue);
+      }
+      if (dataValue && dataValue.includes(filter)) match = true;
     });
 
     return match;
@@ -130,34 +144,40 @@ export default function DataDisplay({
                     onChange={setFilter}
                   />
                 )}
-                {columns.map(c => (
-                  <FormControlLabel
-                    key={c.name}
-                    control={
-                      <Checkbox
-                        size="small"
-                        checked={visibleColumnNames.includes(c.name)}
-                        onClick={() => {
-                          if (visibleColumnNames.includes(c.name)) {
-                            if (visibleColumnNames.length === 1)
-                              return;
-                            setVisibleColumnNames(
-                              visibleColumnNames.filter(
-                                vc => vc !== c.name,
-                              ),
-                            );
-                          } else {
-                            setVisibleColumnNames([
-                              ...visibleColumnNames,
-                              c.name,
-                            ]);
-                          }
-                        }}
-                      />
-                    }
-                    label={<Text variant="body2">{c.label}</Text>}
-                  />
-                ))}
+                {columns
+                  .filter(c =>
+                    get(c, 'options.displayInFilter', true),
+                  )
+                  .map(c => (
+                    <FormControlLabel
+                      key={c.name}
+                      control={
+                        <Checkbox
+                          size="small"
+                          checked={visibleColumnNames.includes(
+                            c.name,
+                          )}
+                          onClick={() => {
+                            if (visibleColumnNames.includes(c.name)) {
+                              if (visibleColumnNames.length === 1)
+                                return;
+                              setVisibleColumnNames(
+                                visibleColumnNames.filter(
+                                  vc => vc !== c.name,
+                                ),
+                              );
+                            } else {
+                              setVisibleColumnNames([
+                                ...visibleColumnNames,
+                                c.name,
+                              ]);
+                            }
+                          }}
+                        />
+                      }
+                      label={<Text variant="body2">{c.label}</Text>}
+                    />
+                  ))}
               </Grid>
             </Paper>
           </Fade>

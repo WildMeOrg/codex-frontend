@@ -132,6 +132,9 @@ export default function useSightingFieldSchemas() {
           descriptionId: 'REGION_DESCRIPTION',
           category: defaultSightingCategories.location.name,
           choices: regionChoices,
+          editComponentProps: {
+            multiple: false,
+          },
         }),
         createFieldSchema(fieldTypes.string, {
           name: 'verbatimLocality',
