@@ -13,7 +13,7 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import IconButton from '@material-ui/core/IconButton';
 import SearchIcon from '@material-ui/icons/Search';
-import NavigateIcon from '@material-ui/icons/Visibility';
+import NavigateIcon from '@material-ui/icons/Launch';
 import Link from '../../components/Link';
 import Button from '../../components/Button';
 import StandardDialog from '../../components/StandardDialog';
