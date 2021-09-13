@@ -18,6 +18,7 @@ function SelectionEditor(props) {
     descriptionId,
     filterId,
     onChange,
+    onClearFilter,
     queryTerm,
     choices,
     width,
@@ -55,13 +56,17 @@ function SelectionEditor(props) {
           );
           const choiceLabel = getLabel(selectedChoice);
           setValue(selectedValue);
-          onChange({
-            filterId,
-            descriptor: `${translatedLabel}: ${choiceLabel}`,
-            query: {
-              match: { [queryTerm]: selectedValue },
-            },
-          });
+          if (selectedValue === '') {
+            onClearFilter(filterId);
+          } else {
+            onChange({
+              filterId,
+              descriptor: `${translatedLabel}: ${choiceLabel}`,
+              query: {
+                match: { [queryTerm]: selectedValue },
+              },
+            });
+          }
         }}
         value={value}
         renderValue={currentValue => {

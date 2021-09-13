@@ -30,6 +30,13 @@ export default function FilterPanel({
     setFilter(filter, formFilters, setFormFilters);
     updateFilters();
   };
+  const clearFilter = filterId => {
+    const newFormFilters = formFilters.filter(
+      f => f.filterId !== filterId,
+    );
+    setFormFilters(newFormFilters);
+    updateFilters();
+  };
 
   return (
     <div>
@@ -61,6 +68,7 @@ export default function FilterPanel({
         <OptionTermFilter
           labelId="SEX"
           onChange={handleFilterChange}
+          onClearFilter={clearFilter}
           queryTerm="sex"
           filterId="sex"
           choices={[
@@ -71,6 +79,32 @@ export default function FilterPanel({
             {
               label: 'Female',
               value: 'female',
+            },
+            {
+              label: 'Either',
+              value: '',
+            },
+          ]}
+          style={{ marginTop: 4 }}
+        />
+        <OptionTermFilter
+          labelId="HAS_ANNOTATIONS"
+          onChange={handleFilterChange}
+          onClearFilter={clearFilter}
+          queryTerm="encounters.has_annotation"
+          filterId="annotation"
+          choices={[
+            {
+              label: 'Yes',
+              value: true,
+            },
+            {
+              label: 'No',
+              value: false,
+            },
+            {
+              label: 'Either',
+              value: '',
             },
           ]}
           style={{ marginTop: 4 }}
