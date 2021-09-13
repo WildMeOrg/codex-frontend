@@ -7,6 +7,7 @@ import Text from './Text';
 import OptionTermFilter from './filterFields/OptionTermFilter';
 import DateRangeFilter from './filterFields/DateRangeFilter';
 import SubstringFilter from './filterFields/SubstringFilter';
+import PointDistanceFilter from './filterFields/PointDistanceFilter';
 
 function setFilter(newFilter, formFilters, setFormFilters) {
   const matchingFilterIndex = formFilters.findIndex(
@@ -65,6 +66,13 @@ export default function FilterPanel({
           filterId="species"
           style={{ marginTop: 4 }}
         />
+        <PointDistanceFilter
+          labelId="DISTANCE_FROM_POINT"
+          queryTerm="encounters.point"
+          onChange={handleFilterChange}
+          filterId="geodistance"
+          style={{ marginTop: 20 }}
+        />
         <OptionTermFilter
           labelId="SEX"
           onChange={handleFilterChange}
@@ -93,6 +101,7 @@ export default function FilterPanel({
           onClearFilter={clearFilter}
           queryTerm="encounters.has_annotation"
           filterId="annotation"
+          queryType="term"
           choices={[
             {
               label: 'Yes',
@@ -141,43 +150,6 @@ export default function FilterPanel({
           </div>
         </AccordionDetails>
       </Accordion>
-      {/* {categoryList.map(category => {
-        const filtersInCategory = filters.filter(
-          f => f.category === category.name,
-        );
-
-        return (
-          <Accordion key={category.name}>
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls={`${category.name}-filter-panel-content`}
-              id={`${category.name}-filter-panel-header`}
-            >
-              <Text id={category.labelId}>{category.label}</Text>
-            </AccordionSummary>
-            <AccordionDetails>
-              <div
-                style={{ display: 'flex', flexDirection: 'column' }}
-              >
-                {filtersInCategory.map(filter => (
-                  <LabeledInput
-                    key={`${category.name} - ${filter.name}`}
-                    schema={filter}
-                    value={formValues[filter.name]}
-                    onChange={value => {
-                      setFormValues({
-                        ...formValues,
-                        [filter.name]: value,
-                      });
-                    }}
-                    width={232}
-                  />
-                ))}
-              </div>
-            </AccordionDetails>
-          </Accordion>
-        );
-      })} */}
     </div>
   );
 }
