@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { get } from 'lodash-es';
+import { get, partition } from 'lodash-es';
 import { formatError } from '../../utils/formatters';
+import { nestQueries } from '../../utils/elasticSearchUtils';
 
 export default function useFilterIndividuals(
-  filters,
+  queries,
   pageIndex,
   resultsPerPage = 20,
 ) {
@@ -20,6 +21,38 @@ export default function useFilterIndividuals(
       const filterIndividuals = async () => {
         try {
           setLoading(true);
+
+          const [filters, mustNots] = partition(
+            queries,
+            q => q.clause === 'filter',
+          );
+          const [nestedFilters, normalFilters] = partition(
+            filters,
+            f => f.nested,
+          );
+          const [nestedMustNots, normalMustNots] = partition(
+            mustNots,
+            f => f.nested,
+          );
+
+          const normalFilterQueries = normalFilters.map(f => f.query);
+          const normalMustNotQueries = normalMustNots.map(
+            f => f.query,
+          );
+          const filterQueriesToNest = nestedFilters.map(f => f.query);
+          const mustNotQueriesToNest = nestedMustNots.map(
+            f => f.query,
+          );
+
+          const nestedFilterQueries = nestQueries(
+            'encounters',
+            filterQueriesToNest,
+          );
+          const nestedMustNotQueries = nestQueries(
+            'encounters',
+            mustNotQueriesToNest,
+          );
+
           const rawResponse = await axios.request({
             url: `${__houston_url__}/api/v1/search/individuals`,
             method: 'post',
@@ -28,7 +61,14 @@ export default function useFilterIndividuals(
               size: resultsPerPage,
               query: {
                 bool: {
-                  filter: filters,
+                  filter: [
+                    ...normalFilterQueries,
+                    ...nestedFilterQueries,
+                  ],
+                  must_not: [
+                    ...normalMustNotQueries,
+                    ...nestedMustNotQueries,
+                  ],
                 },
               },
             },

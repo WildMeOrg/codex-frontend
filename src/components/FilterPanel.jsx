@@ -7,6 +7,7 @@ import Text from './Text';
 import OptionTermFilter from './filterFields/OptionTermFilter';
 import DateRangeFilter from './filterFields/DateRangeFilter';
 import SubstringFilter from './filterFields/SubstringFilter';
+import PointDistanceFilter from './filterFields/PointDistanceFilter';
 
 function setFilter(newFilter, formFilters, setFormFilters) {
   const matchingFilterIndex = formFilters.findIndex(
@@ -28,6 +29,13 @@ export default function FilterPanel({
 }) {
   const handleFilterChange = filter => {
     setFilter(filter, formFilters, setFormFilters);
+    updateFilters();
+  };
+  const clearFilter = filterId => {
+    const newFormFilters = formFilters.filter(
+      f => f.filterId !== filterId,
+    );
+    setFormFilters(newFormFilters);
     updateFilters();
   };
 
@@ -58,9 +66,18 @@ export default function FilterPanel({
           filterId="species"
           style={{ marginTop: 4 }}
         />
+        <PointDistanceFilter
+          nested
+          labelId="DISTANCE_FROM_POINT"
+          queryTerm="encounters.point"
+          onChange={handleFilterChange}
+          filterId="geodistance"
+          style={{ marginTop: 20 }}
+        />
         <OptionTermFilter
           labelId="SEX"
           onChange={handleFilterChange}
+          onClearFilter={clearFilter}
           queryTerm="sex"
           filterId="sex"
           choices={[
@@ -71,6 +88,37 @@ export default function FilterPanel({
             {
               label: 'Female',
               value: 'female',
+            },
+            {
+              label: 'Either',
+              value: '',
+            },
+          ]}
+          style={{ marginTop: 4 }}
+        />
+        <OptionTermFilter
+          nested
+          labelId="HAS_ANNOTATIONS"
+          onChange={handleFilterChange}
+          onClearFilter={clearFilter}
+          queryTerm="encounters.has_annotation"
+          filterId="annotation"
+          queryType="term"
+          choices={[
+            {
+              label: 'Yes',
+              value: 'yes',
+              queryValue: true,
+            },
+            {
+              label: 'No',
+              value: 'no',
+              queryValue: true,
+              clause: 'must_not',
+            },
+            {
+              label: 'Either',
+              value: '',
             },
           ]}
           style={{ marginTop: 4 }}
@@ -107,43 +155,6 @@ export default function FilterPanel({
           </div>
         </AccordionDetails>
       </Accordion>
-      {/* {categoryList.map(category => {
-        const filtersInCategory = filters.filter(
-          f => f.category === category.name,
-        );
-
-        return (
-          <Accordion key={category.name}>
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls={`${category.name}-filter-panel-content`}
-              id={`${category.name}-filter-panel-header`}
-            >
-              <Text id={category.labelId}>{category.label}</Text>
-            </AccordionSummary>
-            <AccordionDetails>
-              <div
-                style={{ display: 'flex', flexDirection: 'column' }}
-              >
-                {filtersInCategory.map(filter => (
-                  <LabeledInput
-                    key={`${category.name} - ${filter.name}`}
-                    schema={filter}
-                    value={formValues[filter.name]}
-                    onChange={value => {
-                      setFormValues({
-                        ...formValues,
-                        [filter.name]: value,
-                      });
-                    }}
-                    width={232}
-                  />
-                ))}
-              </div>
-            </AccordionDetails>
-          </Accordion>
-        );
-      })} */}
     </div>
   );
 }

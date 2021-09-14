@@ -14,7 +14,9 @@ export default function TermFilter(props) {
     filterId,
     onChange,
     queryTerm,
+    clause,
     width,
+    nested = false,
     minimalLabels = false,
     style = {},
     ...rest
@@ -36,6 +38,8 @@ export default function TermFilter(props) {
           setValue(inputValue);
           onChange({
             filterId,
+            nested,
+            clause,
             descriptor: `${translatedLabel}: ${inputValue}`,
             query: {
               match: { [queryTerm]: inputValue.toLowerCase() },

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useIntl } from 'react-intl';
 import { useSelector } from 'react-redux';
+
 import Hidden from '@material-ui/core/Hidden';
 import Drawer from '@material-ui/core/Drawer';
 
@@ -31,14 +32,12 @@ export default function SearchIndividuals() {
   const [page, setPage] = useState(0);
   const [formFilters, setFormFilters] = useState([]);
 
-  const filters = formFilters.map(f => f.query);
-
   const {
     data: searchResults,
     hitCount,
     loading,
     updateFilters,
-  } = useFilterIndividuals(filters, page, rowsPerPage);
+  } = useFilterIndividuals(formFilters, page, rowsPerPage);
 
   const schema = useSelector(selectIndividualSearchSchema);
 

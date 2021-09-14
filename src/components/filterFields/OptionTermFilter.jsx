@@ -10,7 +10,7 @@ import FormControl from '@material-ui/core/FormControl';
 
 import Text from '../Text';
 
-function SelectionEditor(props) {
+function OptionTermFilter(props) {
   const {
     label,
     labelId,
@@ -18,10 +18,13 @@ function SelectionEditor(props) {
     descriptionId,
     filterId,
     onChange,
+    onClearFilter,
     queryTerm,
+    queryType = 'match',
     choices,
     width,
     minimalLabels = false,
+    nested = false,
     style,
     ...rest
   } = props;
@@ -54,14 +57,25 @@ function SelectionEditor(props) {
             c => c.value === selectedValue,
           );
           const choiceLabel = getLabel(selectedChoice);
+          const choiceValue = get(
+            selectedChoice,
+            'queryValue',
+            selectedValue,
+          );
           setValue(selectedValue);
-          onChange({
-            filterId,
-            descriptor: `${translatedLabel}: ${choiceLabel}`,
-            query: {
-              match: { [queryTerm]: selectedValue },
-            },
-          });
+          if (selectedValue === '') {
+            onClearFilter(filterId);
+          } else {
+            onChange({
+              filterId,
+              nested,
+              clause: get(selectedChoice, 'clause', 'filter'),
+              descriptor: `${translatedLabel}: ${choiceLabel}`,
+              query: {
+                [queryType]: { [queryTerm]: choiceValue },
+              },
+            });
+          }
         }}
         value={value}
         renderValue={currentValue => {
@@ -100,4 +114,4 @@ function SelectionEditor(props) {
   );
 }
 
-export default memo(SelectionEditor);
+export default memo(OptionTermFilter);

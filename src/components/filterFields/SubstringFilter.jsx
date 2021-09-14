@@ -17,6 +17,8 @@ export default function SubstringFilter(props) {
     onChange,
     queryTerms,
     width,
+    nested = false,
+    clause = 'filter',
     minimalLabels = false,
     style = {},
     ...rest
@@ -53,6 +55,8 @@ export default function SubstringFilter(props) {
           onChange({
             filterId,
             descriptor: `${translatedLabel}: ${value}`,
+            nested,
+            clause,
             query: {
               query_string: {
                 query: `*${value.toLowerCase()}*`,
