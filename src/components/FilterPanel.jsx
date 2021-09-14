@@ -67,6 +67,7 @@ export default function FilterPanel({
           style={{ marginTop: 4 }}
         />
         <PointDistanceFilter
+          nested
           labelId="DISTANCE_FROM_POINT"
           queryTerm="encounters.point"
           onChange={handleFilterChange}
@@ -96,6 +97,7 @@ export default function FilterPanel({
           style={{ marginTop: 4 }}
         />
         <OptionTermFilter
+          nested
           labelId="HAS_ANNOTATIONS"
           onChange={handleFilterChange}
           onClearFilter={clearFilter}
@@ -105,11 +107,14 @@ export default function FilterPanel({
           choices={[
             {
               label: 'Yes',
-              value: true,
+              value: 'yes',
+              queryValue: true,
             },
             {
               label: 'No',
-              value: false,
+              value: 'no',
+              queryValue: true,
+              clause: 'must_not',
             },
             {
               label: 'Either',

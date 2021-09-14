@@ -24,6 +24,7 @@ function OptionTermFilter(props) {
     choices,
     width,
     minimalLabels = false,
+    nested = false,
     style,
     ...rest
   } = props;
@@ -56,15 +57,22 @@ function OptionTermFilter(props) {
             c => c.value === selectedValue,
           );
           const choiceLabel = getLabel(selectedChoice);
+          const choiceValue = get(
+            selectedChoice,
+            'queryValue',
+            selectedValue,
+          );
           setValue(selectedValue);
           if (selectedValue === '') {
             onClearFilter(filterId);
           } else {
             onChange({
               filterId,
+              nested,
+              clause: get(selectedChoice, 'clause', 'filter'),
               descriptor: `${translatedLabel}: ${choiceLabel}`,
               query: {
-                [queryType]: { [queryTerm]: selectedValue },
+                [queryType]: { [queryTerm]: choiceValue },
               },
             });
           }

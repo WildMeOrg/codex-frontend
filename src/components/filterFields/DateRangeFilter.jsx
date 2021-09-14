@@ -11,7 +11,15 @@ import {
 
 import Text from '../Text';
 
-function buildQuery(queryTerm, label, filterId, startDate, endDate) {
+function buildQuery(
+  queryTerm,
+  label,
+  filterId,
+  startDate,
+  endDate,
+  nested,
+  clause,
+) {
   const formattedStartDate = startDate
     ? format(startDate, 'yyyy-MM-dd')
     : null;
@@ -31,6 +39,8 @@ function buildQuery(queryTerm, label, filterId, startDate, endDate) {
   const query = {
     filterId,
     descriptor,
+    nested,
+    clause,
     query: {
       range: {
         [queryTerm]: {},
@@ -61,7 +71,9 @@ export default function DateRangeFilter({
   filterId,
   onChange,
   queryTerm,
+  clause = 'filter',
   style = {},
+  nested = false,
   minimalLabels = false,
 }) {
   const intl = useIntl();
@@ -118,6 +130,8 @@ export default function DateRangeFilter({
                 filterId,
                 nextStartDate,
                 endDate,
+                nested,
+                clause,
               ),
             );
           }}
@@ -144,6 +158,8 @@ export default function DateRangeFilter({
                 filterId,
                 startDate,
                 nextEndDate,
+                nested,
+                clause,
               ),
             );
           }}

@@ -122,6 +122,7 @@ export default function IndividualsDisplay({
                 'submitter_id',
                 'unknown user',
               );
+
               return (
                 <Text variant="body2" key={encounter.id}>
                   {'Sighting on '}

@@ -21,8 +21,10 @@ export default function PointDistanceFilter({
   descriptionId,
   filterId,
   defaultDistance = 50,
+  clause = 'filter',
   onChange,
   style,
+  nested = false,
   ...rest
 }) {
   const intl = useIntl();
@@ -121,10 +123,15 @@ export default function PointDistanceFilter({
               onChange({
                 filterId,
                 descriptor: `${translatedLabel}: ${distance}km`,
+                nested,
+                clause,
                 query: {
                   geo_distance: {
                     distance: `${distance}km`,
-                    'encounters.point': [latitude, longitude],
+                    'encounters.point': [
+                      parseFloat(latitude),
+                      parseFloat(longitude),
+                    ],
                   },
                 },
               });
