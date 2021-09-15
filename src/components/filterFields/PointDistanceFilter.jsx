@@ -22,6 +22,7 @@ export default function PointDistanceFilter({
   filterId,
   defaultDistance = 50,
   clause = 'filter',
+  queryTerm,
   onChange,
   style,
   nested = false,
@@ -134,7 +135,7 @@ export default function PointDistanceFilter({
                 query: {
                   geo_distance: {
                     distance: `${distance}km`,
-                    'encounters.point': [
+                    [queryTerm]: [
                       parseFloat(latitude),
                       parseFloat(longitude),
                     ],
