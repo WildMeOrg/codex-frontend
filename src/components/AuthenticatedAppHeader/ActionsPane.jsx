@@ -48,7 +48,7 @@ export default function NotificationsPane({
 
   const isAdministrator = get(userData, 'is_admin', false);
   const isUserManager = get(userData, 'is_user_manager', false);
-  const name = get(userData, 'full_name', 'Unnamed user');
+  const name = get(userData, 'full_name') || 'Unnamed user';
   const profileSrc = get(userData, ['profile_fileupload', 'src']);
 
   return (

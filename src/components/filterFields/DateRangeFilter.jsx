@@ -123,17 +123,19 @@ export default function DateRangeFilter({
           value={startDateValue}
           onChange={nextStartDate => {
             setStartDate(nextStartDate);
-            onChange(
-              buildQuery(
-                queryTerm,
-                translatedLabel,
-                filterId,
-                nextStartDate,
-                endDate,
-                nested,
-                clause,
-              ),
-            );
+            if (Date.parse(nextStartDate)) {
+              onChange(
+                buildQuery(
+                  queryTerm,
+                  translatedLabel,
+                  filterId,
+                  nextStartDate,
+                  endDate,
+                  nested,
+                  clause,
+                ),
+              );
+            }
           }}
           style={{ margin: 0 }}
           KeyboardButtonProps={{
@@ -151,17 +153,19 @@ export default function DateRangeFilter({
           value={endDateValue}
           onChange={nextEndDate => {
             setEndDate(nextEndDate);
-            onChange(
-              buildQuery(
-                queryTerm,
-                translatedLabel,
-                filterId,
-                startDate,
-                nextEndDate,
-                nested,
-                clause,
-              ),
-            );
+            if (Date.parse(nextEndDate)) {
+              onChange(
+                buildQuery(
+                  queryTerm,
+                  translatedLabel,
+                  filterId,
+                  startDate,
+                  nextEndDate,
+                  nested,
+                  clause,
+                ),
+              );
+            }
           }}
           KeyboardButtonProps={{
             'aria-label': `Change ${label} end date`,

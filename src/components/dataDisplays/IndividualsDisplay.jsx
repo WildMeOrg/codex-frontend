@@ -55,21 +55,13 @@ export default function IndividualsDisplay({
       },
     },
     {
-      name: 'speciesString',
+      name: 'taxonomy',
       label: intl.formatMessage({ id: 'SPECIES' }),
       align: 'left',
       options: {
-        customBodyRender: (_, individual) => {
-          const genusString = capitalize(
-            get(individual, 'genus', ''),
-          );
-          const speciesString = `${genusString} ${get(
-            individual,
-            'species',
-            '',
-          )}`;
-          return <Text variant="body2">{speciesString}</Text>;
-        },
+        customBodyRender: taxonomy => (
+          <Text variant="body2">{capitalize(taxonomy)}</Text>
+        ),
       },
     },
     {

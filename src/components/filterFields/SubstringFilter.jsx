@@ -19,6 +19,7 @@ export default function SubstringFilter(props) {
     width,
     nested = false,
     clause = 'filter',
+    default_operator = 'AND',
     minimalLabels = false,
     style = {},
     ...rest
@@ -61,6 +62,7 @@ export default function SubstringFilter(props) {
               query_string: {
                 query: `*${value.toLowerCase()}*`,
                 fields: queryTerms,
+                default_operator,
               },
             },
           })
