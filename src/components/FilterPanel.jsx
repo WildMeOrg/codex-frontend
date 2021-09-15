@@ -62,7 +62,7 @@ export default function FilterPanel({
         <SubstringFilter
           labelId="SPECIES"
           onChange={handleFilterChange}
-          queryTerms={['genus', 'species', 'id']}
+          queryTerms={['taxonomy']}
           filterId="species"
           style={{ marginTop: 4 }}
         />

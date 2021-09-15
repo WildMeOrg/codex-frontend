@@ -33,6 +33,7 @@ export default function PointDistanceFilter({
   const [distance, setDistance] = useState(defaultDistance);
   const [latitude, setLatitude] = useState('');
   const [longitude, setLongitude] = useState('');
+  const [gpsForMapUpdate, setGpsForMapUpdate] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
 
   const onClose = () => setModalOpen(false);
@@ -66,6 +67,7 @@ export default function PointDistanceFilter({
       >
         <DialogContent style={{ marginBottom: 24 }}>
           <PointDistanceMap
+            gps={gpsForMapUpdate}
             distance={distance}
             onChange={({ lat, lng }) => {
               setLatitude(lat.toString());
@@ -86,6 +88,8 @@ export default function PointDistanceFilter({
               onChange={e => {
                 const inputValue = e.target.value;
                 setLatitude(inputValue);
+                if (longitude)
+                  setGpsForMapUpdate([inputValue, longitude]);
               }}
             />
             <TextField
@@ -96,6 +100,8 @@ export default function PointDistanceFilter({
               onChange={e => {
                 const inputValue = e.target.value;
                 setLongitude(inputValue);
+                if (latitude)
+                  setGpsForMapUpdate([latitude, inputValue]);
               }}
             />
           </div>
