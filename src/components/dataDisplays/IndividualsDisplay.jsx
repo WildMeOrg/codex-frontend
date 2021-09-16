@@ -1,41 +1,80 @@
 import React from 'react';
-import { format } from 'date-fns';
+import { useIntl } from 'react-intl';
+import { get, capitalize } from 'lodash-es';
+
+import { formatDate } from '../../utils/formatters';
 import DataDisplay from './DataDisplay';
 import Link from '../Link';
 import ButtonLink from '../ButtonLink';
 import Text from '../Text';
 
-export default function IndividualsDisplay({ individuals }) {
-  const title = `${individuals.length} matching individuals`;
+export default function IndividualsDisplay({
+  individuals,
+  loading,
+  hitCount,
+  ...rest
+}) {
+  const intl = useIntl();
+  const title = hitCount ? `${hitCount} matching individuals` : '';
 
   const columns = [
     {
-      name: 'id',
-      label: 'Individual',
+      name: 'name',
+      label: intl.formatMessage({ id: 'NAME' }),
       options: {
-        customBodyRender: value => (
-          <Link href={`/individuals/${value}`}>{value}</Link>
-        ),
-      },
-    },
-    {
-      name: 'lastSeen',
-      label: 'Last Seen',
-      options: {
-        customBodyRender: value => format(value, 'M/dd/yy'),
+        customBodyRender: (name, individual) => {
+          const id = get(individual, 'id', '');
+          return (
+            <Link href={`/individuals/${id}`}>
+              <Text variant="body2">{name}</Text>
+            </Link>
+          );
+        },
       },
     },
     {
       name: 'alias',
-      label: 'Alias',
+      label: intl.formatMessage({ id: 'ALIAS' }),
+      align: 'left',
+      options: {
+        customBodyRender: alias => (
+          <Text variant="body2">{capitalize(alias)}</Text>
+        ),
+      },
     },
     {
-      name: 'species',
-      label: 'Species',
+      name: 'last_sighting',
+      label: intl.formatMessage({ id: 'LAST_SEEN' }),
+      align: 'left',
+      options: {
+        customBodyRender: lastSightingTimestamp => (
+          <Text variant="body2">
+            {formatDate(lastSightingTimestamp)}
+          </Text>
+        ),
+      },
     },
     {
-      name: 'encounterCount',
-      label: 'Encounters',
+      name: 'taxonomy',
+      label: intl.formatMessage({ id: 'SPECIES' }),
+      align: 'left',
+      options: {
+        customBodyRender: taxonomy => (
+          <Text variant="body2">{capitalize(taxonomy)}</Text>
+        ),
+      },
+    },
+    {
+      name: 'encounters',
+      label: intl.formatMessage({ id: 'SIGHTINGS' }),
+      align: 'left',
+      options: {
+        customBodyRender: encounters => (
+          <Text variant="body2">
+            {get(encounters, 'length', '-')}
+          </Text>
+        ),
+      },
     },
   ];
 
@@ -44,38 +83,52 @@ export default function IndividualsDisplay({ individuals }) {
       columns={columns}
       data={individuals}
       title={title}
+      loading={loading}
       onPrint={() => {
         window.open('/individuals/picturebook', '_blank');
       }}
+      dataCount={hitCount}
+      paginatedExternally
       renderExpandedRow={expandedIndividual => (
         <div style={{ display: 'flex' }}>
-          <img
-            src={expandedIndividual.profile}
-            alt="Expanded individual"
-            style={{
-              width: 200,
-              height: 160,
-              padding: 20,
-            }}
-          />
+          {/* <img
+              src={expandedIndividual.profile}
+              alt="Expanded individual"
+              style={{
+                width: 200,
+                height: 160,
+                padding: 20,
+              }}
+            /> */}
           <div style={{ padding: '20px 0' }}>
-            <Text variant="subtitle1">Recent Activity</Text>
-            <Text>
-              Encounter with <Link href="google.com">Tanya</Link> on{' '}
-              <Link href="google.com">4/12/2019</Link>
+            <Text variant="h6" style={{ marginBottom: 8 }}>
+              Recent Activity
             </Text>
-            <Text>
-              Encounter with <Link href="google.com">Drew</Link> on{' '}
-              <Link href="google.com">4/6/2019</Link>
-            </Text>
-            <Text>
-              Encounter with <Link href="google.com">Colin</Link> on{' '}
-              <Link href="google.com">4/2/2019</Link>
-            </Text>
-            <Text>
-              Encounter with <Link href="google.com">Jasonx</Link> on{' '}
-              <Link href="google.com">3/16/2019</Link>
-            </Text>
+            {expandedIndividual.encounters.map(encounter => {
+              const encounterDate = get(encounter, 'date_occurred');
+              const formattedEncounterDate = encounterDate
+                ? formatDate(encounterDate, true)
+                : 'unknown date';
+              const submitter = get(
+                encounter,
+                'submitter_id',
+                'unknown user',
+              );
+
+              return (
+                <Text variant="body2" key={encounter.id}>
+                  {'Sighting on '}
+                  <Link href={`/sightings/${encounter.id}`}>
+                    {formattedEncounterDate}
+                  </Link>
+                  {' by '}
+                  <Link href={`/users/${submitter}`}>
+                    {submitter}
+                  </Link>
+                  .
+                </Text>
+              );
+            })}
             <ButtonLink
               style={{ marginTop: 16 }}
               href={`/individuals/${expandedIndividual.id}`}
@@ -85,6 +138,7 @@ export default function IndividualsDisplay({ individuals }) {
           </div>
         </div>
       )}
+      {...rest}
     />
   );
 }

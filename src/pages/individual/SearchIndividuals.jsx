@@ -1,21 +1,21 @@
 import React, { useState } from 'react';
-import { useIntl, FormattedMessage } from 'react-intl';
+import { useIntl } from 'react-intl';
 import { useSelector } from 'react-redux';
+
 import Hidden from '@material-ui/core/Hidden';
 import Drawer from '@material-ui/core/Drawer';
+
+import useFilterIndividuals from '../../models/individual/useFilterIndividuals';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import FilterPanel from '../../components/FilterPanel';
 import SearchFilterList from '../../components/SearchFilterList';
-import {
-  selectSearchResults,
-  selectIndividualSearchCategories,
-  selectIndividualSearchSchema,
-} from '../../modules/individuals/selectors';
+import { selectIndividualSearchSchema } from '../../modules/individuals/selectors';
 import Button from '../../components/Button';
 import Text from '../../components/Text';
 import IndividualsDisplay from '../../components/dataDisplays/IndividualsDisplay';
 
 const drawerWidth = 280;
+const rowsPerPage = 10;
 
 const paperProps = {
   style: {
@@ -29,21 +29,21 @@ const paperProps = {
 
 export default function SearchIndividuals() {
   const intl = useIntl();
-  const categories = useSelector(selectIndividualSearchCategories);
+  const [page, setPage] = useState(0);
+  const [formFilters, setFormFilters] = useState([]);
+
+  const {
+    data: searchResults,
+    hitCount,
+    loading,
+    updateFilters,
+  } = useFilterIndividuals(formFilters, page, rowsPerPage);
+
   const schema = useSelector(selectIndividualSearchSchema);
 
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
-  const [formValues, setFormValues] = useState(
-    schema.reduce((memo, filter) => {
-      memo[filter.name] = filter.defaultValue;
-      return memo;
-    }, {}),
-  );
 
   useDocumentTitle(intl.formatMessage({ id: 'EXPLORE_INDIVIDUALS' }));
-
-  /* not fetching from API because API is not ready */
-  const searchResults = useSelector(selectSearchResults);
 
   return (
     <div style={{ display: 'flex' }}>
@@ -56,20 +56,18 @@ export default function SearchIndividuals() {
           onClose={() => setMobileDrawerOpen(false)}
         >
           <FilterPanel
-            categories={categories}
-            filters={schema}
-            formValues={formValues}
-            setFormValues={setFormValues}
+            formFilters={formFilters}
+            setFormFilters={setFormFilters}
+            updateFilters={updateFilters}
           />
         </Drawer>
       </Hidden>
       <Hidden xsDown>
         <Drawer open variant="permanent" PaperProps={paperProps}>
           <FilterPanel
-            categories={categories}
-            filters={schema}
-            formValues={formValues}
-            setFormValues={setFormValues}
+            formFilters={formFilters}
+            setFormFilters={setFormFilters}
+            updateFilters={updateFilters}
           />
         </Drawer>
       </Hidden>
@@ -87,20 +85,29 @@ export default function SearchIndividuals() {
           />
         </div>
         <SearchFilterList
-          formValues={formValues}
-          setFormValues={setFormValues}
+          formFilters={formFilters}
+          setFormFilters={setFormFilters}
+          updateFilters={updateFilters}
           schema={schema}
         />
         <Hidden smUp>
           <Button
             style={{ margin: 16 }}
             onClick={() => setMobileDrawerOpen(true)}
-          >
-            <FormattedMessage id="SHOW_FILTERS" />
-          </Button>
+            id="SHOW_FILTERS"
+          />
         </Hidden>
         <div style={{ margin: '40px 40px 20px 16px' }}>
-          <IndividualsDisplay individuals={searchResults} />
+          <IndividualsDisplay
+            individuals={searchResults || []}
+            hideFilterSearch
+            paginated
+            page={page}
+            onChangePage={(_, newPage) => setPage(newPage)}
+            rowsPerPage={rowsPerPage}
+            loading={loading}
+            hitCount={hitCount}
+          />
         </div>
       </div>
     </div>

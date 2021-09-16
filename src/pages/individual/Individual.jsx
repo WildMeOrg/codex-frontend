@@ -76,8 +76,6 @@ export default function Individual() {
     setError: setPatchError,
   } = usePatchIndividual();
 
-  console.log(data);
-
   // fetch data for Id...
   const individuals = useSelector(selectIndividuals);
 
