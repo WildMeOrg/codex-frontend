@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { get, set, pick } from 'lodash-es';
+
 import Grid from '@material-ui/core/Grid';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -24,7 +26,7 @@ export default function CreateIndividualModal({
   const { loading, error, postIndividual } = usePostIndividual();
 
   const initialState = createFields.reduce((memo, field) => {
-    memo[field.name] = field.defaultValue;
+    set(memo, field.name, field.defaultValue);
     return memo;
   }, {});
 
@@ -68,13 +70,13 @@ export default function CreateIndividualModal({
                   descriptionId={field.descriptionId}
                   required={field.required}
                   schema={field}
-                  value={formState[field.name]}
-                  onChange={newFieldValue =>
-                    setFormState({
-                      ...formState,
-                      [field.name]: newFieldValue,
-                    })
-                  }
+                  value={get(formState, field.name)}
+                  onChange={newFieldValue => {
+                    const newFormState = {
+                      ...set(formState, field.name, newFieldValue),
+                    };
+                    setFormState(newFormState);
+                  }}
                 />
               </Grid>
             ))}
@@ -107,7 +109,11 @@ export default function CreateIndividualModal({
             display="primary"
             loading={loading}
             onClick={async () => {
-              const newId = await postIndividual(encounterId);
+              const individualData = pick(formState, 'names'); // just this for now...
+              const newId = await postIndividual(
+                individualData,
+                encounterId,
+              );
               setNewIndividualId(newId);
             }}
             id="CREATE_INDIVIDUAL"

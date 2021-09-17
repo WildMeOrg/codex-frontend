@@ -8,7 +8,7 @@ export default function usePostIndividual() {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
 
-  const postIndividual = async encounterId => {
+  const postIndividual = async (individualData, encounterId) => {
     try {
       setLoading(true);
       setError(null);
@@ -17,6 +17,7 @@ export default function usePostIndividual() {
         withCredentials: true,
         method: 'post',
         data: {
+          ...individualData,
           encounters: [{ id: encounterId }],
         },
       });
