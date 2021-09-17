@@ -7,6 +7,7 @@ import { get } from 'lodash-es';
 
 import useUserMetadataSchemas from '../models/users/useUserMetadataSchemas';
 import useRequestCollaboration from '../models/collaboration/useRequestCollaboration';
+import useGetSightings from '../models/users/useGetSightings';
 import { formatDate } from '../utils/formatters';
 import EntityHeaderNew from './EntityHeaderNew';
 import BigAvatar from './profilePhotos/BigAvatar';
@@ -29,6 +30,11 @@ export default function UserProfile({
   someoneElse,
   noCollaborate = false,
 }) {
+  console.log('deleteMe userData is: ');
+  console.log(userData);
+  const { sigthingsData, loadingSightings, refreshSigtings } = useGetSightings(userId);
+  console.log('deleteMe data from useGetSightings is: ');
+  console.log(sigthingsData);
   const [editingProfile, setEditingProfile] = useState(false);
   const metadataSchemas = useUserMetadataSchemas(userId);
 
@@ -56,6 +62,8 @@ export default function UserProfile({
   const imageSrc = get(userData, ['profile_fileupload', 'src']);
   const imageGuid = get(userData, ['profile_fileupload', 'guid']);
   const name = get(userData, 'full_name', 'Unnamed user');
+  console.log('deleteMe name is: ');
+  console.log(name);
   const dateCreated = formatDate(get(userData, 'created'), true);
 
   if (!userData)
@@ -142,6 +150,7 @@ export default function UserProfile({
             }
             columns={['individual', 'date', 'location']}
             hideSubmitted
+            encounters={sigthingsData}
           />
         </CardContainer>
       </div>
