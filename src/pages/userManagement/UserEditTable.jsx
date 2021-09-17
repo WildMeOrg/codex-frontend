@@ -77,6 +77,7 @@ export default function UserEditTable({
     },
     {
       name: 'actions',
+      align: 'right',
       label: intl.formatMessage({ id: 'ACTIONS' }),
       options: {
         displayInFilter: false,

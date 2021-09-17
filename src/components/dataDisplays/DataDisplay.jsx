@@ -91,20 +91,16 @@ export default function DataDisplay({
       const rawValue = get(datum, c.name, '');
       let dataValue;
       if (userSuppliedDataParser) {
-        dataValue = userSuppliedDataParser(rawValue, datum)
-          .toLowerCase
-          ? userSuppliedDataParser(rawValue, datum)
-              .toLowerCase()
-              .trim()
-          : userSuppliedDataParser(rawValue, datum);
+        const userValue = userSuppliedDataParser(rawValue, datum);
+        dataValue = userValue
+          ? userValue.toLowerCase().trim()
+          : userValue;
       } else {
-        dataValue = JSON.stringify(rawValue)
-          ? JSON.stringify(rawValue)
-              .toLowerCase()
-              .trim()
-          : JSON.stringify(rawValue);
+        const stringifiedValue = JSON.stringify(rawValue) || '';
+        dataValue = stringifiedValue.toLowerCase().trim();
       }
-      if (dataValue && dataValue.includes(filter)) match = true;
+      if (dataValue && dataValue.includes(filter.toLowerCase()))
+        match = true;
     });
 
     return match;
