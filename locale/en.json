@@ -700,6 +700,7 @@
   "CONFIRM_DELETE_BULK_IMPORT_DESCRIPTION": "Are you sure you want to delete this bulk import? All data (INCLUDING SIGHTINGS) associated with the bulk import will be deleted. This action cannot be undone.",
   "CONFIRM_DELETE_ENCOUNTER_DESCRIPTION": "Are you sure you want to delete this animal cluster? All metadata associated with this asset cluster will be deleted. This action cannot be undone.",
   "CONFIRM_DELETE_CUSTOM_FIELD_DESCRIPTION": "Are you sure you want to delete \"{entity}\"? This action cannot be undone.",
+  "CONFIRM_DELETE_SETTINGS_FILE_UPLOAD": "Are you sure you want to delete uploaded image \"{entity}\"? This action cannot be undone.",
   "SUBMITTER_NAME": "Submitter name",
   "CANNOT_DELETE_FINAL_ENCOUNTER_DESCRIPTION": "This cluster cannot be deleted. Sightings must have at least one animal cluster.",
   "SUBMITTER_NAME_DESCRIPTION": "Submitter's name or email address contains the specified substring (this field is not case sensitive).",
