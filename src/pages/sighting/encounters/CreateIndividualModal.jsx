@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { get, set, pick } from 'lodash-es';
 
 import Grid from '@material-ui/core/Grid';
@@ -13,11 +13,14 @@ import Button from '../../../components/Button';
 import ButtonLink from '../../../components/ButtonLink';
 import Alert from '../../../components/Alert';
 import Text from '../../../components/Text';
-import { defaultIndividualFields } from '../../../constants/individualSchema';
 
-const createFields = defaultIndividualFields.filter(
-  f => f.requiredForIndividualCreation,
-);
+function calculateInitialState(schemas) {
+  if (!schemas) return {};
+  return schemas.reduce((memo, field) => {
+    set(memo, field.name, field.defaultValue);
+    return memo;
+  }, {});
+}
 
 export default function CreateIndividualModal({
   open,
@@ -26,20 +29,21 @@ export default function CreateIndividualModal({
 }) {
   const { loading, error, postIndividual } = usePostIndividual();
 
-  const initialState = createFields.reduce((memo, field) => {
-    set(memo, field.name, field.defaultValue);
-    return memo;
-  }, {});
+  const [formState, setFormState] = useState({});
 
-  const [formState, setFormState] = useState(initialState);
   const [newIndividualId, setNewIndividualId] = useState(null);
   const fieldSchemas = useIndividualFieldSchemas();
   const createFieldSchemas = fieldSchemas.filter(
     f => f.requiredForIndividualCreation,
   );
 
-  const onCloseDialog = () => {
+  useEffect(() => {
+    const initialState = calculateInitialState(fieldSchemas);
     setFormState(initialState);
+  }, fieldSchemas);
+
+  const onCloseDialog = () => {
+    setFormState(calculateInitialState(fieldSchemas));
     setNewIndividualId(null);
     onClose();
   };
