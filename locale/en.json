@@ -95,6 +95,7 @@
   "PRAIRIE": "Prairie",
   "EDIT_USER_METADATA": "Edit user metadata",
   "EDIT_SIGHTING_METADATA": "Edit sighting metadata",
+  "EDIT_INDIVIDUAL_METADATA": "Edit individual metadata",
   "EDIT_ENCOUNTER_METADATA": "Edit cluster metadata",
   "STAR_EXPLANATION": "Stars indicate that Codex provides a detection and identification pipeline for a given species.",
   "SCIENTIFIC_NAME": "Scientific name",

@@ -28,8 +28,8 @@ export default function useIndividual(individualId) {
           const successful = responseStatusCode === 200;
           if (!successful) setError(formatError(response));
 
-          setLoading(false);
           setIndividualData(get(response, ['data', 'result']));
+          setLoading(false);
         } catch (fetchError) {
           const responseStatusCode = get(fetchError, [
             'response',

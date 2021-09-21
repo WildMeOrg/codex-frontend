@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
-import { capitalize } from 'lodash-es';
+import { get, capitalize } from 'lodash-es';
 
 import SexIcon from '@material-ui/icons/Nature';
 import AgeIcon from '@material-ui/icons/Height';
@@ -12,12 +12,13 @@ import useIndividual from '../../models/individual/useIndividual';
 import useDeleteIndividual from '../../models/individual/useDeleteIndividual';
 import usePatchIndividual from '../../models/individual/usePatchIndividual';
 
+import useIndividualFieldSchemas from '../../models/individual/useIndividualFieldSchemas';
+import LoadingScreen from '../../components/LoadingScreen';
 import MoreMenu from '../../components/MoreMenu';
 import EntityHeaderNew from '../../components/EntityHeaderNew';
 import MainColumn from '../../components/MainColumn';
 import SadScreen from '../../components/SadScreen';
 import Button from '../../components/Button';
-import EditProfile from '../../components/EditEntityModal';
 import Text from '../../components/Text';
 import CardContainer from '../../components/cards/CardContainer';
 import SightingsCard from '../../components/cards/SightingsCard';
@@ -27,8 +28,8 @@ import ConfirmDelete from '../../components/ConfirmDelete';
 import RelationshipsCard from '../../components/cards/RelationshipsCard';
 import CooccurrenceCard from '../../components/cards/CooccurrenceCard';
 import { selectIndividuals } from '../../modules/individuals/selectors';
-import { selectSpeciesFields } from '../../modules/site/selectors';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
+import EditIndividualMetadata from './EditIndividualMetadata';
 import fakeAssets from './fakeAssets';
 import fakeCoocs from './fakeCoocs';
 import fakeRelationships from './fakeRelationships';
@@ -59,8 +60,23 @@ const items = [
 
 export default function Individual() {
   const { id } = useParams();
-  const { data, refresh } = useIndividual(id);
+  const { data, refresh, loading } = useIndividual(id);
   const history = useHistory();
+  const fieldSchemas = useIndividualFieldSchemas();
+
+  const metadata = useMemo(
+    () => {
+      if (!data || !fieldSchemas) return null;
+      return fieldSchemas.map(schema => ({
+        ...schema,
+        value: schema.getValue(schema, data),
+      }));
+    },
+    [data, fieldSchemas],
+  );
+
+  const defaultName = get(data, ['names', 'defaultName'], 'Unnamed individual');
+  const nickname = get(data, ['names', 'nickname']);
 
   const {
     deleteIndividual,
@@ -79,11 +95,12 @@ export default function Individual() {
   // fetch data for Id...
   const individuals = useSelector(selectIndividuals);
 
-  const speciesFields = useSelector(selectSpeciesFields);
-  useDocumentTitle(capitalize(id));
+  useDocumentTitle(capitalize(defaultName));
   const [editingProfile, setEditingProfile] = useState(false);
   const [deletingIndividual, setDeletingIndividual] = useState(false);
   const [deleteEncounterId, setDeleteEncounterId] = useState(null);
+
+  if (loading) return <LoadingScreen />;
 
   const individual = individuals.teddy;
   if (!individual)
@@ -94,15 +111,14 @@ export default function Individual() {
       />
     );
 
-  const fieldSchema = speciesFields[individual.species];
-
   return (
     <MainColumn fullWidth>
-      <EditProfile
+      <EditIndividualMetadata
         open={editingProfile}
         onClose={() => setEditingProfile(false)}
-        fieldValues={individual.fields}
-        fieldSchema={fieldSchema}
+        individualId={id}
+        metadata={metadata}
+        refreshIndividualData={refresh}
       />
       <ConfirmDelete
         open={Boolean(deleteEncounterId)}
@@ -139,7 +155,7 @@ export default function Individual() {
         messageId="CONFIRM_DELETE_INDIVIDUAL"
       />
       <EntityHeaderNew
-        name={individual.name}
+        name={defaultName}
         renderAvatar={Function.prototype}
         renderOptions={
           <div style={{ display: 'flex' }}>
@@ -147,6 +163,11 @@ export default function Individual() {
             <MoreMenu
               menuId="individual-actions"
               items={[
+                {
+                  id: 'edit-profile',
+                  onClick: () => setEditingProfile(true),
+                  label: 'Edit profile',
+                },
                 {
                   id: 'view-history',
                   onClick: Function.prototype,
@@ -162,7 +183,7 @@ export default function Individual() {
           </div>
         }
       >
-        <Text>Also known as Teddles, T3289-K, and Tweeb.</Text>
+        <Text>{`Also known as ${nickname}.`}</Text>
       </EntityHeaderNew>
       <div style={{ display: 'flex', flexWrap: 'wrap' }}>
         <CardContainer size="small">

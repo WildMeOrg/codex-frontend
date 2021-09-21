@@ -25,7 +25,7 @@ export const prototypeFieldSchema = {
   getValue: (schema, backendObject) =>
     get(
       backendObject,
-      [schema.name],
+      schema.name,
       get(schema, 'defaultValue', null),
     ),
   customField: false,
