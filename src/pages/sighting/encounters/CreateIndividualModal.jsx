@@ -6,8 +6,9 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 
 import usePostIndividual from '../../../models/individual/usePostIndividual';
+import useIndividualFieldSchemas from '../../../models/individual/useIndividualFieldSchemas';
 import StandardDialog from '../../../components/StandardDialog';
-import InputRow from '../../../components/InputRow';
+import InputRow from '../../../components/fields/edit/InputRowNew';
 import Button from '../../../components/Button';
 import ButtonLink from '../../../components/ButtonLink';
 import Alert from '../../../components/Alert';
@@ -32,6 +33,10 @@ export default function CreateIndividualModal({
 
   const [formState, setFormState] = useState(initialState);
   const [newIndividualId, setNewIndividualId] = useState(null);
+  const fieldSchemas = useIndividualFieldSchemas();
+  const createFieldSchemas = fieldSchemas.filter(
+    f => f.requiredForIndividualCreation,
+  );
 
   const onCloseDialog = () => {
     setFormState(initialState);
@@ -61,23 +66,20 @@ export default function CreateIndividualModal({
             component="form"
             direction="column"
           >
-            {createFields.map(field => (
-              <Grid item key={field.label || field.labelId}>
-                <InputRow
-                  label={field.label}
-                  labelId={field.labelId}
-                  description={field.description}
-                  descriptionId={field.descriptionId}
-                  required={field.required}
-                  schema={field}
-                  value={get(formState, field.name)}
-                  onChange={newFieldValue => {
-                    const newFormState = {
-                      ...set(formState, field.name, newFieldValue),
-                    };
-                    setFormState(newFormState);
-                  }}
-                />
+            {createFieldSchemas.map(schema => (
+              <Grid item key={schema.name}>
+                <InputRow schema={schema}>
+                  <schema.editComponent
+                    schema={schema}
+                    value={get(formState, schema.name)}
+                    onChange={newFieldValue => {
+                      const newFormState = {
+                        ...set(formState, schema.name, newFieldValue),
+                      };
+                      setFormState(newFormState);
+                    }}
+                  />
+                </InputRow>
               </Grid>
             ))}
           </Grid>
