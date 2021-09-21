@@ -3,36 +3,6 @@ import logoForWhiteBackground from '../../assets/logo-for-white-bg.png';
 import splashVideo from '../../assets/splashvid.webm';
 import shane from '../../assets/shane.jpg';
 
-export const selectSpeciesFields = state => ({
-  bear: [
-    {
-      name: 'age',
-      labelId: 'AGE',
-      defaultValue: null,
-      type: 'integer',
-    },
-    {
-      name: 'sex',
-      labelId: 'SEX',
-      defaultValue: 'Unknown',
-      type: 'select',
-      choices: [
-        'Unknown',
-        'Male',
-        'Female',
-        'Probable Male',
-        'Probable Female',
-      ],
-    },
-    {
-      name: 'status',
-      labelId: 'STATUS',
-      defaultValue: '',
-      type: 'string',
-    },
-  ],
-});
-
 export const selectSiteSettingsNeedsFetch = state => state.needsFetch;
 
 export const selectSiteSettings = state => ({
