@@ -26,6 +26,11 @@ export default function BannerLogo({
 
   const siteName = get(siteSettings, ['site.name', 'value'], '');
   const logo = get(siteSettings, ['site.images', 'logo']);
+  const logoIncludesSiteName = get(
+    siteSettings,
+    ['site.look.logoIncludesSiteName', 'value'],
+    false,
+  );
 
   return (
     <Container
@@ -50,17 +55,19 @@ export default function BannerLogo({
             }}
           />
         )}
-        <Text
-          variant="h5"
-          style={{
-            color: black
-              ? theme.palette.common.black
-              : theme.palette.common.white,
-            margin: '0 12px 0 8px',
-          }}
-        >
-          {siteName}
-        </Text>
+        {logoIncludesSiteName ? null : (
+          <Text
+            variant="h5"
+            style={{
+              color: black
+                ? theme.palette.common.black
+                : theme.palette.common.white,
+              margin: '0 12px 0 8px',
+            }}
+          >
+            {siteName}
+          </Text>
+        )}
       </div>
     </Container>
   );
