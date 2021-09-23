@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { useIntl, FormattedMessage } from 'react-intl';
 import { get } from 'lodash-es';
 
 // import IconButton from '@material-ui/core/IconButton';
@@ -29,6 +29,7 @@ export default function UserProfile({
   someoneElse,
   noCollaborate = false,
 }) {
+  const intl = useIntl();
   const [editingProfile, setEditingProfile] = useState(false);
   const metadataSchemas = useUserMetadataSchemas(userId);
 
@@ -55,7 +56,12 @@ export default function UserProfile({
 
   const imageSrc = get(userData, ['profile_fileupload', 'src']);
   const imageGuid = get(userData, ['profile_fileupload', 'guid']);
-  const name = get(userData, 'full_name', 'Unnamed user');
+  let name = get(
+    userData,
+    'full_name',
+    intl.formatMessage({ id: 'UNNAMED_USER' }),
+  );
+  if (name === '') name = intl.formatMessage({ id: 'UNNAMED_USER' });
   const dateCreated = formatDate(get(userData, 'created'), true);
 
   if (!userData)

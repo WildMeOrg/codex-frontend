@@ -75,7 +75,11 @@ export default function Individual() {
     [data, fieldSchemas],
   );
 
-  const defaultName = get(data, ['names', 'defaultName'], 'Unnamed individual');
+  const defaultName = get(
+    data,
+    ['names', 'defaultName'],
+    'Unnamed individual',
+  );
   const nickname = get(data, ['names', 'nickname']);
 
   const {

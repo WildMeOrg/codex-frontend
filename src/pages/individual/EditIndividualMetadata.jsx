@@ -86,7 +86,11 @@ export default function EditIndividualMetadata({
                     setCustomFieldValues(newFormValues);
                   } else {
                     const newFormDefaultValues = {
-                      ...set(defaultFieldValues, field.name, newValue),
+                      ...set(
+                        defaultFieldValues,
+                        field.name,
+                        newValue,
+                      ),
                     };
                     setDefaultFieldValues(newFormDefaultValues);
                   }
@@ -115,7 +119,9 @@ export default function EditIndividualMetadata({
           loading={loading}
           display="primary"
           onClick={async () => {
-            const currentPatchableValues = pick(defaultFieldValues, ['names']);
+            const currentPatchableValues = pick(defaultFieldValues, [
+              'names',
+            ]);
             const successfulUpdate = await updateIndividualProperties(
               individualId,
               currentPatchableValues,
