@@ -30,6 +30,7 @@ const generalSettingsFields = [
   'site.links.facebookLink',
   'site.links.instagramLink',
   'site.links.twitterLink',
+  'site.look.logoIncludesSiteName',
 ];
 
 export default function GeneralSettings() {

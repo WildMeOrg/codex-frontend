@@ -170,6 +170,8 @@
   "CONFIGURATION_SITE_LINKS_FACEBOOKLINK_DESCRIPTION": "The URL of a Facebook profile you would like to advertise on the splash page.",
   "CONFIGURATION_SITE_LINKS_INSTAGRAMLINK_LABEL": "Instagram link",
   "CONFIGURATION_SITE_LINKS_INSTAGRAMLINK_DESCRIPTION": "The URL of an Instagram profile you would like to advertise on the splash page.",
+  "CONFIGURATION_SITE_LOOK_LOGOINCLUDESSITENAME_LABEL": "Logo includes site name",
+  "CONFIGURATION_SITE_LOOK_LOGOINCLUDESSITENAME_DESCRIPTION": "If your logo includes your site name, we will not reproduce the name of the site next to the logo.",
   "MAKE_A_DONATION": "Make a donation",
   "REPLACE_PHOTO": "Replace photo",
   "CROP_PHOTO": "Crop photo",
