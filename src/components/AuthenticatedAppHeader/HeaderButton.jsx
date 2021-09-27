@@ -27,10 +27,18 @@ function Core({ Icon, onClick, titleId, style = {} }) {
   );
 }
 
-export default function HeaderButton({ showBadge, ...rest }) {
+export default function HeaderButton({
+  showBadge,
+  badgeContent,
+  ...rest
+}) {
   if (showBadge)
     return (
-      <Badge color="secondary" overlap="circle" badgeContent="1">
+      <Badge
+        color="secondary"
+        overlap="circle"
+        badgeContent={badgeContent}
+      >
         <Core {...rest} />
       </Badge>
     );
