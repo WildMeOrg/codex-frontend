@@ -29,7 +29,6 @@ export default function AppHeader() {
   const {
     data: notifications,
     loading: notificationsLoading,
-    refresh: refreshNotifications,
   } = useNotifications();
   const notificationsCount = get(notifications, 'length', 0);
 

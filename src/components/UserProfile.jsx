@@ -18,6 +18,7 @@ import Button from './Button';
 import MetadataCardNew from './cards/MetadataCardNew';
 import SightingsCard from './cards/SightingsCard';
 // import UserProjectCard from './cards/UserProjectCard';
+import CollaborationsCard from './cards/CollaborationsCard';
 import CardContainer from './cards/CardContainer';
 
 export default function UserProfile({
@@ -36,7 +37,6 @@ export default function UserProfile({
   const {
     requestCollaboration,
     loading,
-    error,
   } = useRequestCollaboration();
 
   const metadata = useMemo(
@@ -149,6 +149,10 @@ export default function UserProfile({
             columns={['individual', 'date', 'location']}
             hideSubmitted
           />
+
+          {!someoneElse && (
+            <CollaborationsCard userId={userId} />
+          )}
         </CardContainer>
       </div>
     </MainColumn>
