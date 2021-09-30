@@ -3,64 +3,16 @@ import { get } from 'lodash-es';
 
 import DialogActions from '@material-ui/core/DialogActions';
 
+import usePatchCollaboration from '../../../models/collaboration/usePatchCollaboration';
 import useRequestEditAccess from '../../../models/collaboration/useRequestEditAccess';
 import Alert from '../../Alert';
 import Button from '../../Button';
 import Text from '../../Text';
 import StandardDialog from '../../StandardDialog';
+import PermissionBlock from './PermissionBlock';
 import collaborationStates from './collaborationStates';
 
 const collaborationSchemas = Object.values(collaborationStates);
-
-function PermissionBlock({ title, schema, setRequest, testKey }) {
-  return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        padding: '20px 24px 0 24px',
-      }}
-    >
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          marginRight: 40,
-          flexShrink: 1,
-        }}
-      >
-        <Text>{title}</Text>
-        <Text variant="body2">{schema.currentStateMessage}</Text>
-      </div>
-      {schema.actionMessage ? (
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'start',
-            justifyContent: 'flex-end',
-            minWidth: '30%',
-          }}
-        >
-          <Button
-            style={{ whiteSpace: 'nowrap' }}
-            onClick={() => {
-              const actionPatch = schema.getActionPatch(
-                testKey,
-                schema,
-              );
-              setRequest({ ...schema, actionPatch });
-            }}
-          >
-            {schema.actionMessage}
-          </Button>
-        </div>
-      ) : (
-        <div />
-      )}
-    </div>
-  );
-}
 
 export default function UserEditDialog({
   open,
@@ -70,9 +22,18 @@ export default function UserEditDialog({
 }) {
   const {
     requestEditAccess,
-    loading,
-    error,
+    loading: requestLoading,
+    error: requestError,
   } = useRequestEditAccess();
+
+  const {
+    patchCollaboration,
+    loading: patchLoading,
+    error: patchError,
+  } = usePatchCollaboration();
+
+  const loading = requestLoading || patchLoading;
+  const error = requestError || patchError;
 
   const [request, setRequest] = useState(null);
 
@@ -97,7 +58,6 @@ export default function UserEditDialog({
         'otherUserName',
         '',
       )}`}
-      // maxWidth="xs"
     >
       <div
         style={{ width: '100%', minWidth: 360, paddingBottom: 32 }}
@@ -135,23 +95,33 @@ export default function UserEditDialog({
           {error}
         </Alert>
       )}
-      <DialogActions style={{ padding: '0px 24px 24px 24px' }}>
-        <Button
-          display="primary"
-          onClick={async () => {
-            console.log(activeCollaboration);
-            console.log(request.actionPatch);
-            if (request.sendEditRequest) {
-              const successful = await requestEditAccess(
-                activeCollaboration.guid,
-              );
-              console.log(successful);
-            }
-          }}
-          loading={loading}
-          id="SAVE"
-        />
-      </DialogActions>
+      {request && (
+        <DialogActions style={{ padding: '0px 24px 24px 24px' }}>
+          <Button
+            display="primary"
+            onClick={async () => {
+              let successful;
+              if (request.sendEditRequest) {
+                successful = await requestEditAccess(
+                  activeCollaboration.guid,
+                );
+              } else {
+                successful = await patchCollaboration(
+                  activeCollaboration.guid,
+                  request.actionPatch,
+                );
+              }
+
+              if (successful) {
+                refreshCollaborationData();
+                cleanupAndClose();
+              }
+            }}
+            loading={loading}
+            id="SAVE"
+          />
+        </DialogActions>
+      )}
     </StandardDialog>
   );
 }

@@ -96,15 +96,17 @@ export default function NotificationsPane({
             );
           })
         )}
-        {!notifications || notifications.length === 0 && (
-          <Grid item style={{ padding: 16 }}>
-        <Text>You have no unread notifications.</Text>
-        </Grid>
-        )}
+        {!notifications ||
+          (notifications.length === 0 && (
+            <Grid item style={{ padding: 16 }}>
+              <Text>You have no unread notifications.</Text>
+            </Grid>
+          ))}
         <Divider />
         <Grid item style={{ padding: 16 }}>
-
-        <Link to="/notifications" noUnderline><Text>View all notifications</Text></Link>
+          <Link to="/notifications" noUnderline>
+            <Text>View all notifications</Text>
+          </Link>
         </Grid>
       </Grid>
     </Popover>

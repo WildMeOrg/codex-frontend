@@ -11,7 +11,6 @@ function buildCollaborationPatch(testKey, value) {
     },
   ];
 }
-/* testKey will be one of two strings, "viewState" or "editState" */
 
 export default {
   pending: {
@@ -31,8 +30,9 @@ export default {
       buildCollaborationPatch(testKey, 'approved'),
     actionMessage2: 'Deny access',
     actionVerificationMessage2:
-      'Are you sure you want to grant access?',
-    getActionPatch2: 'denied',
+      'Are you sure you want to deny access?',
+    getActionPatch2: testKey =>
+      buildCollaborationPatch(testKey, 'declined'),
   },
   blocked: {
     test: (testKey, collaboration) =>

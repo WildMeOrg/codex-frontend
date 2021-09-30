@@ -81,13 +81,11 @@ export default function CollaborationsCard({ userId }) {
       name: 'otherUserName',
       label: intl.formatMessage({ id: 'NAME' }),
       options: {
-        customBodyRender: otherUserName => {
-          return (
-            <Link to="/users/whatever">
-              <Text variant="body2">{otherUserName}</Text>
-            </Link>
-          );
-        },
+        customBodyRender: otherUserName => (
+          <Link to="/users/whatever">
+            <Text variant="body2">{otherUserName}</Text>
+          </Link>
+        ),
       },
     },
     {
@@ -102,15 +100,13 @@ export default function CollaborationsCard({ userId }) {
       name: 'actions',
       label: intl.formatMessage({ id: 'ACTIONS' }),
       options: {
-        customBodyRender: (_, collaboration) => {
-          return (
-            <ActionIcon
-              labelId="EDIT"
-              variant="edit"
-              onClick={() => setActiveCollaboration(collaboration)}
-            />
-          );
-        },
+        customBodyRender: (_, collaboration) => (
+          <ActionIcon
+            labelId="EDIT"
+            variant="edit"
+            onClick={() => setActiveCollaboration(collaboration)}
+          />
+        ),
       },
     },
   ];
@@ -131,6 +127,7 @@ export default function CollaborationsCard({ userId }) {
           noTitleBar
           columns={columns}
           data={tableData}
+          idKey="guid"
         />
       )}
     </Card>
