@@ -16,9 +16,7 @@ export default function useRequestCollaboration() {
         url: `${__houston_url__}/api/v1/collaborations/edit_request/${collaborationId}`,
         withCredentials: true,
         method: 'post',
-        // data: {},
       });
-      console.log(response);
       const successful = get(response, 'status') === 200;
       if (successful) {
         setSuccess(true);

@@ -80,7 +80,7 @@ export default function CollaborationRequestDialog({
               ],
             );
 
-            if (successful) onCloseDialog(); // NEEDS TEST
+            if (successful) onCloseDialog();
           }}
         />
         <Button
@@ -98,7 +98,7 @@ export default function CollaborationRequestDialog({
               ],
             );
 
-            if (successful) onCloseDialog(); // NEEDS TEST
+            if (successful) onCloseDialog();
           }}
           id="GRANT_ACCESS"
         />
