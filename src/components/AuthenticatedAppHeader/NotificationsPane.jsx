@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { get } from 'lodash-es';
 
 import Grid from '@material-ui/core/Grid';
@@ -7,6 +7,9 @@ import Avatar from '@material-ui/core/Avatar';
 import Divider from '@material-ui/core/Divider';
 import LinearProgress from '@material-ui/core/LinearProgress';
 
+import usePatchNotification from '../../models/notification/usePatchNotification';
+import CollaborationRequestDialog from '../dialogs/CollaborationRequestDialog';
+import Link from '../Link';
 import Text from '../Text';
 import Button from '../Button';
 import shane from '../../assets/shane.jpg';
@@ -16,7 +19,15 @@ export default function NotificationsPane({
   setAnchorEl,
   notifications,
   notificationsLoading,
+  refreshNotifications,
 }) {
+  const [
+    activeCollaborationNotification,
+    setActiveCollaborationNotification,
+  ] = useState(null);
+
+  const { markRead } = usePatchNotification();
+
   return (
     <Popover
       open={Boolean(anchorEl)}
@@ -29,6 +40,11 @@ export default function NotificationsPane({
       anchorEl={anchorEl}
       onClose={() => setAnchorEl(null)}
     >
+      <CollaborationRequestDialog
+        open={Boolean(activeCollaborationNotification)}
+        onClose={() => setActiveCollaborationNotification(null)}
+        notification={activeCollaborationNotification}
+      />
       <Grid container direction="column">
         <Grid item style={{ padding: 16 }}>
           <Text style={{ fontWeight: 'bold' }} id="NOTIFICATIONS" />
@@ -61,7 +77,17 @@ export default function NotificationsPane({
                       {`${senderName} sent you a collaboration request`}
                     </Text>
                   </div>
-                  <Button style={{ maxHeight: 40 }} id="VIEW" />
+                  <Button
+                    onClick={async () => {
+                      setActiveCollaborationNotification(
+                        notification,
+                      );
+                      await markRead(get(notification, 'guid'));
+                      refreshNotifications();
+                    }}
+                    style={{ maxHeight: 40 }}
+                    id="VIEW"
+                  />
                 </Grid>
                 <Grid item>
                   <Divider />
@@ -70,6 +96,16 @@ export default function NotificationsPane({
             );
           })
         )}
+        {!notifications || notifications.length === 0 && (
+          <Grid item style={{ padding: 16 }}>
+        <Text>You have no unread notifications.</Text>
+        </Grid>
+        )}
+        <Divider />
+        <Grid item style={{ padding: 16 }}>
+
+        <Link to="/notifications" noUnderline><Text>View all notifications</Text></Link>
+        </Grid>
       </Grid>
     </Popover>
   );

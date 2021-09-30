@@ -29,6 +29,7 @@ export default function AppHeader() {
   const {
     data: notifications,
     loading: notificationsLoading,
+    refresh: refreshNotifications,
   } = useNotifications();
   const notificationsCount = get(notifications, 'length', 0);
 
@@ -130,6 +131,7 @@ export default function AppHeader() {
             setAnchorEl={setNotificationsAnchorEl}
             notifications={notifications || []}
             notificationsLoading={notificationsLoading}
+            refreshNotifications={refreshNotifications}
           />
           <HeaderButton
             onClick={e => setUserMenuAnchorEl(e.currentTarget)}

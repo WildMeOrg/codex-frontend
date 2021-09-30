@@ -19,7 +19,7 @@ export default function useNotifications() {
       const fetchNotifications = async () => {
         try {
           const response = await axios.request({
-            url: `${__houston_url__}/api/v1/notifications/`,
+            url: `${__houston_url__}/api/v1/notifications/unread`,
             method: 'get',
           });
 

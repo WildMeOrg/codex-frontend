@@ -2,9 +2,6 @@ import React, { useState, useMemo } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
 import { get } from 'lodash-es';
 
-// import IconButton from '@material-ui/core/IconButton';
-// import AddIcon from '@material-ui/icons/Add';
-
 import useUserMetadataSchemas from '../models/users/useUserMetadataSchemas';
 import useRequestCollaboration from '../models/collaboration/useRequestCollaboration';
 import { formatDate } from '../utils/formatters';
@@ -17,7 +14,6 @@ import Text from './Text';
 import Button from './Button';
 import MetadataCardNew from './cards/MetadataCardNew';
 import SightingsCard from './cards/SightingsCard';
-// import UserProjectCard from './cards/UserProjectCard';
 import CollaborationsCard from './cards/CollaborationsCard';
 import CardContainer from './cards/CardContainer';
 
@@ -34,10 +30,7 @@ export default function UserProfile({
   const [editingProfile, setEditingProfile] = useState(false);
   const metadataSchemas = useUserMetadataSchemas(userId);
 
-  const {
-    requestCollaboration,
-    loading,
-  } = useRequestCollaboration();
+  const { requestCollaboration, loading } = useRequestCollaboration();
 
   const metadata = useMemo(
     () => {
@@ -150,9 +143,7 @@ export default function UserProfile({
             hideSubmitted
           />
 
-          {!someoneElse && (
-            <CollaborationsCard userId={userId} />
-          )}
+          {!someoneElse && <CollaborationsCard userId={userId} />}
         </CardContainer>
       </div>
     </MainColumn>
