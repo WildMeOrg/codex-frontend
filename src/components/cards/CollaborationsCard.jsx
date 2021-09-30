@@ -73,6 +73,7 @@ export default function CollaborationsCard({ userId }) {
       thisUserData,
       otherUserData,
       otherUserName: get(otherUserData, 'full_name', ''),
+      otherUserId: get(otherUserData, 'guid', ''),
     };
   });
 
@@ -81,8 +82,8 @@ export default function CollaborationsCard({ userId }) {
       name: 'otherUserName',
       label: intl.formatMessage({ id: 'NAME' }),
       options: {
-        customBodyRender: otherUserName => (
-          <Link to="/users/whatever">
+        customBodyRender: (otherUserName, datum) => (
+          <Link to={`/users/${get(datum, 'otherUserId')}`}>
             <Text variant="body2">{otherUserName}</Text>
           </Link>
         ),
