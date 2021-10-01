@@ -8,17 +8,14 @@ export default function useRequestCollaboration() {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
 
-  const requestCollaboration = async userId => {
+  const requestEditAccess = async collaborationId => {
     try {
       setLoading(true);
       setError(null);
       const response = await axios({
-        url: `${__houston_url__}/api/v1/collaborations/`,
+        url: `${__houston_url__}/api/v1/collaborations/edit_request/${collaborationId}`,
         withCredentials: true,
         method: 'post',
-        data: {
-          user_guid: userId,
-        },
       });
       const successful = get(response, 'status') === 200;
       if (successful) {
@@ -52,7 +49,7 @@ export default function useRequestCollaboration() {
   };
 
   return {
-    requestCollaboration,
+    requestEditAccess,
     loading,
     error,
     setError,

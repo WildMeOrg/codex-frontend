@@ -10,6 +10,7 @@ import Text from './Text';
 export default function StandardDialog({
   open,
   onClose,
+  title,
   titleId,
   children,
   ...rest
@@ -17,7 +18,9 @@ export default function StandardDialog({
   return (
     <Dialog open={open} onClose={onClose} {...rest}>
       <DialogTitle>
-        <Text id={titleId} style={{ marginRight: 60 }} />
+        <Text id={titleId} style={{ marginRight: 60 }}>
+          {title}
+        </Text>
         <IconButton
           style={{ position: 'absolute', top: 4, right: 12 }}
           aria-label="close"

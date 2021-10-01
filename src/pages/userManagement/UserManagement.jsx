@@ -120,7 +120,6 @@ export default function UserManagement() {
                   multiple
                   value={newUserRoles}
                   onChange={e => {
-                    console.log(e.target.value);
                     setNewUserRoles(e.target.value);
                   }}
                   input={<Input id="select-roles-input" />}

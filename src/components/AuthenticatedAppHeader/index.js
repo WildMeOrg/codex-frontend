@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
+import { get } from 'lodash-es';
 
 import { useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -13,10 +13,11 @@ import AddIcon from '@material-ui/icons/Add';
 import DropDownIcon from '@material-ui/icons/ArrowDropDown';
 import HomeIcon from '@material-ui/icons/Home';
 
+import useGetMe from '../../models/users/useGetMe';
+import useNotifications from '../../models/notification/useNotifications';
 import Link from '../Link';
 import AppDrawer from '../AppDrawer';
 import BannerLogo from '../BannerLogo';
-import useGetMe from '../../models/users/useGetMe';
 import HeaderButton from './HeaderButton';
 import NotificationsPane from './NotificationsPane';
 import ActionsPane from './ActionsPane';
@@ -25,6 +26,12 @@ import PopoverButtons from './PopoverButtons';
 export default function AppHeader() {
   const theme = useTheme();
   const { data: meData } = useGetMe();
+  const {
+    data: notifications,
+    loading: notificationsLoading,
+    refresh: refreshNotifications,
+  } = useNotifications();
+  const notificationsCount = get(notifications, 'length', 0);
 
   const isSm = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -114,13 +121,17 @@ export default function AppHeader() {
           <HeaderButton
             Icon={NotificationsIcon}
             titleId="NOTIFICATIONS"
-            showBadge
+            showBadge={Boolean(notificationsCount)}
+            badgeContent={notificationsCount}
             onClick={e => setNotificationsAnchorEl(e.currentTarget)}
             style={{ position: 'relative' }}
           />
           <NotificationsPane
             anchorEl={notificationsAnchorEl}
             setAnchorEl={setNotificationsAnchorEl}
+            notifications={notifications || []}
+            notificationsLoading={notificationsLoading}
+            refreshNotifications={refreshNotifications}
           />
           <HeaderButton
             onClick={e => setUserMenuAnchorEl(e.currentTarget)}

@@ -12,8 +12,6 @@ import ProfileSetup from './ProfileSetup';
 export default function Home() {
   const intl = useIntl();
 
-  useDocumentTitle(intl.formatMessage({ id: 'HOME' }));
-
   const { data, loading, refresh } = useGetMe();
   const unprocessedAssetGroupId = get(data, [
     'unprocessed_asset_groups',
@@ -22,6 +20,12 @@ export default function Home() {
 
   const fullName = get(data, ['full_name']);
   const userId = get(data, 'guid');
+
+  useDocumentTitle(
+    intl.formatMessage({ id: 'HOME' }),
+    true,
+    fullName,
+  );
 
   if (loading) return <LoadingScreen />;
   // if (error) handle error
