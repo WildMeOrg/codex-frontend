@@ -72,7 +72,8 @@ export default function CollaborationsCard({ userId }) {
       teamEditState,
       thisUserData,
       otherUserData,
-      otherUserName: get(otherUserData, 'full_name', ''),
+      otherUserName:
+        get(otherUserData, 'full_name') || 'Unnamed User',
       otherUserId: get(otherUserData, 'guid', ''),
     };
   });
