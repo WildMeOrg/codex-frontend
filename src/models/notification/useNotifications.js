@@ -3,11 +3,11 @@ import axios from 'axios';
 import { get } from 'lodash-es';
 import { formatError } from '../../utils/formatters';
 
-export default function useIndividual(individualId) {
+export default function useNotifications() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [statusCode, setStatusCode] = useState(null);
-  const [individualData, setIndividualData] = useState(null);
+  const [notifications, setNotifications] = useState(null);
   const [refreshCount, setRefreshCount] = useState(0);
 
   function refresh() {
@@ -16,10 +16,10 @@ export default function useIndividual(individualId) {
 
   useEffect(
     () => {
-      const fetchSightingData = async () => {
+      const fetchNotifications = async () => {
         try {
           const response = await axios.request({
-            url: `${__houston_url__}/api/v1/individuals/${individualId}`,
+            url: `${__houston_url__}/api/v1/notifications/unread`,
             method: 'get',
           });
 
@@ -28,7 +28,7 @@ export default function useIndividual(individualId) {
           const successful = responseStatusCode === 200;
           if (!successful) setError(formatError(response));
 
-          setIndividualData(get(response, ['data', 'result']));
+          setNotifications(get(response, ['data']));
           setLoading(false);
         } catch (fetchError) {
           const responseStatusCode = get(fetchError, [
@@ -36,20 +36,20 @@ export default function useIndividual(individualId) {
             'status',
           ]);
           setStatusCode(responseStatusCode);
-          console.error(`Error fetching individual ${individualId}`);
+          console.error('Error fetching notifications');
           console.error(fetchError);
           setError(formatError(fetchError));
           setLoading(false);
         }
       };
 
-      if (individualId) fetchSightingData();
+      fetchNotifications();
     },
-    [individualId, refreshCount],
+    [refreshCount],
   );
 
   return {
-    data: individualData,
+    data: notifications,
     statusCode,
     loading,
     error,

@@ -1,12 +1,8 @@
 import React, { useState, useMemo } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { useIntl, FormattedMessage } from 'react-intl';
 import { get } from 'lodash-es';
 
-// import IconButton from '@material-ui/core/IconButton';
-// import AddIcon from '@material-ui/icons/Add';
-
 import useUserMetadataSchemas from '../models/users/useUserMetadataSchemas';
-import useRequestCollaboration from '../models/collaboration/useRequestCollaboration';
 import { formatDate } from '../utils/formatters';
 import EntityHeaderNew from './EntityHeaderNew';
 import BigAvatar from './profilePhotos/BigAvatar';
@@ -14,10 +10,10 @@ import MainColumn from './MainColumn';
 import SadScreen from './SadScreen';
 import EditUserMetadata from './EditUserMetadata';
 import Text from './Text';
-import Button from './Button';
+import RequestCollaborationButton from './RequestCollaborationButton';
 import MetadataCardNew from './cards/MetadataCardNew';
 import SightingsCard from './cards/SightingsCard';
-// import UserProjectCard from './cards/UserProjectCard';
+import CollaborationsCard from './cards/CollaborationsCard';
 import CardContainer from './cards/CardContainer';
 
 export default function UserProfile({
@@ -29,14 +25,9 @@ export default function UserProfile({
   someoneElse,
   noCollaborate = false,
 }) {
+  const intl = useIntl();
   const [editingProfile, setEditingProfile] = useState(false);
   const metadataSchemas = useUserMetadataSchemas(userId);
-
-  const {
-    requestCollaboration,
-    loading,
-    error,
-  } = useRequestCollaboration();
 
   const metadata = useMemo(
     () => {
@@ -55,7 +46,12 @@ export default function UserProfile({
 
   const imageSrc = get(userData, ['profile_fileupload', 'src']);
   const imageGuid = get(userData, ['profile_fileupload', 'guid']);
-  const name = get(userData, 'full_name', 'Unnamed user');
+  let name = get(
+    userData,
+    'full_name',
+    intl.formatMessage({ id: 'UNNAMED_USER' }),
+  );
+  if (name === '') name = intl.formatMessage({ id: 'UNNAMED_USER' });
   const dateCreated = formatDate(get(userData, 'created'), true);
 
   if (!userData)
@@ -95,13 +91,7 @@ export default function UserProfile({
           noCollaborate ? (
             undefined
           ) : (
-            <Button
-              onClick={async () => {
-                requestCollaboration(userId);
-              }}
-              loading={loading}
-              id="ADD_COLLABORATOR"
-            />
+            <RequestCollaborationButton otherUserId={userId} />
           )
         }
       >
@@ -143,6 +133,8 @@ export default function UserProfile({
             columns={['individual', 'date', 'location']}
             hideSubmitted
           />
+
+          {!someoneElse && <CollaborationsCard userId={userId} />}
         </CardContainer>
       </div>
     </MainColumn>

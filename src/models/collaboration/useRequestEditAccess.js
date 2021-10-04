@@ -3,35 +3,26 @@ import axios from 'axios';
 import { get } from 'lodash-es';
 import { formatError } from '../../utils/formatters';
 
-export default function usePostIndividual() {
+export default function useRequestCollaboration() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
 
-  const postIndividual = async (individualData, encounterId) => {
+  const requestEditAccess = async collaborationId => {
     try {
       setLoading(true);
       setError(null);
       const response = await axios({
-        url: `${__houston_url__}/api/v1/individuals/`,
+        url: `${__houston_url__}/api/v1/collaborations/edit_request/${collaborationId}`,
         withCredentials: true,
         method: 'post',
-        data: {
-          ...individualData,
-          encounters: [{ id: encounterId }],
-        },
       });
       const successful = get(response, 'status') === 200;
-      const newIndividualGuid = get(response, [
-        'data',
-        'result',
-        'id',
-      ]);
       if (successful) {
         setSuccess(true);
         setError(null);
         setLoading(false);
-        return newIndividualGuid;
+        return successful;
       }
 
       const backendErrorMessage = get(response, 'passed_message');
@@ -58,7 +49,7 @@ export default function usePostIndividual() {
   };
 
   return {
-    postIndividual,
+    requestEditAccess,
     loading,
     error,
     setError,
