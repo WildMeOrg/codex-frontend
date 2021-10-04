@@ -96,6 +96,9 @@ export default function MediaViewer({
   includeDeleteButton = false,
   assetSubmissionId,
 }) {
+  console.log(
+    'deleteMe includeDeleteButton is: ' + includeDeleteButton,
+  );
   if (variant === 'image') {
     return (
       <div>
