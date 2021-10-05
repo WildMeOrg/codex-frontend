@@ -59,15 +59,11 @@ export default function UserSettings() {
             style={{
               marginTop: 20,
               marginBottom: 12,
-              padding: 24,
+              padding: '8px 24px 24px 24px',
               display: 'flex',
               flexDirection: 'column',
             }}
           >
-            <Text
-              id="NEW_USER_ADMIN_MESSAGE"
-              style={{ marginBottom: 12 }}
-            />
             {notificationSettingsSchemas.map(notificationField => {
               return (
                 <InputRow schema={notificationField}>
