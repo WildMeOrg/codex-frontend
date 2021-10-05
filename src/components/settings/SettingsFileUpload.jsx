@@ -65,9 +65,6 @@ export default function SettingsFileUpload({
         setPreviewText(get(uploadObject, 'name'));
       }
     });
-    console.log('deleteMe uppyInstance is: ');
-    console.log(uppyInstance);
-
     setUppy(uppyInstance);
 
     return () => uppyInstance.close();
@@ -102,19 +99,12 @@ export default function SettingsFileUpload({
           minWidth: '35%',
         }}
       >
-        <Text
-          style={{
-            marginTop: 20,
-          }}
-          variant="subtitle1"
-        >
+        <Text style={{ marginTop: 20 }} variant="subtitle1">
           <FormattedMessage id={labelId} />
           {required && ' *'}
         </Text>
         <Text
-          style={{
-            marginTop: 4,
-          }}
+          style={{ marginTop: 4 }}
           variant="body2"
           id={descriptionId}
         />
@@ -135,7 +125,12 @@ export default function SettingsFileUpload({
               variant={variant}
               label={previewText}
               includeDeleteButton
-              assetSubmissionId={assetSubmissionId}
+              settingKey={settingName}
+              // data={get(
+              //   siteSettings.data['site.images'],
+              //   settingName,
+              //   '',
+              // )}
             />
             <Button
               onClick={() => {
@@ -168,10 +163,11 @@ export default function SettingsFileUpload({
                   )
                 : null
             }
-            // closeAfterFinish
             closeModalOnClickOutside
             showProgressDetails
-            showLinkToFileUploadResult={false}
+            showLinkToFileUploadResult={
+              false // closeAfterFinish
+            }
             open={modalOpen}
             onRequestClose={() => setModalOpen(false)}
           />

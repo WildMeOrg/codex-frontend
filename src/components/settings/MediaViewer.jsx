@@ -8,6 +8,7 @@ import DashboardModal from '@uppy/react/lib/DashboardModal';
 import '@uppy/core/dist/style.css';
 import '@uppy/dashboard/dist/style.css';
 import { v4 as uuid } from 'uuid';
+import axios from 'axios';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 
@@ -21,84 +22,94 @@ import useSiteSettings from '../../models/site/useSiteSettings';
 import Text from '../Text';
 import StandardDialog from '../StandardDialog';
 import CustomAlert from '../Alert';
+import ConfirmDelete from '../ConfirmDelete';
 
-function deleteMeWrapperFn(assetSubmissionId) {
-  console.log(
-    'deleteMe got here deleteMeWrapperFn entered and assetSubmissionId is: ' +
-      assetSubmissionId,
-  );
-  // const [deleteAsset, setDeleteAsset] = useState(null);
-  // setDeleteAsset(assetSubmissionId);
-  return (
-    <StandardDialog // TODO tailor the below for SettingFileUpload remove
-      maxWidth="xl"
-      open
-      onClose={onClose}
-      titleId={titleId}
-    >
-      <DialogContent>
-        <div style={{ width: 900, padding: '0 40px' }}>
-          <div
-            id="editor-bbox-annotator-container"
-            style={{ zIndex: 999 }}
-            ref={divRef}
-          />
-          {!disableDelete && (
-            <div style={{ margin: '8px 0' }}>
-              {confirmDelete ? (
-                <Text id="DELETE_ANNOTATION_CONFIRMATION" /> // TODO use CONFIRM_DELETE_SETTINGS_FILE_UPLOAD?
-              ) : (
-                <Button
-                  onClick={() => setConfirmDelete(true)}
-                  style={{ color: 'red' }}
-                  id="DELETE_THIS_ANNOTATION" // TODO use CONFIRM_DELETE_SETTINGS_FILE_UPLOAD?
-                />
-              )}
-            </div>
-          )}
-        </div>
-      </DialogContent>
-      <DialogActions
-        style={{
-          padding: '0px 24px 24px 24px',
-          display: 'flex',
-          alignItems: 'flex-end',
-          flexDirection: 'column',
-        }}
-      >
-        {error && (
-          <CustomAlert
-            style={{ margin: '20px 0', width: '100%' }}
-            severity="error"
-            titleId="SERVER_ERROR"
-          >
-            {error}
-          </CustomAlert>
-        )}
-        <div>
-          <Button display="basic" onClick={onClose} id="CANCEL" />
-          <Button
-            display="primary"
-            onClick={() => onChange(rect)}
-            loading={loading}
-            id="SAVE"
-          />
-        </div>
-      </DialogActions>
-    </StandardDialog>
-  );
-}
+// function deleteMeWrapperFn(assetSubmissionId) {
+//   console.log(
+//     'deleteMe got here deleteMeWrapperFn entered and assetSubmissionId is: ' +
+//       assetSubmissionId,
+//   );
+//   // const [deleteAsset, setDeleteAsset] = useState(null);
+//   // setDeleteAsset(assetSubmissionId);
+//   return (
+//     <StandardDialog // TODO tailor the below for SettingFileUpload remove
+//       maxWidth="xl"
+//       open
+//       onClose={onClose}
+//       titleId={titleId}
+//     >
+//       <DialogContent>
+//         <div style={{ width: 900, padding: '0 40px' }}>
+//           <div
+//             id="editor-bbox-annotator-container"
+//             style={{ zIndex: 999 }}
+//             ref={divRef}
+//           />
+//           {!disableDelete && (
+//             <div style={{ margin: '8px 0' }}>
+//               {confirmDelete ? (
+//                 <Text id="DELETE_ANNOTATION_CONFIRMATION" /> // TODO use CONFIRM_DELETE_SETTINGS_FILE_UPLOAD?
+//               ) : (
+//                 <Button
+//                   onClick={() => setConfirmDelete(true)}
+//                   style={{ color: 'red' }}
+//                   id="DELETE_THIS_ANNOTATION" // TODO use CONFIRM_DELETE_SETTINGS_FILE_UPLOAD?
+//                 />
+//               )}
+//             </div>
+//           )}
+//         </div>
+//       </DialogContent>
+//       <DialogActions
+//         style={{
+//           padding: '0px 24px 24px 24px',
+//           display: 'flex',
+//           alignItems: 'flex-end',
+//           flexDirection: 'column',
+//         }}
+//       >
+//         {error && (
+//           <CustomAlert
+//             style={{ margin: '20px 0', width: '100%' }}
+//             severity="error"
+//             titleId="SERVER_ERROR"
+//           >
+//             {error}
+//           </CustomAlert>
+//         )}
+//         <div>
+//           <Button display="basic" onClick={onClose} id="CANCEL" />
+//           <Button
+//             display="primary"
+//             onClick={() => onChange(rect)}
+//             loading={loading}
+//             id="SAVE"
+//           />
+//         </div>
+//       </DialogActions>
+//     </StandardDialog>
+//   );
+// }
 
 export default function MediaViewer({
   variant = 'image',
   url,
   label,
   includeDeleteButton = false,
-  assetSubmissionId,
+  settingKey,
+  data,
 }) {
-  console.log(
-    'deleteMe includeDeleteButton is: ' + includeDeleteButton,
-  );
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [deleteSettingFile, setDeleteSettingFile] = useState(false);
+  const onCloseConfirmDelete = () => {
+    if (error) setError(null);
+    setConfirmDelete(null);
+  };
+  console.log('deleteMe data inside media viewer is: ');
+  console.log(data);
+  console.log('deleteMe settingKey is: ');
+  console.log(settingKey);
+
   if (variant === 'image') {
     return (
       <div>
@@ -112,7 +123,7 @@ export default function MediaViewer({
           }}
           src={url}
         />
-        {includeDeleteButton && (
+        {includeDeleteButton && [
           <ActionIcon
             variant="delete"
             style={{
@@ -120,12 +131,49 @@ export default function MediaViewer({
               height: '20px',
               padding: 0,
             }}
-            onClick={() => deleteMeWrapperFn(assetSubmissionId)} // TODO get uppyId somehow // TODO implement uppy.removeFile('uppyteamkongjpg1501851828779') from https://uppy.io/docs/uppy/#uppy-removeFile-fileID
-            // uppy.on('file-removed', (file, reason) => { // TODO
-            // console.log('Removed file', file)
-            // })
-          />
-        )}
+            onClick={() => setDeleteSettingFile(true)}
+          />,
+          <ConfirmDelete
+            open={
+              Boolean(deleteSettingFile)
+              //   const response = await axios({
+              //     url: `${__houston_url__}/api/v1/site-settings/${settingKey}`,
+              //     withCredentials: true,
+              //     method: 'delete',
+              //   });
+              //   console.log('deleteMe response is: ');
+              //   console.log(response);
+            }
+            title={
+              <FormattedMessage id="REMOVE_FILE" /> // onClose={onCloseConfirmDelete}
+            }
+            messageId={<FormattedMessage id="CONFIRM_DELETE_FILE" />} // message={<FormattedMessage id="CONFIRM_DELETE_FILE" />}
+            onClose={onCloseCategoryDialog}
+            onDelete={async () => {
+              const response = await axios({
+                url: `${__houston_url__}/api/v1/site-settings/${settingKey}`,
+                withCredentials: true,
+                method: 'delete',
+              });
+              console.log('deleteMe response is: ');
+              console.log(response);
+              // TODO zhuzh this up when there's a better response
+              if (response) {
+                console.log('hi');
+              }
+              // const newCustomCategories = removeItemById(
+              //   deleteCategory,
+              //   customFieldCategories,
+              // );
+              // putSiteSetting(
+              //   categorySettingName,
+              //   newCustomCategories,
+              // ).then(() => {
+              //   onCloseConfirmDelete();
+              // });
+            }}
+          />,
+        ]}
       </div>
     );
   } else if (variant === 'video' && url) {
