@@ -120,7 +120,7 @@ export default function SettingsFileUpload({
         {mediaUrl || previewText ? (
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <MediaViewer
-              key={settingName}
+              key={mediaUrl}
               url={mediaUrl}
               alt={`Uploaded ${settingName}`}
               variant={variant}
