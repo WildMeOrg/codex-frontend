@@ -120,17 +120,13 @@ export default function SettingsFileUpload({
         {mediaUrl || previewText ? (
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <MediaViewer
+              key={settingName}
               url={mediaUrl}
               alt={`Uploaded ${settingName}`}
               variant={variant}
               label={previewText}
               includeDeleteButton
               settingKey={settingName}
-              // data={get(
-              //   siteSettings.data['site.images'],
-              //   settingName,
-              //   '',
-              // )}
             />
             <Button
               onClick={() => {

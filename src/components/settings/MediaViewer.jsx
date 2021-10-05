@@ -24,91 +24,29 @@ import StandardDialog from '../StandardDialog';
 import CustomAlert from '../Alert';
 import ConfirmDelete from '../ConfirmDelete';
 
-// function deleteMeWrapperFn(assetSubmissionId) {
-//   console.log(
-//     'deleteMe got here deleteMeWrapperFn entered and assetSubmissionId is: ' +
-//       assetSubmissionId,
-//   );
-//   // const [deleteAsset, setDeleteAsset] = useState(null);
-//   // setDeleteAsset(assetSubmissionId);
-//   return (
-//     <StandardDialog // TODO tailor the below for SettingFileUpload remove
-//       maxWidth="xl"
-//       open
-//       onClose={onClose}
-//       titleId={titleId}
-//     >
-//       <DialogContent>
-//         <div style={{ width: 900, padding: '0 40px' }}>
-//           <div
-//             id="editor-bbox-annotator-container"
-//             style={{ zIndex: 999 }}
-//             ref={divRef}
-//           />
-//           {!disableDelete && (
-//             <div style={{ margin: '8px 0' }}>
-//               {confirmDelete ? (
-//                 <Text id="DELETE_ANNOTATION_CONFIRMATION" /> // TODO use CONFIRM_DELETE_SETTINGS_FILE_UPLOAD?
-//               ) : (
-//                 <Button
-//                   onClick={() => setConfirmDelete(true)}
-//                   style={{ color: 'red' }}
-//                   id="DELETE_THIS_ANNOTATION" // TODO use CONFIRM_DELETE_SETTINGS_FILE_UPLOAD?
-//                 />
-//               )}
-//             </div>
-//           )}
-//         </div>
-//       </DialogContent>
-//       <DialogActions
-//         style={{
-//           padding: '0px 24px 24px 24px',
-//           display: 'flex',
-//           alignItems: 'flex-end',
-//           flexDirection: 'column',
-//         }}
-//       >
-//         {error && (
-//           <CustomAlert
-//             style={{ margin: '20px 0', width: '100%' }}
-//             severity="error"
-//             titleId="SERVER_ERROR"
-//           >
-//             {error}
-//           </CustomAlert>
-//         )}
-//         <div>
-//           <Button display="basic" onClick={onClose} id="CANCEL" />
-//           <Button
-//             display="primary"
-//             onClick={() => onChange(rect)}
-//             loading={loading}
-//             id="SAVE"
-//           />
-//         </div>
-//       </DialogActions>
-//     </StandardDialog>
-//   );
-// }
-
 export default function MediaViewer({
+  key,
   variant = 'image',
   url,
   label,
   includeDeleteButton = false,
   settingKey,
-  data,
 }) {
-  const [confirmDelete, setConfirmDelete] = useState(false);
+  console.log('got here b1 and key is: ');
+  console.log(key);
+  // const [confirmDelete, setConfirmDelete] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  // const [success, setSuccess] = useState(false);
   const [deleteSettingFile, setDeleteSettingFile] = useState(false);
   const onCloseConfirmDelete = () => {
+    console.log('deleteMe onCloseConfirmDelete entered');
+    console.log('deleteMe error is:');
+    console.log(error);
     if (error) setError(null);
-    setConfirmDelete(null);
+    setDeleteSettingFile(false);
+    // setConfirmDelete(null);
   };
-  console.log('deleteMe data inside media viewer is: ');
-  console.log(data);
-  console.log('deleteMe settingKey is: ');
-  console.log(settingKey);
 
   if (variant === 'image') {
     return (
@@ -147,19 +85,28 @@ export default function MediaViewer({
             title={
               <FormattedMessage id="REMOVE_FILE" /> // onClose={onCloseConfirmDelete}
             }
-            messageId={<FormattedMessage id="CONFIRM_DELETE_FILE" />} // message={<FormattedMessage id="CONFIRM_DELETE_FILE" />}
-            onClose={onCloseCategoryDialog}
+            messageId={<FormattedMessage id="CONFIRM_DELETE_FILE" />}
+            message={<FormattedMessage id="CONFIRM_DELETE_FILE" />}
+            onClose={onCloseConfirmDelete}
             onDelete={async () => {
-              const response = await axios({
+              setLoading(true);
+              const deleteResponse = await axios({
                 url: `${__houston_url__}/api/v1/site-settings/${settingKey}`,
                 withCredentials: true,
                 method: 'delete',
               });
               console.log('deleteMe response is: ');
-              console.log(response);
-              // TODO zhuzh this up when there's a better response
-              if (response) {
-                console.log('hi');
+              console.log(deleteResponse);
+              const responseStatus = get(deleteResponse, 'status');
+              const successful =
+                responseStatus === 204 || responseStatus === 404; // 404 because if it couldn't be found, it hasn't been persisted yet, but the asset should be removed from the DOM anyway
+              console.log('deleteMe got here a1');
+              if (successful) {
+                setLoading(false);
+                // setSuccess(true);
+                setError(null);
+                console.log('deleteMe got here a2');
+                onCloseConfirmDelete();
               }
               // const newCustomCategories = removeItemById(
               //   deleteCategory,
