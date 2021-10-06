@@ -39,20 +39,53 @@ export default function MediaViewer({
   includeDeleteButton = false,
   settingKey,
 }) {
-  console.log('got here b1 and url is: ');
-  console.log(url);
   const { dispatch } = useContext(AppContext);
   const [loading, setLoading] = useState(false); // TODO deleteMe do something with loading
-  const [error, setError] = useState(null);
-  const [deleteSettingFile, setDeleteSettingFile] = useState(false);
-  const onCloseConfirmDelete = () => {
+  const [localError, setLocalError] = useState(null); // TODO change to null
+  const [
+    shouldOpenConfirmDeleteDialog,
+    setShouldOpenConfirmDeleteDialog,
+  ] = useState(false);
+  const {
+    deleteSettingsAsset,
+    error,
+    // loading: localLoading,
+    success: localSuccess,
+    setSuccess: localSetSuccess,
+  } = useDeleteSiteSettingsMedia();
+  function onCloseConfirmDelete() {
+    // return(
     console.log('deleteMe onCloseConfirmDelete entered');
     console.log('deleteMe error is:');
     console.log(error);
-    if (error) setError(null);
-    setDeleteSettingFile(false);
-  };
+    if (error) {
+      setLocalError(true);
+    }
+    setShouldOpenConfirmDeleteDialog(false);
+    // return null;
+    // if (error) setLocalError(null);
+  }
 
+  if (loading) return <p>Loading...</p>;
+  if (localSuccess)
+    return (
+      <CustomAlert
+        style={{ margin: '0px 24px 20px 24px' }}
+        titleId="SETTINGS_FILE_DELETE_SUCCES"
+      >
+        {success}
+      </CustomAlert>
+    );
+  if (localError)
+    return (
+      <CustomAlert
+        style={{ margin: '0px 24px 20px 24px' }}
+        severity="error"
+        titleId="SERVER_ERROR"
+      >
+        {error}
+      </CustomAlert>
+    );
   if (variant === 'image') {
     return (
       <div key={url + uuid()}>
@@ -75,37 +108,19 @@ export default function MediaViewer({
               height: '20px',
               padding: 0,
             }}
-            onClick={() => setDeleteSettingFile(true)}
+            onClick={() => setShouldOpenConfirmDeleteDialog(true)}
           />,
           <ConfirmDelete
             key={url + uuid()}
-            open={Boolean(deleteSettingFile)}
+            open={Boolean(shouldOpenConfirmDeleteDialog)}
             title={<FormattedMessage id="REMOVE_FILE" />}
             messageId="CONFIRM_DELETE_FILE"
             onClose={onCloseConfirmDelete}
-            onDelete={async () => {
+            onDelete={() => {
               // setLoading(true);
-              // const deleteResponse = await axios({
-              //   url: `${__houston_url__}/api/v1/site-settings/${settingKey}`,
-              //   withCredentials: true,
-              //   method: 'delete',
-              // });
-              // console.log('deleteMe response is: ');
-              // console.log(deleteResponse);
-              // const responseStatus = get(deleteResponse, 'status');
-              // const successful =
-              //   responseStatus === 204 || responseStatus === 404; // 404 because if it couldn't be found, it hasn't been persisted yet, but the asset should be removed from the DOM anyway
-              // console.log('deleteMe got here a1');
-              // if (successful) {
-              //   setLoading(false);
-              //   // setSuccess(true);
-              //   setError(null);
-              //   console.log('deleteMe got here a2');
-              //   dispatch(setSiteSettingsNeedsFetch(true));
-              //   onCloseConfirmDelete();
-              // }
-              useDeleteSiteSettingsMedia(settingKey).then(() => {
+              deleteSettingsAsset(settingKey).then(() => {
                 onCloseConfirmDelete();
+                // setLoading(false);
               });
               // )
             }}
