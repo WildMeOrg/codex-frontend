@@ -1,6 +1,4 @@
-import {
-  createFieldSchema,
-} from '../../utils/fieldUtils';
+import { createFieldSchema } from '../../utils/fieldUtils';
 
 import fieldTypes from '../../constants/fieldTypesNew';
 

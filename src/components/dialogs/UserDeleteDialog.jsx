@@ -1,18 +1,13 @@
 import React, { useState } from 'react';
-import { FormattedMessage } from 'react-intl';
 import { get } from 'lodash-es';
 
-import FormLabel from '@material-ui/core/FormLabel';
-import FormControl from '@material-ui/core/FormControl';
-import FormGroup from '@material-ui/core/FormGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 import DialogActions from '@material-ui/core/DialogActions';
-import Text from '../../components/Text';
 
-import Alert from '../../components/Alert';
-import Button from '../../components/Button';
-import StandardDialog from '../../components/StandardDialog';
-import PasswordVerificationAlert from '../../components/PasswordVerificationAlert';
+import Text from '../Text';
+import Alert from '../Alert';
+import Button from '../Button';
+import StandardDialog from '../StandardDialog';
+import PasswordVerificationAlert from '../PasswordVerificationAlert';
 import useDeleteUser from '../../models/users/useDeleteUser';
 
 export default function UserDeleteDialog({
@@ -20,6 +15,7 @@ export default function UserDeleteDialog({
   onClose,
   userData,
   refreshUserData,
+  deactivatingSelf = false,
 }) {
   const [touched, setTouched] = useState(true);
   const [password, setPassword] = useState('');
@@ -40,26 +36,34 @@ export default function UserDeleteDialog({
     }
   }
 
+  const titleId = deactivatingSelf
+    ? 'DEACTIVATE_ACCOUNT'
+    : 'DEACTIVATE_USER';
+  const confirmationId = deactivatingSelf
+    ? 'DEACTIVATE_ACCOUNT_CONFIRMATION'
+    : 'CONFIRM_USER_DEACTIVATION';
+  const confirmationValues = deactivatingSelf
+    ? undefined
+    : {
+        username: get(userData, 'full_name')
+          ? get(userData, 'full_name')
+          : get(userData, 'email'),
+      };
+
   return (
     <StandardDialog
       open={open}
       onClose={cleanupAndClose}
-      titleId="DELETE_USER"
+      titleId={titleId}
       maxWidth="xs"
     >
       <div style={{ padding: '12px 24px' }}>
-        <Text
-          id="CONFIRM_DELETE_USER"
-          values={{
-            username: get(userData, 'full_name')
-              ? get(userData, 'full_name')
-              : get(userData, 'email'),
-          }}
-        />
+        <Text id={confirmationId} values={confirmationValues} />
         {touched ? (
           <PasswordVerificationAlert
+            style={{ marginTop: 20 }}
             setPassword={setPassword}
-            descriptionId="SENSITIVE_USER_DATA_CHANGE_DESCRIPTION"
+            descriptionId="DEACTIVATION_SENSITIVE_ACTION_DESCRIPTION"
           />
         ) : null}
         {error && (
@@ -73,7 +77,7 @@ export default function UserDeleteDialog({
           display="primary"
           onClick={processDeletion}
           loading={loading}
-          id="DELETE"
+          id={titleId}
         />
       </DialogActions>
     </StandardDialog>

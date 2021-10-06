@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useIntl } from 'react-intl';
-import { get } from 'lodash-es';
 
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
@@ -9,27 +8,36 @@ import useDocumentTitle from '../../hooks/useDocumentTitle';
 // import CustomAlert from '../../components/Alert';
 import MainColumn from '../../components/MainColumn';
 import ButtonLink from '../../components/ButtonLink';
+import UserDeleteDialog from '../../components/dialogs/UserDeleteDialog';
 import Button from '../../components/Button';
 import InputRow from '../../components/fields/edit/InputRowNew';
 import Text from '../../components/Text';
 import useGetMe from '../../models/users/useGetMe';
 import { useNotificationSettingsSchemas } from './useUserSettingsSchemas';
 
-export default function UserSettings() {
+export default function Settings() {
   const intl = useIntl();
-  useDocumentTitle(intl.formatMessage({ id: 'SETTINGS_AND_PRIVACY' }));
+  useDocumentTitle(
+    intl.formatMessage({ id: 'SETTINGS_AND_PRIVACY' }),
+  );
 
-  const {
-    data,
-    loading,
-    error,
-    refresh,
-  } = useGetMe();
+  const { data, refresh } = useGetMe();
+
+  const [deactivating, setDeactivating] = useState(false);
 
   const notificationSettingsSchemas = useNotificationSettingsSchemas();
 
   return (
     <MainColumn>
+      {deactivating && (
+        <UserDeleteDialog
+          open={deactivating}
+          onClose={() => setDeactivating(false)}
+          userData={data}
+          refreshUserData={refresh}
+          deactivatingSelf
+        />
+      )}
       <Text
         variant="h3"
         component="h3"
@@ -64,18 +72,19 @@ export default function UserSettings() {
               flexDirection: 'column',
             }}
           >
-            {notificationSettingsSchemas.map(notificationField => {
-              return (
-                <InputRow schema={notificationField}>
-                  <notificationField.editComponent
-                    schema={notificationField}
-                    value={false}
-                    onChange={value => {}}
-                    minimalLabels
-                  />
-                </InputRow>
-              );
-            })}
+            {notificationSettingsSchemas.map(notificationField => (
+              <InputRow
+                key={notificationField.name}
+                schema={notificationField}
+              >
+                <notificationField.editComponent
+                  schema={notificationField}
+                  value={false}
+                  onChange={Function.prototype}
+                  minimalLabels
+                />
+              </InputRow>
+            ))}
           </Paper>
         </Grid>
         <Grid item style={{ width: '100%' }}>
@@ -98,7 +107,11 @@ export default function UserSettings() {
               id="DEACTIVATE_ACCOUNT_WARNING"
               style={{ marginBottom: 12 }}
             />
-            <Button id="DEACTIVATE_ACCOUNT" style={{ width: 'fit-content' }} onClick={() => {}} />
+            <Button
+              id="DEACTIVATE_ACCOUNT"
+              style={{ width: 'fit-content' }}
+              onClick={() => setDeactivating(true)}
+            />
           </Paper>
         </Grid>
       </Grid>
