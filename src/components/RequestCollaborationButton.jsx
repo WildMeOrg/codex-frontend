@@ -42,7 +42,7 @@ export default function RequestCollaborationButton({ otherUserId }) {
   return (
     <Button
       onClick={async () => {
-        const successful = requestCollaboration(otherUserId);
+        const successful = await requestCollaboration(otherUserId);
         if (successful) refresh();
       }}
       loading={loading}
