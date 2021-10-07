@@ -11,8 +11,6 @@ export default function useDeleteSiteSettingsMedia() {
   const [loading, setLoading] = useState(false);
 
   const deleteSettingsAsset = async data => {
-    console.log('deleteMe got here and data is: ');
-    console.log(data);
     try {
       setLoading(true);
       const response = await axios({
