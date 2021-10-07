@@ -120,6 +120,8 @@ export default function SettingsFileUpload({
         {mediaUrl || previewText ? (
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <MediaViewer
+              setPreviewUrl={setPreviewUrl}
+              setPreviewText={setPreviewText}
               key={mediaUrl}
               url={mediaUrl}
               alt={`Uploaded ${settingName}`}
@@ -135,8 +137,9 @@ export default function SettingsFileUpload({
                 setModalOpen(true);
               }}
               id={changeId}
-              display="basic"
-              style={{ width: 'fit-content' }}
+              style={
+                { width: 'fit-content' } // display="basic"
+              }
             />
           </div>
         ) : (

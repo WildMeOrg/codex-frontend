@@ -32,16 +32,18 @@ import CustomAlert from '../Alert';
 import ConfirmDelete from '../ConfirmDelete';
 
 export default function MediaViewer({
-  // key,
   variant = 'image',
   url,
   label,
   includeDeleteButton = false,
   settingKey,
+  setPreviewUrl,
+  setPreviewText,
 }) {
-  const { dispatch } = useContext(AppContext);
+  // const { dispatch } = useContext(AppContext);
   const [loading, setLoading] = useState(false); // TODO deleteMe do something with loading
   const [localError, setLocalError] = useState(null); // TODO change to null
+  const [dismissed, setDismissed] = useState(false);
   const [
     shouldOpenConfirmDeleteDialog,
     setShouldOpenConfirmDeleteDialog,
@@ -49,10 +51,9 @@ export default function MediaViewer({
   const {
     deleteSettingsAsset,
     error,
-    // loading: localLoading,
     success: localSuccess,
-    setSuccess: localSetSuccess,
-  } = useDeleteSiteSettingsMedia();
+    // setSuccess: localSetSuccess,
+  } = useDeleteSiteSettingsMedia(); // loading: localLoading,
   function onCloseConfirmDelete() {
     // return(
     console.log('deleteMe onCloseConfirmDelete entered');
@@ -65,16 +66,19 @@ export default function MediaViewer({
     // return null;
     // if (error) setLocalError(null);
   }
-
-  if (loading) return <p>Loading...</p>;
+  if (dismissed) {
+    return null;
+  }
   if (localSuccess)
     return (
       <CustomAlert
         style={{ margin: '0px 24px 20px 24px' }}
-        titleId="SETTINGS_FILE_DELETE_SUCCES"
-      >
-        {success}
-      </CustomAlert>
+        titleId="SETTINGS_FILE_DELETE_SUCCESS"
+        severity="success"
+        onClose={() => {
+          setDismissed(true);
+        }}
+      />
     );
   if (localError)
     return (
@@ -82,11 +86,14 @@ export default function MediaViewer({
         style={{ margin: '0px 24px 20px 24px' }}
         severity="error"
         titleId="SERVER_ERROR"
+        onClose={() => {
+          setDismissed(true);
+        }}
       >
         {error}
       </CustomAlert>
     );
-  if (variant === 'image') {
+  if (variant === 'image' && url) {
     return (
       <div key={url + uuid()}>
         <img
@@ -100,16 +107,24 @@ export default function MediaViewer({
           src={url}
         />
         {includeDeleteButton && [
-          <ActionIcon
-            key={url + uuid()}
-            variant="delete"
-            style={{
-              position: 'absolute',
-              height: '20px',
-              padding: 0,
-            }}
-            onClick={() => setShouldOpenConfirmDeleteDialog(true)}
-          />,
+          <Button
+            key={
+              url + uuid() // nested the ActionIcon in a button because I wanted to use the loading functionality that button already had
+            }
+            loading={loading}
+            style={{ border: 'none', backgroundColor: 'transparent' }}
+          >
+            <ActionIcon
+              key={url + uuid()}
+              variant="delete"
+              style={{
+                position: 'absolute',
+                height: '20px',
+                padding: 0,
+              }}
+              onClick={() => setShouldOpenConfirmDeleteDialog(true)}
+            />
+          </Button>,
           <ConfirmDelete
             key={url + uuid()}
             open={Boolean(shouldOpenConfirmDeleteDialog)}
@@ -117,10 +132,12 @@ export default function MediaViewer({
             messageId="CONFIRM_DELETE_FILE"
             onClose={onCloseConfirmDelete}
             onDelete={() => {
-              // setLoading(true);
+              setLoading(true);
               deleteSettingsAsset(settingKey).then(() => {
                 onCloseConfirmDelete();
-                // setLoading(false);
+                setLoading(false);
+                setPreviewUrl(null);
+                setPreviewText(null);
               });
               // )
             }}

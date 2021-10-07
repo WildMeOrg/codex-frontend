@@ -225,7 +225,7 @@
   "DEMO_FIELD_DESCRIPTION": "This is how your custom field will appear to users.",
   "THIS_PAIR": "This pair",
   "OVERVIEW": "Overview",
-  "SETTINGS_FILE_DELETE_SUCCES": "File successfully deleted",
+  "SETTINGS_FILE_DELETE_SUCCESS": "File successfully deleted",
   "BULK_SUCCESS_TITLE": "Bulk import reported",
   "VIEW_BULK_IMPORT": "View bulk import",
   "REPORT_SUCCESS_TITLE": "Sighting reported",
