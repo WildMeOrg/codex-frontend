@@ -33,6 +33,7 @@ class ErrorBoundary extends React.Component {
   }
 
   render() {
+    console.log('test');
     if (!this.state.hasError) {
       return this.props.children;
     }
