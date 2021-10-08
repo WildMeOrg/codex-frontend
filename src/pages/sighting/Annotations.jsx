@@ -87,7 +87,7 @@ export default function Annotations({ assets, refreshSightingData }) {
           setEditId(clickedAnnotationId);
           setAnchorInfo(null);
         }}
-        onClickDelete={async () => {
+        onClickDelete={() => {
           setDeleteId(clickedAnnotationId);
           setAnchorInfo(null);
         }}

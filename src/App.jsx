@@ -12,6 +12,7 @@ import {
   createMuiTheme,
   ThemeProvider,
 } from '@material-ui/core/styles';
+import ErrorBoundary from './ErrorBoundary';
 
 import useSiteSettings from './models/site/useSiteSettings';
 import { selectLocale } from './modules/app/selectors';
@@ -89,7 +90,9 @@ function ContextualizedApp() {
       >
         <BrowserRouter basename="/">
           <ScrollToTop />
-          <FrontDesk adminUserInitialized={adminUserInitialized} />
+          <ErrorBoundary>
+            <FrontDesk adminUserInitialized={adminUserInitialized} />
+          </ErrorBoundary>
         </BrowserRouter>
       </IntlProvider>
     </ThemeProvider>

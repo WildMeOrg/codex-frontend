@@ -8,6 +8,7 @@ export default function PermissionBlock({
   schema,
   setRequest,
   testKey,
+  disabled,
 }) {
   return (
     <div
@@ -48,6 +49,7 @@ export default function PermissionBlock({
               );
               setRequest({ ...schema, actionPatch });
             }}
+            disabled={disabled}
           >
             {schema.actionMessage}
           </Button>
@@ -66,6 +68,7 @@ export default function PermissionBlock({
                   actionPatch,
                 });
               }}
+              disabled={disabled}
             >
               {schema.actionMessage2}
             </Button>

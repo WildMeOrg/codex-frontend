@@ -24,12 +24,14 @@ export default function UserEditDialog({
     requestEditAccess,
     loading: requestLoading,
     error: requestError,
+    setError: setRequestError,
   } = useRequestEditAccess();
 
   const {
     patchCollaboration,
     loading: patchLoading,
     error: patchError,
+    setError: setPatchError,
   } = usePatchCollaboration();
 
   const loading = requestLoading || patchLoading;
@@ -46,6 +48,8 @@ export default function UserEditDialog({
 
   function cleanupAndClose() {
     setRequest(null);
+    setPatchError(null);
+    setRequestError(null);
     onClose();
   }
 
@@ -82,6 +86,11 @@ export default function UserEditDialog({
               testKey="editState"
               schema={editStateSchema}
               setRequest={setRequest}
+              disabled={get(
+                viewStateSchema,
+                'viewDisablesEdit',
+                false,
+              )}
             />
           </>
         )}
