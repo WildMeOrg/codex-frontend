@@ -27,17 +27,10 @@ export default function PointDistanceMap({
     if (lastMarker) lastMarker.setMap(null); // remove old marker
     if (lastCircle) lastCircle.setMap(null); // remove old circle
 
-    console.log('here i go with the drawing', lat, lng);
-
     const safeMapsApi = mapsApi || mapsApiRef.current;
     const safeMapObject = mapObject || mapObjectRef.current;
 
-    console.log(mapsApi, mapsApiRef, safeMapsApi);
-    console.log(mapObject, mapObjectRef, safeMapObject);
-
     if (!safeMapsApi || !safeMapObject) return;
-
-    console.log('for real now');
 
     const markerPosition = new safeMapsApi.LatLng(lat, lng);
 
@@ -61,6 +54,8 @@ export default function PointDistanceMap({
     lastMarker = marker;
     lastCircle = circle;
   }
+
+  const mapReadyToRender = mapsApi && mapObject;
 
   useEffect(
     () => {
@@ -88,7 +83,7 @@ export default function PointDistanceMap({
         draw(parseFloat(latitude), parseFloat(longitude));
       }
     },
-    [openCount],
+    [mapReadyToRender],
   );
 
   return (

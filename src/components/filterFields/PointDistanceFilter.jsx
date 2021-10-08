@@ -36,7 +36,6 @@ export default function PointDistanceFilter({
   const [longitude, setLongitude] = useState('');
   const [gpsForMapUpdate, setGpsForMapUpdate] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
-  const [openCount, setOpenCount] = useState(0);
 
   const onClose = () => setModalOpen(false);
 
@@ -57,10 +56,7 @@ export default function PointDistanceFilter({
       </Text>
       <Button
         size="small"
-        onClick={() => {
-          setModalOpen(true);
-          setOpenCount(openCount + 1);
-        }}
+        onClick={() => setModalOpen(true)}
         style={{ marginLeft: 8, minWidth: 48, height: 36 }}
         id="SET"
         {...rest}
@@ -71,17 +67,18 @@ export default function PointDistanceFilter({
         titleId="SELECT_LOCATION"
       >
         <DialogContent style={{ marginBottom: 24 }}>
-          <PointDistanceMap
-            latitude={latitude}
-            longitude={longitude}
-            openCount={openCount}
-            gps={gpsForMapUpdate}
-            distance={distance}
-            onChange={({ lat, lng }) => {
-              setLatitude(lat.toString());
-              setLongitude(lng.toString());
-            }}
-          />
+          {modalOpen && (
+            <PointDistanceMap
+              latitude={latitude}
+              longitude={longitude}
+              gps={gpsForMapUpdate}
+              distance={distance}
+              onChange={({ lat, lng }) => {
+                setLatitude(lat.toString());
+                setLongitude(lng.toString());
+              }}
+            />
+          )}
           <Text
             id="SEARCH_CENTER_POINT"
             variant="h6"
