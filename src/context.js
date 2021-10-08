@@ -46,3 +46,5 @@ export const initialState = {
   siteSettingsSchemaNeedsFetch: true,
   sightingsNeedsFetch: true,
 };
+
+console.log('look at me');
