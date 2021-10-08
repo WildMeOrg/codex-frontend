@@ -21,6 +21,7 @@ import messagesEs from '../locale/es.json';
 import { AppContext, initialState } from './context';
 import FrontDesk from './FrontDesk';
 import SadScreen from './components/SadScreen';
+import ErrorBoundary from './ErrorBoundary';
 
 // polyfill to enable formatting of a number using the unit prop
 if (typeof Intl.NumberFormat.__addLocaleData === 'function') {
@@ -89,7 +90,9 @@ function ContextualizedApp() {
       >
         <BrowserRouter basename="/">
           <ScrollToTop />
-          <FrontDesk adminUserInitialized={adminUserInitialized} />
+          <ErrorBoundary>
+            <FrontDesk adminUserInitialized={adminUserInitialized} />
+          </ErrorBoundary>
         </BrowserRouter>
       </IntlProvider>
     </ThemeProvider>

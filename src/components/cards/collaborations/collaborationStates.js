@@ -14,12 +14,14 @@ function buildCollaborationPatch(testKey, value) {
 
 export default {
   pending: {
+    viewDisablesEdit: true,
     test: (testKey, collaboration) =>
       get(collaboration, ['otherUserData', testKey]) === 'pending',
     currentStateMessage:
       'Access requested. Waiting for your request to be approved.',
   },
   waiting: {
+    viewDisablesEdit: true,
     test: (testKey, collaboration) =>
       get(collaboration, ['thisUserData', testKey]) === 'pending',
     currentStateMessage: 'Data access requested.',
@@ -35,6 +37,7 @@ export default {
       buildCollaborationPatch(testKey, 'declined'),
   },
   blocked: {
+    viewDisablesEdit: true,
     test: (testKey, collaboration) =>
       ['declined', 'revoked'].includes(
         get(collaboration, ['otherUserData', testKey]),
@@ -43,6 +46,7 @@ export default {
       'Access revoked. Only your collaboration partner can restore access.',
   },
   blocking: {
+    viewDisablesEdit: true,
     test: (testKey, collaboration) =>
       ['declined', 'revoked'].includes(
         get(collaboration, ['thisUserData', testKey]),
@@ -55,6 +59,7 @@ export default {
       buildCollaborationPatch(testKey, 'approved'),
   },
   granted: {
+    viewDisablesEdit: false,
     test: (testKey, collaboration) =>
       get(collaboration, ['otherUserData', testKey]) === 'approved',
     currentStateMessage: 'Access granted.',
@@ -65,6 +70,7 @@ export default {
       buildCollaborationPatch(testKey, 'revoked'),
   },
   untouched: {
+    viewDisablesEdit: true,
     test: (testKey, collaboration) =>
       get(collaboration, ['otherUserData', testKey]) ===
       'not_initiated',
