@@ -138,9 +138,7 @@ export default function SettingsFileUpload({
                 setModalOpen(true);
               }}
               id={changeId}
-              style={
-                { width: 'fit-content' } // display="basic"
-              }
+              style={{ width: 'fit-content' }}
             />
           </div>
         ) : (
@@ -165,9 +163,7 @@ export default function SettingsFileUpload({
             }
             closeModalOnClickOutside
             showProgressDetails
-            showLinkToFileUploadResult={
-              false // closeAfterFinish
-            }
+            showLinkToFileUploadResult={false}
             open={modalOpen}
             onRequestClose={() => setModalOpen(false)}
           />
