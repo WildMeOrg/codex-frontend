@@ -7,9 +7,9 @@ import Skeleton from '@material-ui/lab/Skeleton';
 
 import DataDisplay from '../../components/dataDisplays/DataDisplay';
 import ActionIcon from '../../components/ActionIcon';
+import UserDeleteDialog from '../../components/dialogs/UserDeleteDialog';
 import Text from '../../components/Text';
 import UserEditDialog from './UserEditDialog';
-import UserDeleteDialog from './UserDeleteDialog';
 import roleSchema from './constants/roleSchema';
 
 function makePretty(word) {

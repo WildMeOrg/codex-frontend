@@ -39,6 +39,7 @@ import FlagsOnly from './pages/match/iceland/FlagsOnly';
 import Iceland from './pages/match/iceland/Iceland';
 import Welcome from './pages/auth/Welcome';
 import Home from './pages/home/Home';
+import Settings from './pages/settings/Settings';
 import Footer from './components/Footer';
 import { defaultCrossfadeDuration } from './constants/defaults';
 
@@ -137,6 +138,9 @@ export default function AuthenticatedSwitch() {
                       </Route>
                       <Route path="/users">
                         <Users />
+                      </Route>
+                      <Route path="/settings">
+                        <Settings />
                       </Route>
                       <Route path="/create/user">
                         <CreateUser />

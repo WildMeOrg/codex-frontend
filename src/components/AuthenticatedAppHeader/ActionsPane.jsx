@@ -127,6 +127,7 @@ export default function NotificationsPane({
               backgroundColor: 'unset',
               width: '100%',
               border: 'unset',
+              padding: 0,
             }}
           >
             <MenuItem style={{ minHeight: 'auto' }}>

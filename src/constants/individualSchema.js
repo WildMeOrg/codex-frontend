@@ -13,6 +13,22 @@ export const defaultIndividualCategories = [
 
 export const defaultIndividualFields = [
   {
+    name: 'names.defaultName',
+    labelId: 'NAME',
+    category: categoryIds.individualprofile,
+    fieldType: fieldTypes.string,
+    requiredForIndividualCreation: true,
+    defaultValue: '',
+  },
+  {
+    name: 'names.nickname',
+    labelId: 'NICKNAMES',
+    category: categoryIds.individualprofile,
+    fieldType: fieldTypes.string,
+    requiredForIndividualCreation: true,
+    defaultValue: '',
+  },
+  {
     name: 'sex',
     labelId: 'SEX',
     category: categoryIds.individualprofile,

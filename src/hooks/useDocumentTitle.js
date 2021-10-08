@@ -2,7 +2,11 @@ import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { selectSiteName } from '../modules/site/selectors';
 
-export default function(message, appendSitename = true) {
+export default function(
+  message,
+  appendSitename = true,
+  refreshKey = null,
+) {
   const siteName = useSelector(selectSiteName);
   useEffect(
     () => {
@@ -12,6 +16,6 @@ export default function(message, appendSitename = true) {
         document.title = message;
       }
     },
-    [message],
+    [message, refreshKey],
   );
 }

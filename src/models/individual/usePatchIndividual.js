@@ -18,7 +18,6 @@ export default function usePatchIndividual() {
         method: 'patch',
         data: operations,
       });
-      console.log(patchResponse);
 
       const responseStatus = get(patchResponse, 'status');
       const successful = responseStatus === 200;

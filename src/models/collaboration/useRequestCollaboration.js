@@ -21,7 +21,6 @@ export default function useRequestCollaboration() {
         },
       });
       const successful = get(response, 'status') === 200;
-      console.log(response);
       if (successful) {
         setSuccess(true);
         setError(null);
