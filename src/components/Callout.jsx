@@ -19,7 +19,7 @@ export default function Callout({
         border: '5px double #7716d8',
       }}
       alignItems="center"
-      justify="center"
+      justifyContent="center"
       direction="column"
       spacing={1}
     >

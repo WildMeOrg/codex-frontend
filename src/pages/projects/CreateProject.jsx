@@ -66,7 +66,7 @@ export default function CreateProject({
         <Grid
           container
           spacing={2}
-          justify="center"
+          justifyContent="center"
           component="form"
           style={{ maxWidth: 320, marginBottom: 12 }}
         >

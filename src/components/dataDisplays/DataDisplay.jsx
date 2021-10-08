@@ -182,7 +182,7 @@ export default function DataDisplay({
       {!noTitleBar && (
         <Grid
           container
-          justify="space-between"
+          justifyContent="space-between"
           alignItems="center"
           style={{ margin: '16px 0' }}
         >

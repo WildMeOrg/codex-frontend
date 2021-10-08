@@ -39,7 +39,7 @@ export default function Testimonial() {
     >
       <Grid
         container
-        justify="space-around"
+        justifyContent="space-around"
         direction={isSm ? 'column' : 'row'}
         style={{
           width: '100vw',

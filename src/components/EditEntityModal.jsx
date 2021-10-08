@@ -53,7 +53,7 @@ export default function({
         <Grid
           container
           spacing={2}
-          justify="center"
+          justifyContent="center"
           style={{ maxWidth: 320 }}
         >
           {fieldValues.map(fieldData => {

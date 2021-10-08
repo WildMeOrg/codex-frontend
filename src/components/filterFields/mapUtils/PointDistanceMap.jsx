@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { get } from 'lodash-es';
 import GoogleMapReact from 'google-map-react';
 import { googleMapsApiKey } from '../../../constants/apiKeys';
@@ -9,20 +9,32 @@ let lastCircle = null;
 /* component expects distance in kilometers */
 export default function PointDistanceMap({
   distance = 50,
+  latitude,
+  longitude,
   gps,
+  openCount,
   onChange,
   ...rest
 }) {
   const [mapObject, setMapObject] = useState(null);
   const [mapsApi, setMapsApi] = useState(null);
+  const mapsApiRef = useRef(null);
+  mapsApiRef.current = mapsApi;
+  const mapObjectRef = useRef(null);
+  mapObjectRef.current = mapsApi;
 
   function draw(lat, lng) {
     if (lastMarker) lastMarker.setMap(null); // remove old marker
     if (lastCircle) lastCircle.setMap(null); // remove old circle
 
-    const markerPosition = new mapsApi.LatLng(lat, lng);
+    const safeMapsApi = mapsApi || mapsApiRef.current;
+    const safeMapObject = mapObject || mapObjectRef.current;
 
-    const circle = new mapsApi.Circle({
+    if (!safeMapsApi || !safeMapObject) return;
+
+    const markerPosition = new safeMapsApi.LatLng(lat, lng);
+
+    const circle = new safeMapsApi.Circle({
       center: markerPosition,
       radius: 1000 * distance,
       strokeColor: '#000000',
@@ -32,16 +44,18 @@ export default function PointDistanceMap({
       fillOpacity: 0.35,
     });
 
-    circle.setMap(mapObject);
+    circle.setMap(safeMapObject);
 
-    const marker = new mapsApi.Marker({
+    const marker = new safeMapsApi.Marker({
       position: markerPosition,
     });
-    marker.setMap(mapObject);
+    marker.setMap(safeMapObject);
 
     lastMarker = marker;
     lastCircle = circle;
   }
+
+  const mapReadyToRender = mapsApi && mapObject;
 
   useEffect(
     () => {
@@ -61,6 +75,15 @@ export default function PointDistanceMap({
       if (lat && lng) draw(parseFloat(lat), parseFloat(lng));
     },
     [gps],
+  );
+
+  useEffect(
+    () => {
+      if (latitude && longitude) {
+        draw(parseFloat(latitude), parseFloat(longitude));
+      }
+    },
+    [mapReadyToRender],
   );
 
   return (

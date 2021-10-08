@@ -26,12 +26,11 @@ export default function CustomCard() {
   return (
     <Grid
       container
-      justify="center"
+      justifyContent="space-evenly"
       style={{
         width: '100vw',
         margin: '64px auto',
         display: 'flex',
-        justifyContent: 'space-evenly',
       }}
     >
       <Grid item style={{ marginBottom: 40 }}>
