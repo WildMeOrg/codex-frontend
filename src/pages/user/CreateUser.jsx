@@ -24,7 +24,7 @@ export default function CreateUser() {
       <Grid
         container
         spacing={2}
-        justify="center"
+        justifyContent="center"
         component="form"
         direction="column"
       >

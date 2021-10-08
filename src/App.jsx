@@ -9,7 +9,7 @@ import esPolyfill from '@formatjs/intl-numberformat/dist/locale-data/es';
 
 import CssBaseline from '@material-ui/core/CssBaseline';
 import {
-  createMuiTheme,
+  createTheme,
   ThemeProvider,
 } from '@material-ui/core/styles';
 
@@ -78,7 +78,7 @@ function ContextualizedApp() {
 
   if (error) return <SadScreen variant="serverError" />;
   if (!primaryColor) return null;
-  const theme = createMuiTheme(materialTheme(primaryColor));
+  const theme = createTheme(materialTheme(primaryColor));
 
   return (
     <ThemeProvider theme={theme}>

@@ -56,7 +56,7 @@ export default function PhotoGallery({ sighting }) {
         getHref={() => null}
         filterKey="name"
         titleKey="name"
-        justify="flex-start"
+        justifyContent="flex-start"
         renderDetails={photo => {
           const annotationCount = photo.annotations.length;
           return (

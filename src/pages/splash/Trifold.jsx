@@ -107,7 +107,7 @@ export default function Trifold() {
       </Text>
       <Grid
         container
-        justify="space-around"
+        justifyContent="space-around"
         style={{ maxWidth: 900, margin: '0 auto' }}
       >
         <Card

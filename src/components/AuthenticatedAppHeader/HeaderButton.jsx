@@ -36,7 +36,7 @@ export default function HeaderButton({
     return (
       <Badge
         color="secondary"
-        overlap="circle"
+        overlap="circular"
         badgeContent={badgeContent}
       >
         <Core {...rest} />

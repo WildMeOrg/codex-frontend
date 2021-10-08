@@ -20,7 +20,7 @@ export default function IndividualsGallery({ sighting }) {
         getHref={individual => `/individuals/${individual.id}`}
         filterKey="id"
         titleKey="id"
-        justify="flex-start"
+        justifyContent="flex-start"
         renderDetails={individual => {
           const imageCount = get(
             individual,
