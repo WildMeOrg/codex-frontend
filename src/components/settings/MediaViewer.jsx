@@ -4,6 +4,7 @@ import ReactPlayer from 'react-player';
 import { v4 as uuid } from 'uuid';
 import Paper from '@material-ui/core/Paper';
 import VideoIcon from '@material-ui/icons/Movie';
+import { useTheme } from '@material-ui/core/styles';
 
 import ActionIcon from '../ActionIcon';
 import Button from '../Button';
@@ -21,6 +22,8 @@ export default function MediaViewer({
   setPreviewUrl,
   setPreviewText,
 }) {
+  const theme = useTheme();
+
   const [loading, setLoading] = useState(false);
   const [localError, setLocalError] = useState(null);
   const [dismissed, setDismissed] = useState(false);
@@ -68,7 +71,10 @@ export default function MediaViewer({
     );
   if (variant === 'image' && url) {
     return (
-      <div key={url + uuid()}>
+      <div
+        key={url + uuid()}
+        style={{ position: 'relative', width: 'min-content' }}
+      >
         <img
           alt={label}
           style={{
@@ -80,24 +86,19 @@ export default function MediaViewer({
           src={url}
         />
         {includeDeleteButton && [
-          <Button
-            key={
-              url + uuid() // nested ActionIcon in Button b/c Button has loading prop
-            }
-            loading={loading}
-            style={{ border: 'none', backgroundColor: 'transparent' }}
-          >
-            <ActionIcon
-              key={url + uuid()}
-              variant="delete"
-              style={{
-                position: 'absolute',
-                height: '20px',
-                padding: 0,
-              }}
-              onClick={() => setShouldOpenConfirmDeleteDialog(true)}
-            />
-          </Button>,
+          <ActionIcon
+            key={url + uuid()}
+            disabled={loading}
+            variant="delete"
+            onClick={() => setShouldOpenConfirmDeleteDialog(true)}
+            style={{
+              position: 'absolute',
+              right: -28,
+              top: -28,
+              background: theme.palette.background.default,
+              border: '1px solid rgba(0, 0, 0, 0.23)',
+            }}
+          />,
           <ConfirmDelete
             key={url + uuid()}
             open={Boolean(shouldOpenConfirmDeleteDialog)}
