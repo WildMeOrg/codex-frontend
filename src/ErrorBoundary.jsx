@@ -64,7 +64,7 @@ class ErrorBoundary extends React.Component {
               padding: 20,
             }}
           >
-            <Text variant="h4">An error occurred</Text>
+            <Text variant="h4" id="AN_ERROR_OCCURRED" />
             <div
               style={{
                 display: 'flex',
@@ -81,9 +81,8 @@ class ErrorBoundary extends React.Component {
                 onClick={() => {
                   window.location.reload();
                 }}
-              >
-                Reload the page
-              </Button>
+                id="RELOAD_THE_PAGE"
+              />
               <ButtonLink
                 style={{
                   width: '100%',
@@ -91,10 +90,9 @@ class ErrorBoundary extends React.Component {
                 }}
                 display="secondary"
                 onClick={() => this.setState(initialState)}
-                to="/"
-              >
-                Return home
-              </ButtonLink>
+                href="/"
+                id="RETURN_HOME"
+              />
               <ButtonLink
                 style={{
                   width: '100%',
@@ -104,16 +102,15 @@ class ErrorBoundary extends React.Component {
                 display="tertiary"
                 external
                 newTab
-              >
-                Report to community
-              </ButtonLink>
+                id="REPORT_TO_COMMUNITY"
+              />
             </div>
             <div
               style={{ marginTop: 20, width: '100%', maxWidth: 400 }}
             >
               <Accordion>
                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                  <Text variant="h6">View error details</Text>
+                  <Text variant="h6" id="VIEW_ERROR_DETAILS" />
                 </AccordionSummary>
                 <AccordionDetails
                   style={{ display: 'flex', flexDirection: 'column' }}
