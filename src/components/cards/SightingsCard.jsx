@@ -154,11 +154,11 @@ export default function SightingsCard({
         </div>
       }
     >
-      <DataDisplay
+      {/* <DataDisplay
         noTitleBar
         columns={filteredColumns}
         data={encounters}
-      />
+      /> */}
     </Card>
   );
 }
