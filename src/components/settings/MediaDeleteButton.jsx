@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
-import { FormattedMessage } from 'react-intl';
 
-import { v4 as uuid } from 'uuid';
 import { useTheme } from '@material-ui/core/styles';
 
 import ActionIcon from '../ActionIcon';
@@ -17,6 +15,7 @@ export default function MediaDeleteButton({
   setPreviewUrl = Function.prototype,
   setPreviewText = Function.prototype,
   onSetPostData = Function.prototype,
+  shouldTryDelete = false,
   children,
   ...rest
 }) {
@@ -28,15 +27,12 @@ export default function MediaDeleteButton({
   const {
     deleteSettingsAsset,
     error,
+    setError,
     success: localSuccess,
   } = useDeleteSiteSettingsMedia();
-  const [localError, setLocalError] = useState(null);
   const [dismissed, setDismissed] = useState(false);
-  const [loading, setLoading] = useState(false);
   function onCloseConfirmDelete() {
-    if (error) {
-      setLocalError(true);
-    }
+    setError(null);
     setShouldOpenConfirmDeleteDialog(false);
   }
   if (dismissed) {
@@ -53,30 +49,17 @@ export default function MediaDeleteButton({
         }}
       />
     );
-  if (localError)
-    return (
-      <CustomAlert
-        style={{ margin: '0px 24px 20px 24px' }}
-        severity="error"
-        titleId="SERVER_ERROR"
-        onClose={() => {
-          setDismissed(true);
-        }}
-      >
-        {error}
-      </CustomAlert>
-    );
 
   return (
     <div
-      key={url + uuid()}
+      key="first"
       style={{ position: 'relative', width: 'min-content' }}
       {...rest}
     >
       {children}
       {includeDeleteButton && [
         <ActionIcon
-          key={url + uuid()}
+          key="second"
           variant="delete"
           onClick={() => setShouldOpenConfirmDeleteDialog(true)}
           style={{
@@ -88,20 +71,27 @@ export default function MediaDeleteButton({
           }}
         />,
         <ConfirmDelete
-          key={url + uuid()}
-          open={Boolean(shouldOpenConfirmDeleteDialog)}
-          title={<FormattedMessage id="REMOVE_FILE" />}
+          key="third"
+          open={shouldOpenConfirmDeleteDialog}
+          titleId="REMOVE_FILE"
           messageId="CONFIRM_DELETE_FILE"
           onClose={onCloseConfirmDelete}
+          error={error}
           onDelete={() => {
-            setLoading(true);
-            deleteSettingsAsset(settingKey).then(() => {
-              onCloseConfirmDelete();
+            if (shouldTryDelete) {
+              deleteSettingsAsset(settingKey).then(isOk => {
+                if (isOk) {
+                  setPreviewUrl(null);
+                  setPreviewText(null);
+                  onSetPostData(null);
+                  onCloseConfirmDelete();
+                }
+              });
+            } else {
               setPreviewUrl(null);
               setPreviewText(null);
-              setLoading(false);
               onSetPostData(null);
-            });
+            }
           }}
         />,
       ]}

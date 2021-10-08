@@ -77,6 +77,7 @@ export default function SettingsFileUpload({
   ]);
 
   const mediaUrl = previewUrl || settingValue;
+  const shouldTryDelete = Boolean(settingValue);
 
   const allowedFileTypeString = allowedFileTypes
     ? allowedFileTypes.join(', ')
@@ -130,6 +131,7 @@ export default function SettingsFileUpload({
               includeDeleteButton
               settingKey={settingName}
               onSetPostData={onSetPostData}
+              shouldTryDelete={shouldTryDelete}
             />
             <Button
               onClick={() => {

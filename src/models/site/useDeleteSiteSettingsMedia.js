@@ -11,6 +11,7 @@ export default function useDeleteSiteSettingsMedia() {
   const [loading, setLoading] = useState(false);
 
   const deleteSettingsAsset = async data => {
+    let okStatus = false;
     try {
       setLoading(true);
       const response = await axios({
@@ -19,22 +20,25 @@ export default function useDeleteSiteSettingsMedia() {
         method: 'delete',
       });
       const statusResponse = get(response, 'status');
-      const successful =
-        statusResponse === 204 || statusResponse === 404; // 404 because if it couldn't be found, it hasn't been persisted yet, but the asset should be removed from the DOM anyway
+      const successful = statusResponse === 204;
       setLoading(false);
       if (successful) {
         dispatch(setSiteSettingsNeedsFetch(true));
         setSuccess(true);
         setError(null);
+        okStatus = true;
       } else {
         setError(formatError(response));
         setSuccess(false);
+        okStatus = false;
       }
     } catch (postError) {
       setLoading(false);
       setError(formatError(postError));
       setSuccess(false);
+      okStatus = false;
     }
+    return okStatus;
   };
 
   return {

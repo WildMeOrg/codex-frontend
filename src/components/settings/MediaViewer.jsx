@@ -16,11 +16,12 @@ export default function MediaViewer({
   setPreviewUrl = Function.prototype,
   setPreviewText = Function.prototype,
   onSetPostData = Function.prototype,
+  shouldTryDelete = false,
 }) {
   if (variant === 'image' && url) {
     return (
       <div
-        key={url + uuid()}
+        key="zeroith"
         style={{ position: 'relative', width: 'min-content' }}
       >
         <MediaDeleteButton
@@ -31,6 +32,7 @@ export default function MediaViewer({
           setPreviewUrl={setPreviewUrl}
           setPreviewText={setPreviewText}
           onSetPostData={onSetPostData}
+          shouldTryDelete={shouldTryDelete}
         >
           <img
             alt={label}
@@ -47,7 +49,7 @@ export default function MediaViewer({
     );
   } else if (variant === 'video' && url) {
     return (
-      <div key={url + uuid()} style={{ position: 'relative' }}>
+      <div key="fourth" style={{ position: 'relative' }}>
         <MediaDeleteButton
           includeDeleteButton={includeDeleteButton}
           url={url}
@@ -56,6 +58,7 @@ export default function MediaViewer({
           setPreviewUrl={setPreviewUrl}
           setPreviewText={setPreviewText}
           onSetPostData={onSetPostData}
+          shouldTryDelete={shouldTryDelete}
         >
           <ReactPlayer
             url={url}
@@ -71,15 +74,15 @@ export default function MediaViewer({
     );
   } else if (variant === 'video' && !url) {
     return (
-      <div key={uuid()}>
+      <div key="five">
         <MediaDeleteButton
           includeDeleteButton={includeDeleteButton}
-          url={url}
           variant={variant}
           settingKey={settingKey}
           setPreviewUrl={setPreviewUrl}
           setPreviewText={setPreviewText}
           onSetPostData={onSetPostData}
+          shouldTryDelete={shouldTryDelete}
         >
           <Paper
             style={{
