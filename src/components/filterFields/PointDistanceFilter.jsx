@@ -136,8 +136,8 @@ export default function PointDistanceFilter({
                   geo_distance: {
                     distance: `${distance}km`,
                     [queryTerm]: [
+                      parseFloat(longitude), // yes, elasticsearch puts long before lat =()
                       parseFloat(latitude),
-                      parseFloat(longitude),
                     ],
                   },
                 },

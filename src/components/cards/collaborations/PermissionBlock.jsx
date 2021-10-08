@@ -8,6 +8,7 @@ export default function PermissionBlock({
   schema,
   setRequest,
   testKey,
+  disabled,
 }) {
   return (
     <div
@@ -41,6 +42,7 @@ export default function PermissionBlock({
         >
           <Button
             style={{ whiteSpace: 'nowrap', marginBottom: 8 }}
+            disabled={disabled}
             onClick={() => {
               const actionPatch = schema.getActionPatch(
                 testKey,
@@ -54,6 +56,7 @@ export default function PermissionBlock({
           {schema.actionMessage2 && (
             <Button
               style={{ whiteSpace: 'nowrap' }}
+              disabled={disabled}
               onClick={() => {
                 const actionPatch = schema.getActionPatch2(
                   testKey,

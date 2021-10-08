@@ -18,6 +18,7 @@ export default {
       get(collaboration, ['otherUserData', testKey]) === 'pending',
     currentStateMessage:
       'Access requested. Waiting for your request to be approved.',
+    viewDisablesEdit: true,
   },
   waiting: {
     test: (testKey, collaboration) =>
@@ -33,6 +34,7 @@ export default {
       'Are you sure you want to deny access?',
     getActionPatch2: testKey =>
       buildCollaborationPatch(testKey, 'declined'),
+    viewDisablesEdit: true,
   },
   blocked: {
     test: (testKey, collaboration) =>
@@ -41,6 +43,7 @@ export default {
       ),
     currentStateMessage:
       'Access revoked. Only your collaboration partner can restore access.',
+    viewDisablesEdit: true,
   },
   blocking: {
     test: (testKey, collaboration) =>
@@ -53,6 +56,7 @@ export default {
       'Are you sure you want to restore access? Your data will also become available to your collaboration partner.',
     getActionPatch: testKey =>
       buildCollaborationPatch(testKey, 'approved'),
+    viewDisablesEdit: true,
   },
   granted: {
     test: (testKey, collaboration) =>
@@ -63,6 +67,7 @@ export default {
       "Are you sure you want to revoke access? Access to your collaboration partner's data will be revoked as well.",
     getActionPatch: testKey =>
       buildCollaborationPatch(testKey, 'revoked'),
+    viewDisablesEdit: false,
   },
   untouched: {
     test: (testKey, collaboration) =>
@@ -74,6 +79,7 @@ export default {
       'Are you sure you want to request access? Your data will also become available to your collaboration partner.',
     getActionPatch: Function.prototype,
     sendEditRequest: true,
+    viewDisablesEdit: true,
   },
   confused: {
     test: () => true,

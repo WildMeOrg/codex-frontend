@@ -16,6 +16,7 @@ export default function ButtonLink({
       href={href}
       external={external}
       newTab={newTab}
+      role="button"
       {...linkProps}
     >
       <Button {...rest}>{children}</Button>

@@ -72,6 +72,11 @@ function Core({
     };
   }
 
+  if (display === 'grouped') {
+    variant = undefined;
+    roleStyles = {};
+  }
+
   if (disabled) {
     delete roleStyles.backgroundColor;
     delete roleStyles.color;

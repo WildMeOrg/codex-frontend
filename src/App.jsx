@@ -20,6 +20,7 @@ import messagesEn from '../locale/en.json';
 import messagesEs from '../locale/es.json';
 import { AppContext, initialState } from './context';
 import FrontDesk from './FrontDesk';
+import ErrorBoundary from './ErrorBoundary';
 import SadScreen from './components/SadScreen';
 
 // polyfill to enable formatting of a number using the unit prop
@@ -89,7 +90,9 @@ function ContextualizedApp() {
       >
         <BrowserRouter basename="/">
           <ScrollToTop />
-          <FrontDesk adminUserInitialized={adminUserInitialized} />
+          <ErrorBoundary>
+            <FrontDesk adminUserInitialized={adminUserInitialized} />
+          </ErrorBoundary>
         </BrowserRouter>
       </IntlProvider>
     </ThemeProvider>
