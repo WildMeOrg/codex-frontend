@@ -129,6 +129,7 @@ export default function SettingsFileUpload({
               label={previewText}
               includeDeleteButton
               settingKey={settingName}
+              onSetPostData={onSetPostData}
             />
             <Button
               onClick={() => {
