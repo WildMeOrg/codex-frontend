@@ -31,7 +31,7 @@ export default function CreateIndividual() {
       <Grid
         container
         spacing={2}
-        justify="center"
+        justifyContent="center"
         component="form"
         direction="column"
       >

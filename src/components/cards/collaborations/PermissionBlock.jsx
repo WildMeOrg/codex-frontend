@@ -40,6 +40,7 @@ export default function PermissionBlock({
           }}
         >
           <Button
+            disabled={disabled}
             style={{ whiteSpace: 'nowrap', marginBottom: 8 }}
             onClick={() => {
               const actionPatch = schema.getActionPatch(
@@ -53,6 +54,7 @@ export default function PermissionBlock({
           </Button>
           {schema.actionMessage2 && (
             <Button
+              disabled={disabled}
               style={{ whiteSpace: 'nowrap' }}
               onClick={() => {
                 const actionPatch = schema.getActionPatch2(

@@ -55,7 +55,7 @@ export default function Users() {
         entities={filteredUsers}
         titleKey="full_name"
         filterKey="full_name"
-        justify="flex-start"
+        justifyContent="flex-start"
         getHref={entity => `/users/${entity.guid}`}
         canDelete={isAdministrator}
         onDelete={entity => {

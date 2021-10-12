@@ -9,7 +9,7 @@ import esPolyfill from '@formatjs/intl-numberformat/dist/locale-data/es';
 
 import CssBaseline from '@material-ui/core/CssBaseline';
 import {
-  createMuiTheme,
+  createTheme,
   ThemeProvider,
 } from '@material-ui/core/styles';
 
@@ -21,6 +21,7 @@ import messagesEs from '../locale/es.json';
 import { AppContext, initialState } from './context';
 import FrontDesk from './FrontDesk';
 import SadScreen from './components/SadScreen';
+import ErrorBoundary from './ErrorBoundary';
 
 // polyfill to enable formatting of a number using the unit prop
 if (typeof Intl.NumberFormat.__addLocaleData === 'function') {
@@ -77,7 +78,7 @@ function ContextualizedApp() {
 
   if (error) return <SadScreen variant="serverError" />;
   if (!primaryColor) return null;
-  const theme = createMuiTheme(materialTheme(primaryColor));
+  const theme = createTheme(materialTheme(primaryColor));
 
   return (
     <ThemeProvider theme={theme}>
@@ -89,7 +90,9 @@ function ContextualizedApp() {
       >
         <BrowserRouter basename="/">
           <ScrollToTop />
-          <FrontDesk adminUserInitialized={adminUserInitialized} />
+          <ErrorBoundary>
+            <FrontDesk adminUserInitialized={adminUserInitialized} />
+          </ErrorBoundary>
         </BrowserRouter>
       </IntlProvider>
     </ThemeProvider>

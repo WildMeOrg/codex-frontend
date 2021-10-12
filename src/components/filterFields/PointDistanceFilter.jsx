@@ -67,14 +67,18 @@ export default function PointDistanceFilter({
         titleId="SELECT_LOCATION"
       >
         <DialogContent style={{ marginBottom: 24 }}>
-          <PointDistanceMap
-            gps={gpsForMapUpdate}
-            distance={distance}
-            onChange={({ lat, lng }) => {
-              setLatitude(lat.toString());
-              setLongitude(lng.toString());
-            }}
-          />
+          {modalOpen && (
+            <PointDistanceMap
+              latitude={latitude}
+              longitude={longitude}
+              gps={gpsForMapUpdate}
+              distance={distance}
+              onChange={({ lat, lng }) => {
+                setLatitude(lat.toString());
+                setLongitude(lng.toString());
+              }}
+            />
+          )}
           <Text
             id="SEARCH_CENTER_POINT"
             variant="h6"
