@@ -36,7 +36,7 @@ function TextInput(props) {
       <TextField
         id={schema.name}
         multiline={isLongString}
-        rowsMax={isLongString ? 5 : undefined}
+        maxRows={isLongString ? 5 : undefined}
         label={label}
         type={type}
         onChange={e => {
