@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
 import { get } from 'lodash-es';
 
+import { getHighestRoleLabelId } from '../utils/roleUtils';
 import useUserMetadataSchemas from '../models/users/useUserMetadataSchemas';
 import { formatDate } from '../utils/formatters';
 import EntityHeaderNew from './EntityHeaderNew';
@@ -54,6 +55,8 @@ export default function UserProfile({
   if (name === '') name = intl.formatMessage({ id: 'UNNAMED_USER' });
   const dateCreated = formatDate(get(userData, 'created'), true);
 
+  const highestRoleLabelId = getHighestRoleLabelId(userData);
+
   if (!userData)
     return (
       <SadScreen
@@ -82,7 +85,7 @@ export default function UserProfile({
             imageGuid={imageGuid}
             imageSrc={imageSrc}
             name={name}
-            admin={userData.admin}
+            chipLabel={<FormattedMessage id={highestRoleLabelId} />}
             refreshUserData={refreshUserData}
             userDataLoading={userDataLoading}
           />
