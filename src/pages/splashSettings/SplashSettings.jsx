@@ -224,14 +224,14 @@ export default function SiteSettings() {
               titleId="SUCCESS"
               descriptionId="CHANGES_SAVED"
             >
-              <Button
+              <ButtonLink
                 style={{ marginTop: 12 }}
-                display="primary"
+                display="panel"
                 loading={loading}
                 id="PREVIEW_CHANGES"
-                onClick={() => {
-                  window.open('/admin/splash/preview', '_blank');
-                }}
+                newTab
+                external
+                href="/admin/splash/preview"
               />
             </CustomAlert>
           )}
