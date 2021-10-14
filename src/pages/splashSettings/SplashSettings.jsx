@@ -223,15 +223,28 @@ export default function SiteSettings() {
               severity="success"
               titleId="SUCCESS"
               descriptionId="CHANGES_SAVED"
-            />
+            >
+              <Button
+                style={{ marginTop: 12 }}
+                display="primary"
+                loading={loading}
+                id="PREVIEW_CHANGES"
+                onClick={() => {
+                  window.open('/admin/splash/preview', '_blank');
+                }}
+              />
+            </CustomAlert>
           )}
+
           <Button
             onClick={() => {
               /* Prepare custom fields objects to send to backend */
               Object.values(customFields).forEach(customFieldKey => {
                 const fields = currentValues[customFieldKey];
                 if (!fields) {
-                  currentValues[customFieldKey] = { definitions: [] };
+                  currentValues[customFieldKey] = {
+                    definitions: [],
+                  };
                 } else {
                   const newFields = get(
                     fields,
