@@ -5,7 +5,6 @@ import BigAvatar from './profilePhotos/BigAvatar';
 import Text from './Text';
 
 export default function EntityHeader({
-  admin = false,
   imageSrc,
   imageGuid,
   name,
@@ -36,7 +35,6 @@ export default function EntityHeader({
               editable={editable}
               name={name}
               square={square}
-              admin={admin}
             />
           )}
         </Grid>

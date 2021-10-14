@@ -32,7 +32,6 @@ function Details({ entity, titleKey, renderDetails }) {
 }
 
 export default function EntityCard({
-  admin,
   renderDetails,
   entity,
   href,
@@ -86,7 +85,6 @@ export default function EntityCard({
             square={square}
             size={avatarSize}
             annotations={annotations}
-            admin={admin}
           />
           {canDelete && (
             <>
