@@ -59,7 +59,7 @@ function TextInput(props) {
       <TextField
         id={schema.name}
         multiline={schema.fieldType === 'longstring'}
-        rowsMax={schema.fieldType === 'longstring' ? 5 : undefined}
+        maxRows={schema.fieldType === 'longstring' ? 5 : undefined}
         label={getLabel(schema)}
         type={type}
         onChange={e => {

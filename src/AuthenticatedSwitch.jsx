@@ -16,6 +16,7 @@ import Individual from './pages/individual/Individual';
 import CreateIndividual from './pages/individual/CreateIndividual';
 import PictureBook from './pages/individual/PictureBook';
 import Sighting from './pages/sighting/Sighting';
+import Splash from './pages/splash/Splash';
 import AssetGroup from './pages/assetGroup/AssetGroup';
 import Org from './pages/org/Org';
 import Orgs from './pages/org/Orgs';
@@ -82,8 +83,11 @@ export default function AuthenticatedSwitch() {
                     <SiteSetup />
                   ) : (
                     <Switch location={location}>
-                      <Route path="/admin/splash">
+                      <Route path="/admin/splash" exact>
                         <SplashSettings />
+                      </Route>
+                      <Route path="/admin/splash/preview">
+                        <Splash />
                       </Route>
                       <Route path="/admin/status">
                         <ServerStatus />
