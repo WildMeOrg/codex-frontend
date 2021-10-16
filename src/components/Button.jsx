@@ -72,6 +72,18 @@ function Core({
     };
   }
 
+  if (display === 'link') {
+    roleStyles = {
+      background: 'none!important',
+      border: 'none',
+      padding: '0!important',
+      color: '#069',
+      textDecoration: 'underline',
+      cursor: 'pointer',
+      backgroundColor: 'transparent',
+    };
+  }
+
   if (disabled) {
     delete roleStyles.backgroundColor;
     delete roleStyles.color;

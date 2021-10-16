@@ -8,10 +8,7 @@ import enPolyfill from '@formatjs/intl-numberformat/dist/locale-data/en';
 import esPolyfill from '@formatjs/intl-numberformat/dist/locale-data/es';
 
 import CssBaseline from '@material-ui/core/CssBaseline';
-import {
-  createTheme,
-  ThemeProvider,
-} from '@material-ui/core/styles';
+import { createTheme, ThemeProvider } from '@material-ui/core/styles';
 
 import useSiteSettings from './models/site/useSiteSettings';
 import { selectLocale } from './modules/app/selectors';

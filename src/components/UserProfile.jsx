@@ -27,15 +27,7 @@ export default function UserProfile({
   someoneElse,
   noCollaborate = false,
 }) {
-  console.log('deleteMe userData is: ');
-  console.log(userData);
-  const {
-    sigthingsData,
-    loadingSightings,
-    refreshSigtings,
-  } = useGetSightings(userId);
-  console.log('deleteMe data from useGetSightings is: ');
-  console.log(sigthingsData);
+  const { data: sigthingsData } = useGetSightings(userId);
   const intl = useIntl();
   const [editingProfile, setEditingProfile] = useState(false);
   const metadataSchemas = useUserMetadataSchemas(userId);
@@ -143,7 +135,7 @@ export default function UserProfile({
             }
             columns={['individual', 'date', 'location']}
             hideSubmitted
-            encounters={sigthingsData}
+            encounters={get(sigthingsData, 'sightings', '')}
           />
 
           {!someoneElse && <CollaborationsCard userId={userId} />}

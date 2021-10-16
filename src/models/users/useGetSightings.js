@@ -7,7 +7,6 @@ export default function useGetSightings(userId) {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [refreshCount, setRefreshCount] = useState(0);
-  console.log('deleteMe got here u1 and userId is: ' + userId);
 
   function refresh() {
     setRefreshCount(refreshCount + 1);
