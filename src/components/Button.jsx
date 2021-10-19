@@ -77,7 +77,7 @@ function Core({
       background: 'none!important',
       border: 'none',
       padding: '0!important',
-      color: '#069',
+      color: theme.palette.text.primary,
       textDecoration: 'underline',
       cursor: 'pointer',
       backgroundColor: 'transparent',

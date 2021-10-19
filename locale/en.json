@@ -845,6 +845,7 @@
   "CONFIGURATION_SITE_LOOK_THEMECOLOR_DESCRIPTION": "Choose from 8 theme colors to customize your site.",
   "CONFIGURATION_SITE_GENERAL_TAGLINE_DESCRIPTION": "Displayed front and center on the hero area. Fewer than 4 words recommended.",
   "GPS_TITLE": "Sighting Location",
+  "INVALID_GPS": "Invalid GPS Coordinates",
   "UNNAMED_USER": "Unnamed User",
   "REGION_NAME_REMOVED": "Region Name Has Been Removed"
 }

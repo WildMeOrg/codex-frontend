@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { get } from 'lodash-es';
 
-export default function useGetSightings(userId) {
+export default function useGetUserSightings(userId) {
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);

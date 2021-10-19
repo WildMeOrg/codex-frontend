@@ -11,10 +11,10 @@ import { get } from 'lodash-es';
 
 import Text from '../Text';
 import { formatDate } from '../../utils/formatters';
-import useOptions from '../../pages/bulkImport/utils/useOptions';
+import useOptions from '../../hooks/useOptions';
 import StandardDialog from '../StandardDialog';
 import Button from '../Button';
-import SightingInMap from '../../pages/sighting/SightingInMap';
+import MapInSighting from '../../pages/sighting/MapInSighting';
 import ActionIcon from '../ActionIcon';
 import DataDisplay from '../dataDisplays/DataDisplay';
 import Card from './Card';
@@ -31,6 +31,7 @@ export default function SightingsCard({
   const [localLng, setLocalLng] = useState(null);
   const onClose = () => setModalOpen(false);
   const theme = useTheme();
+
   const getAllColumns = () => [
     {
       reference: 'date',
@@ -101,15 +102,14 @@ export default function SightingsCard({
           )
             return (
               <Button
+                id="VIEW_ON_MAP"
                 display="link"
                 onClick={() => {
                   setLocalLat(currentSightingLat);
                   setLocalLng(currentSightingLong);
                   setModalOpen(true);
                 }}
-              >
-                <FormattedMessage id="VIEW_ON_MAP" />
-              </Button>
+              />
             );
 
           if (
@@ -133,7 +133,7 @@ export default function SightingsCard({
             currentSightingLat &&
             currentSightingLong
           ) {
-            const urlVal = currentLabel ? (
+            const buttonText = currentLabel ? (
               currentLabel + ' (' + currentSightingVerbatimLoc + ')'
             ) : (
               <Text>
@@ -150,7 +150,7 @@ export default function SightingsCard({
                   setModalOpen(true);
                 }}
               >
-                {urlVal}
+                {buttonText}
               </Button>
             );
           }
@@ -193,16 +193,10 @@ export default function SightingsCard({
         titleId="GPS_TITLE"
       >
         <DialogContent style={{ marginBottom: 24 }}>
-          <SightingInMap latitude={localLat} longitude={localLng} />
+          <MapInSighting latitude={localLat} longitude={localLng} />
         </DialogContent>
         <DialogActions style={{ padding: '0px 24px 24px 24px' }}>
-          <Button
-            id="CLOSE"
-            display="basic"
-            onClick={() => {
-              onClose();
-            }}
-          />
+          <Button id="CLOSE" display="basic" onClick={onClose} />
         </DialogActions>
       </StandardDialog>
       <Card

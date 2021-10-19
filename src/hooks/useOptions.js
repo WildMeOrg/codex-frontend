@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { cloneDeep, get } from 'lodash-es';
 
-import useSiteSettings from '../../../models/site/useSiteSettings';
+import useSiteSettings from '../models/site/useSiteSettings';
 
 function flattenTree(regions) {
   const flatTree = cloneDeep(regions);

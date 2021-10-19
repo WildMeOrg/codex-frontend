@@ -4,7 +4,7 @@ import { get } from 'lodash-es';
 
 import useUserMetadataSchemas from '../models/users/useUserMetadataSchemas';
 import useRequestCollaboration from '../models/collaboration/useRequestCollaboration';
-import useGetSightings from '../models/users/useGetSightings';
+import useGetUserSightings from '../models/users/useGetUserSightings';
 import { formatDate } from '../utils/formatters';
 import EntityHeaderNew from './EntityHeaderNew';
 import BigAvatar from './profilePhotos/BigAvatar';
@@ -27,7 +27,7 @@ export default function UserProfile({
   someoneElse,
   noCollaborate = false,
 }) {
-  const { data: sigthingsData } = useGetSightings(userId);
+  const { data: sigthingsData } = useGetUserSightings(userId);
   const intl = useIntl();
   const [editingProfile, setEditingProfile] = useState(false);
   const metadataSchemas = useUserMetadataSchemas(userId);
@@ -135,7 +135,7 @@ export default function UserProfile({
             }
             columns={['individual', 'date', 'location']}
             hideSubmitted
-            encounters={get(sigthingsData, 'sightings', '')}
+            encounters={get(sigthingsData, 'sightings', [])}
           />
 
           {!someoneElse && <CollaborationsCard userId={userId} />}
