@@ -3,7 +3,7 @@ import axios from 'axios';
 import { get } from 'lodash-es';
 import { formatError } from '../../utils/formatters';
 
-export default function useNotifications() {
+export default function useNotifications(includeRead = false) {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [statusCode, setStatusCode] = useState(null);
@@ -18,8 +18,11 @@ export default function useNotifications() {
     () => {
       const fetchNotifications = async () => {
         try {
+          const baseUrl = `${__houston_url__}/api/v1/notifications`;
+          const url = includeRead ? baseUrl : `${baseUrl}/unread`;
+
           const response = await axios.request({
-            url: `${__houston_url__}/api/v1/notifications/unread`,
+            url,
             method: 'get',
           });
 
