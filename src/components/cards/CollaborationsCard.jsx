@@ -121,8 +121,15 @@ export default function CollaborationsCard({ userId }) {
         activeCollaboration={activeCollaboration}
         refreshCollaborationData={refresh}
       />
-      {loading ? (
+      {loading && (
         <LinearProgress style={{ marginTop: 24, marginBottom: 8 }} />
+      )}
+      {tableData.length === 0 ? (
+        <Text
+          variant="body2"
+          id="NO_COLLABORATIONS"
+          style={{ marginTop: 12 }}
+        />
       ) : (
         <DataDisplay
           style={{ marginTop: 12 }}
