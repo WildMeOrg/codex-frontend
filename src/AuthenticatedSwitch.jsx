@@ -30,6 +30,7 @@ import BulkImport from './pages/bulkImport/BulkImport';
 import BulkImportSuccess from './pages/bulkImport/Success';
 import ReportSighting from './pages/reportSighting/ReportSighting';
 import ReportSuccess from './pages/reportSighting/Success';
+import Notifications from './pages/notifications/Notifications';
 import FourOhFour from './pages/fourohfour/FourOhFour';
 import useSiteSettings from './models/site/useSiteSettings';
 import SearchIndividuals from './pages/individual/SearchIndividuals';
@@ -124,6 +125,9 @@ export default function AuthenticatedSwitch() {
                       </Route>
                       <Route path="/bulk-imports/:id">
                         <AssetGroup />
+                      </Route>
+                      <Route path="/notifications">
+                        <Notifications />
                       </Route>
                       <Route path="/match/:id">
                         <MatchReview />
