@@ -12,11 +12,14 @@ import Text from '../../components/Text';
 import UserEditDialog from './UserEditDialog';
 import roleSchema from './constants/roleSchema';
 
-function makePretty(word) {
-  const lowerCased = word.toLowerCase();
-  const capitalizedFirst =
-    lowerCased.charAt(0).toUpperCase() + lowerCased.slice(1);
-  return capitalizedFirst;
+function getRoleLabels(user, intl) {
+  const rolesInCurrentUser = roleSchema.filter(
+    currentRole => user[currentRole.id],
+  );
+  const translatedRoles = rolesInCurrentUser.map(role =>
+    intl.formatMessage({ id: role.titleId }),
+  );
+  return translatedRoles.join(', ');
 }
 export default function UserEditTable({
   data,
@@ -53,26 +56,9 @@ export default function UserEditTable({
       align: 'left',
       label: intl.formatMessage({ id: 'ROLES' }),
       options: {
-        getStringValue: (_, userObj) => {
-          const rolesInCurrentUser = roleSchema.filter(
-            currentRole => userObj[currentRole.id],
-          );
-          const roleLabelInCurrentUser = rolesInCurrentUser.map(
-            currentRole => makePretty(currentRole.titleId),
-          );
-          return roleLabelInCurrentUser.join(', ');
-        },
-        customBodyRender: (_, userObj) => {
-          // filter all possible roles by whether an attribute
-          // in userObj by name of currentRole.id exists
-          const rolesInCurrentUser = roleSchema.filter(
-            currentRole => userObj[currentRole.id],
-          );
-          const roleLabelInCurrentUser = rolesInCurrentUser.map(
-            currentRole => makePretty(currentRole.titleId),
-          );
-          return roleLabelInCurrentUser.join(', ');
-        },
+        getStringValue: (_, userObj) => getRoleLabels(userObj, intl),
+        customBodyRender: (_, userObj) =>
+          getRoleLabels(userObj, intl),
       },
     },
     {

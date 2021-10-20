@@ -19,4 +19,8 @@ export default [
     id: 'is_admin',
     titleId: 'ADMINISTRATOR',
   },
+  {
+    id: 'is_staff',
+    titleId: 'STAFF',
+  },
 ];
