@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { get } from 'lodash-es';
+import { useIntl } from 'react-intl';
 
 import { useTheme } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
@@ -12,6 +13,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import CircleIcon from '@material-ui/icons/Lens';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 
+import useDocumentTitle from '../../hooks/useDocumentTitle';
 import CollaborationRequestDialog from '../../components/dialogs/CollaborationRequestDialog';
 import MainColumn from '../../components/MainColumn';
 import LoadingScreen from '../../components/LoadingScreen';
@@ -21,6 +23,10 @@ import usePatchNotification from '../../models/notification/usePatchNotification
 
 export default function Notifications() {
   const theme = useTheme();
+  const intl = useIntl();
+
+  useDocumentTitle(intl.formatMessage({ id: 'NOTIFICATIONS' }));
+
   const {
     data: notifications,
     loading: notificationsLoading,
