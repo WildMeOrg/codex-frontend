@@ -27,7 +27,7 @@ export default function UserProfile({
   someoneElse,
   noCollaborate = false,
 }) {
-  const { data: sigthingsData } = useGetUserSightings(userId);
+  const { data: sightingsData } = useGetUserSightings(userId);
   const intl = useIntl();
   const [editingProfile, setEditingProfile] = useState(false);
   const metadataSchemas = useUserMetadataSchemas(userId);
@@ -76,8 +76,10 @@ export default function UserProfile({
       />
       <EntityHeaderNew
         name={name}
-        editable // ???
-        onSettingsClick={() => setEditingProfile(true)}
+        editable
+        onSettingsClick={
+          () => setEditingProfile(true) // ???
+        }
         renderAvatar={
           <BigAvatar
             editable
@@ -108,8 +110,10 @@ export default function UserProfile({
       <div style={{ display: 'flex', flexWrap: 'wrap' }}>
         <CardContainer size="small">
           <MetadataCardNew
-            editable // ?
-            onEdit={() => setEditingProfile(true)}
+            editable
+            onEdit={
+              () => setEditingProfile(true) // ?
+            }
             metadata={metadata}
           />
           {/* <UserProjectCard
@@ -135,7 +139,7 @@ export default function UserProfile({
             }
             columns={['individual', 'date', 'location']}
             hideSubmitted
-            encounters={get(sigthingsData, 'sightings', [])}
+            encounters={get(sightingsData, 'sightings', [])}
           />
 
           {!someoneElse && <CollaborationsCard userId={userId} />}

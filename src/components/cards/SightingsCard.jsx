@@ -27,16 +27,15 @@ export default function SightingsCard({
 }) {
   const [modalOpen, setModalOpen] = useState(false);
 
-  const [localLat, setLocalLat] = useState(null);
-  const [localLng, setLocalLng] = useState(null);
+  const [gpsCoordinates, setGpsCoordiates] = useState(null);
   const onClose = () => setModalOpen(false);
   const theme = useTheme();
   const { regionOptions } = useOptions();
   const intl = useIntl();
 
-  const formatLocationFromSighting = (sighting, rOpts) => {
+  const formatLocationFromSighting = (sighting, regionOpts) => {
     const currentSightingLocId = get(sighting, 'locationId', '');
-    const currentLabel = rOpts
+    const currentLabelArray = regionOpts
       .filter(
         region => get(region, 'value', '') === currentSightingLocId,
       )
@@ -46,7 +45,11 @@ export default function SightingsCard({
           'label',
           intl.formatMessage({ id: 'REGION_NAME_REMOVED' }),
         ),
-      )[0];
+      );
+    let currentLabel = null;
+    if (currentLabelArray.length > 0)
+      currentLabel = currentLabelArray[0];
+
     const currentSightingVerbatimLoc = get(
       sighting,
       'verbatimLocality',
@@ -132,8 +135,10 @@ export default function SightingsCard({
             <Button
               display="link"
               onClick={() => {
-                setLocalLat(currentSightingLat);
-                setLocalLng(currentSightingLong);
+                setGpsCoordiates({
+                  lat: currentSightingLat,
+                  lng: currentSightingLong,
+                });
                 setModalOpen(true);
               }}
             >
@@ -181,7 +186,10 @@ export default function SightingsCard({
         titleId="GPS_TITLE"
       >
         <DialogContent style={{ marginBottom: 24 }}>
-          <MapInSighting latitude={localLat} longitude={localLng} />
+          <MapInSighting
+            latitude={get(gpsCoordinates, 'lat')}
+            longitude={get(gpsCoordinates, 'lng')}
+          />
         </DialogContent>
         <DialogActions style={{ padding: '0px 24px 24px 24px' }}>
           <Button id="CLOSE" display="basic" onClick={onClose} />
