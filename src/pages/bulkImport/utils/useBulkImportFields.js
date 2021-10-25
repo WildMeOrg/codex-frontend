@@ -8,7 +8,7 @@ import {
   sightingOmitList,
   encounterOmitList,
 } from '../constants/bulkReportConstants';
-import useOptions from './useOptions';
+import useOptions from '../../../hooks/useOptions';
 
 const requiredValidator = {
   validate: 'required',

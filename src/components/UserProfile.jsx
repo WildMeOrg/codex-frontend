@@ -4,6 +4,8 @@ import { get } from 'lodash-es';
 
 import { getHighestRoleLabelId } from '../utils/roleUtils';
 import useUserMetadataSchemas from '../models/users/useUserMetadataSchemas';
+import useRequestCollaboration from '../models/collaboration/useRequestCollaboration';
+import useGetUserSightings from '../models/users/useGetUserSightings';
 import { formatDate } from '../utils/formatters';
 import EntityHeaderNew from './EntityHeaderNew';
 import BigAvatar from './profilePhotos/BigAvatar';
@@ -26,6 +28,7 @@ export default function UserProfile({
   someoneElse,
   noCollaborate = false,
 }) {
+  const { data: sightingsData } = useGetUserSightings(userId);
   const intl = useIntl();
   const [editingProfile, setEditingProfile] = useState(false);
   const metadataSchemas = useUserMetadataSchemas(userId);
@@ -76,8 +79,10 @@ export default function UserProfile({
       />
       <EntityHeaderNew
         name={name}
-        editable // ???
-        onSettingsClick={() => setEditingProfile(true)}
+        editable
+        onSettingsClick={
+          () => setEditingProfile(true) // ???
+        }
         renderAvatar={
           <BigAvatar
             editable
@@ -108,8 +113,10 @@ export default function UserProfile({
       <div style={{ display: 'flex', flexWrap: 'wrap' }}>
         <CardContainer size="small">
           <MetadataCardNew
-            editable // ?
-            onEdit={() => setEditingProfile(true)}
+            editable
+            onEdit={
+              () => setEditingProfile(true) // ?
+            }
             metadata={metadata}
           />
           {/* <UserProjectCard
@@ -135,6 +142,7 @@ export default function UserProfile({
             }
             columns={['individual', 'date', 'location']}
             hideSubmitted
+            encounters={get(sightingsData, 'sightings', [])}
           />
 
           {!someoneElse && <CollaborationsCard userId={userId} />}

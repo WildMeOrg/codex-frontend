@@ -233,6 +233,7 @@
   "HELP": "Help",
   "IMAGE_METADATA_DETECTED": "Image metadata detected",
   "LOCATION_METADATA_DETECTED": "Some location fields can be populated automatically from image metadata.",
+  "LOCATION_NAME_MISSING": "Location name missing",
   "AUTOFILL_FIELDS": "Autofill fields",
   "EXPLORE": "Explore",
   "DARK_BACKGROUND": "Dark background",
@@ -693,6 +694,7 @@
   "CROP": "Crop",
   "CROP_PROFILE_PHOTO": "Crop profile photo",
   "VIEW_ONLY": "View only",
+  "VIEW_ON_MAP": "View on Map",
   "CATEGORY_FORM_REQUIRED_ERROR": "Label and type are required fields.",
   "REMOVE": "Remove",
   "INVITE_AS_MODERATOR": "Invite as moderator",
@@ -845,5 +847,8 @@
   "CONFIGURATION_SITE_GENERAL_DONATIONBUTTONURL_DESCRIPTION": "If present, a link to your donation page will appear in the help section.",
   "CONFIGURATION_SITE_LOOK_THEMECOLOR_DESCRIPTION": "Choose from 8 theme colors to customize your site.",
   "CONFIGURATION_SITE_GENERAL_TAGLINE_DESCRIPTION": "Displayed front and center on the hero area. Fewer than 4 words recommended.",
-  "UNNAMED_USER": "Unnamed User"
+  "GPS_TITLE": "Sighting Location",
+  "INVALID_GPS": "Invalid GPS Coordinates",
+  "UNNAMED_USER": "Unnamed User",
+  "REGION_NAME_REMOVED": "Region Name Has Been Removed"
 }
