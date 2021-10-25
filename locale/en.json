@@ -233,6 +233,7 @@
   "HELP": "Help",
   "IMAGE_METADATA_DETECTED": "Image metadata detected",
   "LOCATION_METADATA_DETECTED": "Some location fields can be populated automatically from image metadata.",
+  "LOCATION_NAME_MISSING": "Location name missing",
   "AUTOFILL_FIELDS": "Autofill fields",
   "EXPLORE": "Explore",
   "DARK_BACKGROUND": "Dark background",

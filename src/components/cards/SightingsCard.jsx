@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { useIntl } from 'react-intl';
 import { useTheme } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import ViewList from '@material-ui/icons/ViewList';
@@ -9,7 +9,6 @@ import DialogActions from '@material-ui/core/DialogActions';
 
 import { get } from 'lodash-es';
 
-import Text from '../Text';
 import { formatDate } from '../../utils/formatters';
 import useOptions from '../../hooks/useOptions';
 import StandardDialog from '../StandardDialog';
@@ -27,12 +26,77 @@ export default function SightingsCard({
   onDelete,
 }) {
   const [modalOpen, setModalOpen] = useState(false);
+
   const [localLat, setLocalLat] = useState(null);
   const [localLng, setLocalLng] = useState(null);
   const onClose = () => setModalOpen(false);
   const theme = useTheme();
+  const { regionOptions } = useOptions();
+  const intl = useIntl();
 
-  const getAllColumns = () => [
+  const formatLocationFromSighting = (sighting, rOpts) => {
+    const currentSightingLocId = get(sighting, 'locationId', '');
+    const currentLabel = rOpts
+      .filter(
+        region => get(region, 'value', '') === currentSightingLocId,
+      )
+      .map(regionObj =>
+        get(
+          regionObj,
+          'label',
+          intl.formatMessage({ id: 'REGION_NAME_REMOVED' }),
+        ),
+      )[0];
+    const currentSightingVerbatimLoc = get(
+      sighting,
+      'verbatimLocality',
+      '',
+    );
+    const currentSightingLat = get(sighting, 'decimalLatitude', '');
+    const currentSightingLong = get(sighting, 'decimalLongitude', '');
+    if (currentSightingLocId && !currentSightingVerbatimLoc) {
+      return (
+        currentLabel ||
+        intl.formatMessage({ id: 'REGION_NAME_REMOVED' })
+      );
+    }
+
+    if (!currentSightingLocId && currentSightingVerbatimLoc) {
+      return currentSightingVerbatimLoc;
+    }
+    if (
+      !currentSightingLocId &&
+      !currentSightingVerbatimLoc &&
+      currentSightingLat &&
+      currentSightingLong
+    )
+      return intl.formatMessage({ id: 'VIEW_ON_MAP' });
+
+    if (currentSightingLocId && currentSightingVerbatimLoc) {
+      return currentLabel
+        ? currentLabel + ' (' + currentSightingVerbatimLoc + ')'
+        : intl.formatMessage({ id: 'REGION_NAME_REMOVED' });
+    }
+    return '';
+  };
+
+  const encountersWithLocationData = useMemo(
+    () => {
+      const encsWithFormattedLocations = encounters.map(
+        currentEncounter => ({
+          ...currentEncounter,
+          formattedLocation: formatLocationFromSighting(
+            currentEncounter,
+            regionOptions,
+          ),
+        }),
+      );
+      return encsWithFormattedLocations;
+    },
+    [get(encounters, 'length')],
+  );
+
+  const allColumns = [
     {
       reference: 'date',
       name: 'startTime',
@@ -44,27 +108,10 @@ export default function SightingsCard({
     },
     {
       reference: 'location',
-      name: 'verbatimLocality',
+      name: 'formattedLocation',
       label: 'Location',
       options: {
         customBodyRender: (_, sightingObj) => {
-          const { regionOptions } = useOptions();
-          const currentSightingLocId = get(
-            sightingObj,
-            'locationId',
-            '',
-          );
-          const currentLabel = regionOptions
-            .filter(
-              region =>
-                get(region, 'value', '') === currentSightingLocId,
-            )
-            .map(regionObj => get(regionObj, 'label', ''))[0];
-          const currentSightingVerbatimLoc = get(
-            sightingObj,
-            'verbatimLocality',
-            '',
-          );
           const currentSightingLat = get(
             sightingObj,
             'decimalLatitude',
@@ -75,86 +122,28 @@ export default function SightingsCard({
             'decimalLongitude',
             '',
           );
-          if (
-            currentSightingLocId &&
-            !currentSightingVerbatimLoc &&
-            !currentSightingLat &&
-            !currentSightingLong
-          )
-            return (
-              currentLabel || (
-                <FormattedMessage id="REGION_NAME_REMOVED" />
-              )
+          if (!currentSightingLat && !currentSightingLong)
+            return get(
+              sightingObj,
+              'formattedLocation',
+              intl.formatMessage({ id: 'LOCATION_NAME_MISSING' }),
             );
-
-          if (
-            !currentSightingLocId &&
-            currentSightingVerbatimLoc &&
-            !currentSightingLat &&
-            !currentSightingLong
-          )
-            return currentSightingVerbatimLoc;
-          if (
-            !currentSightingLocId &&
-            !currentSightingVerbatimLoc &&
-            currentSightingLat &&
-            currentSightingLong
-          )
-            return (
-              <Button
-                id="VIEW_ON_MAP"
-                display="link"
-                onClick={() => {
-                  setLocalLat(currentSightingLat);
-                  setLocalLng(currentSightingLong);
-                  setModalOpen(true);
-                }}
-              />
-            );
-
-          if (
-            currentSightingLocId &&
-            currentSightingVerbatimLoc &&
-            !currentSightingLat &&
-            !currentSightingLong
-          ) {
-            return currentLabel ? (
-              currentLabel + ' (' + currentSightingVerbatimLoc + ')'
-            ) : (
-              <Text>
-                <FormattedMessage id="REGION_NAME_REMOVED" />
-                {' (' + currentSightingVerbatimLoc + ')'}
-              </Text>
-            );
-          }
-          if (
-            currentSightingLocId &&
-            currentSightingVerbatimLoc &&
-            currentSightingLat &&
-            currentSightingLong
-          ) {
-            const buttonText = currentLabel ? (
-              currentLabel + ' (' + currentSightingVerbatimLoc + ')'
-            ) : (
-              <Text>
-                <FormattedMessage id="REGION_NAME_REMOVED" />
-                {' (' + currentSightingVerbatimLoc + ')'}
-              </Text>
-            );
-            return (
-              <Button
-                display="link"
-                onClick={() => {
-                  setLocalLat(currentSightingLat);
-                  setLocalLng(currentSightingLong);
-                  setModalOpen(true);
-                }}
-              >
-                {buttonText}
-              </Button>
-            );
-          }
-          return '';
+          return (
+            <Button
+              display="link"
+              onClick={() => {
+                setLocalLat(currentSightingLat);
+                setLocalLng(currentSightingLong);
+                setModalOpen(true);
+              }}
+            >
+              {get(
+                sightingObj,
+                'formattedLocation',
+                intl.formatMessage({ id: 'LOCATION_NAME_MISSING' }),
+              )}
+            </Button>
+          );
         },
       },
     },
@@ -180,7 +169,6 @@ export default function SightingsCard({
     },
   ];
 
-  const allColumns = getAllColumns(onDelete);
   const filteredColumns = allColumns.filter(c =>
     columns.includes(c.reference),
   );
@@ -220,7 +208,7 @@ export default function SightingsCard({
           <DataDisplay
             noTitleBar
             columns={filteredColumns}
-            data={encounters}
+            data={encountersWithLocationData}
           />
         )}
       </Card>
