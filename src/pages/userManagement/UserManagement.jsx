@@ -25,7 +25,7 @@ import roleSchema from './constants/roleSchema';
 
 export default function UserManagement() {
   const intl = useIntl();
-  useDocumentTitle(intl.formatMessage({ id: 'MANAGE_USERS' }));
+  useDocumentTitle('MANAGE_USERS');
 
   const {
     postUser,

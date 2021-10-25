@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useIntl } from 'react-intl';
 import { get, zipObject } from 'lodash-es';
 import Grid from '@material-ui/core/Grid';
 
@@ -50,12 +49,7 @@ export default function GeneralSettings() {
     setSuccess: setAssetPostSuccess,
   } = usePostSettingsAsset();
 
-  const intl = useIntl();
-
-  const documentTitle = intl.formatMessage({
-    id: 'GENERAL_SETTINGS',
-  });
-  useDocumentTitle(documentTitle);
+  useDocumentTitle('GENERAL_SETTINGS');
 
   const [currentValues, setCurrentValues] = useState(null);
   const [logoPostData, setLogoPostData] = useState(null);

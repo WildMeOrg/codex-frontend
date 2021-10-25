@@ -105,7 +105,7 @@ function SightingCore({
   );
 
   // fetch data for Id...
-  useDocumentTitle(`Sighting ${id}`);
+  useDocumentTitle(`Sighting ${id}`, { translateMessage: false });
 
   const [historyOpen, setHistoryOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);

@@ -99,7 +99,9 @@ export default function Individual() {
   // fetch data for Id...
   const individuals = useSelector(selectIndividuals);
 
-  useDocumentTitle(capitalize(defaultName));
+  useDocumentTitle(capitalize(defaultName), {
+    translateMessage: false,
+  });
   const [editingProfile, setEditingProfile] = useState(false);
   const [deletingIndividual, setDeletingIndividual] = useState(false);
   const [deleteEncounterId, setDeleteEncounterId] = useState(null);

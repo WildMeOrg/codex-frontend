@@ -12,7 +12,7 @@ export default function User() {
 
   const { data, loading, refresh } = useGetUser(id);
   const name = get(data, 'full_name', 'Unnamed user');
-  useDocumentTitle(name);
+  useDocumentTitle(name, { translateMessage: false });
   if (loading) return <LoadingScreen />;
 
   return (

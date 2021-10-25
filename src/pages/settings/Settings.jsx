@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useIntl } from 'react-intl';
 
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
@@ -16,10 +15,7 @@ import useGetMe from '../../models/users/useGetMe';
 import { useNotificationSettingsSchemas } from './useUserSettingsSchemas';
 
 export default function Settings() {
-  const intl = useIntl();
-  useDocumentTitle(
-    intl.formatMessage({ id: 'SETTINGS_AND_PRIVACY' }),
-  );
+  useDocumentTitle('SETTINGS_AND_PRIVACY');
 
   const { data, refresh } = useGetMe();
 

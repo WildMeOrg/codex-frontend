@@ -1,6 +1,5 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { useIntl } from 'react-intl';
 import Grid from '@material-ui/core/Grid';
 
 import useDocumentTitle from '../../hooks/useDocumentTitle';
@@ -10,10 +9,7 @@ import Text from '../../components/Text';
 
 export default function BulkImportSuccess() {
   const { id } = useParams();
-  const intl = useIntl();
-  useDocumentTitle(
-    intl.formatMessage({ id: 'REPORT_SUCCESS_TITLE' }),
-  );
+  useDocumentTitle('REPORT_SUCCESS_TITLE');
 
   return (
     <MainColumn

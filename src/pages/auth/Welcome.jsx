@@ -1,5 +1,5 @@
 import React from 'react';
-import { useIntl, FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import { useSelector } from 'react-redux';
 import Grid from '@material-ui/core/Grid';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
@@ -10,8 +10,7 @@ import { selectSiteName } from '../../modules/site/selectors';
 
 export default function Welcome() {
   const siteName = useSelector(selectSiteName);
-  const intl = useIntl();
-  useDocumentTitle(intl.formatMessage({ id: 'WELCOME' }));
+  useDocumentTitle('WELCOME');
 
   return (
     <MainColumn

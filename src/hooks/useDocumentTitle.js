@@ -1,21 +1,39 @@
 import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { selectSiteName } from '../modules/site/selectors';
+import { useIntl } from 'react-intl';
+import { get } from 'lodash-es';
 
-export default function(
-  message,
-  appendSitename = true,
-  refreshKey = null,
-) {
-  const siteName = useSelector(selectSiteName);
+import useSiteSettings from '../models/site/useSiteSettings';
+
+export default function(message, configuration = {}) {
+  const intl = useIntl();
+  const appendSiteNameConfiguration = get(
+    configuration,
+    'appendSiteName',
+    true,
+  );
+  const translateMessage = get(
+    configuration,
+    'translateMessage',
+    true,
+  );
+  const refreshKey = get(configuration, 'refreshKey', null);
+  const messageValues = get(configuration, 'messageValues', {});
+
+  const siteSettings = useSiteSettings();
+  const siteName = get(siteSettings, ['data', 'site.name', 'value']);
+  const appendSiteName = siteName && appendSiteNameConfiguration;
+
   useEffect(
     () => {
-      if (appendSitename && siteName) {
-        document.title = `${message} • ${siteName}`;
+      const translatedMessage = translateMessage
+        ? intl.formatMessage({ id: message }, messageValues)
+        : message;
+      if (appendSiteName && siteName) {
+        document.title = `${translatedMessage} • ${siteName}`;
       } else {
-        document.title = message;
+        document.title = translatedMessage;
       }
     },
-    [message, refreshKey],
+    [message, refreshKey, siteName, appendSiteName],
   );
 }

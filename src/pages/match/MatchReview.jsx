@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { useIntl } from 'react-intl';
 import { toLower } from 'lodash-es';
 import { useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
@@ -19,7 +18,6 @@ const heightStyles = {
 };
 
 export default function MatchReview() {
-  const intl = useIntl();
   const { id } = useParams();
   const theme = useTheme();
 
@@ -28,7 +26,7 @@ export default function MatchReview() {
 
   // fetch data for Id...
   const sightings = useSelector(selectSightings);
-  useDocumentTitle(intl.formatMessage({ id: 'MATCH_REVIEW' }));
+  useDocumentTitle('MATCH_REVIEW');
   const [matching, setMatching] = useState(true);
 
   const sighting = sightings.find(e => toLower(e.id) === toLower(id));

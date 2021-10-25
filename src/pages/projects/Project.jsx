@@ -18,7 +18,7 @@ const noaa = fakeProjects[0];
 
 export default function Project() {
   const { id } = useParams();
-  useDocumentTitle(id);
+  useDocumentTitle(id, { translateMessage: false });
 
   const project = noaa;
   if (!project)

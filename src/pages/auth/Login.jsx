@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useIntl, FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
@@ -23,9 +23,7 @@ export default function Login({ showBanner, redirect = '/' }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const intl = useIntl();
-
-  useDocumentTitle(intl.formatMessage({ id: 'LOG_IN' }));
+  useDocumentTitle('LOG_IN');
 
   function onKeyUp(e) {
     if (e.key === 'Enter') {

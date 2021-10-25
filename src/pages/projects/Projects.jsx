@@ -15,7 +15,7 @@ import fakeProjects from './fakeProjects';
 export default function Projects() {
   const intl = useIntl();
   const pageTitle = intl.formatMessage({ id: 'PROJECTS_PAGE_TITLE' });
-  useDocumentTitle(pageTitle, false);
+  useDocumentTitle(pageTitle, { translateMessage: false });
 
   const isAdministrator = useSelector(selectIsAdministrator);
 

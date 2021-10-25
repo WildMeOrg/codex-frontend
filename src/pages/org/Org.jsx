@@ -23,7 +23,7 @@ import EditMembersButton from './EditMembersButton';
 
 export default function Org() {
   const { id } = useParams();
-  useDocumentTitle(id);
+  useDocumentTitle(id, { translateMessage: false });
 
   // fetch data for Id...
   const orgs = useSelector(selectOrgs);

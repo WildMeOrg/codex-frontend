@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { useIntl, FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import { v4 as uuid } from 'uuid';
 import { get } from 'lodash-es';
 
@@ -17,8 +17,7 @@ import UploadManager from '../../components/report/UploadManager';
 import BulkReport from './ReportForm';
 
 export default function BulkImport() {
-  const intl = useIntl();
-  useDocumentTitle(intl.formatMessage({ id: 'REPORT_SIGHTINGS' }));
+  useDocumentTitle('REPORT_SIGHTINGS');
 
   const { data: userData } = useGetMe();
   const unprocessedAssetGroupId = get(userData, [

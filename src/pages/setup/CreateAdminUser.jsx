@@ -25,7 +25,7 @@ export default function CreateAdminUser() {
   const [password2, setPassword2] = useState('');
 
   const intl = useIntl();
-  useDocumentTitle(intl.formatMessage({ id: 'CODEX_INITIALIZED' }));
+  useDocumentTitle('CODEX_INITIALIZED');
 
   function onKeyUp(e) {
     if (e.key === 'Enter') {

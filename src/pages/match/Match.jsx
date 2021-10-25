@@ -31,7 +31,7 @@ export default function Match({ setMatching }) {
 
   // fetch data for Id...
   const sightings = useSelector(selectSightings);
-  useDocumentTitle(intl.formatMessage({ id: 'MATCH_REVIEW' }));
+  useDocumentTitle('MATCH_REVIEW');
   const [popoverData, setPopoverData] = useState(null);
 
   const sighting = sightings.find(e => toLower(e.id) === toLower(id));
