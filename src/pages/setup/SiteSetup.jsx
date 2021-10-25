@@ -7,7 +7,7 @@ import SiteSetupForm from './SiteSetupForm';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 
 export default function SiteSetup() {
-  useDocumentTitle('Welcome to Codex!', false);
+  useDocumentTitle('Welcome to Codex!', { translateMessage: false });
   return (
     <MainColumn>
       <Grid container direction="column" alignItems="center">

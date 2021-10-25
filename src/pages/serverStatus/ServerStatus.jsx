@@ -1,10 +1,6 @@
 import React from 'react';
 import { css } from '@emotion/core';
-import {
-  useIntl,
-  FormattedMessage,
-  FormattedNumber,
-} from 'react-intl';
+import { FormattedMessage, FormattedNumber } from 'react-intl';
 import { get, round } from 'lodash-es';
 
 import Grid from '@material-ui/core/Grid';
@@ -69,8 +65,7 @@ export default function ServerStatus() {
     loading: siteInfoLoading,
   } = useGetSiteInfo();
 
-  const intl = useIntl();
-  useDocumentTitle(intl.formatMessage({ id: 'SERVER_STATUS' }));
+  useDocumentTitle('SERVER_STATUS');
 
   const [results, error, isFetched] = useServerStatus();
   const { lastHour, twoWeeks, byStatus } = results;

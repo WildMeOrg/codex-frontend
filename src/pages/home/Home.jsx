@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { get } from 'lodash-es';
-import { useIntl } from 'react-intl';
 
 import useGetMe from '../../models/users/useGetMe';
 import LoadingScreen from '../../components/LoadingScreen';
@@ -11,7 +10,6 @@ import useDocumentTitle from '../../hooks/useDocumentTitle';
 import ProfileSetup from './ProfileSetup';
 
 export default function Home() {
-  const intl = useIntl();
   const [crash, setCrash] = useState(false);
 
   const { data, loading, refresh } = useGetMe();
@@ -23,11 +21,7 @@ export default function Home() {
   const fullName = get(data, ['full_name']);
   const userId = get(data, 'guid');
 
-  useDocumentTitle(
-    intl.formatMessage({ id: 'HOME' }),
-    true,
-    fullName,
-  );
+  useDocumentTitle('HOME', { refreshKey: fullName });
 
   if (crash) {
     const b = a.b.c.d.e.f;

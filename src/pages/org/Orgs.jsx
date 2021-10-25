@@ -19,7 +19,7 @@ export default function User() {
     { id: 'ORGS_PAGE_TITLE' },
     { siteName },
   );
-  useDocumentTitle(pageTitle, false);
+  useDocumentTitle(pageTitle, { translateMessage: false });
 
   const orgs = useSelector(selectOrgs);
   const isAdministrator = useSelector(selectIsAdministrator);

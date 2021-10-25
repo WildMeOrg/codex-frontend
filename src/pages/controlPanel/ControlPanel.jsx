@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useIntl } from 'react-intl';
 import { get } from 'lodash-es';
 
 import { useTheme } from '@material-ui/core';
@@ -64,7 +63,6 @@ const adminPages = [
 
 export default function ControlPanel() {
   const theme = useTheme();
-  const intl = useIntl();
 
   const disabledStyles = {
     boxShadow: 'none',
@@ -73,8 +71,7 @@ export default function ControlPanel() {
     cursor: 'default',
   };
 
-  const documentTitle = intl.formatMessage({ id: 'CONTROL_PANEL' });
-  useDocumentTitle(documentTitle);
+  useDocumentTitle('CONTROL_PANEL');
   const [hoveredCard, setHoveredCard] = useState(null);
 
   const { data: userData } = useGetMe();

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useIntl, FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import Grid from '@material-ui/core/Grid';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import TextInput from '../../components/inputs/TextInput';
@@ -16,8 +16,7 @@ export default function RequestInvitation() {
   const [requestSent, setRequestSent] = useState(false);
   const [error, setError] = useState('');
 
-  const intl = useIntl();
-  useDocumentTitle(intl.formatMessage({ id: 'REQUEST_INVITE' }));
+  useDocumentTitle('REQUEST_INVITE');
 
   const titleId = 'REQUEST_INVITE';
   const instructionsId = 'REQUEST_INVITATION_INSTRUCTIONS';

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useIntl, FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import { get } from 'lodash-es';
 
 import Grid from '@material-ui/core/Grid';
@@ -19,15 +19,13 @@ export default function ProfileSetup({ userData, refreshUserData }) {
   const [noNameError, setNoNameError] = useState(false);
   const [name, setName] = useState('');
 
-  const intl = useIntl();
-
   const {
     replaceUserProperties,
     loading: replaceLoading,
     error: replaceError,
   } = usePatchUser(get(userData, 'guid'));
 
-  useDocumentTitle(intl.formatMessage({ id: 'SET_UP_PROFILE' }));
+  useDocumentTitle('SET_UP_PROFILE');
 
   function onKeyUp(e) {
     if (e.key === 'Enter') {

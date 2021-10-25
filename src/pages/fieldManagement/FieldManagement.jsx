@@ -1,5 +1,4 @@
 import React from 'react';
-import { useIntl } from 'react-intl';
 import { get } from 'lodash-es';
 import Grid from '@material-ui/core/Grid';
 
@@ -29,10 +28,7 @@ export default function FieldManagement() {
     siteSettingsVersion,
   } = useSiteSettings();
 
-  const intl = useIntl();
-
-  const documentTitle = intl.formatMessage({ id: 'MANAGE_FIELDS' });
-  useDocumentTitle(documentTitle);
+  useDocumentTitle('MANAGE_FIELDS');
 
   const customFieldCategories = get(
     siteSettings,

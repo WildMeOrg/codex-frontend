@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { get } from 'lodash-es';
-import { useIntl } from 'react-intl';
 
 import { useTheme } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
@@ -23,9 +22,8 @@ import usePatchNotification from '../../models/notification/usePatchNotification
 
 export default function Notifications() {
   const theme = useTheme();
-  const intl = useIntl();
 
-  useDocumentTitle(intl.formatMessage({ id: 'NOTIFICATIONS' }));
+  useDocumentTitle('NOTIFICATIONS');
 
   const {
     data: notifications,

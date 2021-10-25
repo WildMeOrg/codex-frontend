@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useIntl, FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
@@ -12,10 +12,7 @@ import Button from '../../components/Button';
 import Text from '../../components/Text';
 
 export default function AdminActions() {
-  const intl = useIntl();
-  useDocumentTitle(
-    intl.formatMessage({ id: 'ADMINISTRATIVE_ACTIONS' }),
-  );
+  useDocumentTitle('ADMINISTRATIVE_ACTIONS');
 
   const [restoreEncounterId, setRestoreEncounterId] = useState('');
   return (

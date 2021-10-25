@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useIntl, FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import { useSelector } from 'react-redux';
 import Hidden from '@material-ui/core/Hidden';
 import Drawer from '@material-ui/core/Drawer';
@@ -28,7 +28,6 @@ const paperProps = {
 };
 
 export default function SearchEncounters() {
-  const intl = useIntl();
   const categories = useSelector(selectSightingSearchCategories);
   const schema = useSelector(selectSightingSearchSchema);
   const searchResults = useSelector(selectSearchResults);
@@ -41,7 +40,7 @@ export default function SearchEncounters() {
     }, {}),
   );
 
-  useDocumentTitle(intl.formatMessage({ id: 'EXPLORE_SIGHTINGS' }));
+  useDocumentTitle('EXPLORE_SIGHTINGS');
 
   return (
     <div style={{ display: 'flex' }}>

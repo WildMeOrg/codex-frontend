@@ -22,7 +22,7 @@ export default function Users() {
     { id: 'USERS_PAGE_TITLE' },
     { siteName },
   );
-  useDocumentTitle(pageTitle, false);
+  useDocumentTitle(pageTitle, { translateMessage: false });
   const [userToDelete, setUserToDelete] = useState(null);
 
   const { data, loading, error } = useGetUsers();

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useIntl, FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
 import Grid from '@material-ui/core/Grid';
 import CustomAlert from '../Alert';
@@ -14,8 +14,7 @@ export default function ReportSightingsPage({
   authenticated = false,
   children,
 }) {
-  const intl = useIntl();
-  useDocumentTitle(intl.formatMessage({ id: titleId }));
+  useDocumentTitle(titleId);
 
   return (
     <MainColumn

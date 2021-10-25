@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useIntl, FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -18,8 +18,7 @@ export default function Create({ callback }) {
   );
   const [loading, setLoading] = useState(false);
 
-  const intl = useIntl();
-  useDocumentTitle(intl.formatMessage({ id: 'CREATE_ACCOUNT' }));
+  useDocumentTitle('CREATE_ACCOUNT');
 
   const disableCreate =
     password === '' || loading || password !== passwordConfirmation;

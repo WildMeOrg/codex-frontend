@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useIntl } from 'react-intl';
 import { get, zipObject } from 'lodash-es';
 
 import Grid from '@material-ui/core/Grid';
@@ -52,10 +51,7 @@ export default function SiteSettings() {
     setSuccess: setAssetPostSuccess,
   } = usePostSettingsAsset();
 
-  const intl = useIntl();
-
-  const documentTitle = intl.formatMessage({ id: 'SPLASH_PAGE' });
-  useDocumentTitle(documentTitle);
+  useDocumentTitle('SPLASH_PAGE');
 
   const [currentValues, setCurrentValues] = useState(null);
   const [splashVideoPostData, setSplashVideoPostData] = useState(

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import ReactPlayer from 'react-player';
 import { get } from 'lodash-es';
-import { useIntl, FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import { useTheme } from '@material-ui/core/styles';
 import ScrollIcon from '@material-ui/icons/KeyboardArrowUp';
 import Fab from '@material-ui/core/Fab';
@@ -26,7 +26,6 @@ const mediaStyles = {
 };
 
 export default function Splash() {
-  const intl = useIntl();
   const theme = useTheme();
   const { data: newSiteSettings, loading, error } = useSiteSettings();
 
@@ -48,13 +47,12 @@ export default function Splash() {
     };
   }, []);
 
-  useDocumentTitle(
-    intl.formatMessage(
-      { id: 'WELCOME_TO_SITENAME' },
-      { siteName: get(newSiteSettings, ['site.name', 'value']) },
-    ),
-    false,
-  );
+  useDocumentTitle('WELCOME_TO_SITENAME', {
+    messageValues: {
+      siteName: get(newSiteSettings, ['site.name', 'value']),
+    },
+    appendSiteName: false,
+  });
 
   if (loading || error) return null;
 

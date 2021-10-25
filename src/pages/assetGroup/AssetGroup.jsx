@@ -31,7 +31,7 @@ export default function AssetGroup() {
     setError: setDeleteSightingError,
   } = useDeleteAssetGroup();
 
-  useDocumentTitle(`Asset group ${id}`);
+  useDocumentTitle(`Asset group ${id}`, { translateMessage: false });
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
   if (loading) return <LoadingScreen />;

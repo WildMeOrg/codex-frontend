@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useIntl } from 'react-intl';
 import { useSelector } from 'react-redux';
 
 import Hidden from '@material-ui/core/Hidden';
@@ -28,7 +27,6 @@ const paperProps = {
 };
 
 export default function SearchIndividuals() {
-  const intl = useIntl();
   const [page, setPage] = useState(0);
   const [formFilters, setFormFilters] = useState([]);
 
@@ -43,7 +41,7 @@ export default function SearchIndividuals() {
 
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
 
-  useDocumentTitle(intl.formatMessage({ id: 'EXPLORE_INDIVIDUALS' }));
+  useDocumentTitle('EXPLORE_INDIVIDUALS');
 
   return (
     <div style={{ display: 'flex' }}>
