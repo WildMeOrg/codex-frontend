@@ -449,6 +449,7 @@
   "ALLOWED_FILE_TYPES": "Allowed file types",
   "ALIVE": "Alive",
   "DEAD": "Dead",
+  "UNDO": "Undo",
   "UNKNOWN": "Unknown",
   "APPROVED": "Approved",
   "OPTION_VALUE": "Option value",

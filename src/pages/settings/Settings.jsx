@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { get, has } from 'lodash-es';
 
 import Grid from '@material-ui/core/Grid';
@@ -13,7 +13,9 @@ import Button from '../../components/Button';
 import InputRow from '../../components/fields/edit/InputRowNew';
 import Text from '../../components/Text';
 import useGetMe from '../../models/users/useGetMe';
+import usePatchUser from '../../models/users/usePatchUser';
 import { useNotificationSettingsSchemas } from './useUserSettingsSchemas';
+import { deriveNotificationPreferences } from './deriveNotificationPreferences';
 
 function getInitialFormValues(schemas, data) {
   return schemas.reduce((memo, field) => {
@@ -31,6 +33,9 @@ export default function Settings() {
 
   const [deactivating, setDeactivating] = useState(false);
 
+  const { replaceUserProperty, loading, error } = usePatchUser(
+    get(data, 'guid'),
+  );
   const schemas = useNotificationSettingsSchemas();
 
   const [formValues, setFormValues] = useState({});
@@ -38,6 +43,11 @@ export default function Settings() {
     () => {
       setFormValues(getInitialFormValues(schemas, data));
     },
+    [schemas, data],
+  );
+
+  const backendValues = useMemo(
+    () => getInitialFormValues(schemas, data),
     [schemas, data],
   );
 
@@ -91,23 +101,70 @@ export default function Settings() {
             {schemas.map(notificationField => {
               const fieldKey = get(notificationField, 'name');
               const fieldValue = get(formValues, fieldKey);
+              const backendValue = get(backendValues, fieldKey);
+              const valueHasChanged = fieldValue !== backendValue;
+
               return (
                 <InputRow
                   key={fieldKey}
                   schema={notificationField}
                   loading={!has(formValues, [fieldKey])}
                 >
-                  <notificationField.editComponent
-                    schema={notificationField}
-                    value={fieldValue}
-                    onChange={() => {
-                      setFormValues({
-                        ...formValues,
-                        [fieldKey]: !fieldValue,
-                      });
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
                     }}
-                    minimalLabels
-                  />
+                  >
+                    <notificationField.editComponent
+                      schema={notificationField}
+                      value={fieldValue}
+                      onChange={() => {
+                        setFormValues({
+                          ...formValues,
+                          [fieldKey]: !fieldValue,
+                        });
+                      }}
+                      minimalLabels
+                    />
+                    {valueHasChanged && (
+                      <div>
+                        <Button
+                          size="small"
+                          display="primary"
+                          id="SAVE"
+                          loading={loading}
+                          onClick={async () => {
+                            const currentChangeValues = {
+                              ...backendValues,
+                              [fieldKey]: fieldValue,
+                            };
+                            const newNotificationPreferences = deriveNotificationPreferences(
+                              backendValues,
+                              currentChangeValues,
+                            );
+                            const successful = await replaceUserProperty(
+                              '/notification_preferences',
+                              newNotificationPreferences,
+                            );
+                            console.log(successful);
+                            refresh();
+                          }}
+                        />
+                        <Button
+                          size="small"
+                          onClick={() => {
+                            setFormValues({
+                              ...formValues,
+                              [fieldKey]: backendValue,
+                            });
+                          }}
+                          style={{ marginLeft: 4 }}
+                          id="UNDO"
+                        />
+                      </div>
+                    )}
+                  </div>
                 </InputRow>
               );
             })}
