@@ -5,13 +5,13 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 
 import useDocumentTitle from '../../hooks/useDocumentTitle';
-// import CustomAlert from '../../components/Alert';
 import MainColumn from '../../components/MainColumn';
 import ButtonLink from '../../components/ButtonLink';
 import UserDeleteDialog from '../../components/dialogs/UserDeleteDialog';
 import Button from '../../components/Button';
 import InputRow from '../../components/fields/edit/InputRowNew';
 import Text from '../../components/Text';
+import ErrorDialog from '../../components/dialogs/ErrorDialog';
 import useGetMe from '../../models/users/useGetMe';
 import usePatchUser from '../../models/users/usePatchUser';
 import { useNotificationSettingsSchemas } from './useUserSettingsSchemas';
@@ -33,15 +33,19 @@ export default function Settings() {
 
   const [deactivating, setDeactivating] = useState(false);
 
-  const { replaceUserProperty, loading, error } = usePatchUser(
-    get(data, 'guid'),
-  );
+  const {
+    replaceUserProperty,
+    loading,
+    error,
+    setError,
+  } = usePatchUser(get(data, 'guid'));
   const schemas = useNotificationSettingsSchemas();
 
   const [formValues, setFormValues] = useState({});
   useEffect(
     () => {
-      setFormValues(getInitialFormValues(schemas, data));
+      const initialValues = getInitialFormValues(schemas, data);
+      setFormValues({ ...initialValues, ...formValues });
     },
     [schemas, data],
   );
@@ -51,10 +55,15 @@ export default function Settings() {
     [schemas, data],
   );
 
-  console.log(formValues);
-
   return (
     <MainColumn>
+      <ErrorDialog
+        open={Boolean(error)}
+        onClose={() => {
+          setError(null);
+        }}
+        errorMessage={error}
+      />
       {deactivating && (
         <UserDeleteDialog
           open={deactivating}
@@ -147,8 +156,7 @@ export default function Settings() {
                               '/notification_preferences',
                               newNotificationPreferences,
                             );
-                            console.log(successful);
-                            refresh();
+                            if (successful) refresh();
                           }}
                         />
                         <Button
