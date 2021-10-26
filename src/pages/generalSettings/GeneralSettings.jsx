@@ -12,6 +12,7 @@ import ButtonLink from '../../components/ButtonLink';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import MainColumn from '../../components/MainColumn';
 import Text from '../../components/Text';
+import DividerTitle from '../../components/DividerTitle';
 import SettingsFileUpload from '../../components/settings/SettingsFileUpload';
 import SettingsTextInput from '../../components/settings/SettingsTextInput';
 
@@ -88,16 +89,39 @@ export default function GeneralSettings() {
         direction="column"
         style={{ marginTop: 20, padding: 20 }}
       >
-        {generalSettingsFields.map(settingKey => (
-          <SettingsTextInput
-            key={settingKey}
-            settingKey={settingKey}
-            customFieldCategories={[]}
-            currentValues={currentValues}
-            setCurrentValues={setCurrentValues}
-            siteSettings={siteSettings}
-          />
-        ))}
+        <DividerTitle titleId="SITE_CONFIGURATION" />
+        <SettingsTextInput
+          settingKey="site.name"
+          customFieldCategories={[]}
+          currentValues={currentValues}
+          setCurrentValues={setCurrentValues}
+          siteSettings={siteSettings}
+        />
+        <SettingsTextInput
+          settingKey="site.private"
+          customFieldCategories={[]}
+          currentValues={currentValues}
+          setCurrentValues={setCurrentValues}
+          siteSettings={siteSettings}
+        />
+        <SettingsTextInput
+          settingKey="site.general.photoGuidelinesUrl"
+          customFieldCategories={[]}
+          currentValues={currentValues}
+          setCurrentValues={setCurrentValues}
+          siteSettings={siteSettings}
+        />
+        <DividerTitle
+          titleId="SITE_THEME"
+          style={{ marginTop: 32 }}
+        />
+        <SettingsTextInput
+          settingKey="site.look.themeColor"
+          customFieldCategories={[]}
+          currentValues={currentValues}
+          setCurrentValues={setCurrentValues}
+          siteSettings={siteSettings}
+        />
         <SettingsFileUpload
           labelId="LOGO"
           descriptionId="LOGO_DESCRIPTION"
@@ -105,6 +129,67 @@ export default function GeneralSettings() {
           allowedFileTypes={['.jpg', '.jpeg', '.png']}
           settingName="logo"
           onSetPostData={setLogoPostData}
+        />
+        <SettingsTextInput
+          settingKey="site.look.logoIncludesSiteName"
+          customFieldCategories={[]}
+          currentValues={currentValues}
+          setCurrentValues={setCurrentValues}
+          siteSettings={siteSettings}
+        />
+        <DividerTitle
+          titleId="EMAIL_SETTINGS"
+          style={{ marginTop: 32 }}
+        />
+        <SettingsTextInput
+          settingKey="email_service"
+          customFieldCategories={[]}
+          currentValues={currentValues}
+          setCurrentValues={setCurrentValues}
+          siteSettings={siteSettings}
+        />
+        {get(currentValues, 'email_service') !== '' && (
+          <>
+            <SettingsTextInput
+              settingKey="email_service_username"
+              customFieldCategories={[]}
+              currentValues={currentValues}
+              setCurrentValues={setCurrentValues}
+              siteSettings={siteSettings}
+            />
+            <SettingsTextInput
+              settingKey="email_service_password"
+              customFieldCategories={[]}
+              currentValues={currentValues}
+              setCurrentValues={setCurrentValues}
+              siteSettings={siteSettings}
+            />
+          </>
+        )}
+        <DividerTitle
+          titleId="SOCIAL_SETTINGS"
+          style={{ marginTop: 32 }}
+        />
+        <SettingsTextInput
+          settingKey="site.links.facebookLink"
+          customFieldCategories={[]}
+          currentValues={currentValues}
+          setCurrentValues={setCurrentValues}
+          siteSettings={siteSettings}
+        />
+        <SettingsTextInput
+          settingKey="site.links.instagramLink"
+          customFieldCategories={[]}
+          currentValues={currentValues}
+          setCurrentValues={setCurrentValues}
+          siteSettings={siteSettings}
+        />
+        <SettingsTextInput
+          settingKey="site.links.twitterLink"
+          customFieldCategories={[]}
+          currentValues={currentValues}
+          setCurrentValues={setCurrentValues}
+          siteSettings={siteSettings}
         />
         <Grid
           item
