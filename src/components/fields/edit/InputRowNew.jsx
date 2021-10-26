@@ -1,4 +1,6 @@
 import React from 'react';
+import Skeleton from '@material-ui/lab/Skeleton';
+
 import useLabel from '../../../hooks/useLabel';
 import useDescription from '../../../hooks/useDescription';
 import Text from '../../Text';
@@ -8,6 +10,7 @@ export default function InputRow({
   containerProps = {},
   schema,
   children,
+  loading = false,
 }) {
   const label = useLabel(schema);
   const description = useDescription(schema);
@@ -41,7 +44,7 @@ export default function InputRow({
           </Text>
         ) : null}
       </div>
-      {children}
+      {loading ? <Skeleton height={36} width={180} /> : children}
     </div>
   );
 }

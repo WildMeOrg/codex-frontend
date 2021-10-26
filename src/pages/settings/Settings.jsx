@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { get, has } from 'lodash-es';
 
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
@@ -14,6 +15,15 @@ import Text from '../../components/Text';
 import useGetMe from '../../models/users/useGetMe';
 import { useNotificationSettingsSchemas } from './useUserSettingsSchemas';
 
+function getInitialFormValues(schemas, data) {
+  return schemas.reduce((memo, field) => {
+    const valueKey = get(field, 'name');
+    const defaultValue = get(field, 'defaultValue');
+    memo[valueKey] = get(data, valueKey, defaultValue);
+    return memo;
+  }, {});
+}
+
 export default function Settings() {
   useDocumentTitle('SETTINGS_AND_PRIVACY');
 
@@ -21,7 +31,17 @@ export default function Settings() {
 
   const [deactivating, setDeactivating] = useState(false);
 
-  const notificationSettingsSchemas = useNotificationSettingsSchemas();
+  const schemas = useNotificationSettingsSchemas();
+
+  const [formValues, setFormValues] = useState({});
+  useEffect(
+    () => {
+      setFormValues(getInitialFormValues(schemas, data));
+    },
+    [schemas, data],
+  );
+
+  console.log(formValues);
 
   return (
     <MainColumn>
@@ -68,19 +88,29 @@ export default function Settings() {
               flexDirection: 'column',
             }}
           >
-            {notificationSettingsSchemas.map(notificationField => (
-              <InputRow
-                key={notificationField.name}
-                schema={notificationField}
-              >
-                <notificationField.editComponent
+            {schemas.map(notificationField => {
+              const fieldKey = get(notificationField, 'name');
+              const fieldValue = get(formValues, fieldKey);
+              return (
+                <InputRow
+                  key={fieldKey}
                   schema={notificationField}
-                  value={false}
-                  onChange={Function.prototype}
-                  minimalLabels
-                />
-              </InputRow>
-            ))}
+                  loading={!has(formValues, [fieldKey])}
+                >
+                  <notificationField.editComponent
+                    schema={notificationField}
+                    value={fieldValue}
+                    onChange={() => {
+                      setFormValues({
+                        ...formValues,
+                        [fieldKey]: !fieldValue,
+                      });
+                    }}
+                    minimalLabels
+                  />
+                </InputRow>
+              );
+            })}
           </Paper>
         </Grid>
         <Grid item style={{ width: '100%' }}>
