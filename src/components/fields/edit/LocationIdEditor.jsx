@@ -40,7 +40,7 @@ export default function LocationIdEditor(props) {
     const result = choices.map(choice => {
       const numDescendants = getNumDescendents(choice);
       const numDescendantsAsString = numDescendants
-        ? `(${numDescendants})`
+        ? ` (${numDescendants})`
         : '';
       if (!choice.locationID) {
         return {
@@ -74,7 +74,7 @@ export default function LocationIdEditor(props) {
             {option.name}
           </Text>
         )}
-        onChange={(event, newValue) => {
+        onChange={(_, newValue) => {
           if (multiple) {
             onChange(
               newValue.map(location => get(location, 'id', '')),
