@@ -19,6 +19,7 @@ export default function SettingsTextInput({
   settingKey,
 }) {
   const matchingSetting = get(siteSettings, ['data', settingKey]);
+  const matchingSettingSchema = get(matchingSetting, 'schema', {});
   const valueIsDefined =
     get(currentValues, settingKey, undefined) !== undefined;
 
@@ -87,6 +88,7 @@ export default function SettingsTextInput({
           <SettingInput
             customFieldCategories={customFieldCategories}
             schema={{
+              ...matchingSettingSchema,
               labelId: matchingSetting.labelId,
               descriptionId: matchingSetting.descriptionId,
               fieldType: matchingSetting.displayType,
