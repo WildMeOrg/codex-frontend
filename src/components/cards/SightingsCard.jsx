@@ -179,7 +179,7 @@ export default function SightingsCard({
   );
 
   return (
-    <div>
+    <div style={{ marginTop: '0.5em', marginLeft: '0.5em' }}>
       <StandardDialog
         open={modalOpen}
         onClose={onClose}
@@ -214,6 +214,7 @@ export default function SightingsCard({
       >
         {encounters && (
           <DataDisplay
+            style={{ width: '37em' }}
             noTitleBar
             columns={filteredColumns}
             data={encountersWithLocationData}

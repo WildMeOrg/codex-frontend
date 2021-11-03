@@ -74,6 +74,7 @@ function Core({
 
   if (display === 'link') {
     roleStyles = {
+      textTransform: 'none',
       background: 'none!important',
       border: 'none',
       padding: '0!important',
@@ -81,7 +82,24 @@ function Core({
       textDecoration: 'underline',
       cursor: 'pointer',
       backgroundColor: 'transparent',
+      padding: 0,
+      textAlign: 'right',
+      justifyContent: 'right',
+      fontSize: '14px',
     };
+    return (
+      <button
+        type="button"
+        style={{ ...roleStyles, ...style }}
+        {...rest}
+      >
+        {loading ? (
+          <CircularProgress size={24} style={{ color: 'white' }} />
+        ) : (
+          children
+        )}
+      </button>
+    );
   }
 
   if (disabled) {
