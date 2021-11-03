@@ -22,6 +22,7 @@ import usePostUser from '../../models/users/usePostUser';
 import useGetUsers from '../../models/users/useGetUsers';
 import UserEditTable from './UserEditTable';
 import roleSchema from './constants/roleSchema';
+import CollaborationManagementForm from '../collaborations/collaborationManagementForm'; // TODO not sure whether this is where the form component should live. Likely /components instead??
 
 export default function UserManagement() {
   const intl = useIntl();
@@ -219,6 +220,25 @@ export default function UserManagement() {
               usersError={userDataError}
               refreshUserData={refreshUserData}
             />
+          </Paper>
+        </Grid>
+        <Grid item style={{ width: '100%' }}>
+          <Text
+            variant="h6"
+            style={{ marginTop: 20, marginLeft: 12 }}
+            id="CREATE_COLLABORATIONS"
+          />
+          <Paper
+            elevation={2}
+            style={{
+              marginTop: 20,
+              marginBottom: 12,
+              padding: 24,
+              display: 'flex',
+              flexDirection: 'column',
+            }}
+          >
+            <CollaborationManagementForm userData={userData} />
           </Paper>
         </Grid>
       </Grid>
