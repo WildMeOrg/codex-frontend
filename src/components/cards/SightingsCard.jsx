@@ -178,49 +178,46 @@ export default function SightingsCard({
     columns.includes(c.reference),
   );
 
-  return (
-    <div style={{ marginTop: '0.5em', marginLeft: '0.5em' }}>
-      <StandardDialog
-        open={modalOpen}
-        onClose={onClose}
-        titleId="GPS_TITLE"
-      >
-        <DialogContent style={{ marginBottom: 24 }}>
-          <MapInSighting
-            latitude={get(gpsCoordinates, 'lat')}
-            longitude={get(gpsCoordinates, 'lng')}
-          />
-        </DialogContent>
-        <DialogActions style={{ padding: '0px 24px 24px 24px' }}>
-          <Button id="CLOSE" display="basic" onClick={onClose} />
-        </DialogActions>
-      </StandardDialog>
-      <Card
-        title={title}
-        titleId={titleId}
-        renderActions={
-          <div>
-            <IconButton
-              style={{ color: theme.palette.primary.main }}
-              aria-label="View list"
-            >
-              <ViewList />
-            </IconButton>
-            <IconButton aria-label="View chart">
-              <ViewMap />
-            </IconButton>
-          </div>
-        }
-      >
-        {encounters && (
-          <DataDisplay
-            style={{ width: '37em' }}
-            noTitleBar
-            columns={filteredColumns}
-            data={encountersWithLocationData}
-          />
-        )}
-      </Card>
-    </div>
-  );
+  return [
+    <StandardDialog
+      open={modalOpen}
+      onClose={onClose}
+      titleId="GPS_TITLE"
+    >
+      <DialogContent style={{ marginBottom: 24 }}>
+        <MapInSighting
+          latitude={get(gpsCoordinates, 'lat')}
+          longitude={get(gpsCoordinates, 'lng')}
+        />
+      </DialogContent>
+      <DialogActions style={{ padding: '0px 24px 24px 24px' }}>
+        <Button id="CLOSE" display="basic" onClick={onClose} />
+      </DialogActions>
+    </StandardDialog>,
+    <Card
+      title={title}
+      titleId={titleId}
+      renderActions={
+        <div>
+          <IconButton
+            style={{ color: theme.palette.primary.main }}
+            aria-label="View list"
+          >
+            <ViewList />
+          </IconButton>
+          <IconButton aria-label="View chart">
+            <ViewMap />
+          </IconButton>
+        </div>
+      }
+    >
+      {encounters && (
+        <DataDisplay
+          noTitleBar
+          columns={filteredColumns}
+          data={encountersWithLocationData}
+        />
+      )}
+    </Card>,
+  ];
 }
