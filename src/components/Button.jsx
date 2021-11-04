@@ -74,14 +74,34 @@ function Core({
 
   if (display === 'link') {
     roleStyles = {
-      background: 'none!important',
+      textTransform: 'none',
+      background: 'none',
       border: 'none',
-      padding: '0!important',
+      padding: '0',
       color: theme.palette.text.primary,
       textDecoration: 'underline',
       cursor: 'pointer',
       backgroundColor: 'transparent',
+      textAlign: 'right',
+      justifyContent: 'right',
+      fontSize: '14px',
     };
+    return (
+      <button
+        type="button"
+        style={{ ...roleStyles, ...style }}
+        {...rest}
+      >
+        {loading ? (
+          <CircularProgress
+            size={24}
+            style={{ color: theme.palette.common.white }}
+          />
+        ) : (
+          children
+        )}
+      </button>
+    );
   }
 
   if (disabled) {
@@ -99,7 +119,10 @@ function Core({
       {...rest}
     >
       {loading ? (
-        <CircularProgress size={24} style={{ color: 'white' }} />
+        <CircularProgress
+          size={24}
+          style={{ color: theme.palette.common.white }}
+        />
       ) : (
         children
       )}

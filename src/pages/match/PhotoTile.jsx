@@ -5,6 +5,7 @@ import IconButton from '@material-ui/core/IconButton';
 import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
 import FullscreenIcon from '@material-ui/icons/Fullscreen';
+import { useTheme } from '@material-ui/core/styles';
 
 import Button from '../../components/Button';
 import Text from '../../components/Text';
@@ -21,6 +22,7 @@ export default function PhotoTile({
   hideButtons,
   ...rest
 }) {
+  const theme = useTheme();
   return (
     <GridListTile {...rest}>
       <div
@@ -60,7 +62,10 @@ export default function PhotoTile({
                 const image = document.getElementById(imgId);
                 openFullscreen(image);
               }}
-              style={{ color: 'white', marginRight: 0 }}
+              style={{
+                color: theme.palette.common.white,
+                marginRight: 0,
+              }}
             >
               <FullscreenIcon style={{ fontSize: 28 }} />
             </IconButton>
