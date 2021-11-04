@@ -51,11 +51,9 @@ export default function Sighting({ pending = false }) {
     refresh: refreshSightingData,
   } = useSighting(id);
 
-  const agSightingData = get(assetGroupSightingData, 'config');
-
   return (
     <SightingCore
-      data={pending ? agSightingData : sightingData}
+      data={pending ? assetGroupSightingData : sightingData}
       loading={pending ? assetGroupLoading : sightingLoading}
       error={pending ? assetGroupError : sightingError}
       statusCode={pending ? assetGroupStatusCode : sightingStatusCode}
