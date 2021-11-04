@@ -2,6 +2,7 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { format } from 'date-fns';
 import Card from '@material-ui/core/Card';
+import { useTheme } from '@material-ui/core/styles';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
@@ -17,6 +18,7 @@ export default function EncounterCard({ encounter, hideSubmitted }) {
     submissionDate,
     status,
   } = encounter;
+  const theme = useTheme();
   return (
     <Card style={{ width: 240 }} elevation={0}>
       <CardActionArea>
@@ -30,7 +32,7 @@ export default function EncounterCard({ encounter, hideSubmitted }) {
               style={{
                 position: 'absolute',
                 top: 0,
-                color: 'white',
+                color: theme.palette.common.white,
                 backgroundColor: 'rgba(255, 60, 60, 0.88)',
                 width: '100%',
                 height: 40,

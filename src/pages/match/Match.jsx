@@ -10,6 +10,7 @@ import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import RightIcon from '@material-ui/icons/ChevronRight';
 import LeftIcon from '@material-ui/icons/ChevronLeft';
+import { useTheme } from '@material-ui/core/styles';
 
 import SadScreen from '../../components/SadScreen';
 import Button from '../../components/Button';
@@ -28,6 +29,7 @@ const pairs = [1, 2, 3, 4, 5, 6];
 export default function Match({ setMatching }) {
   const intl = useIntl();
   const { id } = useParams();
+  const theme = useTheme();
 
   // fetch data for Id...
   const sightings = useSelector(selectSightings);
@@ -67,14 +69,8 @@ export default function Match({ setMatching }) {
         open={Boolean(popoverData)}
         anchorEl={get(popoverData, 'element', null)}
         onClose={() => setPopoverData(null)}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'right',
-        }}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       >
         <div style={{ margin: 20 }}>
           <DataDisplay
@@ -229,7 +225,7 @@ export default function Match({ setMatching }) {
                   position: 'absolute',
                   bottom: 12,
                   left: 12,
-                  backgroundColor: 'white',
+                  backgroundColor: theme.palette.common.white,
                   border: '1px solid grey',
                   borderRadius: 12,
                   opacity: 0.9,
@@ -244,7 +240,7 @@ export default function Match({ setMatching }) {
                   position: 'absolute',
                   bottom: 12,
                   right: 12,
-                  backgroundColor: 'white',
+                  backgroundColor: theme.palette.common.white,
                   border: '1px solid grey',
                   borderRadius: 12,
                   opacity: 0.9,
