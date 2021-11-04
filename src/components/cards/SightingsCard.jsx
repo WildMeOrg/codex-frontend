@@ -178,7 +178,22 @@ export default function SightingsCard({
     columns.includes(c.reference),
   );
 
-  return (
+  return [
+    <StandardDialog
+      open={modalOpen}
+      onClose={onClose}
+      titleId="GPS_TITLE"
+    >
+      <DialogContent style={{ marginBottom: 24 }}>
+        <MapInSighting
+          latitude={get(gpsCoordinates, 'lat')}
+          longitude={get(gpsCoordinates, 'lng')}
+        />
+      </DialogContent>
+      <DialogActions style={{ padding: '0px 24px 24px 24px' }}>
+        <Button id="CLOSE" display="basic" onClick={onClose} />
+      </DialogActions>
+    </StandardDialog>,
     <Card
       title={title}
       titleId={titleId}
@@ -196,29 +211,13 @@ export default function SightingsCard({
         </div>
       }
     >
-      <StandardDialog
-        open={modalOpen}
-        onClose={onClose}
-        titleId="GPS_TITLE"
-      >
-        <DialogContent style={{ marginBottom: 24 }}>
-          <MapInSighting
-            latitude={get(gpsCoordinates, 'lat')}
-            longitude={get(gpsCoordinates, 'lng')}
-          />
-        </DialogContent>
-        <DialogActions style={{ padding: '0px 24px 24px 24px' }}>
-          <Button id="CLOSE" display="basic" onClick={onClose} />
-        </DialogActions>
-      </StandardDialog>
       {encounters && (
         <DataDisplay
-          style={{}}
           noTitleBar
           columns={filteredColumns}
           data={encountersWithLocationData}
         />
       )}
-    </Card>
-  );
+    </Card>,
+  ];
 }

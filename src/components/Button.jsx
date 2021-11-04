@@ -75,14 +75,13 @@ function Core({
   if (display === 'link') {
     roleStyles = {
       textTransform: 'none',
-      background: 'none!important',
+      background: 'none',
       border: 'none',
-      padding: '0!important',
+      padding: '0',
       color: theme.palette.text.primary,
       textDecoration: 'underline',
       cursor: 'pointer',
       backgroundColor: 'transparent',
-      padding: 0,
       textAlign: 'right',
       justifyContent: 'right',
       fontSize: '14px',
@@ -94,7 +93,10 @@ function Core({
         {...rest}
       >
         {loading ? (
-          <CircularProgress size={24} style={{ color: 'white' }} />
+          <CircularProgress
+            size={24}
+            style={{ color: theme.palette.common.white }}
+          />
         ) : (
           children
         )}
@@ -117,7 +119,10 @@ function Core({
       {...rest}
     >
       {loading ? (
-        <CircularProgress size={24} style={{ color: 'white' }} />
+        <CircularProgress
+          size={24}
+          style={{ color: theme.palette.common.white }}
+        />
       ) : (
         children
       )}
