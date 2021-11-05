@@ -15,7 +15,7 @@ import Splash from './pages/splash/Splash';
 import Footer from './components/Footer';
 import { defaultCrossfadeDuration } from './constants/defaults';
 
-export default function AuthenticatedSwitch() {
+export default function UnauthenticatedSwitch() {
   const { pathname } = useLocation();
   const home = pathname === '/';
 

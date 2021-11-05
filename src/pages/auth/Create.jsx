@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { FormattedMessage } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -8,6 +7,7 @@ import TextInput from '../../components/inputs/TextInput';
 import Button from '../../components/Button';
 import SimpleFormPage from '../../components/SimpleFormPage';
 import Text from '../../components/Text';
+import Bao from '../../components/svg/Bao';
 
 export default function Create({ callback }) {
   const history = useHistory();
@@ -31,6 +31,7 @@ export default function Create({ callback }) {
     <SimpleFormPage
       titleId="CREATE_ACCOUNT"
       instructionsId="CREATE_ACCOUNT_INSTRUCTIONS"
+      BaoComponent={Bao}
     >
       <Grid
         container
@@ -82,9 +83,8 @@ export default function Create({ callback }) {
             }}
             style={{ width: '100%' }}
             display="primary"
-          >
-            <FormattedMessage id="CREATE_ACCOUNT" />
-          </Button>
+            id="CREATE_ACCOUNT"
+          />
           {loading && (
             <CircularProgress
               size={24}
