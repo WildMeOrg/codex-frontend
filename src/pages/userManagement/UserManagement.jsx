@@ -22,7 +22,7 @@ import usePostUser from '../../models/users/usePostUser';
 import useGetUsers from '../../models/users/useGetUsers';
 import UserEditTable from './UserEditTable';
 import roleSchema from './constants/roleSchema';
-import CollaborationManagementForm from '../collaborations/collaborationManagementForm'; // TODO not sure whether this is where the form component should live. Likely /components instead??
+import CollaborationManagementForm from '../collaborations/collaborationManagementForm';
 
 export default function UserManagement() {
   const intl = useIntl();

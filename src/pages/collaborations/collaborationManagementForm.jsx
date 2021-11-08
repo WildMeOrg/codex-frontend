@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { get } from 'lodash-es';
 import { TextField } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
@@ -8,12 +8,13 @@ import CustomAlert from '../../components/Alert';
 import useEstablishCollaborationAsUserManager from '../../models/collaboration/useEstablishCollaborationAsUserManager';
 
 export default function CollaborationManagementForm({ userData }) {
-  const [buttonLoading, setButtonLoading] = useState(false);
+  const intl = useIntl();
   const [shouldDisplay, setShouldDisplay] = useState(false);
   const [user1, setUser1] = useState(null);
   const [user2, setUser2] = useState(null);
   const {
     establishCollaboration,
+    loading,
     error,
     success,
   } = useEstablishCollaborationAsUserManager();
@@ -22,14 +23,14 @@ export default function CollaborationManagementForm({ userData }) {
       <div
         style={{
           display: 'flex',
-          justifyContent: 'space-between',
+          justifyContent: 'flex-start',
           flexWrap: 'wrap',
           marginRight: 20,
         }}
       >
         <Autocomplete
           id="select-collaborator-1"
-          style={{ marginBottom: '20px' }}
+          style={{ marginBottom: '20px', marginRight: '20px' }}
           options={
             userData
               ? userData.filter(
@@ -37,7 +38,19 @@ export default function CollaborationManagementForm({ userData }) {
                 )
               : []
           }
-          getOptionLabel={option => get(option, 'full_name', 'guid')}
+          getOptionLabel={option => {
+            const name = get(option, 'full_name', null);
+            if (name) return name;
+            const email = get(option, 'email', null);
+            return (
+              intl.formatMessage({
+                id: 'UNNAMED_USER',
+              }) +
+              ' (' +
+              email +
+              ')'
+            );
+          }}
           getOptionSelected={(option, val) =>
             option.id ? option.id === val : false
           }
@@ -84,15 +97,13 @@ export default function CollaborationManagementForm({ userData }) {
           display="primary"
           size="small"
           style={{ marginBottom: '20px' }}
-          loading={buttonLoading}
+          loading={loading}
           onClick={async () => {
-            setButtonLoading(true);
             const successful = await establishCollaboration(
-              //need the await here. Otherwise, setShouldDisplay(true) below fires asynchronously
+              //need the await here. Otherwise, setShouldDisplay(true) below fires before this completes
               user1,
               user2,
             );
-            setButtonLoading(false);
             setShouldDisplay(true);
           }}
         >
