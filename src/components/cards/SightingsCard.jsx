@@ -214,6 +214,7 @@ export default function SightingsCard({
       {encounters && (
         <DataDisplay
           noTitleBar
+          tableSize="medium"
           columns={filteredColumns}
           data={encountersWithLocationData}
         />
