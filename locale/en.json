@@ -861,5 +861,10 @@
   "GPS_TITLE": "Sighting Location",
   "INVALID_GPS": "Invalid GPS Coordinates",
   "UNNAMED_USER": "Unnamed User",
-  "REGION_NAME_REMOVED": "Region Name Has Been Removed"
+  "REGION_NAME_REMOVED": "Region Name Has Been Removed",
+  "SELECT_COLLABORATOR_1": "Select Collaborator 1",
+  "SELECT_COLLABORATOR_2": "Select Collaborator 2",
+  "CREATE_COLLABORATIONS": "Create Collaborations",
+  "CREATE_COLLABORATION": "Create Collaboration",
+  "COLLABORATION_CREATEDD": "Collaboration Created"
 }
