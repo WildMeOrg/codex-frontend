@@ -1,9 +1,12 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useRef } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { v4 as uuid } from 'uuid';
 
 import Grid from '@material-ui/core/Grid';
 import InfoIcon from '@material-ui/icons/InfoOutlined';
+import Uppy from '@uppy/core';
+import { useUppy } from '@uppy/react';
+import Tus from '@uppy/tus';
 
 import UploadManager from '../../components/report/UploadManager';
 import ReportSightingsPage from '../../components/report/ReportSightingsPage';
@@ -19,6 +22,32 @@ export default function ReportSighting({ authenticated }) {
   const [exifData, setExifData] = useState([]);
   const [reporting, setReporting] = useState(false);
   const noImages = files.length === 0;
+  const [uppy, setUppy] = useState(null);
+  const [cropper, setCropper] = useState({
+    open: false,
+    imgSrc: null,
+  });
+  const uppyInstance = useUppy(() => {
+    return new Uppy({
+      meta: {
+        type: 'Report sightings image upload',
+      },
+      restrictions: {
+        allowedFileTypes: ['.jpg', '.jpeg', '.png'],
+      },
+      autoProceed: true,
+    }).use(Tus, {
+      endpoint: `${__houston_url__}/api/v1/asset_groups/tus`,
+      headers: {
+        'x-tus-transaction-id': assetSubmissionId,
+      },
+    });
+  });
+
+  /* Resolves closure / useEffect issue */
+  // https://www.youtube.com/watch?v=eTDnfS2_WE4&feature=youtu.be
+  const fileRef = useRef([]);
+  fileRef.current = files;
 
   const onBack = () => {
     window.scrollTo(0, 0);
@@ -55,6 +84,12 @@ export default function ReportSighting({ authenticated }) {
               setExifData={setExifData}
               files={files}
               setFiles={setFiles}
+              uppyInstance={uppyInstance}
+              uppy={uppy}
+              setUppy={setUppy}
+              cropper={cropper}
+              setCropper={setCropper}
+              fileRef={fileRef}
             />
             <div
               style={{
@@ -84,6 +119,7 @@ export default function ReportSighting({ authenticated }) {
               onClick={async () => {
                 window.scrollTo(0, 0);
                 setReporting(true);
+                // setShowPhotos(false);
               }}
               style={{ marginTop: 16 }}
             />

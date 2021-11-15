@@ -1,8 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { get } from 'lodash-es';
-import Uppy from '@uppy/core';
-import Tus from '@uppy/tus';
+// import Tus from '@uppy/tus';
 import Dashboard from '@uppy/react/lib/Dashboard';
 import Skeleton from '@material-ui/lab/Skeleton';
 import Cropper from './Cropper';
@@ -21,38 +20,18 @@ export default function UploadManager({
   setFiles,
   exifData,
   disabled = false,
+  uppyInstance,
+  uppy,
+  setUppy,
+  cropper,
+  setCropper,
+  fileRef,
 }) {
   const intl = useIntl();
   const currentExifData = useRef();
   currentExifData.current = exifData;
 
-  const [uppy, setUppy] = useState(null);
-  const [cropper, setCropper] = useState({
-    open: false,
-    imgSrc: null,
-  });
-
-  /* Resolves closure / useEffect issue */
-  // https://www.youtube.com/watch?v=eTDnfS2_WE4&feature=youtu.be
-  const fileRef = useRef([]);
-  fileRef.current = files;
-
   useEffect(() => {
-    const uppyInstance = Uppy({
-      meta: { type: 'Report sightings image upload' },
-      restrictions: {
-        allowedFileTypes: ['.jpg', '.jpeg', '.png'],
-      },
-      autoProceed: true,
-    });
-
-    uppyInstance.use(Tus, {
-      endpoint: `${__houston_url__}/api/v1/asset_groups/tus`,
-      headers: {
-        'x-tus-transaction-id': assetSubmissionId,
-      },
-    });
-
     uppyInstance.on('upload', onUploadStarted);
 
     uppyInstance.on('complete', uppyState => {
@@ -78,7 +57,7 @@ export default function UploadManager({
     setUppy(uppyInstance);
 
     return () => {
-      if (uppyInstance) uppyInstance.close();
+      // TODO closing the uppy session here breaks things. I don't really know the best place to close the uppy session would be now (in report sightings, presumably... also, is it even necessary now that we're using hook, which automatically destroys it upon unmounting of the report sighting component)
     };
   }, []);
 
