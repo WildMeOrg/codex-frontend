@@ -4,7 +4,6 @@ import { get } from 'lodash-es';
 
 import { getHighestRoleLabelId } from '../utils/roleUtils';
 import useUserMetadataSchemas from '../models/users/useUserMetadataSchemas';
-import useRequestCollaboration from '../models/collaboration/useRequestCollaboration';
 import useGetUserSightings from '../models/users/useGetUserSightings';
 import { formatDate } from '../utils/formatters';
 import EntityHeaderNew from './EntityHeaderNew';
@@ -140,9 +139,9 @@ export default function UserProfile({
                 <FormattedMessage id="SIGHTINGS" />
               )
             }
-            columns={['individual', 'date', 'location']}
+            columns={['individual', 'date', 'location', 'actions']}
             hideSubmitted
-            encounters={get(sightingsData, 'sightings', [])}
+            sightings={get(sightingsData, 'sightings', [])}
           />
 
           {!someoneElse && <CollaborationsCard userId={userId} />}

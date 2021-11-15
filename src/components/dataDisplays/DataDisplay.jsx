@@ -48,6 +48,7 @@ export default function DataDisplay({
   renderExpandedRow,
   variant = 'primary',
   idKey = 'id',
+  tableSize = 'small',
   noTitleBar,
   loading,
   paginated = false,
@@ -231,7 +232,7 @@ export default function DataDisplay({
       >
         <Table
           style={{ minWidth: 10 }}
-          size="small"
+          size={tableSize}
           aria-label={title}
         >
           <TableHead>
