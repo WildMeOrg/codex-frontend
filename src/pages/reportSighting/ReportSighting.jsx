@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { FormattedMessage } from 'react-intl';
+import React, { useState } from 'react';
+import { useIntl, FormattedMessage } from 'react-intl';
 import { Prompt } from 'react-router';
 
 import Grid from '@material-ui/core/Grid';
 import InfoIcon from '@material-ui/icons/InfoOutlined';
 
 import useReportUppyInstance from '../../hooks/useReportUppyInstance';
+import useReloadWarning from '../../hooks/useReloadWarning';
 import ReportSightingsPage from '../../components/report/ReportSightingsPage';
 import Text from '../../components/Text';
 import Link from '../../components/Link';
@@ -14,6 +15,7 @@ import UppyDashboard from '../../components/UppyDashboard';
 import ReportForm from './ReportForm';
 
 export default function ReportSighting({ authenticated }) {
+  const intl = useIntl();
   const [reporting, setReporting] = useState(false);
 
   const { uppy, uploadInProgress, files } = useReportUppyInstance(
@@ -22,20 +24,7 @@ export default function ReportSighting({ authenticated }) {
 
   const noImages = files.length === 0;
   const reportInProgress = files.length > 0;
-
-  useEffect(
-    () => {
-      if (reportInProgress) {
-        window.onbeforeunload = () => true;
-      } else {
-        window.onbeforeunload = null;
-      }
-      return () => {
-        window.onbeforeunload = null;
-      };
-    },
-    [reportInProgress],
-  );
+  useReloadWarning(reportInProgress);
 
   const onBack = () => {
     window.scrollTo(0, 0);
@@ -53,7 +42,9 @@ export default function ReportSighting({ authenticated }) {
     >
       <Prompt
         when={reportInProgress}
-        message="Are you sure you want to leave this page? Your changes may not be saved."
+        message={intl.formatMessage({
+          id: 'UNSAVED_CHANGES_WARNING',
+        })}
       />
       {reporting ? (
         <Button
