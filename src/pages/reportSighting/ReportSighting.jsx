@@ -1,53 +1,41 @@
-import React, { useState, useMemo, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { v4 as uuid } from 'uuid';
+import { Prompt } from 'react-router';
 
 import Grid from '@material-ui/core/Grid';
 import InfoIcon from '@material-ui/icons/InfoOutlined';
-import Uppy from '@uppy/core';
-import { useUppy } from '@uppy/react';
-import Tus from '@uppy/tus';
 
-import UploadManager from '../../components/report/UploadManager';
+import useReportUppyInstance from '../../hooks/useReportUppyInstance';
 import ReportSightingsPage from '../../components/report/ReportSightingsPage';
 import Text from '../../components/Text';
 import Link from '../../components/Link';
 import Button from '../../components/Button';
+import UppyDashboard from '../../components/UppyDashboard';
 import ReportForm from './ReportForm';
 
 export default function ReportSighting({ authenticated }) {
-  const assetSubmissionId = useMemo(uuid, []);
-  const [uploadInProgress, setUploadInProgress] = useState(false);
-  const [files, setFiles] = useState([]);
-  const [exifData, setExifData] = useState([]);
   const [reporting, setReporting] = useState(false);
-  const noImages = files.length === 0;
-  const [uppy, setUppy] = useState(null);
-  const [cropper, setCropper] = useState({
-    open: false,
-    imgSrc: null,
-  });
-  const uppyInstance = useUppy(() => {
-    return new Uppy({
-      meta: {
-        type: 'Report sightings image upload',
-      },
-      restrictions: {
-        allowedFileTypes: ['.jpg', '.jpeg', '.png'],
-      },
-      autoProceed: true,
-    }).use(Tus, {
-      endpoint: `${__houston_url__}/api/v1/asset_groups/tus`,
-      headers: {
-        'x-tus-transaction-id': assetSubmissionId,
-      },
-    });
-  });
 
-  /* Resolves closure / useEffect issue */
-  // https://www.youtube.com/watch?v=eTDnfS2_WE4&feature=youtu.be
-  const fileRef = useRef([]);
-  fileRef.current = files;
+  const { uppy, uploadInProgress, files } = useReportUppyInstance(
+    'Report sightings image upload',
+  );
+
+  const noImages = files.length === 0;
+  const reportInProgress = files.length > 0;
+
+  useEffect(
+    () => {
+      if (reportInProgress) {
+        window.onbeforeunload = () => true;
+      } else {
+        window.onbeforeunload = null;
+      }
+      return () => {
+        window.onbeforeunload = null;
+      };
+    },
+    [reportInProgress],
+  );
 
   const onBack = () => {
     window.scrollTo(0, 0);
@@ -63,6 +51,10 @@ export default function ReportSighting({ authenticated }) {
       titleId="REPORT_A_SIGHTING"
       authenticated={authenticated}
     >
+      <Prompt
+        when={reportInProgress}
+        message="Are you sure you want to leave this page? Your changes may not be saved."
+      />
       {reporting ? (
         <Button
           onClick={onBack}
@@ -72,25 +64,11 @@ export default function ReportSighting({ authenticated }) {
         />
       ) : null}
       {reporting ? (
-        <ReportForm assetReferences={files} exifData={exifData} />
+        <ReportForm assetReferences={files} />
       ) : (
         <>
           <Grid item style={{ marginTop: 20 }}>
-            <UploadManager
-              onUploadStarted={() => setUploadInProgress(true)}
-              onUploadComplete={() => setUploadInProgress(false)}
-              assetSubmissionId={assetSubmissionId}
-              exifData={exifData}
-              setExifData={setExifData}
-              files={files}
-              setFiles={setFiles}
-              uppyInstance={uppyInstance}
-              uppy={uppy}
-              setUppy={setUppy}
-              cropper={cropper}
-              setCropper={setCropper}
-              fileRef={fileRef}
-            />
+            <UppyDashboard uppyInstance={uppy} />
             <div
               style={{
                 display: 'flex',
@@ -119,7 +97,6 @@ export default function ReportSighting({ authenticated }) {
               onClick={async () => {
                 window.scrollTo(0, 0);
                 setReporting(true);
-                // setShowPhotos(false);
               }}
               style={{ marginTop: 16 }}
             />

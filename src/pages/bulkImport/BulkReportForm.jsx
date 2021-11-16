@@ -59,7 +59,7 @@ function recordHook(record) {
   return recordHookResponse;
 }
 
-export default function ReportForm({ assetReferences }) {
+export default function BulkReportForm({ assetReferences }) {
   const theme = useTheme();
   const history = useHistory();
   const [dialogOpen, setDialogOpen] = useState(false);
