@@ -1,24 +1,30 @@
-import React, { useState, useMemo } from 'react';
-import { FormattedMessage } from 'react-intl';
-import { v4 as uuid } from 'uuid';
+import React, { useState } from 'react';
+import { useIntl, FormattedMessage } from 'react-intl';
+import { Prompt } from 'react-router';
 
 import Grid from '@material-ui/core/Grid';
 import InfoIcon from '@material-ui/icons/InfoOutlined';
 
-import UploadManager from '../../components/report/UploadManager';
+import useReportUppyInstance from '../../hooks/useReportUppyInstance';
+import useReloadWarning from '../../hooks/useReloadWarning';
 import ReportSightingsPage from '../../components/report/ReportSightingsPage';
 import Text from '../../components/Text';
 import Link from '../../components/Link';
 import Button from '../../components/Button';
+import UppyDashboard from '../../components/UppyDashboard';
 import ReportForm from './ReportForm';
 
 export default function ReportSighting({ authenticated }) {
-  const assetSubmissionId = useMemo(uuid, []);
-  const [uploadInProgress, setUploadInProgress] = useState(false);
-  const [files, setFiles] = useState([]);
-  const [exifData, setExifData] = useState([]);
+  const intl = useIntl();
   const [reporting, setReporting] = useState(false);
+
+  const { uppy, uploadInProgress, files } = useReportUppyInstance(
+    'Report sightings image upload',
+  );
+
   const noImages = files.length === 0;
+  const reportInProgress = files.length > 0;
+  useReloadWarning(reportInProgress);
 
   const onBack = () => {
     window.scrollTo(0, 0);
@@ -34,6 +40,12 @@ export default function ReportSighting({ authenticated }) {
       titleId="REPORT_A_SIGHTING"
       authenticated={authenticated}
     >
+      <Prompt
+        when={reportInProgress}
+        message={intl.formatMessage({
+          id: 'UNSAVED_CHANGES_WARNING',
+        })}
+      />
       {reporting ? (
         <Button
           onClick={onBack}
@@ -43,19 +55,11 @@ export default function ReportSighting({ authenticated }) {
         />
       ) : null}
       {reporting ? (
-        <ReportForm assetReferences={files} exifData={exifData} />
+        <ReportForm assetReferences={files} />
       ) : (
         <>
           <Grid item style={{ marginTop: 20 }}>
-            <UploadManager
-              onUploadStarted={() => setUploadInProgress(true)}
-              onUploadComplete={() => setUploadInProgress(false)}
-              assetSubmissionId={assetSubmissionId}
-              exifData={exifData}
-              setExifData={setExifData}
-              files={files}
-              setFiles={setFiles}
-            />
+            <UppyDashboard uppyInstance={uppy} />
             <div
               style={{
                 display: 'flex',
