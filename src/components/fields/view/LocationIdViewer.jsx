@@ -16,13 +16,17 @@ function findLocationObject(searchId, locationList) {
 }
 
 export default function LocationIdViewer({ value, choices }) {
-  const locationIdLabel = useMemo(
+  let locationIdLabel = useMemo(
     () => {
       const locationObject = findLocationObject(value, choices);
-      return get(locationObject, 'name');
+      return get(locationObject, 'name', 'Region label not found');
     },
     [value, get(choices, 'length', 0)],
   );
+
+  if (value === null || value === undefined) {
+    locationIdLabel = 'Region not set';
+  }
 
   return (
     <Text component="span" variant="body2">

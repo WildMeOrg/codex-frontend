@@ -9,6 +9,8 @@ import Tab from '@material-ui/core/Tab';
 // import RegionIcon from '@material-ui/icons/MyLocation';
 // import ContextIcon from '@material-ui/icons/NaturePeople';
 // import SubmitterIcon from '@material-ui/icons/Person';
+
+import defaultSightingSrc from '../../assets/defaultSighting.png';
 import MainColumn from '../../components/MainColumn';
 import Text from '../../components/Text';
 import LoadingScreen from '../../components/LoadingScreen';
@@ -156,9 +158,10 @@ function SightingCore({
       <EntityHeaderNew
         renderAvatar={
           <FeaturedPhoto
-            data={data}
+            data={pending ? null : data}
             loading={loading}
             refreshSightingData={refreshData}
+            defaultPhotoSrc={defaultSightingSrc}
           />
         }
         name={intl.formatMessage(

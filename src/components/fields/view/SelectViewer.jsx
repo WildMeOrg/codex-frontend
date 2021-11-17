@@ -16,13 +16,18 @@ export default function SelectViewer({
     choice => choice[lookupKey] === value,
   );
 
+  let label = get(selectedOption, labelKey, defaultLabel);
+  if (value === null || value === undefined) {
+    label = 'Value not set';
+  }
+
   return (
     <Text
       component="span"
       variant="body2"
       id={get(selectedOption, labelIdKey, undefined)}
     >
-      {get(selectedOption, labelKey, defaultLabel)}
+      {label}
     </Text>
   );
 }
