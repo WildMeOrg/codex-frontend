@@ -1,22 +1,25 @@
-import React, { useState, useMemo } from 'react';
-import { FormattedMessage } from 'react-intl';
-import { v4 as uuid } from 'uuid';
+import React, { useState } from 'react';
+import { useIntl, FormattedMessage } from 'react-intl';
 import { get } from 'lodash-es';
+import { Prompt } from 'react-router';
 
 import Grid from '@material-ui/core/Grid';
 import InfoIcon from '@material-ui/icons/InfoOutlined';
 
 import useDocumentTitle from '../../hooks/useDocumentTitle';
+import useReloadWarning from '../../hooks/useReloadWarning';
+import useReportUppyInstance from '../../hooks/useReportUppyInstance';
 import useGetMe from '../../models/users/useGetMe';
 import UnprocessedBulkImportAlert from '../../components/bulkImport/UnprocessedBulkImportAlert';
 import Text from '../../components/Text';
 import Link from '../../components/Link';
 import Button from '../../components/Button';
+import UppyDashboard from '../../components/UppyDashboard';
 import ReportSightingsPage from '../../components/report/ReportSightingsPage';
-import UploadManager from '../../components/report/UploadManager';
-import BulkReport from './ReportForm';
+import BulkReportForm from './BulkReportForm';
 
 export default function BulkImport() {
+  const intl = useIntl();
   useDocumentTitle('REPORT_SIGHTINGS');
 
   const { data: userData } = useGetMe();
@@ -25,11 +28,14 @@ export default function BulkImport() {
     '0',
   ]);
 
-  const assetSubmissionId = useMemo(uuid, []);
-  const [files, setFiles] = useState([]);
-  const [exifData, setExifData] = useState([]);
   const [reporting, setReporting] = useState(false);
+
+  const { uppy, uploadInProgress, files } = useReportUppyInstance(
+    'Bulk import image upload',
+  );
   const noImages = files.length === 0;
+  const reportInProgress = files.length > 0;
+  useReloadWarning(reportInProgress);
 
   const onBack = () => {
     window.scrollTo(0, 0);
@@ -38,6 +44,12 @@ export default function BulkImport() {
 
   return (
     <ReportSightingsPage titleId="BULK_IMPORT" authenticated>
+      <Prompt
+        when={reportInProgress}
+        message={intl.formatMessage({
+          id: 'UNSAVED_CHANGES_WARNING',
+        })}
+      />
       {unprocessedAssetGroupId && (
         <UnprocessedBulkImportAlert
           unprocessedAssetGroupId={unprocessedAssetGroupId}
@@ -52,17 +64,13 @@ export default function BulkImport() {
         />
       ) : null}
       {reporting ? (
-        <BulkReport assetReferences={files} />
+        <BulkReportForm assetReferences={files} />
       ) : (
         <>
           <Grid item style={{ marginTop: 20 }}>
-            <UploadManager
+            <UppyDashboard
               disabled={Boolean(unprocessedAssetGroupId)}
-              assetSubmissionId={assetSubmissionId}
-              exifData={exifData}
-              setExifData={setExifData}
-              files={files}
-              setFiles={setFiles}
+              uppyInstance={uppy}
             />
             <div
               style={{
@@ -90,7 +98,9 @@ export default function BulkImport() {
               id={
                 noImages ? 'CONTINUE_WITHOUT_PHOTOGRAPHS' : 'CONTINUE'
               }
-              disabled={Boolean(unprocessedAssetGroupId)}
+              disabled={
+                uploadInProgress || Boolean(unprocessedAssetGroupId)
+              }
               onClick={async () => {
                 window.scrollTo(0, 0);
                 setReporting(true);

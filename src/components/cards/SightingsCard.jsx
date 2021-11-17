@@ -21,7 +21,7 @@ import Card from './Card';
 export default function SightingsCard({
   title,
   titleId = 'SIGHTINGS',
-  encounters,
+  sightings,
   columns = ['date', 'location', 'actions'],
   onDelete,
 }) {
@@ -83,20 +83,16 @@ export default function SightingsCard({
     return '';
   };
 
-  const encountersWithLocationData = useMemo(
-    () => {
-      const encsWithFormattedLocations = encounters.map(
-        currentEncounter => ({
-          ...currentEncounter,
-          formattedLocation: formatLocationFromSighting(
-            currentEncounter,
-            regionOptions,
-          ),
-        }),
-      );
-      return encsWithFormattedLocations;
-    },
-    [get(encounters, 'length')],
+  const sightingsWithLocationData = useMemo(
+    () =>
+      sightings.map(sighting => ({
+        ...sighting,
+        formattedLocation: formatLocationFromSighting(
+          sighting,
+          regionOptions,
+        ),
+      })),
+    [get(sightings, 'length')],
   );
 
   const allColumns = [
@@ -163,11 +159,13 @@ export default function SightingsCard({
               variant="view"
               href={`/individuals/${value}`}
             />
-            <ActionIcon
-              labelId="REMOVE"
-              variant="delete"
-              onClick={() => onDelete(value)}
-            />
+            {onDelete && (
+              <ActionIcon
+                labelId="REMOVE"
+                variant="delete"
+                onClick={() => onDelete(value)}
+              />
+            )}
           </div>
         ),
       },
@@ -211,11 +209,12 @@ export default function SightingsCard({
         </div>
       }
     >
-      {encounters && (
+      {sightings && (
         <DataDisplay
           noTitleBar
+          tableSize="medium"
           columns={filteredColumns}
-          data={encountersWithLocationData}
+          data={sightingsWithLocationData}
         />
       )}
     </Card>,

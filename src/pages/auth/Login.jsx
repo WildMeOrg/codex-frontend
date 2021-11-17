@@ -11,10 +11,11 @@ import CustomAlert from '../../components/Alert';
 
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import useLogin from '../../models/auth/useLogin';
-import InlineButton from '../../components/InlineButton';
 import Link from '../../components/Link';
+import Text from '../../components/Text';
 import Button from '../../components/Button';
 import SimpleFormPage from '../../components/SimpleFormPage';
+import BaoWaving from '../../components/svg/BaoWaving';
 
 const buttonId = 'submitLogin';
 
@@ -42,7 +43,8 @@ export default function Login({ showBanner, redirect = '/' }) {
   return (
     <SimpleFormPage
       titleId="WELCOME_BACK"
-      instructionsId="LOG_IN_INSTRUCTIONS"
+      instructionsId="LOG_IN"
+      BaoComponent={BaoWaving}
     >
       {showBanner && (
         <CustomAlert
@@ -57,7 +59,7 @@ export default function Login({ showBanner, redirect = '/' }) {
           container
           spacing={2}
           direction="column"
-          style={{ padding: '16px 0', width: 280 }}
+          style={{ padding: '8px 0 16px 0', width: 280 }}
         >
           <Grid item>
             <FormControl
@@ -118,17 +120,21 @@ export default function Login({ showBanner, redirect = '/' }) {
           </Grid>
         </Grid>
         <Typography>
-          <InlineButton>
-            <Link href="/forgot">
-              <FormattedMessage id="FORGOT_QUESTION" />
-            </Link>
-          </InlineButton>
-          <span style={{ margin: '0 12px' }}> | </span>
-          <InlineButton>
-            <Link href="/request">
-              <FormattedMessage id="REQUEST_INVITE" />
-            </Link>
-          </InlineButton>
+          <Link href="/forgot">
+            <Text
+              variant="subtitle2"
+              component="span"
+              id="FORGOT_QUESTION"
+            />
+          </Link>
+          <span style={{ margin: '0 4px' }}> | </span>
+          <Link href="/request">
+            <Text
+              variant="subtitle2"
+              component="span"
+              id="REQUEST_INVITE"
+            />
+          </Link>
         </Typography>
       </form>
     </SimpleFormPage>

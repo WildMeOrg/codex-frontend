@@ -4,11 +4,11 @@ import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import TextInput from '../../components/inputs/TextInput';
-import InlineButton from '../../components/InlineButton';
 import Link from '../../components/Link';
 import Button from '../../components/Button';
 import Text from '../../components/Text';
 import SimpleFormPage from '../../components/SimpleFormPage';
+import Bao from '../../components/svg/Bao';
 
 export default function Forgot() {
   const [email, setEmail] = useState('');
@@ -26,6 +26,7 @@ export default function Forgot() {
       <SimpleFormPage
         titleId={titleId}
         instructionsId={instructionsId}
+        BaoComponent={Bao}
       >
         <Text
           style={{ padding: '8px 16px 0 16px', maxWidth: 400 }}
@@ -37,15 +38,18 @@ export default function Forgot() {
           }}
           style={{ width: 280, margin: '24px 16px 16px 16px' }}
           display="primary"
-        >
-          <FormattedMessage id="TRY_AGAIN" />
-        </Button>
+          id="TRY_AGAIN"
+        />
       </SimpleFormPage>
     );
   }
 
   return (
-    <SimpleFormPage titleId={titleId} instructionsId={instructionsId}>
+    <SimpleFormPage
+      titleId={titleId}
+      instructionsId={instructionsId}
+      BaoComponent={Bao}
+    >
       <Grid
         container
         spacing={2}
@@ -87,17 +91,21 @@ export default function Forgot() {
         )}
         <Grid item>
           <Typography>
-            <InlineButton>
-              <Link href="/login">
-                <FormattedMessage id="LOG_IN" />
-              </Link>
-            </InlineButton>
-            <span style={{ margin: '0 12px' }}> | </span>
-            <InlineButton>
-              <Link href="/request">
-                <FormattedMessage id="REQUEST_INVITE" />
-              </Link>
-            </InlineButton>
+            <Link href="/login">
+              <Text
+                variant="subtitle2"
+                component="span"
+                id="LOG_IN"
+              />
+            </Link>
+            <span style={{ margin: '0 4px' }}> | </span>
+            <Link href="/request">
+              <Text
+                variant="subtitle2"
+                component="span"
+                id="REQUEST_INVITE"
+              />
+            </Link>
           </Typography>
         </Grid>
       </Grid>

@@ -2,8 +2,7 @@ import React from 'react';
 
 import { FormattedMessage } from 'react-intl';
 
-import CardContainer from '../../components/cards/CardContainer';
-import GpsCard from '../../components/cards/GpsCard';
+import SinglePoint from '../../components/maps/SinglePoint';
 import CustomAlert from '../../components/Alert';
 
 export default function MapInSighting({ latitude, longitude }) {
@@ -20,8 +19,8 @@ export default function MapInSighting({ latitude, longitude }) {
   }
 
   return (
-    <CardContainer>
-      <GpsCard lat={latitude} lng={longitude} titleId="" />
-    </CardContainer>
+    <div style={{ height: 400, width: 480 }}>
+      <SinglePoint lat={latitude} lng={longitude} />
+    </div>
   );
 }
