@@ -10,6 +10,7 @@ export function prepareBasicReport(
   customSightingData,
   customSightingSchemas,
   assetReferences,
+  simpleAssets = false,
 ) {
   const customSightingDictionary = transformCustomFields(
     customSightingData,
@@ -18,7 +19,9 @@ export function prepareBasicReport(
 
   const report = {
     ...sightingData,
-    assetReferences,
+    assetReferences: simpleAssets
+      ? assetReferences.map(a => get(a, 'path'))
+      : assetReferences,
     decimalLatitude: sightingData.gps[0],
     decimalLongitude: sightingData.gps[1],
     encounters: [
@@ -45,6 +48,7 @@ export function prepareReportWithEncounter(
   encounterData,
   customEncounterData,
   customEncounterSchemas,
+  simpleAssets = false,
 ) {
   const safeEncounterData = encounterData || {};
 
@@ -77,6 +81,7 @@ export function prepareReportWithEncounter(
     customSightingData,
     customSightingSchemas,
     assetReferences,
+    simpleAssets,
   );
   return {
     ...report,

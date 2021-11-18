@@ -19,12 +19,12 @@ export default function usePostAssetGroup() {
         data,
       });
       const successful = get(response, 'status') === 200;
-      const newSightingId = get(response, ['data', 'guid']);
+      const assetGroupData = get(response, 'data');
       if (successful) {
         setSuccess(true);
         setError(null);
         setLoading(false);
-        return newSightingId;
+        return assetGroupData;
       }
 
       const backendErrorMessage = get(response, 'passed_message');

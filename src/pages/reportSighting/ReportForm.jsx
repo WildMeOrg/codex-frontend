@@ -13,6 +13,7 @@ import Radio from '@material-ui/core/Radio';
 import CustomAlert from '../../components/Alert';
 // import ExifIcon from '@material-ui/icons/FlashOn';
 
+import usePostAssetGroup from '../../models/assetGroup/usePostAssetGroup';
 import useSiteSettings from '../../models/site/useSiteSettings';
 import usePutSighting from '../../models/sighting/usePutSighting';
 import useSightingFieldSchemas, {
@@ -143,6 +144,11 @@ export default function ReportForm({
   //   () => getLocationSuggestion(exifData),
   //   [exifData],
   // );
+
+  const {
+    postAssetGroup,
+    loading: postAssetGroupLoading,
+  } = usePostAssetGroup();
 
   const showErrorAlertBox =
     incompleteFields.length > 0 ||
@@ -344,6 +350,116 @@ export default function ReportForm({
                         encounterFormValues,
                         customEncounterFormValues,
                         customEncounterSchemas,
+                        true,
+                      )
+                    : prepareBasicReport(
+                        sightingFormValues,
+                        customSightingFormValues,
+                        customSightingSchemas,
+                        assetReferences,
+                        true,
+                      );
+
+                const assetGroup = {
+                  description: 'Form report from user',
+                  uploadType: 'form',
+                  speciesDetectionModel: get(
+                    report,
+                    'speciesDetectionModel',
+                    [],
+                  ),
+                  transactionId: get(assetReferences, [
+                    0,
+                    'transactionId',
+                  ]),
+                  sightings: [report],
+                };
+
+                const assetGroupData = await postAssetGroup(
+                  assetGroup,
+                );
+
+                const assetGroupSightingId = get(assetGroupData, [
+                  'asset_group_sightings',
+                  '0',
+                  'guid',
+                ]);
+                if (assetGroupSightingId) {
+                  history.push(
+                    `/pending-sightings/${assetGroupSightingId}`,
+                  );
+                }
+              }
+            }}
+            style={{ width: 320, marginBottom: 8 }}
+            loading={postAssetGroupLoading}
+            display="primary"
+          >
+            Report asset group sighting
+          </Button>
+          <Button
+            onClick={async () => {
+              // check that required fields are complete
+              const nextIncompleteFields = defaultSightingSchemas.filter(
+                field =>
+                  field.required &&
+                  field.defaultValue ===
+                    sightingFormValues[field.name],
+              );
+              setIncompleteFields(nextIncompleteFields);
+
+              // check that terms and conditions were accepted
+              setTermsError(!acceptedTerms);
+
+              let startTimeAfterEndTime = false;
+              let durationAcceptable = true;
+              // check that startTime is before endTime and duration < 24hrs
+              if (
+                sightingFormValues.startTime &&
+                sightingFormValues.endTime
+              ) {
+                startTimeAfterEndTime = isAfter(
+                  sightingFormValues.startTime,
+                  sightingFormValues.endTime,
+                );
+                setDateOrderError(startTimeAfterEndTime);
+
+                if (!startTimeAfterEndTime)
+                  durationAcceptable = isWithinInterval(
+                    sightingFormValues.endTime,
+                    {
+                      start: sightingFormValues.startTime,
+                      end: addHours(sightingFormValues.startTime, 24),
+                    },
+                  );
+                setDateDurationError(!durationAcceptable);
+              }
+
+              // check that at least one location field is present
+              const oneLocationFieldPresent =
+                sightingFormValues.locationId ||
+                sightingFormValues.verbatimLocality ||
+                get(sightingFormValues, ['gps', 0]);
+              setLocationFieldError(!oneLocationFieldPresent);
+
+              const formValid =
+                nextIncompleteFields.length === 0 &&
+                acceptedTerms &&
+                durationAcceptable &&
+                oneLocationFieldPresent &&
+                !startTimeAfterEndTime;
+
+              if (formValid) {
+                const report =
+                  sightingType === 'one'
+                    ? prepareReportWithEncounter(
+                        sightingFormValues,
+                        customSightingFormValues,
+                        customSightingSchemas,
+                        assetReferences,
+                        encounterFormValues,
+                        customEncounterFormValues,
+                        customEncounterSchemas,
                       )
                     : prepareBasicReport(
                         sightingFormValues,
@@ -351,6 +467,7 @@ export default function ReportForm({
                         customSightingSchemas,
                         assetReferences,
                       );
+
                 const newSightingId = await putSighting(report);
                 if (newSightingId) {
                   history.push(`/report/success/${newSightingId}`);
@@ -359,7 +476,7 @@ export default function ReportForm({
             }}
             style={{ width: 200 }}
             loading={loading}
-            display="primary"
+            display="secondary"
             id="REPORT_SIGHTING"
           />
         </Grid>
