@@ -23,6 +23,8 @@ import useGetUsers from '../../models/users/useGetUsers';
 import UserEditTable from './UserEditTable';
 import roleSchema from './constants/roleSchema';
 import CollaborationManagementForm from '../collaborations/collaborationManagementForm';
+import useGetAllCollaborations from '../../models/collaboration/useGetAllCollaborations';
+import UserManagersCollaborationEditTable from './UserManagerCollaborationEditTable';
 
 export default function UserManagement() {
   const intl = useIntl();
@@ -43,6 +45,13 @@ export default function UserManagement() {
     error: userDataError,
     refresh: refreshUserData,
   } = useGetUsers();
+
+  const {
+    allCollaborationData,
+    getAllCollaborationsLoading,
+    getAllCollaborationsError,
+    getAllCollaborationsRefreshCount,
+  } = useGetAllCollaborations();
 
   const [newUserEmail, setNewUserEmail] = useState('');
   const [newUserPassword, setNewUserPassword] = useState('');
@@ -257,7 +266,12 @@ export default function UserManagement() {
               flexDirection: 'column',
             }}
           >
-            <CollaborationManagementForm userData={userData} />
+            <UserManagersCollaborationEditTable
+              data={allCollaborationData}
+              loading={getAllCollaborationsLoading}
+              error={getAllCollaborationsError}
+              refresh={getAllCollaborationsRefreshCount}
+            />
           </Paper>
         </Grid>
       </Grid>

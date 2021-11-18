@@ -61,6 +61,8 @@ export default function DataDisplay({
   cellStyles = {},
   ...rest
 }) {
+  console.log('deleteMe data coming into DataDisplay is: ');
+  console.log(data);
   const initialColumnNames = columns
     .filter(c => get(c, 'options.display', true))
     .map(c => c.name);
