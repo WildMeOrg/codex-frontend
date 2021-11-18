@@ -126,7 +126,7 @@
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-image-crop": "^8.6.1",
-    "react-intl": "^4.2.2",
+    "react-intl": "^5.21.2",
     "react-player": "^2.4.0",
     "react-transition-group": "^4.4.1",
     "uuid": "^3.4.0"
