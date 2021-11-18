@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+import { useIntl } from 'react-intl';
 import { flatten, get } from 'lodash-es';
 import Text from '../../Text';
 
@@ -16,16 +17,21 @@ function findLocationObject(searchId, locationList) {
 }
 
 export default function LocationIdViewer({ value, choices }) {
+  const intl = useIntl();
   let locationIdLabel = useMemo(
     () => {
       const locationObject = findLocationObject(value, choices);
-      return get(locationObject, 'name', 'Region label not found');
+      return get(
+        locationObject,
+        'name',
+        intl.formatMessage({ id: 'REGION_LABEL_NOT_FOUND' }),
+      );
     },
     [value, get(choices, 'length', 0)],
   );
 
   if (value === null || value === undefined) {
-    locationIdLabel = 'Region not set';
+    locationIdLabel = intl.formatMessage({ id: 'REGION_NOT_SET' });
   }
 
   return (
