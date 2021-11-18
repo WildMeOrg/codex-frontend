@@ -55,7 +55,7 @@ function updateTree(tree, leafId, newLeafName) {
   });
 }
 
-function Leaf({ level, data, root, onChange, children }) {
+const Leaf = function({ level, data, root, onChange, children }) {
   return (
     <div style={{ marginLeft: level * 32, marginTop: 10 }}>
       <TextInput
@@ -89,7 +89,7 @@ function Leaf({ level, data, root, onChange, children }) {
       {children}
     </div>
   );
-}
+};
 
 function renderLevel(leaves, level, value, onChange) {
   if (!leaves) return null;

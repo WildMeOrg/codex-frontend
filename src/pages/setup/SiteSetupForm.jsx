@@ -19,9 +19,13 @@ const newSettingFields = [
   'site.general.description',
 ];
 
-function SettingInput({ customFieldCategories, schema, ...rest }) {
+const SettingInput = function({
+  customFieldCategories,
+  schema,
+  ...rest
+}) {
   return <LabeledInput schema={schema} {...rest} />;
-}
+};
 
 export default function SiteSettings({ primaryButtonId }) {
   const newSiteSettings = useSiteSettings();

@@ -8,7 +8,7 @@ import AnalysisIcon from '@material-ui/icons/BarChart';
 import Text from '../../components/Text';
 import useSiteSettings from '../../models/site/useSiteSettings';
 
-function Card({ Icon, titleId, descriptionId }) {
+const Card = function({ Icon, titleId, descriptionId }) {
   const theme = useTheme();
 
   return (
@@ -56,7 +56,7 @@ function Card({ Icon, titleId, descriptionId }) {
       />
     </Grid>
   );
-}
+};
 
 export default function Trifold() {
   const { data: siteSettings, loading, error } = useSiteSettings();

@@ -24,7 +24,7 @@ function getNewLeaf() {
   };
 }
 
-function Core({ children, required, width, style = {} }) {
+const Core = function({ children, required, width, style = {} }) {
   return (
     <FormControl
       required={required}
@@ -33,7 +33,7 @@ function Core({ children, required, width, style = {} }) {
       {children}
     </FormControl>
   );
-}
+};
 
 function flattenTree(tree) {
   const flatTree = cloneDeep(tree);
