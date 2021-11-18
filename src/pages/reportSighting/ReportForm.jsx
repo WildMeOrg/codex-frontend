@@ -148,6 +148,7 @@ export default function ReportForm({
   const {
     postAssetGroup,
     loading: postAssetGroupLoading,
+    error: postAssetGroupError,
   } = usePostAssetGroup();
 
   const showErrorAlertBox =
@@ -156,7 +157,8 @@ export default function ReportForm({
     putError ||
     locationFieldError ||
     dateDurationError ||
-    dateOrderError;
+    dateOrderError ||
+    postAssetGroupError;
 
   return (
     <>
@@ -255,6 +257,9 @@ export default function ReportForm({
               <Text variant="body2" id="DATE_DURATION_ERROR" />
             )}
             {putError && <Text variant="body2">{putError}</Text>}
+            {postAssetGroupError && (
+              <Text variant="body2">{postAssetGroupError}</Text>
+            )}
             {termsError && <Text variant="body2" id="TERMS_ERROR" />}
             {locationFieldError && (
               <Text variant="body2" id="LOCATION_FIELD_ERROR" />
