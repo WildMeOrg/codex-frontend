@@ -22,6 +22,7 @@ export default function StatusCard({ sightingData }) {
   const dateString = dateCreated
     ? formatDate(dateCreated, true)
     : 'unknown date';
+
   return (
     <Card titleId="IDENTIFICATION_PIPELINE_STATUS">
       <Timeline>

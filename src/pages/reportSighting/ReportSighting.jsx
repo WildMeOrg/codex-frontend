@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
 import { Prompt } from 'react-router';
+import { get, startsWith } from 'lodash-es';
 
 import Grid from '@material-ui/core/Grid';
 import InfoIcon from '@material-ui/icons/InfoOutlined';
@@ -42,9 +43,17 @@ export default function ReportSighting({ authenticated }) {
     >
       <Prompt
         when={reportInProgress}
-        message={intl.formatMessage({
-          id: 'UNSAVED_CHANGES_WARNING',
-        })}
+        message={location => {
+          const newLocation = get(location, 'pathname');
+          if (startsWith(newLocation, '/report/success/'))
+            return true;
+          if (startsWith(newLocation, '/pending-sightings/'))
+            return true;
+
+          return intl.formatMessage({
+            id: 'UNSAVED_CHANGES_WARNING',
+          });
+        }}
       />
       {reporting ? (
         <Button

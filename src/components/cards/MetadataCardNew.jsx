@@ -21,13 +21,14 @@ export default function MetadataCard({
   onEdit,
 }) {
   let metadataToDisplay = metadata;
-  if (!showDefaultValues)
+  if (!showDefaultValues) {
     metadataToDisplay = metadata.filter(
       field =>
         JSON.stringify(field.value) !==
         JSON.stringify(field.defaultValue),
     );
-  metadataToDisplay = metadata.filter(
+  }
+  metadataToDisplay = metadataToDisplay.filter(
     field => !field.hideInMetadataCard,
   );
 
