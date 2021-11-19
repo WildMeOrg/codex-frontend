@@ -12,6 +12,7 @@ export default function OverviewContent({
   metadata,
   sightingData,
   refreshSightingData,
+  pending,
 }) {
   const [editing, setEditing] = useState(false);
 
@@ -36,6 +37,7 @@ export default function OverviewContent({
           onClose={() => setEditing(false)}
           metadata={editableFields}
           refreshSightingData={refreshSightingData}
+          pending={pending}
         />
       ) : null}
       <CardContainer size="small">

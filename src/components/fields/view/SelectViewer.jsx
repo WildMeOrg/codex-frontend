@@ -23,7 +23,7 @@ export default function SelectViewer({
     intl.formatMessage({ id: 'OPTION_LABEL_NOT_FOUND' });
   let label = get(selectedOption, labelKey, translatedDefaultLabel);
   if (value === null || value === undefined) {
-    label = intl.formatMessage({ id: 'Value not set' });
+    label = intl.formatMessage({ id: 'VALUE_NOT_SET' });
   }
 
   return (

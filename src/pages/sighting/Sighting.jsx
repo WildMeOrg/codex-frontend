@@ -222,6 +222,7 @@ const SightingCore = function({
           metadata={metadata}
           sightingData={data}
           sightingId={id}
+          pending={pending}
           refreshSightingData={refreshData}
         />
       )}
