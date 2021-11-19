@@ -76,7 +76,19 @@ export default function CollaborationManagementForm({ userData }) {
                 )
               : []
           }
-          getOptionLabel={option => get(option, 'full_name', 'guid')}
+          getOptionLabel={option => {
+            const name = get(option, 'full_name', 'guid');
+            if (name) return name;
+            const email = get(option, 'email', null);
+            return (
+              intl.formatMessage({
+                id: 'UNNAMED_USER',
+              }) +
+              ' (' +
+              email +
+              ')'
+            );
+          }}
           getOptionSelected={(option, val) =>
             option.id ? option.id === val : false
           }

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
-import { get } from 'lodash-es';
+import { get, startsWith } from 'lodash-es';
 import { Prompt } from 'react-router';
 
 import Grid from '@material-ui/core/Grid';
@@ -46,9 +46,15 @@ export default function BulkImport() {
     <ReportSightingsPage titleId="BULK_IMPORT" authenticated>
       <Prompt
         when={reportInProgress}
-        message={intl.formatMessage({
-          id: 'UNSAVED_CHANGES_WARNING',
-        })}
+        message={location => {
+          const newLocation = get(location, 'pathname');
+          if (startsWith(newLocation, '/bulk-import/success/'))
+            return true;
+
+          return intl.formatMessage({
+            id: 'UNSAVED_CHANGES_WARNING',
+          });
+        }}
       />
       {unprocessedAssetGroupId && (
         <UnprocessedBulkImportAlert

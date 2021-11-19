@@ -50,7 +50,7 @@ export default function BulkImportSuccess() {
               width: '100%',
             }}
             display="secondary"
-            href={`/assetgroups/${id}`}
+            href={`/bulk-imports/${id}`}
             id="VIEW_BULK_IMPORT"
           />
         </Grid>

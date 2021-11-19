@@ -210,7 +210,7 @@ export default function BulkReportForm({ assetReferences }) {
                 sightingData,
                 assetReferences,
               );
-              const assetGroupId = await postAssetGroup({
+              const assetGroupData = await postAssetGroup({
                 description: 'Bulk import from user',
                 uploadType: 'bulk',
                 speciesDetectionModel: detectionModels,
@@ -220,6 +220,7 @@ export default function BulkReportForm({ assetReferences }) {
                 ]),
                 sightings,
               });
+              const assetGroupId = get(assetGroupData, 'guid');
               if (assetGroupId) {
                 history.push(`/bulk-import/success/${assetGroupId}`);
               }
