@@ -45,6 +45,7 @@
     "@emotion/core": "^10.0.14",
     "@emotion/is-prop-valid": "^0.7.3",
     "@emotion/styled": "^10.0.14",
+    "@formatjs/intl": "^1.15.2",
     "@hot-loader/react-dom": "^16.8.4",
     "@sentry/browser": "^5.6.3",
     "axios": "^0.21.1",
@@ -79,6 +80,7 @@
     "prop-types": "^15.6.2",
     "react-helmet": "^5.2.1",
     "react-hot-loader": "^4.12.8",
+    "react-intl": "^5.21.2",
     "react-redux": "^7.1.0",
     "react-router": "^5.0.1",
     "react-router-dom": "^5.0.1",
@@ -132,7 +134,6 @@
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-image-crop": "^8.6.1",
-    "react-intl": "^5.21.2",
     "react-player": "^2.4.0",
     "react-transition-group": "^4.4.1",
     "uuid": "^3.4.0"
