@@ -26,11 +26,9 @@ const { store } = storeConfigs;
 const root = document.getElementById('root');
 
 const Main = hot(() => (
-  <>
-    <Provider store={store}>
-      <App />
-    </Provider>
-  </>
+  <Provider store={store}>
+    <App />
+  </Provider>
 ));
 
 const load = () => render(<Main />, root);

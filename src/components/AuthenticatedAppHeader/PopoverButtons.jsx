@@ -139,7 +139,7 @@ import IndividualsButton from './IndividualsButton';
 //   );
 // }
 
-function EntityButton({
+const EntityButton = function({
   titleId,
   entities,
   noAvatar,
@@ -261,7 +261,7 @@ function EntityButton({
       </Popover>
     </div>
   );
-}
+};
 
 export default function PopoverButtons() {
   return (

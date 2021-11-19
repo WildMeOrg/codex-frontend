@@ -10,7 +10,7 @@ import Link from './Link';
 import Text from './Text';
 import InlineButton from './InlineButton';
 
-function Details({ entity, titleKey, renderDetails }) {
+const Details = function({ entity, titleKey, renderDetails }) {
   return (
     <>
       <Text
@@ -29,7 +29,7 @@ function Details({ entity, titleKey, renderDetails }) {
       {renderDetails(entity)}
     </>
   );
-}
+};
 
 export default function EntityCard({
   renderDetails,

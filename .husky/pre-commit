@@ -1,0 +1,6 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+echo "Running pre commit hook"
+
+NODE_ENV=development BABEL_ENV=development npx lint-staged

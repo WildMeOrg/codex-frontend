@@ -34,7 +34,7 @@ const colors = [
   },
 ];
 
-function Core({ children, required, width, style = {} }) {
+const Core = function({ children, required, width, style = {} }) {
   return (
     <FormControl
       required={required}
@@ -43,9 +43,9 @@ function Core({ children, required, width, style = {} }) {
       {children}
     </FormControl>
   );
-}
+};
 
-function ColorInput(props) {
+const ColorInput = function(props) {
   const {
     schema,
     required,
@@ -105,6 +105,6 @@ function ColorInput(props) {
       )}
     </Core>
   );
-}
+};
 
 export default memo(ColorInput);

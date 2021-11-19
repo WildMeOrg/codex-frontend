@@ -31,13 +31,13 @@ const messageMap = {
   es: messagesEs,
 };
 
-function ScrollToTop() {
+const ScrollToTop = function() {
   const { pathname } = useLocation();
 
   useEffect(() => window.scrollTo(0, 0), [pathname]);
 
   return null;
-}
+};
 
 function reducer(state, action) {
   const { type, data } = action;
@@ -66,7 +66,7 @@ function reducer(state, action) {
   return state;
 }
 
-function ContextualizedApp() {
+const ContextualizedApp = function() {
   const locale = useSelector(selectLocale);
   const { data, error } = useSiteSettings();
 
@@ -94,7 +94,7 @@ function ContextualizedApp() {
       </IntlProvider>
     </ThemeProvider>
   );
-}
+};
 
 export default function App() {
   const [state, dispatch] = useReducer(reducer, initialState);

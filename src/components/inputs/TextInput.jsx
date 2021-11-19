@@ -5,7 +5,7 @@ import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import TextField from '@material-ui/core/TextField';
 
-function Core({ children, required, width, style = {} }) {
+const Core = function({ children, required, width, style = {} }) {
   return (
     <FormControl
       required={required}
@@ -14,9 +14,9 @@ function Core({ children, required, width, style = {} }) {
       {children}
     </FormControl>
   );
-}
+};
 
-function TextInput(props) {
+const TextInput = function(props) {
   const {
     schema,
     required,
@@ -81,6 +81,6 @@ function TextInput(props) {
       )}
     </Core>
   );
-}
+};
 
 export default memo(TextInput);
