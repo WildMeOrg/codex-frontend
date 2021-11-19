@@ -76,7 +76,6 @@
     "minimist": "^1.2.5",
     "normalize.css": "^8.0.1",
     "prettier": "1.15.1",
-    "prettier-eslint": "^8.8.2",
     "prop-types": "^15.6.2",
     "react-helmet": "^5.2.1",
     "react-hot-loader": "^4.12.8",
