@@ -17,12 +17,12 @@ const LightTooltip = withStyles(theme => ({
   },
 }))(Tooltip);
 
-const WaffleSquare = ({
+const WaffleSquare = function({
   job,
   size = 10,
   gap = '3px',
   categoryData,
-}) => {
+}) {
   const theme = useTheme();
   const intl = useIntl();
 

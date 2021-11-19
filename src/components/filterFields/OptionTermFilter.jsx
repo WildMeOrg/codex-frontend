@@ -10,7 +10,7 @@ import FormControl from '@material-ui/core/FormControl';
 
 import Text from '../Text';
 
-function OptionTermFilter(props) {
+const OptionTermFilter = function(props) {
   const {
     label,
     labelId,
@@ -112,6 +112,6 @@ function OptionTermFilter(props) {
       ) : null}
     </FormControl>
   );
-}
+};
 
 export default memo(OptionTermFilter);

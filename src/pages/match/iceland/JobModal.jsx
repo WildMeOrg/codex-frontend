@@ -21,7 +21,7 @@ import { getFeature, setStatus } from './utils';
 
 const actionAreaWidth = 160;
 
-function PairContainer(props) {
+const PairContainer = function(props) {
   return (
     <div
       style={{
@@ -34,7 +34,7 @@ function PairContainer(props) {
       {...props}
     />
   );
-}
+};
 
 export default function JobModal({
   open,

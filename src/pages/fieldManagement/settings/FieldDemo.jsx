@@ -3,7 +3,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import StandardDialog from '../../../components/StandardDialog';
 import Text from '../../../components/Text';
 
-function Editor({ schema, value, onChange }) {
+const Editor = function({ schema, value, onChange }) {
   const componentProps = schema.editComponentProps || {};
 
   return (
@@ -14,7 +14,7 @@ function Editor({ schema, value, onChange }) {
       {...componentProps}
     />
   );
-}
+};
 
 export default function FieldDemo({
   open,

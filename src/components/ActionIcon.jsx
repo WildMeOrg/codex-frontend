@@ -33,7 +33,7 @@ const variantMap = {
   },
 };
 
-function Core({ variant, labelId, ...rest }) {
+const Core = function({ variant, labelId, ...rest }) {
   const intl = useIntl();
   const config = variantMap[variant];
   const label = intl.formatMessage({ id: labelId || config.labelId });
@@ -45,7 +45,7 @@ function Core({ variant, labelId, ...rest }) {
       </IconButton>
     </Tooltip>
   );
-}
+};
 
 export default function ActionIcon({ href, linkProps, ...rest }) {
   if (href) {

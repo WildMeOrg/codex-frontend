@@ -112,7 +112,7 @@ export default function CollaborationManagementForm({ userData }) {
           loading={loading}
           onClick={async () => {
             const successful = await establishCollaboration(
-              //need the await here. Otherwise, setShouldDisplay(true) below fires before this completes
+              // need the await here. Otherwise, setShouldDisplay(true) below fires before this completes
               user1,
               user2,
             );

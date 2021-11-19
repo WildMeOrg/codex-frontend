@@ -67,7 +67,7 @@ export default function Sighting({ pending = false }) {
   );
 }
 
-function SightingCore({
+const SightingCore = function({
   data,
   loading,
   error,
@@ -246,7 +246,7 @@ function SightingCore({
       )}
     </MainColumn>
   );
-}
+};
 
 /*
 {activeTab === '#annotations' && (
