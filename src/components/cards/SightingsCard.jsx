@@ -17,6 +17,7 @@ import MapInSighting from '../../pages/sighting/MapInSighting';
 import ActionIcon from '../ActionIcon';
 import DataDisplay from '../dataDisplays/DataDisplay';
 import Card from './Card';
+import SightingMapViewCard from '../cards/SightingMapViewCard';
 
 export default function SightingsCard({
   title,
@@ -28,10 +29,21 @@ export default function SightingsCard({
   const [modalOpen, setModalOpen] = useState(false);
 
   const [gpsCoordinates, setGpsCoordiates] = useState(null);
+  const [showMapView, setShowMapView] = useState(false);
   const onClose = () => setModalOpen(false);
   const theme = useTheme();
   const { regionOptions } = useOptions();
   const intl = useIntl();
+
+  const mapModeClicked = function() {
+    console.log('deleteMe clicked here!');
+    setShowMapView(true);
+  };
+
+  const listModeClicked = function() {
+    console.log('deleteMe listModeClicked');
+    setShowMapView(false);
+  };
 
   const formatLocationFromSighting = (sighting, regionOpts) => {
     const currentSightingLocId = get(sighting, 'locationId', '');
@@ -200,22 +212,29 @@ export default function SightingsCard({
           <IconButton
             style={{ color: theme.palette.primary.main }}
             aria-label="View list"
+            onClick={listModeClicked}
           >
             <ViewList />
           </IconButton>
-          <IconButton aria-label="View chart">
+          <IconButton
+            aria-label="View chart"
+            onClick={mapModeClicked}
+          >
             <ViewMap />
           </IconButton>
         </div>
       }
     >
-      {sightings && (
+      {sightings && !showMapView && (
         <DataDisplay
           noTitleBar
           tableSize="medium"
           columns={filteredColumns}
           data={sightingsWithLocationData}
         />
+      )}
+      {sightings && showMapView && (
+        <SightingMapViewCard data={sightingsWithLocationData} />
       )}
     </Card>,
   ];
