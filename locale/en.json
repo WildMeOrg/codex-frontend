@@ -17,6 +17,8 @@
   "VALUE_NOT_SET": "Value not set",
   "OPTION_LABEL_NOT_FOUND": "Option label not found",
   "SITE_THEME": "Site theme",
+  "ANIMAL_DETECTION": "Animal detection",
+  "SIGHTING_CURATION": "Sighting curation",
   "SITE_CONFIGURATION": "Site configuration",
   "EMAIL_SETTINGS": "Email settings",
   "SOCIAL_SETTINGS": "Social settings",

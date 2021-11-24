@@ -6,6 +6,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 
 import CustomAlert from '../../components/Alert';
 import usePatchSighting from '../../models/sighting/usePatchSighting';
+import usePatchAssetGroupSighting from '../../models/assetGroupSighting/usePatchAssetGroupSighting';
 import InputRow from '../../components/fields/edit/InputRowNew';
 import Button from '../../components/Button';
 import StandardDialog from '../../components/StandardDialog';
@@ -28,13 +29,26 @@ export default function EditSightingMetadata({
   metadata,
   onClose,
   refreshSightingData,
+  pending,
 }) {
   const {
-    updateProperties,
-    loading,
-    error,
-    setError,
+    updateProperties: updateSightingProperties,
+    loading: sightingLoading,
+    error: sightingError,
+    setError: setSightingError,
   } = usePatchSighting();
+
+  const {
+    updateProperties: updateAgsProperties,
+    loading: agsLoading,
+    error: agsError,
+    setError: setAgsError,
+  } = usePatchAssetGroupSighting();
+
+  const error = pending ? agsError : sightingError;
+  const setError = pending ? setAgsError : setSightingError;
+  const loading = pending ? agsLoading : sightingLoading;
+  const updateProperties = pending ? updateAgsProperties : updateSightingProperties;
 
   const defaultFieldMetadata = metadata.filter(
     field => !field.customField,
