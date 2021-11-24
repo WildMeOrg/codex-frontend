@@ -16,14 +16,56 @@ export default function UserManagersCollaborationEditTable({
   error,
   refresh,
 }) {
+  function getNthAlphabeticalMemberObj(obj, n) {
+    // derived from https://stackoverflow.com/questions/39483677/how-to-get-first-n-elements-of-an-object-using-lodash
+    const memberObject = Object.keys(obj)
+      .sort()
+      .slice(n - 1, n)
+      .reduce((memo, current) => obj[current], {});
+
+    // Convert empty strings to undefined so that they get handled appropriately by lodash get later omg this is so silly
+    if (get(memberObject, 'full_name') === '')
+      memberObject.full_name = undefined;
+
+    return memberObject;
+  }
   function transformData(inputData) {
     if (!inputData || inputData.length === 0) return null;
-    // TODO change the below values of userOne, userTwo, and status once DEX-553 gets resolved
     return inputData.map(entry => ({
+      // Note: the collaboration API call returned a members OBJECT instead of array of objects, which made some tranformation gymnastics here necessary
       guid: get(entry, 'guid'),
-      userOne: get(entry, ['user_guids', '0']),
-      userTwo: get(entry, ['user_guids', '1']),
-      status: 'Accepted',
+      userOne: get(
+        getNthAlphabeticalMemberObj(get(entry, 'members'), 1),
+        'full_name',
+        get(
+          getNthAlphabeticalMemberObj(get(entry, 'members'), 1),
+          'email',
+        ),
+      ),
+      userTwo: get(
+        getNthAlphabeticalMemberObj(get(entry, 'members'), 2),
+        'full_name',
+        get(
+          getNthAlphabeticalMemberObj(get(entry, 'members'), 2),
+          'email',
+        ),
+      ),
+      viewStatusOne: get(
+        getNthAlphabeticalMemberObj(get(entry, 'members'), 1),
+        'viewState',
+      ),
+      viewStatusTwo: get(
+        getNthAlphabeticalMemberObj(get(entry, 'members'), 2),
+        'viewState',
+      ),
+      // editStatusOne: get(
+      //   getNthAlphabeticalMemberObj(get(entry, 'members'), 1),
+      //   'editState',
+      // ),
+      // editStatusTwo: get(
+      //   getNthAlphabeticalMemberObj(get(entry, 'members'), 2),
+      //   'editState',
+      // ),
     }));
   }
   data = transformData(data);
@@ -32,6 +74,7 @@ export default function UserManagersCollaborationEditTable({
   const tableColumns = [
     {
       name: 'userOne',
+      align: 'right',
       label: intl.formatMessage({ id: 'USER_ONE' }),
       options: {
         customBodyRender: userOne => (
@@ -40,9 +83,29 @@ export default function UserManagersCollaborationEditTable({
       },
     },
     {
-      name: 'userTwo',
+      name: 'viewStatusOne',
       align: 'left',
-      label: intl.formatMessage({ id: 'USER_TWO' }),
+      label: intl.formatMessage({ id: 'USER_ONE_VIEW_STATUS' }),
+      options: {
+        customBodyRender: viewStatusOne => (
+          <Text variant="body2">{viewStatusOne}</Text>
+        ),
+      },
+    }, // {
+    //   name: 'editStatusOne',
+    //   label: intl.formatMessage({ id: 'USER_ONE_EDIT_STATUS' }),
+    //   options: {
+    //     customBodyRender: editStatusOne => (
+    //       <Text variant="body2">{editStatusOne}</Text>
+    //     ),
+    //   },
+    // },
+    {
+      name: 'userTwo',
+      align: 'right',
+      label: intl.formatMessage({
+        id: 'USER_TWO',
+      }),
       options: {
         customBodyRender: userTwo => (
           <Text variant="body2">{userTwo}</Text>
@@ -50,25 +113,35 @@ export default function UserManagersCollaborationEditTable({
       },
     },
     {
-      name: 'status',
+      name: 'viewStatusTwo',
       align: 'left',
-      label: intl.formatMessage({ id: 'COLLABORATION_STATUS' }),
+      label: intl.formatMessage({ id: 'USER_TWO_VIEW_STATUS' }),
       options: {
-        customBodyRender: status => (
-          <Text variant="body2">{status}</Text>
+        customBodyRender: viewStatusTwo => (
+          <Text variant="body2">{viewStatusTwo}</Text>
         ),
       },
-    },
+    }, // {
+    //   name: 'editStatusTwo',
+    //   label: intl.formatMessage({ id: 'USER_TWO_EDIT_STATUS' }),
+    //   options: {
+    //     customBodyRender: editStatusTwo => (
+    //       <Text variant="body2">{editStatusTwo}</Text>
+    //     ),
+    //   },
+    // },
     {
       name: 'actions',
       align: 'left',
-      label: intl.formatMessage({ id: 'ACTIONS' }),
+      label: intl.formatMessage({
+        id: 'ACTIONS',
+      }),
       options: {
         displayInFilter: false,
         customBodyRender: (_, collaboration) => (
           <div style={{ display: 'flex' }}>
             <ActionIcon
-              variant="edit"
+              variant="revoke"
               onClick={() => setEditCollaboration(collaboration)}
             />
           </div>
