@@ -9,6 +9,8 @@ export default function usePatchCollaboration() {
   const [success, setSuccess] = useState(false);
 
   const patchCollaboration = async (collaborationId, data) => {
+    console.log('deleteMe data in patchCollaboration is: ');
+    console.log(data);
     try {
       setLoading(true);
       const patchResponse = await axios({

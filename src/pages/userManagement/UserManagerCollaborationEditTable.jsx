@@ -8,7 +8,8 @@ import Grid from '@material-ui/core/Grid';
 import Text from '../../components/Text';
 import DataDisplay from '../../components/dataDisplays/DataDisplay';
 import ActionIcon from '../../components/ActionIcon';
-import CollaborationsDialog from '../../components/cards/collaborations/CollaborationsDialog';
+import usePatchCollaboration from '../../models/collaboration/usePatchCollaboration';
+// import CollaborationsDialog from '../../components/cards/collaborations/CollaborationsDialog';
 
 export default function UserManagersCollaborationEditTable({
   data,
@@ -16,7 +17,33 @@ export default function UserManagersCollaborationEditTable({
   error,
   refresh,
 }) {
-  function getNthAlphabeticalMemberObj(obj, n) {
+  const {
+    patchCollaboration,
+    loading: patchLoading,
+    error: patchError,
+    setError: patchSetError,
+    success: patchSuccess,
+    setSuccess: patchSetSuccess,
+  } = usePatchCollaboration();
+  async function processRevoke(collaboration) {
+    const collaborationData = {
+      op: 'replace',
+      path: '/view_permission',
+      value: 'revoked',
+    };
+    const response = await patchCollaboration(
+      get(collaboration, 'guid'),
+      collaborationData,
+    );
+    console.log('deleteMe response is: ');
+    console.log(response);
+    console.log(
+      'delteMe processRevoke clicked and collaboration is: ',
+    );
+    console.log(collaboration);
+  }
+
+  function getNthAlphabeticalMemberObjAndMakeLodashReady(obj, n) {
     // derived from https://stackoverflow.com/questions/39483677/how-to-get-first-n-elements-of-an-object-using-lodash
     const memberObject = Object.keys(obj)
       .sort()
@@ -35,35 +62,53 @@ export default function UserManagersCollaborationEditTable({
       // Note: the collaboration API call returned a members OBJECT instead of array of objects, which made some tranformation gymnastics here necessary
       guid: get(entry, 'guid'),
       userOne: get(
-        getNthAlphabeticalMemberObj(get(entry, 'members'), 1),
+        getNthAlphabeticalMemberObjAndMakeLodashReady(
+          get(entry, 'members'),
+          1,
+        ),
         'full_name',
         get(
-          getNthAlphabeticalMemberObj(get(entry, 'members'), 1),
+          getNthAlphabeticalMemberObjAndMakeLodashReady(
+            get(entry, 'members'),
+            1,
+          ),
           'email',
         ),
       ),
       userTwo: get(
-        getNthAlphabeticalMemberObj(get(entry, 'members'), 2),
+        getNthAlphabeticalMemberObjAndMakeLodashReady(
+          get(entry, 'members'),
+          2,
+        ),
         'full_name',
         get(
-          getNthAlphabeticalMemberObj(get(entry, 'members'), 2),
+          getNthAlphabeticalMemberObjAndMakeLodashReady(
+            get(entry, 'members'),
+            2,
+          ),
           'email',
         ),
       ),
       viewStatusOne: get(
-        getNthAlphabeticalMemberObj(get(entry, 'members'), 1),
+        getNthAlphabeticalMemberObjAndMakeLodashReady(
+          get(entry, 'members'),
+          1,
+        ),
         'viewState',
       ),
       viewStatusTwo: get(
-        getNthAlphabeticalMemberObj(get(entry, 'members'), 2),
+        getNthAlphabeticalMemberObjAndMakeLodashReady(
+          get(entry, 'members'),
+          2,
+        ),
         'viewState',
       ),
       // editStatusOne: get(
-      //   getNthAlphabeticalMemberObj(get(entry, 'members'), 1),
+      //   getNthAlphabeticalMemberObjAndMakeLodashReady(get(entry, 'members'), 1),
       //   'editState',
       // ),
       // editStatusTwo: get(
-      //   getNthAlphabeticalMemberObj(get(entry, 'members'), 2),
+      //   getNthAlphabeticalMemberObjAndMakeLodashReady(get(entry, 'members'), 2),
       //   'editState',
       // ),
     }));
@@ -74,7 +119,7 @@ export default function UserManagersCollaborationEditTable({
   const tableColumns = [
     {
       name: 'userOne',
-      align: 'right',
+      align: 'right', // Alignments in this table don't look great, but they are grouped into visually meaningful chunks. I'm open to more aesthetically pleasing ideas
       label: intl.formatMessage({ id: 'USER_ONE' }),
       options: {
         customBodyRender: userOne => (
@@ -142,7 +187,7 @@ export default function UserManagersCollaborationEditTable({
           <div style={{ display: 'flex' }}>
             <ActionIcon
               variant="revoke"
-              onClick={() => setEditCollaboration(collaboration)}
+              onClick={() => processRevoke(collaboration)}
             />
           </div>
         ),
@@ -152,14 +197,14 @@ export default function UserManagersCollaborationEditTable({
 
   return (
     <Grid item>
-      <CollaborationsDialog
+      {/* <CollaborationsDialog
         open={Boolean(editCollaboration)}
         onClose={() => {
           setEditCollaboration(null);
         }}
         activeCollaboration={editCollaboration}
         refreshCollaborationData={refresh}
-      />
+      /> */}
       <DataDisplay
         idKey="guid"
         title={<FormattedMessage id="EDIT_COLLABORATIONS" />}
