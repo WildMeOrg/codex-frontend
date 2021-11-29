@@ -48,7 +48,9 @@ export default function EditSightingMetadata({
   const error = pending ? agsError : sightingError;
   const setError = pending ? setAgsError : setSightingError;
   const loading = pending ? agsLoading : sightingLoading;
-  const updateProperties = pending ? updateAgsProperties : updateSightingProperties;
+  const updateProperties = pending
+    ? updateAgsProperties
+    : updateSightingProperties;
 
   const defaultFieldMetadata = metadata.filter(
     field => !field.customField,

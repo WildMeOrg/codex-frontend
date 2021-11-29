@@ -22,8 +22,8 @@ export default function StatusCard({ sightingData }) {
   const dateString = dateCreated
     ? formatDate(dateCreated, true)
     : 'unknown date';
-  const detectionComplete = get(sightingData, 'stage') !== 'detection';
-
+  const detectionComplete =
+    get(sightingData, 'stage') !== 'detection';
 
   return (
     <Card titleId="IDENTIFICATION_PIPELINE_STATUS">
@@ -64,7 +64,9 @@ export default function StatusCard({ sightingData }) {
         </TimelineItem>
         <TimelineItem style={{ minHeight: 100 }}>
           <TimelineSeparator>
-            <TimelineDot color={detectionComplete ? 'primary' : undefined}>
+            <TimelineDot
+              color={detectionComplete ? 'primary' : undefined}
+            >
               <CurationIcon />
             </TimelineDot>
             <TimelineConnector />

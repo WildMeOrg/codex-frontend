@@ -12,6 +12,11 @@ import useIndividual from '../../models/individual/useIndividual';
 import useDeleteIndividual from '../../models/individual/useDeleteIndividual';
 import usePatchIndividual from '../../models/individual/usePatchIndividual';
 
+// VERILY BAD HOTFIX //
+import defaultIndividualSrc from '../../assets/defaultIndividual.png';
+import FeaturedPhoto from '../sighting/featuredPhoto/FeaturedPhoto';
+// VERILY BAD HOTFIX //
+
 import useIndividualFieldSchemas from '../../models/individual/useIndividualFieldSchemas';
 import LoadingScreen from '../../components/LoadingScreen';
 import MoreMenu from '../../components/MoreMenu';
@@ -162,7 +167,14 @@ export default function Individual() {
       />
       <EntityHeaderNew
         name={defaultName}
-        renderAvatar={Function.prototype}
+        renderAvatar={
+          <FeaturedPhoto
+            data={null}
+            loading={false}
+            refreshSightingData={Function.prototype}
+            defaultPhotoSrc={defaultIndividualSrc}
+          />
+        }
         renderOptions={
           <div style={{ display: 'flex' }}>
             <Button display="primary">SUBSCRIBE</Button>

@@ -84,14 +84,19 @@ export default function SightingsCard({
   };
 
   const sightingsWithLocationData = useMemo(
-    () =>
-      sightings.map(sighting => ({
+    () => {
+      // hotfix //
+      if (!sightings) return [];
+      // hotfix //
+
+      return sightings.map(sighting => ({
         ...sighting,
         formattedLocation: formatLocationFromSighting(
           sighting,
           regionOptions,
         ),
-      })),
+      }));
+    },
     [get(sightings, 'length')],
   );
 
@@ -155,10 +160,7 @@ export default function SightingsCard({
       options: {
         customBodyRender: value => (
           <div>
-            <ActionIcon
-              variant="view"
-              href={`/sightings/${value}`}
-            />
+            <ActionIcon variant="view" href={`/sightings/${value}`} />
             {onDelete && (
               <ActionIcon
                 labelId="REMOVE"
