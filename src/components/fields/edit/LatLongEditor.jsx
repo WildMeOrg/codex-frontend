@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useIntl } from 'react-intl';
 import { get } from 'lodash-es';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -9,6 +9,17 @@ import LatLngMap from './mapUtils/LatLngMap';
 import Button from '../../Button';
 import StandardDialog from '../../StandardDialog';
 import useDescription from '../../../hooks/useDescription';
+
+function deriveGpsStringsFromValue(value) {
+  const currentLatitude = get(value, '0', null);
+  const currentLongitude = get(value, '1', null);
+  return {
+    latitudeString: currentLatitude ? currentLatitude.toString() : '',
+    longitudeString: currentLongitude
+      ? currentLongitude.toString()
+      : '',
+  };
+}
 
 export default function LatLongEditor({
   schema,
@@ -24,14 +35,33 @@ export default function LatLongEditor({
   const [modalOpen, setModalOpen] = useState(false);
   const [mapLatLng, setMapLatLng] = useState(null);
 
+  const {
+    latitudeString: initialLatitudeString,
+    longitudeString: initialLongitudeString,
+  } = useMemo(() => deriveGpsStringsFromValue(value));
+
+  const [currentLatitudeString, setCurrentLatitudeString] = useState(
+    initialLatitudeString,
+  );
+  const [
+    currentLongitudeString,
+    setCurrentLongitudeString,
+  ] = useState(initialLongitudeString);
+
+  useEffect(
+    () => {
+      const {
+        latitudeString,
+        longitudeString,
+      } = deriveGpsStringsFromValue(value);
+      setCurrentLatitudeString(latitudeString);
+      setCurrentLongitudeString(longitudeString);
+    },
+    [get(value, '0'), get(value, '1')],
+  );
+
   const currentLatitude = get(value, '0', null);
   const currentLongitude = get(value, '1', null);
-  const currentLatitudeString = currentLatitude
-    ? currentLatitude.toString()
-    : '';
-  const currentLongitudeString = currentLongitude
-    ? currentLongitude.toString()
-    : '';
 
   const onClose = () => setModalOpen(false);
   const showDescription = !minimalLabels && description;
@@ -46,7 +76,13 @@ export default function LatLongEditor({
           value={currentLatitudeString}
           onChange={e => {
             const inputValue = e.target.value;
-            onChange([parseFloat(inputValue), currentLongitude]);
+            const floatValue = parseFloat(inputValue);
+            if (Number.isNaN(floatValue)) {
+              onChange([parseFloat(inputValue), currentLongitude]);
+            } else {
+              onChange([null, currentLongitude]);
+              setCurrentLatitudeString(inputValue);
+            }
           }}
         />
         <TextField
@@ -56,7 +92,13 @@ export default function LatLongEditor({
           value={currentLongitudeString}
           onChange={e => {
             const inputValue = e.target.value;
-            onChange([currentLatitude, parseFloat(inputValue)]);
+            const floatValue = parseFloat(inputValue);
+            if (Number.isNaN(floatValue)) {
+              onChange([currentLatitude, parseFloat(inputValue)]);
+            } else {
+              onChange([currentLatitude, null]);
+              setCurrentLongitudeString(inputValue);
+            }
           }}
         />
       </div>
