@@ -12,28 +12,30 @@ function createMapOptions() {
 }
 
 export default function ManyPoints({ latLongLabelArr }) {
+  console.log('deleteMe got here');
   console.log('deleteMe latLongLabelArr is: ');
   console.log(latLongLabelArr);
+  console.log('deleteMe hey there!!');
   return (
     <GoogleMapReact
-      ref={ref => {
-        this.map = ref;
-      }}
       options={createMapOptions}
-      bootstrapURLKeys={{ key: googleMapsApiKey }} // defaultCenter={{ lat, lng }}
+      bootstrapURLKeys={{ key: googleMapsApiKey }}
       defaultZoom={7}
-      yesIWantToUseGoogleMapApiInternals
     >
-      {latLongLabelArr.map(entry => (
-        <Marker
-          key={get(entry, 'text', '')}
-          name={get(entry, 'text', '')}
-          position={{
-            lat: get(entry, 'lat'),
-            long: get(entry, 'long'),
-          }}
-        />
-      ))}
+      {latLongLabelArr.map(entry => {
+        console.log('deleteMe entry is: ');
+        console.log(entry);
+        return (
+          <Marker
+            key={get(entry, 'text', '')}
+            name={get(entry, 'text', '')}
+            position={{
+              lat: get(entry, 'lat'),
+              long: get(entry, 'long'),
+            }}
+          />
+        );
+      })}
     </GoogleMapReact>
   );
 }
