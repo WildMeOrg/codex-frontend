@@ -1,6 +1,5 @@
 import React from 'react';
 import { render } from 'react-dom';
-import { Provider } from 'react-redux';
 import { hot } from 'react-hot-loader/root';
 import * as Sentry from '@sentry/react';
 import { get } from 'lodash-es';
@@ -12,7 +11,6 @@ import './styles/globalStyles.css';
 import { sentryDsn } from './constants/apiKeys';
 import pjson from '../package.json';
 import App from './App';
-import storeConfigs from './store';
 
 if (!__DEV__) {
   Sentry.init({
@@ -21,15 +19,9 @@ if (!__DEV__) {
   });
 }
 
-const { store } = storeConfigs;
-
 const root = document.getElementById('root');
 
-const Main = hot(() => (
-  <Provider store={store}>
-    <App />
-  </Provider>
-));
+const Main = hot(() => <App />);
 
 const load = () => render(<Main />, root);
 
