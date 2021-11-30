@@ -1,5 +1,5 @@
 import React from 'react';
-import GoogleMapReact, { Marker } from 'google-map-react';
+import GoogleMapReact from 'google-map-react';
 // import  from 'google-map-react';
 
 import { googleMapsApiKey } from '../../constants/apiKeys';
@@ -11,6 +11,8 @@ function createMapOptions() {
   };
 }
 
+const AnyReactComponent = ({ text }) => <div>{text}</div>;
+
 export default function ManyPoints({ latLongLabelArr }) {
   console.log('deleteMe got here');
   console.log('deleteMe latLongLabelArr is: ');
@@ -21,20 +23,31 @@ export default function ManyPoints({ latLongLabelArr }) {
       options={createMapOptions}
       bootstrapURLKeys={{ key: googleMapsApiKey }}
       defaultZoom={7}
+      defaultCenter={{ lat: 0, lng: 0 }}
+      yesIWantToUseGoogleMapApiInternals
     >
       {latLongLabelArr.map(entry => {
         console.log('deleteMe entry is: ');
         console.log(entry);
+        const tmpLat = get(entry, 'lat');
+        console.log('typeof tmpLat is: ');
+        console.log(typeof tmpLat);
+        const tmpLong = get(entry, 'long');
+        console.log('typeof tmpLong is: ');
+        console.log(typeof tmpLong);
         return (
-          <Marker
+          <AnyReactComponent
+            style={{ outlineColor: 'red' }}
             key={get(entry, 'text', '')}
             name={get(entry, 'text', '')}
-            position={{
-              lat: get(entry, 'lat'),
-              long: get(entry, 'long'),
-            }}
+            lat={get(entry, 'lat')}
+            lng={get(entry, 'long')}
           />
         );
+        // position={{
+        //   lat: get(entry, 'lat'),
+        //   long: get(entry, 'long'),
+        // }}
       })}
     </GoogleMapReact>
   );
