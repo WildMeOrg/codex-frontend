@@ -36,6 +36,7 @@ export default function ManyPoints({ latLongLabelArr }) {
       onGoogleApiLoaded={({ map, maps }) => {
         const bounds = new maps.LatLngBounds();
         console.log('deleteMe GoogleMapReact render fired');
+        const markerArr = [];
         latLongLabelArr.forEach(entry => {
           const currentLat = get(entry, 'lat');
           const currentLong = get(entry, 'long');
@@ -46,25 +47,55 @@ export default function ManyPoints({ latLongLabelArr }) {
               title: get(entry, 'text'),
             });
             marker.setMap(map);
-            const infoWindow = new maps.InfoWindow({
-              content: get(entry, 'text'),
-              map: map,
-            });
-            console.log('deleteMe infoWindow is: ');
-            console.log(infoWindow);
+            // const infoWindow = new maps.InfoWindow({
+            //   content: get(entry, 'text'),
+            //   map: map,
+            // });
 
-            maps.event.addListener(marker, 'click', marker => {
-              console.log('deleteMe hey! Clicked!');
-              infoWindow.setContent(get(entry, 'text'));
-              infoWindow.open(map, marker);
-            });
+            // maps.event.addListener(marker, 'click', () => {
+            //   console.log('deleteMe hey! Clicked!');
+            //   infoWindow.setContent(get(entry, 'text'));
+            //   console.log('deleteMe infoWindow is: ');
+            //   console.log(infoWindow);
+            //   infoWindow.open(map, this);
+            //   console.log('deleteMe done');
+            // });
+            markerArr.push(marker);
             bounds.extend(latLng);
           }
         });
-        map.fitBounds(bounds);
-        // maps.event.addListener(map, 'bounds_changed', function() {
-        //   console.log('deleteMe got here and bounds changed in the end');
+
+        // markerArr.forEach(marker => {
+        //   bounds.extend(marker.position);
         // });
+        map.fitBounds(bounds);
+
+        // map.fitBounds(bounds);
+
+        maps.event.addListener(map, 'bounds_changed', function() {
+          console.log(
+            'deleteMe got here and bounds changed in the end',
+          );
+          markerArr.forEach(marker => {
+            const infoWindow = new maps.InfoWindow({
+              content: get(marker, 'title'),
+              map: map,
+            });
+
+            marker.addListener('click', () => {
+              infoWindow.open(marker.get('map'), marker);
+            });
+
+            // maps.event.addListener(marker, 'click', () => {
+            //   console.log('deleteMe hey! Clicked!');
+            //   infoWindow.setContent(get(marker, 'title'));
+            //   console.log('deleteMe infoWindow is: ');
+            //   console.log(infoWindow);
+            //   infoWindow.open(map, this);
+            //   console.log('deleteMe done');
+            // });
+          });
+        });
       }}
     >
       {/* {latLongLabelArr.map(entry => {
