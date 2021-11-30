@@ -1,7 +1,5 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
 import DialogContent from '@material-ui/core/DialogContent';
-import { selectTermsAndConditions } from '../../modules/site/selectors';
 import Text from '../Text';
 import StandardDialog from '../StandardDialog';
 
@@ -9,7 +7,7 @@ export default function TermsAndConditionsDialog({
   visible,
   onClose,
 }) {
-  const termsAndConditions = useSelector(selectTermsAndConditions);
+  const termsAndConditions = 'These are our terms: liberty or death!';
 
   return (
     <StandardDialog

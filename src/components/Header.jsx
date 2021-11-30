@@ -7,6 +7,7 @@ import Text from './Text';
 
 export default function Header({
   title,
+  titleId,
   showButton,
   showButtonLink,
   buttonLinkHref,
@@ -28,6 +29,7 @@ export default function Header({
         variant="h3"
         component="h3"
         style={{ padding: '16px 0 16px 16px' }}
+        id={titleId}
       >
         {title}
       </Text>
