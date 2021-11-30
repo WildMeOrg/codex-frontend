@@ -9,6 +9,8 @@ import Tab from '@material-ui/core/Tab';
 // import RegionIcon from '@material-ui/icons/MyLocation';
 // import ContextIcon from '@material-ui/icons/NaturePeople';
 // import SubmitterIcon from '@material-ui/icons/Person';
+
+import defaultSightingSrc from '../../assets/defaultSighting.png';
 import MainColumn from '../../components/MainColumn';
 import Text from '../../components/Text';
 import LoadingScreen from '../../components/LoadingScreen';
@@ -51,11 +53,9 @@ export default function Sighting({ pending = false }) {
     refresh: refreshSightingData,
   } = useSighting(id);
 
-  const agSightingData = get(assetGroupSightingData, 'config');
-
   return (
     <SightingCore
-      data={pending ? agSightingData : sightingData}
+      data={pending ? assetGroupSightingData : sightingData}
       loading={pending ? assetGroupLoading : sightingLoading}
       error={pending ? assetGroupError : sightingError}
       statusCode={pending ? assetGroupStatusCode : sightingStatusCode}
@@ -67,7 +67,7 @@ export default function Sighting({ pending = false }) {
   );
 }
 
-function SightingCore({
+const SightingCore = function({
   data,
   loading,
   error,
@@ -158,9 +158,10 @@ function SightingCore({
       <EntityHeaderNew
         renderAvatar={
           <FeaturedPhoto
-            data={data}
+            data={pending ? null : data}
             loading={loading}
             refreshSightingData={refreshData}
+            defaultPhotoSrc={defaultSightingSrc}
           />
         }
         name={intl.formatMessage(
@@ -221,6 +222,7 @@ function SightingCore({
           metadata={metadata}
           sightingData={data}
           sightingId={id}
+          pending={pending}
           refreshSightingData={refreshData}
         />
       )}
@@ -245,7 +247,7 @@ function SightingCore({
       )}
     </MainColumn>
   );
-}
+};
 
 /*
 {activeTab === '#annotations' && (

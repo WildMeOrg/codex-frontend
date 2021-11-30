@@ -4,7 +4,7 @@ import MuiAlert from '@material-ui/lab/Alert';
 import AlertTitle from '@material-ui/lab/AlertTitle';
 import Text from './Text';
 
-function Core({
+const Core = function({
   descriptionId = '',
   description,
   descriptionValues,
@@ -28,7 +28,7 @@ function Core({
       </div>
     </MuiAlert>
   );
-}
+};
 
 export default function CustomAlert({
   titleId = '',

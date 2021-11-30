@@ -34,7 +34,7 @@ const stepMap = {
   },
 };
 
-function ArrowButton({ onClick, disabled, Icon }) {
+const ArrowButton = function({ onClick, disabled, Icon }) {
   const theme = useTheme();
 
   return (
@@ -51,9 +51,14 @@ function ArrowButton({ onClick, disabled, Icon }) {
       <Icon fontSize="large" />
     </IconButton>
   );
-}
+};
 
-function StepButton({ translationId, step, setStep, active }) {
+const StepButton = function({
+  translationId,
+  step,
+  setStep,
+  active,
+}) {
   return (
     <InlineButton
       onClick={() => setStep(step)}
@@ -67,7 +72,7 @@ function StepButton({ translationId, step, setStep, active }) {
       <FormattedMessage id={translationId} />
     </InlineButton>
   );
-}
+};
 
 export default function HowItWorks() {
   const theme = useTheme();

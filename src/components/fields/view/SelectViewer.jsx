@@ -1,4 +1,5 @@
 import React from 'react';
+import { useIntl } from 'react-intl';
 import { get } from 'lodash-es';
 import Text from '../../Text';
 
@@ -8,13 +9,22 @@ export default function SelectViewer({
   lookupKey = 'value',
   labelKey = 'label',
   labelIdKey = 'labelId',
-  defaultLabel = 'Option label not found',
+  defaultLabel,
 }) {
+  const intl = useIntl();
   const { choices } = schema;
 
   const selectedOption = choices.find(
     choice => choice[lookupKey] === value,
   );
+
+  const translatedDefaultLabel =
+    defaultLabel ||
+    intl.formatMessage({ id: 'OPTION_LABEL_NOT_FOUND' });
+  let label = get(selectedOption, labelKey, translatedDefaultLabel);
+  if (value === null || value === undefined) {
+    label = intl.formatMessage({ id: 'VALUE_NOT_SET' });
+  }
 
   return (
     <Text
@@ -22,7 +32,7 @@ export default function SelectViewer({
       variant="body2"
       id={get(selectedOption, labelIdKey, undefined)}
     >
-      {get(selectedOption, labelKey, defaultLabel)}
+      {label}
     </Text>
   );
 }

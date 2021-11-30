@@ -19,7 +19,7 @@ export default function useAssetGroupSighting(assetGroupSightingId) {
       const fetchAssetGroupSightingData = async () => {
         try {
           const response = await axios.request({
-            url: `${__houston_url__}/api/v1/asset_groups/sighting/${assetGroupSightingId}`,
+            url: `${__houston_url__}/api/v1/asset_groups/sighting/as_sighting/${assetGroupSightingId}`,
             method: 'get',
           });
 

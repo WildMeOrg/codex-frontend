@@ -6,7 +6,7 @@ import IconButton from '@material-ui/core/IconButton';
 
 import Text from '../Text';
 
-function Core({ Icon, onClick, titleId, style = {} }) {
+const Core = function({ Icon, onClick, titleId, style = {} }) {
   const theme = useTheme();
 
   return (
@@ -25,7 +25,7 @@ function Core({ Icon, onClick, titleId, style = {} }) {
       </IconButton>
     </Tooltip>
   );
-}
+};
 
 export default function HeaderButton({
   showBadge,

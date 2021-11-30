@@ -169,7 +169,7 @@ export default function SightingsCard({
           <div>
             <ActionIcon
               variant="view"
-              href={`/individuals/${value}`}
+              href={`/sightings/${value}`}
             />
             {onDelete && (
               <ActionIcon

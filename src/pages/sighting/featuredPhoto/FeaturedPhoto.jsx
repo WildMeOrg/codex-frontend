@@ -4,13 +4,14 @@ import { get } from 'lodash-es';
 
 import { useTheme } from '@material-ui/core/styles';
 import SvgText from '../../../components/SvgText';
-import defaultProfilePhoto from '../../../assets/defaultProfile.jpg';
+import defaultProfilePhotoSrc from '../../../assets/defaultProfile.jpg';
 import FeaturedPhotoSelector from './FeaturedPhotoSelector';
 
 export default function FeaturedPhoto({
   data,
   loading,
   refreshSightingData,
+  defaultPhotoSrc = defaultProfilePhotoSrc,
   size = 150,
 }) {
   const theme = useTheme();
@@ -53,7 +54,7 @@ export default function FeaturedPhoto({
         />
       ) : (
         <img
-          src={featuredPhotoSrc || defaultProfilePhoto}
+          src={featuredPhotoSrc || defaultPhotoSrc}
           alt="Featured asset"
           style={{
             objectFit: 'cover',
