@@ -89,6 +89,7 @@ export default function IndividualsDisplay({
       }}
       dataCount={hitCount}
       paginatedExternally
+      showNoResultsBao
       renderExpandedRow={expandedIndividual => (
         <div style={{ display: 'flex' }}>
           {/* <img

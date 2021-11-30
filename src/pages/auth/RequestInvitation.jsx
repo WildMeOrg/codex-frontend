@@ -7,7 +7,7 @@ import ButtonLink from '../../components/ButtonLink';
 import Button from '../../components/Button';
 import Text from '../../components/Text';
 import SimpleFormPage from '../../components/SimpleFormPage';
-import Bao from '../../components/svg/Bao';
+import BaoLetter from '../../components/svg/BaoLetter';
 
 export default function RequestInvitation() {
   const [email, setEmail] = useState('');
@@ -27,7 +27,8 @@ export default function RequestInvitation() {
       <SimpleFormPage
         titleId={titleId}
         instructionsId="REQUEST_SENT"
-        BaoComponent={Bao}
+        BaoComponent={BaoLetter}
+        baoStyles={{ width: 320 }}
       >
         <ButtonLink
           href="/"
@@ -44,7 +45,8 @@ export default function RequestInvitation() {
     <SimpleFormPage
       titleId={titleId}
       instructionsId={instructionsId}
-      BaoComponent={Bao}
+      BaoComponent={BaoLetter}
+      baoStyles={{ width: 320 }}
     >
       <Grid
         container
@@ -91,9 +93,8 @@ export default function RequestInvitation() {
             style={{ width: '100%' }}
             display="primary"
             loading={loading}
-          >
-            <FormattedMessage id="SEND_REQUEST" />
-          </Button>
+            id="SEND_REQUEST"
+          />
         </Grid>
         {error && (
           <Text
