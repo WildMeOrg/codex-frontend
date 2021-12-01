@@ -14,6 +14,7 @@ export default function SightingMapViewCard({
     .filter(entry => get(entry, 'decimalLatitude', null) !== null)
     .map(entry => {
       return {
+        guid: get(entry, 'id'),
         text:
           'Sighting on ' + get(entry, 'startTime', 'Unknown Date'),
         lat: get(entry, 'decimalLatitude', null),

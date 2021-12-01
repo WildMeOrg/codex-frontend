@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
+import ReactDOMServer from 'react-dom/server';
 import GoogleMapReact from 'google-map-react';
-// import  from 'google-map-react';
 
 import { googleMapsApiKey } from '../../constants/apiKeys';
 import { get } from 'lodash';
+
+import Link from '../Link';
+import Marker from './Marker';
 
 function createMapOptions() {
   return {
@@ -11,9 +14,8 @@ function createMapOptions() {
   };
 }
 
-const Marker = ({ text }) => <div>{text}</div>;
-
 export default function ManyPoints({ latLongLabelArr }) {
+  const [clickAwayClicked, setClickAwayClicked] = useState(false);
   console.log('deleteMe got here');
   console.log('deleteMe latLongLabelArr is: ');
   console.log(latLongLabelArr);
@@ -31,78 +33,58 @@ export default function ManyPoints({ latLongLabelArr }) {
       options={createMapOptions}
       bootstrapURLKeys={{ key: googleMapsApiKey }}
       defaultZoom={7}
-      defaultCenter={{ lat: 0, lng: 0 }}
+      defaultCenter={
+        { lat: 0, lng: 0 } // doesn't matter but both zoom and center need defaults
+      }
       yesIWantToUseGoogleMapApiInternals
+      onChildMouseDown={() => {}}
+      onClick={() => {
+        console.log('deleteMe a1 map clicked');
+        setClickAwayClicked(true);
+      }}
       onGoogleApiLoaded={({ map, maps }) => {
         const bounds = new maps.LatLngBounds();
-        console.log('deleteMe GoogleMapReact render fired');
-        const markerArr = [];
         latLongLabelArr.forEach(entry => {
           const currentLat = get(entry, 'lat');
           const currentLong = get(entry, 'long');
           if (currentLat && currentLong) {
             const latLng = new maps.LatLng(currentLat, currentLong);
-            const marker = new maps.Marker({
-              position: latLng,
-              title: get(entry, 'text'),
-            });
-            marker.setMap(map);
+            // const marker = new maps.Marker({
+            //   position: latLng,
+            //   title: get(entry, 'text'),
+            // });
+            // marker.setMap(map);
             // const infoWindow = new maps.InfoWindow({
-            //   content: get(entry, 'text'),
+            //   content: ReactDOMServer.renderToString(
+            //     <Link href={`/sightings/${get(entry, 'guid')}`}>
+            //       {get(entry, 'text')}
+            //     </Link>,
+            //   ),
             //   map: map,
             // });
-
-            // maps.event.addListener(marker, 'click', () => {
-            //   console.log('deleteMe hey! Clicked!');
-            //   infoWindow.setContent(get(entry, 'text'));
-            //   console.log('deleteMe infoWindow is: ');
-            //   console.log(infoWindow);
-            //   infoWindow.open(map, this);
-            //   console.log('deleteMe done');
+            // marker.addListener('click', () => {
+            //   infoWindow.open(marker.get('map'), marker);
             // });
-            markerArr.push(marker);
             bounds.extend(latLng);
           }
         });
-
-        // markerArr.forEach(marker => {
-        //   bounds.extend(marker.position);
-        // });
         map.fitBounds(bounds);
-
-        // map.fitBounds(bounds);
-
-        maps.event.addListener(map, 'bounds_changed', function() {
-          console.log(
-            'deleteMe got here and bounds changed in the end',
-          );
-          markerArr.forEach(marker => {
-            const infoWindow = new maps.InfoWindow({
-              content: get(marker, 'title'),
-              map: map,
-            });
-
-            marker.addListener('click', () => {
-              infoWindow.open(marker.get('map'), marker);
-            });
-
-            // maps.event.addListener(marker, 'click', () => {
-            //   console.log('deleteMe hey! Clicked!');
-            //   infoWindow.setContent(get(marker, 'title'));
-            //   console.log('deleteMe infoWindow is: ');
-            //   console.log(infoWindow);
-            //   infoWindow.open(map, this);
-            //   console.log('deleteMe done');
-            // });
-          });
-        });
+        // maps.event.addListener(map, 'click', event => {
+        //   console.log('deleteMe a1 map clicked before');
+        //   setClickAwayClicked(true);
+        //   // event.stopPropagation();
+        //   console.log('deleteMe a1 map clicked after');
+        // });
       }}
     >
-      {/* {latLongLabelArr.map(entry => {
+      {latLongLabelArr.map(entry => {
         const tmpLat = get(entry, 'lat');
         const tmpLong = get(entry, 'long');
         return (
           <Marker
+            entry={entry}
+            clickAwayClicked={clickAwayClicked}
+            setClickAwayClicked={setClickAwayClicked}
             text={get(entry, 'text', '')}
             style={{ outlineColor: 'red' }}
             key={get(entry, 'text', '')}
@@ -111,7 +93,7 @@ export default function ManyPoints({ latLongLabelArr }) {
             lng={get(entry, 'long')}
           />
         );
-      })} */}
+      })}
     </GoogleMapReact>
   );
 }
