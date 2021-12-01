@@ -23,10 +23,9 @@ export default function BulkImport() {
   useDocumentTitle('REPORT_SIGHTINGS');
 
   const { data: userData } = useGetMe();
-  const unprocessedAssetGroupId = get(userData, [
-    'unprocessed_asset_groups',
-    '0',
-  ]);
+  const unprocessedAssetGroups = get(userData, 'unprocessed_asset_groups', [])
+  const unprocessedBulks = unprocessedAssetGroups.filter(ag => get(ag, 'uploadType') !== 'form')
+  const unprocessedAssetGroupId = get(unprocessedBulks, ['0', 'uuid']);
 
   const [reporting, setReporting] = useState(false);
 
