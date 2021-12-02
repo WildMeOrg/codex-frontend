@@ -26,7 +26,7 @@ const variantMap = {
     artistUrl: 'https://unsplash.com/@editholic7',
     subtitle: 'Server unavailable',
     description:
-      'The server could not be reached. Unfortunately, normal site functionality is currently unavailable. Check back at a later date.',
+      'The server could not be reached. Unfortunately, normal site functionality is currently unavailable. Check back at a later date or try refreshing the page.',
   },
   notFoundOcean: {
     photo: ocean,

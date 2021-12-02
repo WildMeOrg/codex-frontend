@@ -73,7 +73,10 @@ const ContextualizedApp = function() {
   const adminUserInitialized = get(data, 'site.adminUserInitialized');
   const primaryColor = get(data, ['site.look.themeColor', 'value']);
 
-  if (error) return <SadScreen variant="serverError" />;
+  if (error) {
+    document.title = 'Server Unavailable';
+    return <SadScreen variant="serverError" />;
+  }
   if (!primaryColor) return null;
   const theme = createTheme(materialTheme(primaryColor));
 
