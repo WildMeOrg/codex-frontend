@@ -37,6 +37,10 @@ export default function EditIndividualMetadata({
     setError,
   } = usePatchIndividual();
 
+  // hotfix //
+  metadata = metadata || [];
+  // hotfix //
+
   const defaultFieldMetadata = metadata.filter(
     field => !field.customField,
   );

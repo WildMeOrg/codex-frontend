@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { toLower } from 'lodash-es';
 import WebIcon from '@material-ui/icons/Web';
@@ -14,7 +13,6 @@ import CardContainer from '../../components/cards/CardContainer';
 import SightingsCard from '../../components/cards/SightingsCard';
 import MembersCard from '../../components/cards/MembersCard';
 import MetadataCard from '../../components/cards/MetadataCard';
-import { selectOrgs } from '../../modules/orgs/selectors';
 import orgSchema, {
   orgSchemaCategories,
 } from '../../constants/orgSchema';
@@ -26,7 +24,7 @@ export default function Org() {
   useDocumentTitle(id, { translateMessage: false });
 
   // fetch data for Id...
-  const orgs = useSelector(selectOrgs);
+  const orgs = [];
   const [editingProfile, setEditingProfile] = useState(false);
 
   const org = orgs[toLower(id)];

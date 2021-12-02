@@ -10,7 +10,7 @@ import { useTheme } from '@material-ui/core/styles';
 
 import useGetSiteInfo from '../../models/site/useGetSiteInfo';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
-import useServerStatus from '../../modules/administration/useServerStatus';
+import useServerStatus from '../../models/server/useServerStatus';
 import MainColumn from '../../components/MainColumn';
 import ButtonLink from '../../components/ButtonLink';
 import Text from '../../components/Text';

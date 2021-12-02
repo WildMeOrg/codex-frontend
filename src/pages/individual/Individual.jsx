@@ -1,6 +1,5 @@
 import React, { useState, useMemo } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { get, capitalize } from 'lodash-es';
 
@@ -11,6 +10,11 @@ import StatusIcon from '@material-ui/icons/LocalHospital';
 import useIndividual from '../../models/individual/useIndividual';
 import useDeleteIndividual from '../../models/individual/useDeleteIndividual';
 import usePatchIndividual from '../../models/individual/usePatchIndividual';
+
+// VERILY BAD HOTFIX //
+import defaultIndividualSrc from '../../assets/defaultIndividual.png';
+import FeaturedPhoto from '../sighting/featuredPhoto/FeaturedPhoto';
+// VERILY BAD HOTFIX //
 
 import useIndividualFieldSchemas from '../../models/individual/useIndividualFieldSchemas';
 import LoadingScreen from '../../components/LoadingScreen';
@@ -27,7 +31,6 @@ import GalleryCard from '../../components/cards/GalleryCard';
 import ConfirmDelete from '../../components/ConfirmDelete';
 import RelationshipsCard from '../../components/cards/RelationshipsCard';
 import CooccurrenceCard from '../../components/cards/CooccurrenceCard';
-import { selectIndividuals } from '../../modules/individuals/selectors';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import EditIndividualMetadata from './EditIndividualMetadata';
 import fakeAssets from './fakeAssets';
@@ -96,9 +99,6 @@ export default function Individual() {
     setError: setPatchError,
   } = usePatchIndividual();
 
-  // fetch data for Id...
-  const individuals = useSelector(selectIndividuals);
-
   useDocumentTitle(capitalize(defaultName), {
     translateMessage: false,
   });
@@ -108,7 +108,7 @@ export default function Individual() {
 
   if (loading) return <LoadingScreen />;
 
-  const individual = individuals.teddy;
+  const individual = null;
   if (!individual)
     return (
       <SadScreen
@@ -162,7 +162,14 @@ export default function Individual() {
       />
       <EntityHeaderNew
         name={defaultName}
-        renderAvatar={Function.prototype}
+        renderAvatar={
+          <FeaturedPhoto
+            data={null}
+            loading={false}
+            refreshSightingData={Function.prototype}
+            defaultPhotoSrc={defaultIndividualSrc}
+          />
+        }
         renderOptions={
           <div style={{ display: 'flex' }}>
             <Button display="primary">SUBSCRIBE</Button>

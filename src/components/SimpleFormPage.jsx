@@ -11,6 +11,7 @@ export default function SimpleFormPage({
   titleId,
   instructionsId,
   BaoComponent,
+  baoStyles = {},
   children,
 }) {
   const theme = useTheme();
@@ -37,7 +38,7 @@ export default function SimpleFormPage({
         />
         {BaoComponent && (
           <BaoComponent
-            style={{ width: 280 }}
+            style={{ width: 280, ...baoStyles }}
             themeColor={themeColorDark}
             themeColorLight={themeColorLight}
           />

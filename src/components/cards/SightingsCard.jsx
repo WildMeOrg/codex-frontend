@@ -94,14 +94,19 @@ export default function SightingsCard({
   };
 
   const sightingsWithLocationData = useMemo(
-    () =>
-      sightings.map(sighting => ({
+    () => {
+      // hotfix //
+      if (!sightings) return [];
+      // hotfix //
+
+      return sightings.map(sighting => ({
         ...sighting,
         formattedLocation: formatLocationFromSighting(
           sighting,
           regionOptions,
         ),
-      })),
+      }));
+    },
     [get(sightings, 'length')],
   );
 

@@ -8,7 +8,7 @@ import Link from '../../components/Link';
 import Button from '../../components/Button';
 import Text from '../../components/Text';
 import SimpleFormPage from '../../components/SimpleFormPage';
-import Bao from '../../components/svg/Bao';
+import BaoConfused from '../../components/svg/BaoConfused';
 
 export default function Forgot() {
   const [email, setEmail] = useState('');
@@ -26,7 +26,7 @@ export default function Forgot() {
       <SimpleFormPage
         titleId={titleId}
         instructionsId={instructionsId}
-        BaoComponent={Bao}
+        BaoComponent={BaoConfused}
       >
         <Text
           style={{ padding: '8px 16px 0 16px', maxWidth: 400 }}
@@ -48,7 +48,7 @@ export default function Forgot() {
     <SimpleFormPage
       titleId={titleId}
       instructionsId={instructionsId}
-      BaoComponent={Bao}
+      BaoComponent={BaoConfused}
     >
       <Grid
         container

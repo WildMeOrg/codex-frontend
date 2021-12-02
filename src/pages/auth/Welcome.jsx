@@ -1,15 +1,17 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { useSelector } from 'react-redux';
+import { get } from 'lodash-es';
 import Grid from '@material-ui/core/Grid';
+
+import useSiteSettings from '../../models/site/useSiteSettings';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import MainColumn from '../../components/MainColumn';
 import ButtonLink from '../../components/ButtonLink';
 import Text from '../../components/Text';
-import { selectSiteName } from '../../modules/site/selectors';
 
 export default function Welcome() {
-  const siteName = useSelector(selectSiteName);
+  const { data: siteSettings } = useSiteSettings();
+  const siteName = get(siteSettings, ['site.name', 'value'], '');
   useDocumentTitle('WELCOME');
 
   return (
