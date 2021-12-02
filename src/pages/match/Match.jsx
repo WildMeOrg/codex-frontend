@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { get, toLower } from 'lodash-es';
 
@@ -16,7 +15,6 @@ import SadScreen from '../../components/SadScreen';
 import Button from '../../components/Button';
 import Text from '../../components/Text';
 import DataDisplay from '../../components/dataDisplays/DataDisplay';
-import { selectSightings } from '../../modules/sightings/selectors';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import fluke from '../../assets/fluke.png';
 import fluke2 from '../../assets/cascade.jpg';
@@ -32,7 +30,7 @@ export default function Match({ setMatching }) {
   const theme = useTheme();
 
   // fetch data for Id...
-  const sightings = useSelector(selectSightings);
+  const sightings = [];
   useDocumentTitle('MATCH_REVIEW');
   const [popoverData, setPopoverData] = useState(null);
 

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
 import { useIntl } from 'react-intl';
 import { get } from 'lodash-es';
 
@@ -12,17 +11,12 @@ import Text from '../../components/Text';
 import ConfirmDelete from '../../components/ConfirmDelete';
 import useGetUsers from '../../models/users/useGetUsers';
 import useGetMe from '../../models/users/useGetMe';
-import { selectSiteName } from '../../modules/site/selectors';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 
 export default function Users() {
   const intl = useIntl();
-  const siteName = useSelector(selectSiteName);
-  const pageTitle = intl.formatMessage(
-    { id: 'USERS_PAGE_TITLE' },
-    { siteName },
-  );
-  useDocumentTitle(pageTitle, { translateMessage: false });
+
+  useDocumentTitle('USERS');
   const [userToDelete, setUserToDelete] = useState(null);
 
   const { data, loading, error } = useGetUsers();
@@ -46,7 +40,7 @@ export default function Users() {
         entityToDelete={deleteUsername}
       />
       <Header
-        title={pageTitle}
+        titleId="USERS"
         showButtonLink={isAdministrator}
         buttonLinkHref="/create/user"
         buttonText={intl.formatMessage({ id: 'CREATE_USER' })}
