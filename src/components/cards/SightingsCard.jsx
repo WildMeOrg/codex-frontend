@@ -36,12 +36,10 @@ export default function SightingsCard({
   const intl = useIntl();
 
   const mapModeClicked = function() {
-    console.log('deleteMe clicked here!');
     setShowMapView(true);
   };
 
   const listModeClicked = function() {
-    console.log('deleteMe listModeClicked');
     setShowMapView(false);
   };
 
@@ -167,10 +165,7 @@ export default function SightingsCard({
       options: {
         customBodyRender: value => (
           <div>
-            <ActionIcon
-              variant="view"
-              href={`/sightings/${value}`}
-            />
+            <ActionIcon variant="view" href={`/sightings/${value}`} />
             {onDelete && (
               <ActionIcon
                 labelId="REMOVE"

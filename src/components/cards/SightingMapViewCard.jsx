@@ -21,17 +21,8 @@ export default function SightingMapViewCard({
         long: get(entry, 'decimalLongitude', null),
       }; // TODO internationalize Unknown date text
     });
-  console.log('deleteMe transformedData is: ');
-  console.log(transformedData);
-  // const sigtingItems = transformedData.map(entry => (
-  //   <ManyPoints
-  //     lat={get(entry, 'lat', null)}
-  //     lng={get(entry, 'long', null)}
-  //   />
-  // )); // TODO maybe replace single point with something similar? And add text in
-
-  // console.log('deleteMe sigtingItems is: ');
-  // console.log(sigtingItems);
+  // console.log('deleteMe transformedData is: ');
+  // console.log(transformedData);
   return (
     <Card title={title} titleId={titleId}>
       <div style={{ height: 280, marginTop: 4 }}>
