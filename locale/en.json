@@ -458,6 +458,8 @@
   "OPTION": "Option",
   "DROPDOWN_OPTIONS": "Dropdown options",
   "NON_BINARY": "Non-binary",
+  "NONE": "None",
+  "DO_NOT_DETECT_AUTOMATICALLY": "Report will not be sent to Sage automatically.",
   "ALLOWED_FILE_TYPES": "Allowed file types",
   "ALIVE": "Alive",
   "DEAD": "Dead",
