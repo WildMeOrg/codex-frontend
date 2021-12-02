@@ -28,59 +28,38 @@ export default function ManyPoints({ latLongLabelArr }) {
         setClickAwayClicked(true);
       }}
       onGoogleApiLoaded={({ map, maps }) => {
-        const bounds = new maps.LatLngBounds();
-        // map.addListener('idle', () => {
-        //   // const listener = maps.event.addListener(map, 'idle', () => {
-        //   // if (map.getZoom() > 16) map.setZoom(16);
-        //   // map.setOptions({ maxZoom: null });
-        //   console.log('deleteMe idle is reached and bounds is: ');
-        //   console.log(bounds);
-        //   map.fitBounds(bounds, 10);
-        //   // map.panToBounds(bounds);
-        //   // maps.event.removeListener(listener);
-        //   maps.event.clearListeners(map, 'idle');
-        // });
+        let currentSouthernmostLat = 0; // ended up having to do this manually because the asynchronicity of bounds.extend(latLng) was proving intractable
+        let currentEasternmostLong = 0;
+        let currentNorthernmostLat = 0;
+        let currentWesternmostLong = 0;
         latLongLabelArr.forEach(entry => {
           const currentLat = get(entry, 'lat');
           const currentLong = get(entry, 'long');
           if (currentLat && currentLong) {
-            console.log('deleteMe got here for entry:');
-            console.log(entry);
-            const latLng = new maps.LatLng(currentLat, currentLong);
-            bounds.extend(latLng);
-            // map.fitBounds(bounds, 10);
-            // map.panToBounds(bounds);
+            if (currentLat < currentSouthernmostLat)
+              currentSouthernmostLat = currentLat;
+            if (currentLat > currentNorthernmostLat)
+              currentNorthernmostLat = currentLat;
+            if (currentLong < currentWesternmostLong)
+              currentWesternmostLong = currentLong;
+            if (currentLong > currentEasternmostLong)
+              currentEasternmostLong = currentLong;
           }
         });
-        maps.event.addListenerOnce(map, 'bounds_changed', function(
-          event,
-        ) {
-          console.log('deleteMe got here b1');
-          this.setZoom(map.getZoom() - 1);
-
-          if (this.getZoom() > 15) {
-            this.setZoom(15);
-          }
-        });
-        console.log('deleteMe got here and bounds is: ');
-        console.log(bounds);
-        // map.setOptions({ maxZoom: 0 });
+        const sw = new maps.LatLng(
+          currentSouthernmostLat,
+          currentWesternmostLong,
+        );
+        const ne = new maps.LatLng(
+          currentNorthernmostLat,
+          currentEasternmostLong,
+        );
+        const bounds = new maps.LatLngBounds(sw, ne);
+        map.setCenter(bounds.getCenter());
         map.fitBounds(bounds, 10);
-        // map.panToBounds(bounds);
-        // map.addListener('bounds_changed', () => {
-        //   // const listener = maps.event.addListener(map, 'idle', () => {
-        //   // if (map.getZoom() > 16) map.setZoom(16);
-        //   // map.setOptions({ maxZoom: null });
-        //   console.log(
-        //     'deleteMe bounds_changed is reached and bounds is: ',
-        //   );
-        //   console.log(bounds);
-        //   map.fitBounds(bounds, 10);
-        //   // map.panToBounds(bounds);
-        //   // maps.event.removeListener(listener);
-        //   maps.event.clearListeners(map, 'bounds_changed');
-        // });
-        console.log('deleteMe got here and mapFitBounds has run');
+        var opt = { minZoom: 0, maxZoom: 15 };
+        map.setOptions(opt);
+        map.setZoom(Math.max(map.getZoom() - 1, 0)); // add some buffer space to it
       }}
     >
       {latLongLabelArr.map(entry => {

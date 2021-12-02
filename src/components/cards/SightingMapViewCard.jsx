@@ -1,5 +1,8 @@
 import { get } from 'lodash';
 import React from 'react';
+import { useIntl, FormattedMessage } from 'react-intl';
+
+import { formatDate } from '../../utils/formatters';
 import ManyPoints from '../maps/ManyPoints';
 import Card from './Card';
 
@@ -8,21 +11,22 @@ export default function SightingMapViewCard({
   titleId = 'LOCATION',
   data,
 }) {
-  // console.log('deleteMe got here and data is:');
-  // console.log(data);
+  const intl = useIntl();
   const transformedData = data
     .filter(entry => get(entry, 'decimalLatitude', null) !== null)
     .map(entry => {
       return {
         guid: get(entry, 'id'),
-        text:
-          'Sighting on ' + get(entry, 'startTime', 'Unknown Date'),
+        text: intl.formatMessage(
+          { id: 'ENTITY_HEADER_SIGHTING_DATE' },
+          {
+            date: formatDate(get(entry, 'startTime'), true),
+          },
+        ),
         lat: get(entry, 'decimalLatitude', null),
         long: get(entry, 'decimalLongitude', null),
-      }; // TODO internationalize Unknown date text
+      };
     });
-  // console.log('deleteMe transformedData is: ');
-  // console.log(transformedData);
   return (
     <Card title={title} titleId={titleId}>
       <div style={{ height: 280, marginTop: 4 }}>
