@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { useSelector } from 'react-redux';
 import Hidden from '@material-ui/core/Hidden';
 import Drawer from '@material-ui/core/Drawer';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
@@ -8,11 +7,6 @@ import Button from '../../components/Button';
 import Text from '../../components/Text';
 import FilterPanel from '../../components/FilterPanel';
 import SearchFilterList from '../../components/SearchFilterList';
-import {
-  selectSearchResults,
-  selectSightingSearchCategories,
-  selectSightingSearchSchema,
-} from '../../modules/sightings/selectors';
 import SightingsDisplay from '../../components/dataDisplays/SightingsDisplay';
 
 const drawerWidth = 280;
@@ -28,9 +22,9 @@ const paperProps = {
 };
 
 export default function SearchEncounters() {
-  const categories = useSelector(selectSightingSearchCategories);
-  const schema = useSelector(selectSightingSearchSchema);
-  const searchResults = useSelector(selectSearchResults);
+  const categories = [];
+  const schema = [];
+  const searchResults = [];
 
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
   const [formValues, setFormValues] = useState(

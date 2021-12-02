@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
 import { useIntl } from 'react-intl';
 import { get } from 'lodash-es';
 import MainColumn from '../../components/MainColumn';
@@ -7,22 +6,14 @@ import AvatarGallery from '../../components/AvatarGallery';
 import ConfirmDelete from '../../components/ConfirmDelete';
 import Header from '../../components/Header';
 import Text from '../../components/Text';
-import { selectOrgs } from '../../modules/orgs/selectors';
-import { selectSiteName } from '../../modules/site/selectors';
-import { selectIsAdministrator } from '../../modules/app/selectors';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 
 export default function User() {
   const intl = useIntl();
-  const siteName = useSelector(selectSiteName);
-  const pageTitle = intl.formatMessage(
-    { id: 'ORGS_PAGE_TITLE' },
-    { siteName },
-  );
-  useDocumentTitle(pageTitle, { translateMessage: false });
+  useDocumentTitle('ORGANIZATIONS');
 
-  const orgs = useSelector(selectOrgs);
-  const isAdministrator = useSelector(selectIsAdministrator);
+  const orgs = [];
+  const isAdministrator = true;
 
   const [orgToDelete, setOrgToDelete] = useState(null);
   const deleteOrganizationName = get(
@@ -57,7 +48,7 @@ export default function User() {
         entityToDelete={deleteOrganizationName}
       />
       <Header
-        title={pageTitle}
+        titleId="ORGANIZATIONS"
         showButtonLink={isAdministrator}
         buttonText={intl.formatMessage({ id: 'CREATE_ORG' })}
         buttonLinkHref="/create/org"

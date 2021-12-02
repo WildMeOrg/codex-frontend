@@ -1,6 +1,5 @@
 import React, { useState, useMemo } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { get, capitalize } from 'lodash-es';
 
@@ -32,7 +31,6 @@ import GalleryCard from '../../components/cards/GalleryCard';
 import ConfirmDelete from '../../components/ConfirmDelete';
 import RelationshipsCard from '../../components/cards/RelationshipsCard';
 import CooccurrenceCard from '../../components/cards/CooccurrenceCard';
-import { selectIndividuals } from '../../modules/individuals/selectors';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import EditIndividualMetadata from './EditIndividualMetadata';
 import fakeAssets from './fakeAssets';
@@ -101,9 +99,6 @@ export default function Individual() {
     setError: setPatchError,
   } = usePatchIndividual();
 
-  // fetch data for Id...
-  const individuals = useSelector(selectIndividuals);
-
   useDocumentTitle(capitalize(defaultName), {
     translateMessage: false,
   });
@@ -113,7 +108,7 @@ export default function Individual() {
 
   if (loading) return <LoadingScreen />;
 
-  const individual = individuals.teddy;
+  const individual = null;
   if (!individual)
     return (
       <SadScreen
