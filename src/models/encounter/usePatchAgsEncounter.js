@@ -28,30 +28,19 @@ export default function usePatchAgsEncounter() {
       delete dictionaryCopy.gps;
     }
 
-    // delete dictionaryCopy.taxonomy;
-
-    const operations = [
-      {
+    const operations = Object.keys(dictionaryCopy).map(
+      propertyKey => ({
         op: 'replace',
-        path: `${assetGroupSightingId}/encounter/${encounterId}`,
-        value: dictionaryCopy,
-      },
-    ];
-
-    // const operations = [
-    //   {
-    //     op: 'replace',
-    //     path: `/encounter/${encounterId}`,
-    //     value: dictionaryCopy,
-    //   },
-    // ];
+        path: `/${propertyKey}`,
+        value: dictionaryCopy[propertyKey],
+      }),
+    );
 
     try {
       setLoading(true);
       setError(null);
       const patchResponse = await axios({
-        // url: `${__houston_url__}/api/v1/asset_groups/sighting/as_sighting/${assetGroupSightingId}`,
-        url: `${__houston_url__}/api/v1/asset_groups/a2414177-a4ee-43a2-89bb-579a12de3693`,
+        url: `${__houston_url__}/api/v1/asset_groups/sighting/${assetGroupSightingId}/encounter/${encounterId}`,
         withCredentials: true,
         method: 'patch',
         data: operations,
