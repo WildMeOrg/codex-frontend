@@ -241,25 +241,6 @@ export default function UserManagement() {
             <CollaborationManagementForm userData={userData} />
           </Paper>
         </Grid>
-        <Grid item style={{ width: '100%' }}>
-          <Text
-            variant="h6"
-            style={{ marginTop: 20, marginLeft: 12 }}
-            id="EDIT_COLLABORATIONS"
-          />
-          <Paper
-            elevation={2}
-            style={{
-              marginTop: 20,
-              marginBottom: 12,
-              padding: 24,
-              display: 'flex',
-              flexDirection: 'column',
-            }}
-          >
-            <CollaborationManagementForm userData={userData} />
-          </Paper>
-        </Grid>
       </Grid>
     </MainColumn>
   );
