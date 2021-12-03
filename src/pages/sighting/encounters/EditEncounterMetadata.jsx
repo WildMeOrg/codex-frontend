@@ -5,6 +5,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 
 import usePatchEncounter from '../../../models/encounter/usePatchEncounter';
+import usePatchAgsEncounter from '../../../models/encounter/usePatchAgsEncounter';
 import CustomAlert from '../../../components/Alert';
 import InputRow from '../../../components/fields/edit/InputRowNew';
 import Button from '../../../components/Button';
@@ -24,18 +25,30 @@ function getInitialFormValues(schema, fieldKey) {
 
 export default function EditEncounterMetadata({
   open,
-  // sightingId,
+  sightingId,
   encounterId,
   metadata = [],
   onClose,
   refreshSightingData,
+  pending = true,
 }) {
   const {
-    updateProperties,
-    loading,
-    error,
-    setError,
+    updateProperties: updateEncounterProperties,
+    loading: encounterLoading,
+    error: encounterError,
+    setError: setEncounterError,
   } = usePatchEncounter();
+
+  const {
+    updateProperties: updateAgsProperties,
+    loading: agsLoading,
+    error: agsError,
+    setError: setAgsError,
+  } = usePatchAgsEncounter();
+
+  const loading = pending ? agsLoading : encounterLoading;
+  const error = pending ? agsError : encounterError;
+  const setError = pending ? setAgsError : setEncounterError;
 
   const [defaultFieldValues, setDefaultFieldValues] = useState({});
   const [customFieldValues, setCustomFieldValues] = useState({});
@@ -124,10 +137,19 @@ export default function EditEncounterMetadata({
           loading={loading}
           display="primary"
           onClick={async () => {
-            const successfulUpdate = await updateProperties(
-              encounterId,
-              defaultFieldValues,
-            );
+            let successfulUpdate = false;
+            if (pending) {
+              successfulUpdate = await updateAgsProperties(
+                sightingId,
+                encounterId,
+                defaultFieldValues,
+              );
+            } else {
+              successfulUpdate = await updateEncounterProperties(
+                encounterId,
+                defaultFieldValues,
+              );
+            }
             if (successfulUpdate) {
               refreshSightingData();
               onClose();
