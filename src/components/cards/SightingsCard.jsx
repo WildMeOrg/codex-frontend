@@ -217,6 +217,11 @@ export default function SightingsCard({
             <ViewList />
           </IconButton>
           <IconButton
+            disabled={
+              sightingsWithLocationData.filter(entry =>
+                get(entry, 'decimalLatitude'),
+              ).length < 1
+            }
             aria-label="View chart"
             onClick={mapModeClicked}
           >

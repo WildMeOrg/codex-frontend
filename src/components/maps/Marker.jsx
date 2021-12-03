@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import RoomIcon from '@material-ui/icons/Room';
+import IconButton from '@material-ui/core/IconButton';
 
 import { get } from 'lodash';
 
@@ -10,6 +10,7 @@ export default function Marker({
   entry,
   clickAwayClicked,
   setClickAwayClicked,
+  children,
 }) {
   const [showInfo, setShowInfo] = useState(false);
   useEffect(
@@ -18,9 +19,6 @@ export default function Marker({
     },
     [clickAwayClicked],
   );
-  // function onClose() {
-  //   setShowInfo(false);
-  // }
   return (
     <div>
       {showInfo && (
@@ -41,13 +39,15 @@ export default function Marker({
         </div>
       )}
       {!showInfo && (
-        <RoomIcon
+        <IconButton
           onClick={event => {
             event.stopPropagation();
             setShowInfo(true);
             setClickAwayClicked(false);
           }}
-        />
+        >
+          {children}
+        </IconButton>
       )}
     </div>
   );

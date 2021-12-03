@@ -3,8 +3,10 @@ import DialogContent from '@material-ui/core/DialogContent';
 import Text from '../../components/Text';
 import StandardDialog from '../../components/StandardDialog';
 
-export default function TermsAndConditionsDialog({ visible, onClose })
-{
+export default function TermsAndConditionsDialog({
+  visible,
+  onClose,
+}) {
   const termsAndConditions = 'Here are our terms!!!';
 
   return (
