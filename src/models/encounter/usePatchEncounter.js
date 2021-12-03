@@ -24,8 +24,6 @@ export default function usePatchEncounter() {
       delete dictionaryCopy.gps;
     }
 
-    // delete dictionaryCopy.taxonomy;
-
     const operations = Object.keys(dictionaryCopy).map(
       propertyKey => ({
         op: 'replace',
