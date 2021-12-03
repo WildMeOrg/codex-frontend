@@ -8,30 +8,42 @@ import Text from '../Text';
 
 export default function Marker({
   entry,
-  clickAwayClicked,
-  setClickAwayClicked,
+  currentMarkerToShow,
+  setCurrentMarkerToShow,
   children,
 }) {
   const [showInfo, setShowInfo] = useState(false);
   useEffect(
     () => {
-      if (clickAwayClicked) setShowInfo(false);
+      const thisMarkersSightingId = get(entry, 'guid');
+      currentMarkerToShow === thisMarkersSightingId
+        ? setShowInfo(true)
+        : setShowInfo(false);
     },
-    [clickAwayClicked],
+    [currentMarkerToShow],
   );
   return (
     <div>
       {showInfo && (
-        <div style={{ backgroundColor: 'white' }}>
+        <div
+          style={{ backgroundColor: 'white', width: 'max-content' }}
+        >
           <ButtonLink
             href={`/sightings/${get(entry, 'guid')}`}
             newTab
             external
             size="small"
-            style={{ backgroundColor: 'white', borderRadius: 0 }}
+            style={{
+              backgroundColor: 'white',
+              borderRadius: 0,
+              textTransform: 'none',
+            }}
           >
             <Text
-              style={{ fontSize: '9px', textDecoration: 'underline' }}
+              style={{
+                fontSize: '9px',
+                textDecoration: 'underline',
+              }}
             >
               {get(entry, 'text')}
             </Text>
@@ -40,10 +52,10 @@ export default function Marker({
       )}
       {!showInfo && (
         <IconButton
+          style={{ backgroundColor: 'transparent' }}
           onClick={event => {
             event.stopPropagation();
-            setShowInfo(true);
-            setClickAwayClicked(false);
+            setCurrentMarkerToShow(get(entry, 'guid'));
           }}
         >
           {children}

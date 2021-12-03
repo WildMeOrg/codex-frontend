@@ -17,7 +17,7 @@ import MapInSighting from '../../pages/sighting/MapInSighting';
 import ActionIcon from '../ActionIcon';
 import DataDisplay from '../dataDisplays/DataDisplay';
 import Card from './Card';
-import SightingMapViewCard from '../cards/SightingMapViewCard';
+import SightingMapView from '../cards/SightingMapView';
 
 export default function SightingsCard({
   title,
@@ -210,19 +210,28 @@ export default function SightingsCard({
       renderActions={
         <div>
           <IconButton
-            style={{ color: theme.palette.primary.main }}
+            style={
+              showMapView
+                ? { color: undefined }
+                : { color: theme.palette.primary.main }
+            }
             aria-label="View list"
             onClick={listModeClicked}
           >
             <ViewList />
           </IconButton>
           <IconButton
+            style={
+              showMapView
+                ? { color: theme.palette.primary.main }
+                : { color: undefined }
+            }
             disabled={
               sightingsWithLocationData.filter(entry =>
                 get(entry, 'decimalLatitude'),
               ).length < 1
             }
-            aria-label="View chart"
+            aria-label="View map"
             onClick={mapModeClicked}
           >
             <ViewMap />
@@ -239,7 +248,7 @@ export default function SightingsCard({
         />
       )}
       {sightings && showMapView && (
-        <SightingMapViewCard data={sightingsWithLocationData} />
+        <SightingMapView data={sightingsWithLocationData} />
       )}
     </Card>,
   ];
