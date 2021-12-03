@@ -84,9 +84,13 @@ export default function LocationIdEditor(props) {
           }
         }}
         getOptionLabel={option => get(option, 'name', '')}
-        getOptionSelected={(option, val) =>
-          option.id ? option.id === val : false
-        }
+        getOptionSelected={(option, val) => {
+          console.log('deleteMe option is: ');
+          console.log(option);
+          console.log('deleteMe val in LocationIdEditor is: ');
+          console.log(val);
+          option.id ? option.id === get(val, 'id') : false;
+        }}
         renderInput={params => (
           <TextField
             {...params}

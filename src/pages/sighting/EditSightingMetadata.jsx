@@ -31,6 +31,8 @@ export default function EditSightingMetadata({
   refreshSightingData,
   pending,
 }) {
+  // console.log('deleteMe got here and refreshSightingData is: ');
+  // console.log(refreshSightingData);
   const {
     updateProperties: updateSightingProperties,
     loading: sightingLoading,
@@ -79,10 +81,13 @@ export default function EditSightingMetadata({
         {metadata.map(field => {
           if (!field.editable) return null;
           if (!field.editComponent) return null; // temporary stopgap
+          console.log('deleteMe field is: ');
+          console.log(field);
           const value = field.customField
             ? customFieldValues[field.id]
             : defaultFieldValues[field.name];
-
+          console.log('deleteMe value is: ');
+          console.log(value);
           const fieldProps = field.editComponentProps || {};
 
           return (
