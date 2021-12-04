@@ -22,6 +22,7 @@ import ManuallyAssignModal from './ManuallyAssignModal';
 export default function Encounters({
   sightingData,
   refreshSightingData,
+  pending,
 }) {
   const {
     addEncounter,
@@ -49,6 +50,7 @@ export default function Encounters({
 
   const encounterFieldSchemas = useEncounterFieldSchemas();
   const encounters = get(sightingData, 'encounters', []);
+
   return (
     <div>
       <ConfirmDelete
@@ -91,6 +93,7 @@ export default function Encounters({
         metadata={get(editEncounterInfo, 'encounterMetadata')}
         encounterId={get(editEncounterInfo, 'encounterId')}
         refreshSightingData={refreshSightingData}
+        pending={pending}
       />
 
       {encounters.map((encounter, i) => {

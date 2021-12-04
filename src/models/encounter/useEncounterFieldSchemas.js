@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { useIntl } from 'react-intl';
 import { get, startCase } from 'lodash-es';
 
 import useSiteSettings from '../site/useSiteSettings';
@@ -27,12 +28,13 @@ const sexChoices = [
     labelId: 'FEMALE',
   },
   {
-    value: 'unknown',
+    value: '',
     labelId: 'UNKNOWN',
   },
 ];
 
 export default function useSightingFieldSchemas() {
+  const intl = useIntl();
   const {
     data,
     loading,
@@ -43,12 +45,6 @@ export default function useSightingFieldSchemas() {
 
   const encounterFieldSchemas = useMemo(
     () => {
-      const regionChoices = get(
-        data,
-        ['site.custom.regions', 'value', 'locationID'],
-        [],
-      );
-
       const species = get(data, ['site.species', 'value'], []);
       const speciesOptions = species.map(s => {
         const mainCommonName = startCase(get(s, ['commonNames', 0]));
@@ -59,6 +55,11 @@ export default function useSightingFieldSchemas() {
           label: speciesLabel,
           value: s.id,
         };
+      });
+
+      speciesOptions.push({
+        label: intl.formatMessage({ id: 'UNKNOWN' }),
+        value: '',
       });
 
       const customFields = get(
@@ -78,13 +79,6 @@ export default function useSightingFieldSchemas() {
         createFieldSchema(fieldTypes.date, {
           name: 'time',
           labelId: 'SIGHTING_TIME',
-          category: defaultEncounterCategories.animal.name,
-          hideOnBasicReport: true,
-        }),
-        createFieldSchema(fieldTypes.locationId, {
-          name: 'locationId',
-          labelId: 'REGION',
-          choices: regionChoices,
           category: defaultEncounterCategories.animal.name,
           hideOnBasicReport: true,
         }),

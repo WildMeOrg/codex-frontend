@@ -243,6 +243,7 @@ const SightingCore = function({
           assets={assets}
           sightingData={data}
           refreshSightingData={refreshData}
+          pending={pending}
         />
       )}
     </MainColumn>

@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { get } from 'lodash-es';
 
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 
+import usePatchEncounter from '../../../models/encounter/usePatchEncounter';
+import usePatchAgsEncounter from '../../../models/encounter/usePatchAgsEncounter';
 import CustomAlert from '../../../components/Alert';
-import usePatchSighting from '../../../models/sighting/usePatchSighting';
 import InputRow from '../../../components/fields/edit/InputRowNew';
 import Button from '../../../components/Button';
 import StandardDialog from '../../../components/StandardDialog';
@@ -25,31 +26,49 @@ function getInitialFormValues(schema, fieldKey) {
 export default function EditEncounterMetadata({
   open,
   sightingId,
-  // encounterId,
+  encounterId,
   metadata = [],
   onClose,
   refreshSightingData,
+  pending = true,
 }) {
   const {
-    updateProperties,
-    loading,
-    error,
-    setError,
-  } = usePatchSighting();
+    updateProperties: updateEncounterProperties,
+    loading: encounterLoading,
+    error: encounterError,
+    setError: setEncounterError,
+  } = usePatchEncounter();
 
-  const defaultFieldMetadata = metadata.filter(
-    field => !field.customField,
-  );
-  const customFieldMetadata = metadata.filter(
-    field => field.customField,
-  );
+  const {
+    updateProperties: updateAgsProperties,
+    loading: agsLoading,
+    error: agsError,
+    setError: setAgsError,
+  } = usePatchAgsEncounter();
 
-  const [defaultFieldValues, setDefaultFieldValues] = useState(
-    getInitialFormValues(defaultFieldMetadata, 'name'),
-  );
+  const loading = pending ? agsLoading : encounterLoading;
+  const error = pending ? agsError : encounterError;
+  const setError = pending ? setAgsError : setEncounterError;
 
-  const [customFieldValues, setCustomFieldValues] = useState(
-    getInitialFormValues(customFieldMetadata, 'id'),
+  const [defaultFieldValues, setDefaultFieldValues] = useState({});
+  const [customFieldValues, setCustomFieldValues] = useState({});
+
+  useEffect(
+    () => {
+      const defaultFieldMetadata = metadata.filter(
+        field => !field.customField,
+      );
+      const customFieldMetadata = metadata.filter(
+        field => field.customField,
+      );
+      setDefaultFieldValues(
+        getInitialFormValues(defaultFieldMetadata, 'name'),
+      );
+      setCustomFieldValues(
+        getInitialFormValues(customFieldMetadata, 'id'),
+      );
+    },
+    [get(metadata, 'length')],
   );
 
   return (
@@ -118,10 +137,19 @@ export default function EditEncounterMetadata({
           loading={loading}
           display="primary"
           onClick={async () => {
-            const successfulUpdate = await updateProperties(
-              sightingId,
-              defaultFieldValues,
-            );
+            let successfulUpdate = false;
+            if (pending) {
+              successfulUpdate = await updateAgsProperties(
+                sightingId,
+                encounterId,
+                defaultFieldValues,
+              );
+            } else {
+              successfulUpdate = await updateEncounterProperties(
+                encounterId,
+                defaultFieldValues,
+              );
+            }
             if (successfulUpdate) {
               refreshSightingData();
               onClose();
