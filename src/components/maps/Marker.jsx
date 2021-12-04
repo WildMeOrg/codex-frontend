@@ -24,7 +24,7 @@ export default function Marker({
   );
   return (
     <div>
-      {showInfo && (
+      {showInfo ? (
         <div
           style={{ backgroundColor: 'white', width: 'max-content' }}
         >
@@ -40,8 +40,8 @@ export default function Marker({
             }}
           >
             <Text
+              variant="body2"
               style={{
-                fontSize: '9px',
                 textDecoration: 'underline',
               }}
             >
@@ -49,8 +49,7 @@ export default function Marker({
             </Text>
           </ButtonLink>
         </div>
-      )}
-      {!showInfo && (
+      ) : (
         <IconButton
           style={{ backgroundColor: 'transparent' }}
           onClick={event => {

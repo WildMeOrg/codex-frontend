@@ -211,9 +211,7 @@ export default function SightingsCard({
         <div>
           <IconButton
             style={
-              showMapView
-                ? { color: undefined }
-                : { color: theme.palette.primary.main }
+              showMapView ? {} : { color: theme.palette.primary.main }
             }
             aria-label="View list"
             onClick={listModeClicked}
@@ -222,9 +220,7 @@ export default function SightingsCard({
           </IconButton>
           <IconButton
             style={
-              showMapView
-                ? { color: theme.palette.primary.main }
-                : { color: undefined }
+              showMapView ? { color: theme.palette.primary.main } : {}
             }
             disabled={
               sightingsWithLocationData.filter(entry =>
