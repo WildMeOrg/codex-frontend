@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { get } from 'lodash-es';
 
 import DialogContent from '@material-ui/core/DialogContent';
@@ -52,19 +52,26 @@ export default function EditSightingMetadata({
     ? updateAgsProperties
     : updateSightingProperties;
 
-  const defaultFieldMetadata = metadata.filter(
-    field => !field.customField,
-  );
-  const customFieldMetadata = metadata.filter(
-    field => field.customField,
-  );
+  const [defaultFieldValues, setDefaultFieldValues] = useState({});
 
-  const [defaultFieldValues, setDefaultFieldValues] = useState(
-    getInitialFormValues(defaultFieldMetadata, 'name'),
-  );
+  const [customFieldValues, setCustomFieldValues] = useState({});
 
-  const [customFieldValues, setCustomFieldValues] = useState(
-    getInitialFormValues(customFieldMetadata, 'id'),
+  useEffect(
+    () => {
+      const defaultFieldMetadata = metadata.filter(
+        field => !field.customField,
+      );
+      const customFieldMetadata = metadata.filter(
+        field => field.customField,
+      );
+      setDefaultFieldValues(
+        getInitialFormValues(defaultFieldMetadata, 'name'),
+      );
+      setCustomFieldValues(
+        getInitialFormValues(customFieldMetadata, 'id'),
+      );
+    },
+    [get(metadata, 'length')],
   );
 
   return (
