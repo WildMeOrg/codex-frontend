@@ -1,13 +1,17 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
+import { useTheme } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import MainColumn from '../../components/MainColumn';
 import ButtonLink from '../../components/ButtonLink';
 import Text from '../../components/Text';
+import BaoHappy from '../../components/svg/BaoHappy';
 
 export default function ReportSuccess({ authenticated }) {
+  const theme = useTheme();
+  const themeColor = theme.palette.primary.main;
   const { id } = useParams();
   useDocumentTitle('REPORT_SUCCESS_TITLE');
 
@@ -22,8 +26,12 @@ export default function ReportSuccess({ authenticated }) {
       <Text
         variant="h4"
         component="h4"
-        style={{ padding: '16px 0 8px 16px' }}
+        style={{ padding: '32px 0 8px 16px' }}
         id="REPORT_SUCCESS_TITLE"
+      />
+      <BaoHappy
+        style={{ width: 280, margin: '16px 8px 20px 0' }}
+        themeColor={themeColor}
       />
       <Text
         variant="subtitle2"
