@@ -2,7 +2,6 @@ import React from 'react';
 import { get } from 'lodash-es';
 
 import { withTheme } from '@material-ui/core/styles';
-import { lighten } from '@material-ui/core/styles/colorManipulator';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
@@ -40,7 +39,6 @@ class ErrorBoundary extends React.Component {
 
     const { theme } = this.props;
     const themeColor = theme.palette.primary.main;
-    const themeColorLight = lighten(themeColor, 0.35);
 
     return (
       <div
@@ -58,8 +56,7 @@ class ErrorBoundary extends React.Component {
             width: '80vw',
             margin: '60px 0 40px 0',
           }}
-          themeColor={theme.palette.primary.main}
-          themeColorLight={themeColorLight}
+          themeColor={themeColor}
         />
         <div>
           <Text variant="h4" id="AN_ERROR_OCCURRED" />
