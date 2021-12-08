@@ -17,6 +17,7 @@ import MapInSighting from '../../pages/sighting/MapInSighting';
 import ActionIcon from '../ActionIcon';
 import DataDisplay from '../dataDisplays/DataDisplay';
 import Card from './Card';
+import SightingMapView from '../cards/SightingMapView';
 
 export default function SightingsCard({
   title,
@@ -28,10 +29,19 @@ export default function SightingsCard({
   const [modalOpen, setModalOpen] = useState(false);
 
   const [gpsCoordinates, setGpsCoordiates] = useState(null);
+  const [showMapView, setShowMapView] = useState(false);
   const onClose = () => setModalOpen(false);
   const theme = useTheme();
   const { regionOptions } = useOptions();
   const intl = useIntl();
+
+  const mapModeClicked = function() {
+    setShowMapView(true);
+  };
+
+  const listModeClicked = function() {
+    setShowMapView(false);
+  };
 
   const formatLocationFromSighting = (sighting, regionOpts) => {
     const currentSightingLocId = get(sighting, 'locationId', '');
@@ -200,24 +210,41 @@ export default function SightingsCard({
       renderActions={
         <div>
           <IconButton
-            style={{ color: theme.palette.primary.main }}
+            style={
+              showMapView ? {} : { color: theme.palette.primary.main }
+            }
             aria-label="View list"
+            onClick={listModeClicked}
           >
             <ViewList />
           </IconButton>
-          <IconButton aria-label="View chart">
+          <IconButton
+            style={
+              showMapView ? { color: theme.palette.primary.main } : {}
+            }
+            disabled={
+              sightingsWithLocationData.filter(entry =>
+                get(entry, 'decimalLatitude'),
+              ).length < 1
+            }
+            aria-label="View map"
+            onClick={mapModeClicked}
+          >
             <ViewMap />
           </IconButton>
         </div>
       }
     >
-      {sightings && (
+      {sightings && !showMapView && (
         <DataDisplay
           noTitleBar
           tableSize="medium"
           columns={filteredColumns}
           data={sightingsWithLocationData}
         />
+      )}
+      {sightings && showMapView && (
+        <SightingMapView data={sightingsWithLocationData} />
       )}
     </Card>,
   ];

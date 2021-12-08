@@ -872,5 +872,7 @@
   "SELECT_COLLABORATOR_2": "Select Collaborator 2",
   "CREATE_COLLABORATIONS": "Create Collaborations",
   "CREATE_COLLABORATION": "Create Collaboration",
-  "COLLABORATION_CREATEDD": "Collaboration Created"
+  "COLLABORATION_CREATEDD": "Collaboration Created",
+  "EDIT_COLLABORATIONS": "Edit Collaborations",
+  "SIGHTING_ON_MAP": "Sighting"
 }

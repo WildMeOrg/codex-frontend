@@ -54,6 +54,7 @@ export default function LatLongEditor({
         latitudeString,
         longitudeString,
       } = deriveGpsStringsFromValue(value);
+
       setCurrentLatitudeString(latitudeString);
       setCurrentLongitudeString(longitudeString);
     },
@@ -78,11 +79,11 @@ export default function LatLongEditor({
             const inputValue = e.target.value;
             const floatValue = parseFloat(inputValue);
             if (Number.isNaN(floatValue)) {
-              onChange([parseFloat(inputValue), currentLongitude]);
-            } else {
               onChange([null, currentLongitude]);
-              setCurrentLatitudeString(inputValue);
+            } else {
+              onChange([floatValue, currentLongitude]);
             }
+            setCurrentLatitudeString(inputValue);
           }}
         />
         <TextField
@@ -94,11 +95,11 @@ export default function LatLongEditor({
             const inputValue = e.target.value;
             const floatValue = parseFloat(inputValue);
             if (Number.isNaN(floatValue)) {
-              onChange([currentLatitude, parseFloat(inputValue)]);
-            } else {
               onChange([currentLatitude, null]);
-              setCurrentLongitudeString(inputValue);
+            } else {
+              onChange([currentLatitude, floatValue]);
             }
+            setCurrentLongitudeString(inputValue);
           }}
         />
       </div>
