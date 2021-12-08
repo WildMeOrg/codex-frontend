@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import GoogleMapReact from 'google-map-react';
+import { get } from 'lodash-es';
 import RoomIcon from '@material-ui/icons/Room';
 
 import { googleMapsApiKey } from '../../constants/apiKeys';
-import { get } from 'lodash';
-
 import Marker from './Marker';
 
 function createMapOptions() {

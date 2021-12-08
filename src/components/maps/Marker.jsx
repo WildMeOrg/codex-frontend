@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { get } from 'lodash-es';
 import IconButton from '@material-ui/core/IconButton';
-
-import { get } from 'lodash';
 
 import ButtonLink from '../ButtonLink';
 import Text from '../Text';
@@ -16,9 +15,7 @@ export default function Marker({
   useEffect(
     () => {
       const thisMarkersSightingId = get(entry, 'guid');
-      currentMarkerToShow === thisMarkersSightingId
-        ? setShowInfo(true)
-        : setShowInfo(false);
+      setShowInfo(currentMarkerToShow === thisMarkersSightingId);
     },
     [currentMarkerToShow],
   );

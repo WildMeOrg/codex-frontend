@@ -1,6 +1,6 @@
-import { get } from 'lodash';
 import React from 'react';
-import { useIntl, FormattedMessage } from 'react-intl';
+import { useIntl } from 'react-intl';
+import { get } from 'lodash-es';
 
 import { formatDate } from '../../utils/formatters';
 import MultiplePoints from '../maps/MultiplePoints';
