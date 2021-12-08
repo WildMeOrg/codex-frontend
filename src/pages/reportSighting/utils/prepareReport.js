@@ -19,6 +19,9 @@ export function prepareBasicReport(
 
   const report = {
     ...sightingData,
+    speciesDetectionModel: [
+      get(sightingData, 'speciesDetectionModel', 'None'),
+    ],
     assetReferences: simpleAssets
       ? assetReferences.map(a => get(a, 'path'))
       : assetReferences,
