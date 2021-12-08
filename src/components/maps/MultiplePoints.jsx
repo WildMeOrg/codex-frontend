@@ -31,7 +31,7 @@ export default function ManyPoints({ latLongLabelArr }) {
         setCurrentMarkerToShow(null);
       }}
       onGoogleApiLoaded={({ map, maps }) => {
-        let southernmostLat = null; // ended up having to do this manually because the asynchronicity of bounds.extend(latLng) was proving intractable despite a lot of experimentation and researcher
+        let southernmostLat = null; // ended up having to do this manually because the asynchronicity of bounds.extend(latLng) was proving intractable despite a lot of experimentation and research
         let easternmostLong = null;
         let northernmostLat = null;
         let westernmostLong = null;
@@ -56,7 +56,7 @@ export default function ManyPoints({ latLongLabelArr }) {
         map.fitBounds(bounds, 10);
         var opt = { minZoom: 0, maxZoom: 5 };
         map.setOptions(opt);
-        // map.setZoom(Math.max(map.getZoom() - 0.1, 0)); // add some buffer space to it
+        map.setZoom(Math.max(map.getZoom() - 1, 0)); // add some buffer space to it
       }}
     >
       {latLongLabelArr.map(entry => {
