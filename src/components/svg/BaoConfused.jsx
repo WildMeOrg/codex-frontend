@@ -1,10 +1,6 @@
 import React from 'react';
 
-export default function BaoConfused({
-  themeColor,
-  themeColorLight,
-  ...rest
-}) {
+export default function BaoConfused({ themeColor, ...rest }) {
   return (
     <svg
       viewBox="0 0 210 237"
@@ -36,8 +32,8 @@ export default function BaoConfused({
       <path
         d="M134 111H141"
         stroke="#726D68"
-        stroke-miterlimit="10"
-        stroke-linecap="round"
+        strokeMiterlimit="10"
+        strokeLinecap="round"
       />
       <path
         d="M141.03 94.11C140.637 94.4612 140.344 94.9096 140.18 95.41C139.11 98.64 139.04 101.1 140.25 102.35C141.25 103.35 141.25 103.35 142.56 103.35C143.358 103.467 144.174 103.362 144.917 103.047C145.659 102.731 146.3 102.217 146.77 101.56C147.183 100.886 147.42 100.119 147.46 99.33C147.49 98.3691 147.321 97.4124 146.965 96.5195C146.609 95.6266 146.073 94.8166 145.39 94.14C145.114 93.8367 144.772 93.6007 144.39 93.45C143.941 93.2641 143.455 93.1854 142.97 93.22C142.243 93.2943 141.561 93.6073 141.03 94.11V94.11Z"

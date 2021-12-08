@@ -1,10 +1,6 @@
 import React from 'react';
 
-export default function BaoSpills({
-  themeColor,
-  themeColorLight,
-  ...rest
-}) {
+export default function BaoSpills({ themeColor, ...rest }) {
   return (
     <svg
       viewBox="0 0 317 193"

@@ -1,10 +1,6 @@
 import React from 'react';
 
-export default function BaoConfused({
-  themeColor,
-  themeColorLight,
-  ...rest
-}) {
+export default function BaoConfused({ themeColor, ...rest }) {
   return (
     <svg
       viewBox="0 0 294 198"

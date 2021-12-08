@@ -1,10 +1,6 @@
 import React from 'react';
 
-export default function BaoDetective({
-  themeColor,
-  themeColorLight,
-  ...rest
-}) {
+export default function BaoDetective({ themeColor, ...rest }) {
   return (
     <svg
       viewBox="0 0 250 192"

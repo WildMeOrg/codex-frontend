@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { get, sortBy } from 'lodash-es';
 
 import { useTheme } from '@material-ui/core/styles';
-import { lighten } from '@material-ui/core/styles/colorManipulator';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -67,7 +66,6 @@ export default function DataDisplay({
 }) {
   const theme = useTheme();
   const themeColor = theme.palette.primary.main;
-  const themeColorLight = lighten(themeColor, 0.35);
 
   const initialColumnNames = columns
     .filter(c => get(c, 'options.display', true))
@@ -324,7 +322,6 @@ export default function DataDisplay({
           <BaoDetective
             style={{ width: 240 }}
             themeColor={themeColor}
-            themeColorLight={themeColorLight}
           />
           <Text style={{ marginTop: 12 }}>
             Your search did not match any records.
