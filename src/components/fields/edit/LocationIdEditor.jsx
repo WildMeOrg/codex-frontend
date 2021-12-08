@@ -65,6 +65,16 @@ export default function LocationIdEditor(props) {
   return (
     <FormCore schema={schema} width={width}>
       <Autocomplete
+        value={
+          value
+            ? get(
+                get(schema, 'choices').filter(
+                  choice => get(choice, 'id') === value,
+                ),
+                [0],
+              )
+            : null
+        }
         options={collapseChoices(schema.choices, 0)}
         renderOption={option => (
           <Text
@@ -84,9 +94,9 @@ export default function LocationIdEditor(props) {
           }
         }}
         getOptionLabel={option => get(option, 'name', '')}
-        getOptionSelected={(option, val) =>
-          option.id ? option.id === val : false
-        }
+        getOptionSelected={(option, val) => {
+          return option.id ? option.id === val.id : false;
+        }}
         renderInput={params => (
           <TextField
             {...params}
