@@ -67,7 +67,7 @@ export default function Sighting({ pending = false }) {
   );
 }
 
-function SightingCore({
+const SightingCore = function({
   data,
   loading,
   error,
@@ -222,6 +222,7 @@ function SightingCore({
           metadata={metadata}
           sightingData={data}
           sightingId={id}
+          pending={pending}
           refreshSightingData={refreshData}
         />
       )}
@@ -242,11 +243,12 @@ function SightingCore({
           assets={assets}
           sightingData={data}
           refreshSightingData={refreshData}
+          pending={pending}
         />
       )}
     </MainColumn>
   );
-}
+};
 
 /*
 {activeTab === '#annotations' && (

@@ -7,7 +7,27 @@ import Button from '../../components/Button';
 import CustomAlert from '../../components/Alert';
 import useEstablishCollaborationAsUserManager from '../../models/collaboration/useEstablishCollaborationAsUserManager';
 
-export default function CollaborationManagementForm({ userData }) {
+function collaborationAlreadyExists(
+  existingCollaborations,
+  user1,
+  user2,
+) {
+  const collabIdPairs = existingCollaborations.map(collaboration =>
+    get(collaboration, 'members')
+      ? Object.keys(get(collaboration, 'members'))
+      : null,
+  );
+  const pairInQuestion = collabIdPairs.filter(
+    pairArray =>
+      pairArray.includes(user1) && pairArray.includes(user2),
+  );
+  return pairInQuestion.length > 0 ? true : false;
+}
+
+export default function CollaborationManagementForm({
+  userData,
+  existingCollaborations,
+}) {
   const intl = useIntl();
   const [shouldDisplay, setShouldDisplay] = useState(false);
   const [user1, setUser1] = useState(null);
@@ -16,6 +36,7 @@ export default function CollaborationManagementForm({ userData }) {
     establishCollaboration,
     loading,
     error,
+    setError,
     success,
   } = useEstablishCollaborationAsUserManager();
   return (
@@ -111,12 +132,27 @@ export default function CollaborationManagementForm({ userData }) {
           style={{ marginBottom: '20px' }}
           loading={loading}
           onClick={async () => {
-            const successful = await establishCollaboration(
-              //need the await here. Otherwise, setShouldDisplay(true) below fires before this completes
-              user1,
-              user2,
-            );
-            setShouldDisplay(true);
+            if (
+              !collaborationAlreadyExists(
+                existingCollaborations,
+                user1,
+                user2,
+              )
+            ) {
+              const successful = await establishCollaboration(
+                // need the await here. Otherwise, setShouldDisplay(true) below fires before this completes
+                user1,
+                user2,
+              );
+              setShouldDisplay(true);
+            } else {
+              setError(
+                intl.formatMessage({
+                  id: 'COLLABORATION_ALREADY_EXISTS',
+                }),
+              );
+              setShouldDisplay(true);
+            }
           }}
         >
           <FormattedMessage id="CREATE_COLLABORATION" />

@@ -9,12 +9,10 @@ export default function usePatchCollaboration() {
   const [success, setSuccess] = useState(false);
 
   const patchCollaboration = async (collaborationId, data) => {
-    console.log('deleteMe data in patchCollaboration is: ');
-    console.log(data);
     try {
       setLoading(true);
       const patchResponse = await axios({
-        url: `${__houston_url__}/api/v1/collaborations/${collaborationId}`,
+        url: `${__houston_url__}/api/v1/collaborations/${collaborationId}`, // TODO likely to change with DEX-568
         withCredentials: true,
         method: 'patch',
         data,

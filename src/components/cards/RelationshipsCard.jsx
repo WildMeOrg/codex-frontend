@@ -26,7 +26,7 @@ const sexIconMap = {
   Unsure: SexUnsureIcon,
 };
 
-function Node({
+const Node = function({
   x,
   y,
   fill,
@@ -72,7 +72,7 @@ function Node({
       )}
     </g>
   );
-}
+};
 
 export default function RelationshipsCard({
   title,

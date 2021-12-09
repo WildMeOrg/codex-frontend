@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { useSelector } from 'react-redux';
 import { format } from 'date-fns';
 
 import Input from '@material-ui/core/Input';
@@ -13,7 +12,6 @@ import ListItemText from '@material-ui/core/ListItemText';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import SearchIcon from '@material-ui/icons/Search';
 
-import { selectSearchResults } from '../../modules/individuals/selectors';
 import DeleteButton from '../DeleteButton';
 import Button from '../Button';
 import Text from '../Text';
@@ -31,7 +29,7 @@ export default function IndividualInput({
   const [selectedIndividual, setSelectedIndividual] = useState(null);
   const [filter, setFilter] = useState('');
 
-  const individuals = useSelector(selectSearchResults);
+  const individuals = [];
 
   const onClose = () => setModalOpen(false);
 

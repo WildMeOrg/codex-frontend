@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { get } from 'lodash-es';
 
 import DialogContent from '@material-ui/core/DialogContent';
@@ -6,6 +6,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 
 import CustomAlert from '../../components/Alert';
 import usePatchSighting from '../../models/sighting/usePatchSighting';
+import usePatchAssetGroupSighting from '../../models/assetGroupSighting/usePatchAssetGroupSighting';
 import InputRow from '../../components/fields/edit/InputRowNew';
 import Button from '../../components/Button';
 import StandardDialog from '../../components/StandardDialog';
@@ -28,27 +29,49 @@ export default function EditSightingMetadata({
   metadata,
   onClose,
   refreshSightingData,
+  pending,
 }) {
   const {
-    updateProperties,
-    loading,
-    error,
-    setError,
+    updateProperties: updateSightingProperties,
+    loading: sightingLoading,
+    error: sightingError,
+    setError: setSightingError,
   } = usePatchSighting();
 
-  const defaultFieldMetadata = metadata.filter(
-    field => !field.customField,
-  );
-  const customFieldMetadata = metadata.filter(
-    field => field.customField,
-  );
+  const {
+    updateProperties: updateAgsProperties,
+    loading: agsLoading,
+    error: agsError,
+    setError: setAgsError,
+  } = usePatchAssetGroupSighting();
 
-  const [defaultFieldValues, setDefaultFieldValues] = useState(
-    getInitialFormValues(defaultFieldMetadata, 'name'),
-  );
+  const error = pending ? agsError : sightingError;
+  const setError = pending ? setAgsError : setSightingError;
+  const loading = pending ? agsLoading : sightingLoading;
+  const updateProperties = pending
+    ? updateAgsProperties
+    : updateSightingProperties;
 
-  const [customFieldValues, setCustomFieldValues] = useState(
-    getInitialFormValues(customFieldMetadata, 'id'),
+  const [defaultFieldValues, setDefaultFieldValues] = useState({});
+
+  const [customFieldValues, setCustomFieldValues] = useState({});
+
+  useEffect(
+    () => {
+      const defaultFieldMetadata = metadata.filter(
+        field => !field.customField,
+      );
+      const customFieldMetadata = metadata.filter(
+        field => field.customField,
+      );
+      setDefaultFieldValues(
+        getInitialFormValues(defaultFieldMetadata, 'name'),
+      );
+      setCustomFieldValues(
+        getInitialFormValues(customFieldMetadata, 'id'),
+      );
+    },
+    [get(metadata, 'length')],
   );
 
   return (

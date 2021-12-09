@@ -14,7 +14,7 @@ We rely heavily on Material UI. When a component exists in Material UI, use it i
 
 ## Global state 
 
-This project uses Redux but only minimally. Not all responses from the server need to be held in the store, only things that are used all over the place.
+There are a few things stored in context, but mostly pages fetch their own data.
 
 ## Translations 
 
@@ -25,7 +25,7 @@ If you want to help translate the project, that is very much appreciated and nee
 ## Conventions 
 
 - Any file with a React component should have the suffix `.jsx`
-- Redux stuff goes in `/src/modules`
+- Data fetching goes in `/src/models`
 - Code specific to a certain page goes in `/src/pages`
 - Components that are reused widely go in `/src/components`
 - Post any questions in Github issues or send an email to ben@wildme.org 

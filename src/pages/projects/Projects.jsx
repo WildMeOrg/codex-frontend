@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
 import { useIntl } from 'react-intl';
 import { get } from 'lodash-es';
 import MainColumn from '../../components/MainColumn';
@@ -7,17 +6,15 @@ import ConfirmDelete from '../../components/ConfirmDelete';
 import Header from '../../components/Header';
 import Link from '../../components/Link';
 import DataDisplay from '../../components/dataDisplays/DataDisplay';
-import { selectIsAdministrator } from '../../modules/app/selectors';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import CreateProject from './CreateProject';
 import fakeProjects from './fakeProjects';
 
 export default function Projects() {
   const intl = useIntl();
-  const pageTitle = intl.formatMessage({ id: 'PROJECTS_PAGE_TITLE' });
-  useDocumentTitle(pageTitle, { translateMessage: false });
+  useDocumentTitle('PROJECTS');
 
-  const isAdministrator = useSelector(selectIsAdministrator);
+  const isAdministrator = true;
 
   const [creatingProject, setCreatingProject] = useState(false);
   const [projectToDelete, setProjectToDelete] = useState(null);
@@ -50,7 +47,7 @@ export default function Projects() {
         onClose={() => setCreatingProject(false)}
       />
       <Header
-        title={pageTitle}
+        titleId="PROJECTS"
         showButton={isAdministrator}
         buttonText={intl.formatMessage({ id: 'CREATE_PROJECT' })}
         onButtonClick={() => setCreatingProject(true)}

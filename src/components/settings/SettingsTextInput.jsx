@@ -7,9 +7,13 @@ import Skeleton from '@material-ui/lab/Skeleton';
 import Text from '../Text';
 import LabeledInput from '../LabeledInput';
 
-function SettingInput({ customFieldCategories, schema, ...rest }) {
+const SettingInput = function({
+  customFieldCategories,
+  schema,
+  ...rest
+}) {
   return <LabeledInput schema={schema} {...rest} />;
-}
+};
 
 export default function SettingsTextInput({
   siteSettings,

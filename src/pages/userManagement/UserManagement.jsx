@@ -247,7 +247,10 @@ export default function UserManagement() {
               flexDirection: 'column',
             }}
           >
-            <CollaborationManagementForm userData={userData} />
+            <CollaborationManagementForm
+              userData={userData}
+              existingCollaborations={allCollaborationData}
+            />
           </Paper>
         </Grid>
         <Grid item style={{ width: '100%' }}>

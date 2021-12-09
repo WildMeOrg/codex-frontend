@@ -7,7 +7,7 @@ import useLabel from '../../../hooks/useLabel';
 import useDescription from '../../../hooks/useDescription';
 import FormCore from './FormCore';
 
-function TextInput(props) {
+const TextInput = function(props) {
   const {
     schema,
     value,
@@ -58,6 +58,6 @@ function TextInput(props) {
       ) : null}
     </FormCore>
   );
-}
+};
 
 export default memo(TextInput);

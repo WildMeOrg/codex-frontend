@@ -10,8 +10,6 @@ export default function CollaborationEditDialog({
   collaborationData,
   refresh,
 }) {
-  console.log('deleteMe collaborationData is: ');
-  console.log(collaborationData);
   const [formValues, setFormValues] = useState({});
   const [touched, setTouched] = useState(false);
   const {

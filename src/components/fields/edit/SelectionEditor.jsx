@@ -13,7 +13,7 @@ import useDescription from '../../../hooks/useDescription';
 import FormCore from './FormCore';
 import Text from '../../Text';
 
-function SelectionEditor(props) {
+const SelectionEditor = function(props) {
   const {
     schema,
     value,
@@ -92,6 +92,6 @@ function SelectionEditor(props) {
       ) : null}
     </FormCore>
   );
-}
+};
 
 export default memo(SelectionEditor);

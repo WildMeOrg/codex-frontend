@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { get, sortBy } from 'lodash-es';
 
+import { useTheme } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -23,6 +24,7 @@ import Print from '@material-ui/icons/Print';
 import FilterList from '@material-ui/icons/FilterList';
 import CloudDownload from '@material-ui/icons/CloudDownload';
 
+import BaoDetective from '../svg/BaoDetective';
 import FilterBar from '../FilterBar';
 import Text from '../Text';
 import TablePaginationActions from './TablePaginationActions';
@@ -45,6 +47,7 @@ export default function DataDisplay({
   initiallySelectedRow = null,
   onSelectRow = Function.prototype,
   hideFilterSearch = false,
+  showNoResultsBao = false,
   renderExpandedRow,
   variant = 'primary',
   idKey = 'id',
@@ -61,8 +64,9 @@ export default function DataDisplay({
   cellStyles = {},
   ...rest
 }) {
-  // console.log('deleteMe data coming into DataDisplay is: ');
-  // console.log(data);
+  const theme = useTheme();
+  const themeColor = theme.palette.primary.main;
+
   const initialColumnNames = columns
     .filter(c => get(c, 'options.display', true))
     .map(c => c.name);
@@ -118,6 +122,8 @@ export default function DataDisplay({
   const visibleColumns = columns.filter(column =>
     visibleColumnNames.includes(column.name),
   );
+
+  const noResults = showNoResultsBao && data && data.length === 0;
 
   return (
     <div {...rest}>
@@ -288,7 +294,7 @@ export default function DataDisplay({
                 />
               ))}
           </TableBody>
-          {paginated && !loading && (
+          {paginated && !loading && !noResults && (
             <TableFooter>
               <TableRow>
                 <TablePagination
@@ -304,6 +310,24 @@ export default function DataDisplay({
           )}
         </Table>
       </TableContainer>
+      {noResults && (
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            marginTop: 40,
+          }}
+        >
+          <BaoDetective
+            style={{ width: 240 }}
+            themeColor={themeColor}
+          />
+          <Text style={{ marginTop: 12 }}>
+            Your search did not match any records.
+          </Text>
+        </div>
+      )}
       {loading && <LinearProgress style={{ margin: '16px 32px' }} />}
     </div>
   );

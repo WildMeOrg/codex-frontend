@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
 
 import Hidden from '@material-ui/core/Hidden';
 import Drawer from '@material-ui/core/Drawer';
 
+import useIndividualSearchSchemas from '../../models/individual/useIndividualSearchSchemas';
 import useFilterIndividuals from '../../models/individual/useFilterIndividuals';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import FilterPanel from '../../components/FilterPanel';
 import SearchFilterList from '../../components/SearchFilterList';
-import { selectIndividualSearchSchema } from '../../modules/individuals/selectors';
 import Button from '../../components/Button';
 import Text from '../../components/Text';
 import IndividualsDisplay from '../../components/dataDisplays/IndividualsDisplay';
@@ -37,7 +36,7 @@ export default function SearchIndividuals() {
     updateFilters,
   } = useFilterIndividuals(formFilters, page, rowsPerPage);
 
-  const schema = useSelector(selectIndividualSearchSchema);
+  const schemas = useIndividualSearchSchemas();
 
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
 
@@ -86,7 +85,7 @@ export default function SearchIndividuals() {
           formFilters={formFilters}
           setFormFilters={setFormFilters}
           updateFilters={updateFilters}
-          schema={schema}
+          schema={schemas}
         />
         <Hidden smUp>
           <Button

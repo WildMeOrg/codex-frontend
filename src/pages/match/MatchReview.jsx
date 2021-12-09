@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import { toLower } from 'lodash-es';
 import { useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 import SadScreen from '../../components/SadScreen';
-import { selectSightings } from '../../modules/sightings/selectors';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import LargeScreenRequired from './LargeScreenRequired';
 import Match from './Match';
@@ -25,7 +23,7 @@ export default function MatchReview() {
   const marginTop = isSm ? 56 : 64;
 
   // fetch data for Id...
-  const sightings = useSelector(selectSightings);
+  const sightings = [];
   useDocumentTitle('MATCH_REVIEW');
   const [matching, setMatching] = useState(true);
 

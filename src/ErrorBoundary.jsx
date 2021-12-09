@@ -1,16 +1,16 @@
 import React from 'react';
 import { get } from 'lodash-es';
 
-import Paper from '@material-ui/core/Paper';
+import { withTheme } from '@material-ui/core/styles';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
+import BaoSpills from './components/svg/BaoSpills';
 import ButtonLink from './components/ButtonLink';
 import Button from './components/Button';
 import Text from './components/Text';
-import savanna from './assets/savanna.jpeg';
 
 const initialState = {
   hasError: false,
@@ -37,96 +37,88 @@ class ErrorBoundary extends React.Component {
       return this.props.children;
     }
 
+    const { theme } = this.props;
+    const themeColor = theme.palette.primary.main;
+
     return (
       <div
         style={{
           width: '100%',
           height: '100vh',
-          backgroundImage: `url(${savanna})`,
-          backgroundSize: 'cover',
-          position: 'relative',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
         }}
       >
-        <div
+        <BaoSpills
           style={{
-            height: '100vh',
-            display: 'flex',
-            alignItems: 'flex-start',
-            justifyContent: 'center',
+            maxWidth: 580,
+            width: '80vw',
+            margin: '60px 0 40px 0',
           }}
-        >
-          <Paper
+          themeColor={themeColor}
+        />
+        <div>
+          <Text variant="h4" id="AN_ERROR_OCCURRED" />
+          <div
             style={{
-              margin: '100px 20px 0 20px',
               display: 'flex',
               flexDirection: 'column',
-              backgroundColor: '#ffffffc2',
-              padding: 20,
+              justifyContent: 'space-between',
             }}
           >
-            <Text variant="h4" id="AN_ERROR_OCCURRED" />
-            <div
+            <Button
               style={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between',
+                width: '100%',
+                marginTop: 12,
               }}
-            >
-              <Button
-                style={{
-                  width: '100%',
-                  marginTop: 12,
-                }}
-                display="primary"
-                onClick={() => {
-                  window.location.reload();
-                }}
-                id="RELOAD_THE_PAGE"
-              />
-              <ButtonLink
-                style={{
-                  width: '100%',
-                  marginTop: 8,
-                }}
-                display="secondary"
-                onClick={() => this.setState(initialState)}
-                href="/"
-                id="RETURN_HOME"
-              />
-              <ButtonLink
-                style={{
-                  width: '100%',
-                  marginTop: 8,
-                }}
-                href="https://community.wildme.org/"
-                display="tertiary"
-                external
-                newTab
-                id="REPORT_TO_COMMUNITY"
-              />
-            </div>
-            <div
-              style={{ marginTop: 20, width: '100%', maxWidth: 400 }}
-            >
-              <Accordion>
-                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                  <Text variant="h6" id="VIEW_ERROR_DETAILS" />
-                </AccordionSummary>
-                <AccordionDetails
-                  style={{ display: 'flex', flexDirection: 'column' }}
-                >
-                  <Text variant="h5">{this.state.errorName}</Text>
-                  <Text variant="body2">
-                    {this.state.errorMessage}
-                  </Text>
-                </AccordionDetails>
-              </Accordion>
-            </div>
-          </Paper>
+              display="primary"
+              onClick={() => {
+                window.location.reload();
+              }}
+              id="RELOAD_THE_PAGE"
+            />
+            <ButtonLink
+              style={{
+                width: '100%',
+                marginTop: 8,
+              }}
+              display="secondary"
+              onClick={() => this.setState(initialState)}
+              href="/"
+              id="RETURN_HOME"
+            />
+            <ButtonLink
+              style={{
+                width: '100%',
+                marginTop: 8,
+              }}
+              href="https://community.wildme.org/"
+              display="tertiary"
+              external
+              newTab
+              id="REPORT_TO_COMMUNITY"
+            />
+          </div>
+          <div
+            style={{ marginTop: 20, width: '100%', maxWidth: 400 }}
+          >
+            <Accordion>
+              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                <Text variant="h6" id="VIEW_ERROR_DETAILS" />
+              </AccordionSummary>
+              <AccordionDetails
+                style={{ display: 'flex', flexDirection: 'column' }}
+              >
+                <Text variant="h5">{this.state.errorName}</Text>
+                <Text variant="body2">{this.state.errorMessage}</Text>
+              </AccordionDetails>
+            </Accordion>
+          </div>
         </div>
       </div>
     );
   }
 }
 
-export default ErrorBoundary;
+export default withTheme(ErrorBoundary);

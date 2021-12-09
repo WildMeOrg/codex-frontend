@@ -17,6 +17,8 @@
   "VALUE_NOT_SET": "Value not set",
   "OPTION_LABEL_NOT_FOUND": "Option label not found",
   "SITE_THEME": "Site theme",
+  "ANIMAL_DETECTION": "Animal detection",
+  "SIGHTING_CURATION": "Sighting curation",
   "SITE_CONFIGURATION": "Site configuration",
   "EMAIL_SETTINGS": "Email settings",
   "SOCIAL_SETTINGS": "Social settings",
@@ -456,6 +458,8 @@
   "OPTION": "Option",
   "DROPDOWN_OPTIONS": "Dropdown options",
   "NON_BINARY": "Non-binary",
+  "NONE": "None",
+  "DO_NOT_DETECT_AUTOMATICALLY": "Report will not be sent to Sage automatically.",
   "ALLOWED_FILE_TYPES": "Allowed file types",
   "ALIVE": "Alive",
   "DEAD": "Dead",
@@ -630,9 +634,6 @@
   "PROJECT_ID": "Project ID",
   "404_DETAILS": "The page you are looking for may have been removed or may be temporarily unavailable.",
   "SIGHTINGS_OF": "Sightings of {name}",
-  "USERS_PAGE_TITLE": "{siteName} Users",
-  "ORGS_PAGE_TITLE": "{siteName} Organizations",
-  "PROJECTS_PAGE_TITLE": "Projects",
   "SERVER_STATUS_PAGE_TITLE": "Server Status",
   "MATCH_ANNOTATIONS": "Match annotations",
   "MATCH_REVIEW": "Match review",
@@ -880,5 +881,7 @@
   "USER_ONE_VIEW_STATUS": "User 1 Status",
   "USER_TWO_VIEW_STATUS": "User 2 Status",
   "USER_ONE_EDIT_STATUS": "User 1 Edit",
-  "USER_TWO_EDIT_STATUS": "User 2 Edit"
+  "USER_TWO_EDIT_STATUS": "User 2 Edit",
+  "COLLABORATION_ALREADY_EXISTS": "A collaboration between these two users has already been created",
+  "SIGHTING_ON_MAP": "Sighting"
 }

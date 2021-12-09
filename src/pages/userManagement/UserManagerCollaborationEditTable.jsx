@@ -35,12 +35,6 @@ export default function UserManagersCollaborationEditTable({
       get(collaboration, 'guid'),
       collaborationData,
     );
-    console.log('deleteMe response is: ');
-    console.log(response);
-    console.log(
-      'delteMe processRevoke clicked and collaboration is: ',
-    );
-    console.log(collaboration);
   }
 
   function getNthAlphabeticalMemberObjAndMakeLodashReady(obj, n) {

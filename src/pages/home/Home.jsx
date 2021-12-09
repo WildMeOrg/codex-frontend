@@ -13,9 +13,17 @@ export default function Home() {
   const [crash, setCrash] = useState(false);
 
   const { data, loading, refresh } = useGetMe();
-  const unprocessedAssetGroupId = get(data, [
+  const unprocessedAssetGroups = get(
+    data,
     'unprocessed_asset_groups',
+    [],
+  );
+  const unprocessedBulks = unprocessedAssetGroups.filter(
+    ag => get(ag, 'uploadType') !== 'form',
+  );
+  const unprocessedAssetGroupId = get(unprocessedBulks, [
     '0',
+    'uuid',
   ]);
 
   const fullName = get(data, ['full_name']);

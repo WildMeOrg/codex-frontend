@@ -6,7 +6,7 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import Switch from '@material-ui/core/Switch';
 import Text from '../Text';
 
-function Core({ children, required, width, style = {} }) {
+const Core = function({ children, required, width, style = {} }) {
   return (
     <FormControl
       required={required}
@@ -15,7 +15,7 @@ function Core({ children, required, width, style = {} }) {
       {children}
     </FormControl>
   );
-}
+};
 
 export default function BooleanInput({
   schema,

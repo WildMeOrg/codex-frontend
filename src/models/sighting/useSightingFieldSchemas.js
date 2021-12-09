@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { useIntl } from 'react-intl';
 import { get, map, omitBy } from 'lodash-es';
 
 import useDetectionConfig from '../site/useDetectionConfig';
@@ -30,6 +31,8 @@ export const defaultSightingCategories = {
 };
 
 export default function useSightingFieldSchemas() {
+  const intl = useIntl();
+
   const {
     data,
     loading: siteSettingsLoading,
@@ -84,6 +87,14 @@ export default function useSightingFieldSchemas() {
         },
       );
 
+      modelChoices.push({
+        label: intl.formatMessage({ id: 'NONE' }),
+        value: 'None',
+        description: intl.formatMessage({
+          id: 'DO_NOT_DETECT_AUTOMATICALLY',
+        }),
+      });
+
       const customFields = get(
         data,
         [
@@ -111,12 +122,12 @@ export default function useSightingFieldSchemas() {
           descriptionId: 'SIGHTING_END_TIME_DESCRIPTION',
           category: defaultSightingCategories.general.name,
         }),
-        createFieldSchema(fieldTypes.string, {
-          name: 'verbatimEventDate',
-          labelId: 'SIGHTING_VERBATIM_TIME',
-          descriptionId: 'SIGHTING_VERBATIM_TIME_DESCRIPTION',
-          category: defaultSightingCategories.general.name,
-        }),
+        // createFieldSchema(fieldTypes.string, {
+        //   name: 'verbatimEventDate',
+        //   labelId: 'SIGHTING_VERBATIM_TIME',
+        //   descriptionId: 'SIGHTING_VERBATIM_TIME_DESCRIPTION',
+        //   category: defaultSightingCategories.general.name,
+        // }),
         createFieldSchema(fieldTypes.multiselect, {
           name: 'speciesDetectionModel',
           labelId: 'SPECIES_DETECTION_MODEL',

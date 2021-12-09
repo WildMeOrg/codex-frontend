@@ -14,7 +14,7 @@ import BannerLogo from './BannerLogo';
 import Link from './Link';
 import IndividualIcon from './icons/IndividualIcon';
 
-function Entry({ messageId, Icon, disabled, ...rest }) {
+const Entry = function({ messageId, Icon, disabled, ...rest }) {
   const theme = useTheme();
 
   return (
@@ -38,7 +38,7 @@ function Entry({ messageId, Icon, disabled, ...rest }) {
       </Link>
     </ListItem>
   );
-}
+};
 
 export default function AppDrawer({ open, onClose, handleClick }) {
   return (

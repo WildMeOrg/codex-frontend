@@ -2,7 +2,6 @@ import React, { useEffect, useReducer } from 'react';
 import { BrowserRouter, useLocation } from 'react-router-dom';
 import { get } from 'lodash-es';
 import { IntlProvider } from 'react-intl';
-import { useSelector } from 'react-redux';
 import '@formatjs/intl-numberformat/polyfill';
 import enPolyfill from '@formatjs/intl-numberformat/dist/locale-data/en';
 import esPolyfill from '@formatjs/intl-numberformat/dist/locale-data/es';
@@ -11,7 +10,6 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import { createTheme, ThemeProvider } from '@material-ui/core/styles';
 
 import useSiteSettings from './models/site/useSiteSettings';
-import { selectLocale } from './modules/app/selectors';
 import materialTheme from './styles/materialTheme';
 import messagesEn from '../locale/en.json';
 import messagesEs from '../locale/es.json';
@@ -31,13 +29,13 @@ const messageMap = {
   es: messagesEs,
 };
 
-function ScrollToTop() {
+const ScrollToTop = function() {
   const { pathname } = useLocation();
 
   useEffect(() => window.scrollTo(0, 0), [pathname]);
 
   return null;
-}
+};
 
 function reducer(state, action) {
   const { type, data } = action;
@@ -66,14 +64,17 @@ function reducer(state, action) {
   return state;
 }
 
-function ContextualizedApp() {
-  const locale = useSelector(selectLocale);
+const ContextualizedApp = function() {
+  const locale = 'en';
   const { data, error } = useSiteSettings();
 
   const adminUserInitialized = get(data, 'site.adminUserInitialized');
   const primaryColor = get(data, ['site.look.themeColor', 'value']);
 
-  if (error) return <SadScreen variant="serverError" />;
+  if (error) {
+    document.title = 'Server Unavailable';
+    return <SadScreen variant="serverError" />;
+  }
   if (!primaryColor) return null;
   const theme = createTheme(materialTheme(primaryColor));
 
@@ -94,7 +95,7 @@ function ContextualizedApp() {
       </IntlProvider>
     </ThemeProvider>
   );
-}
+};
 
 export default function App() {
   const [state, dispatch] = useReducer(reducer, initialState);

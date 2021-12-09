@@ -5,7 +5,7 @@ import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import BackIcon from '@material-ui/icons/KeyboardBackspace';
 
-function Core({
+const Core = function({
   children,
   display = 'panel',
   loading = false,
@@ -128,7 +128,7 @@ function Core({
       )}
     </Button>
   );
-}
+};
 
 export default function CustomButton({
   id,

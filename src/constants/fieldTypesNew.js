@@ -12,7 +12,7 @@ const fieldTypes = {
   select: 'select', // string
   multiselect: 'multiselect', // array of strings
   boolean: 'boolean',
-  locationID: 'locationID', // nested array
+  locationId: 'locationID', // nested array
   individual: 'individual', // string (individual ID)
   relationships: 'relationships', // { targetIndividualId: string, direction: enum, type: enum, id: int }
 };

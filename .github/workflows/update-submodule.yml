@@ -18,10 +18,10 @@ jobs:
           bash -xe <<EOF
           git config user.name github-actions
           git config user.email github-actions@github.com
-          cd _frontend
+          cd _frontend.codex
           git reset --hard origin/develop
           cd ..
-          git commit -am 'Update _frontend to latest develop'
+          git commit -am 'Update _frontend.codex submodule to HEAD of codex-frontend@develop'
           git show
           git push origin HEAD
           EOF

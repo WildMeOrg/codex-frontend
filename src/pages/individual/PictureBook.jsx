@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
 import { Global, css } from '@emotion/core';
-import { useSelector } from 'react-redux';
 import { cloneDeep } from 'lodash-es';
 import { FormattedMessage } from 'react-intl';
 import { useTheme } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { selectSearchResults } from '../../modules/individuals/selectors';
 import Button from '../../components/Button';
 import Text from '../../components/Text';
 import PrintablePictureBookPage from './components/PrintablePictureBookPage';
@@ -16,6 +14,27 @@ import flukePic from '../../assets/fluke.png';
 import newsitePic from '../../assets/newsite.png';
 import oceanPic from '../../assets/ocean.jpeg';
 import savannaPic from '../../assets/savanna.jpeg';
+
+const fakeSearchResults = [
+  {
+    id: 'Teddy',
+    alias: 'Teddy',
+    species: 'Grampus Griseus',
+    encounterCount: 7,
+    locationsSighted: 3,
+    lastSeen: Date.now(),
+    profile: flukePic,
+  },
+  {
+    id: 'WB-104',
+    alias: 'Zeeb',
+    species: 'Grampus Griseus',
+    encounterCount: 5,
+    locationsSighted: 2,
+    lastSeen: Date.now(),
+    profile: flukePic,
+  },
+];
 
 const mockPhotos = [
   [flukePic, newsitePic, oceanPic],
@@ -78,7 +97,7 @@ function resetStylesForPrintingCSS(theme) {
 
 export default function PictureBook() {
   const theme = useTheme();
-  const searchResultsOriginal = useSelector(selectSearchResults);
+  const searchResultsOriginal = fakeSearchResults;
   const searchResults = [
     ...searchResultsOriginal,
     ...cloneDeep(searchResultsOriginal),
