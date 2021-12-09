@@ -82,11 +82,6 @@ export default function LatLongEditor({
           onChange={e => {
             const inputValue = e.target.value;
             const floatValue = parseFloat(inputValue);
-            console.log(
-              inputValue,
-              floatValue,
-              Number.isNaN(floatValue),
-            );
             if (Number.isNaN(floatValue)) {
               onChange([null, currentLongitude]);
             } else {
