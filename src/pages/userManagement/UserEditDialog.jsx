@@ -17,12 +17,7 @@ import PasswordVerificationAlert from '../../components/PasswordVerificationAler
 import usePatchUser from '../../models/users/usePatchUser';
 import roleSchema from './constants/roleSchema';
 
-export default function UserEditDialog({
-  open,
-  onClose,
-  userData,
-  refreshUserData,
-}) {
+export default function UserEditDialog({ open, onClose, userData }) {
   const [formValues, setFormValues] = useState({});
   const [touched, setTouched] = useState(false);
   const [password, setPassword] = useState('');
@@ -47,7 +42,6 @@ export default function UserEditDialog({
     const success = await replaceUserProperties(properties, password);
 
     if (success) {
-      refreshUserData();
       cleanupAndClose();
     }
   }
