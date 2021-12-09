@@ -129,6 +129,7 @@
     "react-dom": "^16.8.6",
     "react-image-crop": "^8.6.1",
     "react-player": "^2.4.0",
+    "react-query": "^3.34.1",
     "react-transition-group": "^4.4.1",
     "uuid": "^3.4.0"
   }

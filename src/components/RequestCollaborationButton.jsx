@@ -13,20 +13,24 @@ export default function RequestCollaborationButton({ otherUserId }) {
   const {
     data: currentUserData,
     loading: currentUserDataLoading,
-    refresh,
   } = useGetMe();
 
   const loading =
     requestCollaborationLoading || currentUserDataLoading;
 
-  const matchingCollaboration = get(
+  const currentUserCollaborations = get(
     currentUserData,
     'collaborations',
     [],
-  ).find(collaboration => {
-    const collaboratingUserIds = get(collaboration, 'user_guids', []);
-    return collaboratingUserIds.includes(otherUserId);
-  });
+  );
+  const matchingCollaboration = currentUserCollaborations.find(
+    collaboration => {
+      const memberIds = Object.keys(
+        get(collaboration, 'members', {}),
+      );
+      return memberIds.includes(otherUserId);
+    },
+  );
 
   const matchingCollaborationMembers = Object.values(
     get(matchingCollaboration, 'members', {}),
@@ -42,8 +46,7 @@ export default function RequestCollaborationButton({ otherUserId }) {
   return (
     <Button
       onClick={async () => {
-        const successful = await requestCollaboration(otherUserId);
-        if (successful) refresh();
+        await requestCollaboration(otherUserId);
       }}
       loading={loading}
       disabled={matchingCollaborationPending}

@@ -1,5 +1,7 @@
 import React, { useEffect, useReducer } from 'react';
 import { BrowserRouter, useLocation } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { ReactQueryDevtools } from 'react-query/devtools';
 import { get } from 'lodash-es';
 import { IntlProvider } from 'react-intl';
 import '@formatjs/intl-numberformat/polyfill';
@@ -28,6 +30,8 @@ const messageMap = {
   en: messagesEn,
   es: messagesEs,
 };
+
+const queryClient = new QueryClient();
 
 const ScrollToTop = function() {
   const { pathname } = useLocation();
@@ -86,12 +90,17 @@ const ContextualizedApp = function() {
         defaultLocale="en"
         messages={messageMap[locale]}
       >
-        <BrowserRouter basename="/">
-          <ScrollToTop />
-          <ErrorBoundary>
-            <FrontDesk adminUserInitialized={adminUserInitialized} />
-          </ErrorBoundary>
-        </BrowserRouter>
+        <QueryClientProvider client={queryClient}>
+          <BrowserRouter basename="/">
+            <ScrollToTop />
+            <ErrorBoundary>
+              <FrontDesk
+                adminUserInitialized={adminUserInitialized}
+              />
+            </ErrorBoundary>
+          </BrowserRouter>
+          <ReactQueryDevtools initialIsOpen={false} />
+        </QueryClientProvider>
       </IntlProvider>
     </ThemeProvider>
   );
