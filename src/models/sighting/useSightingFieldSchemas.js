@@ -121,14 +121,13 @@ export default function useSightingFieldSchemas() {
           labelId: 'SIGHTING_END',
           descriptionId: 'SIGHTING_END_TIME_DESCRIPTION',
           category: defaultSightingCategories.general.name,
-        }),
-        // createFieldSchema(fieldTypes.string, {
+        }), // createFieldSchema(fieldTypes.string, {
         //   name: 'verbatimEventDate',
         //   labelId: 'SIGHTING_VERBATIM_TIME',
         //   descriptionId: 'SIGHTING_VERBATIM_TIME_DESCRIPTION',
         //   category: defaultSightingCategories.general.name,
         // }),
-        createFieldSchema(fieldTypes.multiselect, {
+        createFieldSchema(fieldTypes.select, {
           name: 'speciesDetectionModel',
           labelId: 'SPECIES_DETECTION_MODEL',
           descriptionId: 'SPECIES_DETECTION_MODEL_DESCRIPTION',

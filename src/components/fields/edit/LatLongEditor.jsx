@@ -10,14 +10,18 @@ import Button from '../../Button';
 import StandardDialog from '../../StandardDialog';
 import useDescription from '../../../hooks/useDescription';
 
+function getNumberString(n) {
+  if (n === 0) return '0';
+  return n ? n.toString() : '';
+}
+
 function deriveGpsStringsFromValue(value) {
   const currentLatitude = get(value, '0', null);
   const currentLongitude = get(value, '1', null);
+
   return {
-    latitudeString: currentLatitude ? currentLatitude.toString() : '',
-    longitudeString: currentLongitude
-      ? currentLongitude.toString()
-      : '',
+    latitudeString: getNumberString(currentLatitude),
+    longitudeString: getNumberString(currentLongitude),
   };
 }
 
