@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer } from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter, useLocation } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
@@ -15,7 +15,6 @@ import useSiteSettings from './models/site/useSiteSettings';
 import materialTheme from './styles/materialTheme';
 import messagesEn from '../locale/en.json';
 import messagesEs from '../locale/es.json';
-import { AppContext, initialState } from './context';
 import FrontDesk from './FrontDesk';
 import SadScreen from './components/SadScreen';
 import ErrorBoundary from './ErrorBoundary';
@@ -41,34 +40,7 @@ const ScrollToTop = function() {
   return null;
 };
 
-function reducer(state, action) {
-  const { type, data } = action;
-  if (type === 'SET_SIGHTINGS_NEEDS_FETCH') {
-    return { ...state, sightingsNeedsFetch: data };
-  }
-  if (type === 'SET_SITE_SETTINGS_NEEDS_FETCH') {
-    return { ...state, siteSettingsNeedsFetch: data };
-  }
-  if (type === 'SET_SITE_SETTINGS_SCHEMA_NEEDS_FETCH') {
-    return { ...state, siteSettingsSchemaNeedsFetch: data };
-  }
-  if (type === 'SET_SITE_SETTINGS_SCHEMA') {
-    return { ...state, siteSettingsSchema: data };
-  }
-  if (type === 'SET_SITE_SETTINGS_VERSION') {
-    return { ...state, siteSettingsVersion: data };
-  }
-  if (type === 'SET_SITE_SETTINGS') {
-    return { ...state, siteSettings: data };
-  }
-  if (type === 'SET_ME') {
-    return { ...state, me: data };
-  }
-  console.warn('Action not recognized', action);
-  return state;
-}
-
-const ContextualizedApp = function() {
+function AppWithQueryClient() {
   const locale = 'en';
   const { data, error } = useSiteSettings();
 
@@ -90,28 +62,22 @@ const ContextualizedApp = function() {
         defaultLocale="en"
         messages={messageMap[locale]}
       >
-          <BrowserRouter basename="/">
-            <ScrollToTop />
-            <ErrorBoundary>
-              <FrontDesk
-                adminUserInitialized={adminUserInitialized}
-              />
-            </ErrorBoundary>
+        <BrowserRouter basename="/">
+          <ScrollToTop />
+          <ErrorBoundary>
+            <FrontDesk adminUserInitialized={adminUserInitialized} />
+          </ErrorBoundary>
         </BrowserRouter>
       </IntlProvider>
     </ThemeProvider>
   );
-};
+}
 
 export default function App() {
-  const [state, dispatch] = useReducer(reducer, initialState);
-
   return (
     <QueryClientProvider client={queryClient}>
-      <AppContext.Provider value={{ state, dispatch }}>
-        <ContextualizedApp />
-        <ReactQueryDevtools initialIsOpen={false} />
-      </AppContext.Provider>
+      <AppWithQueryClient />
+      <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );
 }
