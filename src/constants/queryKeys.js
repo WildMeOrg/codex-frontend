@@ -1,5 +1,6 @@
 export default {
   me: 'me',
-  settings: 'settings',
+  settingsConfig: 'settingsConfig',
+  settingsSchema: 'settingsSchema',
   users: 'users',
 };

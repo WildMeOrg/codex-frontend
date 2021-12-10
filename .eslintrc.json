@@ -23,6 +23,7 @@
   "rules": {
     "semi": 2,
     "react/prop-types": 0,
+    "jsx-no-bind": 0,
     "react/jsx-filename-extension": 0,
     "react/jsx-props-no-spreading": 0,
     "react/destructuring-assignment": 0,

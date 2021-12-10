@@ -41,9 +41,7 @@ export default function UserEditDialog({ open, onClose, userData }) {
 
     const success = await replaceUserProperties(properties, password);
 
-    if (success) {
-      cleanupAndClose();
-    }
+    if (success) cleanupAndClose();
   }
 
   return (

@@ -1,11 +1,9 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
 import { get } from 'lodash-es';
-import { AppContext, setSightingsNeedsFetch } from '../../context';
 import { formatError } from '../../utils/formatters';
 
 export default function usePutSighting() {
-  const { dispatch } = useContext(AppContext);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
@@ -22,7 +20,6 @@ export default function usePutSighting() {
       const successful = get(response, ['data', 'success'], false);
       const newSightingId = get(response, ['data', 'result', 'id']);
       if (successful) {
-        dispatch(setSightingsNeedsFetch(true));
         setSuccess(true);
         setError(null);
         setLoading(false);

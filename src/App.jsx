@@ -90,7 +90,6 @@ const ContextualizedApp = function() {
         defaultLocale="en"
         messages={messageMap[locale]}
       >
-        <QueryClientProvider client={queryClient}>
           <BrowserRouter basename="/">
             <ScrollToTop />
             <ErrorBoundary>
@@ -98,9 +97,7 @@ const ContextualizedApp = function() {
                 adminUserInitialized={adminUserInitialized}
               />
             </ErrorBoundary>
-          </BrowserRouter>
-          <ReactQueryDevtools initialIsOpen={false} />
-        </QueryClientProvider>
+        </BrowserRouter>
       </IntlProvider>
     </ThemeProvider>
   );
@@ -110,8 +107,11 @@ export default function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   return (
-    <AppContext.Provider value={{ state, dispatch }}>
-      <ContextualizedApp />
-    </AppContext.Provider>
+    <QueryClientProvider client={queryClient}>
+      <AppContext.Provider value={{ state, dispatch }}>
+        <ContextualizedApp />
+        <ReactQueryDevtools initialIsOpen={false} />
+      </AppContext.Provider>
+    </QueryClientProvider>
   );
 }
