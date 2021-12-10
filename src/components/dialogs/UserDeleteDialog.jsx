@@ -14,7 +14,6 @@ export default function UserDeleteDialog({
   open,
   onClose,
   userData,
-  refreshUserData,
   deactivatingSelf = false,
 }) {
   const [touched, setTouched] = useState(true);
@@ -31,7 +30,6 @@ export default function UserDeleteDialog({
   async function processDeletion() {
     const success = await deleteUser(get(userData, 'guid'), password);
     if (success) {
-      refreshUserData();
       cleanupAndClose();
     }
   }

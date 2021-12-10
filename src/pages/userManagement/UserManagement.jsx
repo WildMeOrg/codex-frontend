@@ -41,7 +41,6 @@ export default function UserManagement() {
     data: userData,
     loading: userDataLoading,
     error: userDataError,
-    refresh: refreshUserData,
   } = useGetUsers();
 
   const [newUserEmail, setNewUserEmail] = useState('');
@@ -189,7 +188,6 @@ export default function UserManagement() {
                     setNewUserEmail('');
                     setNewUserPassword('');
                     setNewUserRoles([]);
-                    refreshUserData();
                   }
                 }}
               >
@@ -218,7 +216,6 @@ export default function UserManagement() {
               data={userData}
               loading={userDataLoading}
               usersError={userDataError}
-              refreshUserData={refreshUserData}
             />
           </Paper>
         </Grid>

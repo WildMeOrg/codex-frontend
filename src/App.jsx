@@ -1,5 +1,7 @@
-import React, { useEffect, useReducer } from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter, useLocation } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { ReactQueryDevtools } from 'react-query/devtools';
 import { get } from 'lodash-es';
 import { IntlProvider } from 'react-intl';
 import '@formatjs/intl-numberformat/polyfill';
@@ -13,7 +15,6 @@ import useSiteSettings from './models/site/useSiteSettings';
 import materialTheme from './styles/materialTheme';
 import messagesEn from '../locale/en.json';
 import messagesEs from '../locale/es.json';
-import { AppContext, initialState } from './context';
 import FrontDesk from './FrontDesk';
 import SadScreen from './components/SadScreen';
 import ErrorBoundary from './ErrorBoundary';
@@ -29,6 +30,8 @@ const messageMap = {
   es: messagesEs,
 };
 
+const queryClient = new QueryClient();
+
 const ScrollToTop = function() {
   const { pathname } = useLocation();
 
@@ -37,34 +40,7 @@ const ScrollToTop = function() {
   return null;
 };
 
-function reducer(state, action) {
-  const { type, data } = action;
-  if (type === 'SET_SIGHTINGS_NEEDS_FETCH') {
-    return { ...state, sightingsNeedsFetch: data };
-  }
-  if (type === 'SET_SITE_SETTINGS_NEEDS_FETCH') {
-    return { ...state, siteSettingsNeedsFetch: data };
-  }
-  if (type === 'SET_SITE_SETTINGS_SCHEMA_NEEDS_FETCH') {
-    return { ...state, siteSettingsSchemaNeedsFetch: data };
-  }
-  if (type === 'SET_SITE_SETTINGS_SCHEMA') {
-    return { ...state, siteSettingsSchema: data };
-  }
-  if (type === 'SET_SITE_SETTINGS_VERSION') {
-    return { ...state, siteSettingsVersion: data };
-  }
-  if (type === 'SET_SITE_SETTINGS') {
-    return { ...state, siteSettings: data };
-  }
-  if (type === 'SET_ME') {
-    return { ...state, me: data };
-  }
-  console.warn('Action not recognized', action);
-  return state;
-}
-
-const ContextualizedApp = function() {
+function AppWithQueryClient() {
   const locale = 'en';
   const { data, error } = useSiteSettings();
 
@@ -95,14 +71,13 @@ const ContextualizedApp = function() {
       </IntlProvider>
     </ThemeProvider>
   );
-};
+}
 
 export default function App() {
-  const [state, dispatch] = useReducer(reducer, initialState);
-
   return (
-    <AppContext.Provider value={{ state, dispatch }}>
-      <ContextualizedApp />
-    </AppContext.Provider>
+    <QueryClientProvider client={queryClient}>
+      <AppWithQueryClient />
+      <ReactQueryDevtools initialIsOpen={false} />
+    </QueryClientProvider>
   );
 }

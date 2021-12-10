@@ -21,12 +21,7 @@ function getRoleLabels(user, intl) {
   );
   return translatedRoles.join(', ');
 }
-export default function UserEditTable({
-  data,
-  loading,
-  usersError,
-  refreshUserData,
-}) {
+export default function UserEditTable({ data, loading, usersError }) {
   const intl = useIntl();
   const [editUser, setEditUser] = useState(null);
   const [deleteUser, setDeleteUser] = useState(null);
@@ -96,7 +91,6 @@ export default function UserEditTable({
           setEditUser(null);
         }}
         userData={editUser}
-        refreshUserData={refreshUserData}
       />
       <UserDeleteDialog
         open={Boolean(deleteUser)}
@@ -104,7 +98,6 @@ export default function UserEditTable({
           setDeleteUser(null);
         }}
         userData={deleteUser}
-        refreshUserData={refreshUserData}
       />
       <DataDisplay
         idKey="guid"

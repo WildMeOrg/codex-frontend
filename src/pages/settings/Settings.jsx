@@ -29,7 +29,7 @@ function getInitialFormValues(schemas, data) {
 export default function Settings() {
   useDocumentTitle('SETTINGS_AND_PRIVACY');
 
-  const { data, refresh } = useGetMe();
+  const { data } = useGetMe();
 
   const [deactivating, setDeactivating] = useState(false);
 
@@ -69,7 +69,6 @@ export default function Settings() {
           open={deactivating}
           onClose={() => setDeactivating(false)}
           userData={data}
-          refreshUserData={refresh}
           deactivatingSelf
         />
       )}
@@ -156,7 +155,6 @@ export default function Settings() {
                               '/notification_preferences',
                               newNotificationPreferences,
                             );
-                            if (successful) refresh();
                           }}
                         />
                         <Button

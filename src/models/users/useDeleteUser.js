@@ -1,9 +1,13 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { get } from 'lodash-es';
+import { useQueryClient } from 'react-query';
+
+import queryKeys from '../../constants/queryKeys';
 import { formatError } from '../../utils/formatters';
 
 export default function useDeleteUser() {
+  const queryClient = useQueryClient();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
@@ -38,6 +42,7 @@ export default function useDeleteUser() {
         setLoading(false);
         setSuccess(true);
         setError(null);
+        queryClient.invalidateQueries(queryKeys.users);
         return true;
       }
 

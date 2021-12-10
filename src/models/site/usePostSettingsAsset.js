@@ -1,11 +1,13 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
 import { get } from 'lodash-es';
-import { AppContext, setSiteSettingsNeedsFetch } from '../../context';
+import { useQueryClient } from 'react-query';
+
+import queryKeys from '../../constants/queryKeys';
 import { formatError } from '../../utils/formatters';
 
 export default function usePostSettingsAsset() {
-  const { dispatch } = useContext(AppContext);
+  const queryClient = useQueryClient();
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -22,7 +24,7 @@ export default function usePostSettingsAsset() {
       const successful = get(response, 'status') === 200;
       setLoading(false);
       if (successful) {
-        dispatch(setSiteSettingsNeedsFetch(true));
+        queryClient.invalidateQueries(queryKeys.settingsConfig);
         setSuccess(true);
         setError(null);
       } else {
