@@ -33,6 +33,7 @@ export default function usePatchUser(userId) {
         setLoading(false);
         setSuccess(true);
         setError(null);
+        queryClient.invalidateQueries(queryKeys.me);
         queryClient.invalidateQueries(queryKeys.users);
         return true;
       }
@@ -81,6 +82,7 @@ export default function usePatchUser(userId) {
         setLoading(false);
         setSuccess(true);
         setError(null);
+        queryClient.invalidateQueries(queryKeys.me);
         queryClient.invalidateQueries(queryKeys.users);
         return true;
       }
@@ -99,12 +101,7 @@ export default function usePatchUser(userId) {
   const removeUserProperty = async (path, currentPassword) => {
     try {
       setLoading(true);
-      const propertyPatch = [
-        {
-          op: 'remove',
-          path,
-        },
-      ];
+      const propertyPatch = [{ op: 'remove', path }];
       const currentPasswordTest = currentPassword
         ? [
             {
@@ -126,6 +123,7 @@ export default function usePatchUser(userId) {
         setLoading(false);
         setSuccess(true);
         setError(null);
+        queryClient.invalidateQueries(queryKeys.me);
         queryClient.invalidateQueries(queryKeys.users);
         return true;
       }

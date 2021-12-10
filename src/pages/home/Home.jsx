@@ -12,7 +12,7 @@ import ProfileSetup from './ProfileSetup';
 export default function Home() {
   const [crash, setCrash] = useState(false);
 
-  const { data, loading, refresh } = useGetMe();
+  const { data, loading } = useGetMe();
   const unprocessedAssetGroups = get(
     data,
     'unprocessed_asset_groups',
@@ -37,8 +37,7 @@ export default function Home() {
 
   if (loading) return <LoadingScreen />;
   // if (error) handle error
-  if (!fullName)
-    return <ProfileSetup userData={data} refreshUserData={refresh} />;
+  if (!fullName) return <ProfileSetup userData={data} />;
 
   return (
     <UserProfile
@@ -46,7 +45,6 @@ export default function Home() {
       userData={data}
       userId={userId}
       userDataLoading={loading}
-      refreshUserData={refresh}
       noCollaborate
     >
       {unprocessedAssetGroupId && (

@@ -25,7 +25,6 @@ export default function EditUserMetadata({
   userId,
   metadata,
   onClose,
-  refreshUserData,
 }) {
   const {
     replaceUserProperties,
@@ -138,7 +137,6 @@ export default function EditUserMetadata({
                 setError(null);
                 setPasswordRequired(false);
                 setPassword('');
-                refreshUserData();
                 onClose();
               }
             }

@@ -15,7 +15,7 @@ import SimpleFormPage from '../../components/SimpleFormPage';
 
 const buttonId = 'saveProfile';
 
-export default function ProfileSetup({ userData, refreshUserData }) {
+export default function ProfileSetup({ userData }) {
   const [noNameError, setNoNameError] = useState(false);
   const [name, setName] = useState('');
 
@@ -49,8 +49,7 @@ export default function ProfileSetup({ userData, refreshUserData }) {
           value: name,
         },
       ];
-      const successful = await replaceUserProperties(properties);
-      if (successful) refreshUserData();
+      await replaceUserProperties(properties);
     } else {
       setNoNameError(true);
     }
