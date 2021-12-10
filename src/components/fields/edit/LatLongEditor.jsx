@@ -72,8 +72,6 @@ export default function LatLongEditor({
   const onClose = () => setModalOpen(false);
   const showDescription = !minimalLabels && description;
 
-  console.log(value);
-
   return (
     <div>
       <div style={{ display: 'flex', flexDirection: 'column' }}>
