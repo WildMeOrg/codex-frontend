@@ -38,6 +38,7 @@ export default function LatLongEditor({
 
   const [modalOpen, setModalOpen] = useState(false);
   const [mapLatLng, setMapLatLng] = useState(null);
+  const [savedMapLatLng, setSavedMapLatLng] = useState(null);
 
   const {
     latitudeString: initialLatitudeString,
@@ -57,12 +58,12 @@ export default function LatLongEditor({
       const {
         latitudeString,
         longitudeString,
-      } = deriveGpsStringsFromValue(value);
+      } = deriveGpsStringsFromValue(savedMapLatLng);
 
       setCurrentLatitudeString(latitudeString);
       setCurrentLongitudeString(longitudeString);
     },
-    [get(value, '0'), get(value, '1')],
+    [get(savedMapLatLng, '0'), get(savedMapLatLng, '1')],
   );
 
   const currentLatitude = get(value, '0', null);
@@ -70,6 +71,8 @@ export default function LatLongEditor({
 
   const onClose = () => setModalOpen(false);
   const showDescription = !minimalLabels && description;
+
+  console.log(value);
 
   return (
     <div>
@@ -79,14 +82,11 @@ export default function LatLongEditor({
           id="gps-latitude"
           label={intl.formatMessage({ id: 'DECIMAL_LATITUDE' })}
           value={currentLatitudeString}
+          type="number"
           onChange={e => {
             const inputValue = e.target.value;
             const floatValue = parseFloat(inputValue);
-            if (Number.isNaN(floatValue)) {
-              onChange([null, currentLongitude]);
-            } else {
-              onChange([floatValue, currentLongitude]);
-            }
+            onChange([floatValue, currentLongitude]);
             setCurrentLatitudeString(inputValue);
           }}
         />
@@ -95,14 +95,11 @@ export default function LatLongEditor({
           id="gps-longitude"
           label={intl.formatMessage({ id: 'DECIMAL_LONGITUDE' })}
           value={currentLongitudeString}
+          type="number"
           onChange={e => {
             const inputValue = e.target.value;
             const floatValue = parseFloat(inputValue);
-            if (Number.isNaN(floatValue)) {
-              onChange([currentLatitude, null]);
-            } else {
-              onChange([currentLatitude, floatValue]);
-            }
+            onChange([currentLatitude, floatValue]);
             setCurrentLongitudeString(inputValue);
           }}
         />
@@ -134,6 +131,7 @@ export default function LatLongEditor({
           <Button
             display="primary"
             onClick={() => {
+              setSavedMapLatLng(mapLatLng);
               onChange(mapLatLng);
               onClose();
             }}
