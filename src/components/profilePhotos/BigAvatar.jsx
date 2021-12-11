@@ -13,7 +13,6 @@ export default function BigAvatar({
   imageSrc,
   imageGuid,
   userId,
-  refreshUserData,
   userDataLoading,
   name,
   editable,
@@ -56,7 +55,6 @@ export default function BigAvatar({
           visible={editingAvatar}
           square={square}
           onClose={() => setEditingAvatar(false)}
-          refreshUserData={refreshUserData}
           userDataLoading={userDataLoading}
         />
         {userDataLoading ? (

@@ -74,7 +74,6 @@ export default function UserProfile({
         userId={userId}
         metadata={metadata}
         onClose={() => setEditingProfile(false)}
-        refreshUserData={refreshUserData}
       />
       <EntityHeaderNew
         name={name}
