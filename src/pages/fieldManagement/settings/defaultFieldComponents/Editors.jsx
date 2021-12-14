@@ -4,9 +4,9 @@ import { get } from 'lodash-es';
 import TreeEditor from './TreeEditor';
 import ConfigureDefaultField from './ConfigureDefaultField';
 
-export var RelationshipEditor = function() {
+export function RelationshipEditor() {
   return null;
-};
+}
 
 // export function RelationshipEditor({
 //   onClose,
@@ -38,7 +38,7 @@ export var RelationshipEditor = function() {
 //   );
 // }
 
-export var RegionEditor = function({
+export function RegionEditor({
   onClose,
   onSubmit,
   formSettings,
@@ -68,4 +68,4 @@ export var RegionEditor = function({
       {children}
     </ConfigureDefaultField>
   );
-};
+}
