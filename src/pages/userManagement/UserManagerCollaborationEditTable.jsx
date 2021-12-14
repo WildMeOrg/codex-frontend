@@ -16,6 +16,8 @@ export default function UserManagersCollaborationEditTable({
   error,
   refresh,
 }) {
+  const intl = useIntl();
+  const [editCollaboration, setEditCollaboration] = useState(null);
   const {
     patchCollaboration,
     loading: patchLoading,
@@ -92,8 +94,6 @@ export default function UserManagersCollaborationEditTable({
     });
   }
   const tableFriendlyData = tranformDataForCollabTable(data);
-  const intl = useIntl();
-  const [editCollaboration, setEditCollaboration] = useState(null);
   const tableColumns = [
     {
       name: 'userOne',

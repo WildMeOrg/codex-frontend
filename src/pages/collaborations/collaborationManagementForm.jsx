@@ -145,15 +145,14 @@ export default function CollaborationManagementForm({
                 user1,
                 user2,
               );
-              setShouldDisplay(true);
             } else {
               setError(
                 intl.formatMessage({
                   id: 'COLLABORATION_ALREADY_EXISTS',
                 }),
               );
-              setShouldDisplay(true);
             }
+            setShouldDisplay(true);
           }}
         >
           <FormattedMessage id="CREATE_COLLABORATION" />

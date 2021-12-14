@@ -35,7 +35,7 @@ export default function CollaborationEditDialog({
     const success = await patchCollaboration(
       get(collaborationData, 'guid'),
       properties,
-    ); // TODO check this
+    );
 
     if (success) {
       refresh();
