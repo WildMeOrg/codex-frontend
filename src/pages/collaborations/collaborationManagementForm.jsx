@@ -1,13 +1,34 @@
 import React, { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { get } from 'lodash-es';
+import { get, some } from 'lodash-es';
 import { TextField } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
 import Button from '../../components/Button';
 import CustomAlert from '../../components/Alert';
 import useEstablishCollaborationAsUserManager from '../../models/collaboration/useEstablishCollaborationAsUserManager';
 
-export default function CollaborationManagementForm({ userData }) {
+function collabContainsUsers(collab, user1, user2) {
+  const members = get(collab, 'members');
+  if (!members) return true; // err on the side of safety
+  return (
+    some(members, ['guid', user1]) && some(members, ['guid', user2])
+  );
+}
+
+function collaborationAlreadyExists(
+  existingCollaborations,
+  user1,
+  user2,
+) {
+  return some(existingCollaborations, collab =>
+    collabContainsUsers(collab, user1, user2),
+  );
+}
+
+export default function CollaborationManagementForm({
+  userData,
+  existingCollaborations,
+}) {
   const intl = useIntl();
   const [shouldDisplay, setShouldDisplay] = useState(false);
   const [user1, setUser1] = useState(null);
@@ -16,6 +37,7 @@ export default function CollaborationManagementForm({ userData }) {
     establishCollaboration,
     loading,
     error,
+    setError,
     success,
   } = useEstablishCollaborationAsUserManager();
   return (
@@ -111,11 +133,25 @@ export default function CollaborationManagementForm({ userData }) {
           style={{ marginBottom: '20px' }}
           loading={loading}
           onClick={async () => {
-            const successful = await establishCollaboration(
-              // need the await here. Otherwise, setShouldDisplay(true) below fires before this completes
-              user1,
-              user2,
-            );
+            if (
+              !collaborationAlreadyExists(
+                existingCollaborations,
+                user1,
+                user2,
+              )
+            ) {
+              await establishCollaboration(
+                // need the await here. Otherwise, setShouldDisplay(true) below fires before this completes
+                user1,
+                user2,
+              );
+            } else {
+              setError(
+                intl.formatMessage({
+                  id: 'COLLABORATION_ALREADY_EXISTS',
+                }),
+              );
+            }
             setShouldDisplay(true);
           }}
         >

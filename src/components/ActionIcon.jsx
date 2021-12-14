@@ -19,6 +19,10 @@ const variantMap = {
     labelId: 'VIEW',
     component: ViewIcon,
   },
+  revoke: {
+    labelId: 'MUTUAL_REVOKE',
+    component: DeleteIcon,
+  },
   delete: {
     labelId: 'DELETE',
     component: DeleteIcon,

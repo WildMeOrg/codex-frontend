@@ -23,6 +23,8 @@ import useGetUsers from '../../models/users/useGetUsers';
 import UserEditTable from './UserEditTable';
 import roleSchema from './constants/roleSchema';
 import CollaborationManagementForm from '../collaborations/collaborationManagementForm';
+import useGetAllCollaborations from '../../models/collaboration/useGetAllCollaborations';
+import UserManagersCollaborationEditTable from './UserManagerCollaborationEditTable';
 
 export default function UserManagement() {
   const intl = useIntl();
@@ -42,6 +44,13 @@ export default function UserManagement() {
     loading: userDataLoading,
     error: userDataError,
   } = useGetUsers();
+
+  const {
+    allCollaborationData,
+    allCollaborationsLoading,
+    allCollaborationsError,
+    allCollaborationsRefreshCount,
+  } = useGetAllCollaborations();
 
   const [newUserEmail, setNewUserEmail] = useState('');
   const [newUserPassword, setNewUserPassword] = useState('');
@@ -235,7 +244,34 @@ export default function UserManagement() {
               flexDirection: 'column',
             }}
           >
-            <CollaborationManagementForm userData={userData} />
+            <CollaborationManagementForm
+              userData={userData}
+              existingCollaborations={allCollaborationData}
+            />
+          </Paper>
+        </Grid>
+        <Grid item style={{ width: '100%' }}>
+          <Text
+            variant="h6"
+            style={{ marginTop: 20, marginLeft: 12 }}
+            id="EDIT_COLLABORATIONS"
+          />
+          <Paper
+            elevation={2}
+            style={{
+              marginTop: 20,
+              marginBottom: 12,
+              padding: 24,
+              display: 'flex',
+              flexDirection: 'column',
+            }}
+          >
+            <UserManagersCollaborationEditTable
+              data={allCollaborationData}
+              loading={allCollaborationsLoading}
+              error={allCollaborationsError}
+              refresh={allCollaborationsRefreshCount}
+            />
           </Paper>
         </Grid>
       </Grid>

@@ -525,6 +525,7 @@
   "RESET_PASSWORD": "Reset password",
   "FORGOT_PASSWORD_INSTRUCTIONS": "Enter your email to reset your password.",
   "EDIT": "Edit",
+  "MUTUAL_REVOKE": "Revoke Collaboration",
   "TRY_AGAIN": "Try again",
   "SUCCESSFULLY_LOGGED_OUT": "You have successfully logged out.",
   "LOGGED_OUT": "Logged out",
@@ -874,5 +875,13 @@
   "CREATE_COLLABORATION": "Create Collaboration",
   "COLLABORATION_CREATEDD": "Collaboration Created",
   "EDIT_COLLABORATIONS": "Edit Collaborations",
+  "USER_ONE": "User 1",
+  "USER_TWO": "User 2",
+  "COLLABORATION_STATUS": "Status",
+  "USER_ONE_VIEW_STATUS": "User 1 Status",
+  "USER_TWO_VIEW_STATUS": "User 2 Status",
+  "USER_ONE_EDIT_STATUS": "User 1 Edit",
+  "USER_TWO_EDIT_STATUS": "User 2 Edit",
+  "COLLABORATION_ALREADY_EXISTS": "A collaboration between these two users has already been created",
   "SIGHTING_ON_MAP": "Sighting"
 }
