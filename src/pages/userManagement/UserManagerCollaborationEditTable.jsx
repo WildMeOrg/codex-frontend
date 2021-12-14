@@ -9,8 +9,7 @@ import Text from '../../components/Text';
 import DataDisplay from '../../components/dataDisplays/DataDisplay';
 import ActionIcon from '../../components/ActionIcon';
 import usePatchCollaboration from '../../models/collaboration/usePatchCollaboration';
-// import CollaborationsDialog from '../../components/cards/collaborations/CollaborationsDialog';
-
+import { getNthAlphabeticalMemberObjAndMakeLodashReady } from '../../utils/manipulators';
 export default function UserManagersCollaborationEditTable({
   data,
   loading,
@@ -26,88 +25,73 @@ export default function UserManagersCollaborationEditTable({
     setSuccess: patchSetSuccess,
   } = usePatchCollaboration();
   async function processRevoke(collaboration) {
+    // const collaborationData = { // TODO note that this is still in progress and will be resolved along with a few other things in the separate ticket DEX-527
+    //   op: 'replace',
+    //   path: '/view_permission',
+    //   value: 'revoked',
+    // };
     const collaborationData = {
       op: 'replace',
-      path: '/view_permission',
-      value: 'revoked',
+      path: '/managed_view_permission',
+      value: {
+        user_guid: get(collaboration, 'userOneGuid'),
+        permission: 'revoked',
+      },
     };
+    // const collaborationData = {
+    //   managed_view_permission: {
+    //     user_guid: get(collaboration, 'userOneGuid'),
+    //   },
+    //   permission: 'revoked',
+    // };
     const response = await patchCollaboration(
       get(collaboration, 'guid'),
       collaborationData,
     );
+    // const collaborationDataTheOtherWay = {
+    //   managed_view_permission: {
+    //     user_guid: get(collaboration, 'userTwoGuid'),
+    //   },
+    //   permission: 'revoked',
+    // };
+    // const responseTheOtherWay = await patchCollaboration(
+    //   get(collaboration, 'guid'),
+    //   collaborationDataTheOtherWay,
+    // );
   }
 
-  function getNthAlphabeticalMemberObjAndMakeLodashReady(obj, n) {
-    // derived from https://stackoverflow.com/questions/39483677/how-to-get-first-n-elements-of-an-object-using-lodash
-    const memberObject = Object.keys(obj)
-      .sort()
-      .slice(n - 1, n)
-      .reduce((memo, current) => obj[current], {});
-
-    // Convert empty strings to undefined so that they get handled appropriately by lodash get later omg this is so silly
-    if (get(memberObject, 'full_name') === '')
-      memberObject.full_name = undefined;
-
-    return memberObject;
-  }
-  function transformData(inputData) {
+  function tranformDataForCollabTable(inputData) {
     if (!inputData || inputData.length === 0) return null;
-    return inputData.map(entry => ({
+    return inputData.map(entry => {
+      const member1 = getNthAlphabeticalMemberObjAndMakeLodashReady(
+        get(entry, 'members'),
+        1,
+      );
+      const member2 = getNthAlphabeticalMemberObjAndMakeLodashReady(
+        get(entry, 'members'),
+        2,
+      );
       // Note: the collaboration API call returned a members OBJECT instead of array of objects, which made some tranformation gymnastics here necessary
-      guid: get(entry, 'guid'),
-      userOne: get(
-        getNthAlphabeticalMemberObjAndMakeLodashReady(
-          get(entry, 'members'),
-          1,
-        ),
-        'full_name',
-        get(
-          getNthAlphabeticalMemberObjAndMakeLodashReady(
-            get(entry, 'members'),
-            1,
-          ),
-          'email',
-        ),
-      ),
-      userTwo: get(
-        getNthAlphabeticalMemberObjAndMakeLodashReady(
-          get(entry, 'members'),
-          2,
-        ),
-        'full_name',
-        get(
-          getNthAlphabeticalMemberObjAndMakeLodashReady(
-            get(entry, 'members'),
-            2,
-          ),
-          'email',
-        ),
-      ),
-      viewStatusOne: get(
-        getNthAlphabeticalMemberObjAndMakeLodashReady(
-          get(entry, 'members'),
-          1,
-        ),
-        'viewState',
-      ),
-      viewStatusTwo: get(
-        getNthAlphabeticalMemberObjAndMakeLodashReady(
-          get(entry, 'members'),
-          2,
-        ),
-        'viewState',
-      ),
-      // editStatusOne: get(
-      //   getNthAlphabeticalMemberObjAndMakeLodashReady(get(entry, 'members'), 1),
-      //   'editState',
-      // ),
-      // editStatusTwo: get(
-      //   getNthAlphabeticalMemberObjAndMakeLodashReady(get(entry, 'members'), 2),
-      //   'editState',
-      // ),
-    }));
+      return {
+        guid: get(entry, 'guid'),
+        userOne: get(member1, 'full_name', get(member1, 'email')),
+        userOneGuid: get(member1, 'guid'),
+        userTwo: get(member2, 'full_name', get(member2, 'email')),
+        userTwoGuid: get(member2, 'guid'),
+        viewStatusOne: get(member1, 'viewState'),
+        viewStatusTwo: get(member2, 'viewState'),
+        // editStatusOne: get(
+        //   member1,
+        //   'editState',
+        // ),
+        // editStatusTwo: get(
+        //   member2,
+        //   'editState',
+        // ),
+      };
+    });
   }
-  data = transformData(data);
+  const tableFriendlyData = tranformDataForCollabTable(data);
   const intl = useIntl();
   const [editCollaboration, setEditCollaboration] = useState(null);
   const tableColumns = [
@@ -205,7 +189,7 @@ export default function UserManagersCollaborationEditTable({
         style={{ marginTop: 8 }}
         variant="secondary"
         columns={tableColumns}
-        data={data || []}
+        data={tableFriendlyData || []}
       />
       {loading ? (
         <Skeleton style={{ transform: 'unset' }} height={44} />

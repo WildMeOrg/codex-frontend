@@ -48,9 +48,9 @@ export default function UserManagement() {
 
   const {
     allCollaborationData,
-    getAllCollaborationsLoading,
-    getAllCollaborationsError,
-    getAllCollaborationsRefreshCount,
+    allCollaborationsLoading,
+    allCollaborationsError,
+    allCollaborationsRefreshCount,
   } = useGetAllCollaborations();
 
   const [newUserEmail, setNewUserEmail] = useState('');
@@ -271,9 +271,9 @@ export default function UserManagement() {
           >
             <UserManagersCollaborationEditTable
               data={allCollaborationData}
-              loading={getAllCollaborationsLoading}
-              error={getAllCollaborationsError}
-              refresh={getAllCollaborationsRefreshCount}
+              loading={allCollaborationsLoading}
+              error={allCollaborationsError}
+              refresh={allCollaborationsRefreshCount}
             />
           </Paper>
         </Grid>

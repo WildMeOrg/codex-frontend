@@ -12,7 +12,7 @@ export default function usePatchCollaboration() {
     try {
       setLoading(true);
       const patchResponse = await axios({
-        url: `${__houston_url__}/api/v1/collaborations/${collaborationId}`, // TODO likely to change with DEX-568
+        url: `${__houston_url__}/api/v1/collaborations/${collaborationId}`,
         withCredentials: true,
         method: 'patch',
         data,

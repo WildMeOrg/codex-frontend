@@ -1,27 +1,28 @@
 import React, { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { get } from 'lodash-es';
+import { get, some } from 'lodash-es';
 import { TextField } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
 import Button from '../../components/Button';
 import CustomAlert from '../../components/Alert';
 import useEstablishCollaborationAsUserManager from '../../models/collaboration/useEstablishCollaborationAsUserManager';
 
+function collabContainsUsers(collab, user1, user2) {
+  const members = get(collab, 'members');
+  if (!members) return true; // err on the side of safety
+  return (
+    some(members, ['guid', user1]) && some(members, ['guid', user2])
+  );
+}
+
 function collaborationAlreadyExists(
   existingCollaborations,
   user1,
   user2,
 ) {
-  const collabIdPairs = existingCollaborations.map(collaboration =>
-    get(collaboration, 'members')
-      ? Object.keys(get(collaboration, 'members'))
-      : null,
+  return some(existingCollaborations, collab =>
+    collabContainsUsers(collab, user1, user2),
   );
-  const pairInQuestion = collabIdPairs.filter(
-    pairArray =>
-      pairArray.includes(user1) && pairArray.includes(user2),
-  );
-  return pairInQuestion.length > 0 ? true : false;
 }
 
 export default function CollaborationManagementForm({
@@ -139,7 +140,7 @@ export default function CollaborationManagementForm({
                 user2,
               )
             ) {
-              const successful = await establishCollaboration(
+              await establishCollaboration(
                 // need the await here. Otherwise, setShouldDisplay(true) below fires before this completes
                 user1,
                 user2,
