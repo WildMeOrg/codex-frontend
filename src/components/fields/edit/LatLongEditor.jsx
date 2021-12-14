@@ -55,13 +55,15 @@ export default function LatLongEditor({
 
   useEffect(
     () => {
-      const {
-        latitudeString,
-        longitudeString,
-      } = deriveGpsStringsFromValue(savedMapLatLng);
+      if (savedMapLatLng) {
+        const {
+          latitudeString,
+          longitudeString,
+        } = deriveGpsStringsFromValue(savedMapLatLng);
 
-      setCurrentLatitudeString(latitudeString);
-      setCurrentLongitudeString(longitudeString);
+        setCurrentLatitudeString(latitudeString);
+        setCurrentLongitudeString(longitudeString);
+      }
     },
     [get(savedMapLatLng, '0'), get(savedMapLatLng, '1')],
   );
