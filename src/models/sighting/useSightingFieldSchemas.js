@@ -111,18 +111,11 @@ export default function useSightingFieldSchemas() {
       return [
         createFieldSchema(fieldTypes.date, {
           name: 'startTime',
-          labelId: 'SIGHTING_START',
-          descriptionId: 'SIGHTING_START_TIME_DESCRIPTION',
+          labelId: 'SIGHTING_TIME',
+          descriptionId: 'SIGHTING_TIME_DESCRIPTION',
           category: defaultSightingCategories.general.name,
           required: true,
-        }),
-        createFieldSchema(fieldTypes.date, {
-          name: 'endTime',
-          labelId: 'SIGHTING_END',
-          descriptionId: 'SIGHTING_END_TIME_DESCRIPTION',
-          category: defaultSightingCategories.general.name,
-        }), // createFieldSchema(fieldTypes.string, {
-        //   name: 'verbatimEventDate',
+        }), //   name: 'verbatimEventDate', // createFieldSchema(fieldTypes.string, {
         //   labelId: 'SIGHTING_VERBATIM_TIME',
         //   descriptionId: 'SIGHTING_VERBATIM_TIME_DESCRIPTION',
         //   category: defaultSightingCategories.general.name,
