@@ -119,6 +119,7 @@ export default function TreeEditor({
   schema,
   value,
   onChange,
+  siteSettings, // unpacking to prevent passing to div
   ...rest
 }) {
   return (
