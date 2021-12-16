@@ -65,11 +65,7 @@ export function prepareReportWithEncounter(
 
   if (!sightingData.endTime) encounter.time = sightingData.startTime;
 
-  if (safeEncounterData.taxonomy) {
-    encounter.taxonomy = {
-      id: encounterData.taxonomy,
-    };
-  }
+  if (encounter.taxonomy === '') encounter.taxonomy = null;
 
   if (customEncounterData) {
     const customEncounterDictonary = transformCustomFields(
@@ -86,8 +82,5 @@ export function prepareReportWithEncounter(
     assetReferences,
     simpleAssets,
   );
-  return {
-    ...report,
-    encounters: [encounter],
-  };
+  return { ...report, encounters: [encounter] };
 }
