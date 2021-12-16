@@ -16,6 +16,7 @@ import Text from '../../components/Text';
 import LoadingScreen from '../../components/LoadingScreen';
 import SadScreen from '../../components/SadScreen';
 import Button from '../../components/Button';
+import Alert from '../../components/Alert';
 import MoreMenu from '../../components/MoreMenu';
 import ConfirmDelete from '../../components/ConfirmDelete';
 import EntityHeaderNew from '../../components/EntityHeaderNew';
@@ -23,6 +24,7 @@ import useAssetGroupSighting from '../../models/assetGroup/useAssetGroupSighting
 import useSighting from '../../models/sighting/useSighting';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import useDeleteSighting from '../../models/sighting/useDeleteSighting';
+import useCommitAssetGroupSighting from '../../models/assetGroupSighting/useCommitAssetGroupSighting';
 import useSightingFieldSchemas from '../../models/sighting/useSightingFieldSchemas';
 import { formatDate } from '../../utils/formatters';
 // import AnnotationsGallery from './AnnotationsGallery';
@@ -63,6 +65,7 @@ export default function Sighting({ pending = false }) {
         pending ? refreshAssetGroupData : refreshSightingData
       }
       pending={pending}
+      id={id}
     />
   );
 }
@@ -74,8 +77,8 @@ const SightingCore = function({
   statusCode,
   refreshData,
   pending,
+  id,
 }) {
-  const { id } = useParams();
   const history = useHistory();
   const intl = useIntl();
 
@@ -87,6 +90,11 @@ const SightingCore = function({
     error: deleteSightingError,
     setError: setDeleteSightingError,
   } = useDeleteSighting();
+
+  const {
+    commitAgs,
+    isLoading: commitAgsLoading,
+  } = useCommitAssetGroupSighting();
 
   /*
     known issue: if data or fieldschemas change values
@@ -217,6 +225,20 @@ const SightingCore = function({
           value="photographs"
         />
       </Tabs>
+      <Alert
+        severity="info"
+        titleId="SIGHTING_COMMIT_TITLE"
+        descriptionId="SIGHTING_COMMIT_DESCRIPTION"
+        action={
+          <Button
+            id="COMMIT"
+            size="small"
+            loading={commitAgsLoading}
+            onClick={() => commitAgs(id)}
+            style={{ marginTop: 8, marginRight: 4 }}
+          />
+        }
+      />
       {activeTab === '#overview' && (
         <OverviewContent
           metadata={metadata}
