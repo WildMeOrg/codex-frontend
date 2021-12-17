@@ -23,6 +23,7 @@ export default function useGetMe() {
     },
     {
       staleTime: Infinity,
+      retry: false,
     },
   );
 
