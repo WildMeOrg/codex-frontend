@@ -59,7 +59,7 @@ export default function useSightingFieldSchemas() {
 
       speciesOptions.push({
         label: intl.formatMessage({ id: 'UNKNOWN' }),
-        value: '',
+        value: null,
       });
 
       const customFields = get(

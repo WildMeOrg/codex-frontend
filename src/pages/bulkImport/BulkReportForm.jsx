@@ -66,7 +66,7 @@ export default function BulkReportForm({ assetReferences }) {
   const [termsError, setTermsError] = useState(false);
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [sightingData, setSightingData] = useState(null);
-  const [detectionModels, setDetectionModels] = useState([]);
+  const [detectionModel, setDetectionModel] = useState('');
 
   const {
     postAssetGroup,
@@ -149,9 +149,9 @@ export default function BulkReportForm({ assetReferences }) {
             <InputRow schema={detectionModelField}>
               <detectionModelField.editComponent
                 schema={detectionModelField}
-                value={detectionModels}
+                value={detectionModel}
                 onChange={value => {
-                  setDetectionModels(value);
+                  setDetectionModel(value);
                 }}
                 minimalLabels
               />
@@ -213,7 +213,7 @@ export default function BulkReportForm({ assetReferences }) {
               const assetGroupData = await postAssetGroup({
                 description: 'Bulk import from user',
                 uploadType: 'bulk',
-                speciesDetectionModel: detectionModels,
+                speciesDetectionModel: [detectionModel || null],
                 transactionId: get(assetReferences, [
                   0,
                   'transactionId',
