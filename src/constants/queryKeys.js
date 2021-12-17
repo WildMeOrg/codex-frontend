@@ -4,3 +4,7 @@ export default {
   settingsSchema: 'settingsSchema',
   users: 'users',
 };
+
+export function getAuditLogQueryKey(id) {
+  return ['auditLog', id];
+}

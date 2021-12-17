@@ -39,6 +39,7 @@ import SiteSetup from './pages/setup/SiteSetup';
 import MatchReview from './pages/match/MatchReview';
 import FlagsOnly from './pages/match/iceland/FlagsOnly';
 import Iceland from './pages/match/iceland/Iceland';
+import AuditLog from './pages/devTools/AuditLog';
 import Welcome from './pages/auth/Welcome';
 import Home from './pages/home/Home';
 import Settings from './pages/settings/Settings';
@@ -185,6 +186,9 @@ export default function AuthenticatedSwitch() {
                       </Route>
                       <Route path="/iceland">
                         <Iceland />
+                      </Route>
+                      <Route path="/auditlog">
+                        <AuditLog />
                       </Route>
                       <Route path="/welcome">
                         <Welcome />
