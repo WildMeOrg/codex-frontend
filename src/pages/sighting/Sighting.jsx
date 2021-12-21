@@ -136,7 +136,9 @@ const SightingCore = function({
   const assets = get(data, 'assets', []);
 
   const sightingCreator = data?.creator;
-  const creatorName = sightingCreator?.full_name || 'Unnamed user';
+  const creatorName =
+    sightingCreator?.full_name ||
+    intl.formatMessage({ id: 'UNNAMED_USER' });
   const creatorUrl = `/users/${sightingCreator?.guid}`;
 
   return (
@@ -222,10 +224,12 @@ const SightingCore = function({
           </div>
         }
       >
-        <Text variant="body2">
-          {`Reported by `}
-          <Link to={creatorUrl}>{creatorName}</Link>
-        </Text>
+        {sightingCreator && (
+          <Text variant="body2">
+            {intl.formatMessage({ id: 'REPORTED_BY' })}
+            <Link to={creatorUrl}>{creatorName}</Link>
+          </Text>
+        )}
       </EntityHeaderNew>
       {activeTab === '#overview' && (
         <OverviewContent
