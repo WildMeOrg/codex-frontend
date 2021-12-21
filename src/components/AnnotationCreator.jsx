@@ -1,12 +1,18 @@
 import React, { useCallback, useState } from 'react';
 import { get } from 'lodash-es';
+import { FormattedMessage } from 'react-intl';
 import BboxAnnotator from 'bboxjs';
 
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
+import Select from '@material-ui/core/Select';
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
 import { useTheme } from '@material-ui/core/styles';
 import CustomAlert from './Alert';
 
+import viewpointChoices from '../constants/viewpoints';
 import usePostAnnotation from '../models/annotation/usePostAnnotation';
 import Button from './Button';
 import StandardDialog from './StandardDialog';
@@ -22,6 +28,7 @@ export default function AnnotationCreator({
   onClose,
   refreshSightingData,
 }) {
+  const [viewpoint, setViewpoint] = useState('');
   const [rect, setRect] = useState({});
   const theme = useTheme();
 
@@ -96,6 +103,24 @@ export default function AnnotationCreator({
             ref={divRef}
           />
         </div>
+        <FormControl
+          required
+          style={{ width: 240, margin: '12px 40px' }}
+        >
+          <InputLabel>Viewpoint</InputLabel>
+          <Select
+            labelId="viewpoint-selector-label"
+            id="viewpoint-selector"
+            value={viewpoint}
+            onChange={e => setViewpoint(e.target.value)}
+          >
+            {viewpointChoices.map(viewpointChoice => (
+              <MenuItem value={viewpointChoice.value}>
+                <FormattedMessage id={viewpointChoice.labelId} />
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
         {error && (
           <CustomAlert
             titleId="SERVER_ERROR"
@@ -111,6 +136,7 @@ export default function AnnotationCreator({
         <Button
           display="primary"
           loading={loading}
+          disabled={viewpoint === ''}
           onClick={async () => {
             const assetId = get(asset, 'guid');
             const coords = [
@@ -136,6 +162,7 @@ export default function AnnotationCreator({
               assetId,
               'test-ia-class',
               coords,
+              viewpoint,
               theta,
             );
             if (newAnnotationId) {
