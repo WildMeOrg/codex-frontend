@@ -12,6 +12,7 @@ export default function usePostAnnotation() {
     assetId,
     iaClass,
     rect,
+    viewpoint,
     theta = 0,
   ) => {
     try {
@@ -22,6 +23,7 @@ export default function usePostAnnotation() {
         withCredentials: true,
         method: 'post',
         data: {
+          viewpoint,
           asset_guid: assetId,
           ia_class: iaClass,
           bounds: {

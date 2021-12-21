@@ -9,15 +9,15 @@ export default function EntityHeader({
   children,
   renderOptions,
   renderAvatar,
+  renderTabs,
 }) {
   return (
     <>
-      <Grid container>
+      <Grid container justify="center">
         {renderAvatar ? (
           <Grid
             style={{
-              marginLeft: 12,
-              padding: '24px 0 0 0',
+              padding: '24px 0 16px 12px',
             }}
             item
           >
@@ -29,9 +29,10 @@ export default function EntityHeader({
           style={{
             marginLeft: 12,
             flexGrow: 1,
-            padding: '24px 12px 12px 0',
+            padding: '24px 0 12px 0',
             overflow: 'hidden',
-            maxWidth: renderAvatar ? 677 : undefined, // (i never said i was a role model)
+            display: 'flex',
+            flexDirection: 'column',
           }}
         >
           <div
@@ -58,9 +59,10 @@ export default function EntityHeader({
           <div style={{ marginLeft: 4, marginTop: 4 }}>
             {children}
           </div>
+          <div style={{ marginTop: 20 }}>{renderTabs}</div>
         </Grid>
       </Grid>
-      <Divider style={{ marginTop: 24, marginBottom: 12 }} />
+      <Divider style={{ marginBottom: 12 }} />
     </>
   );
 }

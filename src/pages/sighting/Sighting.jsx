@@ -12,6 +12,7 @@ import Tab from '@material-ui/core/Tab';
 
 import defaultSightingSrc from '../../assets/defaultSighting.png';
 import MainColumn from '../../components/MainColumn';
+import Link from '../../components/Link';
 import Text from '../../components/Text';
 import LoadingScreen from '../../components/LoadingScreen';
 import SadScreen from '../../components/SadScreen';
@@ -142,6 +143,12 @@ const SightingCore = function({
   // const encounters = get(data, ['encounters'], []);
   const assets = get(data, 'assets', []);
 
+  const sightingCreator = data?.creator;
+  const creatorName =
+    sightingCreator?.full_name ||
+    intl.formatMessage({ id: 'UNNAMED_USER' });
+  const creatorUrl = `/users/${sightingCreator?.guid}`;
+
   return (
     <MainColumn fullWidth>
       <SightingHistoryDialog
@@ -178,6 +185,32 @@ const SightingCore = function({
             date: formatDate(sightingDisplayDate, true),
           },
         )}
+        renderTabs={
+          <Tabs
+            value={activeTab.replace('#', '')}
+            onChange={(_, newValue) => {
+              window.location.hash = newValue;
+            }}
+            variant="scrollable"
+          >
+            <Tab
+              label={<FormattedMessage id="OVERVIEW" />}
+              value="overview"
+            />
+            <Tab
+              label={<FormattedMessage id="ANIMALS" />}
+              value="individuals"
+            />
+            <Tab
+              label={<FormattedMessage id="ANNOTATIONS" />}
+              value="annotations"
+            />
+            <Tab
+              label={<FormattedMessage id="PHOTOGRAPHS" />}
+              value="photographs"
+            />
+          </Tabs>
+        }
         renderOptions={
           <div style={{ display: 'flex' }}>
             <Button id="SUBSCRIBE" display="primary" />
@@ -199,32 +232,13 @@ const SightingCore = function({
           </div>
         }
       >
-        <Text>Reported by George Masterson</Text>
+        {sightingCreator && (
+          <Text variant="body2">
+            {intl.formatMessage({ id: 'REPORTED_BY' })}
+            <Link to={creatorUrl}>{creatorName}</Link>
+          </Text>
+        )}
       </EntityHeaderNew>
-      <Tabs
-        value={activeTab.replace('#', '')}
-        onChange={(_, newValue) => {
-          window.location.hash = newValue;
-        }}
-        style={{ margin: '32px 0 20px' }}
-      >
-        <Tab
-          label={<FormattedMessage id="OVERVIEW" />}
-          value="overview"
-        />
-        <Tab
-          label={<FormattedMessage id="ANIMALS" />}
-          value="individuals"
-        />
-        <Tab
-          label={<FormattedMessage id="ANNOTATIONS" />}
-          value="annotations"
-        />
-        <Tab
-          label={<FormattedMessage id="PHOTOGRAPHS" />}
-          value="photographs"
-        />
-      </Tabs>
       <Alert
         severity="info"
         titleId="SIGHTING_COMMIT_TITLE"
