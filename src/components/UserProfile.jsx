@@ -102,7 +102,7 @@ export default function UserProfile({
         }
       >
         <Text
-          variant="subtitle2"
+          variant="body2"
           id="USER_SINCE"
           values={{ date: dateCreated }}
         />

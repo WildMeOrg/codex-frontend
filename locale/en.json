@@ -90,6 +90,7 @@
   "NEW_INDIVIDUAL_CREATED_DESCRIPTION": "A new individual has been created with this cluster. Adding more annotations to this cluster will automatically add them to the same individual.",
   "PENDING_BULK_IMPORT_MESSAGE": "You reported {sightingCount} sightings on {date}. You must finish processing this bulk import before starting another.",
   "HISTORY": "History",
+  "REPORTED_BY": "Reported by ",
   "GENERAL_SETTINGS": "General settings",
   "ONE_SIGHTING_TOGGLE_DESCRIPTION": "This sighting has only one individual and I would like to report metadata about it now.",
   "SPLASH_PAGE": "Splash page",

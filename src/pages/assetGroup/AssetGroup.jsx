@@ -12,6 +12,7 @@ import MainColumn from '../../components/MainColumn';
 import LoadingScreen from '../../components/LoadingScreen';
 import SadScreen from '../../components/SadScreen';
 import Button from '../../components/Button';
+import Text from '../../components/Text';
 import Link from '../../components/Link';
 import MoreMenu from '../../components/MoreMenu';
 import ConfirmDelete from '../../components/ConfirmDelete';
@@ -56,6 +57,12 @@ export default function AssetGroup() {
   const agSightingIds = get(data, 'asset_group_sightings', []).map(
     a => get(a, 'guid'),
   );
+
+  const sightingCreator = data?.creator;
+  const creatorName =
+    sightingCreator?.full_name ||
+    intl.formatMessage({ id: 'UNNAMED_USER' });
+  const creatorUrl = `/users/${sightingCreator?.guid}`;
 
   return (
     <MainColumn fullWidth>
@@ -106,7 +113,12 @@ export default function AssetGroup() {
           </div>
         }
       >
-        Reported by George Masterson
+        {sightingCreator && (
+          <Text variant="body2">
+            {intl.formatMessage({ id: 'REPORTED_BY' })}
+            <Link to={creatorUrl}>{creatorName}</Link>
+          </Text>
+        )}
       </EntityHeaderNew>
       <div
         style={{
