@@ -15,15 +15,14 @@ export default function CollaborationRequestDialog({
   onClose,
   notification,
 }) {
-  const {
-    patchCollaboration,
-    loading,
-    error,
-    setError,
-  } = usePatchCollaboration();
+  const { collabPatchArgs, loading, error } = usePatchCollaboration();
+  // setError,
+
+  const [localError, setLocalError] = useState(false);
+  setLocalError(error);
 
   const onCloseDialog = () => {
-    if (error) setError(null);
+    if (localError) setLocalError(null);
     onClose();
   };
 
@@ -56,11 +55,11 @@ export default function CollaborationRequestDialog({
           id={messageId}
           values={{ userName: senderName }}
         />
-        {error && (
+        {localError && (
           <CustomAlert
             severity="error"
             titleId="SERVER_ERROR"
-            description={error}
+            description={localError}
           />
         )}
       </DialogContent>
@@ -69,16 +68,13 @@ export default function CollaborationRequestDialog({
           display="basic"
           id="DECLINE_REQUEST"
           onClick={async () => {
-            const successful = await patchCollaboration(
-              collaborationId,
-              [
-                {
-                  op: 'replace',
-                  path,
-                  value: 'declined',
-                },
-              ],
-            );
+            const successful = collabPatchArgs(collaborationId, [
+              {
+                op: 'replace',
+                path,
+                value: 'declined',
+              },
+            ]);
 
             if (successful) onCloseDialog();
           }}
@@ -87,16 +83,13 @@ export default function CollaborationRequestDialog({
           loading={loading}
           display="primary"
           onClick={async () => {
-            const successful = await patchCollaboration(
-              collaborationId,
-              [
-                {
-                  op: 'replace',
-                  path,
-                  value: 'approved',
-                },
-              ],
-            );
+            const successful = collabPatchArgs(collaborationId, [
+              {
+                op: 'replace',
+                path,
+                value: 'approved',
+              },
+            ]);
 
             if (successful) onCloseDialog();
           }}

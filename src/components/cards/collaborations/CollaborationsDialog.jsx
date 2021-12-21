@@ -28,11 +28,11 @@ export default function UserEditDialog({
   } = useRequestEditAccess();
 
   const {
-    patchCollaboration,
-    loading: patchLoading,
+    collabPatchArgs,
+    isLoading: patchLoading,
     error: patchError,
-    setError: setPatchError,
   } = usePatchCollaboration();
+  // setError: setPatchError,
 
   const loading = requestLoading || patchLoading;
   const error = requestError || patchError;
@@ -48,7 +48,7 @@ export default function UserEditDialog({
 
   function cleanupAndClose() {
     setRequest(null);
-    setPatchError(null);
+    // setPatchError(null);
     setRequestError(null);
     onClose();
   }
@@ -115,7 +115,7 @@ export default function UserEditDialog({
                   activeCollaboration.guid,
                 );
               } else {
-                successful = await patchCollaboration(
+                successful = collabPatchArgs(
                   activeCollaboration.guid,
                   request.actionPatch,
                 );

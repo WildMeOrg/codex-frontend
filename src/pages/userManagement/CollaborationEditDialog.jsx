@@ -13,13 +13,15 @@ export default function CollaborationEditDialog({
   const [formValues, setFormValues] = useState({});
   const [touched, setTouched] = useState(false);
   const {
-    patchCollaboration,
-    loading,
-    error,
-    setError,
-    success,
-    setSuccess,
+    collabPatchArgs,
+    isLoading,
+    isError,
+    isSuccess,
   } = usePatchCollaboration();
+  // status,
+  // setError,
+  // success,
+  // setSuccess,
   function cleanupAndClose() {
     setTouched(false);
     setFormValues({});
@@ -32,12 +34,9 @@ export default function CollaborationEditDialog({
       value: formValues[propertyId],
     }));
 
-    const success = await patchCollaboration(
-      get(collaborationData, 'guid'),
-      properties,
-    );
+    collabPatchArgs(get(collaborationData, 'guid'), properties);
 
-    if (success) {
+    if (isSuccess) {
       refresh();
       cleanupAndClose();
     }
@@ -47,6 +46,7 @@ export default function CollaborationEditDialog({
     <StandardDialog
       open={open}
       onClose={cleanupAndClose}
+      loading={isLoading}
       titleId="EDIT_COLLABORATION"
       maxWidth="xs"
     >

@@ -18,48 +18,53 @@ export default function UserManagersCollaborationEditTable({
 }) {
   const intl = useIntl();
   const [editCollaboration, setEditCollaboration] = useState(null);
+  const [revokesLoading, setRevokesLoading] = useState(false);
   const {
-    patchCollaboration,
-    loading: patchLoading,
-    error: patchError,
-    setError: patchSetError,
-    success: patchSuccess,
-    setSuccess: patchSetSuccess,
+    collabPatchArgs,
+    isLoading: patchLoading,
+    isError: patchError,
+    // setError: patchSetError,
+    isSuccess: patchSuccess,
+    // setSuccess: patchSetSuccess,
   } = usePatchCollaboration();
+  const collabEditPath = '/managed_view_permission';
+  const collabEditOp = 'replace';
+  const revokedPermission = 'revoked';
   async function processRevoke(collaboration) {
-    // const collaborationData = { // TODO note that this is still in progress and will be resolved along with a few other things in the separate ticket DEX-527
-    //   op: 'replace',
-    //   path: '/view_permission',
-    //   value: 'revoked',
-    // };
-    const collaborationData = {
-      op: 'replace',
-      path: '/managed_view_permission',
-      value: {
-        user_guid: get(collaboration, 'userOneGuid'),
-        permission: 'revoked',
+    setRevokesLoading(true);
+    const collaborationData = [
+      {
+        op: collabEditOp,
+        path: collabEditPath,
+        value: {
+          user_guid: get(collaboration, 'userOneGuid'),
+          permission: revokedPermission,
+        },
       },
-    };
-    // const collaborationData = {
-    //   managed_view_permission: {
-    //     user_guid: get(collaboration, 'userOneGuid'),
-    //   },
-    //   permission: 'revoked',
-    // };
-    const response = await patchCollaboration(
+    ];
+    const response = collabPatchArgs(
       get(collaboration, 'guid'),
       collaborationData,
     );
-    // const collaborationDataTheOtherWay = {
-    //   managed_view_permission: {
-    //     user_guid: get(collaboration, 'userTwoGuid'),
-    //   },
-    //   permission: 'revoked',
-    // };
-    // const responseTheOtherWay = await patchCollaboration(
-    //   get(collaboration, 'guid'),
-    //   collaborationDataTheOtherWay,
-    // );
+    console.log('deleteMe response1 is: ');
+    console.log(response);
+    const collaborationDataTheOtherWay = [
+      {
+        op: collabEditOp,
+        path: collabEditPath,
+        value: {
+          user_guid: get(collaboration, 'userTwoGuid'),
+          permission: revokedPermission,
+        },
+      },
+    ];
+    const responseTheOtherWay = collabPatchArgs(
+      get(collaboration, 'guid'),
+      collaborationDataTheOtherWay,
+    );
+    console.log('deleteMe responseTheOtherWay is: ');
+    console.log(responseTheOtherWay);
+    setRevokesLoading(false);
   }
 
   function tranformDataForCollabTable(inputData) {
@@ -93,7 +98,13 @@ export default function UserManagersCollaborationEditTable({
       };
     });
   }
-  const tableFriendlyData = tranformDataForCollabTable(data);
+  const tableFriendlyData = tranformDataForCollabTable(data)?.filter(
+    collab =>
+      get(collab, 'viewStatusOne') !== revokedPermission ||
+      get(collab, 'viewStatusTwo') !== revokedPermission,
+  );
+  // console.log('deleteMe tableFriendlyData is: ');
+  // console.log(tableFriendlyData);
   const tableColumns = [
     {
       name: 'userOne',
@@ -166,6 +177,7 @@ export default function UserManagersCollaborationEditTable({
             <ActionIcon
               variant="revoke"
               onClick={() => processRevoke(collaboration)}
+              loading={patchLoading}
             />
           </div>
         ),
