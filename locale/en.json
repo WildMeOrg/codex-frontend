@@ -873,7 +873,7 @@
   "SELECT_COLLABORATOR_2": "Select Collaborator 2",
   "CREATE_COLLABORATIONS": "Create Collaborations",
   "CREATE_COLLABORATION": "Create Collaboration",
-  "COLLABORATION_CREATEDD": "Collaboration Created",
+  "COLLABORATION_CREATED": "Collaboration Created",
   "EDIT_COLLABORATIONS": "Edit Collaborations",
   "USER_ONE": "User 1",
   "USER_TWO": "User 2",
@@ -883,5 +883,8 @@
   "USER_ONE_EDIT_STATUS": "User 1 Edit",
   "USER_TWO_EDIT_STATUS": "User 2 Edit",
   "COLLABORATION_ALREADY_EXISTS": "A collaboration between these two users has already been created",
-  "SIGHTING_ON_MAP": "Sighting"
+  "SIGHTING_ON_MAP": "Sighting",
+  "COLLABORATION_DATA_ERROR": "Error fetching collaboration data",
+  "COLLABORATION_REVOKE_ERROR": "Error revoking the collaboration",
+  "COLLABORATION_REVOKE_SUCCESS": "Successfully revoked the collaboration"
 }

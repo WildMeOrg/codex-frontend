@@ -1,31 +1,37 @@
 import React, { useState } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
 import { get } from 'lodash-es';
+import { useQueryClient } from 'react-query';
 
 import Skeleton from '@material-ui/lab/Skeleton';
 import Grid from '@material-ui/core/Grid';
 
+import CustomAlert from '../../components/Alert';
 import Text from '../../components/Text';
 import DataDisplay from '../../components/dataDisplays/DataDisplay';
 import ActionIcon from '../../components/ActionIcon';
 import usePatchCollaboration from '../../models/collaboration/usePatchCollaboration';
 import { getNthAlphabeticalMemberObjAndMakeLodashReady } from '../../utils/manipulators';
+import queryKeys from '../../constants/queryKeys';
+
 export default function UserManagersCollaborationEditTable({
-  data,
-  loading,
-  error,
-  refresh,
+  inputData,
+  collaborationLoading,
+  collaborationError,
+  // collaborationRefresh,
 }) {
+  const queryClient = useQueryClient();
   const intl = useIntl();
+  const [dismissed, setDismissed] = useState(false);
   const [editCollaboration, setEditCollaboration] = useState(null);
   const [revokesLoading, setRevokesLoading] = useState(false);
   const {
     collabPatchArgs,
-    isLoading: patchLoading,
-    isError: patchError,
-    // setError: patchSetError,
-    isSuccess: patchSuccess,
-    // setSuccess: patchSetSuccess,
+    data: patchData,
+    error,
+    isError,
+    isLoading,
+    isSuccess,
   } = usePatchCollaboration();
   const collabEditPath = '/managed_view_permission';
   const collabEditOp = 'replace';
@@ -42,12 +48,6 @@ export default function UserManagersCollaborationEditTable({
         },
       },
     ];
-    const response = collabPatchArgs(
-      get(collaboration, 'guid'),
-      collaborationData,
-    );
-    console.log('deleteMe response1 is: ');
-    console.log(response);
     const collaborationDataTheOtherWay = [
       {
         op: collabEditOp,
@@ -58,12 +58,11 @@ export default function UserManagersCollaborationEditTable({
         },
       },
     ];
-    const responseTheOtherWay = collabPatchArgs(
+    collabPatchArgs(
       get(collaboration, 'guid'),
+      collaborationData,
       collaborationDataTheOtherWay,
     );
-    console.log('deleteMe responseTheOtherWay is: ');
-    console.log(responseTheOtherWay);
     setRevokesLoading(false);
   }
 
@@ -87,18 +86,20 @@ export default function UserManagersCollaborationEditTable({
         userTwoGuid: get(member2, 'guid'),
         viewStatusOne: get(member1, 'viewState'),
         viewStatusTwo: get(member2, 'viewState'),
-        // editStatusOne: get(
-        //   member1,
-        //   'editState',
-        // ),
-        // editStatusTwo: get(
-        //   member2,
-        //   'editState',
-        // ),
       };
+      // editStatusOne: get(
+      //   member1,
+      //   'editState',
+      // ),
+      // editStatusTwo: get(
+      //   member2,
+      //   'editState',
+      // ),
     });
   }
-  const tableFriendlyData = tranformDataForCollabTable(data)?.filter(
+  const tableFriendlyData = tranformDataForCollabTable(
+    inputData,
+  )?.filter(
     collab =>
       get(collab, 'viewStatusOne') !== revokedPermission ||
       get(collab, 'viewStatusTwo') !== revokedPermission,
@@ -108,8 +109,11 @@ export default function UserManagersCollaborationEditTable({
   const tableColumns = [
     {
       name: 'userOne',
-      align: 'right', // Alignments in this table don't look great, but they are grouped into visually meaningful chunks. I'm open to more aesthetically pleasing ideas
-      label: intl.formatMessage({ id: 'USER_ONE' }),
+      align: 'right',
+      label: intl.formatMessage(
+        // Alignments in this table don't look great, but they are grouped into visually meaningful chunks. I'm open to more aesthetically pleasing ideas
+        { id: 'USER_ONE' },
+      ),
       options: {
         customBodyRender: userOne => (
           <Text variant="body2">{userOne}</Text>
@@ -125,11 +129,7 @@ export default function UserManagersCollaborationEditTable({
           <Text variant="body2">{viewStatusOne}</Text>
         ),
       },
-    }, // {
-    //   name: 'editStatusOne',
-    //   label: intl.formatMessage({ id: 'USER_ONE_EDIT_STATUS' }),
-    //   options: {
-    //     customBodyRender: editStatusOne => (
+    }, //     customBodyRender: editStatusOne => ( //   options: { //   label: intl.formatMessage({ id: 'USER_ONE_EDIT_STATUS' }), //   name: 'editStatusOne', // {
     //       <Text variant="body2">{editStatusOne}</Text>
     //     ),
     //   },
@@ -155,11 +155,7 @@ export default function UserManagersCollaborationEditTable({
           <Text variant="body2">{viewStatusTwo}</Text>
         ),
       },
-    }, // {
-    //   name: 'editStatusTwo',
-    //   label: intl.formatMessage({ id: 'USER_TWO_EDIT_STATUS' }),
-    //   options: {
-    //     customBodyRender: editStatusTwo => (
+    }, //     customBodyRender: editStatusTwo => ( //   options: { //   label: intl.formatMessage({ id: 'USER_TWO_EDIT_STATUS' }), //   name: 'editStatusTwo', // {
     //       <Text variant="body2">{editStatusTwo}</Text>
     //     ),
     //   },
@@ -177,15 +173,14 @@ export default function UserManagersCollaborationEditTable({
             <ActionIcon
               variant="revoke"
               onClick={() => processRevoke(collaboration)}
-              loading={patchLoading}
+              loading={false}
             />
           </div>
         ),
       },
     },
   ];
-
-  return (
+  return [
     <Grid item>
       {/* <CollaborationsDialog
         open={Boolean(editCollaboration)}
@@ -203,16 +198,42 @@ export default function UserManagersCollaborationEditTable({
         columns={tableColumns}
         data={tableFriendlyData || []}
       />
-      {loading ? (
+      {collaborationLoading ? (
         <Skeleton style={{ transform: 'unset' }} height={44} />
       ) : null}
-      {error ? (
+      {collaborationError ? (
         <Text
           id="COLLABORATION_DATA_ERROR"
           variant="body2"
           style={{ margin: '8px 16px', display: 'block' }}
         />
       ) : null}
-    </Grid>
-  );
+      {isError && !dismissed ? (
+        <CustomAlert
+          severity="error"
+          titleId="COLLABORATION_REVOKE_ERROR"
+          onClose={() => {
+            // collaborationRefresh++;
+            queryClient.invalidateQueries(queryKeys.collaborations);
+            setDismissed(true);
+          }}
+        >
+          {error}
+        </CustomAlert>
+      ) : null}
+      {isSuccess && !dismissed ? (
+        <CustomAlert
+          severity="success"
+          titleId="COLLABORATION_REVOKE_SUCCESS"
+          onClose={() => {
+            // collaborationRefresh++;
+            queryClient.invalidateQueries(queryKeys.collaborations);
+            setDismissed(true);
+          }}
+        >
+          {error}
+        </CustomAlert>
+      ) : null}
+    </Grid>,
+  ];
 }

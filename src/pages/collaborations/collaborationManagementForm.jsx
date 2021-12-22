@@ -1,18 +1,41 @@
 import React, { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { get, some } from 'lodash-es';
+import { get, some, reduce } from 'lodash-es';
 import { TextField } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
+import { useQueryClient } from 'react-query';
+
+import queryKeys from '../../constants/queryKeys';
 import Button from '../../components/Button';
 import CustomAlert from '../../components/Alert';
 import useEstablishCollaborationAsUserManager from '../../models/collaboration/useEstablishCollaborationAsUserManager';
 
 function collabContainsUsers(collab, user1, user2) {
+  console.log('deleteMe got here and collab is: ');
+  console.log(collab);
   const members = get(collab, 'members');
   if (!members) return true; // err on the side of safety
   return (
-    some(members, ['guid', user1]) && some(members, ['guid', user2])
+    some(members, ['guid', user1]) &&
+    some(members, ['guid', user2]) &&
+    !mutuallyRevoked(members)
   );
+}
+
+function mutuallyRevoked(members) {
+  console.log('deleteMe members is: ');
+  console.log(members);
+  //brain too dead right now to make this better
+  const memberKeys = Object.keys(members);
+  const memberViewStates = memberKeys.map(memberKey => {
+    return get(members, [memberKey, 'viewState']);
+  });
+  const numUniqStates = [...new Set(memberViewStates)].length;
+  console.log('deleteMe numUniqStates is: ' + numUniqStates);
+  const returnVal =
+    numUniqStates == 1 && memberViewStates.includes('revoked');
+  console.log('deleteMe returnVal is: ' + returnVal);
+  return numUniqStates == 1 && memberViewStates.includes('revoked');
 }
 
 function collaborationAlreadyExists(
@@ -28,7 +51,9 @@ function collaborationAlreadyExists(
 export default function CollaborationManagementForm({
   userData,
   existingCollaborations,
+  // collaborationRefresh,
 }) {
+  const queryClient = useQueryClient();
   const intl = useIntl();
   const [shouldDisplay, setShouldDisplay] = useState(false);
   const [user1, setUser1] = useState(null);
@@ -161,9 +186,11 @@ export default function CollaborationManagementForm({
       {success && shouldDisplay && (
         <CustomAlert
           style={{ margin: '0px 24px 20px 24px' }}
-          titleId="COLLABORATION_CREATEDD"
+          titleId="COLLABORATION_CREATED"
           severity="success"
           onClose={() => {
+            // collaborationRefresh++;
+            queryClient.invalidateQueries(queryKeys.collaborations);
             setShouldDisplay(false);
           }}
         />
@@ -174,6 +201,8 @@ export default function CollaborationManagementForm({
           severity="error"
           titleId="SERVER_ERROR"
           onClose={() => {
+            queryClient.invalidateQueries(queryKeys.collaborations);
+            // collaborationRefresh++;
             setShouldDisplay(false);
           }}
         >
