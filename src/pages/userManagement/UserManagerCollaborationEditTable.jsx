@@ -124,8 +124,7 @@ export default function UserManagersCollaborationEditTable({
           <Text variant="body2">{viewStatusOne}</Text>
         ),
       },
-    }, //     customBodyRender: editStatusOne => ( //   options: { //   label: intl.formatMessage({ id: 'USER_ONE_EDIT_STATUS' }), //   name: 'editStatusOne', // {
-    //       <Text variant="body2">{editStatusOne}</Text>
+    }, //       <Text variant="body2">{editStatusOne}</Text> //     customBodyRender: editStatusOne => ( //   options: { //   label: intl.formatMessage({ id: 'USER_ONE_EDIT_STATUS' }), //   name: 'editStatusOne', // {
     //     ),
     //   },
     // },
@@ -150,8 +149,7 @@ export default function UserManagersCollaborationEditTable({
           <Text variant="body2">{viewStatusTwo}</Text>
         ),
       },
-    }, //     customBodyRender: editStatusTwo => ( //   options: { //   label: intl.formatMessage({ id: 'USER_TWO_EDIT_STATUS' }), //   name: 'editStatusTwo', // {
-    //       <Text variant="body2">{editStatusTwo}</Text>
+    }, //       <Text variant="body2">{editStatusTwo}</Text> //     customBodyRender: editStatusTwo => ( //   options: { //   label: intl.formatMessage({ id: 'USER_TWO_EDIT_STATUS' }), //   name: 'editStatusTwo', // {
     //     ),
     //   },
     // },
@@ -168,7 +166,7 @@ export default function UserManagersCollaborationEditTable({
             <ActionIcon
               variant="revoke"
               onClick={() => processRevoke(collaboration)}
-              loading={false}
+              loading={revokesLoading}
             />
           </div>
         ),

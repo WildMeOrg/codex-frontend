@@ -27,13 +27,8 @@ export default function CollaborationRequestDialog({
     isError,
   } = usePatchCollaboration();
   const intl = useIntl();
-  // setError,
-
-  // const [localError, setLocalError] = useState(false);
-  // setLocalError(error);
 
   const onCloseDialog = () => {
-    // if (error) setLocalError(null);
     onClose();
   };
 
@@ -93,7 +88,7 @@ export default function CollaborationRequestDialog({
 
             if (isSuccess) {
               onCloseDialog();
-              invalidateQueries(queryKeys.collaborations);
+              queryClient.invalidateQueries(queryKeys.collaborations);
             }
           }}
         />
@@ -111,7 +106,7 @@ export default function CollaborationRequestDialog({
 
             if (isSuccess) {
               onCloseDialog();
-              invalidateQueries(queryKeys.collaborations);
+              queryClient.invalidateQueries(queryKeys.collaborations);
             }
           }}
           id="GRANT_ACCESS"
