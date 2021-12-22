@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { get, some, reduce } from 'lodash-es';
+import { get, some } from 'lodash-es';
 import { TextField } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
 import { useQueryClient } from 'react-query';
@@ -9,6 +9,16 @@ import queryKeys from '../../constants/queryKeys';
 import Button from '../../components/Button';
 import CustomAlert from '../../components/Alert';
 import useEstablishCollaborationAsUserManager from '../../models/collaboration/useEstablishCollaborationAsUserManager';
+
+function mutuallyRevoked(members) {
+  //brain too dead right now to make this better
+  const memberKeys = Object.keys(members);
+  const memberViewStates = memberKeys.map(memberKey => {
+    return get(members, [memberKey, 'viewState']);
+  });
+  const numUniqStates = [...new Set(memberViewStates)].length;
+  return numUniqStates === 1 && memberViewStates.includes('revoked');
+}
 
 function collabContainsUsers(collab, user1, user2) {
   const members = get(collab, 'members');
@@ -20,33 +30,9 @@ function collabContainsUsers(collab, user1, user2) {
   );
 }
 
-function collaborationsContainsAlreadyMutuallyRevokedCollab(
-  existingCollaborations,
-  user1,
-  user2,
-) {
-  const returnVal = some(existingCollaborations, collab =>
-    collabIsMutuallyRevoked(collab, user1, user2),
-  );
-  console.log(
-    'deleteMe returnVal of collaborationsContainsAlreadyMutuallyRevokedCollab is: ' +
-      returnVal,
-  );
-  return returnVal;
-}
-
 function collabIsMutuallyRevoked(collab, user1, user2) {
-  // console.log('deleteMe got here and collab is: ');
-  // console.log(collab);
   const members = get(collab, 'members');
   if (!members) return true; // err on the side of safety
-  const returnVal =
-    some(members, ['guid', user1]) &&
-    some(members, ['guid', user2]) &&
-    mutuallyRevoked(members);
-  // console.log(
-  //   'deleteMe collabIsMutuallyRevoked returning: ' + returnVal,
-  // );
   return (
     some(members, ['guid', user1]) &&
     some(members, ['guid', user2]) &&
@@ -54,14 +40,14 @@ function collabIsMutuallyRevoked(collab, user1, user2) {
   );
 }
 
-function mutuallyRevoked(members) {
-  //brain too dead right now to make this better
-  const memberKeys = Object.keys(members);
-  const memberViewStates = memberKeys.map(memberKey => {
-    return get(members, [memberKey, 'viewState']);
-  });
-  const numUniqStates = [...new Set(memberViewStates)].length;
-  return numUniqStates == 1 && memberViewStates.includes('revoked');
+function collaborationsContainsAlreadyMutuallyRevokedCollab(
+  existingCollaborations,
+  user1,
+  user2,
+) {
+  return some(existingCollaborations, collab =>
+    collabIsMutuallyRevoked(collab, user1, user2),
+  );
 }
 
 function collaborationAlreadyExists(
@@ -77,7 +63,6 @@ function collaborationAlreadyExists(
 export default function CollaborationManagementForm({
   userData,
   existingCollaborations,
-  // collaborationRefresh,
 }) {
   const queryClient = useQueryClient();
   const intl = useIntl();
@@ -91,9 +76,6 @@ export default function CollaborationManagementForm({
     setError,
     success,
   } = useEstablishCollaborationAsUserManager();
-  // if (success || error) {
-  //   queryClient.invalidateQueries(queryKeys.collaborations);
-  // }
   return (
     <div>
       <div
@@ -194,13 +176,11 @@ export default function CollaborationManagementForm({
                 user2,
               )
             ) {
-              console.log('deleteMe already revoked entered');
               setError(
                 intl.formatMessage({
                   id: 'REVOKED_COLLAB_EXISTS',
                 }),
               );
-              // setShouldDisplay(true);
             } else {
               if (
                 !collaborationAlreadyExists(
@@ -209,18 +189,12 @@ export default function CollaborationManagementForm({
                   user2,
                 )
               ) {
-                console.log(
-                  'deleteMe collab is unique... let us make it',
-                );
                 await establishCollaboration(
                   // need the await here. Otherwise, setShouldDisplay(true) below fires before this completes
                   user1,
                   user2,
                 );
               } else {
-                console.log(
-                  'deleteMe collab is not unique and is not mutually revoked',
-                );
                 setError(
                   intl.formatMessage({
                     id: 'COLLABORATION_ALREADY_EXISTS',
@@ -240,8 +214,7 @@ export default function CollaborationManagementForm({
           titleId="COLLABORATION_CREATED"
           severity="success"
           onClose={() => {
-            // collaborationRefresh++;
-            queryClient.invalidateQueries(queryKeys.collaborations);
+            queryClient.invalidateQueries(queryKeys.collaborations); // originally put in this in a conditional if(isSuccessful), but got called A LOT
             setShouldDisplay(false);
           }}
         />
@@ -252,7 +225,6 @@ export default function CollaborationManagementForm({
           severity="error"
           titleId="SERVER_ERROR"
           onClose={() => {
-            // collaborationRefresh++;
             queryClient.invalidateQueries(queryKeys.collaborations);
             setShouldDisplay(false);
           }}

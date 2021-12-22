@@ -18,26 +18,22 @@ export default function UserManagersCollaborationEditTable({
   inputData,
   collaborationLoading,
   collaborationError,
-  // collaborationRefresh,
 }) {
   const queryClient = useQueryClient();
   const intl = useIntl();
   const [dismissed, setDismissed] = useState(false);
-  const [editCollaboration, setEditCollaboration] = useState(null);
   const [revokesLoading, setRevokesLoading] = useState(false);
   const {
     collabPatchArgs,
-    data: patchData,
     error,
-    isError,
-    isLoading,
+    isError, // isLoading, // see setRevokesLoading below
     isSuccess,
   } = usePatchCollaboration();
   const collabEditPath = '/managed_view_permission';
   const collabEditOp = 'replace';
   const revokedPermission = 'revoked';
   async function processRevoke(collaboration) {
-    setRevokesLoading(true);
+    setRevokesLoading(true); // I couldn't seem to get isLoading to work for the axios.all call in usePatchCollaboration, so I did it this way. Happy to use isLoading instead if I can get it to work
     setDismissed(false);
     const collaborationData = [
       {
@@ -67,9 +63,9 @@ export default function UserManagersCollaborationEditTable({
     setRevokesLoading(false);
   }
 
-  function tranformDataForCollabTable(inputData) {
-    if (!inputData || inputData.length === 0) return null;
-    return inputData.map(entry => {
+  function tranformDataForCollabTable(originalData) {
+    if (!originalData || originalData.length === 0) return null;
+    return originalData.map(entry => {
       const member1 = getNthAlphabeticalMemberObjAndMakeLodashReady(
         get(entry, 'members'),
         1,
@@ -105,8 +101,6 @@ export default function UserManagersCollaborationEditTable({
       get(collab, 'viewStatusOne') !== revokedPermission ||
       get(collab, 'viewStatusTwo') !== revokedPermission,
   );
-  // console.log('deleteMe tableFriendlyData is: ');
-  // console.log(tableFriendlyData);
   const tableColumns = [
     {
       name: 'userOne',
@@ -181,13 +175,11 @@ export default function UserManagersCollaborationEditTable({
       },
     },
   ];
-  // if (isSuccess || isError) {
-  //   queryClient.invalidateQueries(queryKeys.collaborations);
-  // }
   return [
     <Grid item>
       <DataDisplay
         idKey="guid"
+        loading={revokesLoading}
         title={<FormattedMessage id="EDIT_COLLABORATIONS" />}
         style={{ marginTop: 8 }}
         variant="secondary"

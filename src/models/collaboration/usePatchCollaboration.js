@@ -5,7 +5,6 @@ export default function usePatchCollaboration() {
   const collabPatchMutation = useMutation(async dataObj => {
     const collabId = dataObj?.collabId;
     if (dataObj?.dataReverse) {
-      console.log('deleteMe got here p1 two-way');
       // it's two-way
       return axios.all([
         axios.request({
@@ -22,7 +21,6 @@ export default function usePatchCollaboration() {
         }),
       ]);
     }
-    console.log('deleteMe got here p2 one-way');
     return axios({
       url: `${__houston_url__}/api/v1/collaborations/${collabId}`,
       withCredentials: true,
