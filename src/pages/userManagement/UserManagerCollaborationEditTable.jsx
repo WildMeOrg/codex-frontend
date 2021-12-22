@@ -38,6 +38,7 @@ export default function UserManagersCollaborationEditTable({
   const revokedPermission = 'revoked';
   async function processRevoke(collaboration) {
     setRevokesLoading(true);
+    setDismissed(false);
     const collaborationData = [
       {
         op: collabEditOp,
@@ -180,16 +181,11 @@ export default function UserManagersCollaborationEditTable({
       },
     },
   ];
+  // if (isSuccess || isError) {
+  //   queryClient.invalidateQueries(queryKeys.collaborations);
+  // }
   return [
     <Grid item>
-      {/* <CollaborationsDialog
-        open={Boolean(editCollaboration)}
-        onClose={() => {
-          setEditCollaboration(null);
-        }}
-        activeCollaboration={editCollaboration}
-        refreshCollaborationData={refresh}
-      /> */}
       <DataDisplay
         idKey="guid"
         title={<FormattedMessage id="EDIT_COLLABORATIONS" />}
@@ -213,12 +209,17 @@ export default function UserManagersCollaborationEditTable({
           severity="error"
           titleId="COLLABORATION_REVOKE_ERROR"
           onClose={() => {
-            // collaborationRefresh++;
             queryClient.invalidateQueries(queryKeys.collaborations);
             setDismissed(true);
           }}
         >
-          {error}
+          {error
+            ? error.toJSON().message +
+              '. ' +
+              intl.formatMessage({
+                id: 'COLLAB_REVOKE_ERROR_SUPPLEMENTAL',
+              })
+            : intl.formatMessage({ id: 'UNKNOWN_ERROR' })}
         </CustomAlert>
       ) : null}
       {isSuccess && !dismissed ? (
@@ -226,13 +227,10 @@ export default function UserManagersCollaborationEditTable({
           severity="success"
           titleId="COLLABORATION_REVOKE_SUCCESS"
           onClose={() => {
-            // collaborationRefresh++;
             queryClient.invalidateQueries(queryKeys.collaborations);
             setDismissed(true);
           }}
-        >
-          {error}
-        </CustomAlert>
+        />
       ) : null}
     </Grid>,
   ];

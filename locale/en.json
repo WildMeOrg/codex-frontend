@@ -886,5 +886,8 @@
   "SIGHTING_ON_MAP": "Sighting",
   "COLLABORATION_DATA_ERROR": "Error fetching collaboration data",
   "COLLABORATION_REVOKE_ERROR": "Error revoking the collaboration",
-  "COLLABORATION_REVOKE_SUCCESS": "Successfully revoked the collaboration"
+  "COLLABORATION_REVOKE_SUCCESS": "Successfully revoked the collaboration",
+  "UNKNOWN_ERROR": "Unknown error",
+  "REVOKED_COLLAB_EXISTS": "Could not create collaboration - a revoked collaboration between those users already exists",
+  "COLLAB_REVOKE_ERROR_SUPPLEMENTAL": "Note that collaborations cannot be revoked unless they are mutually approved."
 }

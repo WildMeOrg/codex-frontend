@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { get } from 'lodash-es';
+import { useQueryClient } from 'react-query';
 
 import DialogActions from '@material-ui/core/DialogActions';
 
@@ -11,6 +12,7 @@ import Text from '../../Text';
 import StandardDialog from '../../StandardDialog';
 import PermissionBlock from './PermissionBlock';
 import collaborationStates from './collaborationStates';
+import queryKeys from '../../../constants/queryKeys';
 
 const collaborationSchemas = Object.values(collaborationStates);
 
@@ -18,8 +20,8 @@ export default function UserEditDialog({
   open,
   onClose,
   activeCollaboration,
-  refreshCollaborationData,
 }) {
+  const queryClient = useQueryClient();
   const {
     requestEditAccess,
     loading: requestLoading,
@@ -30,9 +32,10 @@ export default function UserEditDialog({
   const {
     collabPatchArgs,
     isLoading: patchLoading,
+    isError,
+    isSuccess,
     error: patchError,
   } = usePatchCollaboration();
-  // setError: setPatchError,
 
   const loading = requestLoading || patchLoading;
   const error = requestError || patchError;
@@ -48,7 +51,6 @@ export default function UserEditDialog({
 
   function cleanupAndClose() {
     setRequest(null);
-    // setPatchError(null);
     setRequestError(null);
     onClose();
   }
@@ -115,15 +117,15 @@ export default function UserEditDialog({
                   activeCollaboration.guid,
                 );
               } else {
-                successful = collabPatchArgs(
+                collabPatchArgs(
                   activeCollaboration.guid,
                   request.actionPatch,
                 );
               }
 
-              if (successful) {
-                refreshCollaborationData();
+              if (isSuccess || successful) {
                 cleanupAndClose();
+                queryClient.invalidateQueries(queryKeys.me);
               }
             }}
             loading={loading}

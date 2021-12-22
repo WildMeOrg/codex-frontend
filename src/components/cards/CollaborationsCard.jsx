@@ -119,7 +119,7 @@ export default function CollaborationsCard({ userId }) {
         open={Boolean(activeCollaboration)}
         onClose={() => setActiveCollaboration(null)}
         activeCollaboration={activeCollaboration}
-        refreshCollaborationData={refresh}
+        // refreshCollaborationData={refresh}
       />
       {loading && (
         <LinearProgress style={{ marginTop: 24, marginBottom: 8 }} />

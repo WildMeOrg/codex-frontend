@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { get } from 'lodash-es';
+import { useIntl } from 'react-intl';
+import { useQueryClient } from 'react-query';
 
+import queryKeys from '../../constants/queryKeys';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import CustomAlert from '../Alert';
@@ -15,14 +18,22 @@ export default function CollaborationRequestDialog({
   onClose,
   notification,
 }) {
-  const { collabPatchArgs, loading, error } = usePatchCollaboration();
+  const queryClient = useQueryClient();
+  const {
+    collabPatchArgs,
+    loading,
+    error,
+    isSuccess,
+    isError,
+  } = usePatchCollaboration();
+  const intl = useIntl();
   // setError,
 
-  const [localError, setLocalError] = useState(false);
-  setLocalError(error);
+  // const [localError, setLocalError] = useState(false);
+  // setLocalError(error);
 
   const onCloseDialog = () => {
-    if (localError) setLocalError(null);
+    // if (error) setLocalError(null);
     onClose();
   };
 
@@ -55,11 +66,15 @@ export default function CollaborationRequestDialog({
           id={messageId}
           values={{ userName: senderName }}
         />
-        {localError && (
+        {isError && (
           <CustomAlert
             severity="error"
             titleId="SERVER_ERROR"
-            description={localError}
+            description={
+              error
+                ? error.toJSON().message
+                : intl.formatMessage({ id: 'UNKNOWN_ERROR' })
+            }
           />
         )}
       </DialogContent>
@@ -68,7 +83,7 @@ export default function CollaborationRequestDialog({
           display="basic"
           id="DECLINE_REQUEST"
           onClick={async () => {
-            const successful = collabPatchArgs(collaborationId, [
+            collabPatchArgs(collaborationId, [
               {
                 op: 'replace',
                 path,
@@ -76,14 +91,17 @@ export default function CollaborationRequestDialog({
               },
             ]);
 
-            if (successful) onCloseDialog();
+            if (isSuccess) {
+              onCloseDialog();
+              invalidateQueries(queryKeys.collaborations);
+            }
           }}
         />
         <Button
           loading={loading}
           display="primary"
           onClick={async () => {
-            const successful = collabPatchArgs(collaborationId, [
+            collabPatchArgs(collaborationId, [
               {
                 op: 'replace',
                 path,
@@ -91,7 +109,10 @@ export default function CollaborationRequestDialog({
               },
             ]);
 
-            if (successful) onCloseDialog();
+            if (isSuccess) {
+              onCloseDialog();
+              invalidateQueries(queryKeys.collaborations);
+            }
           }}
           id="GRANT_ACCESS"
         />
