@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { get } from 'lodash-es';
 import { useIntl } from 'react-intl';
 import { useQueryClient } from 'react-query';
@@ -20,10 +20,9 @@ export default function CollaborationRequestDialog({
 }) {
   const queryClient = useQueryClient();
   const {
-    collabPatchArgs,
+    pathCollaborationAsync,
     loading,
     error,
-    isSuccess,
     isError,
   } = usePatchCollaboration();
   const intl = useIntl();
@@ -67,7 +66,7 @@ export default function CollaborationRequestDialog({
             titleId="SERVER_ERROR"
             description={
               error
-                ? error.toJSON().message
+                ? error
                 : intl.formatMessage({ id: 'UNKNOWN_ERROR' })
             }
           />
@@ -78,15 +77,17 @@ export default function CollaborationRequestDialog({
           display="basic"
           id="DECLINE_REQUEST"
           onClick={async () => {
-            collabPatchArgs(collaborationId, [
-              {
-                op: 'replace',
-                path,
-                value: 'declined',
-              },
-            ]);
-
-            if (isSuccess) {
+            const response = await pathCollaborationAsync(
+              collaborationId,
+              [
+                {
+                  op: 'replace',
+                  path,
+                  value: 'declined',
+                },
+              ],
+            );
+            if (response?.status === 200) {
               onCloseDialog();
               queryClient.invalidateQueries(queryKeys.collaborations);
             }
@@ -96,15 +97,17 @@ export default function CollaborationRequestDialog({
           loading={loading}
           display="primary"
           onClick={async () => {
-            collabPatchArgs(collaborationId, [
-              {
-                op: 'replace',
-                path,
-                value: 'approved',
-              },
-            ]);
-
-            if (isSuccess) {
+            const response = await pathCollaborationAsync(
+              collaborationId,
+              [
+                {
+                  op: 'replace',
+                  path,
+                  value: 'approved',
+                },
+              ],
+            );
+            if (response?.status === 200) {
               onCloseDialog();
               queryClient.invalidateQueries(queryKeys.collaborations);
             }

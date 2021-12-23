@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { get, some } from 'lodash-es';
+import { get } from 'lodash-es';
 import { TextField } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
 import { useQueryClient } from 'react-query';
@@ -9,56 +9,10 @@ import queryKeys from '../../constants/queryKeys';
 import Button from '../../components/Button';
 import CustomAlert from '../../components/Alert';
 import useEstablishCollaborationAsUserManager from '../../models/collaboration/useEstablishCollaborationAsUserManager';
-
-function mutuallyRevoked(members) {
-  //brain too dead right now to make this better
-  const memberKeys = Object.keys(members);
-  const memberViewStates = memberKeys.map(memberKey => {
-    return get(members, [memberKey, 'viewState']);
-  });
-  const numUniqStates = [...new Set(memberViewStates)].length;
-  return numUniqStates === 1 && memberViewStates.includes('revoked');
-}
-
-function collabContainsUsers(collab, user1, user2) {
-  const members = get(collab, 'members');
-  if (!members) return true; // err on the side of safety
-  return (
-    some(members, ['guid', user1]) &&
-    some(members, ['guid', user2]) &&
-    !mutuallyRevoked(members)
-  );
-}
-
-function collabIsMutuallyRevoked(collab, user1, user2) {
-  const members = get(collab, 'members');
-  if (!members) return true; // err on the side of safety
-  return (
-    some(members, ['guid', user1]) &&
-    some(members, ['guid', user2]) &&
-    mutuallyRevoked(members)
-  );
-}
-
-function collaborationsContainsAlreadyMutuallyRevokedCollab(
-  existingCollaborations,
-  user1,
-  user2,
-) {
-  return some(existingCollaborations, collab =>
-    collabIsMutuallyRevoked(collab, user1, user2),
-  );
-}
-
-function collaborationAlreadyExists(
-  existingCollaborations,
-  user1,
-  user2,
-) {
-  return some(existingCollaborations, collab =>
-    collabContainsUsers(collab, user1, user2),
-  );
-}
+import {
+  mutuallyRevokedCollabExists,
+  collaborationAlreadyExists,
+} from '../../utils/formatters';
 
 export default function CollaborationManagementForm({
   userData,
@@ -76,6 +30,9 @@ export default function CollaborationManagementForm({
     setError,
     success,
   } = useEstablishCollaborationAsUserManager();
+  if (error) queryClient.invalidateQueries(queryKeys.collaborations);
+  if (success)
+    queryClient.invalidateQueries(queryKeys.collaborations);
   return (
     <div>
       <div
@@ -170,7 +127,7 @@ export default function CollaborationManagementForm({
           loading={loading}
           onClick={async () => {
             if (
-              collaborationsContainsAlreadyMutuallyRevokedCollab(
+              mutuallyRevokedCollabExists(
                 existingCollaborations,
                 user1,
                 user2,
@@ -189,11 +146,7 @@ export default function CollaborationManagementForm({
                   user2,
                 )
               ) {
-                await establishCollaboration(
-                  // need the await here. Otherwise, setShouldDisplay(true) below fires before this completes
-                  user1,
-                  user2,
-                );
+                await establishCollaboration(user1, user2);
               } else {
                 setError(
                   intl.formatMessage({
@@ -214,7 +167,6 @@ export default function CollaborationManagementForm({
           titleId="COLLABORATION_CREATED"
           severity="success"
           onClose={() => {
-            queryClient.invalidateQueries(queryKeys.collaborations); // originally put in this in a conditional if(isSuccessful), but got called A LOT
             setShouldDisplay(false);
           }}
         />
@@ -225,7 +177,6 @@ export default function CollaborationManagementForm({
           severity="error"
           titleId="SERVER_ERROR"
           onClose={() => {
-            queryClient.invalidateQueries(queryKeys.collaborations);
             setShouldDisplay(false);
           }}
         >

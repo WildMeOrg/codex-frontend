@@ -30,10 +30,8 @@ export default function UserEditDialog({
   } = useRequestEditAccess();
 
   const {
-    collabPatchArgs,
+    pathCollaborationAsync,
     isLoading: patchLoading,
-    isError,
-    isSuccess,
     error: patchError,
   } = usePatchCollaboration();
 
@@ -111,19 +109,22 @@ export default function UserEditDialog({
           <Button
             display="primary"
             onClick={async () => {
-              let successful;
+              let requestEditAccessSuccessful;
+              let isPatchSuccessful;
               if (request.sendEditRequest) {
-                successful = await requestEditAccess(
+                requestEditAccessSuccessful = await requestEditAccess(
                   activeCollaboration.guid,
                 );
               } else {
-                collabPatchArgs(
+                const collabPatchResponse = await pathCollaborationAsync(
                   activeCollaboration.guid,
                   request.actionPatch,
                 );
+                isPatchSuccessful =
+                  collabPatchResponse?.status === 200;
               }
 
-              if (isSuccess || successful) {
+              if (isPatchSuccessful || requestEditAccessSuccessful) {
                 cleanupAndClose();
                 queryClient.invalidateQueries(queryKeys.me);
               }

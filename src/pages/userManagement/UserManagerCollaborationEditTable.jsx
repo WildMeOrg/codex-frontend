@@ -22,18 +22,17 @@ export default function UserManagersCollaborationEditTable({
   const queryClient = useQueryClient();
   const intl = useIntl();
   const [dismissed, setDismissed] = useState(false);
-  const [revokesLoading, setRevokesLoading] = useState(false);
   const {
-    collabPatchArgs,
+    patchCollaboration,
     error,
-    isError, // isLoading, // see setRevokesLoading below
+    isLoading,
+    isError,
     isSuccess,
   } = usePatchCollaboration();
   const collabEditPath = '/managed_view_permission';
   const collabEditOp = 'replace';
   const revokedPermission = 'revoked';
   async function processRevoke(collaboration) {
-    setRevokesLoading(true); // I couldn't seem to get isLoading to work for the axios.all call in usePatchCollaboration, so I did it this way. Happy to use isLoading instead if I can get it to work
     setDismissed(false);
     const collaborationData = [
       {
@@ -55,52 +54,51 @@ export default function UserManagersCollaborationEditTable({
         },
       },
     ];
-    collabPatchArgs(
+    patchCollaboration(
       get(collaboration, 'guid'),
       collaborationData,
       collaborationDataTheOtherWay,
     );
-    setRevokesLoading(false);
   }
 
   function tranformDataForCollabTable(originalData) {
     if (!originalData || originalData.length === 0) return null;
-    return originalData.map(entry => {
-      const member1 = getNthAlphabeticalMemberObjAndMakeLodashReady(
-        get(entry, 'members'),
-        1,
+    return originalData
+      .map(entry => {
+        const member1 = getNthAlphabeticalMemberObjAndMakeLodashReady(
+          get(entry, 'members'),
+          1,
+        );
+        const member2 = getNthAlphabeticalMemberObjAndMakeLodashReady(
+          get(entry, 'members'),
+          2,
+        );
+        // Note: the collaboration API call returned a members OBJECT instead of array of objects, which made some tranformation gymnastics here necessary
+        return {
+          guid: get(entry, 'guid'),
+          userOne: get(member1, 'full_name', get(member1, 'email')),
+          userOneGuid: get(member1, 'guid'),
+          userTwo: get(member2, 'full_name', get(member2, 'email')),
+          userTwoGuid: get(member2, 'guid'),
+          viewStatusOne: get(member1, 'viewState'),
+          viewStatusTwo: get(member2, 'viewState'),
+        };
+        // editStatusOne: get(
+        //   member1,
+        //   'editState',
+        // ),
+        // editStatusTwo: get(
+        //   member2,
+        //   'editState',
+        // ),
+      })
+      ?.filter(
+        collab =>
+          get(collab, 'viewStatusOne') !== revokedPermission ||
+          get(collab, 'viewStatusTwo') !== revokedPermission,
       );
-      const member2 = getNthAlphabeticalMemberObjAndMakeLodashReady(
-        get(entry, 'members'),
-        2,
-      );
-      // Note: the collaboration API call returned a members OBJECT instead of array of objects, which made some tranformation gymnastics here necessary
-      return {
-        guid: get(entry, 'guid'),
-        userOne: get(member1, 'full_name', get(member1, 'email')),
-        userOneGuid: get(member1, 'guid'),
-        userTwo: get(member2, 'full_name', get(member2, 'email')),
-        userTwoGuid: get(member2, 'guid'),
-        viewStatusOne: get(member1, 'viewState'),
-        viewStatusTwo: get(member2, 'viewState'),
-      };
-      // editStatusOne: get(
-      //   member1,
-      //   'editState',
-      // ),
-      // editStatusTwo: get(
-      //   member2,
-      //   'editState',
-      // ),
-    });
   }
-  const tableFriendlyData = tranformDataForCollabTable(
-    inputData,
-  )?.filter(
-    collab =>
-      get(collab, 'viewStatusOne') !== revokedPermission ||
-      get(collab, 'viewStatusTwo') !== revokedPermission,
-  );
+  const tableFriendlyData = tranformDataForCollabTable(inputData);
   const tableColumns = [
     {
       name: 'userOne',
@@ -124,8 +122,7 @@ export default function UserManagersCollaborationEditTable({
           <Text variant="body2">{viewStatusOne}</Text>
         ),
       },
-    }, //       <Text variant="body2">{editStatusOne}</Text> //     customBodyRender: editStatusOne => ( //   options: { //   label: intl.formatMessage({ id: 'USER_ONE_EDIT_STATUS' }), //   name: 'editStatusOne', // {
-    //     ),
+    }, //     ), //       <Text variant="body2">{editStatusOne}</Text> //     customBodyRender: editStatusOne => ( //   options: { //   label: intl.formatMessage({ id: 'USER_ONE_EDIT_STATUS' }), //   name: 'editStatusOne', // {
     //   },
     // },
     {
@@ -149,8 +146,7 @@ export default function UserManagersCollaborationEditTable({
           <Text variant="body2">{viewStatusTwo}</Text>
         ),
       },
-    }, //       <Text variant="body2">{editStatusTwo}</Text> //     customBodyRender: editStatusTwo => ( //   options: { //   label: intl.formatMessage({ id: 'USER_TWO_EDIT_STATUS' }), //   name: 'editStatusTwo', // {
-    //     ),
+    }, //     ), //       <Text variant="body2">{editStatusTwo}</Text> //     customBodyRender: editStatusTwo => ( //   options: { //   label: intl.formatMessage({ id: 'USER_TWO_EDIT_STATUS' }), //   name: 'editStatusTwo', // {
     //   },
     // },
     {
@@ -166,7 +162,7 @@ export default function UserManagersCollaborationEditTable({
             <ActionIcon
               variant="revoke"
               onClick={() => processRevoke(collaboration)}
-              loading={revokesLoading}
+              loading={isLoading}
             />
           </div>
         ),
@@ -177,7 +173,7 @@ export default function UserManagersCollaborationEditTable({
     <Grid item>
       <DataDisplay
         idKey="guid"
-        loading={revokesLoading}
+        loading={isLoading}
         title={<FormattedMessage id="EDIT_COLLABORATIONS" />}
         style={{ marginTop: 8 }}
         variant="secondary"
@@ -204,7 +200,7 @@ export default function UserManagersCollaborationEditTable({
           }}
         >
           {error
-            ? error.toJSON().message +
+            ? error +
               '. ' +
               intl.formatMessage({
                 id: 'COLLAB_REVOKE_ERROR_SUPPLEMENTAL',

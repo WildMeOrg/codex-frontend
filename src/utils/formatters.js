@@ -1,5 +1,55 @@
-import { get, round, find } from 'lodash-es';
+import { get, round, find, some, map } from 'lodash-es';
 import { format } from 'date-fns';
+
+export const isMutuallyRevoked = members => {
+  const memberViewStates = map(members, member =>
+    get(member, 'viewState'),
+  );
+  return (
+    memberViewStates.filter(viewState => viewState === 'revoked')
+      .length === 2
+  );
+};
+
+export const collabContainsUsers = (collab, user1, user2) => {
+  const members = get(collab, 'members');
+  if (!members) return true; // err on the side of safety
+  return (
+    some(members, ['guid', user1]) &&
+    some(members, ['guid', user2]) &&
+    !isMutuallyRevoked(members)
+  );
+};
+
+export const collabIsMutuallyRevoked = (collab, user1, user2) => {
+  const members = get(collab, 'members');
+  if (!members) return true; // err on the side of safety
+  return (
+    some(members, ['guid', user1]) &&
+    some(members, ['guid', user2]) &&
+    isMutuallyRevoked(members)
+  );
+};
+
+export const mutuallyRevokedCollabExists = (
+  existingCollaborations,
+  user1,
+  user2,
+) => {
+  return some(existingCollaborations, collab =>
+    collabIsMutuallyRevoked(collab, user1, user2),
+  );
+};
+
+export const collaborationAlreadyExists = (
+  existingCollaborations,
+  user1,
+  user2,
+) => {
+  return some(existingCollaborations, collab =>
+    collabContainsUsers(collab, user1, user2),
+  );
+};
 
 export const formatFilename = (input, characterLimit = 40) => {
   // minimum character limit is 20, otherwise this will need to be redone

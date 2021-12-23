@@ -4,9 +4,10 @@ import { useMutation } from 'react-query';
 export default function usePatchCollaboration() {
   const collabPatchMutation = useMutation(async dataObj => {
     const collabId = dataObj?.collabId;
+
     if (dataObj?.dataReverse) {
       // it's two-way
-      return axios.all([
+      return Promise.all([
         axios.request({
           url: `${__houston_url__}/api/v1/collaborations/${collabId}`,
           withCredentials: true,
@@ -29,7 +30,7 @@ export default function usePatchCollaboration() {
     });
   });
 
-  const collabPatchArgs = (
+  const patchCollaboration = (
     collabId,
     dataForward,
     dataReverse = null,
@@ -41,5 +42,35 @@ export default function usePatchCollaboration() {
     return collabPatchMutation.mutate(dataObj);
   };
 
-  return { collabPatchArgs, ...collabPatchMutation };
+  const pathCollaborationAsync = (
+    collabId,
+    dataForward,
+    dataReverse = null,
+  ) => {
+    let dataObj = {};
+    dataObj.collabId = collabId;
+    dataObj.dataForward = dataForward;
+    if (dataReverse) dataObj.dataReverse = dataReverse;
+    return collabPatchMutation.mutateAsync(dataObj);
+  };
+
+  const {
+    isSuccess,
+    isError,
+    isLoading,
+    error: collabPatchError,
+  } = collabPatchMutation;
+
+  const error = collabPatchError
+    ? collabPatchError.toJSON().message
+    : null;
+
+  return {
+    patchCollaboration,
+    pathCollaborationAsync,
+    isSuccess,
+    isError,
+    isLoading,
+    error,
+  };
 }
