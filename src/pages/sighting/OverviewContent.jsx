@@ -4,7 +4,7 @@ import { get } from 'lodash-es';
 import CardContainer from '../../components/cards/CardContainer';
 import MetadataCard from '../../components/cards/MetadataCardNew';
 import GpsCard from '../../components/cards/GpsCard';
-import StatusCard from './StatusCard';
+import StatusCard from './statusCard/StatusCard';
 import EditSightingMetadata from './EditSightingMetadata';
 
 export default function OverviewContent({

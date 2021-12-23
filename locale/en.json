@@ -98,6 +98,8 @@
   "DETECTION_SKIPPED_MESSAGE": "Detection skipped - no images to detect.",
   "CURATION_SKIPPED_MESSAGE": "Curation skipped - no images to curate.",
   "MATCHING_SKIPPED_MESSAGE": "Matching skipped - no images to match.",
+  "MATCHING": "Matching",
+  "WAITING_ELLIPSES": "Waiting...",
   "REPORTED_BY": "Reported by ",
   "GENERAL_SETTINGS": "General settings",
   "ONE_SIGHTING_TOGGLE_DESCRIPTION": "This sighting has only one individual and I would like to report metadata about it now.",
