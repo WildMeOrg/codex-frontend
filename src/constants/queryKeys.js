@@ -3,6 +3,7 @@ export default {
   settingsConfig: 'settingsConfig',
   settingsSchema: 'settingsSchema',
   users: 'users',
+  collaborations: 'collaborations',
 };
 
 export function getAuditLogQueryKey(id) {

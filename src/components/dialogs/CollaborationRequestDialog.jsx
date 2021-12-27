@@ -1,6 +1,9 @@
 import React from 'react';
 import { get } from 'lodash-es';
+import { useIntl } from 'react-intl';
+import { useQueryClient } from 'react-query';
 
+import queryKeys from '../../constants/queryKeys';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import CustomAlert from '../Alert';
@@ -15,15 +18,16 @@ export default function CollaborationRequestDialog({
   onClose,
   notification,
 }) {
+  const queryClient = useQueryClient();
   const {
-    patchCollaboration,
+    pathCollaborationAsync,
     loading,
     error,
-    setError,
+    isError,
   } = usePatchCollaboration();
+  const intl = useIntl();
 
   const onCloseDialog = () => {
-    if (error) setError(null);
     onClose();
   };
 
@@ -56,11 +60,15 @@ export default function CollaborationRequestDialog({
           id={messageId}
           values={{ userName: senderName }}
         />
-        {error && (
+        {isError && (
           <CustomAlert
             severity="error"
             titleId="SERVER_ERROR"
-            description={error}
+            description={
+              error
+                ? error
+                : intl.formatMessage({ id: 'UNKNOWN_ERROR' })
+            }
           />
         )}
       </DialogContent>
@@ -69,7 +77,7 @@ export default function CollaborationRequestDialog({
           display="basic"
           id="DECLINE_REQUEST"
           onClick={async () => {
-            const successful = await patchCollaboration(
+            const response = await pathCollaborationAsync(
               collaborationId,
               [
                 {
@@ -79,15 +87,17 @@ export default function CollaborationRequestDialog({
                 },
               ],
             );
-
-            if (successful) onCloseDialog();
+            if (response?.status === 200) {
+              onCloseDialog();
+              queryClient.invalidateQueries(queryKeys.collaborations);
+            }
           }}
         />
         <Button
           loading={loading}
           display="primary"
           onClick={async () => {
-            const successful = await patchCollaboration(
+            const response = await pathCollaborationAsync(
               collaborationId,
               [
                 {
@@ -97,8 +107,10 @@ export default function CollaborationRequestDialog({
                 },
               ],
             );
-
-            if (successful) onCloseDialog();
+            if (response?.status === 200) {
+              onCloseDialog();
+              queryClient.invalidateQueries(queryKeys.collaborations);
+            }
           }}
           id="GRANT_ACCESS"
         />

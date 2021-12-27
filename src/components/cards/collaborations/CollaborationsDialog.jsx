@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { get } from 'lodash-es';
+import { useQueryClient } from 'react-query';
 
 import DialogActions from '@material-ui/core/DialogActions';
 
@@ -11,6 +12,7 @@ import Text from '../../Text';
 import StandardDialog from '../../StandardDialog';
 import PermissionBlock from './PermissionBlock';
 import collaborationStates from './collaborationStates';
+import queryKeys from '../../../constants/queryKeys';
 
 const collaborationSchemas = Object.values(collaborationStates);
 
@@ -18,8 +20,8 @@ export default function UserEditDialog({
   open,
   onClose,
   activeCollaboration,
-  refreshCollaborationData,
 }) {
+  const queryClient = useQueryClient();
   const {
     requestEditAccess,
     loading: requestLoading,
@@ -28,10 +30,9 @@ export default function UserEditDialog({
   } = useRequestEditAccess();
 
   const {
-    patchCollaboration,
-    loading: patchLoading,
+    pathCollaborationAsync,
+    isLoading: patchLoading,
     error: patchError,
-    setError: setPatchError,
   } = usePatchCollaboration();
 
   const loading = requestLoading || patchLoading;
@@ -48,7 +49,6 @@ export default function UserEditDialog({
 
   function cleanupAndClose() {
     setRequest(null);
-    setPatchError(null);
     setRequestError(null);
     onClose();
   }
@@ -109,21 +109,24 @@ export default function UserEditDialog({
           <Button
             display="primary"
             onClick={async () => {
-              let successful;
+              let requestEditAccessSuccessful;
+              let isPatchSuccessful;
               if (request.sendEditRequest) {
-                successful = await requestEditAccess(
+                requestEditAccessSuccessful = await requestEditAccess(
                   activeCollaboration.guid,
                 );
               } else {
-                successful = await patchCollaboration(
+                const collabPatchResponse = await pathCollaborationAsync(
                   activeCollaboration.guid,
                   request.actionPatch,
                 );
+                isPatchSuccessful =
+                  collabPatchResponse?.status === 200;
               }
 
-              if (successful) {
-                refreshCollaborationData();
+              if (isPatchSuccessful || requestEditAccessSuccessful) {
                 cleanupAndClose();
+                queryClient.invalidateQueries(queryKeys.me);
               }
             }}
             loading={loading}
