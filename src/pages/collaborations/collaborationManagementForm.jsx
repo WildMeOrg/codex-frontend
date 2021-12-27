@@ -30,8 +30,7 @@ export default function CollaborationManagementForm({
     setError,
     success,
   } = useEstablishCollaborationAsUserManager();
-  if (error) queryClient.invalidateQueries(queryKeys.collaborations);
-  if (success)
+  if (error || success)
     queryClient.invalidateQueries(queryKeys.collaborations);
   return (
     <div>
@@ -138,22 +137,20 @@ export default function CollaborationManagementForm({
                   id: 'REVOKED_COLLAB_EXISTS',
                 }),
               );
+            } else if (
+              !collaborationAlreadyExists(
+                existingCollaborations,
+                user1,
+                user2,
+              )
+            ) {
+              await establishCollaboration(user1, user2);
             } else {
-              if (
-                !collaborationAlreadyExists(
-                  existingCollaborations,
-                  user1,
-                  user2,
-                )
-              ) {
-                await establishCollaboration(user1, user2);
-              } else {
-                setError(
-                  intl.formatMessage({
-                    id: 'COLLABORATION_ALREADY_EXISTS',
-                  }),
-                );
-              }
+              setError(
+                intl.formatMessage({
+                  id: 'COLLABORATION_ALREADY_EXISTS',
+                }),
+              );
             }
             setShouldDisplay(true);
           }}

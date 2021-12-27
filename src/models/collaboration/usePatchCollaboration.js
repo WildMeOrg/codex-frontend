@@ -30,29 +30,35 @@ export default function usePatchCollaboration() {
     });
   });
 
-  const patchCollaboration = (
+  const formatForPatchDat = (
     collabId,
     dataForward,
     dataReverse = null,
   ) => {
-    let dataObj = {};
+    const dataObj = {};
     dataObj.collabId = collabId;
     dataObj.dataForward = dataForward;
     if (dataReverse) dataObj.dataReverse = dataReverse;
-    return collabPatchMutation.mutate(dataObj);
+    return dataObj;
   };
+
+  const patchCollaboration = (
+    collabId,
+    dataForward,
+    dataReverse = null,
+  ) =>
+    collabPatchMutation.mutate(
+      formatForPatchDat(collabId, dataForward, dataReverse),
+    );
 
   const pathCollaborationAsync = (
     collabId,
     dataForward,
     dataReverse = null,
-  ) => {
-    let dataObj = {};
-    dataObj.collabId = collabId;
-    dataObj.dataForward = dataForward;
-    if (dataReverse) dataObj.dataReverse = dataReverse;
-    return collabPatchMutation.mutateAsync(dataObj);
-  };
+  ) =>
+    collabPatchMutation.mutateAsync(
+      formatForPatchDat(collabId, dataForward, dataReverse),
+    );
 
   const {
     isSuccess,
