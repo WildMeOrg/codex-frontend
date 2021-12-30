@@ -16,10 +16,11 @@ import queryKeys from '../../../constants/queryKeys';
 
 const collaborationSchemas = Object.values(collaborationStates);
 
-export default function UserEditDialog({
+export default function CollaborationsDialog({
   open,
   onClose,
   activeCollaboration,
+  setCollabDialogButtonClickLoading = null,
 }) {
   const queryClient = useQueryClient();
   const {
@@ -30,7 +31,7 @@ export default function UserEditDialog({
   } = useRequestEditAccess();
 
   const {
-    pathCollaborationAsync,
+    patchCollaborationsAsync,
     isLoading: patchLoading,
     error: patchError,
   } = usePatchCollaboration();
@@ -109,6 +110,8 @@ export default function UserEditDialog({
           <Button
             display="primary"
             onClick={async () => {
+              if (setCollabDialogButtonClickLoading)
+                setCollabDialogButtonClickLoading(true);
               let requestEditAccessSuccessful;
               let isPatchSuccessful;
               if (request.sendEditRequest) {
@@ -116,7 +119,7 @@ export default function UserEditDialog({
                   activeCollaboration.guid,
                 );
               } else {
-                const collabPatchResponse = await pathCollaborationAsync(
+                const collabPatchResponse = await patchCollaborationsAsync(
                   activeCollaboration.guid,
                   request.actionPatch,
                 );

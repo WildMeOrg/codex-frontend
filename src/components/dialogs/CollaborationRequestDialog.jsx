@@ -20,7 +20,7 @@ export default function CollaborationRequestDialog({
 }) {
   const queryClient = useQueryClient();
   const {
-    pathCollaborationAsync,
+    patchCollaborationsAsync,
     loading,
     error,
     isError,
@@ -77,7 +77,7 @@ export default function CollaborationRequestDialog({
           display="basic"
           id="DECLINE_REQUEST"
           onClick={async () => {
-            const response = await pathCollaborationAsync(
+            const response = await patchCollaborationsAsync(
               collaborationId,
               [
                 {
@@ -89,7 +89,7 @@ export default function CollaborationRequestDialog({
             );
             if (response?.status === 200) {
               onCloseDialog();
-              queryClient.invalidateQueries(queryKeys.collaborations);
+              queryClient.invalidateQueries(queryKeys.me);
             }
           }}
         />
@@ -97,7 +97,7 @@ export default function CollaborationRequestDialog({
           loading={loading}
           display="primary"
           onClick={async () => {
-            const response = await pathCollaborationAsync(
+            const response = await patchCollaborationsAsync(
               collaborationId,
               [
                 {
@@ -109,7 +109,7 @@ export default function CollaborationRequestDialog({
             );
             if (response?.status === 200) {
               onCloseDialog();
-              queryClient.invalidateQueries(queryKeys.collaborations);
+              queryClient.invalidateQueries(queryKeys.me);
             }
           }}
           id="GRANT_ACCESS"
