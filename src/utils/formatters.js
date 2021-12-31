@@ -1,6 +1,9 @@
 import { get, round, find, some, map } from 'lodash-es';
 import { format } from 'date-fns';
 
+export const isNull = inputArr =>
+  inputArr.join().replace(/,/g, '').length === 0;
+
 export const isMutuallyRevoked = members => {
   const memberViewStates = map(members, member =>
     get(member, 'viewState'),
@@ -35,21 +38,19 @@ export const mutuallyRevokedCollabExists = (
   existingCollaborations,
   user1,
   user2,
-) => {
-  return some(existingCollaborations, collab =>
+) =>
+  some(existingCollaborations, collab =>
     collabIsMutuallyRevoked(collab, user1, user2),
   );
-};
 
 export const collaborationAlreadyExists = (
   existingCollaborations,
   user1,
   user2,
-) => {
-  return some(existingCollaborations, collab =>
+) =>
+  some(existingCollaborations, collab =>
     collabContainsUsers(collab, user1, user2),
   );
-};
 
 export const formatFilename = (input, characterLimit = 40) => {
   // minimum character limit is 20, otherwise this will need to be redone

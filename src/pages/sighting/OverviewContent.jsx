@@ -6,6 +6,7 @@ import MetadataCard from '../../components/cards/MetadataCardNew';
 import GpsCard from '../../components/cards/GpsCard';
 import StatusCard from './StatusCard';
 import EditSightingMetadata from './EditSightingMetadata';
+import { isNull } from '../../utils/formatters';
 
 export default function OverviewContent({
   sightingId,
@@ -50,7 +51,7 @@ export default function OverviewContent({
       {gps && (
         <CardContainer>
           <StatusCard sightingData={sightingData} />
-          <GpsCard lat={gps[0]} lng={gps[1]} />
+          {!isNull(gps) && <GpsCard lat={gps[0]} lng={gps[1]} />}
         </CardContainer>
       )}
     </div>
