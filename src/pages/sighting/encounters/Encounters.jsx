@@ -135,9 +135,16 @@ export default function Encounters({
                       onClick: Function.prototype,
                     },
                     {
+                      id: 'create-new-individual',
+                      label: 'Create new individual',
+                      onClick: () =>
+                        setCreateIndividualEncounterId(encounterId),
+                    },
+                    {
                       id: 'identify-manually',
                       label: 'Manually assign',
-                      onClick: Function.prototype,
+                      onClick: () =>
+                        setEncounterToAssign(encounterId),
                     },
                   ]}
                 />
@@ -148,18 +155,6 @@ export default function Encounters({
                       id: 'view-history',
                       onClick: () => {},
                       label: 'View history',
-                    },
-                    {
-                      id: 'create-new-individual',
-                      label: 'Create new individual',
-                      onClick: () =>
-                        setCreateIndividualEncounterId(encounterId),
-                    },
-                    {
-                      id: 'manually-assign',
-                      label: 'Manually assign',
-                      onClick: () =>
-                        setEncounterToAssign(encounterId),
                     },
                     {
                       id: 'delete-cluster',

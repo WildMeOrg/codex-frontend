@@ -12,6 +12,7 @@ import { get } from 'lodash-es';
 import { formatDate } from '../../utils/formatters';
 import useOptions from '../../hooks/useOptions';
 import StandardDialog from '../StandardDialog';
+import Text from '../Text';
 import Button from '../Button';
 import MapInSighting from '../../pages/sighting/MapInSighting';
 import ActionIcon from '../ActionIcon';
@@ -188,6 +189,8 @@ export default function SightingsCard({
     columns.includes(c.reference),
   );
 
+  const noSightings = sightings && sightings.length === 0;
+
   return [
     <StandardDialog
       open={modalOpen}
@@ -235,7 +238,14 @@ export default function SightingsCard({
         </div>
       }
     >
-      {sightings && !showMapView && (
+      {noSightings && (
+        <Text
+          variant="body2"
+          id="NO_SIGHTINGS"
+          style={{ marginTop: 12 }}
+        />
+      )}
+      {!noSightings && !showMapView && (
         <DataDisplay
           noTitleBar
           tableSize="medium"
@@ -243,7 +253,7 @@ export default function SightingsCard({
           data={sightingsWithLocationData}
         />
       )}
-      {sightings && showMapView && (
+      {!noSightings && showMapView && (
         <SightingMapView data={sightingsWithLocationData} />
       )}
     </Card>,

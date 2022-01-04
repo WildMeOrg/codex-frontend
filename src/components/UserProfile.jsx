@@ -103,6 +103,7 @@ export default function UserProfile({
       >
         <Text
           variant="body2"
+          domId="selenium-user-since"
           id="USER_SINCE"
           values={{ date: dateCreated }}
         />

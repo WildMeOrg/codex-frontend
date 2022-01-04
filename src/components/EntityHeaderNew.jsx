@@ -13,7 +13,7 @@ export default function EntityHeader({
 }) {
   return (
     <>
-      <Grid container justify="center">
+      <Grid container justifyContent="center">
         {renderAvatar ? (
           <Grid
             style={{
