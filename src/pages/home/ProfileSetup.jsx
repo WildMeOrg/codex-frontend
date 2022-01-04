@@ -11,6 +11,7 @@ import usePatchUser from '../../models/users/usePatchUser';
 import CustomAlert from '../../components/Alert';
 import Text from '../../components/Text';
 import Button from '../../components/Button';
+import BaoWaving from '../../components/svg/BaoWaving';
 import SimpleFormPage from '../../components/SimpleFormPage';
 
 const buttonId = 'saveProfile';
@@ -58,6 +59,7 @@ export default function ProfileSetup({ userData }) {
     <SimpleFormPage
       titleId="SET_UP_PROFILE"
       instructionsId="SET_UP_PROFILE_INSTRUCTIONS"
+      BaoComponent={BaoWaving}
     >
       <form>
         <Grid

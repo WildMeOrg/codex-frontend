@@ -16,6 +16,7 @@ import Individual from './pages/individual/Individual';
 import CreateIndividual from './pages/individual/CreateIndividual';
 import PictureBook from './pages/individual/PictureBook';
 import Sighting from './pages/sighting/Sighting';
+import AssetGroupSighting from './pages/sighting/AssetGroupSighting';
 import Splash from './pages/splash/Splash';
 import AssetGroup from './pages/assetGroup/AssetGroup';
 import Org from './pages/org/Org';
@@ -134,7 +135,7 @@ export default function AuthenticatedSwitch() {
                         <MatchReview />
                       </Route>
                       <Route path="/pending-sightings/:id">
-                        <Sighting pending />
+                        <AssetGroupSighting />
                       </Route>
                       <Route path="/sightings/:id">
                         <Sighting />
