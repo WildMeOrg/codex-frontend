@@ -1,9 +1,6 @@
 import { get, round, find, some, map } from 'lodash-es';
 import { format } from 'date-fns';
 
-export const isNull = inputArr =>
-  inputArr.join().replace(/,/g, '').length === 0;
-
 export const isMutuallyRevoked = members => {
   const memberViewStates = map(members, member =>
     get(member, 'viewState'),
