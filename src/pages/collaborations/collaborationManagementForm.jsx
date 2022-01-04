@@ -30,8 +30,9 @@ export default function CollaborationManagementForm({
     setError,
     success,
   } = useEstablishCollaborationAsUserManager();
-  if (error || success)
+  if (error || success) {
     queryClient.invalidateQueries(queryKeys.collaborations);
+  }
   return (
     <div>
       <div

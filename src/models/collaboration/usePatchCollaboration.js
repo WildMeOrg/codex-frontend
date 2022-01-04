@@ -51,7 +51,7 @@ export default function usePatchCollaboration() {
       formatForPatchDat(collabId, dataForward, dataReverse),
     );
 
-  const pathCollaborationAsync = (
+  const patchCollaborationsAsync = (
     collabId,
     dataForward,
     dataReverse = null,
@@ -73,7 +73,7 @@ export default function usePatchCollaboration() {
 
   return {
     patchCollaboration,
-    pathCollaborationAsync,
+    patchCollaborationsAsync,
     isSuccess,
     isError,
     isLoading,

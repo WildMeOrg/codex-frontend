@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useIntl } from 'react-intl';
 import { get, partition } from 'lodash-es';
 
@@ -17,8 +17,19 @@ export default function CollaborationsCard({ userId }) {
   const [activeCollaboration, setActiveCollaboration] = useState(
     null,
   );
+  const [
+    collabDialogButtonClickLoading,
+    setCollabDialogButtonClickLoading,
+  ] = useState(false);
 
-  const { data, loading, refresh } = useGetMe();
+  const { data, loading } = useGetMe();
+
+  useEffect(
+    () => {
+      setCollabDialogButtonClickLoading(false);
+    },
+    [data],
+  );
 
   const collaborations = get(data, ['collaborations'], []);
   const tableData = collaborations.map(collaboration => {
@@ -119,6 +130,9 @@ export default function CollaborationsCard({ userId }) {
         open={Boolean(activeCollaboration)}
         onClose={() => setActiveCollaboration(null)}
         activeCollaboration={activeCollaboration}
+        setCollabDialogButtonClickLoading={
+          setCollabDialogButtonClickLoading
+        }
       />
       {loading && (
         <LinearProgress style={{ marginTop: 24, marginBottom: 8 }} />
@@ -131,6 +145,7 @@ export default function CollaborationsCard({ userId }) {
         />
       ) : (
         <DataDisplay
+          loading={loading || collabDialogButtonClickLoading}
           style={{ marginTop: 12 }}
           noTitleBar
           columns={columns}
