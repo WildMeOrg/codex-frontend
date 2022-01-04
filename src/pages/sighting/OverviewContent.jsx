@@ -27,6 +27,8 @@ export default function OverviewContent({
     field => field.name === 'gps',
   );
   const gps = gpsField && get(gpsField, 'value');
+  const isGpsAllNulls =
+    gps.filter(entry => entry == null).length === gps.length;
 
   return (
     <div style={{ display: 'flex', flexWrap: 'wrap' }}>
@@ -50,7 +52,7 @@ export default function OverviewContent({
       {gps && (
         <CardContainer>
           <StatusCard sightingData={sightingData} />
-          <GpsCard lat={gps[0]} lng={gps[1]} />
+          {!isGpsAllNulls && <GpsCard lat={gps[0]} lng={gps[1]} />}
         </CardContainer>
       )}
     </div>
