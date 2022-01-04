@@ -15,7 +15,6 @@ import CustomAlert from '../../components/Alert';
 
 import usePostAssetGroup from '../../models/assetGroup/usePostAssetGroup';
 import useSiteSettings from '../../models/site/useSiteSettings';
-import usePutSighting from '../../models/sighting/usePutSighting';
 import useSightingFieldSchemas, {
   defaultSightingCategories,
 } from '../../models/sighting/useSightingFieldSchemas';
@@ -52,7 +51,6 @@ export default function ReportForm({
     data: siteSettingsData,
     siteSettingsVersion,
   } = useSiteSettings();
-  const { loading, error: putError, putSighting } = usePutSighting();
   const [sightingType, setSightingType] = useState(null);
 
   const {
@@ -154,7 +152,6 @@ export default function ReportForm({
   const showErrorAlertBox =
     incompleteFields.length > 0 ||
     termsError ||
-    putError ||
     locationFieldError ||
     dateDurationError ||
     dateOrderError ||
@@ -256,7 +253,6 @@ export default function ReportForm({
             {dateDurationError && (
               <Text variant="body2" id="DATE_DURATION_ERROR" />
             )}
-            {putError && <Text variant="body2">{putError}</Text>}
             {postAssetGroupError && (
               <Text variant="body2">{postAssetGroupError}</Text>
             )}
@@ -399,89 +395,6 @@ export default function ReportForm({
             style={{ width: 320, marginBottom: 8 }}
             loading={postAssetGroupLoading}
             display="primary"
-          >
-            Report asset group sighting
-          </Button>
-          <Button
-            onClick={async () => {
-              // check that required fields are complete
-              const nextIncompleteFields = defaultSightingSchemas.filter(
-                field =>
-                  field.required &&
-                  field.defaultValue ===
-                    sightingFormValues[field.name],
-              );
-              setIncompleteFields(nextIncompleteFields);
-
-              // check that terms and conditions were accepted
-              setTermsError(!acceptedTerms);
-
-              let startTimeAfterEndTime = false;
-              let durationAcceptable = true;
-              // check that startTime is before endTime and duration < 24hrs
-              if (
-                sightingFormValues.startTime &&
-                sightingFormValues.endTime
-              ) {
-                startTimeAfterEndTime = isAfter(
-                  sightingFormValues.startTime,
-                  sightingFormValues.endTime,
-                );
-                setDateOrderError(startTimeAfterEndTime);
-
-                if (!startTimeAfterEndTime)
-                  durationAcceptable = isWithinInterval(
-                    sightingFormValues.endTime,
-                    {
-                      start: sightingFormValues.startTime,
-                      end: addHours(sightingFormValues.startTime, 24),
-                    },
-                  );
-                setDateDurationError(!durationAcceptable);
-              }
-
-              // check that at least one location field is present
-              const oneLocationFieldPresent =
-                sightingFormValues.locationId ||
-                sightingFormValues.verbatimLocality ||
-                get(sightingFormValues, ['gps', 0]);
-              setLocationFieldError(!oneLocationFieldPresent);
-
-              const formValid =
-                nextIncompleteFields.length === 0 &&
-                acceptedTerms &&
-                durationAcceptable &&
-                oneLocationFieldPresent &&
-                !startTimeAfterEndTime;
-
-              if (formValid) {
-                const report =
-                  sightingType === 'one'
-                    ? prepareReportWithEncounter(
-                        sightingFormValues,
-                        customSightingFormValues,
-                        customSightingSchemas,
-                        assetReferences,
-                        encounterFormValues,
-                        customEncounterFormValues,
-                        customEncounterSchemas,
-                      )
-                    : prepareBasicReport(
-                        sightingFormValues,
-                        customSightingFormValues,
-                        customSightingSchemas,
-                        assetReferences,
-                      );
-
-                const newSightingId = await putSighting(report);
-                if (newSightingId) {
-                  history.push(`/report/success/${newSightingId}`);
-                }
-              }
-            }}
-            style={{ width: 200 }}
-            loading={loading}
-            display="secondary"
             id="REPORT_SIGHTING"
           />
         </Grid>

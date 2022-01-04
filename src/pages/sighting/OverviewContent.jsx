@@ -9,7 +9,7 @@ import EditSightingMetadata from './EditSightingMetadata';
 
 export default function OverviewContent({
   sightingId,
-  metadata,
+  metadata = [],
   sightingData,
   refreshSightingData,
   pending,
@@ -26,7 +26,7 @@ export default function OverviewContent({
   const gpsField = viewableMetadata.find(
     field => field.name === 'gps',
   );
-  const gps = gpsField && get(gpsField, 'value');
+  const gps = get(gpsField, 'value', []);
   const isGpsAllNulls =
     gps.filter(entry => entry == null).length === gps.length;
 
