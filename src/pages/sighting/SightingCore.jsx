@@ -90,7 +90,6 @@ export default function SightingCore({
     [data, fieldSchemas],
   );
 
-  // fetch data for Id...
   useDocumentTitle(`Sighting ${id}`, { translateMessage: false });
 
   const [historyOpen, setHistoryOpen] = useState(false);
@@ -107,7 +106,6 @@ export default function SightingCore({
         variant="genericError"
       />
     );
-  if (error) return <SadScreen variant="genericError" />;
   if (!data)
     return (
       <SadScreen
@@ -115,6 +113,7 @@ export default function SightingCore({
         subtitleId="SIGHTING_NOT_FOUND"
       />
     );
+  if (error) return <SadScreen variant="genericError" />;
 
   const assets = get(data, 'assets', []);
   const annotations = flatten(
@@ -126,7 +125,6 @@ export default function SightingCore({
     pending && detectionComplete && allAnnotationsAssigned;
 
   const sightingDisplayDate = get(data, ['startTime']);
-  // const encounters = get(data, ['encounters'], []);
 
   const sightingCreator = data?.creator;
   const creatorName =

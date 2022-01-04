@@ -23,6 +23,7 @@ export default function useSighting(sightingId) {
   return {
     ...result,
     data: data?.data,
+    statusCode: data?.status,
     loading: isLoading,
     error: error ? error.toJSON().message : null,
   };

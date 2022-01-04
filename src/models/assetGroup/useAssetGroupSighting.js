@@ -23,6 +23,7 @@ export default function useAssetGroupSighting(assetGroupSightingId) {
   return {
     ...result,
     data: data?.data,
+    statusCode: data?.status,
     loading: isLoading,
     error: error ? error.toJSON().message : null,
   };

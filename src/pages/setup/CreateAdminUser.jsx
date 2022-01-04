@@ -6,6 +6,7 @@ import TextField from '@material-ui/core/TextField';
 import Button from '../../components/Button';
 import SimpleFormPage from '../../components/SimpleFormPage';
 import CustomAlert from '../../components/Alert';
+import BaoParty from '../../components/svg/BaoParty';
 
 import useCreateAdminUser from '../../models/setup/useCreateAdminUser';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
@@ -25,7 +26,7 @@ export default function CreateAdminUser() {
   const [password2, setPassword2] = useState('');
 
   const intl = useIntl();
-  useDocumentTitle('CODEX_INITIALIZED');
+  useDocumentTitle('CODEX_INITIALIZED', { appendSiteName: false });
 
   function onKeyUp(e) {
     if (e.key === 'Enter') {
@@ -45,6 +46,7 @@ export default function CreateAdminUser() {
     <SimpleFormPage
       titleId="CODEX_INITIALIZED"
       instructionsId="FIRST_STEP_CREATE_ADMIN"
+      BaoComponent={BaoParty}
     >
       <form>
         <Grid
