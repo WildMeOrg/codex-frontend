@@ -140,7 +140,9 @@ export default function AnnotationCreator({
         }}
       >
         <FormControl required style={{ width: 240 }}>
-          <InputLabel>Viewpoint</InputLabel>
+          <InputLabel>
+            <FormattedMessage id="VIEWPOINT" />
+          </InputLabel>
           <Select
             labelId="viewpoint-selector-label"
             id="viewpoint-selector"
@@ -174,9 +176,7 @@ export default function AnnotationCreator({
           id="viewpoint-help-tooltip"
           onClose={handleViewpointInfoClose}
         >
-          <Text style={{ padding: 12 }}>
-            Select the side of the animal that is shown.
-          </Text>
+          <Text style={{ padding: 12 }} id="VIEWPOINT_INFO" />
         </Popover>
       </div>
       <DialogActions style={{ padding: '0px 24px 24px 24px' }}>

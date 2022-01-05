@@ -166,6 +166,8 @@
   "ONE_ANIMAL": "One animal",
   "MULTIPLE_ANIMALS": "Multiple animals",
   "TAXONOMIES": "Taxonomies",
+  "VIEWPOINT": "Viewpoint",
+  "VIEWPOINT_INFO": "Select the side of the animal that is shown.",
   "VIEWPOINT_UP": "Up",
   "VIEWPOINT_DOWN": "Down",
   "VIEWPOINT_FRONT": "Front",

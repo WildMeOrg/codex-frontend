@@ -10,6 +10,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 
 import { formatFilename } from '../../utils/formatters';
+import useDetectionConfig from '../../models/site/useDetectionConfig';
 import AnnotatedPhotograph from '../../components/AnnotatedPhotograph';
 import AnnotationCreator from '../../components/AnnotationCreator';
 import Text from '../../components/Text';
@@ -24,11 +25,19 @@ const useStyles = makeStyles({
   },
 });
 
-export default function Photographs({ assets, refreshSightingData }) {
+export default function Photographs({
+  assets,
+  sightingData,
+  refreshSightingData,
+})
+{
   const theme = useTheme();
   const intl = useIntl();
   const isSm = useMediaQuery(theme.breakpoints.down('xs'));
   const classes = useStyles();
+  const detectionConfig = useDetectionConfig();
+
+  // derive possible IA classes from sightingData and detectionConfig here...
 
   const [anchorInfo, setAnchorInfo] = useState(null);
   const [showAnnotations, setShowAnnotations] = useState(true);

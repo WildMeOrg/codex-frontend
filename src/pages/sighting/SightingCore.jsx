@@ -250,6 +250,7 @@ export default function SightingCore({
       {activeTab === '#photographs' && (
         <Photographs
           assets={assets}
+          sightingData={data}
           refreshSightingData={refreshData}
         />
       )}
