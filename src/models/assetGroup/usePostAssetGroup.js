@@ -9,6 +9,11 @@ export default function usePostAssetGroup() {
   const [success, setSuccess] = useState(false);
 
   const postAssetGroup = async data => {
+    console.log('deleteMe data going into postAssetGroup is: ');
+    const timeThing = get(data, ['sightings', '0', 'startTime']);
+    console.log(timeThing);
+    console.log('deleteMe typeof timeThing is: ' + typeof timeThing);
+    // debugger;
     try {
       setLoading(true);
       setError(null);

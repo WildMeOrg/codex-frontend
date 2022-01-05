@@ -62,6 +62,9 @@ export const formatFilename = (input, characterLimit = 40) => {
 export const formatDate = (input, fancy) => {
   const formatter = fancy ? 'PP' : 'yyyy-MM-dd HH:mm';
   try {
+    console.log('deleteMe date in formatDate is: ');
+    console.log(input);
+    console.log('deleteMe typeof date input is: ' + typeof input);
     const jsDate =
       typeof input === 'string' ? new Date(input) : input;
     const formattedDate = format(jsDate, formatter);

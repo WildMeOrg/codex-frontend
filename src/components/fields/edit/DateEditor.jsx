@@ -1,7 +1,7 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
 import DateFnsUtils from '@date-io/date-fns';
-import { parseISO } from 'date-fns';
+import { formatISO } from 'date-fns';
 import {
   MuiPickersUtilsProvider,
   KeyboardDateTimePicker,
@@ -24,9 +24,15 @@ export default function DateEditor(props) {
   const showDescription = !minimalLabels && description;
 
   const intl = useIntl();
+  console.log('deleteMe value coming in is: ');
+  console.log(value);
   const dateValue =
-    typeof value === 'string' ? parseISO(value) : value;
-
+    typeof value === 'string'
+      ? formatISO(value, { representation: 'complete' })
+      : value;
+  console.log('deleteMe dateValue is: ');
+  console.log(dateValue);
+  console.log('deleteMe typeof dateValue is: ' + typeof dateValue);
   /* Note: the wrapper div is there because MuiPicker creates two child elements,
    * which messes up display if this component is a flex child. */
   return (

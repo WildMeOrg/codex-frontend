@@ -19,6 +19,8 @@ export function prepareBasicReport(
 
   const report = {
     ...sightingData,
+    time: get(sightingData, 'startTime'),
+    timeSpecificity: 'time', // TODO I plan on moving this into sightingData upstream as part of DEX-645. Eventually, this value will come from a form.
     speciesDetectionModel: [
       get(sightingData, 'speciesDetectionModel', 'None'),
     ],
@@ -39,6 +41,10 @@ export function prepareBasicReport(
   };
 
   delete report.gps;
+  // TODO delete startTime
+  console.log('deleteMe report in prepareBasicReport is: ');
+  console.log(report);
+  // debugger;
 
   return report;
 }
@@ -53,6 +59,10 @@ export function prepareReportWithEncounter(
   customEncounterSchemas,
   simpleAssets = false,
 ) {
+  console.log(
+    'deleteMe sightingData in prepareReportWithEncounter is: ',
+  );
+  console.log(sightingData);
   const safeEncounterData = encounterData || {};
 
   const encounter = {
