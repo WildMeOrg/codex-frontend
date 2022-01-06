@@ -17,10 +17,11 @@ export default function OverviewContent({
   const [editing, setEditing] = useState(false);
 
   const viewableMetadata = metadata.filter(
-    field => !field.hideOnMetadataCard,
+    field =>
+      !field.hideOnMetadataCard && Boolean(get(field, 'value')),
   );
-  const editableFields = viewableMetadata.filter(
-    field => field.editable,
+  const editableFields = metadata.filter(
+    field => field.editable && !field.hideOnMetadataCard,
   );
 
   const gpsField = viewableMetadata.find(
