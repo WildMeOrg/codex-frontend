@@ -124,7 +124,7 @@ export default function SightingCore({
   const showCommitAlert =
     pending && detectionComplete && allAnnotationsAssigned;
 
-  const sightingDisplayDate = get(data, ['startTime']);
+  const sightingDisplayDate = get(data, 'time');
 
   const sightingCreator = data?.creator;
   const creatorName =

@@ -2,7 +2,6 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { get } from 'lodash-es';
 import { useHistory } from 'react-router-dom';
-import { addHours, isWithinInterval, isAfter } from 'date-fns';
 
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -101,8 +100,6 @@ export default function ReportForm({
   const [dialogOpen, setDialogOpen] = useState(false);
   const [incompleteFields, setIncompleteFields] = useState([]);
   const [termsError, setTermsError] = useState(false);
-  const [dateOrderError, setDateOrderError] = useState(false);
-  const [dateDurationError, setDateDurationError] = useState(false);
   const [locationFieldError, setLocationFieldError] = useState(false);
 
   const [sightingFormValues, setSightingFormValues] = useState({});
@@ -153,8 +150,6 @@ export default function ReportForm({
     incompleteFields.length > 0 ||
     termsError ||
     locationFieldError ||
-    dateDurationError ||
-    dateOrderError ||
     postAssetGroupError;
 
   return (
@@ -247,12 +242,6 @@ export default function ReportForm({
       {showErrorAlertBox && (
         <Grid item style={{ marginBottom: 12 }}>
           <CustomAlert severity="error" titleId="SUBMISSION_ERROR">
-            {dateOrderError && (
-              <Text variant="body2" id="DATE_ORDER_ERROR" />
-            )}
-            {dateDurationError && (
-              <Text variant="body2" id="DATE_DURATION_ERROR" />
-            )}
             {postAssetGroupError && (
               <Text variant="body2">{postAssetGroupError}</Text>
             )}
@@ -302,30 +291,6 @@ export default function ReportForm({
               // check that terms and conditions were accepted
               setTermsError(!acceptedTerms);
 
-              let startTimeAfterEndTime = false;
-              let durationAcceptable = true;
-              // check that startTime is before endTime and duration < 24hrs
-              if (
-                sightingFormValues.startTime &&
-                sightingFormValues.endTime
-              ) {
-                startTimeAfterEndTime = isAfter(
-                  sightingFormValues.startTime,
-                  sightingFormValues.endTime,
-                );
-                setDateOrderError(startTimeAfterEndTime);
-
-                if (!startTimeAfterEndTime)
-                  durationAcceptable = isWithinInterval(
-                    sightingFormValues.endTime,
-                    {
-                      start: sightingFormValues.startTime,
-                      end: addHours(sightingFormValues.startTime, 24),
-                    },
-                  );
-                setDateDurationError(!durationAcceptable);
-              }
-
               // check that at least one location field is present
               const oneLocationFieldPresent =
                 sightingFormValues.locationId ||
@@ -336,9 +301,7 @@ export default function ReportForm({
               const formValid =
                 nextIncompleteFields.length === 0 &&
                 acceptedTerms &&
-                durationAcceptable &&
-                oneLocationFieldPresent &&
-                !startTimeAfterEndTime;
+                oneLocationFieldPresent;
 
               if (formValid) {
                 const report =
