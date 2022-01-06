@@ -1,7 +1,10 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { get } from 'lodash-es';
-import { formatError } from '../../utils/formatters';
+import {
+  formatError,
+  formatHoustonTime,
+} from '../../utils/formatters';
 
 export default function usePatchAssetGroupSighting() {
   const [loading, setLoading] = useState(false);
@@ -22,6 +25,10 @@ export default function usePatchAssetGroupSighting() {
         null,
       );
       delete dictionaryCopy.gps;
+    }
+
+    if ('time' in dictionaryCopy) {
+      dictionaryCopy.time = formatHoustonTime(dictionaryCopy.time);
     }
 
     const operations = Object.keys(dictionaryCopy).map(

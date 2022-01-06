@@ -15,7 +15,7 @@ export default function SightingMapView({ data }) {
         text: intl.formatMessage(
           { id: 'ENTITY_HEADER_SIGHTING_DATE' },
           {
-            date: formatDate(get(entry, 'startTime'), true),
+            date: formatDate(get(entry, 'time'), true),
           },
         ),
         lat: get(entry, 'decimalLatitude'),
