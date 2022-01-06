@@ -64,6 +64,7 @@ export function prepareReportWithEncounter(
     locationId: sightingData.locationId,
     verbatimLocality: sightingData.verbatimLocality,
     time: formatHoustonTime(get(sightingData, 'time')),
+    timeSpecificity: get(sightingData, 'timeSpecificity'),
   };
 
   if (encounter.taxonomy === '') encounter.taxonomy = null;
