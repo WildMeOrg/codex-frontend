@@ -19,7 +19,7 @@ export function prepareBasicReport(
 
   const report = {
     ...sightingData,
-    time: get(sightingData, 'startTime'),
+    // time: get(sightingData, 'startTime'),
     timeSpecificity: 'time', // TODO I plan on moving this into sightingData upstream as part of DEX-645. Eventually, this value will come from a form.
     speciesDetectionModel: [
       get(sightingData, 'speciesDetectionModel', 'None'),

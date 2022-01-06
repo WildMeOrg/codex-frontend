@@ -10,6 +10,8 @@ export default function usePatchSighting() {
 
   const updateProperties = async (sightingId, dictionary) => {
     const dictionaryCopy = { ...dictionary };
+    console.log('deleteMe dictionaryCopy is: ');
+    console.log(dictionaryCopy);
     if ('gps' in dictionaryCopy) {
       dictionaryCopy.decimalLatitude = get(
         dictionaryCopy,
@@ -22,6 +24,10 @@ export default function usePatchSighting() {
         null,
       );
       delete dictionaryCopy.gps;
+    }
+    if ('time' in dictionaryCopy) {
+      console.log('deleteMe got here c1');
+      dictionaryCopy.timeSpecificity = 'time'; // TODO will eventually want this to come form form data
     }
 
     const operations = Object.keys(dictionaryCopy).map(

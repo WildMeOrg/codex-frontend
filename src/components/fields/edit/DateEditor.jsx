@@ -1,7 +1,7 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
 import DateFnsUtils from '@date-io/date-fns';
-import { formatISO } from 'date-fns';
+import { formatISO, parseISO } from 'date-fns';
 import {
   MuiPickersUtilsProvider,
   KeyboardDateTimePicker,
@@ -26,10 +26,26 @@ export default function DateEditor(props) {
   const intl = useIntl();
   console.log('deleteMe value coming in is: ');
   console.log(value);
+  const handleFormatIso = val => {
+    console.log('deleteMe val in handleFormatIso is: ');
+    console.log(val);
+    try {
+      const dateObj = parseISO(val);
+      console.log('deleteMe got here b1');
+      const tmpReturnObj = formatISO(dateObj, {
+        representation: 'complete',
+      });
+      console.log('deleteMe got here b2 and tmpReturnObj is: ');
+      console.log(tmpReturnObj);
+      return formatISO(dateObj, { representation: 'complete' });
+    } catch (error) {
+      console.log('deleteMe formatting error: ');
+      console.log(error);
+      return parseISO(val);
+    }
+  };
   const dateValue =
-    typeof value === 'string'
-      ? formatISO(value, { representation: 'complete' })
-      : value;
+    typeof value === 'string' ? handleFormatIso(value) : value;
   console.log('deleteMe dateValue is: ');
   console.log(dateValue);
   console.log('deleteMe typeof dateValue is: ' + typeof dateValue);

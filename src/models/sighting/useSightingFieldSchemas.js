@@ -107,10 +107,12 @@ export default function useSightingFieldSchemas() {
       const customFieldSchemas = customFields.map(
         createCustomFieldSchema,
       );
+      console.log('deleteMe customFieldSchemas are: ');
+      console.log(customFieldSchemas);
 
       return [
         createFieldSchema(fieldTypes.date, {
-          name: 'startTime',
+          name: 'time',
           labelId: 'SIGHTING_TIME',
           descriptionId: 'SIGHTING_TIME_DESCRIPTION',
           category: defaultSightingCategories.general.name,

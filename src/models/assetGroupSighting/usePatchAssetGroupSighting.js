@@ -10,6 +10,8 @@ export default function usePatchAssetGroupSighting() {
 
   const updateProperties = async (agsId, dictionary) => {
     const dictionaryCopy = { ...dictionary };
+    console.log('deleteMe dictionaryCopy 2 is: ');
+    console.log(dictionaryCopy);
     if ('gps' in dictionaryCopy) {
       dictionaryCopy.decimalLatitude = get(
         dictionaryCopy,
@@ -23,13 +25,27 @@ export default function usePatchAssetGroupSighting() {
       );
       delete dictionaryCopy.gps;
     }
+    if ('time' in dictionaryCopy) {
+      console.log('deleteMe got here d1');
+      dictionaryCopy.timeSpecificity = 'time'; // TODO will eventually want this to come form form data
+    }
 
     const operations = Object.keys(dictionaryCopy).map(
-      propertyKey => ({
-        op: 'replace',
-        path: `/${propertyKey}`,
-        value: dictionaryCopy[propertyKey],
-      }),
+      propertyKey => {
+        const dictValue = dictionaryCopy[propertyKey];
+        // if (propertyKey === 'time')
+        // dictValue = dictionaryCopy[propertyKey].replace(
+        //   'Z',
+        //   '+00:00',
+        // );
+        // dictValue = '1999-01-01T12:34:56-07:00';
+        // TODO this sucks and I hate it but I need to cut off the rabbit hole for now
+        return {
+          op: 'replace',
+          path: `/${propertyKey}`,
+          value: dictValue,
+        };
+      },
     );
 
     try {

@@ -31,6 +31,8 @@ export default function EditSightingMetadata({
   refreshSightingData,
   pending,
 }) {
+  console.log('deleteMe metadata is: ');
+  console.log(metadata);
   const {
     updateProperties: updateSightingProperties,
     loading: sightingLoading,
