@@ -1,4 +1,5 @@
 import { get, keyBy, mapValues } from 'lodash-es';
+import { formatHoustonTime } from '../../../utils/formatters';
 
 function transformCustomFields(formData, schemas) {
   const schemaDict = keyBy(schemas, s => s.id);
@@ -27,6 +28,7 @@ export function prepareBasicReport(
       : assetReferences,
     decimalLatitude: sightingData.gps[0],
     decimalLongitude: sightingData.gps[1],
+    time: formatHoustonTime(get(sightingData, 'time')),
     encounters: [
       {
         decimalLatitude: sightingData.gps[0],
@@ -61,9 +63,9 @@ export function prepareReportWithEncounter(
     decimalLongitude: sightingData.gps[1],
     locationId: sightingData.locationId,
     verbatimLocality: sightingData.verbatimLocality,
+    time: formatHoustonTime(get(sightingData, 'time')),
+    timeSpecificity: get(sightingData, 'timeSpecificity'),
   };
-
-  if (!sightingData.endTime) encounter.time = sightingData.startTime;
 
   if (encounter.taxonomy === '') encounter.taxonomy = null;
 

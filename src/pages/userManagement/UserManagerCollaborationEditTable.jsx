@@ -23,7 +23,7 @@ export default function UserManagersCollaborationEditTable({
   const intl = useIntl();
   const [dismissed, setDismissed] = useState(false);
   const {
-    patchCollaboration,
+    patchCollaborationsAsync,
     error,
     isLoading,
     isError,
@@ -54,11 +54,16 @@ export default function UserManagersCollaborationEditTable({
         },
       },
     ];
-    patchCollaboration(
+    const response = await patchCollaborationsAsync(
       get(collaboration, 'guid'),
       collaborationData,
       collaborationDataTheOtherWay,
     );
+    const allOk =
+      get(response, ['0', 'status']) === 200 &&
+      get(response, ['1', 'status']) === 200;
+    if (allOk)
+      queryClient.invalidateQueries(queryKeys.collaborations);
   }
 
   function tranformDataForCollabTable(originalData) {

@@ -1,5 +1,5 @@
 import { get, round, find, some, map } from 'lodash-es';
-import { format } from 'date-fns';
+import { format, formatISO } from 'date-fns';
 
 export const isMutuallyRevoked = members => {
   const memberViewStates = map(members, member =>
@@ -131,4 +131,19 @@ export const formatError = error => {
   const stringError = error instanceof Error && error.toString();
   const errorToPrint = serverError || stringError || error;
   return JSON.stringify(errorToPrint, null, 2);
+};
+
+export const formatHoustonTime = possibleTimeObject => {
+  try {
+    const houstonTime = formatISO(possibleTimeObject, {
+      representation: 'complete',
+    });
+    return houstonTime;
+  } catch (error) {
+    console.log(
+      'formatHoustonTime: possibleTimeObject not parseable, passing through',
+      possibleTimeObject,
+    );
+    return possibleTimeObject;
+  }
 };
