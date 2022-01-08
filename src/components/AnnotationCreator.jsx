@@ -9,13 +9,16 @@ import Select from '@material-ui/core/Select';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
+import Popover from '@material-ui/core/Popover';
 import { useTheme } from '@material-ui/core/styles';
-import CustomAlert from './Alert';
+import HelpIcon from '@material-ui/icons/Info';
 
 import viewpointChoices from '../constants/viewpoints';
 import usePostAnnotation from '../models/annotation/usePostAnnotation';
 import Button from './Button';
+import Text from './Text';
 import StandardDialog from './StandardDialog';
+import CustomAlert from './Alert';
 
 function percentageToPixels(percentValue, scalar) {
   const pixelValue = 0.01 * scalar * percentValue;
@@ -30,9 +33,18 @@ export default function AnnotationCreator({
 }) {
   const [viewpoint, setViewpoint] = useState('');
   const [rect, setRect] = useState({});
+  const [anchorEl, setAnchorEl] = useState(null);
   const theme = useTheme();
 
   const { postAnnotation, loading, error } = usePostAnnotation();
+
+  const handleViewpointInfoClick = event => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleViewpointInfoClose = () => {
+    setAnchorEl(null);
+  };
 
   const imgSrc = get(asset, 'src');
   const imageWidth = get(asset, ['dimensions', 'width']);
@@ -90,24 +102,47 @@ export default function AnnotationCreator({
 
   return (
     <StandardDialog
-      maxWidth="xl"
+      fullScreen
       open
       onClose={onClose}
       titleId={titleId}
     >
       <DialogContent>
-        <div style={{ width: '80vw', padding: '0 40px' }}>
+        <div
+          style={{
+            maxHeight: '80vh',
+            width: '100%',
+            padding: '0 40px',
+          }}
+        >
           <div
             id="editor-bbox-annotator-container"
             style={{ zIndex: 999 }}
             ref={divRef}
           />
         </div>
-        <FormControl
-          required
-          style={{ width: 240, margin: '12px 40px' }}
-        >
-          <InputLabel>Viewpoint</InputLabel>
+        {error && (
+          <CustomAlert
+            titleId="SERVER_ERROR"
+            style={{ marginTop: 16, marginBottom: 8 }}
+            severity="error"
+          >
+            {error}
+          </CustomAlert>
+        )}
+      </DialogContent>
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'flex-end',
+          margin: '12px auto',
+          width: 'fit-content',
+        }}
+      >
+        <FormControl required style={{ width: 240 }}>
+          <InputLabel>
+            <FormattedMessage id="VIEWPOINT" />
+          </InputLabel>
           <Select
             labelId="viewpoint-selector-label"
             id="viewpoint-selector"
@@ -121,16 +156,29 @@ export default function AnnotationCreator({
             ))}
           </Select>
         </FormControl>
-        {error && (
-          <CustomAlert
-            titleId="SERVER_ERROR"
-            style={{ marginTop: 16, marginBottom: 8 }}
-            severity="error"
-          >
-            {error}
-          </CustomAlert>
-        )}
-      </DialogContent>
+        <HelpIcon
+          onClick={handleViewpointInfoClick}
+          fontSize="small"
+          style={{ marginLeft: 4, color: theme.palette.grey['700'] }}
+        />
+        <Popover
+          open={Boolean(anchorEl)}
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'right',
+          }}
+          PaperProps={{ style: { marginTop: 4 } }}
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'right',
+          }}
+          anchorEl={anchorEl}
+          id="viewpoint-help-tooltip"
+          onClose={handleViewpointInfoClose}
+        >
+          <Text style={{ padding: 12 }} id="VIEWPOINT_INFO" />
+        </Popover>
+      </div>
       <DialogActions style={{ padding: '0px 24px 24px 24px' }}>
         <Button display="basic" onClick={onClose} id="CANCEL" />
         <Button

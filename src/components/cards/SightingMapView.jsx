@@ -11,7 +11,7 @@ export default function SightingMapView({ data }) {
     .filter(entry => get(entry, 'decimalLatitude'))
     .map(entry => {
       return {
-        guid: get(entry, 'id'),
+        guid: get(entry, 'guid'),
         text: intl.formatMessage(
           { id: 'ENTITY_HEADER_SIGHTING_DATE' },
           {
@@ -22,6 +22,7 @@ export default function SightingMapView({ data }) {
         long: get(entry, 'decimalLongitude'),
       };
     });
+
   return (
     <div style={{ height: 280, marginTop: 4 }}>
       <MultiplePoints latLongLabelArr={transformedData} />

@@ -166,7 +166,7 @@ export default function SightingsCard({
     },
     {
       reference: 'actions',
-      name: 'id',
+      name: 'guid',
       label: 'Actions',
       options: {
         customBodyRender: value => (

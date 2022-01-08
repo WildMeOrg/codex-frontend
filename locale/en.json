@@ -168,6 +168,8 @@
   "SIGHTING_TIME_SPECIFICITY": "Time precision",
   "SIGHTING_TIME_SPECIFICITY_DESCRIPTION": "How much do you know about when the sighting took place?",
   "TAXONOMIES": "Taxonomies",
+  "VIEWPOINT": "Viewpoint",
+  "VIEWPOINT_INFO": "Select the side of the animal that is shown.",
   "VIEWPOINT_UP": "Up",
   "VIEWPOINT_DOWN": "Down",
   "VIEWPOINT_FRONT": "Front",
