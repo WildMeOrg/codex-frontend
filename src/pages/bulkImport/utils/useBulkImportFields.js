@@ -49,30 +49,11 @@ export default function useBulkImportFields() {
       const bulkSightingFields = sightingFieldSchemas.filter(
         f => !sightingOmitList.includes(f.name),
       );
-      return bulkSightingFields.map(f => ({
-        label: f.labelId
-          ? intl.formatMessage({ id: f.labelId })
-          : f.label,
-        key: f.name,
-      }));
-    },
-    [sightingFieldSchemas],
-  );
-
-  const encounterFieldSchemas = useEncounterFieldSchemas();
-  const flatfileEncounterFields = useMemo(
-    () => {
-      if (!encounterFieldSchemas || !regionOptions || !speciesOptions)
-        return {};
-      const bulkEncounterFields = encounterFieldSchemas.filter(
-        f => !encounterOmitList.includes(f.name),
-      );
-      return bulkEncounterFields.map(f => {
+      return bulkSightingFields.map(f => {
+        console.log('deleteMe got here a3 and f is: ');
+        console.log(f);
         const additionalProperties = {};
-        if (f.name === 'taxonomy') {
-          additionalProperties.type = 'select';
-          additionalProperties.options = speciesOptions;
-        } else if (f.name === 'locationId') {
+        if (f.name === 'locationId') {
           additionalProperties.type = 'select';
           additionalProperties.options = regionOptions;
           additionalProperties.validators = [
@@ -87,6 +68,53 @@ export default function useBulkImportFields() {
             },
           ];
         }
+        return {
+          label: f.labelId
+            ? intl.formatMessage({
+                id: f.labelId,
+              })
+            : f.label,
+          key: f.name,
+          ...additionalProperties,
+        };
+      });
+    },
+    [sightingFieldSchemas],
+  );
+  console.log('deleteMe got here a2 flatfileSightingFields is: ');
+  console.log(flatfileSightingFields);
+
+  const encounterFieldSchemas = useEncounterFieldSchemas();
+  console.log('deleteMe encounterFieldSchemas are: ');
+  console.log(encounterFieldSchemas);
+  const flatfileEncounterFields = useMemo(
+    () => {
+      if (!encounterFieldSchemas || !regionOptions || !speciesOptions)
+        return {};
+      const bulkEncounterFields = encounterFieldSchemas.filter(
+        f => !encounterOmitList.includes(f.name),
+      );
+      return bulkEncounterFields.map(f => {
+        const additionalProperties = {};
+        if (f.name === 'taxonomy') {
+          additionalProperties.type = 'select';
+          additionalProperties.options = speciesOptions;
+        }
+        // else if (f.name === 'locationId') {
+        //   additionalProperties.type = 'select';
+        //   additionalProperties.options = regionOptions;
+        //   additionalProperties.validators = [
+        //     {
+        //       validate: 'required_without_all',
+        //       fields: [
+        //         'decimalLatitude',
+        //         'decimalLongitude',
+        //         'verbatimLocality',
+        //       ],
+        //       error: 'At least one location field is required.',
+        //     },
+        //   ];
+        // }
 
         return {
           label: f.labelId
@@ -99,18 +127,32 @@ export default function useBulkImportFields() {
     },
     [encounterFieldSchemas, regionOptions, speciesOptions],
   );
+  console.log('deleteMe flatfileEncounterFields is: ');
+  console.log(flatfileEncounterFields);
 
   return [
     {
-      label: intl.formatMessage({ id: 'SIGHTING_ID' }),
+      label: intl.formatMessage({
+        id: 'SIGHTING_ID',
+      }),
       key: 'sightingId',
     },
     {
-      label: intl.formatMessage({ id: 'INDIVIDUAL_NAME' }),
+      label: intl.formatMessage({
+        id: 'REGION',
+      }),
+      key: 'locationId',
+    },
+    {
+      label: intl.formatMessage({
+        id: 'INDIVIDUAL_NAME',
+      }),
       key: 'individualName',
     },
     {
-      label: intl.formatMessage({ id: 'DECIMAL_LATITUDE' }),
+      label: intl.formatMessage({
+        id: 'DECIMAL_LATITUDE',
+      }),
       key: 'decimalLatitude',
       validators: [
         floatValidator,
@@ -161,7 +203,15 @@ export default function useBulkImportFields() {
       validators: [positiveIntegerValidator],
     },
     {
-      label: intl.formatMessage({ id: 'TIMEZONE' }),
+      label: intl.formatMessage({ id: 'SIGHTING_TIME_SPECIFICITY' }),
+      key: 'timeSpecificity',
+      validators: [requiredValidator],
+    },
+    {
+      label: intl.formatMessage(
+        // TODO string validator
+        { id: 'TIMEZONE' },
+      ),
       key: 'utcOffset',
       validators: [utcOffsetValidator],
     },

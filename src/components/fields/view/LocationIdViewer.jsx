@@ -4,7 +4,13 @@ import { flatten, get } from 'lodash-es';
 import Text from '../../Text';
 
 function findLocationObject(searchId, locationList) {
-  if (locationList === [] || !locationList || !searchId) return null;
+  if (
+    locationList === [] ||
+    !locationList ||
+    !searchId ||
+    locationList.length === 0
+  )
+    return null;
   const match = locationList.find(
     location => location.id === searchId,
   );
