@@ -4,6 +4,7 @@ import { get, startCase } from 'lodash-es';
 
 import useSiteSettings from '../site/useSiteSettings';
 import fieldTypes from '../../constants/fieldTypesNew';
+import timeSpecificityChoices from '../../constants/timeSpecificityChoices';
 import {
   createFieldSchema,
   createCustomFieldSchema,
@@ -76,6 +77,14 @@ export default function useSightingFieldSchemas() {
       );
 
       return [
+        createFieldSchema(fieldTypes.select, {
+          name: 'timeSpecificity',
+          labelId: 'SIGHTING_TIME_SPECIFICITY',
+          descriptionId: 'SIGHTING_TIME_SPECIFICITY_DESCRIPTION',
+          category: defaultEncounterCategories.animal.name,
+          required: true,
+          choices: timeSpecificityChoices,
+        }),
         createFieldSchema(fieldTypes.date, {
           name: 'time',
           labelId: 'SIGHTING_TIME',

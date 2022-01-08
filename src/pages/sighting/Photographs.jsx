@@ -29,8 +29,7 @@ export default function Photographs({
   assets,
   sightingData,
   refreshSightingData,
-})
-{
+}) {
   const theme = useTheme();
   const intl = useIntl();
   const isSm = useMediaQuery(theme.breakpoints.down('xs'));
