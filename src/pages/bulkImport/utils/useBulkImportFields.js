@@ -41,21 +41,31 @@ const utcOffsetValidator = {
 export default function useBulkImportFields() {
   const intl = useIntl();
   const { regionOptions, speciesOptions } = useOptions();
+  console.log('deleteMe regionOptions is: ');
+  console.log(regionOptions);
 
   const sightingFieldSchemas = useSightingFieldSchemas();
   const flatfileSightingFields = useMemo(
     () => {
+      console.log('deleteMe got here x0');
       if (!sightingFieldSchemas) return {};
+      console.log('deleteMe got here x1');
       const bulkSightingFields = sightingFieldSchemas.filter(
         f => !sightingOmitList.includes(f.name),
       );
+      console.log('deleteMe got here x2');
+      console.log('deleteMe bulkSightingFields is: ');
+      console.log(bulkSightingFields);
       return bulkSightingFields.map(f => {
-        console.log('deleteMe got here a3 and f is: ');
+        console.log('deleteMe got here x3 and f is: ');
         console.log(f);
         const additionalProperties = {};
         if (f.name === 'locationId') {
           additionalProperties.type = 'select';
           additionalProperties.options = regionOptions;
+          console.log('deleteMe x4 additionalProperties are: ');
+          console.log(additionalProperties);
+          // debugger; //deleteMe
           additionalProperties.validators = [
             {
               validate: 'required_without_all',
@@ -68,6 +78,17 @@ export default function useBulkImportFields() {
             },
           ];
         }
+        const returnObj = {
+          label: f.labelId
+            ? intl.formatMessage({
+                id: f.labelId,
+              })
+            : f.label,
+          key: f.name,
+          ...additionalProperties,
+        };
+        console.log('deleteMe returnObj is: ');
+        console.log(returnObj);
         return {
           label: f.labelId
             ? intl.formatMessage({
@@ -79,7 +100,7 @@ export default function useBulkImportFields() {
         };
       });
     },
-    [sightingFieldSchemas],
+    [sightingFieldSchemas, regionOptions],
   );
   console.log('deleteMe got here a2 flatfileSightingFields is: ');
   console.log(flatfileSightingFields);
@@ -99,6 +120,11 @@ export default function useBulkImportFields() {
         if (f.name === 'taxonomy') {
           additionalProperties.type = 'select';
           additionalProperties.options = speciesOptions;
+          console.log(
+            'deleteMe additionalProperties for species are: ',
+          );
+          console.log(additionalProperties);
+          // debugger; // deleteMe
         }
         // else if (f.name === 'locationId') {
         //   additionalProperties.type = 'select';
@@ -125,7 +151,7 @@ export default function useBulkImportFields() {
         };
       });
     },
-    [encounterFieldSchemas, regionOptions, speciesOptions],
+    [encounterFieldSchemas, speciesOptions],
   );
   console.log('deleteMe flatfileEncounterFields is: ');
   console.log(flatfileEncounterFields);
@@ -137,12 +163,12 @@ export default function useBulkImportFields() {
       }),
       key: 'sightingId',
     },
-    {
-      label: intl.formatMessage({
-        id: 'REGION',
-      }),
-      key: 'locationId',
-    },
+    // {
+    //   label: intl.formatMessage({
+    //     id: 'REGION',
+    //   }),
+    //   key: 'locationId',
+    // },
     {
       label: intl.formatMessage({
         id: 'INDIVIDUAL_NAME',

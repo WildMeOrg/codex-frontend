@@ -7,6 +7,7 @@ import Text from '../../Text';
 import useDescription from '../../../hooks/useDescription';
 import useLabel from '../../../hooks/useLabel';
 import FormCore from './FormCore';
+import { collapseChoices } from '../../../utils/formatters';
 
 export default function LocationIdEditor(props) {
   const {
@@ -19,55 +20,15 @@ export default function LocationIdEditor(props) {
     minimalLabels = false,
     ...rest
   } = props;
+  console.log('deleteMe region editor shcema are: ');
+  console.log(schema);
 
   const label = useLabel(schema);
   const description = useDescription(schema);
   const showDescription = !minimalLabels && description;
 
-  function getNumDescendents(targetChoice) {
-    let result = 0;
-    if (!targetChoice.locationID) return result;
-    const childCountsArr = targetChoice.locationID.map(child =>
-      getNumDescendents(child),
-    );
-    result =
-      targetChoice.locationID.length +
-      childCountsArr.reduce((a, b) => a + b, 0);
-    return result;
-  }
-
   const collapsedChoices = useMemo(
-    () => {
-      function collapseChoices(choices, depth) {
-        const result = choices.map(choice => {
-          const numDescendants = getNumDescendents(choice);
-          const numDescendantsAsString = numDescendants
-            ? ` (${numDescendants})`
-            : '';
-          if (!choice.locationID) {
-            return {
-              depth,
-              name: choice.name + numDescendantsAsString,
-              id: choice.id,
-            };
-          }
-          const subchoices = [
-            {
-              depth,
-              name: choice.name + numDescendantsAsString,
-              id: choice.id,
-            },
-          ];
-          subchoices.push(
-            collapseChoices(choice.locationID, depth + 1),
-          );
-          return subchoices;
-        });
-        return result.flat(100);
-      }
-
-      return collapseChoices(get(schema, 'choices', []), 0);
-    },
+    () => collapseChoices(get(schema, 'choices', []), 0),
     [get(schema, 'choices.length')],
   );
 

@@ -28,7 +28,7 @@ export const bulkImportCategories = {
 /* These fields are still used in bulk import but are ommitted from the sightings schema
    because the analogous encounter fields are used instead. */
 export const sightingOmitList = [
-  'locationId',
+  // 'locationId',
   'gps',
   'verbatimLocality',
   'time',
