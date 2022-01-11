@@ -147,3 +147,61 @@ export const formatHoustonTime = possibleTimeObject => {
     return possibleTimeObject;
   }
 };
+
+export const formatLocationFromSighting = (
+  sighting,
+  regionOpts,
+  intl,
+) => {
+  const currentSightingLocId = get(sighting, 'locationId', '');
+  const currentLabelArray = regionOpts
+    .filter(
+      region => get(region, 'value', '') === currentSightingLocId,
+    )
+    .map(regionObj =>
+      get(
+        regionObj,
+        'label',
+        intl.formatMessage({
+          id: 'REGION_NAME_REMOVED',
+        }),
+      ),
+    );
+  let currentLabel = null;
+  if (currentLabelArray.length > 0)
+    currentLabel = currentLabelArray[0];
+
+  const currentSightingVerbatimLoc = get(
+    sighting,
+    'verbatimLocality',
+    '',
+  );
+  const currentSightingLat = get(sighting, 'decimalLatitude', '');
+  const currentSightingLong = get(sighting, 'decimalLongitude', '');
+  if (currentSightingLocId && !currentSightingVerbatimLoc) {
+    return (
+      currentLabel ||
+      intl.formatMessage({
+        id: 'REGION_NAME_REMOVED',
+      })
+    );
+  }
+
+  if (!currentSightingLocId && currentSightingVerbatimLoc) {
+    return currentSightingVerbatimLoc;
+  }
+  if (
+    !currentSightingLocId &&
+    !currentSightingVerbatimLoc &&
+    currentSightingLat &&
+    currentSightingLong
+  )
+    return intl.formatMessage({ id: 'VIEW_ON_MAP' });
+
+  if (currentSightingLocId && currentSightingVerbatimLoc) {
+    return currentLabel
+      ? currentLabel + ' (' + currentSightingVerbatimLoc + ')'
+      : intl.formatMessage({ id: 'REGION_NAME_REMOVED' });
+  }
+  return '';
+};

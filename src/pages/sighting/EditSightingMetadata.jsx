@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { get } from 'lodash-es';
+import { useQueryClient } from 'react-query';
 
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 
+import queryKeys from '../../constants/queryKeys';
 import CustomAlert from '../../components/Alert';
 import usePatchSighting from '../../models/sighting/usePatchSighting';
 import usePatchAssetGroupSighting from '../../models/assetGroupSighting/usePatchAssetGroupSighting';
@@ -31,6 +33,7 @@ export default function EditSightingMetadata({
   refreshSightingData,
   pending,
 }) {
+  const queryClient = useQueryClient();
   const {
     updateProperties: updateSightingProperties,
     loading: sightingLoading,
@@ -144,6 +147,9 @@ export default function EditSightingMetadata({
             );
             if (successfulUpdate) {
               refreshSightingData();
+              queryClient.invalidateQueries(
+                queryKeys.assetGroupSightings,
+              );
               onClose();
             }
           }}
