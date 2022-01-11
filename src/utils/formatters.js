@@ -141,7 +141,7 @@ export const formatHoustonTime = possibleTimeObject => {
     return houstonTime;
   } catch (error) {
     console.log(
-      'formatHoustonTime: possibleTimeObject not parseable, passing through',
+      'formatHoustonTime: possibleTimeObject not formatable, passing through',
       possibleTimeObject,
     );
     return possibleTimeObject;

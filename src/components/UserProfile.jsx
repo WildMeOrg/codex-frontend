@@ -133,35 +133,21 @@ export default function UserProfile({
         </CardContainer>
         <CardContainer>
           <SightingsCard
-            title={
-              someoneElse ? (
-                <FormattedMessage
-                  id="USERS_UNPROCESSED_AGS"
-                  values={{ name }}
-                />
-              ) : (
-                <FormattedMessage id="PENDING_SIGHTINGS" />
-              )
+            titleId={
+              someoneElse
+                ? 'USERS_UNPROCESSED_AGS'
+                : 'PENDING_SIGHTINGS'
             }
             columns={['individual', 'date', 'location', 'actions']}
-            sightings={agsData ? agsData : []}
+            sightings={agsData || []}
             linkPath="pending-sightings"
             noSightingsMsg="NO_PENDING_SIGHTINGS"
           />
           <SightingsCard
-            title={
-              someoneElse ? (
-                <FormattedMessage
-                  id="USERS_SIGHTINGS"
-                  values={{ name }}
-                />
-              ) : (
-                <FormattedMessage id="SIGHTINGS" />
-              )
-            }
+            titleId={someoneElse ? 'USERS_SIGHTINGS' : 'SIGHTINGS'}
             columns={['individual', 'date', 'location', 'actions']}
             hideSubmitted
-            sightings={sightingsData ? sightingsData : []}
+            sightings={sightingsData || []}
           />
 
           {!someoneElse && <CollaborationsCard userId={userId} />}
