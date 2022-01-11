@@ -72,6 +72,18 @@ export const formatDate = (input, fancy) => {
   }
 };
 
+export const formatDateCustom = (input, formatSpecification) => {
+  try {
+    const jsDate =
+      typeof input === 'string' ? new Date(input) : input;
+    const formattedDate = format(jsDate, formatSpecification);
+    return formattedDate;
+  } catch (error) {
+    console.error(error);
+    return '';
+  }
+};
+
 const elapsedTimeCache = {};
 export const getElapsedTimeInWords = (
   durationInSeconds,

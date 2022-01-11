@@ -80,6 +80,14 @@ export default function useSightingFieldSchemas() {
           name: 'specifiedTime',
           labelId: 'SIGHTING_TIME',
           descriptionId: 'SIGHTING_TIME_DESCRIPTION',
+          getValue: (_, encounterData) => {
+            const timeSpecificity = get(
+              encounterData,
+              'timeSpecificity',
+            );
+            const time = get(encounterData, 'time');
+            return { time, timeSpecificity };
+          },
           category: defaultEncounterCategories.animal.name,
           hideOnBasicReport: true,
         }),

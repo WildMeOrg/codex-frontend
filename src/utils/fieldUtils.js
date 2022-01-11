@@ -9,6 +9,7 @@ import DateViewer from '../components/fields/view/DateViewer';
 import DateRangeViewer from '../components/fields/view/DateRangeViewer';
 import FloatViewer from '../components/fields/view/FloatViewer';
 import LocationIdViewer from '../components/fields/view/LocationIdViewer';
+import SpecifiedTimeViewer from '../components/fields/view/SpecifiedTimeViewer';
 
 import TextEditor from '../components/fields/edit/TextEditor';
 import SelectionEditor from '../components/fields/edit/SelectionEditor';
@@ -95,7 +96,7 @@ const componentMap = {
   [fieldTypes.specifiedTime]: {
     defaultValue: { time: null, timeSpecificity: '' },
     fieldType: fieldTypes.specifiedTime,
-    viewComponent: null,
+    viewComponent: SpecifiedTimeViewer,
     editComponent: SpecifiedTimeEditor,
     filterComponent: null,
   },

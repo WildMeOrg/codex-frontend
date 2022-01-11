@@ -114,9 +114,18 @@ export default function useSightingFieldSchemas() {
           labelId: 'SIGHTING_TIME',
           descriptionId: 'SIGHTING_TIME_DESCRIPTION',
           category: defaultSightingCategories.general.name,
+          getValue: (_, sightingData) => {
+            const timeSpecificity = get(
+              sightingData,
+              'timeSpecificity',
+            );
+            const time = get(sightingData, 'time');
+            return { time, timeSpecificity };
+          },
           required: true,
-        }), // }), //   category: defaultSightingCategories.general.name, //   descriptionId: 'SIGHTING_VERBATIM_TIME_DESCRIPTION', //   labelId: 'SIGHTING_VERBATIM_TIME', //   name: 'verbatimEventDate', // createFieldSchema(fieldTypes.string, {
+        }),
         createFieldSchema(fieldTypes.select, {
+          // }), //   category: defaultSightingCategories.general.name, //   descriptionId: 'SIGHTING_VERBATIM_TIME_DESCRIPTION', //   labelId: 'SIGHTING_VERBATIM_TIME', //   name: 'verbatimEventDate', // createFieldSchema(fieldTypes.string, {
           name: 'speciesDetectionModel',
           labelId: 'SPECIES_DETECTION_MODEL',
           descriptionId: 'SPECIES_DETECTION_MODEL_DESCRIPTION',
