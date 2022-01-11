@@ -93,7 +93,7 @@ const componentMap = {
     filterComponent: null,
   },
   [fieldTypes.specifiedTime]: {
-    defaultValue: { time: null, timePrecision: '' },
+    defaultValue: { time: null, timeSpecificity: '' },
     fieldType: fieldTypes.specifiedTime,
     viewComponent: null,
     editComponent: SpecifiedTimeEditor,

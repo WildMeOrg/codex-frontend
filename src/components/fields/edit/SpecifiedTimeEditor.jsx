@@ -40,7 +40,14 @@ const precisionMap = {
 };
 
 export default function SpecifiedTimeEditor(props) {
-  const { schema, value, onChange, width = 280, ...rest } = props;
+  const {
+    schema,
+    value,
+    onChange,
+    width = 280,
+    minimalLabels = false,
+    ...rest
+  } = props;
   const intl = useIntl();
 
   function getLabel(object) {

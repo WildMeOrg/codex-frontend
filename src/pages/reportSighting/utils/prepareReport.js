@@ -28,7 +28,13 @@ export function prepareBasicReport(
       : assetReferences,
     decimalLatitude: sightingData.gps[0],
     decimalLongitude: sightingData.gps[1],
-    time: formatHoustonTime(get(sightingData, 'time')),
+    time: formatHoustonTime(
+      get(sightingData, ['specifiedTime', 'time']),
+    ),
+    timeSpecificity: get(sightingData, [
+      'specifiedTime',
+      'timeSpecificity',
+    ]),
     encounters: [
       {
         decimalLatitude: sightingData.gps[0],
@@ -41,6 +47,7 @@ export function prepareBasicReport(
   };
 
   delete report.gps;
+  delete report.specifiedTime;
 
   return report;
 }
@@ -63,8 +70,13 @@ export function prepareReportWithEncounter(
     decimalLongitude: sightingData.gps[1],
     locationId: sightingData.locationId,
     verbatimLocality: sightingData.verbatimLocality,
-    time: formatHoustonTime(get(sightingData, 'time')),
-    timeSpecificity: get(sightingData, 'timeSpecificity'),
+    time: formatHoustonTime(
+      get(sightingData, ['specifiedTime', 'time']),
+    ),
+    timeSpecificity: get(sightingData, [
+      'specifiedTime',
+      'timeSpecificity',
+    ]),
   };
 
   if (encounter.taxonomy === '') encounter.taxonomy = null;
