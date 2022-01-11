@@ -13,31 +13,9 @@ import {
 } from '@material-ui/pickers';
 
 import timeSpecificityChoices from '../../../constants/timeSpecificityChoices';
+import timePrecisionMap from '../../../constants/timePrecisionMap';
 import Text from '../../Text';
 import FormCore from './FormCore';
-
-const precisionMap = {
-  year: {
-    views: ['year'],
-    intlFormat: 'yyyy',
-    usFormat: 'yyyy',
-  },
-  month: {
-    views: ['year', 'month'],
-    intlFormat: 'yyyy-MM',
-    usFormat: 'MM/yyyy',
-  },
-  day: {
-    views: ['year', 'month', 'date'],
-    intlFormat: 'yyyy-MM-dd',
-    usFormat: 'MM/dd/yyyy',
-  },
-  time: {
-    views: undefined,
-    intlFormat: 'yyyy-MM-dd HH:mm',
-    usFormat: 'MM/dd/yyyy hh:mm',
-  },
-};
 
 export default function SpecifiedTimeEditor(props) {
   const {
@@ -59,12 +37,12 @@ export default function SpecifiedTimeEditor(props) {
   const timeSpecificity = get(value, 'timeSpecificity', '');
   const time = get(value, 'time', null);
   const dateInputViews = get(
-    precisionMap,
+    timePrecisionMap,
     [timeSpecificity, 'views'],
     undefined,
   );
   const dateInputFormat = get(
-    precisionMap,
+    timePrecisionMap,
     [timeSpecificity, 'intlFormat'],
     undefined,
   );
