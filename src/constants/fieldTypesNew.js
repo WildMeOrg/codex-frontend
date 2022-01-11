@@ -9,6 +9,7 @@ const fieldTypes = {
   latlong: 'latlong', // [float, float] defines [lat, lng]
   date: 'date',
   daterange: 'daterange', // [date, date]
+  specifiedTime: 'specifiedTime', // { time: string, timePrecision: string }
   select: 'select', // string
   multiselect: 'multiselect', // array of strings
   boolean: 'boolean',

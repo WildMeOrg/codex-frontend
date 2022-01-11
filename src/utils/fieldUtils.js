@@ -20,6 +20,7 @@ import LocationIdEditor from '../components/fields/edit/LocationIdEditor';
 import IndividualEditor from '../components/fields/edit/IndividualEditor';
 import RelationshipsEditor from '../components/fields/edit/RelationshipsEditor';
 import FeetMetersEditor from '../components/fields/edit/FeetMetersEditor';
+import SpecifiedTimeEditor from '../components/fields/edit/SpecifiedTimeEditor';
 
 export const prototypeFieldSchema = {
   getValue: (schema, backendObject) =>
@@ -89,6 +90,13 @@ const componentMap = {
     fieldType: fieldTypes.latlong,
     viewComponent: LatLongViewer,
     editComponent: LatLongEditor,
+    filterComponent: null,
+  },
+  [fieldTypes.specifiedTime]: {
+    defaultValue: { time: null, timePrecision: '' },
+    fieldType: fieldTypes.specifiedTime,
+    viewComponent: null,
+    editComponent: SpecifiedTimeEditor,
     filterComponent: null,
   },
   [fieldTypes.date]: {

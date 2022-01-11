@@ -5,7 +5,6 @@ import { get, map, omitBy } from 'lodash-es';
 import useDetectionConfig from '../site/useDetectionConfig';
 import useSiteSettings from '../site/useSiteSettings';
 import fieldTypes from '../../constants/fieldTypesNew';
-import timeSpecificityChoices from '../../constants/timeSpecificityChoices';
 import {
   createFieldSchema,
   createCustomFieldSchema,
@@ -110,22 +109,13 @@ export default function useSightingFieldSchemas() {
       );
 
       return [
-        createFieldSchema(fieldTypes.select, {
-          name: 'timeSpecificity',
-          labelId: 'SIGHTING_TIME_SPECIFICITY',
-          descriptionId: 'SIGHTING_TIME_SPECIFICITY_DESCRIPTION',
-          category: defaultSightingCategories.general.name,
-          required: true,
-          choices: timeSpecificityChoices,
-        }),
-        createFieldSchema(fieldTypes.date, {
-          name: 'time',
+        createFieldSchema(fieldTypes.specifiedTime, {
+          name: 'specifiedTime',
           labelId: 'SIGHTING_TIME',
           descriptionId: 'SIGHTING_TIME_DESCRIPTION',
           category: defaultSightingCategories.general.name,
           required: true,
-        }), //   category: defaultSightingCategories.general.name, //   descriptionId: 'SIGHTING_VERBATIM_TIME_DESCRIPTION', //   labelId: 'SIGHTING_VERBATIM_TIME', //   name: 'verbatimEventDate', // createFieldSchema(fieldTypes.string, {
-        // }),
+        }), // }), //   category: defaultSightingCategories.general.name, //   descriptionId: 'SIGHTING_VERBATIM_TIME_DESCRIPTION', //   labelId: 'SIGHTING_VERBATIM_TIME', //   name: 'verbatimEventDate', // createFieldSchema(fieldTypes.string, {
         createFieldSchema(fieldTypes.select, {
           name: 'speciesDetectionModel',
           labelId: 'SPECIES_DETECTION_MODEL',
