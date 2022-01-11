@@ -5,6 +5,7 @@ import { get } from 'lodash-es';
 import { getHighestRoleLabelId } from '../utils/roleUtils';
 import useUserMetadataSchemas from '../models/users/useUserMetadataSchemas';
 import useGetUserSightings from '../models/users/useGetUserSightings';
+import useGetUserUnprocessedAssetGroupSightings from '../models/users/useGetUserUnproccessedAssetGroupSightings';
 import { formatDate } from '../utils/formatters';
 import EntityHeaderNew from './EntityHeaderNew';
 import BigAvatar from './profilePhotos/BigAvatar';
@@ -31,6 +32,9 @@ export default function UserProfile({
   const intl = useIntl();
   const [editingProfile, setEditingProfile] = useState(false);
   const metadataSchemas = useUserMetadataSchemas(userId);
+  const { data: agsData } = useGetUserUnprocessedAssetGroupSightings(
+    userId,
+  );
 
   const metadata = useMemo(
     () => {
@@ -129,19 +133,21 @@ export default function UserProfile({
         </CardContainer>
         <CardContainer>
           <SightingsCard
-            title={
-              someoneElse ? (
-                <FormattedMessage
-                  id="USERS_SIGHTINGS"
-                  values={{ name }}
-                />
-              ) : (
-                <FormattedMessage id="SIGHTINGS" />
-              )
+            titleId={
+              someoneElse
+                ? 'USERS_UNPROCESSED_AGS'
+                : 'PENDING_SIGHTINGS'
             }
             columns={['individual', 'date', 'location', 'actions']}
+            sightings={agsData || []}
+            linkPath="pending-sightings"
+            noSightingsMsg="NO_PENDING_SIGHTINGS"
+          />
+          <SightingsCard
+            titleId={someoneElse ? 'USERS_SIGHTINGS' : 'SIGHTINGS'}
+            columns={['individual', 'date', 'location', 'actions']}
             hideSubmitted
-            sightings={get(sightingsData, 'sightings', [])}
+            sightings={sightingsData || []}
           />
 
           {!someoneElse && <CollaborationsCard userId={userId} />}

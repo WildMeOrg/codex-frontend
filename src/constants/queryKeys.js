@@ -4,6 +4,7 @@ export default {
   settingsSchema: 'settingsSchema',
   users: 'users',
   collaborations: 'collaborations',
+  assetGroupSightings: 'assetGroupSightings',
 };
 
 export function getAuditLogQueryKey(id) {
