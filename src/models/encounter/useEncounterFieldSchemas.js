@@ -123,9 +123,5 @@ export default function useSightingFieldSchemas() {
     },
     [siteSettingsVersion],
   );
-
-  // console.log('deleteMe got here a1 encounterFieldSchemas is: ');
-  // console.log(encounterFieldSchemas);
-
   return encounterFieldSchemas;
 }

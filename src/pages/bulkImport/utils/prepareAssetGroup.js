@@ -54,8 +54,6 @@ export default function prepareAssetGroup(
 
     if (!sightings[sightingId]) sightings[sightingId] = {};
     sightings[sightingId].assetReferences = matchingAssets;
-    // console.log('deleteMe sightings are: ');
-    // console.log();
     assignIfPresent(
       newEncounter,
       sightings[sightingId],
@@ -82,7 +80,7 @@ export default function prepareAssetGroup(
       'timeSpecificity',
     );
 
-    const time = get(sightings, [sightingId, 'time']); // TODO formatHoustonTime did not work here
+    const time = get(sightings, [sightingId, 'time']);
     const timeAfter = newEncounter.time < time;
     if (!time || timeAfter) {
       assignIfPresent(
@@ -92,28 +90,6 @@ export default function prepareAssetGroup(
         'time',
       );
     }
-
-    // const startTime = get(sightings, [sightingId, 'startTime']);
-    // const startTimeAfter = newEncounter.time < startTime;
-    // if (!startTime || startTimeAfter) {
-    //   assignIfPresent(
-    //     newEncounter,
-    //     sightings[sightingId],
-    //     'time',
-    //     'startTime',
-    //   );
-    // }
-
-    // const endTime = get(sightings, [sightingId, 'startTime']);
-    // const endTimeBefore = newEncounter.time > startTime;
-    // if (!endTime || endTimeBefore) {
-    //   assignIfPresent(
-    //     newEncounter,
-    //     sightings[sightingId],
-    //     'time',
-    //     'endTime',
-    //   );
-    // }
 
     if (!get(sightings, [sightingId, 'encounters']))
       sightings[sightingId].encounters = [];

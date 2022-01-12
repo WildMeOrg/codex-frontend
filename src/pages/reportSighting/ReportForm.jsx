@@ -338,11 +338,6 @@ export default function ReportForm({
                   ]),
                   sightings: [report],
                 };
-                // console.log(
-                //   'deleteMe assetGroup going to the post is: ',
-                // );
-                // console.log(assetGroup);
-                // debugger; deleteMe
 
                 const assetGroupData = await postAssetGroup(
                   assetGroup,
