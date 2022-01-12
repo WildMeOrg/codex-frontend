@@ -27,8 +27,13 @@ export default function usePatchAssetGroupSighting() {
       delete dictionaryCopy.gps;
     }
 
-    if ('time' in dictionaryCopy) {
-      dictionaryCopy.time = formatHoustonTime(dictionaryCopy.time);
+    if ('specifiedTime' in dictionaryCopy) {
+      dictionaryCopy.time = formatHoustonTime(
+        dictionaryCopy.specifiedTime?.time,
+      );
+      dictionaryCopy.timeSpecificity =
+        dictionaryCopy.specifiedTime?.timeSpecificity;
+      delete dictionaryCopy.specifiedTime;
     }
 
     const operations = Object.keys(dictionaryCopy).map(
