@@ -46,7 +46,7 @@ export default function Encounters({
   const [editEncounterInfo, setEditEncounterInfo] = useState(null);
   const [encounterToAssign, setEncounterToAssign] = useState(null);
 
-  const sightingId = get(sightingData, 'id');
+  const sightingId = get(sightingData, 'guid');
 
   const encounterFieldSchemas = useEncounterFieldSchemas();
   const encounters = get(sightingData, 'encounters', []);
@@ -97,7 +97,7 @@ export default function Encounters({
       />
 
       {encounters.map((encounter, i) => {
-        const encounterId = get(encounter, 'id');
+        const encounterId = get(encounter, 'guid');
         const encounterMetadata = encounterFieldSchemas.map(
           schema => ({
             ...schema,

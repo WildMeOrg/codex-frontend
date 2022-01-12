@@ -72,6 +72,18 @@ export const formatDate = (input, fancy) => {
   }
 };
 
+export const formatDateCustom = (input, formatSpecification) => {
+  try {
+    const jsDate =
+      typeof input === 'string' ? new Date(input) : input;
+    const formattedDate = format(jsDate, formatSpecification);
+    return formattedDate;
+  } catch (error) {
+    console.error(error);
+    return '';
+  }
+};
+
 const elapsedTimeCache = {};
 export const getElapsedTimeInWords = (
   durationInSeconds,
@@ -141,7 +153,7 @@ export const formatHoustonTime = possibleTimeObject => {
     return houstonTime;
   } catch (error) {
     console.log(
-      'formatHoustonTime: possibleTimeObject not parseable, passing through',
+      'formatHoustonTime: possibleTimeObject not formatable, passing through',
       possibleTimeObject,
     );
     return possibleTimeObject;
@@ -184,4 +196,62 @@ export const collapseChoices = (choices, depth) => {
     return subchoices;
   });
   return result.flat(100);
+};
+
+export const formatLocationFromSighting = (
+  sighting,
+  regionOpts,
+  intl,
+) => {
+  const currentSightingLocId = get(sighting, 'locationId', '');
+  const currentLabelArray = regionOpts
+    .filter(
+      region => get(region, 'value', '') === currentSightingLocId,
+    )
+    .map(regionObj =>
+      get(
+        regionObj,
+        'label',
+        intl.formatMessage({
+          id: 'REGION_NAME_REMOVED',
+        }),
+      ),
+    );
+  let currentLabel = null;
+  if (currentLabelArray.length > 0)
+    currentLabel = currentLabelArray[0];
+
+  const currentSightingVerbatimLoc = get(
+    sighting,
+    'verbatimLocality',
+    '',
+  );
+  const currentSightingLat = get(sighting, 'decimalLatitude', '');
+  const currentSightingLong = get(sighting, 'decimalLongitude', '');
+  if (currentSightingLocId && !currentSightingVerbatimLoc) {
+    return (
+      currentLabel ||
+      intl.formatMessage({
+        id: 'REGION_NAME_REMOVED',
+      })
+    );
+  }
+
+  if (!currentSightingLocId && currentSightingVerbatimLoc) {
+    return currentSightingVerbatimLoc;
+  }
+  if (
+    !currentSightingLocId &&
+    !currentSightingVerbatimLoc &&
+    currentSightingLat &&
+    currentSightingLong
+  )
+    return intl.formatMessage({ id: 'VIEW_ON_MAP' });
+
+  if (currentSightingLocId && currentSightingVerbatimLoc) {
+    return currentLabel
+      ? currentLabel + ' (' + currentSightingVerbatimLoc + ')'
+      : intl.formatMessage({ id: 'REGION_NAME_REMOVED' });
+  }
+  return '';
 };

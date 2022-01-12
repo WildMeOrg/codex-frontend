@@ -28,15 +28,13 @@ export const bulkImportCategories = {
 /* These fields are still used in bulk import but are ommitted from the sightings schema
    because the analogous encounter fields are used instead. */
 export const sightingOmitList = [
-  // 'locationId',
   'gps',
   'verbatimLocality',
-  'time',
-  'timeSpecificity',
+  'specifiedTime',
 ];
 
 /* Lat and lng are treated as two separate columns here */
-export const encounterOmitList = ['gps', 'time', 'timeSpecificity'];
+export const encounterOmitList = ['gps', 'specifiedTime'];
 
 export const bulkFieldSchemas = [
   { name: 'decimalLatitude', labelId: 'DECIMAL_LATITUDE' },

@@ -9,6 +9,7 @@ import DateViewer from '../components/fields/view/DateViewer';
 import DateRangeViewer from '../components/fields/view/DateRangeViewer';
 import FloatViewer from '../components/fields/view/FloatViewer';
 import LocationIdViewer from '../components/fields/view/LocationIdViewer';
+import SpecifiedTimeViewer from '../components/fields/view/SpecifiedTimeViewer';
 
 import TextEditor from '../components/fields/edit/TextEditor';
 import SelectionEditor from '../components/fields/edit/SelectionEditor';
@@ -20,6 +21,7 @@ import LocationIdEditor from '../components/fields/edit/LocationIdEditor';
 import IndividualEditor from '../components/fields/edit/IndividualEditor';
 import RelationshipsEditor from '../components/fields/edit/RelationshipsEditor';
 import FeetMetersEditor from '../components/fields/edit/FeetMetersEditor';
+import SpecifiedTimeEditor from '../components/fields/edit/SpecifiedTimeEditor';
 
 export const prototypeFieldSchema = {
   getValue: (schema, backendObject) =>
@@ -89,6 +91,13 @@ const componentMap = {
     fieldType: fieldTypes.latlong,
     viewComponent: LatLongViewer,
     editComponent: LatLongEditor,
+    filterComponent: null,
+  },
+  [fieldTypes.specifiedTime]: {
+    defaultValue: { time: null, timeSpecificity: '' },
+    fieldType: fieldTypes.specifiedTime,
+    viewComponent: SpecifiedTimeViewer,
+    editComponent: SpecifiedTimeEditor,
     filterComponent: null,
   },
   [fieldTypes.date]: {

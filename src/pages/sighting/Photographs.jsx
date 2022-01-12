@@ -30,6 +30,8 @@ export default function Photographs({ assets, refreshSightingData }) {
   const isSm = useMediaQuery(theme.breakpoints.down('xs'));
   const classes = useStyles();
 
+  // derive possible IA classes from sightingData and detectionConfig here...
+
   const [anchorInfo, setAnchorInfo] = useState(null);
   const [showAnnotations, setShowAnnotations] = useState(true);
   const [detailAssetIndex, setDetailAssetIndex] = useState(null);

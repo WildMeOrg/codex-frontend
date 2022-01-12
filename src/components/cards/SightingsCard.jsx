@@ -9,7 +9,10 @@ import DialogActions from '@material-ui/core/DialogActions';
 
 import { get } from 'lodash-es';
 
-import { formatDate } from '../../utils/formatters';
+import {
+  formatDate,
+  formatLocationFromSighting,
+} from '../../utils/formatters';
 import useOptions from '../../hooks/useOptions';
 import StandardDialog from '../StandardDialog';
 import Text from '../Text';
@@ -26,6 +29,8 @@ export default function SightingsCard({
   sightings,
   columns = ['date', 'location', 'actions'],
   onDelete,
+  linkPath = 'sightings',
+  noSightingsMsg = 'NO_SIGHTINGS',
 }) {
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -44,56 +49,6 @@ export default function SightingsCard({
     setShowMapView(false);
   };
 
-  const formatLocationFromSighting = (sighting, regionOpts) => {
-    const currentSightingLocId = get(sighting, 'locationId', '');
-    const currentLabelArray = regionOpts
-      .filter(
-        region => get(region, 'value', '') === currentSightingLocId,
-      )
-      .map(regionObj =>
-        get(
-          regionObj,
-          'label',
-          intl.formatMessage({ id: 'REGION_NAME_REMOVED' }),
-        ),
-      );
-    let currentLabel = null;
-    if (currentLabelArray.length > 0)
-      currentLabel = currentLabelArray[0];
-
-    const currentSightingVerbatimLoc = get(
-      sighting,
-      'verbatimLocality',
-      '',
-    );
-    const currentSightingLat = get(sighting, 'decimalLatitude', '');
-    const currentSightingLong = get(sighting, 'decimalLongitude', '');
-    if (currentSightingLocId && !currentSightingVerbatimLoc) {
-      return (
-        currentLabel ||
-        intl.formatMessage({ id: 'REGION_NAME_REMOVED' })
-      );
-    }
-
-    if (!currentSightingLocId && currentSightingVerbatimLoc) {
-      return currentSightingVerbatimLoc;
-    }
-    if (
-      !currentSightingLocId &&
-      !currentSightingVerbatimLoc &&
-      currentSightingLat &&
-      currentSightingLong
-    )
-      return intl.formatMessage({ id: 'VIEW_ON_MAP' });
-
-    if (currentSightingLocId && currentSightingVerbatimLoc) {
-      return currentLabel
-        ? currentLabel + ' (' + currentSightingVerbatimLoc + ')'
-        : intl.formatMessage({ id: 'REGION_NAME_REMOVED' });
-    }
-    return '';
-  };
-
   const sightingsWithLocationData = useMemo(
     () => {
       // hotfix //
@@ -105,6 +60,7 @@ export default function SightingsCard({
         formattedLocation: formatLocationFromSighting(
           sighting,
           regionOptions,
+          intl,
         ),
       }));
     },
@@ -114,7 +70,7 @@ export default function SightingsCard({
   const allColumns = [
     {
       reference: 'date',
-      name: 'startTime',
+      name: 'time',
       label: 'Date',
       options: {
         customBodyRender: value => formatDate(value, true),
@@ -166,12 +122,15 @@ export default function SightingsCard({
     },
     {
       reference: 'actions',
-      name: 'id',
+      name: 'guid',
       label: 'Actions',
       options: {
         customBodyRender: value => (
           <div>
-            <ActionIcon variant="view" href={`/sightings/${value}`} />
+            <ActionIcon
+              variant="view"
+              href={`/${linkPath}/${value}`}
+            />
             {onDelete && (
               <ActionIcon
                 labelId="REMOVE"
@@ -241,7 +200,7 @@ export default function SightingsCard({
       {noSightings && (
         <Text
           variant="body2"
-          id="NO_SIGHTINGS"
+          id={noSightingsMsg}
           style={{ marginTop: 12 }}
         />
       )}

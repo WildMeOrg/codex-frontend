@@ -168,6 +168,8 @@
   "SIGHTING_TIME_SPECIFICITY": "Time precision",
   "SIGHTING_TIME_SPECIFICITY_DESCRIPTION": "How much do you know about when the sighting took place?",
   "TAXONOMIES": "Taxonomies",
+  "VIEWPOINT": "Viewpoint",
+  "VIEWPOINT_INFO": "Select the side of the animal that is shown.",
   "VIEWPOINT_UP": "Up",
   "VIEWPOINT_DOWN": "Down",
   "VIEWPOINT_FRONT": "Front",
@@ -377,6 +379,7 @@
   "SAVE_CHANGES": "Save changes",
   "NO_COLLABORATIONS": "You have no collaborations.",
   "NO_SIGHTINGS": "You have no sightings.",
+  "NO_PENDING_SIGHTINGS": "You have no pending sightings.",
   "PREVIEW_CHANGES": "Preview changes",
   "CUSTOM_FIELD": "Custom field",
   "FIELD_TYPE": "Field type",
@@ -693,6 +696,7 @@
   "HOW_CAN_HELP": "How can I help?",
   "HOW_CAN_HELP_DESCRIPTIONS": "Aside from submitting images, you can adopt your own whale shark or make a donation to this work. Your help support the continued development of this project, which allows for new research and conservation initiatives to help protect these endangered sharks.",
   "USERS_SIGHTINGS": "{name}'s sightings",
+  "USERS_UNPROCESSED_AGS": "{name}'s pending sightings",
   "YOUR_SIGHTINGS": "Your sightings",
   "IDENTIFYING_INDIVIDUALS": "Identifying Individuals",
   "IDENTIFYING_INDIVIDUALS_DESCRIPTION": "Our servers are hard at work identifying the individuals in your photographs. You can monitor their progress here.",
@@ -928,5 +932,6 @@
   "COLLABORATION_REVOKE_SUCCESS": "Successfully revoked the collaboration",
   "UNKNOWN_ERROR": "Unknown error",
   "REVOKED_COLLAB_EXISTS": "Could not create collaboration - a revoked collaboration between those users already exists",
-  "COLLAB_REVOKE_ERROR_SUPPLEMENTAL": "Note that collaborations cannot be revoked unless they are mutually approved."
+  "COLLAB_REVOKE_ERROR_SUPPLEMENTAL": "Note that collaborations cannot be revoked unless they are mutually approved.",
+  "PENDING_SIGHTINGS": "Pending Sightings"
 }
