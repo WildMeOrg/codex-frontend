@@ -47,12 +47,12 @@ export default function StatusCard({ sightingData }) {
   const detectionStartTime = sightingData?.detection_start_time;
   const curationStartTime = sightingData?.curation_start_time;
   const matchingStartTime = sightingData?.identification_start_time;
-  const sightingStage = sightingData?.stage;
+  const sightingStatus = sightingData?.stage;
 
   const detectionComplete = detectionStartTime && curationStartTime;
   const curationComplete = detectionComplete && matchingStartTime;
   const matchingComplete =
-    curationComplete && sightingStage !== 'reviewed';
+    curationComplete && sightingStatus !== 'reviewed';
 
   let detectionStage = stages.waiting;
   let curationStage = stages.waiting;
@@ -60,17 +60,17 @@ export default function StatusCard({ sightingData }) {
 
   if (detectionStartTime) {
     detectionStage =
-      sightingStage === 'failed' ? stages.failed : stages.current;
+      sightingStatus === 'failed' ? stages.failed : stages.current;
   }
   if (curationStartTime) {
     detectionStage = stages.finished;
     curationStage =
-      sightingStage === 'failed' ? stages.failed : stages.current;
+      sightingStatus === 'failed' ? stages.failed : stages.current;
   }
   if (matchingStartTime) {
     curationStage = stages.finished;
     matchingStage =
-      sightingStage === 'failed' ? stages.failed : stages.current;
+      sightingStatus === 'failed' ? stages.failed : stages.current;
   }
   if (matchingComplete) matchingStage = stages.finished;
 
