@@ -3,4 +3,5 @@ export default {
   finished: 'finished',
   current: 'current',
   waiting: 'waiting',
+  failed: 'failed',
 };
