@@ -41,30 +41,31 @@ const utcOffsetValidator = {
 export default function useBulkImportFields() {
   const intl = useIntl();
   const { regionOptions, speciesOptions } = useOptions();
-  console.log('deleteMe regionOptions is: ');
-  console.log(regionOptions);
+  // console.log('deleteMe regionOptions is: ');
+  // console.log(regionOptions);
 
   const sightingFieldSchemas = useSightingFieldSchemas();
+
   const flatfileSightingFields = useMemo(
     () => {
-      console.log('deleteMe got here x0');
+      // console.log('deleteMe got here x0');
       if (!sightingFieldSchemas) return {};
-      console.log('deleteMe got here x1');
+      // console.log('deleteMe got here x1');
       const bulkSightingFields = sightingFieldSchemas.filter(
         f => !sightingOmitList.includes(f.name),
       );
-      console.log('deleteMe got here x2');
-      console.log('deleteMe bulkSightingFields is: ');
-      console.log(bulkSightingFields);
+      // console.log('deleteMe got here x2');
+      // console.log('deleteMe bulkSightingFields is: ');
+      // console.log(bulkSightingFields);
       return bulkSightingFields.map(f => {
-        console.log('deleteMe got here x3 and f is: ');
-        console.log(f);
+        // console.log('deleteMe got here x3 and f is: ');
+        // console.log(f);
         const additionalProperties = {};
         if (f.name === 'locationId') {
           additionalProperties.type = 'select';
           additionalProperties.options = regionOptions;
-          console.log('deleteMe x4 additionalProperties are: ');
-          console.log(additionalProperties);
+          // console.log('deleteMe x4 additionalProperties are: ');
+          // console.log(additionalProperties);
           // debugger; //deleteMe
           additionalProperties.validators = [
             {
@@ -78,17 +79,17 @@ export default function useBulkImportFields() {
             },
           ];
         }
-        const returnObj = {
-          label: f.labelId
-            ? intl.formatMessage({
-                id: f.labelId,
-              })
-            : f.label,
-          key: f.name,
-          ...additionalProperties,
-        };
-        console.log('deleteMe returnObj is: ');
-        console.log(returnObj);
+        // const returnObj = {
+        //   label: f.labelId
+        //     ? intl.formatMessage({
+        //         id: f.labelId,
+        //       })
+        //     : f.label,
+        //   key: f.name,
+        //   ...additionalProperties,
+        // };
+        // console.log('deleteMe returnObj is: ');
+        // console.log(returnObj);
         return {
           label: f.labelId
             ? intl.formatMessage({
@@ -102,12 +103,12 @@ export default function useBulkImportFields() {
     },
     [sightingFieldSchemas, regionOptions],
   );
-  console.log('deleteMe got here a2 flatfileSightingFields is: ');
-  console.log(flatfileSightingFields);
+  // console.log('deleteMe got here a2 flatfileSightingFields is: ');
+  // console.log(flatfileSightingFields);
 
   const encounterFieldSchemas = useEncounterFieldSchemas();
-  console.log('deleteMe encounterFieldSchemas are: ');
-  console.log(encounterFieldSchemas);
+  // console.log('deleteMe encounterFieldSchemas are: ');
+  // console.log(encounterFieldSchemas);
   const flatfileEncounterFields = useMemo(
     () => {
       if (!encounterFieldSchemas || !regionOptions || !speciesOptions)
@@ -120,10 +121,10 @@ export default function useBulkImportFields() {
         if (f.name === 'taxonomy') {
           additionalProperties.type = 'select';
           additionalProperties.options = speciesOptions;
-          console.log(
-            'deleteMe additionalProperties for species are: ',
-          );
-          console.log(additionalProperties);
+          // console.log(
+          //   'deleteMe additionalProperties for species are: ',
+          // );
+          // console.log(additionalProperties);
           // debugger; // deleteMe
         }
         // else if (f.name === 'locationId') {
@@ -153,22 +154,14 @@ export default function useBulkImportFields() {
     },
     [encounterFieldSchemas, speciesOptions],
   );
-  console.log('deleteMe flatfileEncounterFields is: ');
-  console.log(flatfileEncounterFields);
-
-  return [
+  const additionalFields = [
+    // TODO I don't know what to call these yet
     {
       label: intl.formatMessage({
         id: 'SIGHTING_ID',
       }),
       key: 'sightingId',
     },
-    // {
-    //   label: intl.formatMessage({
-    //     id: 'REGION',
-    //   }),
-    //   key: 'locationId',
-    // },
     {
       label: intl.formatMessage({
         id: 'INDIVIDUAL_NAME',
@@ -241,7 +234,15 @@ export default function useBulkImportFields() {
       key: 'utcOffset',
       validators: [utcOffsetValidator],
     },
-    ...flatfileEncounterFields,
-    ...flatfileSightingFields,
   ];
+
+  return {
+    numEncounterFieldsForFlatFile: flatfileEncounterFields.length,
+    numSightingFieldsForFlatFile: flatfileSightingFields.length,
+    availableFields: [
+      ...additionalFields,
+      ...flatfileEncounterFields,
+      ...flatfileSightingFields,
+    ],
+  };
 }

@@ -20,8 +20,8 @@ export default function LocationIdEditor(props) {
     minimalLabels = false,
     ...rest
   } = props;
-  console.log('deleteMe region editor shcema are: ');
-  console.log(schema);
+  // console.log('deleteMe region editor shcema are: ');
+  // console.log(schema);
 
   const label = useLabel(schema);
   const description = useDescription(schema);

@@ -54,8 +54,8 @@ export default function prepareAssetGroup(
 
     if (!sightings[sightingId]) sightings[sightingId] = {};
     sightings[sightingId].assetReferences = matchingAssets;
-    console.log('deleteMe sightings are: ');
-    console.log();
+    // console.log('deleteMe sightings are: ');
+    // console.log();
     assignIfPresent(
       newEncounter,
       sightings[sightingId],
