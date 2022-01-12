@@ -1,10 +1,8 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { get } from 'lodash-es';
-import {
-  formatError,
-  formatHoustonTime,
-} from '../../utils/formatters';
+import { formatError } from '../../utils/formatters';
+import formatPropertiesForPatch from '../../utils/formatPropertiesForPatch';
 
 export default function usePatchSighting() {
   const [loading, setLoading] = useState(false);
@@ -12,32 +10,7 @@ export default function usePatchSighting() {
   const [success, setSuccess] = useState(false);
 
   const updateProperties = async (sightingId, dictionary) => {
-    const dictionaryCopy = { ...dictionary };
-    if ('gps' in dictionaryCopy) {
-      dictionaryCopy.decimalLatitude = get(
-        dictionaryCopy,
-        ['gps', 0],
-        null,
-      );
-      dictionaryCopy.decimalLongitude = get(
-        dictionaryCopy,
-        ['gps', 1],
-        null,
-      );
-      delete dictionaryCopy.gps;
-    }
-
-    if ('time' in dictionaryCopy) {
-      dictionaryCopy.time = formatHoustonTime(dictionaryCopy.time);
-    }
-
-    const operations = Object.keys(dictionaryCopy).map(
-      propertyKey => ({
-        op: 'replace',
-        path: `/${propertyKey}`,
-        value: dictionaryCopy[propertyKey],
-      }),
-    );
+    const operations = formatPropertiesForPatch(dictionary);
 
     try {
       setLoading(true);
