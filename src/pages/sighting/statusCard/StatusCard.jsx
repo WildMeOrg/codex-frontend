@@ -44,35 +44,33 @@ export default function StatusCard({ sightingData }) {
   const photoCount = get(sightingData, ['assets', 'length'], 0);
   const dateCreated = get(sightingData, 'createdHouston');
 
-  const detectionComplete =
-    get(sightingData, 'stage') !== 'detection';
-  const curationComplete =
-    detectionComplete && get(sightingData, 'stage') !== 'curation';
-  const matchingComplete =
-    curationComplete && get(sightingData, 'stage') !== 'un_reviewed';
+  const detectionStartTime = sightingData?.detection_start_time;
+  const curationStartTime = sightingData?.curation_start_time;
+  const matchingStartTime = sightingData?.identification_start_time;
+  const sightingStage = sightingData?.stage;
 
-  const detectionStartTime = get(
-    sightingData,
-    'detection_start_time',
-  );
-  const curationStartTime = get(sightingData, 'curation_start_time');
-  const matchingStartTime = get(
-    sightingData,
-    'identification_start_time',
-  );
+  const detectionComplete = detectionStartTime && curationStartTime;
+  const curationComplete = detectionComplete && matchingStartTime;
+  const matchingComplete =
+    curationComplete && sightingStage !== 'reviewed';
 
   let detectionStage = stages.waiting;
   let curationStage = stages.waiting;
   let matchingStage = stages.waiting;
 
-  if (detectionStartTime) detectionStage = stages.current;
+  if (detectionStartTime) {
+    detectionStage =
+      sightingStage === 'failed' ? stages.failed : stages.current;
+  }
   if (curationStartTime) {
     detectionStage = stages.finished;
-    curationStage = stages.current;
+    curationStage =
+      sightingStage === 'failed' ? stages.failed : stages.current;
   }
   if (matchingStartTime) {
     curationStage = stages.finished;
-    matchingStage = stages.current;
+    matchingStage =
+      sightingStage === 'failed' ? stages.failed : stages.current;
   }
   if (matchingComplete) matchingStage = stages.finished;
 
@@ -113,6 +111,7 @@ export default function StatusCard({ sightingData }) {
           skippedText={intl.formatMessage({
             id: 'DETECTION_SKIPPED_MESSAGE',
           })}
+          failedText={intl.formatMessage({ id: 'DETECTION_FAILED' })}
         />
         <TimelineStep
           Icon={CurationIcon}
@@ -128,6 +127,7 @@ export default function StatusCard({ sightingData }) {
           skippedText={intl.formatMessage({
             id: 'CURATION_SKIPPED_MESSAGE',
           })}
+          failedText={intl.formatMessage({ id: 'CURATION_FAILED' })}
         />
         <TimelineStep
           Icon={MatchingIcon}
@@ -140,6 +140,9 @@ export default function StatusCard({ sightingData }) {
           finishedText="Matching finished"
           skippedText={intl.formatMessage({
             id: 'MATCHING_SKIPPED_MESSAGE',
+          })}
+          failedText={intl.formatMessage({
+            id: 'IDENTIFICATION_FAILED',
           })}
         />
       </Timeline>
