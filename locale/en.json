@@ -165,6 +165,8 @@
   "IDENTIFICATION_FAILED": "Image identification failed.",
   "SIGHTING_START": "Sighting start",
   "SIGHTING_END": "Sighting end",
+  "NOT_READY_FOR_COMMIT": "This sighting is pending",
+  "NOT_READY_FOR_COMMIT_DESCRIPTION": "Sightings must remain in 'pending' state until detection is complete and all annotations are assigned.",
   "SIGHTING_RADIO_QUESTION": "How many animals were in the sighting? *",
   "ONE_ANIMAL": "One animal",
   "MULTIPLE_ANIMALS": "Multiple animals",
