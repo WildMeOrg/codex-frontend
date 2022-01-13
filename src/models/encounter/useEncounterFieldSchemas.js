@@ -91,12 +91,6 @@ export default function useSightingFieldSchemas() {
           category: defaultEncounterCategories.animal.name,
           hideOnBasicReport: true,
         }),
-        createFieldSchema(fieldTypes.date, {
-          name: 'timeSpecificity',
-          labelId: 'SIGHTING_TIME_SPECIFICITY',
-          category: defaultEncounterCategories.animal.name,
-          hideOnBasicReport: true,
-        }),
         createFieldSchema(fieldTypes.latlong, {
           name: 'gps',
           labelId: 'EXACT_LOCATION',

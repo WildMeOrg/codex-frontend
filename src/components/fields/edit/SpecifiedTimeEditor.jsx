@@ -18,7 +18,14 @@ import Text from '../../Text';
 import FormCore from './FormCore';
 
 export default function SpecifiedTimeEditor(props) {
-  const { schema, value, onChange, width = 280, ...rest } = props;
+  const {
+    schema,
+    value,
+    onChange,
+    width = 280, // eslint-disable-next-line no-unused-vars
+    minimalLabels = false,
+    ...rest
+  } = props;
   const intl = useIntl();
 
   function getLabel(object) {
