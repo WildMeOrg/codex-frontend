@@ -11,6 +11,15 @@ import Button from '../Button';
 import Text from '../Text';
 import Card from './Card';
 
+const badValues = [null, undefined, ''];
+function fieldValueGood(field) {
+  const value = field?.value;
+  if (badValues.includes(value)) return false;
+  if (value?.time === null && value?.timeSpecificity === null)
+    return false;
+  return true;
+}
+
 export default function MetadataCard({
   title,
   titleId = 'METADATA',
@@ -28,8 +37,9 @@ export default function MetadataCard({
         JSON.stringify(field.defaultValue),
     );
   }
+
   metadataToDisplay = metadataToDisplay.filter(
-    field => !field.hideInMetadataCard,
+    field => !field.hideInMetadataCard && fieldValueGood(field),
   );
 
   const showEditButton = metadataToDisplay.length === 0 && editable;

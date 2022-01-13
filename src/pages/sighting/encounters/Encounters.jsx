@@ -14,6 +14,8 @@ import ConfirmDelete from '../../../components/ConfirmDelete';
 import useEncounterFieldSchemas from '../../../models/encounter/useEncounterFieldSchemas';
 import useAddEncounter from '../../../models/encounter/useAddEncounter';
 import useDeleteEncounter from '../../../models/encounter/useDeleteEncounter';
+import useAddEncounterToAGS from '../../../models/assetGroupSighting/useAddEncounterToAGS';
+import useDeleteAGSEncounter from '../../../models/assetGroupSighting/useDeleteAGSEncounter';
 import AnnotationsCard from './AnnotationsCard';
 import EditEncounterMetadata from './EditEncounterMetadata';
 import CreateIndividualModal from './CreateIndividualModal';
@@ -25,18 +27,50 @@ export default function Encounters({
   pending,
 }) {
   const {
-    addEncounter,
-    loading: addEncounterLoading,
-    error: addEncounterError,
+    addEncounter: addEncounterToSighting,
+    loading: addEncounterToSightingLoading,
+    error: addEncounterToSightingError,
     setError: setAddEncounterError,
   } = useAddEncounter();
 
   const {
-    deleteEncounter,
-    loading: deleteEncounterInProgress,
-    error: deleteEncounterError,
+    addEncounterToAGS,
+    isLoading: addEncounterToAGSLoading,
+    error: addEncounterToAGSError,
+  } = useAddEncounterToAGS();
+
+  const addEncounter = pending
+    ? addEncounterToAGS
+    : addEncounterToSighting;
+  const addEncounterLoading = pending
+    ? addEncounterToAGSLoading
+    : addEncounterToSightingLoading;
+  const addEncounterError = pending
+    ? addEncounterToAGSError
+    : addEncounterToSightingError;
+
+  const {
+    deleteEncounter: deleteSightingEncounter,
+    loading: deleteSightingEncounterLoading,
+    error: deleteSightingEncounterError,
     setError: setDeleteEncounterError,
   } = useDeleteEncounter();
+
+  const {
+    deleteAGSEncounter,
+    isLoading: deleteAGSEncounterLoading,
+    error: deleteAGSEncounterError,
+  } = useDeleteAGSEncounter();
+
+  const deleteEncounterLoading = pending
+    ? deleteAGSEncounterLoading
+    : deleteSightingEncounterLoading;
+  const deleteEncounterError = pending
+    ? deleteAGSEncounterError
+    : deleteSightingEncounterError;
+  const onClearDeleteEncounterError = pending
+    ? undefined
+    : () => setDeleteEncounterError(null);
 
   const [
     createIndividualEncounterId,
@@ -57,15 +91,25 @@ export default function Encounters({
         open={Boolean(encounterToDelete)}
         onClose={() => setEncounterToDelete(null)}
         onDelete={async () => {
-          const successful = await deleteEncounter(encounterToDelete);
+          let successful;
+          if (pending) {
+            successful = await deleteAGSEncounter(
+              sightingId,
+              encounterToDelete,
+            );
+          } else {
+            successful = await deleteSightingEncounter(
+              encounterToDelete,
+            );
+          }
           if (successful) {
             setEncounterToDelete(null);
             refreshSightingData();
           }
         }}
-        deleteInProgress={deleteEncounterInProgress}
+        deleteInProgress={deleteEncounterLoading}
         error={deleteEncounterError}
-        onClearError={() => setDeleteEncounterError(null)}
+        onClearError={onClearDeleteEncounterError}
         messageId={
           encounters.length <= 1
             ? 'CANNOT_DELETE_FINAL_ENCOUNTER_DESCRIPTION'
