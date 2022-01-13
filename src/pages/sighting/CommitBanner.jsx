@@ -10,7 +10,7 @@ const alertProps = {
   style: { marginBottom: 24 },
 };
 
-export default function SightingCore({
+export default function CommitBanner({
   sightingId,
   sightingData,
   pending,
@@ -26,12 +26,11 @@ export default function SightingCore({
   const annotations = flatten(
     assets.map(asset => get(asset, 'annotations')),
   );
+
   const allAnnotationsAssigned = every(annotations, 'encounter_guid');
-
-  const detectionStartTime = sightingData?.detection_start_time;
-  const curationStartTime = sightingData?.curation_start_time;
-
-  const detectionComplete = detectionStartTime && curationStartTime;
+  const detectionComplete = Boolean(
+    sightingData?.curation_start_time,
+  );
   const showCommitAlert = detectionComplete && allAnnotationsAssigned;
 
   if (showCommitAlert) {

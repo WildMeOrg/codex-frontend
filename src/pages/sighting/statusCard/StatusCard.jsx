@@ -63,7 +63,9 @@ export default function StatusCard({ sightingData }) {
       sightingStatus === 'failed' ? stages.failed : stages.current;
   }
   if (curationStartTime) {
-    detectionStage = stages.finished;
+    detectionStage = detectionStartTime
+      ? stages.finished
+      : stages.skipped;
     curationStage =
       sightingStatus === 'failed' ? stages.failed : stages.current;
   }
