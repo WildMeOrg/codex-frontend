@@ -10,8 +10,7 @@ export default function useDeleteAGSEncounter() {
     };
 
     return axios.request({
-      // url: `${__houston_url__}/api/v1/asset_groups/sighting/${agsId}`,
-      url: `${__houston_url__}/api/v1/asseasdfasdfasft_groups/sighting/${agsId}`,
+      url: `${__houston_url__}/api/v1/asset_groups/sighting/${agsId}`,
       method: 'patch',
       withCredentials: true,
       data: [operation],
