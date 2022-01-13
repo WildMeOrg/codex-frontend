@@ -1,7 +1,6 @@
 import { useMemo } from 'react';
 import { useIntl } from 'react-intl';
 
-// import fieldTypes from '../../../constants/fieldTypesNew';
 import useEncounterFieldSchemas from '../../../models/encounter/useEncounterFieldSchemas';
 import useSightingFieldSchemas from '../../../models/sighting/useSightingFieldSchemas';
 import {
@@ -20,12 +19,6 @@ const floatValidator = {
   error: 'You must enter a number',
 };
 
-// const integerValidator = {
-//   validate: 'regex_matches',
-//   regex: '^[-]?\\d+$',
-//   error: 'You must enter a number',
-// };
-
 const positiveIntegerValidator = {
   validate: 'regex_matches',
   regex: '^\\d+$',
@@ -41,7 +34,6 @@ const utcOffsetValidator = {
 export default function useBulkImportFields() {
   const intl = useIntl();
   const { regionOptions, speciesOptions } = useOptions();
-
   const sightingFieldSchemas = useSightingFieldSchemas();
   const flatfileSightingFields = useMemo(
     () => {
@@ -49,14 +41,35 @@ export default function useBulkImportFields() {
       const bulkSightingFields = sightingFieldSchemas.filter(
         f => !sightingOmitList.includes(f.name),
       );
-      return bulkSightingFields.map(f => ({
-        label: f.labelId
-          ? intl.formatMessage({ id: f.labelId })
-          : f.label,
-        key: f.name,
-      }));
+      return bulkSightingFields.map(f => {
+        const additionalProperties = {};
+        if (f.name === 'locationId') {
+          additionalProperties.type = 'select';
+          additionalProperties.options = regionOptions;
+          additionalProperties.validators = [
+            {
+              validate: 'required_without_all',
+              fields: [
+                'decimalLatitude',
+                'decimalLongitude',
+                'verbatimLocality',
+              ],
+              error: 'At least one location field is required.',
+            },
+          ];
+        }
+        return {
+          label: f.labelId
+            ? intl.formatMessage({
+                id: f.labelId,
+              })
+            : f.label,
+          key: f.name,
+          ...additionalProperties,
+        };
+      });
     },
-    [sightingFieldSchemas],
+    [sightingFieldSchemas, regionOptions],
   );
 
   const encounterFieldSchemas = useEncounterFieldSchemas();
@@ -72,22 +85,7 @@ export default function useBulkImportFields() {
         if (f.name === 'taxonomy') {
           additionalProperties.type = 'select';
           additionalProperties.options = speciesOptions;
-        } else if (f.name === 'locationId') {
-          additionalProperties.type = 'select';
-          additionalProperties.options = regionOptions;
-          additionalProperties.validators = [
-            {
-              validate: 'required_without_all',
-              fields: [
-                'decimalLatitude',
-                'decimalLongitude',
-                'verbatimLocality',
-              ],
-              error: 'At least one location field is required.',
-            },
-          ];
         }
-
         return {
           label: f.labelId
             ? intl.formatMessage({ id: f.labelId })
@@ -97,20 +95,25 @@ export default function useBulkImportFields() {
         };
       });
     },
-    [encounterFieldSchemas, regionOptions, speciesOptions],
+    [encounterFieldSchemas, speciesOptions],
   );
-
-  return [
+  const additionalFlatfileFields = [
     {
-      label: intl.formatMessage({ id: 'SIGHTING_ID' }),
+      label: intl.formatMessage({
+        id: 'SIGHTING_ID',
+      }),
       key: 'sightingId',
     },
     {
-      label: intl.formatMessage({ id: 'INDIVIDUAL_NAME' }),
+      label: intl.formatMessage({
+        id: 'INDIVIDUAL_NAME',
+      }),
       key: 'individualName',
     },
     {
-      label: intl.formatMessage({ id: 'DECIMAL_LATITUDE' }),
+      label: intl.formatMessage({
+        id: 'DECIMAL_LATITUDE',
+      }),
       key: 'decimalLatitude',
       validators: [
         floatValidator,
@@ -161,11 +164,24 @@ export default function useBulkImportFields() {
       validators: [positiveIntegerValidator],
     },
     {
+      label: intl.formatMessage({ id: 'SIGHTING_TIME_SPECIFICITY' }),
+      key: 'timeSpecificity',
+      validators: [requiredValidator],
+    },
+    {
       label: intl.formatMessage({ id: 'TIMEZONE' }),
       key: 'utcOffset',
       validators: [utcOffsetValidator],
     },
-    ...flatfileEncounterFields,
-    ...flatfileSightingFields,
   ];
+
+  return {
+    numEncounterFieldsForFlatFile: flatfileEncounterFields.length,
+    numSightingFieldsForFlatFile: flatfileSightingFields.length,
+    availableFields: [
+      ...additionalFlatfileFields,
+      ...flatfileEncounterFields,
+      ...flatfileSightingFields,
+    ],
+  };
 }

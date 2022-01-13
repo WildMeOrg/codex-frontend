@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { FlatfileButton } from '@flatfile/react';
 import { get } from 'lodash-es';
@@ -13,10 +13,12 @@ import CustomAlert from '../../components/Alert';
 
 import usePostAssetGroup from '../../models/assetGroup/usePostAssetGroup';
 import useSightingFieldSchemas from '../../models/sighting/useSightingFieldSchemas';
+import useEncounterFieldSchemas from '../../models/encounter/useEncounterFieldSchemas';
 import prepareAssetGroup from './utils/prepareAssetGroup';
 import useBulkImportFields from './utils/useBulkImportFields';
 import { flatfileKey } from '../../constants/apiKeys';
 
+import LoadingScreen from '../../components/LoadingScreen';
 import InputRow from '../../components/fields/edit/InputRowNew';
 import TermsAndConditionsDialog from '../../components/report/TermsAndConditionsDialog';
 import Button from '../../components/Button';
@@ -67,6 +69,10 @@ export default function BulkReportForm({ assetReferences }) {
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [sightingData, setSightingData] = useState(null);
   const [detectionModel, setDetectionModel] = useState('');
+  const [
+    everythingReadyForFlatfile,
+    setEverythingReadyForFlatfile,
+  ] = useState(false);
 
   const {
     postAssetGroup,
@@ -75,11 +81,31 @@ export default function BulkReportForm({ assetReferences }) {
   } = usePostAssetGroup();
   const error = termsError || postError;
 
-  const availableFields = useBulkImportFields();
+  const {
+    numEncounterFieldsForFlatFile,
+    numSightingFieldsForFlatFile,
+    availableFields,
+  } = useBulkImportFields();
   const sightingFieldSchemas = useSightingFieldSchemas();
+  const encounterFieldSchemas = useEncounterFieldSchemas();
   const detectionModelField = sightingFieldSchemas.find(
     schema => schema.name === 'speciesDetectionModel',
   );
+
+  useEffect(
+    () => {
+      if (
+        numEncounterFieldsForFlatFile > 0 &&
+        numSightingFieldsForFlatFile > 0
+      ) {
+        // wait for these to become non-zero to be confident that availableFields is fully populated before sending off to FlatFile
+        setEverythingReadyForFlatfile(true);
+      }
+    },
+    [encounterFieldSchemas, sightingFieldSchemas],
+  );
+
+  if (!everythingReadyForFlatfile) return <LoadingScreen />;
 
   return (
     <>

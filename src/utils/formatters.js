@@ -160,6 +160,44 @@ export const formatHoustonTime = possibleTimeObject => {
   }
 };
 
+export const getNumDescendents = targetChoice => {
+  let result = 0;
+  if (!targetChoice.locationID) return result;
+  const childCountsArr = targetChoice.locationID.map(child =>
+    getNumDescendents(child),
+  );
+  result =
+    targetChoice.locationID.length +
+    childCountsArr.reduce((a, b) => a + b, 0);
+  return result;
+};
+
+export const collapseChoices = (choices, depth) => {
+  const result = choices.map(choice => {
+    const numDescendants = getNumDescendents(choice);
+    const numDescendantsAsString = numDescendants
+      ? ` (${numDescendants})`
+      : '';
+    if (!choice.locationID) {
+      return {
+        depth,
+        name: choice.name + numDescendantsAsString,
+        id: choice.id,
+      };
+    }
+    const subchoices = [
+      {
+        depth,
+        name: choice.name + numDescendantsAsString,
+        id: choice.id,
+      },
+    ];
+    subchoices.push(collapseChoices(choice.locationID, depth + 1));
+    return subchoices;
+  });
+  return result.flat(100);
+};
+
 export const formatLocationFromSighting = (
   sighting,
   regionOpts,

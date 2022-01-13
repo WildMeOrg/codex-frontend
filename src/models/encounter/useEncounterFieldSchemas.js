@@ -126,6 +126,5 @@ export default function useSightingFieldSchemas() {
     },
     [siteSettingsVersion],
   );
-
   return encounterFieldSchemas;
 }

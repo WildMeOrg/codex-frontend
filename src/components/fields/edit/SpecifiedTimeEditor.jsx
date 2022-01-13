@@ -22,7 +22,7 @@ export default function SpecifiedTimeEditor(props) {
     schema,
     value,
     onChange,
-    width = 280,
+    width = 280, // eslint-disable-next-line no-unused-vars
     minimalLabels = false,
     ...rest
   } = props;

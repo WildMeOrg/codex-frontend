@@ -1,5 +1,6 @@
 import { get, omit } from 'lodash-es';
 import { v4 as uuid } from 'uuid';
+import { formatHoustonTime } from '../../../utils/formatters';
 
 function updateTimes(encounter) {
   const year = get(encounter, 'timeYear', 0);
@@ -8,7 +9,9 @@ function updateTimes(encounter) {
   const hours = get(encounter, 'timeHour', 1);
   const minutes = get(encounter, 'timeMinutes', 0);
   const seconds = get(encounter, 'timeSeconds', 0);
-  const time = new Date(year, month, day, hours, minutes, seconds);
+  const time = formatHoustonTime(
+    new Date(year, month, day, hours, minutes, seconds),
+  );
   return {
     ...encounter,
     time,
@@ -71,26 +74,20 @@ export default function prepareAssetGroup(
       sightings[sightingId],
       'verbatimLocality',
     );
+    assignIfPresent(
+      newEncounter,
+      sightings[sightingId],
+      'timeSpecificity',
+    );
 
-    const startTime = get(sightings, [sightingId, 'startTime']);
-    const startTimeAfter = newEncounter.time < startTime;
-    if (!startTime || startTimeAfter) {
+    const time = get(sightings, [sightingId, 'time']);
+    const timeAfter = newEncounter.time < time;
+    if (!time || timeAfter) {
       assignIfPresent(
         newEncounter,
         sightings[sightingId],
         'time',
-        'startTime',
-      );
-    }
-
-    const endTime = get(sightings, [sightingId, 'startTime']);
-    const endTimeBefore = newEncounter.time > startTime;
-    if (!endTime || endTimeBefore) {
-      assignIfPresent(
-        newEncounter,
-        sightings[sightingId],
         'time',
-        'endTime',
       );
     }
 
