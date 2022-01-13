@@ -11,9 +11,10 @@ import Button from '../Button';
 import Text from '../Text';
 import Card from './Card';
 
+const badValues = [null, undefined, ''];
 function fieldValueGood(field) {
   const value = field?.value;
-  if (value === null || value === undefined) return false;
+  if (badValues.includes(value)) return false;
   if (value?.time === null && value?.timeSpecificity === null)
     return false;
   return true;
