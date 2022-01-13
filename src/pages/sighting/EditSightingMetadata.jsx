@@ -143,7 +143,10 @@ export default function EditSightingMetadata({
           onClick={async () => {
             const successfulUpdate = await updateProperties(
               sightingId,
-              defaultFieldValues,
+              {
+                ...defaultFieldValues,
+                customFields: customFieldValues,
+              },
             );
             if (successfulUpdate) {
               refreshSightingData();
