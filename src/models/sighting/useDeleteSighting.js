@@ -8,11 +8,11 @@ export default function useDeleteSighting() {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
 
-  const deleteSighting = async sightingId => {
+  const deleteSighting = async (sightingId, path) => {
     try {
       setLoading(true);
       const deleteResponse = await axios({
-        url: `${__houston_url__}/api/v1/sightings/${sightingId}`,
+        url: `${__houston_url__}/api/v1/${path}/${sightingId}`,
         withCredentials: true,
         method: 'delete',
       });

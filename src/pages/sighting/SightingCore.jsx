@@ -48,6 +48,9 @@ export default function SightingCore({
   pending,
   id,
 }) {
+  const path = get(data, 'asset_group_guid')
+    ? 'asset_groups/sighting/as_sighting'
+    : 'sightings';
   const history = useHistory();
   const intl = useIntl();
   const queryClient = useQueryClient();
@@ -129,7 +132,7 @@ export default function SightingCore({
         open={deleteDialogOpen}
         onClose={() => setDeleteDialogOpen(false)}
         onDelete={async () => {
-          const successful = await deleteSighting(id);
+          const successful = await deleteSighting(id, path);
           if (successful) {
             setDeleteDialogOpen(false);
             history.push('/');
