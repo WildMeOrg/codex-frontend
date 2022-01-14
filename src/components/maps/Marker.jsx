@@ -26,7 +26,7 @@ export default function Marker({
           style={{ backgroundColor: 'white', width: 'max-content' }}
         >
           <ButtonLink
-            href={`/sightings/${get(entry, 'guid')}`}
+            href={`/${entry?.linkPath}/${entry?.guid}`}
             newTab
             external
             size="small"
@@ -38,9 +38,7 @@ export default function Marker({
           >
             <Text
               variant="body2"
-              style={{
-                textDecoration: 'underline',
-              }}
+              style={{ textDecoration: 'underline' }}
             >
               {get(entry, 'text')}
             </Text>

@@ -12,7 +12,7 @@ function createMapOptions() {
   };
 }
 
-export default function ManyPoints({ latLongLabelArr }) {
+export default function MultiplePoints({ latLongLabelArr }) {
   const [currentMarkerToShow, setCurrentMarkerToShow] = useState(
     null,
   );
@@ -68,7 +68,12 @@ export default function ManyPoints({ latLongLabelArr }) {
             lat={get(entry, 'lat')}
             lng={get(entry, 'long')}
           >
-            <RoomIcon />
+            <RoomIcon
+              style={{
+                position: 'absolute',
+                transform: 'translate(-50%,-50%)',
+              }}
+            />
           </Marker>
         );
       })}
