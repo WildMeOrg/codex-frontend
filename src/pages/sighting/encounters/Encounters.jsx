@@ -155,16 +155,16 @@ export default function Encounters({
           >
             <div
               style={{
-                margin: '0 30px',
+                margin: '0 30px 4px 30px',
                 display: 'flex',
-                justifyContent: 'space-between',
                 alignItems: 'center',
               }}
             >
               <Text
                 id="ANIMAL_CLUSTER_LABEL"
-                variant="h6"
+                variant="h5"
                 values={{ i: i + 1 }}
+                style={{ marginRight: 20 }}
               />
               <div style={{ display: 'flex', alignItems: 'center' }}>
                 <ButtonMenu
