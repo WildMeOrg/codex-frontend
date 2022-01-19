@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { useIntl } from 'react-intl';
 import { get } from 'lodash-es';
+import { useQueryClient } from 'react-query';
 
 import useDeleteAssetGroup from '../../models/assetGroup/useDeleteAssetGroup';
 import useAssetGroup from '../../models/assetGroup/useAssetGroup';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import { formatDate } from '../../utils/formatters';
 
+import queryKeys from '../../constants/queryKeys';
 import MainColumn from '../../components/MainColumn';
 import LoadingScreen from '../../components/LoadingScreen';
 import SadScreen from '../../components/SadScreen';
@@ -22,6 +24,7 @@ export default function AssetGroup() {
   const { id } = useParams();
   const history = useHistory();
   const intl = useIntl();
+  const queryClient = useQueryClient();
 
   const { data, loading, error, statusCode } = useAssetGroup(id);
 
@@ -74,6 +77,7 @@ export default function AssetGroup() {
           if (successful) {
             setDeleteDialogOpen(false);
             history.push('/');
+            queryClient.invalidateQueries(queryKeys.me);
           }
         }}
         deleteInProgress={deleteInProgress}

@@ -5,18 +5,17 @@ import { get } from 'lodash-es';
 import { formatDate } from '../../utils/formatters';
 import MultiplePoints from '../maps/MultiplePoints';
 
-export default function SightingMapView({ data }) {
+export default function SightingMapView({ data, linkPath }) {
   const intl = useIntl();
   const transformedData = data
     .filter(entry => get(entry, 'decimalLatitude'))
     .map(entry => {
       return {
         guid: get(entry, 'guid'),
+        linkPath: linkPath,
         text: intl.formatMessage(
           { id: 'ENTITY_HEADER_SIGHTING_DATE' },
-          {
-            date: formatDate(get(entry, 'time'), true),
-          },
+          { date: formatDate(get(entry, 'time'), true) },
         ),
         lat: get(entry, 'decimalLatitude'),
         long: get(entry, 'decimalLongitude'),

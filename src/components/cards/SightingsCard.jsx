@@ -213,7 +213,10 @@ export default function SightingsCard({
         />
       )}
       {!noSightings && showMapView && (
-        <SightingMapView data={sightingsWithLocationData} />
+        <SightingMapView
+          data={sightingsWithLocationData}
+          linkPath={linkPath}
+        />
       )}
     </Card>,
   ];
