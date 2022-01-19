@@ -137,6 +137,7 @@ export default function Encounters({
 
       <AddAnnotationsDialog
         sightingData={sightingData}
+        pending={pending}
         encounterId={encounterToAddAnnotations}
         onClose={() => setEncounterToAddAnnotations(null)}
       />

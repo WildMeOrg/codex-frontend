@@ -5,25 +5,47 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import Grid from '@material-ui/core/Grid';
 
+import useAddAnnotationsToSightingEncounter from '../../../models/encounter/useAddAnnotationsToSightingEncounter';
+import useAddAnnotationsToAGSEncounter from '../../../models/assetGroupSighting/useAddAnnotationsToAGSEncounter';
 import StandardDialog from '../../../components/StandardDialog';
 import Button from '../../../components/Button';
 import Alert from '../../../components/Alert';
 import AnnotatedPhotograph from '../../../components/AnnotatedPhotograph';
 
 export default function AddAnnotationsDialog({
+  sightingData,
+  pending,
   encounterId,
   onClose,
-  sightingData,
 }) {
   const [selectedAnnotations, setSelectedAnnotations] = useState([]);
+
+  const {
+    addAnnotationsToSightingEncounter,
+    error: addToSightingEncounterError,
+    isLoading: addToSightingEncounterLoading,
+  } = useAddAnnotationsToSightingEncounter();
+
+  const {
+    addAnnotationsToAGSEncounter,
+    error: addToAGSEncounterError,
+    isLoading: addToAGSEncounterLoading,
+  } = useAddAnnotationsToAGSEncounter();
+
+  const error = pending
+    ? addToAGSEncounterError
+    : addToSightingEncounterError;
+  const loading = pending
+    ? addToAGSEncounterLoading
+    : addToSightingEncounterLoading;
+
   const open = Boolean(encounterId);
   const onCloseDialog = () => {
     setSelectedAnnotations([]);
     onClose();
   };
 
-  const error = 'sup';
-
+  const sightingId = get(sightingData, 'guid');
   const assets = get(sightingData, 'assets', []);
   const annotations = assets.reduce((acc, asset) => {
     const assetAnnotations = get(asset, 'annotations', []);
@@ -33,8 +55,6 @@ export default function AddAnnotationsDialog({
     }));
     return [...acc, ...amendedAssetAnnotations];
   }, []);
-
-  console.log(selectedAnnotations);
 
   return (
     <StandardDialog
@@ -75,7 +95,7 @@ export default function AddAnnotationsDialog({
             );
           })}
         </Grid>
-        {/* {error && (
+        {error && (
           <Alert
             titleId="SERVER_ERROR"
             style={{ marginTop: 16, marginBottom: 8 }}
@@ -83,16 +103,29 @@ export default function AddAnnotationsDialog({
           >
             {error}
           </Alert>
-        )} */}
+        )}
       </DialogContent>
       <DialogActions>
         <Button display="basic" onClick={onCloseDialog} id="CLOSE" />
         <Button
           display="primary"
-          disabled={false}
-          loading={false}
+          disabled={selectedAnnotations.length === 0}
+          loading={loading}
           onClick={async () => {
-            console.log('result');
+            let result;
+            if (pending) {
+              result = await addAnnotationsToAGSEncounter(
+                sightingId,
+                encounterId,
+                selectedAnnotations,
+              );
+            } else {
+              result = await addAnnotationsToSightingEncounter(
+                encounterId,
+                selectedAnnotations,
+              );
+            }
+            if (result?.status === 200) onCloseDialog();
           }}
           id="ADD_ANNOTATIONS_TO_CLUSTER_BUTTON"
         />
