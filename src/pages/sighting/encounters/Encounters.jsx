@@ -20,6 +20,7 @@ import AnnotationsCard from './AnnotationsCard';
 import EditEncounterMetadata from './EditEncounterMetadata';
 import CreateIndividualModal from './CreateIndividualModal';
 import ManuallyAssignModal from './ManuallyAssignModal';
+import AddAnnotationsDialog from './AddAnnotationsDialog';
 
 export default function Encounters({
   sightingData,
@@ -79,6 +80,10 @@ export default function Encounters({
   const [encounterToDelete, setEncounterToDelete] = useState(null);
   const [editEncounterInfo, setEditEncounterInfo] = useState(null);
   const [encounterToAssign, setEncounterToAssign] = useState(null);
+  const [
+    encounterToAddAnnotations,
+    setEncounterToAddAnnotations,
+  ] = useState(null);
 
   const sightingId = get(sightingData, 'guid');
 
@@ -128,6 +133,12 @@ export default function Encounters({
         encounterId={encounterToAssign}
         open={Boolean(encounterToAssign)}
         onClose={() => setEncounterToAssign(null)}
+      />
+
+      <AddAnnotationsDialog
+        sightingData={sightingData}
+        encounterId={encounterToAddAnnotations}
+        onClose={() => setEncounterToAddAnnotations(null)}
       />
 
       <EditEncounterMetadata
@@ -212,7 +223,12 @@ export default function Encounters({
             </div>
             <div style={{ display: 'flex', flexWrap: 'wrap' }}>
               <CardContainer>
-                <AnnotationsCard annotations={[]} />
+                <AnnotationsCard
+                  onAddAnnotations={() =>
+                    setEncounterToAddAnnotations(encounterId)
+                  }
+                  annotations={[]}
+                />
               </CardContainer>
               <CardContainer size="small">
                 <MetadataCard
