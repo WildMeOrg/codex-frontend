@@ -1,4 +1,4 @@
-import { get, round, find, some, map } from 'lodash-es';
+import { get, round, find, some, map, cloneDeep } from 'lodash-es';
 import { format, formatISO } from 'date-fns';
 
 export const isMutuallyRevoked = members => {
@@ -254,4 +254,19 @@ export const formatLocationFromSighting = (
       : intl.formatMessage({ id: 'REGION_NAME_REMOVED' });
   }
   return '';
+};
+
+export const flattenTree = regions => {
+  const flatTree = cloneDeep(regions);
+  function addLevel(leaves) {
+    leaves.forEach(leaf => {
+      if (!flatTree.map(entry => entry?.id).includes(leaf?.id)) {
+        flatTree.push(leaf);
+      }
+      if (leaf?.locationID) addLevel(leaf.locationID);
+    });
+  }
+
+  addLevel(regions);
+  return flatTree;
 };
