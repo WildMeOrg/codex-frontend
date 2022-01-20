@@ -26,7 +26,7 @@ export default function Marker({
           style={{ backgroundColor: 'white', width: 'max-content' }}
         >
           <ButtonLink
-            href={`/${get(entry, 'linkPath')}/${get(entry, 'guid')}`}
+            href={`/${entry?.linkPath}/${entry?.guid}`}
             newTab
             external
             size="small"

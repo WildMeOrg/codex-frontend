@@ -3,6 +3,7 @@ import { FormattedMessage } from 'react-intl';
 import { FlatfileButton } from '@flatfile/react';
 import { get } from 'lodash-es';
 import { useHistory } from 'react-router-dom';
+import { useQueryClient } from 'react-query';
 
 import { useTheme } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
@@ -11,6 +12,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import CustomAlert from '../../components/Alert';
 
+import queryKeys from '../../constants/queryKeys';
 import usePostAssetGroup from '../../models/assetGroup/usePostAssetGroup';
 import useSightingFieldSchemas from '../../models/sighting/useSightingFieldSchemas';
 import useEncounterFieldSchemas from '../../models/encounter/useEncounterFieldSchemas';
@@ -69,6 +71,7 @@ export default function BulkReportForm({ assetReferences }) {
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [sightingData, setSightingData] = useState(null);
   const [detectionModel, setDetectionModel] = useState('');
+  const queryClient = useQueryClient();
   const [
     everythingReadyForFlatfile,
     setEverythingReadyForFlatfile,
@@ -249,6 +252,7 @@ export default function BulkReportForm({ assetReferences }) {
               const assetGroupId = get(assetGroupData, 'guid');
               if (assetGroupId) {
                 history.push(`/bulk-import/success/${assetGroupId}`);
+                queryClient.invalidateQueries(queryKeys.me);
               }
             } else {
               setTermsError(true);
