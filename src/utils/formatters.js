@@ -1,5 +1,5 @@
 import { get, round, find, some, map } from 'lodash-es';
-import { format, formatISO } from 'date-fns';
+import { format } from 'date-fns';
 
 export const isMutuallyRevoked = members => {
   const memberViewStates = map(members, member =>
@@ -147,9 +147,10 @@ export const formatError = error => {
 
 export const formatHoustonTime = possibleTimeObject => {
   try {
-    const houstonTime = formatISO(possibleTimeObject, {
-      representation: 'complete',
-    });
+    const houstonTime = format(
+      possibleTimeObject,
+      "yyyy-MM-dd'T'hh:mm:ssxxx", // ISO 8601 without "Z" timezones.
+    );
     return houstonTime;
   } catch (error) {
     console.log(
