@@ -157,10 +157,9 @@ export default function IndividualsButton() {
           {mappableSearchResults.map(result => {
             const resultId = get(result, 'id');
             const aliasString = capitalize(get(result, 'alias'));
-            const nameString = `${get(
-              result,
-              'name',
-            )} (${aliasString})`;
+            let nameString = get(result, 'name', '');
+            if (aliasString)
+              nameString = `${nameString} (${aliasString})`;
             const alias = get(result, 'alias') || '-';
             const avatarLetter = alias[0].toUpperCase();
             const genusString = capitalize(get(result, 'genus', ''));

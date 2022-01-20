@@ -105,31 +105,33 @@ export default function IndividualsDisplay({
             <Text variant="h6" style={{ marginBottom: 8 }}>
               Recent Activity
             </Text>
-            {expandedIndividual.encounters.map(encounter => {
-              const encounterDate = get(encounter, 'date_occurred');
-              const formattedEncounterDate = encounterDate
-                ? formatDate(encounterDate, true)
-                : 'unknown date';
-              const submitter = get(
-                encounter,
-                'submitter_id',
-                'unknown user',
-              );
+            {get(expandedIndividual, 'encounters', []).map(
+              encounter => {
+                const encounterDate = get(encounter, 'date_occurred');
+                const formattedEncounterDate = encounterDate
+                  ? formatDate(encounterDate, true)
+                  : 'unknown date';
+                const submitter = get(
+                  encounter,
+                  'submitter_id',
+                  'unknown user',
+                );
 
-              return (
-                <Text variant="body2" key={encounter.id}>
-                  {'Sighting on '}
-                  <Link href={`/sightings/${encounter.id}`}>
-                    {formattedEncounterDate}
-                  </Link>
-                  {' by '}
-                  <Link href={`/users/${submitter}`}>
-                    {submitter}
-                  </Link>
-                  .
-                </Text>
-              );
-            })}
+                return (
+                  <Text variant="body2" key={encounter.id}>
+                    {'Sighting on '}
+                    <Link href={`/sightings/${encounter.id}`}>
+                      {formattedEncounterDate}
+                    </Link>
+                    {' by '}
+                    <Link href={`/users/${submitter}`}>
+                      {submitter}
+                    </Link>
+                    .
+                  </Text>
+                );
+              },
+            )}
             <ButtonLink
               style={{ marginTop: 16 }}
               href={`/individuals/${expandedIndividual.id}`}
