@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { get } from 'lodash-es';
 
-import { flattenTree } from '../utils/formatters';
+import { flattenTree } from '../utils/treeUtils';
 import useSiteSettings from '../models/site/useSiteSettings';
 
 export default function useOptions() {

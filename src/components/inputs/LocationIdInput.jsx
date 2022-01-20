@@ -16,7 +16,7 @@ import TreeItem from '@material-ui/lab/TreeItem';
 import TextInput from './TextInput';
 import DeleteButton from '../DeleteButton';
 import Button from '../Button';
-import { flattenTree } from '../../utils/formatters';
+import { flattenTree } from '../../utils/treeUtils';
 
 const textInputWidth = 200;
 
