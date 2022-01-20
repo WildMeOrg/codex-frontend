@@ -14,6 +14,7 @@ import { useTheme } from '@material-ui/core/styles';
 import HelpIcon from '@material-ui/icons/Info';
 
 import viewpointChoices from '../constants/viewpoints';
+import useIAClassOptions from '../hooks/useIAClassOptions';
 import usePostAnnotation from '../models/annotation/usePostAnnotation';
 import Button from './Button';
 import Text from './Text';
@@ -29,14 +30,17 @@ export default function AnnotationCreator({
   titleId = 'CREATE_ANNOTATION',
   asset,
   onClose,
+  sightingData,
   refreshSightingData,
 }) {
   const [viewpoint, setViewpoint] = useState('');
+  const [IAClass, setIAClass] = useState('');
   const [rect, setRect] = useState({});
   const [anchorEl, setAnchorEl] = useState(null);
   const theme = useTheme();
 
   const { postAnnotation, loading, error } = usePostAnnotation();
+  const IAClassOptions = useIAClassOptions(sightingData);
 
   const handleViewpointInfoClick = event => {
     setAnchorEl(event.currentTarget);
@@ -135,7 +139,7 @@ export default function AnnotationCreator({
         style={{
           display: 'flex',
           alignItems: 'flex-end',
-          margin: '12px auto',
+          margin: '8px auto 4px auto',
           width: 'fit-content',
         }}
       >
@@ -179,12 +183,36 @@ export default function AnnotationCreator({
           <Text style={{ padding: 12 }} id="VIEWPOINT_INFO" />
         </Popover>
       </div>
+
+      <div
+        style={{
+          margin: '4px auto 8px auto',
+        }}
+      >
+        <FormControl required style={{ width: 240 }}>
+          <InputLabel>
+            <FormattedMessage id="ANNOTATION_CLASS" />
+          </InputLabel>
+          <Select
+            labelId="annotation-class-selector-label"
+            id="annotation-class-selector"
+            value={IAClass}
+            onChange={e => setIAClass(e.target.value)}
+          >
+            {IAClassOptions.map(IAClassChoice => (
+              <MenuItem value={IAClassChoice.value}>
+                {IAClassChoice.label}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </div>
       <DialogActions style={{ padding: '0px 24px 24px 24px' }}>
         <Button display="basic" onClick={onClose} id="CANCEL" />
         <Button
           display="primary"
           loading={loading}
-          disabled={viewpoint === ''}
+          disabled={!viewpoint || !IAClass}
           onClick={async () => {
             const assetId = get(asset, 'guid');
             const coords = [
@@ -208,7 +236,7 @@ export default function AnnotationCreator({
             const theta = get(rect, 'theta', 0);
             const newAnnotationId = await postAnnotation(
               assetId,
-              'test-ia-class',
+              IAClass,
               coords,
               viewpoint,
               theta,

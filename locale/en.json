@@ -12,6 +12,7 @@
   "LABEL": "Label",
   "TYPE": "Type",
   "FOREST": "Forest",
+  "ANNOTATION_CLASS": "Annotation class",
   "COMMIT": "Commit",
   "ADD_ANNOTATIONS_TO_CLUSTER_TITLE": "Add annotations to animal cluster",
   "ADD_ANNOTATIONS_TO_CLUSTER_BUTTON": "Add annotations",

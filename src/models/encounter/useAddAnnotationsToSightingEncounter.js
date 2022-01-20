@@ -11,7 +11,6 @@ export default function useAddAnnotationsToSightingEncounter() {
       }));
 
       return axios.request({
-        // url: `${__houston_url__}/api/v1/module/encounters/${encounterId}`,
         url: `${__houston_url__}/api/v1/encounters/${encounterId}`,
         method: 'patch',
         withCredentials: true,
