@@ -28,6 +28,7 @@ import ConfirmDelete from '../../components/ConfirmDelete';
 import EntityHeaderNew from '../../components/EntityHeaderNew';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import useDeleteSighting from '../../models/sighting/useDeleteSighting';
+import useDeleteAssetGroupSighting from '../../models/assetGroupSighting/useDeleteAssetGroupSighting';
 import useSightingFieldSchemas from '../../models/sighting/useSightingFieldSchemas';
 import { formatDate } from '../../utils/formatters';
 // import AnnotationsGallery from './AnnotationsGallery';
@@ -48,9 +49,6 @@ export default function SightingCore({
   pending,
   id,
 }) {
-  const path = get(data, 'asset_group_guid')
-    ? 'asset_groups/sighting/as_sighting'
-    : 'sightings';
   const history = useHistory();
   const intl = useIntl();
   const queryClient = useQueryClient();
@@ -63,13 +61,18 @@ export default function SightingCore({
       : getSightingQueryKey(id);
     queryClient.invalidateQueries(queryKey);
   }
-
   const {
     deleteSighting,
     loading: deleteInProgress,
     error: deleteSightingError,
     setError: setDeleteSightingError,
   } = useDeleteSighting();
+  const {
+    deleteAssetGroupSighting,
+    loading: deleteAgsInProgress,
+    error: deleteAssetGroupSightingError,
+    setError: setDeleteAssetGroupSightingError,
+  } = useDeleteAssetGroupSighting();
 
   /*
     known issue: if data or fieldschemas change values
@@ -132,15 +135,30 @@ export default function SightingCore({
         open={deleteDialogOpen}
         onClose={() => setDeleteDialogOpen(false)}
         onDelete={async () => {
-          const successful = await deleteSighting(id, path);
+          let successful;
+          if (pending) {
+            successful = await deleteAssetGroupSighting(id);
+          } else {
+            successful = await deleteSighting(id);
+          }
           if (successful) {
             setDeleteDialogOpen(false);
             history.push('/');
           }
         }}
-        deleteInProgress={deleteInProgress}
-        error={deleteSightingError}
-        onClearError={() => setDeleteSightingError(null)}
+        deleteInProgress={
+          pending ? deleteAgsInProgress : deleteInProgress
+        }
+        error={
+          pending
+            ? deleteAssetGroupSightingError
+            : deleteSightingError
+        }
+        onClearError={() =>
+          pending
+            ? setDeleteAssetGroupSightingError(null)
+            : setDeleteSightingError(null)
+        }
         messageId="CONFIRM_DELETE_SIGHTING_DESCRIPTION"
       />
       <EntityHeaderNew
@@ -154,9 +172,7 @@ export default function SightingCore({
         }
         name={intl.formatMessage(
           { id: 'ENTITY_HEADER_SIGHTING_DATE' },
-          {
-            date: formatDate(sightingDisplayDate, true),
-          },
+          { date: formatDate(sightingDisplayDate, true) },
         )}
         renderTabs={
           <Tabs

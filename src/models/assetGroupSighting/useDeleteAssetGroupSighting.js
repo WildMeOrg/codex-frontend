@@ -3,16 +3,16 @@ import axios from 'axios';
 import { get } from 'lodash-es';
 import { formatError } from '../../utils/formatters';
 
-export default function useDeleteSighting() {
+export default function useDeleteAssetGroupSighting() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
 
-  const deleteSighting = async sightingId => {
+  const deleteAssetGroupSighting = async assetGroupSightingId => {
     try {
       setLoading(true);
       const deleteResponse = await axios({
-        url: `${__houston_url__}/api/v1/sightings/${sightingId}`,
+        url: `${__houston_url__}/api/v1/asset_groups/sighting/as_sighting/${assetGroupSightingId}`,
         withCredentials: true,
         method: 'delete',
       });
@@ -37,7 +37,7 @@ export default function useDeleteSighting() {
   };
 
   return {
-    deleteSighting,
+    deleteAssetGroupSighting,
     loading,
     error,
     setError,
