@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useIntl, FormattedMessage } from 'react-intl';
 import { get } from 'lodash-es';
@@ -65,19 +65,17 @@ export default function SightingCore({
     deleteSighting,
     loading: deleteInProgress,
     error: deleteSightingError,
-    setError: setDeleteSightingError,
   } = useDeleteSighting();
   const {
     deleteAssetGroupSighting,
-    loading: deleteAgsInProgress,
+    isLoading: deleteAgsInProgress,
     error: deleteAssetGroupSightingError,
-    setError: setDeleteAssetGroupSightingError,
   } = useDeleteAssetGroupSighting();
 
   /*
-    known issue: if data or fieldschemas change values
-    or properties this may not update
-    switch to data.version?
+  known issue: if data or fieldschemas change values
+  or properties this may not update
+  switch to data.version?
   */
   const metadata = useMemo(
     () => {
@@ -92,9 +90,18 @@ export default function SightingCore({
 
   useDocumentTitle(`Sighting ${id}`, { translateMessage: false });
 
+  const [localDeleteError, setLocalDeleteError] = useState(null);
   const [historyOpen, setHistoryOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-
+  useEffect(
+    () => {
+      const localDeleteErrorMessage = pending
+        ? deleteAssetGroupSightingError
+        : deleteSightingError;
+      setLocalDeleteError(localDeleteErrorMessage);
+    },
+    [deleteAssetGroupSightingError, deleteSightingError],
+  );
   const activeTab = window.location.hash || '#overview';
 
   if (loading) return <LoadingScreen />;
@@ -135,12 +142,15 @@ export default function SightingCore({
         open={deleteDialogOpen}
         onClose={() => setDeleteDialogOpen(false)}
         onDelete={async () => {
-          let successful;
+          let deleteResults;
           if (pending) {
-            successful = await deleteAssetGroupSighting(id);
+            deleteResults = await deleteAssetGroupSighting(id);
           } else {
-            successful = await deleteSighting(id);
+            deleteResults = await deleteSighting(id);
           }
+          const successful = pending
+            ? deleteResults?.status === 204
+            : deleteResults;
           if (successful) {
             setDeleteDialogOpen(false);
             history.push('/');
@@ -149,16 +159,8 @@ export default function SightingCore({
         deleteInProgress={
           pending ? deleteAgsInProgress : deleteInProgress
         }
-        error={
-          pending
-            ? deleteAssetGroupSightingError
-            : deleteSightingError
-        }
-        onClearError={() =>
-          pending
-            ? setDeleteAssetGroupSightingError(null)
-            : setDeleteSightingError(null)
-        }
+        error={localDeleteError}
+        onClearError={() => setLocalDeleteError(null)}
         messageId="CONFIRM_DELETE_SIGHTING_DESCRIPTION"
       />
       <EntityHeaderNew

@@ -24,6 +24,8 @@ export default function useDeleteAGSEncounter() {
     ? mutation?.error.toJSON().message
     : null;
 
+  // const error = 'Test error 1';
+
   return {
     ...mutation,
     deleteAGSEncounter,

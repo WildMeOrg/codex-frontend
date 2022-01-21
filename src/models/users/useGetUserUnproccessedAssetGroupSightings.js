@@ -27,7 +27,7 @@ export default function useGetUserUnprocessedAssetGroupSightings(
       refetchOnMount: 'always',
       onError: error => {
         console.log(
-          'Error fetching unprocessed ASGs for user ' + userId + ': ',
+          'Error fetching unprocessed AGSs for user ' + userId + ': ',
         );
         console.log(error);
         setErrorMessage(error.toJSON().message);
