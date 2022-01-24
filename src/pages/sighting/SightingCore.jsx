@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useIntl, FormattedMessage } from 'react-intl';
 import { get } from 'lodash-es';
@@ -65,11 +65,13 @@ export default function SightingCore({
     deleteSighting,
     loading: deleteInProgress,
     error: deleteSightingError,
+    onClearError: deleteSightingOnClearError,
   } = useDeleteSighting();
   const {
     deleteAssetGroupSighting,
     isLoading: deleteAgsInProgress,
     error: deleteAssetGroupSightingError,
+    onClearError: deleteAsgOnClearError,
   } = useDeleteAssetGroupSighting();
 
   /*
@@ -90,18 +92,8 @@ export default function SightingCore({
 
   useDocumentTitle(`Sighting ${id}`, { translateMessage: false });
 
-  const [localDeleteError, setLocalDeleteError] = useState(null);
   const [historyOpen, setHistoryOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-  useEffect(
-    () => {
-      const localDeleteErrorMessage = pending
-        ? deleteAssetGroupSightingError
-        : deleteSightingError;
-      setLocalDeleteError(localDeleteErrorMessage);
-    },
-    [deleteAssetGroupSightingError, deleteSightingError],
-  );
   const activeTab = window.location.hash || '#overview';
 
   if (loading) return <LoadingScreen />;
@@ -159,8 +151,14 @@ export default function SightingCore({
         deleteInProgress={
           pending ? deleteAgsInProgress : deleteInProgress
         }
-        error={localDeleteError}
-        onClearError={() => setLocalDeleteError(null)}
+        error={
+          pending
+            ? deleteAssetGroupSightingError
+            : deleteSightingError
+        }
+        onClearError={
+          pending ? deleteAsgOnClearError : deleteSightingOnClearError
+        }
         messageId="CONFIRM_DELETE_SIGHTING_DESCRIPTION"
       />
       <EntityHeaderNew

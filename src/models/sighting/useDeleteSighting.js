@@ -41,6 +41,7 @@ export default function useDeleteSighting() {
     loading,
     error,
     setError,
+    onClearError: () => setError(null),
     success,
     setSuccess,
   };

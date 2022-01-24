@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { get } from 'lodash-es';
 
 import AddIcon from '@material-ui/icons/Add';
@@ -53,12 +53,14 @@ export default function Encounters({
     deleteEncounter: deleteSightingEncounter,
     loading: deleteSightingEncounterLoading,
     error: deleteSightingEncounterError,
+    onClearError: deleteEncounterOnClearError,
   } = useDeleteEncounter();
 
   const {
     deleteAGSEncounter,
     isLoading: deleteAGSEncounterLoading,
     error: deleteAGSEncounterError,
+    onClearError: deleteAgsEncounterOnClearError,
   } = useDeleteAGSEncounter();
 
   const deleteEncounterLoading = pending
@@ -72,17 +74,6 @@ export default function Encounters({
   const [encounterToDelete, setEncounterToDelete] = useState(null);
   const [editEncounterInfo, setEditEncounterInfo] = useState(null);
   const [encounterToAssign, setEncounterToAssign] = useState(null);
-  const [localDeleteError, setLocalDeleteError] = useState(null);
-
-  useEffect(
-    () => {
-      const localDeleteErrorMessage = pending
-        ? deleteAGSEncounterError
-        : deleteSightingEncounterError;
-      setLocalDeleteError(localDeleteErrorMessage);
-    },
-    [deleteAGSEncounterError, deleteSightingEncounterError],
-  );
 
   const sightingId = get(sightingData, 'guid');
 
@@ -112,8 +103,16 @@ export default function Encounters({
           }
         }}
         deleteInProgress={deleteEncounterLoading}
-        error={localDeleteError}
-        onClearError={() => setLocalDeleteError(null)}
+        error={
+          pending
+            ? deleteAGSEncounterError
+            : deleteSightingEncounterError
+        }
+        onClearError={
+          pending
+            ? deleteAgsEncounterOnClearError
+            : deleteEncounterOnClearError
+        }
         messageId={
           encounters.length <= 1
             ? 'CANNOT_DELETE_FINAL_ENCOUNTER_DESCRIPTION'
