@@ -1,7 +1,9 @@
 import axios from 'axios';
 import { useMutation } from 'react-query';
+import { useState, useEffect } from 'react';
 
 export default function useDeleteAGSEncounter() {
+  const [displayedError, setDisplayedError] = useState(null);
   const mutation = useMutation(async ({ agsId, encounterId }) => {
     const operation = {
       op: 'remove',
@@ -24,9 +26,21 @@ export default function useDeleteAGSEncounter() {
     ? mutation?.error.toJSON().message
     : null;
 
+  useEffect(
+    () => {
+      if (error) {
+        setDisplayedError(error);
+      }
+    },
+    [error],
+  );
+
   return {
     ...mutation,
     deleteAGSEncounter,
-    error,
+    onClearError: () => {
+      setDisplayedError(null);
+    },
+    error: displayedError,
   };
 }
