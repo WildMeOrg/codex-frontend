@@ -14,7 +14,7 @@ const Core = function({
 }) {
   return (
     <MuiAlert {...rest}>
-      {children},
+      {children}
       <div style={{ display: 'flex', flexDirection: 'column' }}>
         {descriptionId ? (
           <FormattedMessage
