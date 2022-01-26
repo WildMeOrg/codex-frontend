@@ -29,6 +29,7 @@ export default function AnnotatedPhotograph({
       style={{
         background: theme.palette.grey['600'],
         position: 'relative',
+        width,
       }}
     >
       {showSelectableIcon && (

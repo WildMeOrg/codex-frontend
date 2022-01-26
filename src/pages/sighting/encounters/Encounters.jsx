@@ -228,7 +228,8 @@ export default function Encounters({
                   onAddAnnotations={() =>
                     setEncounterToAddAnnotations(encounterId)
                   }
-                  annotations={[]}
+                  annotationReferences={get(encounter, 'annotations', [])}
+                  assets={get(sightingData, 'assets', [])}
                 />
               </CardContainer>
               <CardContainer size="small">
