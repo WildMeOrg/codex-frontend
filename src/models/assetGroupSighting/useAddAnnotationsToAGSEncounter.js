@@ -1,7 +1,9 @@
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useMutation } from 'react-query';
 
 export default function useAddAnnotationsToAGSEncounter() {
+  const [displayedError, setDisplayedError] = useState(null);
   const mutation = useMutation(
     async ({ agsId, encounterId, annotationIds }) => {
       const operations = annotationIds.map(annotationId => ({
@@ -29,9 +31,21 @@ export default function useAddAnnotationsToAGSEncounter() {
     ? mutation?.error.toJSON().message
     : null;
 
+  useEffect(
+    () => {
+      if (error) {
+        setDisplayedError(error);
+      }
+    },
+    [error],
+  );
+
   return {
     ...mutation,
     addAnnotationsToAGSEncounter,
-    error,
+    onClearError: () => {
+      setDisplayedError(null);
+    },
+    error: displayedError,
   };
 }

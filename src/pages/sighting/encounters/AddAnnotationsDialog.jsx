@@ -24,12 +24,14 @@ export default function AddAnnotationsDialog({
     addAnnotationsToSightingEncounter,
     error: addToSightingEncounterError,
     isLoading: addToSightingEncounterLoading,
+    onClearError: onClearAddToSightingEncounterError,
   } = useAddAnnotationsToSightingEncounter();
 
   const {
     addAnnotationsToAGSEncounter,
     error: addToAGSEncounterError,
     isLoading: addToAGSEncounterLoading,
+    onClearError: onClearAddToAGSEncounterError,
   } = useAddAnnotationsToAGSEncounter();
 
   const error = pending
@@ -38,12 +40,16 @@ export default function AddAnnotationsDialog({
   const loading = pending
     ? addToAGSEncounterLoading
     : addToSightingEncounterLoading;
+  const onClearError = pending
+    ? onClearAddToAGSEncounterError
+    : onClearAddToSightingEncounterError;
 
   const encounterId = encounter?.guid;
 
   const open = Boolean(encounterId);
   const onCloseDialog = () => {
     setSelectedAnnotations([]);
+    if (error) onClearError();
     onClose();
   };
 

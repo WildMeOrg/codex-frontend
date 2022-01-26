@@ -1,7 +1,10 @@
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useMutation } from 'react-query';
 
 export default function useAddAnnotationsToSightingEncounter() {
+  const [displayedError, setDisplayedError] = useState(null);
+
   const mutation = useMutation(
     async ({ encounterId, annotationIds }) => {
       const operations = annotationIds.map(annotationId => ({
@@ -28,9 +31,21 @@ export default function useAddAnnotationsToSightingEncounter() {
     ? mutation?.error.toJSON().message
     : null;
 
+  useEffect(
+    () => {
+      if (error) {
+        setDisplayedError(error);
+      }
+    },
+    [error],
+  );
+
   return {
     ...mutation,
     addAnnotationsToSightingEncounter,
-    error,
+    onClearError: () => {
+      setDisplayedError(null);
+    },
+    error: displayedError,
   };
 }
