@@ -11,13 +11,13 @@ export default function useGetSiteInfo() {
     const getSiteInfo = async () => {
       try {
         const response = await axios.request({
-          url: `${__houston_url__}/api/v1/site-info/`,
+          url: `${__houston_url__}/api/v1/site-settings/site-info/`,
           method: 'get',
         });
         setData(get(response, 'data'));
         setLoading(false);
       } catch (fetchError) {
-        console.error('Error fetching /site-info/');
+        console.error('Error fetching site-info');
         console.error(fetchError);
         setError(fetchError);
         setLoading(false);
