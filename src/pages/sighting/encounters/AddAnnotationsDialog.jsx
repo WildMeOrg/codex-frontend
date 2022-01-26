@@ -15,7 +15,7 @@ import AnnotatedPhotograph from '../../../components/AnnotatedPhotograph';
 export default function AddAnnotationsDialog({
   sightingData,
   pending,
-  encounterId,
+  encounter,
   onClose,
 }) {
   const [selectedAnnotations, setSelectedAnnotations] = useState([]);
@@ -39,6 +39,8 @@ export default function AddAnnotationsDialog({
     ? addToAGSEncounterLoading
     : addToSightingEncounterLoading;
 
+  const encounterId = encounter?.guid;
+
   const open = Boolean(encounterId);
   const onCloseDialog = () => {
     setSelectedAnnotations([]);
@@ -46,13 +48,23 @@ export default function AddAnnotationsDialog({
   };
 
   const sightingId = sightingData?.guid;
+  const annotationsOnEncounter = get(
+    encounter,
+    'annotations',
+    [],
+  ).map(a => a?.guid);
   const assets = get(sightingData, 'assets', []);
   const annotations = assets.reduce((acc, asset) => {
     const assetAnnotations = get(asset, 'annotations', []);
-    const amendedAssetAnnotations = assetAnnotations.map(a => ({
-      ...a,
-      ...omit(asset, ['annotations', 'guid']),
-    }));
+    const filteredAssetAnnotations = assetAnnotations.filter(
+      a => !annotationsOnEncounter.includes(a?.guid),
+    );
+    const amendedAssetAnnotations = filteredAssetAnnotations.map(
+      a => ({
+        ...a,
+        ...omit(asset, ['annotations', 'guid']),
+      }),
+    );
     return [...acc, ...amendedAssetAnnotations];
   }, []);
 

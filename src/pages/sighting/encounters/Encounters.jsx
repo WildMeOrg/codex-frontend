@@ -138,7 +138,7 @@ export default function Encounters({
       <AddAnnotationsDialog
         sightingData={sightingData}
         pending={pending}
-        encounterId={encounterToAddAnnotations}
+        encounter={encounterToAddAnnotations}
         onClose={() => setEncounterToAddAnnotations(null)}
       />
 
@@ -226,9 +226,13 @@ export default function Encounters({
               <CardContainer>
                 <AnnotationsCard
                   onAddAnnotations={() =>
-                    setEncounterToAddAnnotations(encounterId)
+                    setEncounterToAddAnnotations(encounter)
                   }
-                  annotationReferences={get(encounter, 'annotations', [])}
+                  annotationReferences={get(
+                    encounter,
+                    'annotations',
+                    [],
+                  )}
                   assets={get(sightingData, 'assets', [])}
                 />
               </CardContainer>

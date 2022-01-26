@@ -11,8 +11,7 @@ export default function ClusteredAnnotationMenu({
   onClose,
   // onClickEditAnnotation = Function.prototype,
   onClickDelete = Function.prototype,
-})
-{
+}) {
   return (
     <Menu id={id} anchorEl={anchorEl} open={open} onClose={onClose}>
       {/* <MenuItem onClick={onClickEditAnnotation}>

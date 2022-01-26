@@ -52,18 +52,31 @@ export default function AnnotationsCard({
         anchorEl={get(anchorInfo, 'element')}
         open={Boolean(get(anchorInfo, 'element'))}
         onClose={() => setAnchorInfo(null)}
-        onClickEditAnnotation={() => { }}
-        onClickDelete={() => { }}
+        onClickEditAnnotation={() => {}}
+        onClickDelete={() => {}}
       />
       {annotationReferences.length > 0 ? (
         <Grid container spacing={2}>
-          {annotationReferences.map(annotationReference =>
-          {
-            const matchingAsset = assets.find(asset => asset?.guid === annotationReference?.asset_guid);
-            const matchingAssetAnnotations = get(matchingAsset, 'annotations', []);
-            const matchingAnnotation = matchingAssetAnnotations.find(annotation => annotation?.guid === annotationReference?.guid);
+          {annotationReferences.map(annotationReference => {
+            const matchingAsset = assets.find(
+              asset =>
+                asset?.guid === annotationReference?.asset_guid,
+            );
+            const matchingAssetAnnotations = get(
+              matchingAsset,
+              'annotations',
+              [],
+            );
+            const matchingAnnotation = matchingAssetAnnotations.find(
+              annotation =>
+                annotation?.guid === annotationReference?.guid,
+            );
             return (
-              <Grid key={matchingAnnotation?.guid} item style={{ position: 'relative' }}>
+              <Grid
+                key={matchingAnnotation?.guid}
+                item
+                style={{ position: 'relative' }}
+              >
                 <AnnotatedPhotograph
                   assetMetadata={matchingAsset}
                   annotations={[matchingAnnotation]}
@@ -72,7 +85,10 @@ export default function AnnotationsCard({
                 />
                 <IconButton
                   onClick={e =>
-                    setAnchorInfo({ element: e.currentTarget, annotation: matchingAnnotation })
+                    setAnchorInfo({
+                      element: e.currentTarget,
+                      annotation: matchingAnnotation,
+                    })
                   }
                   style={{
                     position: 'absolute',
@@ -85,9 +101,10 @@ export default function AnnotationsCard({
                   <MoreIcon />
                 </IconButton>
               </Grid>
-            )
+            );
           })}
-        </Grid>) : (
+        </Grid>
+      ) : (
         <Text
           style={{ marginTop: 4 }}
           id="CLUSTER_NO_ANNOTATIONS"
