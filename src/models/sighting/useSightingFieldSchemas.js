@@ -138,6 +138,7 @@ export default function useSightingFieldSchemas() {
           name: 'locationId',
           labelId: 'REGION',
           descriptionId: 'REGION_DESCRIPTION',
+          required: true,
           category: defaultSightingCategories.location.name,
           choices: regionChoices,
           editComponentProps: {

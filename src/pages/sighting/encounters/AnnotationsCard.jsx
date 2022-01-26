@@ -1,18 +1,109 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { get } from 'lodash-es';
+
+import { makeStyles, useTheme } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
+import IconButton from '@material-ui/core/IconButton';
+import AddIcon from '@material-ui/icons/Add';
+import MoreIcon from '@material-ui/icons/MoreVert';
 // import Skeleton from '@material-ui/lab/Skeleton';
+
 import Text from '../../../components/Text';
 import Card from '../../../components/cards/Card';
+import AnnotatedPhotograph from '../../../components/AnnotatedPhotograph';
+import ClusteredAnnotationMenu from './ClusteredAnnotationMenu';
+
+const useStyles = makeStyles({
+  photoIcon: {
+    '&:hover': {
+      backgroundColor: 'rgba(0, 0, 0, 0.54)',
+    },
+  },
+});
 
 export default function AnnotationsCard({
   title,
   titleId = 'ANNOTATIONS',
-  annotations,
+  annotationReferences,
+  assets,
+  onAddAnnotations,
 }) {
-  const loading = !annotations;
+  const theme = useTheme();
+  const classes = useStyles();
+
+  const [anchorInfo, setAnchorInfo] = useState(null);
+  const loading = !annotationReferences;
   return (
-    <Card title={title} titleId={titleId}>
-      {annotations.length > 0 ? (
-        annotations.map(annotation => <div>{annotation.id}</div>)
+    <Card
+      title={title}
+      titleId={titleId}
+      renderActions={
+        <IconButton
+          aria-label="add annotations"
+          size="small"
+          onClick={onAddAnnotations}
+        >
+          <AddIcon />
+        </IconButton>
+      }
+    >
+      <ClusteredAnnotationMenu
+        id="clustered-annotation-actions-menu"
+        anchorEl={get(anchorInfo, 'element')}
+        open={Boolean(get(anchorInfo, 'element'))}
+        onClose={() => setAnchorInfo(null)}
+        onClickEditAnnotation={() => {}}
+        onClickDelete={() => {}}
+      />
+      {annotationReferences.length > 0 ? (
+        <Grid container spacing={2}>
+          {annotationReferences.map(annotationReference => {
+            const matchingAsset = assets.find(
+              asset =>
+                asset?.guid === annotationReference?.asset_guid,
+            );
+            const matchingAssetAnnotations = get(
+              matchingAsset,
+              'annotations',
+              [],
+            );
+            const matchingAnnotation = matchingAssetAnnotations.find(
+              annotation =>
+                annotation?.guid === annotationReference?.guid,
+            );
+            return (
+              <Grid
+                key={matchingAnnotation?.guid}
+                item
+                style={{ position: 'relative' }}
+              >
+                <AnnotatedPhotograph
+                  assetMetadata={matchingAsset}
+                  annotations={[matchingAnnotation]}
+                  onClick={Function.prototype}
+                  width={248}
+                />
+                <IconButton
+                  onClick={e =>
+                    setAnchorInfo({
+                      element: e.currentTarget,
+                      annotation: matchingAnnotation,
+                    })
+                  }
+                  style={{
+                    position: 'absolute',
+                    top: 12,
+                    right: 12,
+                    color: theme.palette.common.white,
+                  }}
+                  className={classes.photoIcon}
+                >
+                  <MoreIcon />
+                </IconButton>
+              </Grid>
+            );
+          })}
+        </Grid>
       ) : (
         <Text
           style={{ marginTop: 4 }}

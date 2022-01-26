@@ -2,11 +2,13 @@ import React, { useState, useMemo } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
 import { get, capitalize } from 'lodash-es';
+import { useQueryClient } from 'react-query';
 
 import SexIcon from '@material-ui/icons/Nature';
 import AgeIcon from '@material-ui/icons/Height';
 import StatusIcon from '@material-ui/icons/LocalHospital';
 
+import { getIndividualQueryKey } from '../../constants/queryKeys';
 import useIndividual from '../../models/individual/useIndividual';
 import useDeleteIndividual from '../../models/individual/useDeleteIndividual';
 import usePatchIndividual from '../../models/individual/usePatchIndividual';
@@ -63,27 +65,35 @@ const items = [
 
 export default function Individual() {
   const { id } = useParams();
-  const { data, refresh, loading } = useIndividual(id);
+  const queryClient = useQueryClient();
+  const { data: individualData, statusCode, loading } = useIndividual(
+    id,
+  );
   const history = useHistory();
   const fieldSchemas = useIndividualFieldSchemas();
 
+  function refreshIndividualData() {
+    const queryKey = getIndividualQueryKey(id);
+    queryClient.invalidateQueries(queryKey);
+  }
+
   const metadata = useMemo(
     () => {
-      if (!data || !fieldSchemas) return null;
+      if (!individualData || !fieldSchemas) return null;
       return fieldSchemas.map(schema => ({
         ...schema,
-        value: schema.getValue(schema, data),
+        value: schema.getValue(schema, individualData),
       }));
     },
-    [data, fieldSchemas],
+    [individualData, fieldSchemas],
   );
 
   const defaultName = get(
-    data,
+    individualData,
     ['names', 'defaultName'],
     'Unnamed individual',
   );
-  const nickname = get(data, ['names', 'nickname']);
+  const nickname = individualData?.names?.nickname;
 
   const {
     deleteIndividual,
@@ -108,8 +118,7 @@ export default function Individual() {
 
   if (loading) return <LoadingScreen />;
 
-  const individual = null;
-  if (!individual)
+  if (statusCode === 404)
     return (
       <SadScreen
         variant="notFoundOcean"
@@ -124,7 +133,7 @@ export default function Individual() {
         onClose={() => setEditingProfile(false)}
         individualId={id}
         metadata={metadata}
-        refreshIndividualData={refresh}
+        refreshIndividualData={refreshIndividualData}
       />
       <ConfirmDelete
         open={Boolean(deleteEncounterId)}
@@ -137,7 +146,7 @@ export default function Individual() {
 
           if (deleteSuccessful) {
             setDeleteEncounterId(null);
-            refresh();
+            refreshIndividualData();
           }
         }}
         deleteInProgress={patchInProgress}
@@ -208,7 +217,7 @@ export default function Individual() {
             title={
               <FormattedMessage
                 id="SIGHTINGS_OF"
-                values={{ name: individual.name }}
+                values={{ name: individualData?.name }}
               />
             }
             columns={['date', 'submitter', 'location', 'actions']}
