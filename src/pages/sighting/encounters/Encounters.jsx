@@ -54,24 +54,19 @@ export default function Encounters({
     deleteEncounter: deleteSightingEncounter,
     loading: deleteSightingEncounterLoading,
     error: deleteSightingEncounterError,
-    setError: setDeleteEncounterError,
+    onClearError: deleteEncounterOnClearError,
   } = useDeleteEncounter();
 
   const {
     deleteAGSEncounter,
     isLoading: deleteAGSEncounterLoading,
     error: deleteAGSEncounterError,
+    onClearError: deleteAgsEncounterOnClearError,
   } = useDeleteAGSEncounter();
 
   const deleteEncounterLoading = pending
     ? deleteAGSEncounterLoading
     : deleteSightingEncounterLoading;
-  const deleteEncounterError = pending
-    ? deleteAGSEncounterError
-    : deleteSightingEncounterError;
-  const onClearDeleteEncounterError = pending
-    ? undefined
-    : () => setDeleteEncounterError(null);
 
   const [
     createIndividualEncounterId,
@@ -113,8 +108,16 @@ export default function Encounters({
           }
         }}
         deleteInProgress={deleteEncounterLoading}
-        error={deleteEncounterError}
-        onClearError={onClearDeleteEncounterError}
+        error={
+          pending
+            ? deleteAGSEncounterError
+            : deleteSightingEncounterError
+        }
+        onClearError={
+          pending
+            ? deleteAgsEncounterOnClearError
+            : deleteEncounterOnClearError
+        }
         messageId={
           encounters.length <= 1
             ? 'CANNOT_DELETE_FINAL_ENCOUNTER_DESCRIPTION'

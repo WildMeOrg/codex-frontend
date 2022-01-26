@@ -52,6 +52,7 @@ export default function useDeleteEncounter() {
     deleteEncounter,
     loading,
     error,
+    onClearError: () => setError(null),
     setError,
     success,
     setSuccess,
