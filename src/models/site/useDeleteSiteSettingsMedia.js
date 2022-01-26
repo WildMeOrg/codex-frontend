@@ -17,7 +17,7 @@ export default function useDeleteSiteSettingsMedia() {
     try {
       setLoading(true);
       const response = await axios({
-        url: `${__houston_url__}/api/v1/site-settings/${data}`,
+        url: `${__houston_url__}/api/v1/site-settings/file/${data}`,
         withCredentials: true,
         method: 'delete',
       });

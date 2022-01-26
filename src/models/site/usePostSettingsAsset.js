@@ -16,7 +16,8 @@ export default function usePostSettingsAsset() {
     try {
       setLoading(true);
       const response = await axios({
-        url: `${__houston_url__}/api/v1/site-settings/`,
+        url: `${__houston_url__}/api/v1/site-settings/file
+`,
         withCredentials: true,
         method: 'post',
         data,
