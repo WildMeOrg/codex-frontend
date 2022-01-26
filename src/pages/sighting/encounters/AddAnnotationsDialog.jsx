@@ -45,7 +45,7 @@ export default function AddAnnotationsDialog({
     onClose();
   };
 
-  const sightingId = get(sightingData, 'guid');
+  const sightingId = sightingData?.guid;
   const assets = get(sightingData, 'assets', []);
   const annotations = assets.reduce((acc, asset) => {
     const assetAnnotations = get(asset, 'annotations', []);

@@ -535,7 +535,6 @@
   "SIGHTING_NOT_FOUND_DESCRIPTION": "Sighting lookup failed. There may be a problem with the URL or the sighting may no longer exist.",
   "BULK_IMPORT_NOT_FOUND": "Bulk import not found",
   "BULK_IMPORT_NOT_FOUND_DESCRIPTION": "Bulk import lookup failed. There may be a problem with the URL or the bulk import may no longer exist.",
-  "LOCATION_FIELD_ERROR": "At least one location field is required.",
   "ADDITIONAL_MEDIA": "Additional Media",
   "INDIVIDUAL_INFORMATION": "Individual information",
   "TERMS_CHECKBOX_1": "I agree to the ",

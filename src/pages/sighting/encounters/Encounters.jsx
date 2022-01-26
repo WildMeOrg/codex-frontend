@@ -163,7 +163,7 @@ export default function Encounters({
         return (
           <div
             style={{ marginTop: i > 0 ? 20 : 0 }}
-            key={encounter.id}
+            key={encounterId}
           >
             <div
               style={{

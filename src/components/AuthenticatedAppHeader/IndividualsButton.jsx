@@ -157,9 +157,10 @@ export default function IndividualsButton() {
           {mappableSearchResults.map(result => {
             const resultId = get(result, 'id');
             const aliasString = capitalize(get(result, 'alias'));
-            let nameString = get(result, 'name', '');
-            if (aliasString)
-              nameString = `${nameString} (${aliasString})`;
+            const nameString = get(result, 'name', '');
+            const displayString = aliasString
+              ? `${nameString} (${aliasString})`
+              : nameString;
             const alias = get(result, 'alias') || '-';
             const avatarLetter = alias[0].toUpperCase();
             const genusString = capitalize(get(result, 'genus', ''));
@@ -181,7 +182,7 @@ export default function IndividualsButton() {
                       href={`/individuals/${resultId}`}
                       noUnderline
                     >
-                      {nameString}
+                      {displayString}
                     </Link>
                   }
                   secondary={

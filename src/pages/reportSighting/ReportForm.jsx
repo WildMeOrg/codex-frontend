@@ -100,7 +100,6 @@ export default function ReportForm({
   const [dialogOpen, setDialogOpen] = useState(false);
   const [incompleteFields, setIncompleteFields] = useState([]);
   const [termsError, setTermsError] = useState(false);
-  const [locationFieldError, setLocationFieldError] = useState(false);
 
   const [sightingFormValues, setSightingFormValues] = useState({});
   const [
@@ -147,10 +146,7 @@ export default function ReportForm({
   } = usePostAssetGroup();
 
   const showErrorAlertBox =
-    incompleteFields.length > 0 ||
-    termsError ||
-    locationFieldError ||
-    postAssetGroupError;
+    incompleteFields.length > 0 || termsError || postAssetGroupError;
 
   return (
     <>
@@ -246,9 +242,6 @@ export default function ReportForm({
               <Text variant="body2">{postAssetGroupError}</Text>
             )}
             {termsError && <Text variant="body2" id="TERMS_ERROR" />}
-            {locationFieldError && (
-              <Text variant="body2" id="LOCATION_FIELD_ERROR" />
-            )}
             {incompleteFields.map(incompleteField => (
               <p
                 style={{ margin: '4px 0' }}
@@ -291,17 +284,8 @@ export default function ReportForm({
               // check that terms and conditions were accepted
               setTermsError(!acceptedTerms);
 
-              // check that at least one location field is present
-              const oneLocationFieldPresent =
-                sightingFormValues.locationId ||
-                sightingFormValues.verbatimLocality ||
-                get(sightingFormValues, ['gps', 0]);
-              setLocationFieldError(!oneLocationFieldPresent);
-
               const formValid =
-                nextIncompleteFields.length === 0 &&
-                acceptedTerms &&
-                oneLocationFieldPresent;
+                nextIncompleteFields.length === 0 && acceptedTerms;
 
               if (formValid) {
                 const report =
