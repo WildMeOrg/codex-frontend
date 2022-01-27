@@ -64,6 +64,8 @@ function recordHook(record) {
 }
 
 export default function BulkReportForm({ assetReferences }) {
+  // console.log('deleteMe got here a1 and assetReferences are: ');
+  // console.log(assetReferences);
   const theme = useTheme();
   const history = useHistory();
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -239,6 +241,9 @@ export default function BulkReportForm({ assetReferences }) {
                 sightingData,
                 assetReferences,
               );
+              console.log('deleteMe got here a2 and sightings are: ');
+              console.log(sightings);
+              debugger;
               const assetGroupData = await postAssetGroup({
                 description: 'Bulk import from user',
                 uploadType: 'bulk',
