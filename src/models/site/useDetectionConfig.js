@@ -11,7 +11,7 @@ export default function useDetectionConfig() {
     const getDetectionConfig = async () => {
       try {
         const response = await axios.request({
-          url: `${__houston_url__}/api/v1/config/detection/`,
+          url: `${__houston_url__}/api/v1/site-settings/detection`,
           method: 'get',
         });
         setData(get(response, ['data', 'detection_config']));

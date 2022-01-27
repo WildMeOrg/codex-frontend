@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import axios from 'axios';
 import { get } from 'lodash-es';
@@ -27,7 +28,7 @@ export default function useRemoveCustomField() {
     try {
       setLoading(true);
       const patchResponse = await axios({
-        url: `${__houston_url__}/api/v1/configuration/default`,
+        url: `${__houston_url__}/api/v1/site-settings/main`,
         withCredentials: true,
         method: 'patch',
         data: [operation],

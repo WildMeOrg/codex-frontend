@@ -20,6 +20,7 @@ import AnnotationsCard from './AnnotationsCard';
 import EditEncounterMetadata from './EditEncounterMetadata';
 import CreateIndividualModal from './CreateIndividualModal';
 import ManuallyAssignModal from './ManuallyAssignModal';
+import AddAnnotationsDialog from './AddAnnotationsDialog';
 
 export default function Encounters({
   sightingData,
@@ -74,6 +75,10 @@ export default function Encounters({
   const [encounterToDelete, setEncounterToDelete] = useState(null);
   const [editEncounterInfo, setEditEncounterInfo] = useState(null);
   const [encounterToAssign, setEncounterToAssign] = useState(null);
+  const [
+    encounterToAddAnnotations,
+    setEncounterToAddAnnotations,
+  ] = useState(null);
 
   const sightingId = get(sightingData, 'guid');
 
@@ -133,6 +138,13 @@ export default function Encounters({
         onClose={() => setEncounterToAssign(null)}
       />
 
+      <AddAnnotationsDialog
+        sightingData={sightingData}
+        pending={pending}
+        encounter={encounterToAddAnnotations}
+        onClose={() => setEncounterToAddAnnotations(null)}
+      />
+
       <EditEncounterMetadata
         open={Boolean(editEncounterInfo)}
         sightingId={sightingId}
@@ -154,20 +166,20 @@ export default function Encounters({
         return (
           <div
             style={{ marginTop: i > 0 ? 20 : 0 }}
-            key={encounter.id}
+            key={encounterId}
           >
             <div
               style={{
-                margin: '0 30px',
+                margin: '0 30px 4px 30px',
                 display: 'flex',
-                justifyContent: 'space-between',
                 alignItems: 'center',
               }}
             >
               <Text
                 id="ANIMAL_CLUSTER_LABEL"
-                variant="h6"
+                variant="h5"
                 values={{ i: i + 1 }}
+                style={{ marginRight: 20 }}
               />
               <div style={{ display: 'flex', alignItems: 'center' }}>
                 <ButtonMenu
@@ -215,7 +227,17 @@ export default function Encounters({
             </div>
             <div style={{ display: 'flex', flexWrap: 'wrap' }}>
               <CardContainer>
-                <AnnotationsCard annotations={[]} />
+                <AnnotationsCard
+                  onAddAnnotations={() =>
+                    setEncounterToAddAnnotations(encounter)
+                  }
+                  annotationReferences={get(
+                    encounter,
+                    'annotations',
+                    [],
+                  )}
+                  assets={get(sightingData, 'assets', [])}
+                />
               </CardContainer>
               <CardContainer size="small">
                 <MetadataCard

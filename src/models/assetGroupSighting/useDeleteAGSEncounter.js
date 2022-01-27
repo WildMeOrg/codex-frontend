@@ -1,6 +1,6 @@
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useMutation } from 'react-query';
-import { useState, useEffect } from 'react';
 
 export default function useDeleteAGSEncounter() {
   const [displayedError, setDisplayedError] = useState(null);

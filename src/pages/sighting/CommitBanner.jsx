@@ -1,5 +1,5 @@
 import React from 'react';
-import { get, flatten, every } from 'lodash-es';
+import { get, flatten } from 'lodash-es';
 
 import useCommitAssetGroupSighting from '../../models/assetGroupSighting/useCommitAssetGroupSighting';
 import Button from '../../components/Button';
@@ -23,11 +23,17 @@ export default function CommitBanner({
   if (!pending) return null;
 
   const assets = get(sightingData, 'assets', []);
-  const annotations = flatten(
+  const encounters = get(sightingData, 'encounters', []);
+  const annotationsOnAssets = flatten(
     assets.map(asset => get(asset, 'annotations')),
   );
 
-  const allAnnotationsAssigned = every(annotations, 'encounter_guid');
+  const annotationsOnEncounters = flatten(
+    encounters.map(encounter => get(encounter, 'annotations')),
+  );
+
+  const allAnnotationsAssigned =
+    annotationsOnAssets.length === annotationsOnEncounters.length;
   const detectionComplete = Boolean(
     sightingData?.curation_start_time,
   );

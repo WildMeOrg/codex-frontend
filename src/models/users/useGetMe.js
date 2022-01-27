@@ -23,6 +23,7 @@ export default function useGetMe() {
     },
     {
       staleTime: Infinity,
+      cacheTime: Infinity,
       retry: false,
     },
   );
@@ -30,6 +31,7 @@ export default function useGetMe() {
   const { data, isLoading, error } = result;
 
   return {
+    ...result,
     data: get(data, 'data'),
     loading: isLoading,
     error: error ? error.toJSON().message : null,

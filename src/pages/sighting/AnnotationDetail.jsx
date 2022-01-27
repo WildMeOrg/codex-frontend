@@ -211,7 +211,17 @@ export default function AnnotationDetail({
               )}
             </Keywords>
           </div>
-          <Text variant="h6">{`Viewpoint: ${viewpointLabel}`}</Text>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              marginTop: 8,
+            }}
+          >
+            <Text variant="h6">{`Viewpoint: ${viewpointLabel}`}</Text>
+            <Text variant="h6">{`Annotation class: ${annotation?.ia_class ||
+              'N/A'}`}</Text>
+          </div>
         </div>
       </div>
     </StandardDialog>

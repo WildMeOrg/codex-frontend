@@ -9,7 +9,7 @@ export default function useSiteSettings() {
     queryKeys.settingsSchema,
     async () => {
       const response = await axios({
-        url: `${__houston_url__}/api/v1/configurationDefinition/default/__bundle_setup`,
+        url: `${__houston_url__}/api/v1/site-settings/definition/main/block`,
         timeout: 2000,
       });
       return get(response, 'data.response.configuration');
@@ -23,7 +23,7 @@ export default function useSiteSettings() {
     queryKeys.settingsConfig,
     async () => {
       const response = await axios(
-        `${__houston_url__}/api/v1/configuration/default/__bundle_setup`,
+        `${__houston_url__}/api/v1/site-settings/main/block`,
       );
       return get(response, 'data.response.configuration');
     },

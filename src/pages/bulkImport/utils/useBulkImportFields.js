@@ -7,6 +7,7 @@ import {
   sightingOmitList,
   encounterOmitList,
 } from '../constants/bulkReportConstants';
+import timePrecisionMap from '../../../constants/timePrecisionMap';
 import useOptions from '../../../hooks/useOptions';
 
 const requiredValidator = {
@@ -46,17 +47,7 @@ export default function useBulkImportFields() {
         if (f.name === 'locationId') {
           additionalProperties.type = 'select';
           additionalProperties.options = regionOptions;
-          additionalProperties.validators = [
-            {
-              validate: 'required_without_all',
-              fields: [
-                'decimalLatitude',
-                'decimalLongitude',
-                'verbatimLocality',
-              ],
-              error: 'At least one location field is required.',
-            },
-          ];
+          additionalProperties.validators = [requiredValidator];
         }
         return {
           label: f.labelId
@@ -167,6 +158,11 @@ export default function useBulkImportFields() {
       label: intl.formatMessage({ id: 'SIGHTING_TIME_SPECIFICITY' }),
       key: 'timeSpecificity',
       validators: [requiredValidator],
+      type: 'select',
+      options: Object.keys(timePrecisionMap).map(t => ({
+        label: t,
+        value: t,
+      })),
     },
     {
       label: intl.formatMessage({ id: 'TIMEZONE' }),

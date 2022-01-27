@@ -10,10 +10,10 @@ import CreateAdminUser from './pages/setup/CreateAdminUser';
 
 export default function FrontDesk({ adminUserInitialized }) {
   // Display a loading spinner while waiting for authentication status from the server.
-  const { loading, data, error } = useGetMe();
+  const { isFetched, data, error } = useGetMe();
   const theme = useTheme();
 
-  if (!loading && !adminUserInitialized) return <CreateAdminUser />;
+  if (isFetched && !adminUserInitialized) return <CreateAdminUser />;
   if (data) return <AuthenticatedSwitch />;
   if (error) return <UnauthenticatedSwitch />;
 
