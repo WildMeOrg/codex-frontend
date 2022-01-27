@@ -34,14 +34,8 @@ export default function prepareAssetGroup(
   encounters,
   assetReferences,
 ) {
-  console.log('deleteMe got here a1.5 and encounters are: ');
-  console.log(encounters);
   const sightings = {};
   const simpleAssetReferences = assetReferences.map(a => a.path);
-  console.log(
-    'deleteMe got here a1.51 and simpleAssetReferences is: ',
-  );
-  console.log(simpleAssetReferences);
   encounters.forEach(encounter => {
     const newEncounter = updateTimes(encounter);
 
@@ -51,25 +45,21 @@ export default function prepareAssetGroup(
       'assetReferences',
       '',
     );
-    console.log(
-      'deleteMe got here a1.52 and sightingAssetInput is: ',
-    );
-    console.log(sightingAssetInput);
     const sightingAssets = sightingAssetInput
       .split(',')
       .map(a => a.trim());
     const matchingAssets = simpleAssetReferences.filter(path =>
       sightingAssets.includes(path),
     );
-    console.log('deleteMe got here a 1.6 and matchingAssets are: ');
-    console.log(matchingAssets);
-
     if (!sightings[sightingId]) sightings[sightingId] = {};
-    sightings[sightingId].assetReferences = matchingAssets;
-    console.log(
-      'deleteMe got here a 1.7 and sightings object after matchingAssets is: ',
+    const assetReferencesAlreadyExist = Boolean(
+      sightings[sightingId]?.assetReferences,
     );
-    console.log(sightings);
+    if (assetReferencesAlreadyExist) {
+      sightings[sightingId].assetReferences.push(...matchingAssets);
+    } else {
+      sightings[sightingId].assetReferences = matchingAssets;
+    }
     assignIfPresent(
       newEncounter,
       sightings[sightingId],
@@ -112,7 +102,7 @@ export default function prepareAssetGroup(
 
     const finalEncounter = omit(newEncounter, [
       'sightingId',
-      // 'assetReferences', //TODO maybe the problem? deleteMe once not useful
+      'assetReferences',
       'timeYear',
       'timeMonth',
       'timeDay',

@@ -45,7 +45,6 @@ export function prepareBasicReport(
     ],
     customFields: customSightingDictionary,
   };
-
   delete report.gps;
   delete report.specifiedTime;
 
