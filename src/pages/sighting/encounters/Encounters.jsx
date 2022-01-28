@@ -228,6 +228,8 @@ export default function Encounters({
             <div style={{ display: 'flex', flexWrap: 'wrap' }}>
               <CardContainer>
                 <AnnotationsCard
+                  pending={pending}
+                  sightingId={sightingId}
                   onAddAnnotations={() =>
                     setEncounterToAddAnnotations(encounter)
                   }

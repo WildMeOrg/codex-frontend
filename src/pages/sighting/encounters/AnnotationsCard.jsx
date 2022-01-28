@@ -27,6 +27,8 @@ export default function AnnotationsCard({
   annotationReferences,
   assets,
   onAddAnnotations,
+  pending,
+  sightingId,
 }) {
   const theme = useTheme();
   const classes = useStyles();
@@ -49,11 +51,12 @@ export default function AnnotationsCard({
     >
       <ClusteredAnnotationMenu
         id="clustered-annotation-actions-menu"
-        anchorEl={get(anchorInfo, 'element')}
-        open={Boolean(get(anchorInfo, 'element'))}
+        anchorEl={anchorInfo?.element}
+        open={Boolean(anchorInfo?.element)}
         onClose={() => setAnchorInfo(null)}
-        onClickEditAnnotation={() => {}}
-        onClickDelete={() => {}}
+        annotation={anchorInfo?.annotation}
+        pending={pending}
+        sightingId={sightingId}
       />
       {annotationReferences.length > 0 ? (
         <Grid container spacing={2}>

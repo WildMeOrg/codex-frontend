@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import axios from 'axios';
 import { get } from 'lodash-es';
@@ -42,7 +41,7 @@ export default function usePutSiteSettings() {
   const putSiteSetting = async (property, data) => {
     try {
       const response = await axios({
-	url: `${__houston_url__}/api/v1/site-settings/main/${property}`,
+        url: `${__houston_url__}/api/v1/site-settings/main/${property}`,
         withCredentials: true,
         method: 'post',
         data: {

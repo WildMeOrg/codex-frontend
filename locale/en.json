@@ -21,6 +21,8 @@
   "SIGHTING_COMMIT_DESCRIPTION": "Now that all annotations are assigned to animals, this sighting can be committed. Commit this sighting to have it appear in searches and match results.",
   "REGION_LABEL_NOT_FOUND": "Region label not found",
   "REGION_NOT_SET": "Region not set",
+  "REMOVE_ANNOTATION_FROM_CLUSTER": "Remove annotation",
+  "REMOVE_ANNOTATION_FROM_CLUSTER_CONFIRMATION": "Are you sure you want to remove this annotation from the current animal cluster?",
   "VALUE_NOT_SET": "Value not set",
   "OPTION_LABEL_NOT_FOUND": "Option label not found",
   "SITE_THEME": "Site theme",
