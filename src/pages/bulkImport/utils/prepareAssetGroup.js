@@ -51,9 +51,15 @@ export default function prepareAssetGroup(
     const matchingAssets = simpleAssetReferences.filter(path =>
       sightingAssets.includes(path),
     );
-
     if (!sightings[sightingId]) sightings[sightingId] = {};
-    sightings[sightingId].assetReferences = matchingAssets;
+    const assetReferencesAlreadyExist = Boolean(
+      sightings[sightingId]?.assetReferences,
+    );
+    if (assetReferencesAlreadyExist) {
+      sightings[sightingId].assetReferences.push(...matchingAssets);
+    } else {
+      sightings[sightingId].assetReferences = matchingAssets;
+    }
     assignIfPresent(
       newEncounter,
       sightings[sightingId],
