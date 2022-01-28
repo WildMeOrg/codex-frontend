@@ -62,8 +62,6 @@ export default function MoveAnnotationDialog({
   const sightingId = sightingData?.guid;
   const encounters = get(sightingData, 'encounters', []);
 
-  console.log(selectedEncounter);
-
   const selectedEncounterAnnotations = get(
     selectedEncounter,
     'annotations',
@@ -71,6 +69,8 @@ export default function MoveAnnotationDialog({
   );
   const noAnnotations =
     selectedEncounter && selectedEncounterAnnotations.length === 0;
+
+  const showSelect = encounters.length > 1;
 
   return (
     <StandardDialog
@@ -87,37 +87,45 @@ export default function MoveAnnotationDialog({
       }}
     >
       <DialogContent>
-        <FormControl style={{ width: 240 }}>
-          <InputLabel>
-            <FormattedMessage id="SELECT_NEW_CLUSTER" />
-          </InputLabel>
-          <Select
-            labelId="move-encounter-selector-label"
-            id="move-encounter-selector"
-            value={selectedEncounter}
-            onChange={e => setSelectedEncounter(e.target.value)}
-          >
-            {encounters.map((encounter, i) => {
-              const encounterAnnotations = get(
-                encounter,
-                'annotations',
-                [],
-              );
-              const exclude = encounterAnnotations.find(
-                a => a?.guid === annotation?.guid,
-              );
-              if (exclude) return null;
-              return (
-                <MenuItem value={encounter}>
-                  <FormattedMessage
-                    id="ANIMAL_CLUSTER_LABEL"
-                    values={{ i: i + 1 }}
-                  />
-                </MenuItem>
-              );
-            })}
-          </Select>
-        </FormControl>
+        {showSelect ? (
+          <FormControl style={{ width: 240 }}>
+            <InputLabel>
+              <FormattedMessage id="SELECT_NEW_CLUSTER" />
+            </InputLabel>
+            <Select
+              labelId="move-encounter-selector-label"
+              id="move-encounter-selector"
+              value={selectedEncounter}
+              onChange={e => setSelectedEncounter(e.target.value)}
+            >
+              {encounters.map((encounter, i) => {
+                const encounterAnnotations = get(
+                  encounter,
+                  'annotations',
+                  [],
+                );
+                const exclude = encounterAnnotations.find(
+                  a => a?.guid === annotation?.guid,
+                );
+                if (exclude) return null;
+                return (
+                  <MenuItem key={encounter?.guid} value={encounter}>
+                    <FormattedMessage
+                      id="ANIMAL_CLUSTER_LABEL"
+                      values={{ i: i + 1 }}
+                    />
+                  </MenuItem>
+                );
+              })}
+            </Select>
+          </FormControl>
+        ) : (
+          <Text
+            style={{ margin: '8px 0 20px 8px' }}
+            variant="body2"
+            id="NO_DESTINATION_CLUSTERS"
+          />
+        )}
         <Grid container spacing={2} style={{ margin: '20px 0' }}>
           {selectedEncounterAnnotations.map(a => {
             const assetGuid = a?.asset_guid;
