@@ -229,7 +229,7 @@ export default function Encounters({
               <CardContainer>
                 <AnnotationsCard
                   pending={pending}
-                  sightingId={sightingId}
+                  sightingData={sightingData}
                   onAddAnnotations={() =>
                     setEncounterToAddAnnotations(encounter)
                   }

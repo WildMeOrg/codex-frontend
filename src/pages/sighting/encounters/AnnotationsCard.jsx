@@ -28,7 +28,7 @@ export default function AnnotationsCard({
   assets,
   onAddAnnotations,
   pending,
-  sightingId,
+  sightingData,
 }) {
   const theme = useTheme();
   const classes = useStyles();
@@ -56,7 +56,7 @@ export default function AnnotationsCard({
         onClose={() => setAnchorInfo(null)}
         annotation={anchorInfo?.annotation}
         pending={pending}
-        sightingId={sightingId}
+        sightingData={sightingData}
       />
       {annotationReferences.length > 0 ? (
         <Grid container spacing={2}>

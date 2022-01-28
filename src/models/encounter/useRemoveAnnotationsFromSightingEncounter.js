@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useMutation } from 'react-query';
 
+/* Note: this API is currently unsupported. Leaving this hook here for future use 
+in case we change our mind about supporting this functionality. */
 export default function useRemoveAnnotationsFromSightingEncounter() {
   const [displayedError, setDisplayedError] = useState(null);
 
