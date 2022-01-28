@@ -4,7 +4,7 @@ import { formatHoustonTime } from '../../../utils/formatters';
 
 function updateTimes(encounter) {
   const year = get(encounter, 'timeYear', 0);
-  const month = get(encounter, 'timeMonth', 0);
+  const month = get(encounter, 'timeMonth', 1) - 1;
   const day = get(encounter, 'timeDay', 1);
   const hours = get(encounter, 'timeHour', 1);
   const minutes = get(encounter, 'timeMinutes', 0);
@@ -81,8 +81,9 @@ export default function prepareAssetGroup(
     );
 
     const time = get(sightings, [sightingId, 'time']);
-    const timeAfter = newEncounter.time < time;
-    if (!time || timeAfter) {
+    // const timeAfter = newEncounter.time < time; // removed for MVP, where we just take the first time and ignore the rest for the same sightingId
+    if (!time) {
+      // || timeAfter removed this condition for MVP, where we just take the first time and ignore the rest for the same sightingId
       assignIfPresent(
         newEncounter,
         sightings[sightingId],
