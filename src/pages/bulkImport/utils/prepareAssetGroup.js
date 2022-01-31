@@ -35,6 +35,7 @@ export default function prepareAssetGroup(
   assetReferences,
 ) {
   const sightings = {};
+  const sightingTimeSpecificityTracker = {};
   const simpleAssetReferences = assetReferences.map(a => a.path);
   encounters.forEach(encounter => {
     const newEncounter = updateTimes(encounter);
@@ -80,11 +81,15 @@ export default function prepareAssetGroup(
       sightings[sightingId],
       'verbatimLocality',
     );
-    assignIfPresent(
-      newEncounter,
-      sightings[sightingId],
-      'timeSpecificity',
-    );
+
+    if (!sightingTimeSpecificityTracker[sightingId]) {
+      assignIfPresent(
+        newEncounter,
+        sightings[sightingId],
+        'timeSpecificity',
+      );
+      sightingTimeSpecificityTracker[sightingId] = true;
+    }
 
     const time = get(sightings, [sightingId, 'time']);
     // const timeAfter = newEncounter.time < time; // removed for MVP, where we just take the first time and ignore the rest for the same sightingId
