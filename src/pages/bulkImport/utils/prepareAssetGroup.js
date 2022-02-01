@@ -88,7 +88,7 @@ export default function prepareAssetGroup(
         sightings[sightingId],
         'timeSpecificity',
       );
-      sightingTimeSpecificityTracker[sightingId] = 1;
+      sightingTimeSpecificityTracker[sightingId] = true;
     }
 
     const time = get(sightings, [sightingId, 'time']);
