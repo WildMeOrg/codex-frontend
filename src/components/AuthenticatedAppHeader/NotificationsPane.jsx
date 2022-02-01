@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useIntl } from 'react-intl';
 import { get } from 'lodash-es';
 
 import Grid from '@material-ui/core/Grid';
@@ -21,6 +22,7 @@ export default function NotificationsPane({
   notificationsLoading,
   refreshNotifications,
 }) {
+  const intl = useIntl();
   const [
     activeCollaborationNotification,
     setActiveCollaborationNotification,
@@ -73,9 +75,27 @@ export default function NotificationsPane({
                 >
                   <div style={{ display: 'flex' }}>
                     <Avatar src={shane} variant="circular" />
-                    <Text style={{ maxWidth: 200, margin: '0 20px' }}>
-                      {`${senderName} sent you a collaboration request`}
-                    </Text>
+                    {senderName !== 'N/A' && (
+                      <Text
+                        style={{ maxWidth: 200, margin: '0 20px' }}
+                      >
+                        {`${senderName}`}
+                        {intl.formatMessage({
+                          id: 'SENT_YOU_A_COLLABORATION_REQUEST',
+                        })}
+                      </Text>
+                    )}
+                    {senderName === 'N/A' &&
+                    !get(notification, 'sender_guid') && ( // probably fine with one or the other check?
+                        <Text
+                          style={{ maxWidth: 200, margin: '0 20px' }}
+                        >
+                          {intl.formatMessage({
+                            id:
+                              'A_COLLABORATION_WAS_CREATED_ON_YOUR_BEHALF',
+                          })}
+                        </Text>
+                      )}
                   </div>
                   <Button
                     onClick={async () => {
