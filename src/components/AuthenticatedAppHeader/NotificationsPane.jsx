@@ -7,6 +7,7 @@ import Popover from '@material-ui/core/Popover';
 import Avatar from '@material-ui/core/Avatar';
 import Divider from '@material-ui/core/Divider';
 import LinearProgress from '@material-ui/core/LinearProgress';
+import { useTheme } from '@material-ui/core/styles';
 
 import usePatchNotification from '../../models/notification/usePatchNotification';
 import CollaborationRequestDialog from '../dialogs/CollaborationRequestDialog';
@@ -14,6 +15,7 @@ import Link from '../Link';
 import Text from '../Text';
 import Button from '../Button';
 import shane from '../../assets/shane.jpg';
+import { calculatePrettyTimeElapsedSince } from '../../utils/formatters';
 
 export default function NotificationsPane({
   anchorEl,
@@ -23,6 +25,7 @@ export default function NotificationsPane({
   refreshNotifications,
 }) {
   const intl = useIntl();
+  const theme = useTheme();
   const [
     activeCollaborationNotification,
     setActiveCollaborationNotification,
@@ -62,6 +65,10 @@ export default function NotificationsPane({
               'sender_name',
               'Unnamed User',
             );
+            const createdDate = notification?.created;
+            const timeSince = calculatePrettyTimeElapsedSince(
+              createdDate,
+            );
             return (
               <React.Fragment key={notification.guid}>
                 <Grid
@@ -86,9 +93,11 @@ export default function NotificationsPane({
                       </Text>
                     )}
                     {senderName === 'N/A' &&
-                    !get(notification, 'sender_guid') && ( // probably fine with one or the other check?
+                      !get(notification, 'sender_guid') && (
                         <Text
-                          style={{ maxWidth: 200, margin: '0 20px' }}
+                          style={
+                            { maxWidth: 200, margin: '0 20px' } // probably fine with one or the other check above?
+                          }
                         >
                           {intl.formatMessage({
                             id:
@@ -108,6 +117,24 @@ export default function NotificationsPane({
                     style={{ maxHeight: 40 }}
                     id="VIEW"
                   />
+                </Grid>
+                <Grid
+                  item
+                  style={{
+                    display: 'flex',
+                    paddingLeft: 12,
+                    marginLeft: 4,
+                    width: 'max-content',
+                  }}
+                >
+                  <Text
+                    style={{ color: theme.palette.text.secondary }}
+                  >
+                    {timeSince}{' '}
+                    {intl.formatMessage({
+                      id: 'AGO',
+                    })}
+                  </Text>
                 </Grid>
                 <Grid item>
                   <Divider />

@@ -1,5 +1,5 @@
 import { get, round, find, some, map } from 'lodash-es';
-import { format } from 'date-fns';
+import { format, formatDistance } from 'date-fns';
 
 export const isMutuallyRevoked = members => {
   const memberViewStates = map(members, member =>
@@ -197,6 +197,18 @@ export const collapseChoices = (choices, depth) => {
     return subchoices;
   });
   return result.flat(100);
+};
+
+export const calculatePrettyTimeElapsedSince = createdDate => {
+  const now = new Date();
+  const formattedDistance = formatDistance(
+    now,
+    new Date(createdDate),
+  );
+  return (
+    formattedDistance.charAt(0).toUpperCase() +
+    formattedDistance.slice(1)
+  );
 };
 
 export const formatLocationFromSighting = (

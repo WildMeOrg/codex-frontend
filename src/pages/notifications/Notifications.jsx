@@ -20,6 +20,7 @@ import LoadingScreen from '../../components/LoadingScreen';
 import Text from '../../components/Text';
 import useNotifications from '../../models/notification/useNotifications';
 import usePatchNotification from '../../models/notification/usePatchNotification';
+import { calculatePrettyTimeElapsedSince } from '../../utils/formatters';
 
 export default function Notifications() {
   const intl = useIntl();
@@ -81,6 +82,56 @@ export default function Notifications() {
                   'sender_name',
                   'Unnamed User',
                 );
+                const createdDate = notification?.created;
+                const timeSince = calculatePrettyTimeElapsedSince(
+                  createdDate,
+                );
+                const senderNameText = (
+                  <Text
+                    style={{
+                      color: read
+                        ? theme.palette.text.secondary
+                        : theme.palette.text.primary,
+                    }}
+                    variant="body2"
+                  >
+                    {`${senderName}`}{' '}
+                    {intl.formatMessage({
+                      id: 'SENT_YOU_A_COLLABORATION_REQUEST',
+                    })}
+                  </Text>
+                );
+                const noSenderNameText = (
+                  <Text
+                    style={{
+                      color: read
+                        ? theme.palette.text.secondary
+                        : theme.palette.text.primary,
+                    }}
+                    variant="body2"
+                  >
+                    {intl.formatMessage({
+                      id:
+                        'A_COLLABORATION_WAS_CREATED_ON_YOUR_BEHALF',
+                    })}
+                  </Text>
+                );
+                const howLongAgoText = (
+                  <Text
+                    style={{
+                      color: read
+                        ? theme.palette.text.secondary
+                        : theme.palette.text.primary,
+                      fontSize: '14px',
+                    }}
+                  >
+                    {timeSince}{' '}
+                    {intl.formatMessage({
+                      id: 'AGO',
+                    })}
+                  </Text>
+                );
+
                 return (
                   <ListItem
                     onClick={async () => {
@@ -108,6 +159,7 @@ export default function Notifications() {
                       </ListItemIcon>
                     </ListItemAvatar>
                     <ListItemText
+                      style={{ flex: '1 1 0' }}
                       primary={
                         <Text
                           style={{
@@ -121,35 +173,9 @@ export default function Notifications() {
                         </Text>
                       }
                       secondary={
-                        hasSenderName ? (
-                          <Text
-                            style={{
-                              color: read
-                                ? theme.palette.text.secondary
-                                : theme.palette.text.primary,
-                            }}
-                            variant="body2"
-                          >
-                            {`${senderName}`}
-                            {intl.formatMessage({
-                              id: 'SENT_YOU_A_COLLABORATION_REQUEST',
-                            })}
-                          </Text>
-                        ) : (
-                          <Text
-                            style={{
-                              color: read
-                                ? theme.palette.text.secondary
-                                : theme.palette.text.primary,
-                            }}
-                            variant="body2"
-                          >
-                            {intl.formatMessage({
-                              id:
-                                'A_COLLABORATION_WAS_CREATED_ON_YOUR_BEHALF',
-                            })}
-                          </Text>
-                        )
+                        hasSenderName
+                          ? [senderNameText, howLongAgoText]
+                          : [noSenderNameText, howLongAgoText]
                       }
                     />
                   </ListItem>
