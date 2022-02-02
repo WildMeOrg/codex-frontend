@@ -13,6 +13,8 @@ import Text from '../../components/Text';
 // import Button from '../../components/Button';
 import MorePhotoMenu from './MorePhotoMenu';
 
+const imageMaxHeight = '80vh';
+
 const useStyles = makeStyles({
   photoIcon: {
     backgroundColor: 'rgba(0, 0, 0, 0.54)',
@@ -61,12 +63,13 @@ export default function PhotographDetail({
             position: 'relative',
             alignSelf: 'start',
             width: '100%',
-            maxHeight: '80vh',
+            maxHeight: imageMaxHeight,
           }}
         >
           <AnnotatedPhotograph
             assetMetadata={asset}
             width="100%"
+            height={imageMaxHeight}
             annotations={get(asset, 'annotations')}
           />
           <IconButton

@@ -18,6 +18,8 @@ import useAddKeyword from '../../models/keyword/useAddKeyword';
 import Keywords from './Keywords';
 import MorePhotoMenu from './MorePhotoMenu';
 
+const imageMaxHeight = '80vh';
+
 export default function AnnotationDetail({
   annotation,
   open,
@@ -88,12 +90,13 @@ export default function AnnotationDetail({
             position: 'relative',
             alignSelf: 'start',
             width: '100%',
-            maxHeight: '80vh',
+            maxHeight: imageMaxHeight,
           }}
         >
           <AnnotatedPhotograph
             assetMetadata={annotation}
             width="100%"
+            height={imageMaxHeight}
             annotations={[annotation]}
           />
         </div>
