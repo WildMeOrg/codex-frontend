@@ -5,14 +5,15 @@
   "main": "index.js",
   "scripts": {
     "start": "run-script-os",
-    "start:default": "NODE_ENV=development webpack serve --config ./config/webpack/webpack.common.js",
-    "start:win32": "$env:NODE_ENV=\"development\" & webpack serve --config ./config/webpack/webpack.common.js",
+    "start:default": "npm run git-info; NODE_ENV=development webpack serve --config ./config/webpack/webpack.common.js",
+    "start:win32": "npm run git-info; $env:NODE_ENV=\"development\" & webpack serve --config ./config/webpack/webpack.common.js",
     "lint": "NODE_ENV=development BABEL_ENV=development ./node_modules/.bin/eslint --fix \"src/**/*.{js,jsx}\"",
     "format": "./node_modules/.bin/prettier --write \"src/**/*.{js,jsx}\"",
     "test": "echo \"Error: no test specified\" && exit 1",
     "clean": "rm -rf dist",
-    "build": "npm run clean && NODE_ENV=production webpack --config ./config/webpack/webpack.common.js",
-    "prepare": "husky install"
+    "build": "npm run git-info; npm run clean && NODE_ENV=production webpack --config ./config/webpack/webpack.common.js",
+    "prepare": "husky install",
+    "git-info": "echo export default \"{\\\"hash\\\": \\\"$(git log -1 --oneline)\\\"}\"  > src/constants/gitHash.js"
   },
   "repository": {
     "type": "git",

@@ -6,6 +6,7 @@ package-lock.json
 .DS_Store
 .vscode/
 
+/src/constants/gitHash.js
 /src/constants/apiKeys.js
 
 dist.*.tar.gz
