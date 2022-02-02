@@ -1,6 +1,7 @@
 import React from 'react';
 import { css } from '@emotion/core';
 import { FormattedMessage, FormattedNumber } from 'react-intl';
+import GitInfo from 'react-git-info/macro';
 import { get, round } from 'lodash-es';
 
 import Grid from '@material-ui/core/Grid';
@@ -65,6 +66,8 @@ export default function ServerStatus() {
     loading: siteInfoLoading,
   } = useGetSiteInfo();
 
+  const gitInfo = GitInfo();
+
   useDocumentTitle('SERVER_STATUS');
 
   const [results, error, isFetched] = useServerStatus();
@@ -106,6 +109,11 @@ export default function ServerStatus() {
       />
       <div style={{ padding: 16, boxSizing: 'border-box' }}>
         <Text variant="h5">Versions</Text>
+        <Text>{`Frontend branch: ${get(
+          gitInfo,
+          'branch',
+          'Unknown',
+        )}`}</Text>
         {siteInfoLoading ? (
           <>
             <Skeleton width={200} />
@@ -141,6 +149,11 @@ export default function ServerStatus() {
         <Text variant="h5" style={{ marginTop: 20 }}>
           Hashes
         </Text>
+        <Text>{`Frontend commit: ${get(
+          gitInfo,
+          ['commit', 'hash'],
+          'Unknown',
+        )}`}</Text>
         {siteInfoLoading ? (
           <>
             <Skeleton width={300} />
