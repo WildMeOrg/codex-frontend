@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { get, omit } from 'lodash-es';
+import { get, flatten, omit } from 'lodash-es';
 
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -9,6 +9,7 @@ import useAddAnnotationsToSightingEncounter from '../../../models/encounter/useA
 import useAddAnnotationsToAGSEncounter from '../../../models/assetGroupSighting/useAddAnnotationsToAGSEncounter';
 import StandardDialog from '../../../components/StandardDialog';
 import Button from '../../../components/Button';
+import Text from '../../../components/Text';
 import Alert from '../../../components/Alert';
 import AnnotatedPhotograph from '../../../components/AnnotatedPhotograph';
 
@@ -54,16 +55,19 @@ export default function AddAnnotationsDialog({
   };
 
   const sightingId = sightingData?.guid;
-  const annotationsOnEncounter = get(
-    encounter,
-    'annotations',
-    [],
-  ).map(a => a?.guid);
+  const encounters = get(sightingData, 'encounters', []);
+  const annotationsOnEncounters = flatten(
+    encounters.map(enc => {
+      const encAnnotations = get(enc, 'annotations', []);
+      return encAnnotations.map(a => a?.guid);
+    }),
+  );
+
   const assets = get(sightingData, 'assets', []);
   const annotations = assets.reduce((acc, asset) => {
     const assetAnnotations = get(asset, 'annotations', []);
     const filteredAssetAnnotations = assetAnnotations.filter(
-      a => !annotationsOnEncounter.includes(a?.guid),
+      a => !annotationsOnEncounters.includes(a?.guid),
     );
     const amendedAssetAnnotations = filteredAssetAnnotations.map(
       a => ({
@@ -83,6 +87,13 @@ export default function AddAnnotationsDialog({
     >
       <DialogContent>
         <Grid container spacing={2}>
+          {annotations.length === 0 && (
+            <Text
+              style={{ margin: '8px 0 20px 8px' }}
+              variant="body2"
+              id="NO_UNASSIGNED_ANNOTATIONS"
+            />
+          )}
           {annotations.map(annotation => {
             const annotationIsSelected = selectedAnnotations.includes(
               annotation?.guid,

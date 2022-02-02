@@ -61,7 +61,7 @@ export default function AnnotatedPhotograph({
         style={{
           width,
           height: width,
-          cursor: 'pointer',
+          cursor: onClick ? 'pointer' : undefined,
           background: theme.palette.grey['600'],
           transform: selected
             ? 'translateZ(0px) scale3d(0.89, 0.85, 1)'
