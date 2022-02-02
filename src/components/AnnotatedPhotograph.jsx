@@ -9,6 +9,7 @@ import SelectableIcon from '@material-ui/icons/AddCircle';
 export default function AnnotatedPhotograph({
   assetMetadata,
   width = 300,
+  height,
   annotations = [],
   selectable = false,
   selected = false,
@@ -60,7 +61,7 @@ export default function AnnotatedPhotograph({
         xmlns="http://www.w3.org/2000/svg"
         style={{
           width,
-          height: width,
+          height: height || width, // fall back to height=width;
           cursor: onClick ? 'pointer' : undefined,
           background: theme.palette.grey['600'],
           transform: selected
