@@ -94,10 +94,12 @@ export default function Notifications() {
                     }}
                     variant="body2"
                   >
-                    {`${senderName}`}{' '}
-                    {intl.formatMessage({
-                      id: 'SENT_YOU_A_COLLABORATION_REQUEST',
-                    })}
+                    {intl.formatMessage(
+                      {
+                        id: 'SENT_YOU_A_COLLABORATION_REQUEST',
+                      },
+                      { senderName },
+                    )}
                   </Text>
                 );
                 const noSenderNameText = (
@@ -124,10 +126,12 @@ export default function Notifications() {
                       fontSize: '14px',
                     }}
                   >
-                    {timeSince}{' '}
-                    {intl.formatMessage({
-                      id: 'AGO',
-                    })}
+                    {intl.formatMessage(
+                      {
+                        id: 'TIME_SINCE',
+                      },
+                      { timeSince },
+                    )}
                   </Text>
                 );
 

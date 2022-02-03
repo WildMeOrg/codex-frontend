@@ -200,11 +200,16 @@ export const collapseChoices = (choices, depth) => {
 };
 
 export const calculatePrettyTimeElapsedSince = createdDate => {
-  const now = new Date();
-  const formattedDistance = formatDistance(
-    now,
-    new Date(createdDate),
-  );
+  let formattedDistance = 'Unknown amount of time';
+  try {
+    formattedDistance = formatDistance(
+      new Date(),
+      new Date(createdDate),
+    );
+  } catch (error) {
+    console.log('calculatePrettyTimeElapsedSince not formattable: ');
+    console.log(error);
+  }
   return (
     formattedDistance.charAt(0).toUpperCase() +
     formattedDistance.slice(1)

@@ -86,10 +86,12 @@ export default function NotificationsPane({
                       <Text
                         style={{ maxWidth: 200, margin: '0 20px' }}
                       >
-                        {`${senderName}`}
-                        {intl.formatMessage({
-                          id: 'SENT_YOU_A_COLLABORATION_REQUEST',
-                        })}
+                        {intl.formatMessage(
+                          {
+                            id: 'SENT_YOU_A_COLLABORATION_REQUEST',
+                          },
+                          { senderName },
+                        )}
                       </Text>
                     )}
                     {senderName === 'N/A' &&
@@ -130,10 +132,10 @@ export default function NotificationsPane({
                   <Text
                     style={{ color: theme.palette.text.secondary }}
                   >
-                    {timeSince}{' '}
-                    {intl.formatMessage({
-                      id: 'AGO',
-                    })}
+                    {intl.formatMessage(
+                      { id: 'TIME_SINCE' },
+                      { timeSince },
+                    )}
                   </Text>
                 </Grid>
                 <Grid item>
