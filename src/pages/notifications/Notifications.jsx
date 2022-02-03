@@ -73,10 +73,9 @@ export default function Notifications() {
             <List>
               {safeNotifications.map(notification => {
                 const read = get(notification, 'is_read', false);
-                const hasSenderName = Boolean(
+                const hasSenderName =
                   get(notification, 'sender_name') &&
-                    get(notification, 'sender_name') !== 'N/A',
-                );
+                  get(notification, 'sender_name') !== 'N/A';
                 const senderName = get(
                   notification,
                   'sender_name',

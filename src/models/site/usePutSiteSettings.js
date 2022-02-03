@@ -1,7 +1,5 @@
-
 import { useState } from 'react';
 import axios from 'axios';
-import { get } from 'lodash-es';
 import { useQueryClient } from 'react-query';
 
 import queryKeys from '../../constants/queryKeys';
@@ -22,7 +20,7 @@ export default function usePutSiteSettings() {
         method: 'post',
         data,
       });
-      const successful = get(response, ['data', 'success'], false);
+      const successful = response?.status === 200;
       setLoading(false);
       if (successful) {
         queryClient.invalidateQueries(queryKeys.settingsConfig);
@@ -42,14 +40,14 @@ export default function usePutSiteSettings() {
   const putSiteSetting = async (property, data) => {
     try {
       const response = await axios({
-	url: `${__houston_url__}/api/v1/site-settings/main/${property}`,
+        url: `${__houston_url__}/api/v1/site-settings/main/${property}`,
         withCredentials: true,
         method: 'post',
         data: {
           _value: data,
         },
       });
-      const successful = get(response, ['data', 'success'], false);
+      const successful = response?.status === 200;
       if (successful) {
         queryClient.invalidateQueries(queryKeys.settingsConfig);
         setSuccess(true);
