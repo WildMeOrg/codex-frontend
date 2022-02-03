@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useIntl } from 'react-intl';
 import { get } from 'lodash-es';
 
 import { useTheme } from '@material-ui/core/styles';
@@ -21,6 +22,7 @@ import useNotifications from '../../models/notification/useNotifications';
 import usePatchNotification from '../../models/notification/usePatchNotification';
 
 export default function Notifications() {
+  const intl = useIntl();
   const theme = useTheme();
 
   useDocumentTitle('NOTIFICATIONS');
@@ -70,6 +72,14 @@ export default function Notifications() {
             <List>
               {safeNotifications.map(notification => {
                 const read = get(notification, 'is_read', false);
+                const hasSenderName =
+                  get(notification, 'sender_name') &&
+                  get(notification, 'sender_name') !== 'N/A';
+                const senderName = get(
+                  notification,
+                  'sender_name',
+                  'Unnamed User',
+                );
                 return (
                   <ListItem
                     onClick={async () => {
@@ -110,20 +120,35 @@ export default function Notifications() {
                         </Text>
                       }
                       secondary={
-                        <Text
-                          style={{
-                            color: read
-                              ? theme.palette.text.secondary
-                              : theme.palette.text.primary,
-                          }}
-                          variant="body2"
-                        >
-                          {`${get(
-                            notification,
-                            'sender_name',
-                            'Unnamed User',
-                          )} sent you a collaboration request.`}
-                        </Text>
+                        hasSenderName ? (
+                          <Text
+                            style={{
+                              color: read
+                                ? theme.palette.text.secondary
+                                : theme.palette.text.primary,
+                            }}
+                            variant="body2"
+                          >
+                            {`${senderName}`}{' '}
+                            {intl.formatMessage({
+                              id: 'SENT_YOU_A_COLLABORATION_REQUEST',
+                            })}
+                          </Text>
+                        ) : (
+                          <Text
+                            style={{
+                              color: read
+                                ? theme.palette.text.secondary
+                                : theme.palette.text.primary,
+                            }}
+                            variant="body2"
+                          >
+                            {intl.formatMessage({
+                              id:
+                                'A_COLLABORATION_WAS_CREATED_ON_YOUR_BEHALF',
+                            })}
+                          </Text>
+                        )
                       }
                     />
                   </ListItem>
