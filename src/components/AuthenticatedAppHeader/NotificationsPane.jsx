@@ -14,6 +14,7 @@ import Link from '../Link';
 import Text from '../Text';
 import Button from '../Button';
 import shane from '../../assets/shane.jpg';
+import { notificationSchema } from '../../constants/notificationSchema';
 
 export default function NotificationsPane({
   anchorEl,
@@ -22,6 +23,8 @@ export default function NotificationsPane({
   notificationsLoading,
   refreshNotifications,
 }) {
+  console.log('deleteMe notifications are: ');
+  console.log(notifications);
   const intl = useIntl();
   const [
     activeCollaborationNotification,
@@ -57,6 +60,22 @@ export default function NotificationsPane({
           </div>
         ) : (
           notifications.map(notification => {
+            const notificationType = notification?.message_type;
+            const currentNotificationSchema = get(
+              notificationSchema,
+              notificationType,
+            );
+            console.log('deleteMe currentNotificationSchema is: ');
+            console.log(currentNotificationSchema);
+            const deleteMeMsg = get(
+              currentNotificationSchema,
+              'message',
+            );
+            const delteMeTranslatedMsg = intl.formatMessage({
+              id: deleteMeMsg,
+            });
+            console.log('deleteMe delteMeTranslatedMsg is: ');
+            console.log(delteMeTranslatedMsg);
             const senderName = get(
               notification,
               'sender_name',
