@@ -7,6 +7,7 @@ import Popover from '@material-ui/core/Popover';
 import Avatar from '@material-ui/core/Avatar';
 import Divider from '@material-ui/core/Divider';
 import LinearProgress from '@material-ui/core/LinearProgress';
+import { useTheme } from '@material-ui/core/styles';
 
 import usePatchNotification from '../../models/notification/usePatchNotification';
 import CollaborationRequestDialog from '../dialogs/CollaborationRequestDialog';
@@ -15,6 +16,23 @@ import Text from '../Text';
 import Button from '../Button';
 import shane from '../../assets/shane.jpg';
 import { notificationSchema } from '../../constants/notificationSchema';
+import { calculatePrettyTimeElapsedSince } from '../../utils/formatters';
+
+function renderTextBasedOnMessageType(
+  currentNotificationSchema,
+  userName,
+  intl,
+) {
+  const returnHtml = (
+    <Text style={{ maxWidth: 200, margin: '0 20px' }}>
+      {intl.formatMessage(
+        { id: currentNotificationSchema?.notificationMessage },
+        { userName },
+      )}
+    </Text>
+  );
+  return returnHtml;
+}
 
 export default function NotificationsPane({
   anchorEl,
@@ -26,6 +44,7 @@ export default function NotificationsPane({
   console.log('deleteMe notifications are: ');
   console.log(notifications);
   const intl = useIntl();
+  const theme = useTheme();
   const [
     activeCollaborationNotification,
     setActiveCollaborationNotification,
@@ -69,7 +88,7 @@ export default function NotificationsPane({
             console.log(currentNotificationSchema);
             const deleteMeMsg = get(
               currentNotificationSchema,
-              'message',
+              'notificationMessage',
             );
             const delteMeTranslatedMsg = intl.formatMessage({
               id: deleteMeMsg,
@@ -80,6 +99,10 @@ export default function NotificationsPane({
               notification,
               'sender_name',
               'Unnamed User',
+            );
+            const createdDate = notification?.created;
+            const timeSince = calculatePrettyTimeElapsedSince(
+              createdDate,
             );
             return (
               <React.Fragment key={notification.guid}>
@@ -94,27 +117,11 @@ export default function NotificationsPane({
                 >
                   <div style={{ display: 'flex' }}>
                     <Avatar src={shane} variant="circular" />
-                    {senderName !== 'N/A' && (
-                      <Text
-                        style={{ maxWidth: 200, margin: '0 20px' }}
-                      >
-                        {`${senderName}`}
-                        {intl.formatMessage({
-                          id: 'SENT_YOU_A_COLLABORATION_REQUEST',
-                        })}
-                      </Text>
+                    {renderTextBasedOnMessageType(
+                      currentNotificationSchema,
+                      senderName,
+                      intl,
                     )}
-                    {senderName === 'N/A' &&
-                    !get(notification, 'sender_guid') && ( // probably fine with one or the other check?
-                        <Text
-                          style={{ maxWidth: 200, margin: '0 20px' }}
-                        >
-                          {intl.formatMessage({
-                            id:
-                              'A_COLLABORATION_WAS_CREATED_ON_YOUR_BEHALF',
-                          })}
-                        </Text>
-                      )}
                   </div>
                   <Button
                     onClick={async () => {
@@ -127,6 +134,26 @@ export default function NotificationsPane({
                     style={{ maxHeight: 40 }}
                     id="VIEW"
                   />
+                </Grid>
+                <Grid
+                  item
+                  style={{
+                    display: 'flex',
+                    paddingLeft: 12,
+                    marginLeft: 4,
+                    width: 'max-content',
+                  }}
+                >
+                  <Text
+                    style={{
+                      color: theme.palette.text.secondary,
+                    }}
+                  >
+                    {intl.formatMessage(
+                      { id: 'TIME_SINCE' },
+                      { timeSince },
+                    )}
+                  </Text>
                 </Grid>
                 <Grid item>
                   <Divider />

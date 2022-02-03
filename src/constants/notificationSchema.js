@@ -1,44 +1,57 @@
 export const notificationSchema = {
   collaboration_manager_create: {
-    message: 'A_COLLABORATION_WAS_CREATED_ON_YOUR_BEHALF',
+    notificationMessage: 'A_COLLABORATION_WAS_CREATED_ON_YOUR_BEHALF',
+    moreDetailedDescription:
+      'A_COLLABORATION_WAS_CREATED_ON_YOUR_BEHALF',
     availableButtons: ['revoke'],
   },
   collaboration_request: {
-    message: 'COLLABORATION_VIEW_REQUEST_DESCRIPTION',
-    avaialableButtons: ['grant', 'decline'],
+    notificationMessage: 'COLLABORATION_VIEW_REQUEST_BRIEF',
+    moreDetailedDescription:
+      'COLLABORATION_VIEW_REQUEST_moreDetailedDescription',
+    availableButtons: ['grant', 'decline'],
   },
   collaboration_approved: {
-    message: 'name approved your collaboration request',
-    avaialableButtons: ['revoke'],
+    notificationMessage: 'COLLABORATION_APPROVED',
+    moreDetailedDescription: 'COLLABORATION_APPROVED',
+    availableButtons: ['revoke'],
   },
   collaboration_revoke: {
-    message: 'name revoked your collaboration request',
-    avaialableButtons: [],
+    notificationMessage: 'COLLABORATION_REVOKE_BRIEF',
+    moreDetailedDescription: 'COLLABORATION_REVOKE_BRIEF',
+    availableButtons: [],
   },
   collaboration_edit_request: {
-    message: 'COLLABORATION_EDIT_REQUEST_DESCRIPTION',
-    avaialableButtons: ['approve', 'decline'],
+    notificationMessage: 'COLLABORATION_EDIT_REQUEST_BRIEF',
+    moreDetailedDescription:
+      'COLLABORATION_EDIT_REQUEST_moreDetailedDescription',
+    availableButtons: ['approve', 'decline'],
   },
   collaboration_edit_approved: {
-    message: 'name approved your collaboration edit request',
-    avaialableButtons: ['revoke'],
+    notificationMessage: 'EDIT_COLLABORATION_APPROVED',
+    moreDetailedDescription: 'EDIT_COLLABORATION_APPROVED',
+    availableButtons: ['revoke'],
   },
   collaboration_edit_revoke: {
-    message:
-      'name revoked edit privileges for your collaboration with them',
-    avaialableButtons: ['request'],
+    notificationMessage: 'EDIT_COLLABORATION_REVOKED',
+    moreDetailedDescription: 'EDIT_COLLABORATION_REVOKED',
+    availableButtons: ['request'],
   },
   collaboration_manager_revoke: {
-    message: 'a collaboration was revoked by a user manager',
-    avaialableButtons: ['request'],
+    notificationMessage: 'COLLABORATION_REVOKED_BY_MANAGER',
+    moreDetailedDescription: 'COLLABORATION_REVOKED_BY_MANAGER',
+    availableButtons: ['request'],
   },
   individual_merge_request: {
-    message:
-      'name requested that an individual in your data set be merged with another individual in the database',
-    avaialableButtons: ['view'],
+    notificationMessage:
+      'INDIVIDUAL_MERGE_REQUEST_notificationMessage',
+    moreDetailedDescription:
+      'INDIVIDUAL_MERGE_REQUEST_notificationMessage',
+    availableButtons: ['view'],
   },
   individual_merge_complete: {
-    message: 'name completed the an individual merge',
-    avaialableButtons: ['view'],
+    notificationMessage: 'INDIVIDUALS_MERGE_COMPLETE_MESSAGE',
+    moreDetailedDescription: 'INDIVIDUALS_MERGE_COMPLETE_MESSAGE',
+    availableButtons: ['view'],
   },
 };

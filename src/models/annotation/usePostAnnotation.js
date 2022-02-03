@@ -41,7 +41,7 @@ export default function usePostAnnotation() {
         return newAnnotationGuid;
       }
 
-      const backendErrorMessage = get(response, 'passed_message');
+      const backendErrorMessage = response?.message;
       const errorMessage =
         backendErrorMessage || formatError(response);
       setError(errorMessage);
@@ -52,7 +52,7 @@ export default function usePostAnnotation() {
       const backendErrorMessage = get(postError, [
         'response',
         'data',
-        'passed_message',
+        'message',
       ]);
       const errorMessage =
         backendErrorMessage || formatError(postError);

@@ -63,7 +63,9 @@
   "INDIVIDUAL_MERGE_REQUESTS_DESCRIPTION": "Receive an email whenever someone attempts to merge an individual that I created.",
   "GRANT_ACCESS": "Grant access",
   "COLLABORATION_REQUEST": "Collaboration request",
+  "COLLABORATION_VIEW_REQUEST_BRIEF": "{userName} has requested to collaborate with you",
   "COLLABORATION_VIEW_REQUEST_DESCRIPTION": "{userName} has requested to collaborate with you. If you grant access to {userName}, you will be able to view each other's data.",
+  "COLLABORATION_EDIT_REQUEST_BRIEF": "{userName} has requested an edit collaboration with you",
   "COLLABORATION_EDIT_REQUEST_DESCRIPTION": "{userName} has requested an edit collaboration with you. If you grant access to {userName}, you will be able to edit each other's data.",
   "VIEW_USER_PROFILE": "View user profile",
   "SEARCH_RADIUS_LABEL": "Search radius (kilometers)",
@@ -951,6 +953,14 @@
   "REVOKED_COLLAB_EXISTS": "Could not create collaboration - a revoked collaboration between those users already exists",
   "COLLAB_REVOKE_ERROR_SUPPLEMENTAL": "Note that collaborations cannot be revoked unless they are mutually approved.",
   "PENDING_SIGHTINGS": "Pending Sightings",
-  "SENT_YOU_A_COLLABORATION_REQUEST": "sent you a collaboration request",
-  "A_COLLABORATION_WAS_CREATED_ON_YOUR_BEHALF": "A collaboration was created on your behalf"
+  "SENT_YOU_A_COLLABORATION_REQUEST": "{userName} sent you a collaboration request",
+  "A_COLLABORATION_WAS_CREATED_ON_YOUR_BEHALF": "A collaboration was created on your behalf",
+  "TIME_SINCE": "{timeSince} ago",
+  "COLLABORATION_APPROVED": "Your collaboration with {userName} has been approved",
+  "COLLABORATION_REVOKE_BRIEF": "{userName} revoked your collaboration request",
+  "EDIT_COLLABORATION_APPROVED": "{userName} approved your collaboration edit request",
+  "EDIT_COLLABORATION_REVOKED": "{userName} revoked edit privileges for your collaboration with them",
+  "COLLABORATION_REVOKED_BY_MANAGER": "A collaboration was revoked by a user manager",
+  "INDIVIDUAL_MERGE_REQUEST_MESSAGE": "{userName} requested that an individual in your data set be merged with another individual in the database",
+  "INDIVIDUALS_MERGE_COMPLETE_MESSAGE": "{userName} completed the individual merge"
 }

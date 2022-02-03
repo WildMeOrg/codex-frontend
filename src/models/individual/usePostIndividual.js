@@ -34,7 +34,7 @@ export default function usePostIndividual() {
         return newIndividualGuid;
       }
 
-      const backendErrorMessage = get(response, 'passed_message');
+      const backendErrorMessage = response?.message;
       const errorMessage =
         backendErrorMessage || formatError(response);
       setError(errorMessage);
@@ -45,7 +45,7 @@ export default function usePostIndividual() {
       const backendErrorMessage = get(postError, [
         'response',
         'data',
-        'passed_message',
+        'message',
       ]);
       const errorMessage =
         backendErrorMessage || formatError(postError);
