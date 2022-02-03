@@ -33,7 +33,7 @@ export default function useRequestCollaboration() {
         return successful;
       }
 
-      const backendErrorMessage = get(response, 'passed_message');
+      const backendErrorMessage = response?.message;
       const errorMessage =
         backendErrorMessage || formatError(response);
       setError(errorMessage);
@@ -44,7 +44,7 @@ export default function useRequestCollaboration() {
       const backendErrorMessage = get(postError, [
         'response',
         'data',
-        'passed_message',
+        'message',
       ]);
       const errorMessage =
         backendErrorMessage || formatError(postError);
