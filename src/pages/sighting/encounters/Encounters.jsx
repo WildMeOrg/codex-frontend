@@ -187,6 +187,7 @@ export default function Encounters({
                   size="small"
                   buttonId="identify-animal-cluster"
                   id="IDENTIFY"
+                  disabled={pending}
                   actions={[
                     {
                       id: 'start-id',
