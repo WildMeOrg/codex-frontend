@@ -951,6 +951,7 @@
   "REVOKED_COLLAB_EXISTS": "Could not create collaboration - a revoked collaboration between those users already exists",
   "COLLAB_REVOKE_ERROR_SUPPLEMENTAL": "Note that collaborations cannot be revoked unless they are mutually approved.",
   "PENDING_SIGHTINGS": "Pending Sightings",
-  "SENT_YOU_A_COLLABORATION_REQUEST": "sent you a collaboration request",
-  "A_COLLABORATION_WAS_CREATED_ON_YOUR_BEHALF": "A collaboration was created on your behalf"
+  "SENT_YOU_A_COLLABORATION_REQUEST": "{senderName} sent you a collaboration request",
+  "A_COLLABORATION_WAS_CREATED_ON_YOUR_BEHALF": "A collaboration was created on your behalf",
+  "TIME_SINCE": "{timeSince} ago"
 }
