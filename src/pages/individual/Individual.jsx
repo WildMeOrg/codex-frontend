@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
-import { get, capitalize } from 'lodash-es';
+import { capitalize } from 'lodash-es';
 import { useQueryClient } from 'react-query';
 
 import SexIcon from '@material-ui/icons/Nature';
@@ -88,12 +88,14 @@ export default function Individual() {
     [individualData, fieldSchemas],
   );
 
-  const defaultName = get(
-    individualData,
-    ['names', 'defaultName'],
-    'Unnamed individual',
+  const names = individualData?.names || [];
+  const defaultNameObject = names.find(
+    n => n.context === 'defaultName',
   );
-  const nickname = individualData?.names?.nickname;
+  const defaultName =
+    defaultNameObject?.value || 'Unnamed individual';
+  const nicknameObject = names.find(n => n.context === 'nickname');
+  const nickname = nicknameObject?.value || 'Unnamed individual';
 
   const {
     deleteIndividual,
@@ -205,7 +207,7 @@ export default function Individual() {
           </div>
         }
       >
-        <Text>{`Also known as ${nickname}.`}</Text>
+        {nickname && <Text>{`Also known as ${nickname}.`}</Text>}
       </EntityHeaderNew>
       <div style={{ display: 'flex', flexWrap: 'wrap' }}>
         <CardContainer size="small">
