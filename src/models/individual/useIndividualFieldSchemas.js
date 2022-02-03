@@ -76,7 +76,7 @@ export default function useIndividualFieldSchemas() {
 
       return [
         createFieldSchema(fieldTypes.string, {
-          name: 'names.defaultName',
+          name: 'defaultName',
           labelId: 'NAME',
           category: defaultCategories.general.name,
           requiredForIndividualCreation: true,
@@ -84,7 +84,7 @@ export default function useIndividualFieldSchemas() {
           defaultValue: '',
         }),
         createFieldSchema(fieldTypes.string, {
-          name: 'names.nickname',
+          name: 'nickname',
           labelId: 'NICKNAMES',
           category: defaultCategories.general.name,
           requiredForIndividualCreation: true,

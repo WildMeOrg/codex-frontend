@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { get, set, pick } from 'lodash-es';
+import { get, set } from 'lodash-es';
 
 import Grid from '@material-ui/core/Grid';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -37,10 +37,13 @@ export default function CreateIndividualModal({
     f => f.requiredForIndividualCreation,
   );
 
-  useEffect(() => {
-    const initialState = calculateInitialState(fieldSchemas);
-    setFormState(initialState);
-  }, fieldSchemas);
+  useEffect(
+    () => {
+      const initialState = calculateInitialState(fieldSchemas);
+      setFormState(initialState);
+    },
+    [fieldSchemas],
+  );
 
   const onCloseDialog = () => {
     setFormState(calculateInitialState(fieldSchemas));
@@ -115,7 +118,22 @@ export default function CreateIndividualModal({
             display="primary"
             loading={loading}
             onClick={async () => {
-              const individualData = pick(formState, 'names'); // just this for now...
+              const defaultName = formState?.defaultName;
+              const nickname = formState?.nickname;
+              const names = [
+                {
+                  context: 'defaultName',
+                  value: defaultName,
+                },
+              ];
+              if (nickname)
+                names.push({
+                  context: 'nickname',
+                  value: nickname,
+                });
+              const individualData = {
+                names,
+              };
               const newId = await postIndividual(
                 individualData,
                 encounterId,
