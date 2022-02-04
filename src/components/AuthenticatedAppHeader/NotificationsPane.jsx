@@ -10,7 +10,7 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import { useTheme } from '@material-ui/core/styles';
 
 import usePatchNotification from '../../models/notification/usePatchNotification';
-import CollaborationRequestDialog from '../dialogs/CollaborationRequestDialog';
+import NotificationDetailsDialog from '../dialogs/NotificationDetailsDialog';
 import Link from '../Link';
 import Text from '../Text';
 import Button from '../Button';
@@ -18,12 +18,12 @@ import shane from '../../assets/shane.jpg';
 import { notificationSchema } from '../../constants/notificationSchema';
 import { calculatePrettyTimeElapsedSince } from '../../utils/formatters';
 
-function renderTextBasedOnMessageType(
+function renderDisplayTextBasedOnMessageType(
   currentNotificationSchema,
   userName,
   intl,
 ) {
-  const returnHtml = (
+  return (
     <Text style={{ maxWidth: 200, margin: '0 20px' }}>
       {intl.formatMessage(
         { id: currentNotificationSchema?.notificationMessage },
@@ -31,7 +31,6 @@ function renderTextBasedOnMessageType(
       )}
     </Text>
   );
-  return returnHtml;
 }
 
 export default function NotificationsPane({
@@ -41,8 +40,6 @@ export default function NotificationsPane({
   notificationsLoading,
   refreshNotifications,
 }) {
-  console.log('deleteMe notifications are: ');
-  console.log(notifications);
   const intl = useIntl();
   const theme = useTheme();
   const [
@@ -64,7 +61,7 @@ export default function NotificationsPane({
       anchorEl={anchorEl}
       onClose={() => setAnchorEl(null)}
     >
-      <CollaborationRequestDialog
+      <NotificationDetailsDialog
         open={Boolean(activeCollaborationNotification)}
         onClose={() => setActiveCollaborationNotification(null)}
         notification={activeCollaborationNotification}
@@ -84,17 +81,6 @@ export default function NotificationsPane({
               notificationSchema,
               notificationType,
             );
-            console.log('deleteMe currentNotificationSchema is: ');
-            console.log(currentNotificationSchema);
-            const deleteMeMsg = get(
-              currentNotificationSchema,
-              'notificationMessage',
-            );
-            const delteMeTranslatedMsg = intl.formatMessage({
-              id: deleteMeMsg,
-            });
-            console.log('deleteMe delteMeTranslatedMsg is: ');
-            console.log(delteMeTranslatedMsg);
             const senderName = get(
               notification,
               'sender_name',
@@ -117,7 +103,7 @@ export default function NotificationsPane({
                 >
                   <div style={{ display: 'flex' }}>
                     <Avatar src={shane} variant="circular" />
-                    {renderTextBasedOnMessageType(
+                    {renderDisplayTextBasedOnMessageType(
                       currentNotificationSchema,
                       senderName,
                       intl,
@@ -131,7 +117,11 @@ export default function NotificationsPane({
                       await markRead(get(notification, 'guid'));
                       refreshNotifications();
                     }}
-                    style={{ maxHeight: 40 }}
+                    style={{
+                      maxHeight: 40,
+                      display:
+                        currentNotificationSchema?.displayViewMoreInfoButton,
+                    }}
                     id="VIEW"
                   />
                 </Grid>
@@ -145,9 +135,7 @@ export default function NotificationsPane({
                   }}
                 >
                   <Text
-                    style={{
-                      color: theme.palette.text.secondary,
-                    }}
+                    style={{ color: theme.palette.text.secondary }}
                   >
                     {intl.formatMessage(
                       { id: 'TIME_SINCE' },

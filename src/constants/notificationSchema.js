@@ -1,55 +1,74 @@
 export const notificationSchema = {
   collaboration_manager_create: {
+    titleId: 'COLLABORATION_ESTABLISHED_BY_USER_MANAGER',
+    displayViewMoreInfoButton: 'true',
     notificationMessage: 'A_COLLABORATION_WAS_CREATED_ON_YOUR_BEHALF',
     moreDetailedDescription:
-      'A_COLLABORATION_WAS_CREATED_ON_YOUR_BEHALF',
-    availableButtons: ['revoke'],
+      'A_COLLABORATION_WAS_CREATED_ON_YOUR_BEHALF_MORE_DETAILED',
+    availableButtons: [],
   },
   collaboration_request: {
+    titleId: 'COLLABORATION_REQUEST',
+    displayViewMoreInfoButton: 'true',
     notificationMessage: 'COLLABORATION_VIEW_REQUEST_BRIEF',
-    moreDetailedDescription:
-      'COLLABORATION_VIEW_REQUEST_moreDetailedDescription',
+    moreDetailedDescription: 'COLLABORATION_VIEW_REQUEST_DESCRIPTION',
     availableButtons: ['grant', 'decline'],
+    path: '/view_permission',
   },
   collaboration_approved: {
+    titleId: 'COLLABORATION_APPROVED_TITLE',
+    displayViewMoreInfoButton: 'none',
     notificationMessage: 'COLLABORATION_APPROVED',
     moreDetailedDescription: 'COLLABORATION_APPROVED',
     availableButtons: ['revoke'],
   },
   collaboration_revoke: {
+    titleId: 'COLLABORATION_REVOKE_TITLE',
+    displayViewMoreInfoButton: 'none',
     notificationMessage: 'COLLABORATION_REVOKE_BRIEF',
     moreDetailedDescription: 'COLLABORATION_REVOKE_BRIEF',
     availableButtons: [],
   },
   collaboration_edit_request: {
+    titleId: 'COLLABORATION_EDIT_REQUEST_TITLE',
+    displayViewMoreInfoButton: 'true',
     notificationMessage: 'COLLABORATION_EDIT_REQUEST_BRIEF',
-    moreDetailedDescription:
-      'COLLABORATION_EDIT_REQUEST_moreDetailedDescription',
-    availableButtons: ['approve', 'decline'],
+    moreDetailedDescription: 'COLLABORATION_EDIT_REQUEST_DESCRIPTION',
+    availableButtons: ['grant', 'decline'],
+    path: '/edit_permission',
   },
   collaboration_edit_approved: {
+    titleId: 'COLLABORATION_EDIT_APPROVED_TITLE',
+    displayViewMoreInfoButton: 'none',
     notificationMessage: 'EDIT_COLLABORATION_APPROVED',
     moreDetailedDescription: 'EDIT_COLLABORATION_APPROVED',
     availableButtons: ['revoke'],
   },
   collaboration_edit_revoke: {
+    titleId: 'COLLABORATION_EDIT_REVOKE_TITLE',
+    displayViewMoreInfoButton: 'none',
     notificationMessage: 'EDIT_COLLABORATION_REVOKED',
     moreDetailedDescription: 'EDIT_COLLABORATION_REVOKED',
     availableButtons: ['request'],
   },
   collaboration_manager_revoke: {
+    titleId: 'COLLABORATION_MANAGER_REVOKE_TITLE',
+    displayViewMoreInfoButton: 'none',
     notificationMessage: 'COLLABORATION_REVOKED_BY_MANAGER',
     moreDetailedDescription: 'COLLABORATION_REVOKED_BY_MANAGER',
     availableButtons: ['request'],
   },
   individual_merge_request: {
-    notificationMessage:
-      'INDIVIDUAL_MERGE_REQUEST_notificationMessage',
-    moreDetailedDescription:
-      'INDIVIDUAL_MERGE_REQUEST_notificationMessage',
-    availableButtons: ['view'],
+    titleId: 'INDIVIDUAL_MERGE_REQUEST_TITLE',
+    displayViewMoreInfoButton: 'none',
+    notificationMessage: 'INDIVIDUAL_MERGE_REQUEST_MESSAGE',
+    moreDetailedDescription: 'INDIVIDUAL_MERGE_REQUEST_MESSAGE',
+    availableButtons: [],
+    path: 'TODO',
   },
   individual_merge_complete: {
+    titleId: 'INDIVIDUAL_MERGE_COMPLETE_TITLE',
+    displayViewMoreInfoButton: 'none',
     notificationMessage: 'INDIVIDUALS_MERGE_COMPLETE_MESSAGE',
     moreDetailedDescription: 'INDIVIDUALS_MERGE_COMPLETE_MESSAGE',
     availableButtons: ['view'],

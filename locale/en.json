@@ -955,12 +955,22 @@
   "PENDING_SIGHTINGS": "Pending Sightings",
   "SENT_YOU_A_COLLABORATION_REQUEST": "{userName} sent you a collaboration request",
   "A_COLLABORATION_WAS_CREATED_ON_YOUR_BEHALF": "A collaboration was created on your behalf",
+  "A_COLLABORATION_WAS_CREATED_ON_YOUR_BEHALF_MORE_DETAILED": "A collaboration was created on your behalf between {user1Name} and {user2Name}",
   "TIME_SINCE": "{timeSince} ago",
   "COLLABORATION_APPROVED": "Your collaboration with {userName} has been approved",
+  "COLLABORATION_APPROVED_TITLE": "Collaboration approved",
   "COLLABORATION_REVOKE_BRIEF": "{userName} revoked your collaboration request",
   "EDIT_COLLABORATION_APPROVED": "{userName} approved your collaboration edit request",
   "EDIT_COLLABORATION_REVOKED": "{userName} revoked edit privileges for your collaboration with them",
   "COLLABORATION_REVOKED_BY_MANAGER": "A collaboration was revoked by a user manager",
   "INDIVIDUAL_MERGE_REQUEST_MESSAGE": "{userName} requested that an individual in your data set be merged with another individual in the database",
-  "INDIVIDUALS_MERGE_COMPLETE_MESSAGE": "{userName} completed the individual merge"
+  "INDIVIDUALS_MERGE_COMPLETE_MESSAGE": "{userName} completed the individual merge",
+  "COLLABORATION_ESTABLISHED_BY_USER_MANAGER": "Collaboration established by your user manager",
+  "COLLABORATION_REVOKE_TITLE": "Revoke collaboration",
+  "COLLABORATION_EDIT_REQUEST_TITLE": "Edit collaboration request",
+  "COLLABORATION_EDIT_APPROVED_TITLE": "Collaboration edit approved",
+  "COLLABORATION_EDIT_REVOKE_TITLE": "Revoke edit privileges",
+  "COLLABORATION_MANAGER_REVOKE_TITLE": "Revoke manager-assigned collaboration",
+  "INDIVIDUAL_MERGE_REQUEST_TITLE": "Individual merge request",
+  "INDIVIDUAL_MERGE_COMPLETE_TITLE": "Individual merge completed"
 }

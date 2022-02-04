@@ -14,13 +14,14 @@ import CircleIcon from '@material-ui/icons/Lens';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 
 import useDocumentTitle from '../../hooks/useDocumentTitle';
-import CollaborationRequestDialog from '../../components/dialogs/CollaborationRequestDialog';
+import NotificationDetailsDialog from '../../components/dialogs/NotificationDetailsDialog';
 import MainColumn from '../../components/MainColumn';
 import LoadingScreen from '../../components/LoadingScreen';
 import Text from '../../components/Text';
 import useNotifications from '../../models/notification/useNotifications';
 import usePatchNotification from '../../models/notification/usePatchNotification';
 import { calculatePrettyTimeElapsedSince } from '../../utils/formatters';
+import { notificationSchema } from '../../constants/notificationSchema';
 
 export default function Notifications() {
   const intl = useIntl();
@@ -53,7 +54,7 @@ export default function Notifications() {
         maxWidth: 1000,
       }}
     >
-      <CollaborationRequestDialog
+      <NotificationDetailsDialog
         open={Boolean(activeCollaborationNotification)}
         onClose={() => setActiveCollaborationNotification(null)}
         notification={activeCollaborationNotification}
@@ -72,20 +73,30 @@ export default function Notifications() {
           >
             <List>
               {safeNotifications.map(notification => {
+                const notificationType = notification?.message_type;
+                const currentNotificationSchema = get(
+                  notificationSchema,
+                  notificationType,
+                );
                 const read = get(notification, 'is_read', false);
-                const hasSenderName =
-                  get(notification, 'sender_name') &&
-                  get(notification, 'sender_name') !== 'N/A';
                 const senderName = get(
                   notification,
                   'sender_name',
                   'Unnamed User',
                 );
+                const user1Name = get(notification, [
+                  'message_values',
+                  'user1_name',
+                ]);
+                const user2Name = get(notification, [
+                  'message_values',
+                  'user2_name',
+                ]);
                 const createdDate = notification?.created;
                 const timeSince = calculatePrettyTimeElapsedSince(
                   createdDate,
                 );
-                const senderNameText = (
+                const notificationText = (
                   <Text
                     style={{
                       color: read
@@ -96,25 +107,15 @@ export default function Notifications() {
                   >
                     {intl.formatMessage(
                       {
-                        id: 'SENT_YOU_A_COLLABORATION_REQUEST',
+                        id:
+                          currentNotificationSchema?.notificationMessage,
                       },
-                      { userName: senderName },
+                      {
+                        userName: senderName,
+                        user1Name,
+                        user2Name,
+                      },
                     )}
-                  </Text>
-                );
-                const noSenderNameText = (
-                  <Text
-                    style={{
-                      color: read
-                        ? theme.palette.text.secondary
-                        : theme.palette.text.primary,
-                    }}
-                    variant="body2"
-                  >
-                    {intl.formatMessage({
-                      id:
-                        'A_COLLABORATION_WAS_CREATED_ON_YOUR_BEHALF',
-                    })}
                   </Text>
                 );
                 const howLongAgoText = (
@@ -171,15 +172,10 @@ export default function Notifications() {
                               : theme.palette.text.primary,
                             fontWeight: 'bold',
                           }}
-                        >
-                          Collaboration request
-                        </Text>
+                          id={currentNotificationSchema?.titleId}
+                        />
                       }
-                      secondary={
-                        hasSenderName
-                          ? [senderNameText, howLongAgoText]
-                          : [noSenderNameText, howLongAgoText]
-                      }
+                      secondary={[notificationText, howLongAgoText]}
                     />
                   </ListItem>
                 );
