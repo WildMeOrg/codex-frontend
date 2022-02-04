@@ -9,21 +9,20 @@ import ViewMap from '@material-ui/icons/Language';
 
 import { formatLocationFromSighting } from '../../utils/formatters';
 import useOptions from '../../hooks/useOptions';
+import { cellRendererTypes } from '../dataDisplays/cellRenderers';
 import Text from '../Text';
 import ActionIcon from '../ActionIcon';
-import { cellRendererTypes } from '../dataDisplays/cellRenderers';
 import DataDisplay from '../dataDisplays/DataDisplay';
 import Card from './Card';
-import SightingMapView from '../cards/SightingMapView';
 
-export default function SightingsCard({
+/* While this displays an array of encounters, the card will often be 
+"sightings of __individual_name__" or something like that. */
+export default function EncountersCard({
   title,
   titleId = 'SIGHTINGS',
-  sightings,
-  columns = ['date', 'location', 'actions'],
-  onDelete,
-  linkPath = 'sightings',
-  noSightingsMsg = 'NO_SIGHTINGS',
+  encounters,
+  columns = ['date', 'location', 'owner', 'actions'],
+  noDataMessage = 'NO_SIGHTINGS',
 }) {
   const [showMapView, setShowMapView] = useState(false);
   const theme = useTheme();
@@ -33,22 +32,22 @@ export default function SightingsCard({
   const mapModeClicked = () => setShowMapView(true);
   const listModeClicked = () => setShowMapView(false);
 
-  const sightingsWithLocationData = useMemo(
+  const encountersWithLocationData = useMemo(
     () => {
       // hotfix //
-      if (!sightings) return [];
+      if (!encounters) return [];
       // hotfix //
 
-      return sightings.map(sighting => ({
-        ...sighting,
+      return encounters.map(encounter => ({
+        ...encounter,
         formattedLocation: formatLocationFromSighting(
-          sighting,
+          encounter,
           regionOptions,
           intl,
         ),
       }));
     },
-    [get(sightings, 'length')],
+    [get(encounters, 'length')],
   );
 
   const allColumns = [
@@ -69,24 +68,23 @@ export default function SightingsCard({
       },
     },
     {
+      reference: 'owner',
+      name: 'owner',
+      label: 'Owner',
+      options: {
+        cellRenderer: cellRendererTypes.user,
+      },
+    },
+    {
       reference: 'actions',
       name: 'guid',
       label: 'Actions',
       options: {
-        customBodyRender: value => (
-          <div>
-            <ActionIcon
-              variant="view"
-              href={`/${linkPath}/${value}`}
-            />
-            {onDelete && (
-              <ActionIcon
-                labelId="REMOVE"
-                variant="delete"
-                onClick={() => onDelete(value)}
-              />
-            )}
-          </div>
+        customBodyRender: (_, encounter) => (
+          <ActionIcon
+            variant="view"
+            href={`/sightings/${encounter?.sighting}`}
+          />
         ),
       },
     },
@@ -96,7 +94,7 @@ export default function SightingsCard({
     columns.includes(c.reference),
   );
 
-  const noSightings = sightings && sightings.length === 0;
+  const noEncounters = encounters && encounters.length === 0;
 
   return (
     <Card
@@ -118,7 +116,7 @@ export default function SightingsCard({
               showMapView ? { color: theme.palette.primary.main } : {}
             }
             disabled={
-              sightingsWithLocationData.filter(entry =>
+              encountersWithLocationData.filter(entry =>
                 get(entry, 'decimalLatitude'),
               ).length < 1
             }
@@ -130,27 +128,22 @@ export default function SightingsCard({
         </div>
       }
     >
-      {noSightings && (
+      {noEncounters && (
         <Text
           variant="body2"
-          id={noSightingsMsg}
+          id={noDataMessage}
           style={{ marginTop: 12 }}
         />
       )}
-      {!noSightings && !showMapView && (
+      {!noEncounters && !showMapView && (
         <DataDisplay
           noTitleBar
           tableSize="medium"
           columns={filteredColumns}
-          data={sightings}
+          data={encountersWithLocationData}
         />
       )}
-      {!noSightings && showMapView && (
-        <SightingMapView
-          data={sightingsWithLocationData}
-          linkPath={linkPath}
-        />
-      )}
+      {!noEncounters && showMapView && <div>Map goes here</div>}
     </Card>
   );
 }

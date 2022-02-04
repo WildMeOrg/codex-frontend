@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
-import { capitalize } from 'lodash-es';
+import { get, capitalize } from 'lodash-es';
 import { useQueryClient } from 'react-query';
 
 import SexIcon from '@material-ui/icons/Nature';
@@ -27,7 +27,7 @@ import SadScreen from '../../components/SadScreen';
 import Button from '../../components/Button';
 import Text from '../../components/Text';
 import CardContainer from '../../components/cards/CardContainer';
-import SightingsCard from '../../components/cards/SightingsCard';
+import EncountersCard from '../../components/cards/EncountersCard';
 import MetadataCard from '../../components/cards/MetadataCard';
 import GalleryCard from '../../components/cards/GalleryCard';
 import ConfirmDelete from '../../components/ConfirmDelete';
@@ -215,17 +215,18 @@ export default function Individual() {
           <MetadataCard editable metadata={items} />
         </CardContainer>
         <CardContainer>
-          <SightingsCard
+          <EncountersCard
             title={
               <FormattedMessage
                 id="SIGHTINGS_OF"
-                values={{ name: individualData?.name }}
+                values={{ name: defaultName }}
               />
             }
-            columns={['date', 'submitter', 'location', 'actions']}
+            columns={['date', 'owner', 'location', 'actions']}
             onDelete={encounterId =>
               setDeleteEncounterId(encounterId)
             }
+            encounters={get(individualData, 'encounters', [])}
           />
           <RelationshipsCard
             title="Relationships"
