@@ -51,6 +51,18 @@ export default function NotificationDetailsDialog({
     'message_values',
     'user2_name',
   ]);
+  const individual1Names = notification?.names || []; // TODO flesh out more once this is included in notifications DEX-739
+  const individual1NicknameObject = individual1Names.find(
+    n => n.context === 'nickname',
+  );
+  const individual1Nickname =
+    individual1NicknameObject?.value || 'Unnamed individual';
+  const individual2Names = notification?.names || []; // TODO flesh out more once this is included in notifications DEX-739
+  const individual2NicknameObject = individual2Names.find(
+    n => n.context === 'nickname',
+  );
+  const individual2Nickname =
+    individual2NicknameObject?.value || 'Unnamed individual';
   const path = get(currentNotificationSchema, 'path', '');
 
   // TODO revokeCollabButton
@@ -117,6 +129,8 @@ export default function NotificationDetailsDialog({
             userName: senderName,
             user1Name,
             user2Name,
+            individual1Nickname,
+            individual2Nickname,
           }}
         />
         {isError && (

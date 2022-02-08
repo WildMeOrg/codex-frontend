@@ -86,6 +86,11 @@ export default function NotificationsPane({
               'sender_name',
               'Unnamed User',
             );
+            const availableButtons = get(
+              currentNotificationSchema,
+              'availableButtons',
+              [],
+            );
             const createdDate = notification?.created;
             const timeSince = calculatePrettyTimeElapsedSince(
               createdDate,
@@ -109,21 +114,19 @@ export default function NotificationsPane({
                       intl,
                     )}
                   </div>
-                  <Button
-                    onClick={async () => {
-                      setActiveCollaborationNotification(
-                        notification,
-                      );
-                      await markRead(get(notification, 'guid'));
-                      refreshNotifications();
-                    }}
-                    style={{
-                      maxHeight: 40,
-                      display:
-                        currentNotificationSchema?.displayViewMoreInfoButton,
-                    }}
-                    id="VIEW"
-                  />
+                  {availableButtons.includes('view') && (
+                    <Button
+                      onClick={async () => {
+                        setActiveCollaborationNotification(
+                          notification,
+                        );
+                        await markRead(get(notification, 'guid'));
+                        refreshNotifications();
+                      }}
+                      style={{ maxHeight: 40 }}
+                      id="VIEW"
+                    />
+                  )}
                 </Grid>
                 <Grid
                   item
@@ -135,7 +138,9 @@ export default function NotificationsPane({
                   }}
                 >
                   <Text
-                    style={{ color: theme.palette.text.secondary }}
+                    style={{
+                      color: theme.palette.text.secondary,
+                    }}
                   >
                     {intl.formatMessage(
                       { id: 'TIME_SINCE' },
