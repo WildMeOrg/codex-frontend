@@ -187,16 +187,16 @@ export default function SightingCore({
               value="overview"
             />
             <Tab
-              label={<FormattedMessage id="ANIMALS" />}
-              value="individuals"
+              label={<FormattedMessage id="PHOTOGRAPHS" />}
+              value="photographs"
             />
             <Tab
               label={<FormattedMessage id="ANNOTATIONS" />}
               value="annotations"
             />
             <Tab
-              label={<FormattedMessage id="PHOTOGRAPHS" />}
-              value="photographs"
+              label={<FormattedMessage id="ANIMALS" />}
+              value="individuals"
             />
           </Tabs>
         }
