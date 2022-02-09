@@ -19,7 +19,6 @@ export const defaultSightingCategories = {
   location: {
     name: 'location',
     labelId: 'LOCATION',
-    descriptionId: 'LOCATION_CATEGORY_DESCRIPTION',
     required: true,
     individualFields: false,
   },
@@ -132,6 +131,7 @@ export default function useSightingFieldSchemas() {
           category: defaultSightingCategories.general.name,
           choices: modelChoices,
           hideOnMetadataCard: true,
+          required: true,
           editable: false,
         }),
         createFieldSchema(fieldTypes.locationId, {
