@@ -6,7 +6,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 
 import CustomAlert from './Alert';
 import usePatchUser from '../models/users/usePatchUser';
-import InputRow from './fields/edit/InputRowNew';
+import InputRow from './fields/edit/InputRow';
 import Button from './Button';
 import PasswordVerificationAlert from './PasswordVerificationAlert';
 import StandardDialog from './StandardDialog';
