@@ -220,7 +220,7 @@ export default function Encounters({
                       id: 'delete-cluster',
                       onClick: () =>
                         setEncounterToDelete(encounterId),
-                      label: 'Delete cluster',
+                      label: 'Delete animal',
                     },
                   ]}
                 />
