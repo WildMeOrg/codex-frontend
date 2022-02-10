@@ -9,7 +9,6 @@ export const sightingCategories = {
   location: {
     name: 'location',
     labelId: 'LOCATION',
-    descriptionId: 'LOCATION_CATEGORY_DESCRIPTION',
     required: true,
     individualFields: false,
   },
