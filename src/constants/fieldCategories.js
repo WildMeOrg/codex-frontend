@@ -23,3 +23,11 @@ export const defaultSightingCategories = {
     individualFields: false,
   },
 };
+
+export const defaultEncounterCategories = {
+  animal: {
+    name: 'individual',
+    labelId: 'INDIVIDUAL_INFORMATION',
+    individualFields: true,
+  },
+};
