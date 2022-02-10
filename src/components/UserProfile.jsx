@@ -7,7 +7,7 @@ import useUserMetadataSchemas from '../models/users/useUserMetadataSchemas';
 import useGetUserSightings from '../models/users/useGetUserSightings';
 import useGetUserUnprocessedAssetGroupSightings from '../models/users/useGetUserUnproccessedAssetGroupSightings';
 import { formatDate } from '../utils/formatters';
-import EntityHeaderNew from './EntityHeaderNew';
+import EntityHeader from './EntityHeader';
 import BigAvatar from './profilePhotos/BigAvatar';
 import MainColumn from './MainColumn';
 import SadScreen from './SadScreen';
@@ -79,7 +79,7 @@ export default function UserProfile({
         metadata={metadata}
         onClose={() => setEditingProfile(false)}
       />
-      <EntityHeaderNew
+      <EntityHeader
         name={name}
         editable
         onSettingsClick={
@@ -111,7 +111,7 @@ export default function UserProfile({
           id="USER_SINCE"
           values={{ date: dateCreated }}
         />
-      </EntityHeaderNew>
+      </EntityHeader>
       {children}
       <div style={{ display: 'flex', flexWrap: 'wrap' }}>
         <CardContainer size="small">

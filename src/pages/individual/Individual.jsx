@@ -21,7 +21,7 @@ import FeaturedPhoto from '../sighting/featuredPhoto/FeaturedPhoto';
 import useIndividualFieldSchemas from '../../models/individual/useIndividualFieldSchemas';
 import LoadingScreen from '../../components/LoadingScreen';
 import MoreMenu from '../../components/MoreMenu';
-import EntityHeaderNew from '../../components/EntityHeaderNew';
+import EntityHeader from '../../components/EntityHeader';
 import MainColumn from '../../components/MainColumn';
 import SadScreen from '../../components/SadScreen';
 import Button from '../../components/Button';
@@ -171,7 +171,7 @@ export default function Individual() {
         onClearError={() => setDeleteError(null)}
         messageId="CONFIRM_DELETE_INDIVIDUAL"
       />
-      <EntityHeaderNew
+      <EntityHeader
         name={defaultName}
         renderAvatar={
           <FeaturedPhoto
@@ -208,7 +208,7 @@ export default function Individual() {
         }
       >
         {nickname && <Text>{`Also known as ${nickname}.`}</Text>}
-      </EntityHeaderNew>
+      </EntityHeader>
       <div style={{ display: 'flex', flexWrap: 'wrap' }}>
         <CardContainer size="small">
           <GalleryCard title="Photos of Teddy" assets={fakeAssets} />
