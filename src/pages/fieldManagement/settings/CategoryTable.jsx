@@ -21,20 +21,22 @@ import InputRow from '../../../components/fields/edit/InputRow';
 import TextEditor from '../../../components/fields/edit/TextEditor';
 import SelectionEditor from '../../../components/fields/edit/SelectionEditor';
 import categoryTypes from '../../../constants/categoryTypes';
-import { defaultSightingCategories } from '../../../constants/newSightingSchema';
-import { defaultIndividualCategories } from '../../../constants/individualSchema';
+import {
+  defaultIndividualCategories,
+  defaultSightingCategories,
+} from '../../../constants/fieldCategories';
 import {
   mergeItemById,
   removeItemById,
 } from '../../../utils/manipulators';
 
 const defaultCategories = [
-  ...defaultSightingCategories.map(c => ({
+  ...Object.values(defaultSightingCategories).map(c => ({
     ...c,
     type: categoryTypes.sighting,
     isDefault: true,
   })),
-  ...defaultIndividualCategories.map(c => ({
+  ...Object.values(defaultIndividualCategories).map(c => ({
     ...c,
     type: categoryTypes.individual,
     isDefault: true,
@@ -60,8 +62,18 @@ export default function FieldSettings() {
 
   const categoryColumns = [
     {
-      name: 'label',
+      name: 'labelId',
       label: intl.formatMessage({ id: 'LABEL' }),
+      options: {
+        customBodyRender: (labelId, category) => {
+          if (labelId) return <Text variant="body2" id={labelId} />;
+          return (
+            <Text variant="body2">
+              {get(category, 'label', 'Unlabeled category')}
+            </Text>
+          );
+        },
+      },
     },
     {
       name: 'type',
