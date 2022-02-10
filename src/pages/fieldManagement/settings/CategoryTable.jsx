@@ -13,11 +13,13 @@ import useSiteSettings from '../../../models/site/useSiteSettings';
 import usePutSiteSettings from '../../../models/site/usePutSiteSettings';
 import Button from '../../../components/Button';
 import ActionIcon from '../../../components/ActionIcon';
-import InputRow from '../../../components/InputRow';
 import ConfirmDelete from '../../../components/ConfirmDelete';
 import DataDisplay from '../../../components/dataDisplays/DataDisplay';
 import Text from '../../../components/Text';
 import StandardDialog from '../../../components/StandardDialog';
+import InputRow from '../../../components/fields/edit/InputRow';
+import TextEditor from '../../../components/fields/edit/TextEditor';
+import SelectionEditor from '../../../components/fields/edit/SelectionEditor';
 import categoryTypes from '../../../constants/categoryTypes';
 import { defaultSightingCategories } from '../../../constants/newSightingSchema';
 import { defaultIndividualCategories } from '../../../constants/individualSchema';
@@ -156,34 +158,32 @@ export default function FieldSettings() {
                   : 'CATEGORY_EDIT_MESSAGE'
               }
             />
-            <InputRow
-              labelId="LABEL"
-              disabled={dialogData.isDefault}
-              schema={{
-                fieldType: 'string',
-                labelId: 'LABEL',
-              }}
-              value={dialogData.label || ''}
-              onChange={newLabel =>
-                setDialogData({ ...dialogData, label: newLabel })
-              }
-            />
-            <InputRow
-              labelId="TYPE"
-              disabled={dialogData.isDefault}
-              schema={{
-                fieldType: 'select',
-                labelId: 'TYPE',
-                choices: Object.values(categoryTypes).map(ct => ({
-                  label: ct,
-                  value: ct,
-                })),
-              }}
-              value={dialogData.type || ''}
-              onChange={newType =>
-                setDialogData({ ...dialogData, type: newType })
-              }
-            />
+            <InputRow schema={{ labelId: 'LABEL' }}>
+              <TextEditor
+                disabled={dialogData.isDefault}
+                schema={{ labelId: 'LABEL' }}
+                value={dialogData.label || ''}
+                onChange={newLabel =>
+                  setDialogData({ ...dialogData, label: newLabel })
+                }
+              />
+            </InputRow>
+            <InputRow schema={{ labelId: 'TYPE' }}>
+              <SelectionEditor
+                disabled={dialogData.isDefault}
+                schema={{
+                  labelId: 'TYPE',
+                  choices: Object.values(categoryTypes).map(ct => ({
+                    label: ct,
+                    value: ct,
+                  })),
+                }}
+                value={dialogData.type || ''}
+                onChange={newType =>
+                  setDialogData({ ...dialogData, type: newType })
+                }
+              />
+            </InputRow>
             {error && (
               <CustomAlert severity="error">{error}</CustomAlert>
             )}

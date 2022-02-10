@@ -9,8 +9,6 @@ import Login from './pages/auth/Login';
 import RequestInvitation from './pages/auth/RequestInvitation';
 import Forgot from './pages/auth/Forgot';
 import Create from './pages/auth/Create';
-import Iceland from './pages/match/iceland/Iceland';
-import FlagsOnly from './pages/match/iceland/FlagsOnly';
 import Splash from './pages/splash/Splash';
 import Footer from './components/Footer';
 import { defaultCrossfadeDuration } from './constants/defaults';
@@ -68,12 +66,6 @@ export default function UnauthenticatedSwitch() {
                     </Route>
                     <Route path="/login">
                       <Login redirect="/" />
-                    </Route>
-                    <Route path="/iceland/flags">
-                      <FlagsOnly />
-                    </Route>
-                    <Route path="/iceland">
-                      <Iceland />
                     </Route>
                     <Route path="/" exact>
                       <Splash />
