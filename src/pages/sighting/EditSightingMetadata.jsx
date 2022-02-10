@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { get } from 'lodash-es';
+import { get, isEmpty } from 'lodash-es';
 import { useQueryClient } from 'react-query';
 
 import DialogContent from '@material-ui/core/DialogContent';
@@ -141,12 +141,12 @@ export default function EditSightingMetadata({
           loading={loading}
           display="primary"
           onClick={async () => {
+            const properties = { ...defaultFieldValues };
+            if (!isEmpty(customFieldValues))
+              properties.customFields = customFieldValues;
             const successfulUpdate = await updateProperties(
               sightingId,
-              {
-                ...defaultFieldValues,
-                customFields: customFieldValues,
-              },
+              properties,
             );
             if (successfulUpdate) {
               refreshSightingData();
