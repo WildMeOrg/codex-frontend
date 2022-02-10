@@ -4,10 +4,6 @@ import { FormattedMessage } from 'react-intl';
 import { get, capitalize } from 'lodash-es';
 import { useQueryClient } from 'react-query';
 
-import SexIcon from '@material-ui/icons/Nature';
-import AgeIcon from '@material-ui/icons/Height';
-import StatusIcon from '@material-ui/icons/LocalHospital';
-
 import { getIndividualQueryKey } from '../../constants/queryKeys';
 import useIndividual from '../../models/individual/useIndividual';
 import useDeleteIndividual from '../../models/individual/useDeleteIndividual';
@@ -38,30 +34,6 @@ import EditIndividualMetadata from './EditIndividualMetadata';
 import fakeAssets from './fakeAssets';
 import fakeCoocs from './fakeCoocs';
 import fakeRelationships from './fakeRelationships';
-
-const items = [
-  {
-    key: 'sex',
-    id: 'sex',
-    icon: SexIcon,
-    value: 'Male',
-    titleId: 'PROFILE_LABEL_SEX',
-  },
-  {
-    key: 'age',
-    id: 'age',
-    icon: AgeIcon,
-    value: 42,
-    titleId: 'PROFILE_LABEL_AGE',
-  },
-  {
-    id: 'status',
-    key: 'status',
-    icon: StatusIcon,
-    value: 'Alive',
-    titleId: 'PROFILE_LABEL_STATUS',
-  },
-];
 
 export default function Individual() {
   const { id } = useParams();
@@ -212,7 +184,7 @@ export default function Individual() {
       <div style={{ display: 'flex', flexWrap: 'wrap' }}>
         <CardContainer size="small">
           <GalleryCard title="Photos of Teddy" assets={fakeAssets} />
-          <MetadataCard editable metadata={items} />
+          <MetadataCard editable metadata={metadata} />
         </CardContainer>
         <CardContainer>
           <EncountersCard

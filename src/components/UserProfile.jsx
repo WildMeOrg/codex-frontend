@@ -14,7 +14,7 @@ import SadScreen from './SadScreen';
 import EditUserMetadata from './EditUserMetadata';
 import Text from './Text';
 import RequestCollaborationButton from './RequestCollaborationButton';
-import MetadataCardNew from './cards/MetadataCardNew';
+import MetadataCard from './cards/MetadataCard';
 import SightingsCard from './cards/SightingsCard';
 import CollaborationsCard from './cards/CollaborationsCard';
 import CardContainer from './cards/CardContainer';
@@ -115,7 +115,7 @@ export default function UserProfile({
       {children}
       <div style={{ display: 'flex', flexWrap: 'wrap' }}>
         <CardContainer size="small">
-          <MetadataCardNew
+          <MetadataCard
             editable
             onEdit={
               () => setEditingProfile(true) // ?

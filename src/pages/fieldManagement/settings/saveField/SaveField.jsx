@@ -24,7 +24,7 @@ import useSiteSettings from '../../../../models/site/useSiteSettings';
 import MainColumn from '../../../../components/MainColumn';
 import Text from '../../../../components/Text';
 import Button from '../../../../components/Button';
-import MetadataCard from '../../../../components/cards/MetadataCardNew';
+import MetadataCard from '../../../../components/cards/MetadataCard';
 import InputRow from '../../../../components/fields/edit/InputRow';
 import { mergeItemById } from '../../../../utils/manipulators';
 import customFieldTypes from '../constants/customFieldTypes';
