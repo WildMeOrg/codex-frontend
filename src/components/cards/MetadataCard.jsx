@@ -29,18 +29,14 @@ export default function MetadataCard({
   editButtonId = 'REPORT_METADATA',
   onEdit,
 }) {
-  let metadataToDisplay = metadata;
-  if (!showDefaultValues) {
-    metadataToDisplay = metadata.filter(
-      field =>
-        JSON.stringify(field.value) !==
-        JSON.stringify(field.defaultValue),
-    );
-  }
-
-  metadataToDisplay = metadataToDisplay.filter(
-    field => !field.hideInMetadataCard && fieldValueGood(field),
-  );
+  const metadataToDisplay = metadata.filter(field => {
+    const valid = !field?.hideInMetadataCard && fieldValueGood(field);
+    const passedDefaultValueCheck = showDefaultValues
+      ? true
+      : JSON.stringify(field?.value) !==
+        JSON.stringify(field?.defaultValue);
+    return valid && passedDefaultValueCheck;
+  });
 
   const showEditButton = metadataToDisplay.length === 0 && editable;
   const showEditIcon = editable && !showEditButton;
@@ -67,11 +63,11 @@ export default function MetadataCard({
         {metadata
           ? metadataToDisplay.map(field => {
               const viewComponentProps =
-                field.viewComponentProps || {};
+                field?.viewComponentProps || {};
 
               return (
-                <ListItem key={field.id || field.name}>
-                  {field.icon && (
+                <ListItem key={field?.id || field?.name}>
+                  {field?.icon && (
                     <ListItemIcon style={{ minWidth: 36 }}>
                       <field.icon />
                     </ListItemIcon>
@@ -81,15 +77,15 @@ export default function MetadataCard({
                       <Text
                         component="span"
                         variant="caption"
-                        id={field.labelId}
+                        id={field?.labelId}
                       >
-                        {field.label}
+                        {field?.label}
                       </Text>
                     }
                     secondary={
                       <field.viewComponent
-                        value={field.value}
-                        choices={field.choices}
+                        value={field?.value}
+                        choices={field?.choices}
                         schema={field}
                         {...viewComponentProps}
                       />
