@@ -1,12 +1,8 @@
 import React, { useState, useMemo } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
-import { capitalize } from 'lodash-es';
+import { get, capitalize } from 'lodash-es';
 import { useQueryClient } from 'react-query';
-
-import SexIcon from '@material-ui/icons/Nature';
-import AgeIcon from '@material-ui/icons/Height';
-import StatusIcon from '@material-ui/icons/LocalHospital';
 
 import { getIndividualQueryKey } from '../../constants/queryKeys';
 import useIndividual from '../../models/individual/useIndividual';
@@ -21,13 +17,13 @@ import FeaturedPhoto from '../sighting/featuredPhoto/FeaturedPhoto';
 import useIndividualFieldSchemas from '../../models/individual/useIndividualFieldSchemas';
 import LoadingScreen from '../../components/LoadingScreen';
 import MoreMenu from '../../components/MoreMenu';
-import EntityHeaderNew from '../../components/EntityHeaderNew';
+import EntityHeader from '../../components/EntityHeader';
 import MainColumn from '../../components/MainColumn';
 import SadScreen from '../../components/SadScreen';
 import Button from '../../components/Button';
 import Text from '../../components/Text';
 import CardContainer from '../../components/cards/CardContainer';
-import SightingsCard from '../../components/cards/SightingsCard';
+import EncountersCard from '../../components/cards/EncountersCard';
 import MetadataCard from '../../components/cards/MetadataCard';
 import GalleryCard from '../../components/cards/GalleryCard';
 import ConfirmDelete from '../../components/ConfirmDelete';
@@ -38,30 +34,6 @@ import EditIndividualMetadata from './EditIndividualMetadata';
 import fakeAssets from './fakeAssets';
 import fakeCoocs from './fakeCoocs';
 import fakeRelationships from './fakeRelationships';
-
-const items = [
-  {
-    key: 'sex',
-    id: 'sex',
-    icon: SexIcon,
-    value: 'Male',
-    titleId: 'PROFILE_LABEL_SEX',
-  },
-  {
-    key: 'age',
-    id: 'age',
-    icon: AgeIcon,
-    value: 42,
-    titleId: 'PROFILE_LABEL_AGE',
-  },
-  {
-    id: 'status',
-    key: 'status',
-    icon: StatusIcon,
-    value: 'Alive',
-    titleId: 'PROFILE_LABEL_STATUS',
-  },
-];
 
 export default function Individual() {
   const { id } = useParams();
@@ -171,7 +143,7 @@ export default function Individual() {
         onClearError={() => setDeleteError(null)}
         messageId="CONFIRM_DELETE_INDIVIDUAL"
       />
-      <EntityHeaderNew
+      <EntityHeader
         name={defaultName}
         renderAvatar={
           <FeaturedPhoto
@@ -208,24 +180,25 @@ export default function Individual() {
         }
       >
         {nickname && <Text>{`Also known as ${nickname}.`}</Text>}
-      </EntityHeaderNew>
+      </EntityHeader>
       <div style={{ display: 'flex', flexWrap: 'wrap' }}>
         <CardContainer size="small">
           <GalleryCard title="Photos of Teddy" assets={fakeAssets} />
-          <MetadataCard editable metadata={items} />
+          <MetadataCard editable metadata={metadata} />
         </CardContainer>
         <CardContainer>
-          <SightingsCard
+          <EncountersCard
             title={
               <FormattedMessage
                 id="SIGHTINGS_OF"
-                values={{ name: individualData?.name }}
+                values={{ name: defaultName }}
               />
             }
-            columns={['date', 'submitter', 'location', 'actions']}
+            columns={['date', 'owner', 'location', 'actions']}
             onDelete={encounterId =>
               setDeleteEncounterId(encounterId)
             }
+            encounters={get(individualData, 'encounters', [])}
           />
           <RelationshipsCard
             title="Relationships"

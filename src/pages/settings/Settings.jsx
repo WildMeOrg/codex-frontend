@@ -9,7 +9,7 @@ import MainColumn from '../../components/MainColumn';
 import ButtonLink from '../../components/ButtonLink';
 import UserDeleteDialog from '../../components/dialogs/UserDeleteDialog';
 import Button from '../../components/Button';
-import InputRow from '../../components/fields/edit/InputRowNew';
+import InputRow from '../../components/fields/edit/InputRow';
 import Text from '../../components/Text';
 import ErrorDialog from '../../components/dialogs/ErrorDialog';
 import useGetMe from '../../models/users/useGetMe';
@@ -151,7 +151,7 @@ export default function Settings() {
                               backendValues,
                               currentChangeValues,
                             );
-                            const successful = await replaceUserProperty(
+                            await replaceUserProperty(
                               '/notification_preferences',
                               newNotificationPreferences,
                             );

@@ -3,19 +3,12 @@ import { useIntl } from 'react-intl';
 import { get, startCase } from 'lodash-es';
 
 import useSiteSettings from '../site/useSiteSettings';
+import { defaultEncounterCategories } from '../../constants/fieldCategories';
 import fieldTypes from '../../constants/fieldTypesNew';
 import {
   createFieldSchema,
   createCustomFieldSchema,
 } from '../../utils/fieldUtils';
-
-export const defaultEncounterCategories = {
-  animal: {
-    name: 'individual',
-    labelId: 'INDIVIDUAL_INFORMATION',
-    individualFields: true,
-  },
-};
 
 const sexChoices = [
   // biologists not yet woke

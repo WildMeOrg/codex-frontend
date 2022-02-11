@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { get } from 'lodash-es';
 
 import CardContainer from '../../components/cards/CardContainer';
-import MetadataCard from '../../components/cards/MetadataCardNew';
+import MetadataCard from '../../components/cards/MetadataCard';
 import GpsCard from '../../components/cards/GpsCard';
 import StatusCard from './statusCard/StatusCard';
 import EditSightingMetadata from './EditSightingMetadata';

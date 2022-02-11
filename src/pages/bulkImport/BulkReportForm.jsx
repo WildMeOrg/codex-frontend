@@ -21,7 +21,7 @@ import useBulkImportFields from './utils/useBulkImportFields';
 import { flatfileKey } from '../../constants/apiKeys';
 
 import LoadingScreen from '../../components/LoadingScreen';
-import InputRow from '../../components/fields/edit/InputRowNew';
+import InputRow from '../../components/fields/edit/InputRow';
 import TermsAndConditionsDialog from '../../components/report/TermsAndConditionsDialog';
 import Button from '../../components/Button';
 import Text from '../../components/Text';

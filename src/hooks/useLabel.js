@@ -9,6 +9,6 @@ export default function useLabel(fieldSchema, noAsterisk = false) {
   } else {
     label = get(fieldSchema, 'label', undefined);
   }
-  if (fieldSchema.required && !noAsterisk) label = `${label} *`;
+  if (fieldSchema.required && !noAsterisk) label = `${label}*`;
   return label;
 }

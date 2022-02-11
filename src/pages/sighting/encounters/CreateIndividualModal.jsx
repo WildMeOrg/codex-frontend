@@ -8,7 +8,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import usePostIndividual from '../../../models/individual/usePostIndividual';
 import useIndividualFieldSchemas from '../../../models/individual/useIndividualFieldSchemas';
 import StandardDialog from '../../../components/StandardDialog';
-import InputRow from '../../../components/fields/edit/InputRowNew';
+import InputRow from '../../../components/fields/edit/InputRow';
 import Button from '../../../components/Button';
 import ButtonLink from '../../../components/ButtonLink';
 import Alert from '../../../components/Alert';

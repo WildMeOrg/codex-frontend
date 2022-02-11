@@ -1,6 +1,6 @@
 export const bulkImportCategories = {
   encounter: {
-    name: 'encounter',
+    name: 'animal',
     fields: ['individualName', 'taxonomy', 'sex'],
   },
   sighting: {

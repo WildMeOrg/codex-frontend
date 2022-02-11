@@ -25,7 +25,7 @@ import SadScreen from '../../components/SadScreen';
 import Button from '../../components/Button';
 import MoreMenu from '../../components/MoreMenu';
 import ConfirmDelete from '../../components/ConfirmDelete';
-import EntityHeaderNew from '../../components/EntityHeaderNew';
+import EntityHeader from '../../components/EntityHeader';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import useDeleteSighting from '../../models/sighting/useDeleteSighting';
 import useDeleteAssetGroupSighting from '../../models/assetGroupSighting/useDeleteAssetGroupSighting';
@@ -161,7 +161,7 @@ export default function SightingCore({
         }
         messageId="CONFIRM_DELETE_SIGHTING_DESCRIPTION"
       />
-      <EntityHeaderNew
+      <EntityHeader
         renderAvatar={
           <FeaturedPhoto
             data={pending ? null : data}
@@ -187,16 +187,16 @@ export default function SightingCore({
               value="overview"
             />
             <Tab
-              label={<FormattedMessage id="ANIMALS" />}
-              value="individuals"
+              label={<FormattedMessage id="PHOTOGRAPHS" />}
+              value="photographs"
             />
             <Tab
               label={<FormattedMessage id="ANNOTATIONS" />}
               value="annotations"
             />
             <Tab
-              label={<FormattedMessage id="PHOTOGRAPHS" />}
-              value="photographs"
+              label={<FormattedMessage id="ANIMALS" />}
+              value="individuals"
             />
           </Tabs>
         }
@@ -227,7 +227,7 @@ export default function SightingCore({
             <Link to={creatorUrl}>{creatorName}</Link>
           </Text>
         )}
-      </EntityHeaderNew>
+      </EntityHeader>
       <CommitBanner
         sightingId={id}
         pending={pending}

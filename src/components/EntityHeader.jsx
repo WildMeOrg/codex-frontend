@@ -1,51 +1,38 @@
 import React from 'react';
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
-import BigAvatar from './profilePhotos/BigAvatar';
 import Text from './Text';
 
 export default function EntityHeader({
-  imageSrc,
-  imageGuid,
   name,
-  editable,
   noAvatar = false,
   children,
-  square = false,
   renderOptions,
-  renderAvatar = Function.prototype,
+  renderAvatar,
+  renderTabs,
 }) {
   return (
     <>
-      <Grid container>
-        <Grid
-          style={{
-            marginLeft: 12,
-            padding: '24px 0 0 0',
-          }}
-          item
-        >
-          {renderAvatar()}
-          {noAvatar ? (
-            <div style={{ width: 4, height: 151 }} />
-          ) : (
-            <BigAvatar
-              imageSrc={imageSrc}
-              imageGuid={imageGuid}
-              editable={editable}
-              name={name}
-              square={square}
-            />
-          )}
-        </Grid>
+      <Grid container justifyContent="center">
+        {renderAvatar ? (
+          <Grid
+            style={{
+              padding: '24px 0 16px 12px',
+            }}
+            item
+          >
+            {renderAvatar}
+          </Grid>
+        ) : null}
         <Grid
           item
           style={{
             marginLeft: 12,
             flexGrow: 1,
-            padding: '24px 12px 12px 0',
+            padding: '24px 0 12px 0',
             overflow: 'hidden',
-            maxWidth: 677, // (i never said i was a role model)
+            display: 'flex',
+            flexDirection: 'column',
           }}
         >
           <div
@@ -72,9 +59,10 @@ export default function EntityHeader({
           <div style={{ marginLeft: 4, marginTop: 4 }}>
             {children}
           </div>
+          <div style={{ marginTop: 20 }}>{renderTabs}</div>
         </Grid>
       </Grid>
-      <Divider style={{ marginTop: 24, marginBottom: 12 }} />
+      <Divider style={{ marginBottom: 12 }} />
     </>
   );
 }

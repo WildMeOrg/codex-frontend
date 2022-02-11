@@ -18,7 +18,7 @@ import Text from '../../components/Text';
 import Link from '../../components/Link';
 import MoreMenu from '../../components/MoreMenu';
 import ConfirmDelete from '../../components/ConfirmDelete';
-import EntityHeaderNew from '../../components/EntityHeaderNew';
+import EntityHeader from '../../components/EntityHeader';
 
 export default function AssetGroup() {
   const { id } = useParams();
@@ -85,7 +85,7 @@ export default function AssetGroup() {
         onClearError={() => setDeleteSightingError(null)}
         messageId="CONFIRM_DELETE_BULK_IMPORT_DESCRIPTION"
       />
-      <EntityHeaderNew
+      <EntityHeader
         // renderAvatar={
         //   <FeaturedPhoto
         //     assets={assets}
@@ -123,7 +123,7 @@ export default function AssetGroup() {
             <Link to={creatorUrl}>{creatorName}</Link>
           </Text>
         )}
-      </EntityHeaderNew>
+      </EntityHeader>
       <div
         style={{
           display: 'flex',

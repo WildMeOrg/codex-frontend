@@ -8,14 +8,12 @@ import DownIcon from '@material-ui/icons/KeyboardArrowDown';
 import UpIcon from '@material-ui/icons/KeyboardArrowUp';
 import Collapse from '@material-ui/core/Collapse';
 
+import { cellRenderers } from './cellRenderers';
+
 function getCellAlignment(cellIndex, columnDefinition) {
   if (columnDefinition.align) return columnDefinition.align;
   if (cellIndex === 0) return undefined;
   return 'right';
-}
-
-function defaultCellRenderer(value) {
-  return value || '';
 }
 
 export default function CollabsibleRow({
@@ -42,11 +40,22 @@ export default function CollabsibleRow({
         )}
         {columns.map((c, i) => {
           const cellValue = get(datum, c.name);
-          const cellRenderer = get(
+          const requestedCellRenderer = get(
+            c,
+            'options.cellRenderer',
+            'default',
+          );
+          const cellRendererProps = get(
+            c,
+            'options.cellRendererProps',
+            {},
+          );
+          const customCellRenderer = get(
             c,
             'options.customBodyRender',
-            defaultCellRenderer,
           );
+          const RequestedCellRenderer =
+            cellRenderers[requestedCellRenderer];
 
           return (
             <TableCell
@@ -57,7 +66,15 @@ export default function CollabsibleRow({
                 ...cellStyles,
               }}
             >
-              {cellRenderer(cellValue, datum)}
+              {customCellRenderer ? (
+                customCellRenderer(cellValue, datum)
+              ) : (
+                <RequestedCellRenderer
+                  value={cellValue}
+                  datum={datum}
+                  {...cellRendererProps}
+                />
+              )}
             </TableCell>
           );
         })}

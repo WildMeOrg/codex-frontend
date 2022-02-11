@@ -13,26 +13,30 @@ import useSiteSettings from '../../../models/site/useSiteSettings';
 import usePutSiteSettings from '../../../models/site/usePutSiteSettings';
 import Button from '../../../components/Button';
 import ActionIcon from '../../../components/ActionIcon';
-import InputRow from '../../../components/InputRow';
 import ConfirmDelete from '../../../components/ConfirmDelete';
 import DataDisplay from '../../../components/dataDisplays/DataDisplay';
 import Text from '../../../components/Text';
 import StandardDialog from '../../../components/StandardDialog';
+import InputRow from '../../../components/fields/edit/InputRow';
+import TextEditor from '../../../components/fields/edit/TextEditor';
+import SelectionEditor from '../../../components/fields/edit/SelectionEditor';
 import categoryTypes from '../../../constants/categoryTypes';
-import { defaultSightingCategories } from '../../../constants/newSightingSchema';
-import { defaultIndividualCategories } from '../../../constants/individualSchema';
+import {
+  defaultIndividualCategories,
+  defaultSightingCategories,
+} from '../../../constants/fieldCategories';
 import {
   mergeItemById,
   removeItemById,
 } from '../../../utils/manipulators';
 
 const defaultCategories = [
-  ...defaultSightingCategories.map(c => ({
+  ...Object.values(defaultSightingCategories).map(c => ({
     ...c,
     type: categoryTypes.sighting,
     isDefault: true,
   })),
-  ...defaultIndividualCategories.map(c => ({
+  ...Object.values(defaultIndividualCategories).map(c => ({
     ...c,
     type: categoryTypes.individual,
     isDefault: true,
@@ -58,8 +62,18 @@ export default function FieldSettings() {
 
   const categoryColumns = [
     {
-      name: 'label',
+      name: 'labelId',
       label: intl.formatMessage({ id: 'LABEL' }),
+      options: {
+        customBodyRender: (labelId, category) => {
+          if (labelId) return <Text variant="body2" id={labelId} />;
+          return (
+            <Text variant="body2">
+              {get(category, 'label', 'Unlabeled category')}
+            </Text>
+          );
+        },
+      },
     },
     {
       name: 'type',
@@ -156,34 +170,32 @@ export default function FieldSettings() {
                   : 'CATEGORY_EDIT_MESSAGE'
               }
             />
-            <InputRow
-              labelId="LABEL"
-              disabled={dialogData.isDefault}
-              schema={{
-                fieldType: 'string',
-                labelId: 'LABEL',
-              }}
-              value={dialogData.label || ''}
-              onChange={newLabel =>
-                setDialogData({ ...dialogData, label: newLabel })
-              }
-            />
-            <InputRow
-              labelId="TYPE"
-              disabled={dialogData.isDefault}
-              schema={{
-                fieldType: 'select',
-                labelId: 'TYPE',
-                choices: Object.values(categoryTypes).map(ct => ({
-                  label: ct,
-                  value: ct,
-                })),
-              }}
-              value={dialogData.type || ''}
-              onChange={newType =>
-                setDialogData({ ...dialogData, type: newType })
-              }
-            />
+            <InputRow schema={{ labelId: 'LABEL' }}>
+              <TextEditor
+                disabled={dialogData.isDefault}
+                schema={{ labelId: 'LABEL' }}
+                value={dialogData.label || ''}
+                onChange={newLabel =>
+                  setDialogData({ ...dialogData, label: newLabel })
+                }
+              />
+            </InputRow>
+            <InputRow schema={{ labelId: 'TYPE' }}>
+              <SelectionEditor
+                disabled={dialogData.isDefault}
+                schema={{
+                  labelId: 'TYPE',
+                  choices: Object.values(categoryTypes).map(ct => ({
+                    label: ct,
+                    value: ct,
+                  })),
+                }}
+                value={dialogData.type || ''}
+                onChange={newType =>
+                  setDialogData({ ...dialogData, type: newType })
+                }
+              />
+            </InputRow>
             {error && (
               <CustomAlert severity="error">{error}</CustomAlert>
             )}
