@@ -112,6 +112,7 @@ export default function Notifications() {
                 );
                 const notificationText = (
                   <Text
+                    key={notification?.guid}
                     style={{
                       color: read
                         ? theme.palette.text.secondary
@@ -136,6 +137,7 @@ export default function Notifications() {
                 );
                 const howLongAgoText = (
                   <Text
+                    // key={notification?.guid + '_howLongAgo'}
                     style={{
                       color: read
                         ? theme.palette.text.secondary
@@ -154,6 +156,7 @@ export default function Notifications() {
 
                 return (
                   <ListItem
+                    key={get(notification, 'guid')}
                     onClick={async () => {
                       setActiveCollaborationNotification(
                         notification,

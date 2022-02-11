@@ -9,14 +9,14 @@ import Divider from '@material-ui/core/Divider';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import { useTheme } from '@material-ui/core/styles';
 
-import usePatchNotification from '../../models/notification/usePatchNotification';
+// import usePatchNotification from '../../models/notification/usePatchNotification';
 import NotificationDetailsDialog from '../dialogs/NotificationDetailsDialog';
 import Link from '../Link';
 import Text from '../Text';
-import Button from '../Button';
 import shane from '../../assets/shane.jpg';
 import { notificationSchema } from '../../constants/notificationSchema';
 import { calculatePrettyTimeElapsedSince } from '../../utils/formatters';
+import { notificationButtons } from '../dialogs/notificationDialogUtils';
 
 function renderDisplayTextBasedOnMessageType(
   currentNotificationSchema,
@@ -46,8 +46,6 @@ export default function NotificationsPane({
     activeCollaborationNotification,
     setActiveCollaborationNotification,
   ] = useState(null);
-
-  const { markRead } = usePatchNotification();
 
   return (
     <Popover
@@ -91,6 +89,17 @@ export default function NotificationsPane({
               'availableButtons',
               [],
             );
+            let RequestNotificationButton;
+            if (
+              availableButtons.length > 0 &&
+              availableButtons.includes('view')
+            ) {
+              RequestNotificationButton = notificationButtons.view;
+            }
+            const notificationButtonOptionProps = {
+              refreshNotifications,
+              setActiveCollaborationNotification,
+            };
             const createdDate = notification?.created;
             const timeSince = calculatePrettyTimeElapsedSince(
               createdDate,
@@ -114,19 +123,13 @@ export default function NotificationsPane({
                       intl,
                     )}
                   </div>
-                  {availableButtons.includes('view') && (
-                    <Button
-                      onClick={async () => {
-                        setActiveCollaborationNotification(
-                          notification,
-                        );
-                        await markRead(get(notification, 'guid'));
-                        refreshNotifications();
-                      }}
-                      style={{ maxHeight: 40 }}
-                      id="VIEW"
-                    />
-                  )}
+                  {availableButtons.includes('view') &&
+                    refreshNotifications !== undefined && (
+                      <RequestNotificationButton
+                        notification={notification}
+                        {...notificationButtonOptionProps}
+                      />
+                    )}
                 </Grid>
                 <Grid
                   item

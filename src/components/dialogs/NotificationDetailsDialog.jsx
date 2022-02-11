@@ -1,33 +1,19 @@
 import React from 'react';
 import { get } from 'lodash-es';
-import { useIntl } from 'react-intl';
-import { useQueryClient } from 'react-query';
 
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
-import queryKeys from '../../constants/queryKeys';
-import CustomAlert from '../Alert';
 
-import usePatchCollaboration from '../../models/collaboration/usePatchCollaboration';
 import StandardDialog from '../StandardDialog';
 import Text from '../Text';
-import Button from '../Button';
 import { notificationSchema } from '../../constants/notificationSchema';
+import { notificationButtons } from './notificationDialogUtils';
 
 export default function NotificationDetailsDialog({
   open,
   onClose,
   notification,
 }) {
-  const queryClient = useQueryClient();
-  const {
-    patchCollaborationsAsync,
-    loading,
-    error,
-    isError,
-  } = usePatchCollaboration();
-  const intl = useIntl();
-
   const notificationType = notification?.message_type;
   const currentNotificationSchema = get(
     notificationSchema,
@@ -38,10 +24,6 @@ export default function NotificationDetailsDialog({
     onClose();
   };
 
-  const collaborationId = get(notification, [
-    'message_values',
-    'collaboration_guid',
-  ]);
   const senderName = get(notification, 'sender_name', 'Unnamed User');
   const user1Name = get(notification, [
     'message_values',
@@ -65,56 +47,6 @@ export default function NotificationDetailsDialog({
     individual2NicknameObject?.value || 'Unnamed individual';
   const path = get(currentNotificationSchema, 'path', '');
 
-  // TODO revokeCollabButton
-  // TODO requestCollab/orEdit Button
-
-  const declineRequestButton = (
-    <Button
-      display="basic"
-      id="DECLINE_REQUEST"
-      onClick={async () => {
-        const response = await patchCollaborationsAsync(
-          collaborationId,
-          [
-            {
-              op: 'replace',
-              path,
-              value: 'declined',
-            },
-          ],
-        );
-        if (response?.status === 200) {
-          onCloseDialog();
-          queryClient.invalidateQueries(queryKeys.me);
-        }
-      }}
-    />
-  );
-
-  const grantAccessButton = (
-    <Button
-      loading={loading}
-      display="primary"
-      onClick={async () => {
-        const response = await patchCollaborationsAsync(
-          collaborationId,
-          [
-            {
-              op: 'replace',
-              path,
-              value: 'approved',
-            },
-          ],
-        );
-        if (response?.status === 200) {
-          onCloseDialog();
-          queryClient.invalidateQueries(queryKeys.me);
-        }
-      }}
-      id="GRANT_ACCESS"
-    />
-  );
-
   return (
     <StandardDialog
       open={open}
@@ -133,27 +65,25 @@ export default function NotificationDetailsDialog({
             individual2Nickname,
           }}
         />
-        {isError && (
-          <CustomAlert
-            severity="error"
-            titleId="SERVER_ERROR"
-            description={
-              error || intl.formatMessage({ id: 'UNKNOWN_ERROR' })
-            }
-          />
-        )}
       </DialogContent>
       <DialogActions style={{ padding: '0px 24px 24px 24px' }}>
-        {get(
-          currentNotificationSchema,
-          'availableButtons',
-          [],
-        ).includes('decline') && declineRequestButton}
-        {get(
-          currentNotificationSchema,
-          'availableButtons',
-          [],
-        ).includes('grant') && grantAccessButton}
+        {get(currentNotificationSchema, 'availableButtons', [])
+          .filter(candidateButton => candidateButton !== 'view')
+          .map(notificationButton => {
+            const NotificationButtonComponent =
+              notificationButtons[notificationButton];
+            const notificationButtonOptionProps = {
+              onCloseDialog,
+              path,
+            };
+            return (
+              <NotificationButtonComponent
+                key={notification?.guid}
+                notification={notification}
+                {...notificationButtonOptionProps}
+              />
+            );
+          })}
       </DialogActions>
     </StandardDialog>
   );
