@@ -10,6 +10,7 @@ import DataDisplay from './dataDisplays/DataDisplay';
 import Button from './Button';
 import Text from './Text';
 import CustomAlert from './Alert';
+import { cellRendererTypes } from '../components/dataDisplays/cellRenderers';
 
 export default function IndividualSelector({
   setSelectedIndividualId,
@@ -34,17 +35,17 @@ export default function IndividualSelector({
   const tableColumns = [
     {
       name: 'name',
-      label: intl.formatMessage({ id: 'NAME' }),
+      label: intl.formatMessage({
+        id: 'NAME',
+      }),
     },
     {
       name: 'alias',
-      label: intl.formatMessage({ id: 'ALIAS' }),
+      label: intl.formatMessage({
+        id: 'ALIAS',
+      }),
       align: 'left',
-      options: {
-        customBodyRender: alias => (
-          <Text variant="body2">{capitalize(alias)}</Text>
-        ),
-      },
+      options: { cellRenderer: cellRendererTypes.capitalizedString },
     },
     {
       name: 'speciesString',

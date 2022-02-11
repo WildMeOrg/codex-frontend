@@ -1,12 +1,13 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
-import { get, capitalize } from 'lodash-es';
+import { get } from 'lodash-es';
 
 import { formatDate } from '../../utils/formatters';
 import DataDisplay from './DataDisplay';
 import Link from '../Link';
 import ButtonLink from '../ButtonLink';
 import Text from '../Text';
+import { cellRendererTypes } from './cellRenderers';
 
 export default function IndividualsDisplay({
   individuals,
@@ -20,7 +21,9 @@ export default function IndividualsDisplay({
   const columns = [
     {
       name: 'name',
-      label: intl.formatMessage({ id: 'NAME' }),
+      label: intl.formatMessage({
+        id: 'NAME',
+      }),
       options: {
         customBodyRender: (name, individual) => {
           const id = get(individual, 'id', '');
@@ -34,35 +37,23 @@ export default function IndividualsDisplay({
     },
     {
       name: 'alias',
-      label: intl.formatMessage({ id: 'ALIAS' }),
+      label: intl.formatMessage({
+        id: 'ALIAS',
+      }),
       align: 'left',
-      options: {
-        customBodyRender: alias => (
-          <Text variant="body2">{capitalize(alias)}</Text>
-        ),
-      },
+      options: { cellRenderer: cellRendererTypes.capitalizedString },
     },
     {
       name: 'last_sighting',
       label: intl.formatMessage({ id: 'LAST_SEEN' }),
       align: 'left',
-      options: {
-        customBodyRender: lastSightingTimestamp => (
-          <Text variant="body2">
-            {formatDate(lastSightingTimestamp)}
-          </Text>
-        ),
-      },
+      options: { cellRenderer: cellRendererTypes.date },
     },
     {
       name: 'taxonomy',
       label: intl.formatMessage({ id: 'SPECIES' }),
       align: 'left',
-      options: {
-        customBodyRender: taxonomy => (
-          <Text variant="body2">{capitalize(taxonomy)}</Text>
-        ),
-      },
+      options: { cellRenderer: cellRendererTypes.capitalizedString },
     },
     {
       name: 'encounters',

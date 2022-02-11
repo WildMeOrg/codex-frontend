@@ -23,6 +23,10 @@ export default function CollabsibleRow({
   cellStyles = {},
   ...rest
 }) {
+  console.log('deleteMe got here b0 and columns are: ');
+  console.log(columns);
+  console.log('deleteMe got here b1 and datum is: ');
+  console.log(datum);
   const [open, setOpen] = useState(false);
   return (
     <>
@@ -50,6 +54,8 @@ export default function CollabsibleRow({
             'options.cellRendererProps',
             {},
           );
+          console.log('deleteMe d0 cellRendererProps are: ');
+          console.log(cellRendererProps);
           const customCellRenderer = get(
             c,
             'options.customBodyRender',

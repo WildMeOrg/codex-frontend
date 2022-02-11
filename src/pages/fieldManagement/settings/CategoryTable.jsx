@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
-import { get, capitalize } from 'lodash-es';
+import { get } from 'lodash-es';
 import { v4 as uuid } from 'uuid';
 
 import Grid from '@material-ui/core/Grid';
@@ -25,6 +25,7 @@ import {
   mergeItemById,
   removeItemById,
 } from '../../../utils/manipulators';
+import { cellRendererTypes } from '../../../components/dataDisplays/cellRenderers';
 
 const defaultCategories = [
   ...defaultSightingCategories.map(c => ({
@@ -57,18 +58,13 @@ export default function FieldSettings() {
   const categories = [...defaultCategories, ...customFieldCategories];
 
   const categoryColumns = [
-    {
-      name: 'label',
-      label: intl.formatMessage({ id: 'LABEL' }),
-    },
+    { name: 'label', label: intl.formatMessage({ id: 'LABEL' }) },
     {
       name: 'type',
-      label: intl.formatMessage({ id: 'TYPE' }),
-      options: {
-        customBodyRender: type => (
-          <Text variant="body2">{capitalize(type)}</Text>
-        ),
-      },
+      label: intl.formatMessage({
+        id: 'TYPE',
+      }),
+      options: { cellRenderer: cellRendererTypes.capitalizedString },
     },
     {
       name: 'actions',
