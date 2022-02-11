@@ -6,6 +6,7 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
 import AddIcon from '@material-ui/icons/Add';
 
+import useOnEnter from '../../hooks/useOnEnter';
 import viewpointChoices from '../../constants/viewpoints';
 import { getKeywordColor } from '../../utils/colorUtils';
 import StandardDialog from '../../components/StandardDialog';
@@ -61,6 +62,28 @@ export default function AnnotationDetail({
     setNewTagInputValue('');
     setNewTagSelectValue(null);
   };
+
+  async function onAddTag() {
+    const selectValue = get(newTagSelectValue, 'value');
+    const selectKeywordId = get(newTagSelectValue, 'guid');
+    const matchingKeywordId =
+      newTagInputValue === selectValue ? selectKeywordId : null;
+
+    const successful = await addKeyword(
+      get(annotation, 'guid'),
+      matchingKeywordId,
+      newTagInputValue,
+    );
+    if (successful) {
+      setNewTagInputValue('');
+      setNewTagSelectValue(null);
+      refreshSightingData();
+    }
+  }
+
+  useOnEnter(() => {
+    if (newTagInputValue !== '') onAddTag();
+  });
 
   const viewpoint = viewpointChoices.find(
     viewpointChoice =>
@@ -127,6 +150,7 @@ export default function AnnotationDetail({
                     freeSolo
                     blurOnSelect
                     clearOnEscape
+                    disableClearable
                     handleHomeEndKeys
                     selectOnFocus
                     value={newTagSelectValue}
@@ -135,7 +159,7 @@ export default function AnnotationDetail({
                     }}
                     inputValue={newTagInputValue}
                     onInputChange={(_, newValue) => {
-                      setNewTagInputValue(newValue);
+                      if (newValue) setNewTagInputValue(newValue);
                     }}
                     disabled={addKeywordLoading}
                     options={filteredKeywordOptions}
@@ -175,31 +199,7 @@ export default function AnnotationDetail({
                     display="panel"
                     size="small"
                     loading={addKeywordLoading}
-                    onClick={async () => {
-                      const selectValue = get(
-                        newTagSelectValue,
-                        'value',
-                      );
-                      const selectKeywordId = get(
-                        newTagSelectValue,
-                        'guid',
-                      );
-                      const matchingKeywordId =
-                        newTagInputValue === selectValue
-                          ? selectKeywordId
-                          : null;
-
-                      const successful = await addKeyword(
-                        get(annotation, 'guid'),
-                        matchingKeywordId,
-                        newTagInputValue,
-                      );
-                      if (successful) {
-                        setNewTagInputValue('');
-                        setNewTagSelectValue(null);
-                        refreshSightingData();
-                      }
-                    }}
+                    onClick={onAddTag}
                     id="ADD_TAG"
                   />
                 </div>
