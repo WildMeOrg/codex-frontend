@@ -24,7 +24,10 @@ export default function SightingsCard({
   onDelete,
   linkPath = 'sightings',
   noSightingsMsg = 'NO_SIGHTINGS',
+  loading,
 }) {
+  console.log('deleteMe loading is: ');
+  console.log(loading);
   const [showMapView, setShowMapView] = useState(false);
   const theme = useTheme();
   const { regionOptions } = useOptions();
@@ -130,7 +133,7 @@ export default function SightingsCard({
         </div>
       }
     >
-      {noSightings && (
+      {noSightings && !loading && (
         <Text
           variant="body2"
           id={noSightingsMsg}
@@ -143,6 +146,7 @@ export default function SightingsCard({
           tableSize="medium"
           columns={filteredColumns}
           data={sightings}
+          loading={loading}
         />
       )}
       {!noSightings && showMapView && (

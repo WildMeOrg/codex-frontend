@@ -64,6 +64,10 @@ export default function DataDisplay({
   cellStyles = {},
   ...rest
 }) {
+  console.log(
+    'deleteMe got here and loading inside the DataDisplay is: ',
+  );
+  console.log(loading);
   const theme = useTheme();
   const themeColor = theme.palette.primary.main;
 

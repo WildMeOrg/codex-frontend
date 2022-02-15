@@ -28,13 +28,17 @@ export default function UserProfile({
   someoneElse,
   noCollaborate = false,
 }) {
-  const { data: sightingsData } = useGetUserSightings(userId);
+  const {
+    data: sightingsData,
+    loading: sightingsLoading,
+  } = useGetUserSightings(userId);
   const intl = useIntl();
   const [editingProfile, setEditingProfile] = useState(false);
   const metadataSchemas = useUserMetadataSchemas(userId);
-  const { data: agsData } = useGetUserUnprocessedAssetGroupSightings(
-    userId,
-  );
+  const {
+    data: agsData,
+    loading: agsLoading,
+  } = useGetUserUnprocessedAssetGroupSightings(userId);
 
   const metadata = useMemo(
     () => {
@@ -142,12 +146,14 @@ export default function UserProfile({
             sightings={agsData || []}
             linkPath="pending-sightings"
             noSightingsMsg="NO_PENDING_SIGHTINGS"
+            loading={agsLoading}
           />
           <SightingsCard
             titleId={someoneElse ? 'USERS_SIGHTINGS' : 'SIGHTINGS'}
             columns={['individual', 'date', 'location', 'actions']}
             hideSubmitted
             sightings={sightingsData || []}
+            loading={sightingsLoading}
           />
 
           {!someoneElse && <CollaborationsCard userId={userId} />}
