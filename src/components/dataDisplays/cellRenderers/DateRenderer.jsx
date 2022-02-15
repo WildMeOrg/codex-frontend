@@ -1,20 +1,12 @@
 import React from 'react';
-
-import Text from '../../Text';
 import { formatDate } from '../../../utils/formatters';
+import Text from '../../Text';
+import { get } from 'lodash-es';
 
 export default function DateRenderer({ datum }) {
-  console.log('deleteMe got here c1 and datum is: ');
-  console.log(datum);
-  return <Text variant="body2">{formatDate('test')}</Text>;
+  return (
+    <Text component="span" variant="body2">
+      {formatDate(get(datum, 'created', ''))}
+    </Text>
+  );
 }
-
-// import React from 'react';
-
-// import { capitalize } from 'lodash-es';
-
-// import Text from '../../Text';
-
-// export default function CapitalizedStringRenderer({ value }) {
-//   return <Text variant="body2">{capitalize(value)}</Text>;
-// }

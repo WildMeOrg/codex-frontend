@@ -47,7 +47,7 @@ export default function IndividualsDisplay({
       name: 'last_sighting',
       label: intl.formatMessage({ id: 'LAST_SEEN' }),
       align: 'left',
-      options: { cellRenderer: cellRendererTypes.date },
+      options: { cellRenderer: cellRendererTypes.lastSighting },
     },
     {
       name: 'taxonomy',
