@@ -5,7 +5,7 @@ import AddIcon from '@material-ui/icons/Add';
 
 import CustomAlert from '../../../components/Alert';
 import CardContainer from '../../../components/cards/CardContainer';
-import MetadataCard from '../../../components/cards/MetadataCardNew';
+import MetadataCard from '../../../components/cards/MetadataCard';
 import Text from '../../../components/Text';
 import Button from '../../../components/Button';
 import ButtonMenu from '../../../components/ButtonMenu';
@@ -220,7 +220,7 @@ export default function Encounters({
                       id: 'delete-cluster',
                       onClick: () =>
                         setEncounterToDelete(encounterId),
-                      label: 'Delete cluster',
+                      label: 'Delete animal',
                     },
                   ]}
                 />

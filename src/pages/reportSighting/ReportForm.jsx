@@ -12,14 +12,14 @@ import Radio from '@material-ui/core/Radio';
 import CustomAlert from '../../components/Alert';
 // import ExifIcon from '@material-ui/icons/FlashOn';
 
+import {
+  defaultSightingCategories,
+  defaultEncounterCategories,
+} from '../../constants/fieldCategories';
 import usePostAssetGroup from '../../models/assetGroup/usePostAssetGroup';
 import useSiteSettings from '../../models/site/useSiteSettings';
-import useSightingFieldSchemas, {
-  defaultSightingCategories,
-} from '../../models/sighting/useSightingFieldSchemas';
-import useEncounterFieldSchemas, {
-  defaultEncounterCategories,
-} from '../../models/encounter/useEncounterFieldSchemas';
+import useSightingFieldSchemas from '../../models/sighting/useSightingFieldSchemas';
+import useEncounterFieldSchemas from '../../models/encounter/useEncounterFieldSchemas';
 // import { getLocationSuggestion } from '../../utils/exif';
 import Button from '../../components/Button';
 import Text from '../../components/Text';

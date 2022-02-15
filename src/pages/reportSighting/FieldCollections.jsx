@@ -4,7 +4,7 @@ import { get } from 'lodash-es';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 
-import InputRow from '../../components/fields/edit/InputRowNew';
+import InputRow from '../../components/fields/edit/InputRow';
 import Text from '../../components/Text';
 
 export default function FieldCollections({

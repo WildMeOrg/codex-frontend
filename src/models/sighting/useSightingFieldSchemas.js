@@ -5,30 +5,11 @@ import { get, map, omitBy } from 'lodash-es';
 import useDetectionConfig from '../site/useDetectionConfig';
 import useSiteSettings from '../site/useSiteSettings';
 import fieldTypes from '../../constants/fieldTypesNew';
+import { defaultSightingCategories } from '../../constants/fieldCategories';
 import {
   createFieldSchema,
   createCustomFieldSchema,
 } from '../../utils/fieldUtils';
-
-export const defaultSightingCategories = {
-  general: {
-    name: 'general',
-    labelId: 'GENERAL',
-    individualFields: false,
-  },
-  location: {
-    name: 'location',
-    labelId: 'LOCATION',
-    descriptionId: 'LOCATION_CATEGORY_DESCRIPTION',
-    required: true,
-    individualFields: false,
-  },
-  details: {
-    name: 'sightingDetails',
-    labelId: 'SIGHTING_DETAILS',
-    individualFields: false,
-  },
-};
 
 export default function useSightingFieldSchemas() {
   const intl = useIntl();
@@ -132,6 +113,7 @@ export default function useSightingFieldSchemas() {
           category: defaultSightingCategories.general.name,
           choices: modelChoices,
           hideOnMetadataCard: true,
+          required: true,
           editable: false,
         }),
         createFieldSchema(fieldTypes.locationId, {

@@ -13,20 +13,13 @@ import UserManagement from './pages/userManagement/UserManagement';
 import AdminActions from './pages/adminActions/AdminActions';
 import ControlPanel from './pages/controlPanel/ControlPanel';
 import Individual from './pages/individual/Individual';
-import CreateIndividual from './pages/individual/CreateIndividual';
 import PictureBook from './pages/individual/PictureBook';
 import Sighting from './pages/sighting/Sighting';
 import AssetGroupSighting from './pages/sighting/AssetGroupSighting';
 import Splash from './pages/splash/Splash';
 import AssetGroup from './pages/assetGroup/AssetGroup';
-import Org from './pages/org/Org';
-import Orgs from './pages/org/Orgs';
-import CreateOrg from './pages/org/CreateOrg';
-// import Project from './pages/projects/Project';
-// import Projects from './pages/projects/Projects';
 import User from './pages/user/User';
 import Users from './pages/user/Users';
-import CreateUser from './pages/user/CreateUser';
 import BulkImport from './pages/bulkImport/BulkImport';
 import BulkImportSuccess from './pages/bulkImport/Success';
 import ReportSighting from './pages/reportSighting/ReportSighting';
@@ -38,8 +31,6 @@ import SearchIndividuals from './pages/individual/SearchIndividuals';
 import SearchSightings from './pages/sighting/SearchSightings';
 import SiteSetup from './pages/setup/SiteSetup';
 import MatchReview from './pages/match/MatchReview';
-import FlagsOnly from './pages/match/iceland/FlagsOnly';
-import Iceland from './pages/match/iceland/Iceland';
 import AuditLog from './pages/devTools/AuditLog';
 import Welcome from './pages/auth/Welcome';
 import Home from './pages/home/Home';
@@ -122,9 +113,6 @@ export default function AuthenticatedSwitch() {
                       <Route path="/individuals">
                         <SearchIndividuals />
                       </Route>
-                      <Route path="/create/individual">
-                        <CreateIndividual />
-                      </Route>
                       <Route path="/bulk-imports/:id">
                         <AssetGroup />
                       </Route>
@@ -152,24 +140,6 @@ export default function AuthenticatedSwitch() {
                       <Route path="/settings">
                         <Settings />
                       </Route>
-                      <Route path="/create/user">
-                        <CreateUser />
-                      </Route>
-                      <Route path="/create/org">
-                        <CreateOrg />
-                      </Route>
-                      <Route path="/orgs/:id">
-                        <Org />
-                      </Route>
-                      <Route path="/orgs">
-                        <Orgs />
-                      </Route>
-                      {/* <Route path="/projects/:id">
-                        <Project />
-                      </Route>
-                      <Route path="/projects">
-                        <Projects />
-                      </Route> */}
                       <Route path="/bulk-import/success/:id">
                         <BulkImportSuccess />
                       </Route>
@@ -181,12 +151,6 @@ export default function AuthenticatedSwitch() {
                       </Route>
                       <Route path="/report">
                         <ReportSighting authenticated />
-                      </Route>
-                      <Route path="/iceland/flags">
-                        <FlagsOnly />
-                      </Route>
-                      <Route path="/iceland">
-                        <Iceland />
                       </Route>
                       <Route path="/auditlog">
                         <AuditLog />

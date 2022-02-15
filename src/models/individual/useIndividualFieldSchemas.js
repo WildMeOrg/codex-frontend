@@ -7,6 +7,7 @@ import {
   createFieldSchema,
   createCustomFieldSchema,
 } from '../../utils/fieldUtils';
+import { defaultIndividualCategories } from '../../constants/fieldCategories';
 
 const sexChoices = [
   {
@@ -42,13 +43,6 @@ const statusChoices = [
   },
 ];
 
-export const defaultCategories = {
-  general: {
-    name: 'general',
-    labelId: 'INDIVIDUAL_METADATA',
-  },
-};
-
 export default function useIndividualFieldSchemas() {
   const {
     data,
@@ -78,7 +72,7 @@ export default function useIndividualFieldSchemas() {
         createFieldSchema(fieldTypes.string, {
           name: 'defaultName',
           labelId: 'NAME',
-          category: defaultCategories.general.name,
+          category: defaultIndividualCategories.general.name,
           requiredForIndividualCreation: true,
           required: true,
           defaultValue: '',
@@ -86,14 +80,14 @@ export default function useIndividualFieldSchemas() {
         createFieldSchema(fieldTypes.string, {
           name: 'nickname',
           labelId: 'NICKNAMES',
-          category: defaultCategories.general.name,
+          category: defaultIndividualCategories.general.name,
           requiredForIndividualCreation: true,
           defaultValue: '',
         }),
         createFieldSchema(fieldTypes.select, {
           name: 'sex',
           labelId: 'SEX',
-          category: defaultCategories.general.name,
+          category: defaultIndividualCategories.general.name,
           choices: sexChoices,
           requiredForIndividualCreation: true,
           defaultValue: '',
@@ -101,7 +95,7 @@ export default function useIndividualFieldSchemas() {
         createFieldSchema(fieldTypes.select, {
           name: 'status',
           labelId: 'STATUS',
-          category: defaultCategories.general.name,
+          category: defaultIndividualCategories.general.name,
           choices: statusChoices,
           requiredForIndividualCreation: true,
           defaultValue: '',
