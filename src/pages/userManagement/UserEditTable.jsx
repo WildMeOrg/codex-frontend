@@ -83,6 +83,11 @@ export default function UserEditTable({ data, loading, usersError }) {
     },
   ];
 
+  const safeUsers = data || [];
+  const activeUsers = safeUsers.filter(
+    u => u?.full_name !== 'Inactivated User',
+  );
+
   return (
     <Grid item>
       <UserEditDialog
@@ -105,7 +110,7 @@ export default function UserEditTable({ data, loading, usersError }) {
         style={{ marginTop: 8 }}
         variant="secondary"
         columns={tableColumns}
-        data={data || []}
+        data={activeUsers}
       />
       {loading ? (
         <Skeleton style={{ transform: 'unset' }} height={44} />
