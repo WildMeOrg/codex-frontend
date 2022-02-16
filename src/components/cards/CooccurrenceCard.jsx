@@ -1,8 +1,8 @@
 import React from 'react';
-import { format } from 'date-fns';
 import DataDisplay from '../dataDisplays/DataDisplay';
 import Link from '../Link';
 import Card from './Card';
+import { cellRendererTypes } from '../dataDisplays/cellRenderers';
 
 export default function CooccurrenceCard({
   title,
@@ -23,16 +23,13 @@ export default function CooccurrenceCard({
               ),
             },
           },
-          {
-            name: 'count',
-            label: 'Count',
-          },
+          { name: 'count', label: 'Count' },
           {
             name: 'lastSeen',
             label: 'Last seen together',
             options: {
-              customBodyRender: value => format(value, 'MMM d, yyyy'),
-              getStringValue: value => format(value, 'MMM d, yyyy'),
+              cellRenderer: cellRendererTypes.date,
+              cellRendererProps: { accessor: 'lastSeen' },
             },
           },
         ]}

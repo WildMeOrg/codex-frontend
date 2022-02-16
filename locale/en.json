@@ -953,5 +953,6 @@
   "PENDING_SIGHTINGS": "Pending Sightings",
   "SENT_YOU_A_COLLABORATION_REQUEST": "{senderName} sent you a collaboration request",
   "A_COLLABORATION_WAS_CREATED_ON_YOUR_BEHALF": "A collaboration was created on your behalf",
-  "TIME_SINCE": "{timeSince} ago"
+  "TIME_SINCE": "{timeSince} ago",
+  "PHOTOS_OF": "Photos of {name}"
 }
