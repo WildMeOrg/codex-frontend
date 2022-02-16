@@ -60,7 +60,10 @@ export default function SightingsDisplay({ sightings }) {
     {
       name: 'sightingDate',
       label: intl.formatMessage({ id: 'SIGHTING_DATE' }),
-      options: { cellRenderer: cellRendererTypes.lastSighting },
+      options: {
+        cellRenderer: cellRendererTypes.date,
+        cellRendererProps: { accessor: 'lastSeen' },
+      },
     },
     {
       name: 'submissionDate',

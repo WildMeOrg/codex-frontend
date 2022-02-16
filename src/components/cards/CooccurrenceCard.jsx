@@ -27,7 +27,10 @@ export default function CooccurrenceCard({
           {
             name: 'lastSeen',
             label: 'Last seen together',
-            options: { cellRenderer: cellRendererTypes.lastSighting },
+            options: {
+              cellRenderer: cellRendererTypes.date,
+              cellRendererProps: { accessor: 'lastSeen' },
+            },
           },
         ]}
         data={data}

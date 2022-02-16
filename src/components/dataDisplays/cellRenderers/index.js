@@ -2,7 +2,6 @@ import DefaultRenderer from './DefaultRenderer';
 import UserRenderer from './UserRenderer';
 import LocationRenderer from './LocationRenderer';
 import SpecifiedTimeRenderer from './SpecifiedTimeRenderer';
-import LastSightingRenderer from './LastSightingRenderer';
 import CapitalizedStringRenderer from './CapitalizedStringRenderer';
 import DateRenderer from './DateRenderer';
 
@@ -11,7 +10,6 @@ export const cellRendererTypes = {
   user: 'user',
   location: 'location',
   specifiedTime: 'specifiedTime',
-  lastSighting: 'lastSighting',
   capitalizedString: 'capitalizedString',
   date: 'date',
 };
@@ -21,7 +19,6 @@ export const cellRenderers = {
   [cellRendererTypes.user]: UserRenderer,
   [cellRendererTypes.location]: LocationRenderer,
   [cellRendererTypes.specifiedTime]: SpecifiedTimeRenderer,
-  [cellRendererTypes.lastSighting]: LastSightingRenderer,
   [cellRendererTypes.capitalizedString]: CapitalizedStringRenderer,
   [cellRendererTypes.date]: DateRenderer,
 };
