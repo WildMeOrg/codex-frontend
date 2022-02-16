@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useIntl } from 'react-intl';
 import { get, capitalize } from 'lodash-es';
 
@@ -17,6 +17,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import SearchIcon from '@material-ui/icons/Search';
 import ExploreIcon from '@material-ui/icons/FilterList';
 
+import useOnEnter from '../../hooks/useOnEnter';
 import useQueryIndividuals from '../../models/individual/useQueryIndividuals';
 import Button from '../Button';
 import Text from '../Text';
@@ -37,21 +38,9 @@ export default function IndividualsButton() {
     queryIndividuals,
   } = useQueryIndividuals();
 
-  function onKeyUp(e) {
-    if (e.key === 'Enter' && searchTerm !== '') {
-      queryIndividuals(searchTerm);
-    }
-  }
-
-  useEffect(
-    () => {
-      document.addEventListener('keyup', onKeyUp);
-      return () => {
-        document.removeEventListener('keyup', onKeyUp);
-      };
-    },
-    [searchTerm],
-  );
+  useOnEnter(() => {
+    if (searchTerm !== '') queryIndividuals(searchTerm);
+  });
 
   const handleClose = () => {
     setAnchorEl(null);

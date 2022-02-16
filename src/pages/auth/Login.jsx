@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import Typography from '@material-ui/core/Typography';
@@ -9,6 +9,7 @@ import TextField from '@material-ui/core/TextField';
 import Switch from '@material-ui/core/Switch';
 import CustomAlert from '../../components/Alert';
 
+import useOnEnter from '../../hooks/useOnEnter';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import useLogin from '../../models/auth/useLogin';
 import Link from '../../components/Link';
@@ -26,19 +27,9 @@ export default function Login({ showBanner, redirect = '/' }) {
 
   useDocumentTitle('LOG_IN');
 
-  function onKeyUp(e) {
-    if (e.key === 'Enter') {
-      document.querySelector(`#${buttonId}`).click();
-      e.preventDefault();
-    }
-  }
-
-  useEffect(() => {
-    document.addEventListener('keyup', onKeyUp);
-    return () => {
-      document.removeEventListener('keyup', onKeyUp);
-    };
-  }, []);
+  useOnEnter(() => {
+    document.querySelector(`#${buttonId}`).click();
+  });
 
   return (
     <SimpleFormPage

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter, useLocation } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { ReactQueryDevtools } from 'react-query/devtools';
+// import { ReactQueryDevtools } from 'react-query/devtools';
 import { get } from 'lodash-es';
 import { IntlProvider } from 'react-intl';
 import '@formatjs/intl-numberformat/polyfill';
@@ -77,7 +77,7 @@ export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <AppWithQueryClient />
-      <ReactQueryDevtools initialIsOpen={false} />
+      {/* <ReactQueryDevtools initialIsOpen={false} /> */}
     </QueryClientProvider>
   );
 }
