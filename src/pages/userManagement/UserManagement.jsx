@@ -26,6 +26,8 @@ import CollaborationManagementForm from '../collaborations/collaborationManageme
 import useGetAllCollaborations from '../../models/collaboration/useGetAllCollaborations';
 import UserManagersCollaborationEditTable from './UserManagerCollaborationEditTable';
 
+const validRoles = roleSchema.filter(role => role.id !== 'is_staff');
+
 export default function UserManagement() {
   const intl = useIntl();
   useDocumentTitle('MANAGE_USERS');
@@ -158,7 +160,7 @@ export default function UserManagement() {
                     </div>
                   )}
                 >
-                  {roleSchema.map(role => (
+                  {validRoles.map(role => (
                     <MenuItem key={role.id} value={role.id}>
                       <FormattedMessage id={role.titleId} />
                     </MenuItem>
