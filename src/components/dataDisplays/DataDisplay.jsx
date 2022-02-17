@@ -275,7 +275,7 @@ export default function DataDisplay({
           <TableBody>
             {!loading &&
               sortedData?.map(datum => (
-                <CollabsibleRow
+                <CollapsibleRow
                   key={get(datum, idKey)}
                   onClick={() => {
                     if (selectedRow === get(datum, idKey)) {
