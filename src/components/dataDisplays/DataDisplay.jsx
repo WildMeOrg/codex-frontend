@@ -64,10 +64,6 @@ export default function DataDisplay({
   cellStyles = {},
   ...rest
 }) {
-  console.log(
-    'deleteMe got here and loading inside the DataDisplay is: ',
-  );
-  console.log(loading);
   const theme = useTheme();
   const themeColor = theme.palette.primary.main;
 
@@ -92,7 +88,7 @@ export default function DataDisplay({
     ? (page + 1) * rowsPerPage - 1
     : Infinity;
 
-  const visibleData = data.filter((datum, index) => {
+  const visibleData = data?.filter((datum, index) => {
     if (index < startIndex && !paginatedExternally) return false;
     if (index > endIndex && !paginatedExternally) return false;
 
@@ -278,7 +274,7 @@ export default function DataDisplay({
           </TableHead>
           <TableBody>
             {!loading &&
-              sortedData.map(datum => (
+              sortedData?.map(datum => (
                 <CollabsibleRow
                   key={get(datum, idKey)}
                   onClick={() => {

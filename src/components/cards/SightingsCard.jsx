@@ -26,8 +26,6 @@ export default function SightingsCard({
   noSightingsMsg = 'NO_SIGHTINGS',
   loading,
 }) {
-  console.log('deleteMe loading is: ');
-  console.log(loading);
   const [showMapView, setShowMapView] = useState(false);
   const theme = useTheme();
   const { regionOptions } = useOptions();
@@ -95,7 +93,7 @@ export default function SightingsCard({
     },
   ];
 
-  const filteredColumns = allColumns.filter(c =>
+  const filteredColumns = allColumns?.filter(c =>
     columns.includes(c.reference),
   );
 
@@ -121,7 +119,7 @@ export default function SightingsCard({
               showMapView ? { color: theme.palette.primary.main } : {}
             }
             disabled={
-              sightingsWithLocationData.filter(entry =>
+              sightingsWithLocationData?.filter(entry =>
                 get(entry, 'decimalLatitude'),
               ).length < 1
             }

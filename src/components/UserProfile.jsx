@@ -1,5 +1,6 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
+import LinearProgress from '@material-ui/core/LinearProgress';
 import { get } from 'lodash-es';
 
 import { getHighestRoleLabelId } from '../utils/roleUtils';
@@ -18,6 +19,7 @@ import MetadataCard from './cards/MetadataCard';
 import SightingsCard from './cards/SightingsCard';
 import CollaborationsCard from './cards/CollaborationsCard';
 import CardContainer from './cards/CardContainer';
+import Card from './cards/Card';
 
 export default function UserProfile({
   children,
@@ -39,6 +41,23 @@ export default function UserProfile({
     data: agsData,
     loading: agsLoading,
   } = useGetUserUnprocessedAssetGroupSightings(userId);
+
+  const [localAgsLoading, setLocalAgsLoading] = useState(true);
+  const [localSightingsLoading, setLocalSightingsLoading] = useState(
+    true,
+  );
+  useEffect(
+    () => {
+      setLocalAgsLoading(agsLoading);
+    },
+    [agsLoading],
+  );
+  useEffect(
+    () => {
+      setLocalSightingsLoading(sightingsLoading);
+    },
+    [sightingsLoading],
+  );
 
   const metadata = useMemo(
     () => {
@@ -136,25 +155,41 @@ export default function UserProfile({
           /> */}
         </CardContainer>
         <CardContainer>
-          <SightingsCard
-            titleId={
-              someoneElse
-                ? 'USERS_UNPROCESSED_AGS'
-                : 'PENDING_SIGHTINGS'
-            }
-            columns={['individual', 'date', 'location', 'actions']}
-            sightings={agsData || []}
-            linkPath="pending-sightings"
-            noSightingsMsg="NO_PENDING_SIGHTINGS"
-            loading={agsLoading}
-          />
-          <SightingsCard
-            titleId={someoneElse ? 'USERS_SIGHTINGS' : 'SIGHTINGS'}
-            columns={['individual', 'date', 'location', 'actions']}
-            hideSubmitted
-            sightings={sightingsData || []}
-            loading={sightingsLoading}
-          />
+          {localAgsLoading && (
+            <Card titleId={'PENDING_SIGHTINGS'}>
+              <LinearProgress style={{ margin: '16px 32px' }} />
+            </Card>
+          )}
+          {!localAgsLoading && (
+            <SightingsCard
+              id="pending-sightings-card"
+              titleId={
+                someoneElse
+                  ? 'USERS_UNPROCESSED_AGS'
+                  : 'PENDING_SIGHTINGS'
+              }
+              columns={['individual', 'date', 'location', 'actions']}
+              sightings={agsData || []}
+              linkPath="pending-sightings"
+              noSightingsMsg="NO_PENDING_SIGHTINGS"
+              loading={localAgsLoading}
+            />
+          )}
+          {localSightingsLoading && (
+            <Card titleId={'SIGHTINGS'}>
+              <LinearProgress style={{ margin: '16px 32px' }} />
+            </Card>
+          )}
+          {!localSightingsLoading && (
+            <SightingsCard
+              id="sightings-card"
+              titleId={someoneElse ? 'USERS_SIGHTINGS' : 'SIGHTINGS'}
+              columns={['individual', 'date', 'location', 'actions']}
+              hideSubmitted
+              sightings={sightingsData || []}
+              loading={localSightingsLoading}
+            />
+          )}
 
           {!someoneElse && <CollaborationsCard userId={userId} />}
         </CardContainer>
