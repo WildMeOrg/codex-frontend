@@ -16,6 +16,7 @@ import {
   getAGSQueryKey,
   getSightingQueryKey,
 } from '../../constants/queryKeys';
+import timePrecisionMap from '../../constants/timePrecisionMap';
 import defaultSightingSrc from '../../assets/defaultSighting.png';
 import MainColumn from '../../components/MainColumn';
 import Link from '../../components/Link';
@@ -30,7 +31,7 @@ import useDocumentTitle from '../../hooks/useDocumentTitle';
 import useDeleteSighting from '../../models/sighting/useDeleteSighting';
 import useDeleteAssetGroupSighting from '../../models/assetGroupSighting/useDeleteAssetGroupSighting';
 import useSightingFieldSchemas from '../../models/sighting/useSightingFieldSchemas';
-import { formatDate } from '../../utils/formatters';
+import { formatDateCustom } from '../../utils/formatters';
 // import AnnotationsGallery from './AnnotationsGallery';
 // import IndividualsGallery from './IndividualsGallery';
 import Annotations from './Annotations';
@@ -116,7 +117,17 @@ export default function SightingCore({
 
   const assets = get(data, 'assets', []);
 
-  const sightingDisplayDate = get(data, 'time');
+  const sightingTime = data?.time;
+  const sightingTimeSpecificity = data?.timeSpecificity;
+  const formatSpecification = get(
+    timePrecisionMap,
+    [sightingTimeSpecificity, 'prettyFormat'],
+    'yyyy-MM-dd',
+  );
+  const sightingDisplayDate = formatDateCustom(
+    sightingTime,
+    formatSpecification,
+  );
 
   const sightingCreator = data?.creator;
   const creatorName =
@@ -172,7 +183,7 @@ export default function SightingCore({
         }
         name={intl.formatMessage(
           { id: 'ENTITY_HEADER_SIGHTING_DATE' },
-          { date: formatDate(sightingDisplayDate, true) },
+          { date: sightingDisplayDate },
         )}
         renderTabs={
           <Tabs

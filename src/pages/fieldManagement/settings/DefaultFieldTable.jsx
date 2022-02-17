@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
-import { get, capitalize } from 'lodash-es';
+import { get } from 'lodash-es';
 
 import Grid from '@material-ui/core/Grid';
 import CustomAlert from '../../../components/Alert';
@@ -15,6 +15,7 @@ import {
   RelationshipEditor,
 } from './defaultFieldComponents/Editors';
 import SpeciesEditor from './defaultFieldComponents/SpeciesEditor';
+import { cellRendererTypes } from '../../../components/dataDisplays/cellRenderers';
 
 const configurableFields = [
   {
@@ -79,11 +80,7 @@ export default function DefaultFieldTable({
     {
       name: 'type',
       label: intl.formatMessage({ id: 'TYPE' }),
-      options: {
-        customBodyRender: type => (
-          <Text variant="body2">{capitalize(type)}</Text>
-        ),
-      },
+      options: { cellRenderer: cellRendererTypes.capitalizedString },
     },
     {
       name: 'actions',

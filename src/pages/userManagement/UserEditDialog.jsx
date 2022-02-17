@@ -17,6 +17,8 @@ import PasswordVerificationAlert from '../../components/PasswordVerificationAler
 import usePatchUser from '../../models/users/usePatchUser';
 import roleSchema from './constants/roleSchema';
 
+const validRoles = roleSchema.filter(role => role.id !== 'is_staff');
+
 export default function UserEditDialog({ open, onClose, userData }) {
   const [formValues, setFormValues] = useState({});
   const [touched, setTouched] = useState(false);
@@ -86,7 +88,7 @@ export default function UserEditDialog({ open, onClose, userData }) {
             <FormattedMessage id="ROLE" />
           </FormLabel>
           <FormGroup row>
-            {roleSchema.map(role => {
+            {validRoles.map(role => {
               const userDataChecked = get(userData, role.id, false);
               const formDataChecked = get(
                 formValues,

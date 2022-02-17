@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { get } from 'lodash-es';
 
@@ -6,6 +6,7 @@ import Grid from '@material-ui/core/Grid';
 import FormControl from '@material-ui/core/FormControl';
 import TextField from '@material-ui/core/TextField';
 
+import useOnEnter from '../../hooks/useOnEnter';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import usePatchUser from '../../models/users/usePatchUser';
 import CustomAlert from '../../components/Alert';
@@ -28,19 +29,9 @@ export default function ProfileSetup({ userData }) {
 
   useDocumentTitle('SET_UP_PROFILE');
 
-  function onKeyUp(e) {
-    if (e.key === 'Enter') {
-      document.querySelector(`#${buttonId}`).click();
-      e.preventDefault();
-    }
-  }
-
-  useEffect(() => {
-    document.addEventListener('keyup', onKeyUp);
-    return () => {
-      document.removeEventListener('keyup', onKeyUp);
-    };
-  }, []);
+  useOnEnter(() => {
+    document.querySelector(`#${buttonId}`).click();
+  });
 
   async function saveProfile() {
     if (name) {

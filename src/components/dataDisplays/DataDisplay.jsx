@@ -28,7 +28,7 @@ import BaoDetective from '../svg/BaoDetective';
 import FilterBar from '../FilterBar';
 import Text from '../Text';
 import TablePaginationActions from './TablePaginationActions';
-import CollabsibleRow from './CollapsibleRow';
+import CollapsibleRow from './CollapsibleRow';
 import sendCsv from './sendCsv';
 
 function getCellAlignment(cellIndex, columnDefinition) {

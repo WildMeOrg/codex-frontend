@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { get } from 'lodash-es';
+import { get, pick } from 'lodash-es';
 
 import AddIcon from '@material-ui/icons/Add';
 
@@ -271,7 +271,12 @@ export default function Encounters({
         id="ADD_CLUSTER"
         loading={addEncounterLoading}
         onClick={async () => {
-          await addEncounter(sightingId, {});
+          const copiedProperties = pick(sightingData, [
+            'time',
+            'timeSpecificity',
+            'locationId',
+          ]);
+          await addEncounter(sightingId, copiedProperties);
           refreshSightingData();
         }}
         startIcon={<AddIcon />}
