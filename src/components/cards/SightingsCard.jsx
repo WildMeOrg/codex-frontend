@@ -24,6 +24,7 @@ export default function SightingsCard({
   onDelete,
   linkPath = 'sightings',
   noSightingsMsg = 'NO_SIGHTINGS',
+  loading,
 }) {
   const [showMapView, setShowMapView] = useState(false);
   const theme = useTheme();
@@ -92,7 +93,7 @@ export default function SightingsCard({
     },
   ];
 
-  const filteredColumns = allColumns.filter(c =>
+  const filteredColumns = allColumns?.filter(c =>
     columns.includes(c.reference),
   );
 
@@ -118,7 +119,7 @@ export default function SightingsCard({
               showMapView ? { color: theme.palette.primary.main } : {}
             }
             disabled={
-              sightingsWithLocationData.filter(entry =>
+              sightingsWithLocationData?.filter(entry =>
                 get(entry, 'decimalLatitude'),
               ).length < 1
             }
@@ -130,7 +131,7 @@ export default function SightingsCard({
         </div>
       }
     >
-      {noSightings && (
+      {noSightings && !loading && (
         <Text
           variant="body2"
           id={noSightingsMsg}
@@ -143,6 +144,7 @@ export default function SightingsCard({
           tableSize="medium"
           columns={filteredColumns}
           data={sightings}
+          loading={loading}
         />
       )}
       {!noSightings && showMapView && (
