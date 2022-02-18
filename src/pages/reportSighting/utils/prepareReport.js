@@ -18,6 +18,14 @@ export function prepareBasicReport(
     customSightingSchemas,
   );
 
+  const sightingTime = formatHoustonTime(
+    get(sightingData, ['specifiedTime', 'time']),
+  );
+  const sightingTimeSpecifity = get(sightingData, [
+    'specifiedTime',
+    'timeSpecificity',
+  ]);
+
   const report = {
     ...sightingData,
     speciesDetectionModel: [
@@ -28,19 +36,16 @@ export function prepareBasicReport(
       : assetReferences,
     decimalLatitude: sightingData.gps[0],
     decimalLongitude: sightingData.gps[1],
-    time: formatHoustonTime(
-      get(sightingData, ['specifiedTime', 'time']),
-    ),
-    timeSpecificity: get(sightingData, [
-      'specifiedTime',
-      'timeSpecificity',
-    ]),
+    time: sightingTime,
+    timeSpecificity: sightingTimeSpecifity,
     encounters: [
       {
         decimalLatitude: sightingData.gps[0],
         decimalLongitude: sightingData.gps[1],
         locationId: sightingData.locationId,
         verbatimLocality: sightingData.verbatimLocality,
+        time: sightingTime,
+        timeSpecificity: sightingTimeSpecifity,
       },
     ],
     customFields: customSightingDictionary,
