@@ -5,6 +5,8 @@ export default {
   users: 'users',
   collaborations: 'collaborations',
   assetGroupSightings: 'assetGroupSightings',
+  allNotifications: 'allNotifications',
+  unreadNotifications: 'unreadNotifications',
 };
 
 export function getAuditLogQueryKey(id) {
