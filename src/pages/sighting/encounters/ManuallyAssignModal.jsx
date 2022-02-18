@@ -52,7 +52,7 @@ export default function ManuallyAssignModal({
         {error && (
           <Alert
             titleId="SERVER_ERROR"
-            style={{ marginTop: 16, marginBottom: 8 }}
+            style={{ marginTop: 16, marginBottom: 8, width: 520 }}
             severity="error"
           >
             {error}
