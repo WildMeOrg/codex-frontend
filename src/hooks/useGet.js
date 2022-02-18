@@ -8,10 +8,20 @@ function refreshNoop() {
   );
 }
 
+// to do: borrow some logic from error formatter in utils, then delete that function
+function formatError(response) {
+  try {
+    return response?.error ? response.error.toJSON().message : null;
+  } catch (e) {
+    return 'Error could not be formatted as JSON';
+  }
+}
+
 export default function useGet({
   queryKey,
   url,
   data,
+  dataAccessor = result => result?.data?.data,
   onSuccess = Function.prototype,
   prependHoustonApiUrl = true,
   queryOptions = {},
@@ -42,9 +52,7 @@ export default function useGet({
     },
   );
 
-  const error = result?.error
-    ? result?.error?.toJSON()?.message
-    : null;
+  const error = formatError(result);
 
   useEffect(
     () => {
@@ -58,7 +66,7 @@ export default function useGet({
   return {
     ...result,
     statusCode,
-    data: result?.data?.data,
+    data: dataAccessor(result),
     loading: result?.isLoading,
     error: displayedError,
     clearError: () => {

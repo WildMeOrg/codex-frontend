@@ -2,6 +2,9 @@ export default {
   me: 'me',
   settingsConfig: 'settingsConfig',
   settingsSchema: 'settingsSchema',
+  siteInfo: 'siteInfo',
+  detectionConfig: 'detectionConfig',
+  keywords: 'keywords',
   users: 'users',
   collaborations: 'collaborations',
   assetGroupSightings: 'assetGroupSightings',
@@ -35,4 +38,8 @@ export function getUserSightingsQueryKey(id) {
 
 export function getUserAgsQueryKey(id) {
   return ['userAgs', id];
+}
+
+export function getAssetGroupQueryKey(id) {
+  return ['assetGroup', id];
 }

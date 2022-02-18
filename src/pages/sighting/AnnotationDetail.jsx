@@ -31,7 +31,7 @@ export default function AnnotationDetail({
   const [anchorEl, setAnchorEl] = useState(null);
   const [addingTag, setAddingTag] = useState(false);
 
-  const { keywords: keywordOptions } = useKeywords();
+  const { data: keywordOptions } = useKeywords();
   const filteredKeywordOptions = useMemo(
     () => {
       const annotationKeywords = get(annotation, 'keywords');
@@ -68,6 +68,7 @@ export default function AnnotationDetail({
     const selectKeywordId = get(newTagSelectValue, 'guid');
     const matchingKeywordId =
       newTagInputValue === selectValue ? selectKeywordId : null;
+    if (newTagInputValue === '') return;
 
     const successful = await addKeyword(
       get(annotation, 'guid'),

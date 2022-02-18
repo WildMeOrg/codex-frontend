@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 
 import SightingCore from './SightingCore';
-import useAssetGroupSighting from '../../models/assetGroup/useAssetGroupSighting';
+import useAssetGroupSighting from '../../models/assetGroupSighting/useAssetGroupSighting';
 
 export default function AssetGroupSighting() {
   const history = useHistory();
