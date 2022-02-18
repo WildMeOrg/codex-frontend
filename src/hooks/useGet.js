@@ -72,12 +72,6 @@ export default function useGet({
     clearError: () => {
       setDisplayedError(null);
     },
-    setError: nextError => {
-      console.warning(
-        'Replace setError with clearError if possible.',
-      );
-      setDisplayedError(nextError);
-    },
     refresh: refreshNoop,
   };
 }
