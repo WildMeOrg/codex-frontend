@@ -24,3 +24,15 @@ export function getAGSQueryKey(id) {
 export function getIndividualQueryKey(id) {
   return ['individual', id];
 }
+
+export function getUserQueryKey(id) {
+  return ['user', id];
+}
+
+export function getUserSightingsQueryKey(id) {
+  return ['userSightings', id];
+}
+
+export function getUserAgsQueryKey(id) {
+  return ['userAgs', id];
+}

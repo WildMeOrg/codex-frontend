@@ -11,6 +11,7 @@ function refreshNoop() {
 export default function useGet({
   queryKey,
   url,
+  data,
   onSuccess = Function.prototype,
   prependHoustonApiUrl = true,
   queryOptions = {},
@@ -27,6 +28,7 @@ export default function useGet({
       const response = await axios.request({
         url: apiUrl,
         method: 'get',
+        data,
       });
       const status = response?.status;
       setStatusCode(status);
@@ -59,8 +61,14 @@ export default function useGet({
     data: result?.data?.data,
     loading: result?.isLoading,
     error: displayedError,
-    onClearError: () => {
+    clearError: () => {
       setDisplayedError(null);
+    },
+    setError: nextError => {
+      console.warning(
+        'Replace setError with clearError if possible.',
+      );
+      setDisplayedError(nextError);
     },
     refresh: refreshNoop,
   };
