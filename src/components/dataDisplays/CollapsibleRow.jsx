@@ -16,7 +16,7 @@ function getCellAlignment(cellIndex, columnDefinition) {
   return 'right';
 }
 
-export default function CollabsibleRow({
+export default function CollapsibleRow({
   columns,
   datum,
   renderExpandedRow,

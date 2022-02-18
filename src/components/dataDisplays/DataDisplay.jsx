@@ -88,7 +88,7 @@ export default function DataDisplay({
     ? (page + 1) * rowsPerPage - 1
     : Infinity;
 
-  const visibleData = data.filter((datum, index) => {
+  const visibleData = data?.filter((datum, index) => {
     if (index < startIndex && !paginatedExternally) return false;
     if (index > endIndex && !paginatedExternally) return false;
 
@@ -274,7 +274,7 @@ export default function DataDisplay({
           </TableHead>
           <TableBody>
             {!loading &&
-              sortedData.map(datum => (
+              sortedData?.map(datum => (
                 <CollapsibleRow
                   key={get(datum, idKey)}
                   onClick={() => {
