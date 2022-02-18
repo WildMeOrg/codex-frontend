@@ -156,38 +156,55 @@ export default function UserProfile({
         </CardContainer>
         <CardContainer>
           {localAgsLoading && (
-            <Card titleId={'PENDING_SIGHTINGS'}>
+            <Card titleId="PENDING_SIGHTINGS">
               <LinearProgress style={{ margin: '16px 32px' }} />
             </Card>
           )}
           {!localAgsLoading && (
             <SightingsCard
               id="pending-sightings-card"
-              titleId={
+              title={
                 someoneElse
-                  ? 'USERS_UNPROCESSED_AGS'
-                  : 'PENDING_SIGHTINGS'
+                  ? intl.formatMessage(
+                      { id: 'USERS_UNPROCESSED_AGS' },
+                      { name },
+                    )
+                  : intl.formatMessage({ id: 'PENDING_SIGHTINGS' })
               }
               columns={['individual', 'date', 'location', 'actions']}
               sightings={agsData || []}
               linkPath="pending-sightings"
-              noSightingsMsg="NO_PENDING_SIGHTINGS"
+              noSightingsMsg={
+                someoneElse
+                  ? 'NO_PENDING_SIGHTINGS_NON_SELF'
+                  : 'NO_PENDING_SIGHTINGS'
+              }
               loading={localAgsLoading}
             />
           )}
           {localSightingsLoading && (
-            <Card titleId={'SIGHTINGS'}>
+            <Card titleId="SIGHTINGS">
               <LinearProgress style={{ margin: '16px 32px' }} />
             </Card>
           )}
           {!localSightingsLoading && (
             <SightingsCard
               id="sightings-card"
-              titleId={someoneElse ? 'USERS_SIGHTINGS' : 'SIGHTINGS'}
+              titleId={
+                someoneElse
+                  ? intl.formatMessage(
+                      { id: 'USERS_SIGHTINGS' },
+                      { name },
+                    )
+                  : intl.formatMessage({ id: 'SIGHTINGS' })
+              }
               columns={['individual', 'date', 'location', 'actions']}
               hideSubmitted
               sightings={sightingsData || []}
               loading={localSightingsLoading}
+              noSightingsMsg={
+                someoneElse ? 'NO_SIGHTINGS_NON_SELF' : 'NO_SIGHTINGS'
+              }
             />
           )}
 
