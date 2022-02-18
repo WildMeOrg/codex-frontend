@@ -155,12 +155,11 @@ export default function UserProfile({
           /> */}
         </CardContainer>
         <CardContainer>
-          {localAgsLoading && (
+          {localAgsLoading ? (
             <Card titleId="PENDING_SIGHTINGS">
               <LinearProgress style={{ margin: '16px 32px' }} />
             </Card>
-          )}
-          {!localAgsLoading && (
+          ) : (
             <SightingsCard
               id="pending-sightings-card"
               title={
@@ -182,12 +181,11 @@ export default function UserProfile({
               loading={localAgsLoading}
             />
           )}
-          {localSightingsLoading && (
+          {localSightingsLoading ? (
             <Card titleId="SIGHTINGS">
               <LinearProgress style={{ margin: '16px 32px' }} />
             </Card>
-          )}
-          {!localSightingsLoading && (
+          ) : (
             <SightingsCard
               id="sightings-card"
               titleId={
