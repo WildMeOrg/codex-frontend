@@ -8,6 +8,7 @@ import Skeleton from '@material-ui/lab/Skeleton';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useTheme } from '@material-ui/core/styles';
 
+import version from '../../constants/version';
 import useGetSiteInfo from '../../models/site/useGetSiteInfo';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import useServerStatus from '../../models/server/useServerStatus';
@@ -114,6 +115,7 @@ export default function ServerStatus() {
           </>
         ) : (
           <>
+            <Text>{`Frontend version: ${version.scmVersion}`}</Text>
             <Text>
               {`Houston version: ${get(
                 siteInfo,
@@ -148,6 +150,7 @@ export default function ServerStatus() {
           </>
         ) : (
           <>
+            <Text>{`Frontend commit: ${version.commitHash}`}</Text>
             <Text>
               {`Houston git hash: ${get(
                 siteInfo,
