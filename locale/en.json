@@ -400,7 +400,9 @@
   "SAVE_CHANGES": "Save changes",
   "NO_COLLABORATIONS": "You have no collaborations.",
   "NO_SIGHTINGS": "You have no sightings.",
+  "NO_SIGHTINGS_NON_SELF": "User has no sightings.",
   "NO_PENDING_SIGHTINGS": "You have no pending sightings.",
+  "NO_PENDING_SIGHTINGS_NON_SELF": "User has no pending sightings.",
   "PREVIEW_CHANGES": "Preview changes",
   "CUSTOM_FIELD": "Custom field",
   "FIELD_TYPE": "Field type",
@@ -458,8 +460,8 @@
   "BULK_SIGHTING_EMAIL_CONSENT": "I would like to receive email updates about these sightings.",
   "UPLOAD_A_FILE": "Upload a file",
   "ENTITY_HEADER_SPECIES": "Species: {species}",
-  "ENTITY_HEADER_SIGHTING_DATE": "Sighting on {date}",
-  "ENTITY_HEADER_BULK_IMPORT_DATE": "Bulk import on {date}",
+  "ENTITY_HEADER_SIGHTING_DATE": "Sighting from {date}",
+  "ENTITY_HEADER_BULK_IMPORT_DATE": "Bulk import from {date}",
   "ENTITY_HEADER_REGION": "Region: {region}",
   "ENTITY_HEADER_CONTEXT": "Context: {context}",
   "ENTITY_HEADER_SUBMITTER": "Submitter: ",
@@ -973,5 +975,6 @@
   "COLLABORATION_EDIT_REVOKE_TITLE": "Revoke edit privileges",
   "COLLABORATION_MANAGER_REVOKE_TITLE": "Revoke manager-assigned collaboration",
   "INDIVIDUAL_MERGE_REQUEST_TITLE": "Individual merge request",
-  "INDIVIDUAL_MERGE_COMPLETE_TITLE": "Individual merge completed"
+  "INDIVIDUAL_MERGE_COMPLETE_TITLE": "Individual merge completed",
+  "PHOTOS_OF": "Photos of {name}"
 }

@@ -1,5 +1,6 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
+import LinearProgress from '@material-ui/core/LinearProgress';
 import { get } from 'lodash-es';
 
 import { getHighestRoleLabelId } from '../utils/roleUtils';
@@ -18,6 +19,7 @@ import MetadataCard from './cards/MetadataCard';
 import SightingsCard from './cards/SightingsCard';
 import CollaborationsCard from './cards/CollaborationsCard';
 import CardContainer from './cards/CardContainer';
+import Card from './cards/Card';
 
 export default function UserProfile({
   children,
@@ -28,12 +30,33 @@ export default function UserProfile({
   someoneElse,
   noCollaborate = false,
 }) {
-  const { data: sightingsData } = useGetUserSightings(userId);
+  const {
+    data: sightingsData,
+    loading: sightingsLoading,
+  } = useGetUserSightings(userId);
   const intl = useIntl();
   const [editingProfile, setEditingProfile] = useState(false);
   const metadataSchemas = useUserMetadataSchemas(userId);
-  const { data: agsData } = useGetUserUnprocessedAssetGroupSightings(
-    userId,
+  const {
+    data: agsData,
+    loading: agsLoading,
+  } = useGetUserUnprocessedAssetGroupSightings(userId);
+
+  const [localAgsLoading, setLocalAgsLoading] = useState(true);
+  const [localSightingsLoading, setLocalSightingsLoading] = useState(
+    true,
+  );
+  useEffect(
+    () => {
+      setLocalAgsLoading(agsLoading);
+    },
+    [agsLoading],
+  );
+  useEffect(
+    () => {
+      setLocalSightingsLoading(sightingsLoading);
+    },
+    [sightingsLoading],
   );
 
   const metadata = useMemo(
@@ -132,23 +155,56 @@ export default function UserProfile({
           /> */}
         </CardContainer>
         <CardContainer>
-          <SightingsCard
-            titleId={
-              someoneElse
-                ? 'USERS_UNPROCESSED_AGS'
-                : 'PENDING_SIGHTINGS'
-            }
-            columns={['individual', 'date', 'location', 'actions']}
-            sightings={agsData || []}
-            linkPath="pending-sightings"
-            noSightingsMsg="NO_PENDING_SIGHTINGS"
-          />
-          <SightingsCard
-            titleId={someoneElse ? 'USERS_SIGHTINGS' : 'SIGHTINGS'}
-            columns={['individual', 'date', 'location', 'actions']}
-            hideSubmitted
-            sightings={sightingsData || []}
-          />
+          {localAgsLoading ? (
+            <Card titleId="PENDING_SIGHTINGS">
+              <LinearProgress style={{ margin: '16px 32px' }} />
+            </Card>
+          ) : (
+            <SightingsCard
+              id="pending-sightings-card"
+              title={
+                someoneElse
+                  ? intl.formatMessage(
+                      { id: 'USERS_UNPROCESSED_AGS' },
+                      { name },
+                    )
+                  : intl.formatMessage({ id: 'PENDING_SIGHTINGS' })
+              }
+              columns={['individual', 'date', 'location', 'actions']}
+              sightings={agsData || []}
+              linkPath="pending-sightings"
+              noSightingsMsg={
+                someoneElse
+                  ? 'NO_PENDING_SIGHTINGS_NON_SELF'
+                  : 'NO_PENDING_SIGHTINGS'
+              }
+              loading={localAgsLoading}
+            />
+          )}
+          {localSightingsLoading ? (
+            <Card titleId="SIGHTINGS">
+              <LinearProgress style={{ margin: '16px 32px' }} />
+            </Card>
+          ) : (
+            <SightingsCard
+              id="sightings-card"
+              titleId={
+                someoneElse
+                  ? intl.formatMessage(
+                      { id: 'USERS_SIGHTINGS' },
+                      { name },
+                    )
+                  : intl.formatMessage({ id: 'SIGHTINGS' })
+              }
+              columns={['individual', 'date', 'location', 'actions']}
+              hideSubmitted
+              sightings={sightingsData || []}
+              loading={localSightingsLoading}
+              noSightingsMsg={
+                someoneElse ? 'NO_SIGHTINGS_NON_SELF' : 'NO_SIGHTINGS'
+              }
+            />
+          )}
 
           {!someoneElse && <CollaborationsCard userId={userId} />}
         </CardContainer>

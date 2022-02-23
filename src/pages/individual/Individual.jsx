@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { get, capitalize } from 'lodash-es';
 import { useQueryClient } from 'react-query';
 
@@ -36,6 +36,7 @@ import fakeCoocs from './fakeCoocs';
 import fakeRelationships from './fakeRelationships';
 
 export default function Individual() {
+  const intl = useIntl();
   const { id } = useParams();
   const queryClient = useQueryClient();
   const { data: individualData, statusCode, loading } = useIndividual(
@@ -183,7 +184,15 @@ export default function Individual() {
       </EntityHeader>
       <div style={{ display: 'flex', flexWrap: 'wrap' }}>
         <CardContainer size="small">
-          <GalleryCard title="Photos of Teddy" assets={fakeAssets} />
+          <GalleryCard
+            title={intl.formatMessage(
+              {
+                id: 'PHOTOS_OF',
+              },
+              { name: defaultName },
+            )}
+            assets={fakeAssets}
+          />
           <MetadataCard editable metadata={metadata} />
         </CardContainer>
         <CardContainer>

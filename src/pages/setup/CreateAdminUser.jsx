@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
+
 import Grid from '@material-ui/core/Grid';
 import FormControl from '@material-ui/core/FormControl';
 import TextField from '@material-ui/core/TextField';
+
+import useOnEnter from '../../hooks/useOnEnter';
 import Button from '../../components/Button';
 import SimpleFormPage from '../../components/SimpleFormPage';
 import CustomAlert from '../../components/Alert';
 import BaoParty from '../../components/svg/BaoParty';
-
 import useCreateAdminUser from '../../models/setup/useCreateAdminUser';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 
@@ -28,19 +30,9 @@ export default function CreateAdminUser() {
   const intl = useIntl();
   useDocumentTitle('CODEX_INITIALIZED', { appendSiteName: false });
 
-  function onKeyUp(e) {
-    if (e.key === 'Enter') {
-      document.querySelector(`#${buttonId}`).click();
-      e.preventDefault();
-    }
-  }
-
-  useEffect(() => {
-    document.addEventListener('keyup', onKeyUp);
-    return () => {
-      document.removeEventListener('keyup', onKeyUp);
-    };
-  }, []);
+  useOnEnter(() => {
+    document.querySelector(`#${buttonId}`).click();
+  });
 
   return (
     <SimpleFormPage

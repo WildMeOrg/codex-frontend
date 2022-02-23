@@ -1,11 +1,11 @@
 import React from 'react';
 import { get } from 'lodash-es';
-import { format } from 'date-fns';
 import { useIntl, FormattedMessage } from 'react-intl';
 import DataDisplay from './DataDisplay';
 import Link from '../Link';
 import ButtonLink from '../ButtonLink';
 import Text from '../Text';
+import { cellRendererTypes } from '../dataDisplays/cellRenderers';
 
 export default function SightingsDisplay({ sightings }) {
   const intl = useIntl();
@@ -32,7 +32,9 @@ export default function SightingsDisplay({ sightings }) {
   const columns = [
     {
       name: 'id',
-      label: intl.formatMessage({ id: 'SIGHTING_ID' }),
+      label: intl.formatMessage({
+        id: 'SIGHTING_ID',
+      }),
       options: {
         customBodyRender: value => (
           <Link href={`/sightings/${value}`}>{value}</Link>
@@ -59,15 +61,14 @@ export default function SightingsDisplay({ sightings }) {
       name: 'sightingDate',
       label: intl.formatMessage({ id: 'SIGHTING_DATE' }),
       options: {
-        customBodyRender: value => format(value, 'M/dd/yy'),
+        cellRenderer: cellRendererTypes.date,
+        cellRendererProps: { accessor: 'lastSeen' },
       },
     },
     {
       name: 'submissionDate',
       label: intl.formatMessage({ id: 'SUBMISSION_DATE' }),
-      options: {
-        customBodyRender: value => format(value, 'M/dd/yy'),
-      },
+      options: { cellRenderer: cellRendererTypes.date },
     },
     {
       name: 'submitter',
