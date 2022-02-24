@@ -63,6 +63,7 @@
   "COLLABORATION_REQUESTS_DESCRIPTION": "Receive an email whenever someone sends me a collaboration request.",
   "INDIVIDUAL_MERGE_REQUESTS_DESCRIPTION": "Receive an email whenever someone attempts to merge an individual that I created.",
   "GRANT_ACCESS": "Grant access",
+  "REVOKE_ACCESS": "Revoke access",
   "COLLABORATION_REQUEST": "Collaboration request",
   "COLLABORATION_VIEW_REQUEST_BRIEF": "{userName} has requested to collaborate with you",
   "COLLABORATION_VIEW_REQUEST_DESCRIPTION": "{userName} has requested to collaborate with you. If you grant access to {userName}, you will be able to view each other's data.",

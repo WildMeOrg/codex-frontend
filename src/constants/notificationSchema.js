@@ -18,6 +18,7 @@ export const notificationSchema = {
     notificationMessage: 'COLLABORATION_APPROVED',
     moreDetailedDescription: 'COLLABORATION_APPROVED',
     availableButtons: ['revoke'],
+    path: '/view_permission',
   },
   collaboration_revoke: {
     titleId: 'COLLABORATION_REVOKE_TITLE',
@@ -37,18 +38,21 @@ export const notificationSchema = {
     notificationMessage: 'EDIT_COLLABORATION_APPROVED',
     moreDetailedDescription: 'EDIT_COLLABORATION_APPROVED',
     availableButtons: ['revoke'],
+    path: '/edit_permission',
   },
   collaboration_edit_revoke: {
     titleId: 'COLLABORATION_EDIT_REVOKE_TITLE',
     notificationMessage: 'EDIT_COLLABORATION_REVOKED',
     moreDetailedDescription: 'EDIT_COLLABORATION_REVOKED',
-    availableButtons: ['request'],
+    availableButtons: [],
+    path: 'TODO',
   },
   collaboration_manager_revoke: {
     titleId: 'COLLABORATION_MANAGER_REVOKE_TITLE',
     notificationMessage: 'COLLABORATION_REVOKED_BY_MANAGER',
     moreDetailedDescription: 'COLLABORATION_REVOKED_BY_MANAGER',
-    availableButtons: ['request'],
+    availableButtons: [],
+    path: 'TODO',
   },
   individual_merge_request: {
     titleId: 'INDIVIDUAL_MERGE_REQUEST_TITLE',
@@ -62,5 +66,6 @@ export const notificationSchema = {
     notificationMessage: 'INDIVIDUALS_MERGE_COMPLETE_MESSAGE',
     moreDetailedDescription: 'INDIVIDUALS_MERGE_COMPLETE_MESSAGE',
     availableButtons: [],
+    path: 'TODO',
   },
 };
