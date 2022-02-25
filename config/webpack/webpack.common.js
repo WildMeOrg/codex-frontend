@@ -1,3 +1,4 @@
+const { execSync } = require('child_process');
 const { resolve } = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -6,6 +7,7 @@ const path = require('path');
 const merge = require('webpack-merge');
 const fs = require('fs');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const VersionFile = require('webpack-version-file');
 const config = require('../config.json');
 const prodConfig = require('./webpack.prod');
 const devConfig = require('./webpack.dev');
@@ -120,6 +122,28 @@ module.exports = env => {
         },
       },
       plugins: [
+        new VersionFile({
+          output: './src/constants/version.js',
+          templateString:
+            'export default {\n' +
+            '  packageVersion: "<%= version %>",\n' +
+            '  buildTimestamp: <%= buildDate.getTime() %>,\n' +
+            '  commitHash: "<%= commitHash %>",\n' +
+            '  scmVersion: "<%= scmVersion %>",\n' +
+            '};\n',
+          data: {
+            commitHash: execSync('git rev-parse --short HEAD')
+              .toString()
+              .replace(/[\n ]/g, ''),
+            // format is <tag>[-<commit-distance>-g<hash>[-dirty]] when there is a tag
+            // or <hash>[-dirty] when there are no tags (note, --always is required for this case)
+            scmVersion: execSync(
+              'git describe --always --dirty --tags --long --match "*[0-9]*"',
+            )
+              .toString()
+              .replace(/[\n ]/g, ''),
+          },
+        }),
         new webpack.ProvidePlugin({
           process: 'process/browser',
         }),

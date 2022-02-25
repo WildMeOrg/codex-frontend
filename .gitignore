@@ -7,5 +7,7 @@ package-lock.json
 .vscode/
 
 /src/constants/apiKeys.js
+#: created on build
+/src/constants/version.js
 
 dist.*.tar.gz

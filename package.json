@@ -131,6 +131,7 @@
     "react-player": "^2.4.0",
     "react-query": "^3.34.1",
     "react-transition-group": "^4.4.1",
-    "uuid": "^3.4.0"
+    "uuid": "^3.4.0",
+    "webpack-version-file": "^0.1.6"
   }
 }
