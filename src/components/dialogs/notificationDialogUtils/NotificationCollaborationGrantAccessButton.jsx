@@ -2,13 +2,11 @@ import React from 'react';
 import { useIntl } from 'react-intl';
 import { useQueryClient } from 'react-query';
 import { get } from 'lodash-es';
-import DialogContent from '@material-ui/core/DialogContent';
 
 import Button from '../../Button';
 import CustomAlert from '../../Alert';
 import usePatchCollaboration from '../../../models/collaboration/usePatchCollaboration';
 import queryKeys from '../../../constants/queryKeys';
-// import Text from '../../Text';
 
 export default function NotificationCollaborationGrantAccessButton({
   notification,
@@ -28,9 +26,7 @@ export default function NotificationCollaborationGrantAccessButton({
     'collaboration_guid',
   ]);
   return (
-    // <Text>Hi there</Text>
-    <DialogContent>
-      {/* I know that this is a nested DialogContent. If you have better advice for how to handle the fact that isError now lives locally withing these button files instead of the in the NotificationDetailsDialog, I'm all ears */}
+    <div>
       <Button
         loading={loading}
         display="primary"
@@ -61,6 +57,6 @@ export default function NotificationCollaborationGrantAccessButton({
           }
         />
       )}
-    </DialogContent>
+    </div>
   );
 }

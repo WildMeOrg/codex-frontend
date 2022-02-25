@@ -1,6 +1,6 @@
 import NotificationViewButton from './NotificationViewButton';
 import NotificationCollaborationGrantAccessButton from './NotificationCollaborationGrantAccessButton';
-import NotificationDeclineCollaborationRequestButton from './NotificationDeclineCollaborationRequestButton';
+import NotificationDeclineCollaborationRequestDialog from './NotificationDeclineCollaborationRequestDialog';
 
 export const notificationButtonTypes = {
   view: 'view',
@@ -13,5 +13,5 @@ export const notificationButtonTypes = {
 export const notificationButtons = {
   [notificationButtonTypes.view]: NotificationViewButton,
   [notificationButtonTypes.grant]: NotificationCollaborationGrantAccessButton,
-  [notificationButtonTypes.decline]: NotificationDeclineCollaborationRequestButton,
+  [notificationButtonTypes.decline]: NotificationDeclineCollaborationRequestDialog,
 };
