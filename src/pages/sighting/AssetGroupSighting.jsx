@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 
 import SightingCore from './SightingCore';
-import useAssetGroupSighting from '../../models/assetGroupSighting/useAssetGroupSighting';
+import useGetAGS from '../../models/assetGroupSighting/useGetAGS';
 
 export default function AssetGroupSighting() {
   const history = useHistory();
@@ -13,7 +13,7 @@ export default function AssetGroupSighting() {
     loading: assetGroupLoading,
     error: assetGroupError,
     statusCode: assetGroupStatusCode,
-  } = useAssetGroupSighting(id);
+  } = useGetAGS(id);
 
   const sightingId = assetGroupSightingData?.sightingGuid;
 
