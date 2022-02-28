@@ -184,6 +184,7 @@ export default function UserManagersCollaborationEditTable({
         variant="secondary"
         columns={tableColumns}
         data={tableFriendlyData || []}
+        noResultsTextId="NO_COLLABORATIONS_MESSAGE"
       />
       {collaborationLoading ? (
         <Skeleton style={{ transform: 'unset' }} height={44} />
