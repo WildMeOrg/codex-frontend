@@ -29,10 +29,6 @@ export default function ProfileSetup({ userData }) {
 
   useDocumentTitle('SET_UP_PROFILE');
 
-  useOnEnter(() => {
-    document.querySelector(`#${buttonId}`).click();
-  });
-
   async function saveProfile() {
     if (name) {
       const properties = [
@@ -46,6 +42,9 @@ export default function ProfileSetup({ userData }) {
       setNoNameError(true);
     }
   }
+
+  useOnEnter(saveProfile);
+
   return (
     <SimpleFormPage
       titleId="SET_UP_PROFILE"
@@ -101,6 +100,7 @@ export default function ProfileSetup({ userData }) {
               onClick={saveProfile}
               display="primary"
               id="SAVE_PROFILE"
+              disabled={replaceLoading || name === ''}
             />
           </Grid>
         </Grid>
