@@ -12,6 +12,7 @@ import MainColumn from '../../components/MainColumn';
 import Button from '../../components/Button';
 import ButtonLink from '../../components/ButtonLink';
 import DividerTitle from '../../components/DividerTitle';
+import SettingsBreadcrumbs from '../../components/SettingsBreadcrumbs';
 import Text from '../../components/Text';
 import SettingsFileUpload from '../../components/settings/SettingsFileUpload';
 import SettingsTextInput from '../../components/settings/SettingsTextInput';
@@ -89,12 +90,7 @@ export default function SiteSettings() {
         style={{ padding: '16px 0 16px 16px' }}
         id="SPLASH_PAGE"
       />
-      <ButtonLink
-        href="/admin"
-        style={{ marginTop: 8, width: 'fit-content' }}
-        display="back"
-        id="BACK"
-      />
+      <SettingsBreadcrumbs currentPageTextId="SPLASH_PAGE" />
       <Grid
         container
         direction="column"
