@@ -1,5 +1,3 @@
-import NotificationViewButton from './NotificationViewButton';
-
 import NotificationCollaborationManagerCreateDialog from './NotificationCollaborationManagerCreateDialog';
 import NotificationCollaborationRequestDialog from './NotificationCollaborationRequestDialog';
 import NotificationCollaborationApprovedDialog from './NotificationCollaborationApprovedDialog';

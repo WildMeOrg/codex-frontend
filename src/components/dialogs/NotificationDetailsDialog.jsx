@@ -1,5 +1,6 @@
 import React from 'react';
 import { get } from 'lodash-es';
+import { useIntl } from 'react-intl';
 
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -8,8 +9,6 @@ import StandardDialog from '../StandardDialog';
 import Text from '../Text';
 import Button from '../Button';
 import CustomAlert from '../Alert';
-// import { notificationSchema } from '../../constants/notificationSchema';
-// import { notificationButtons } from './notificationDialogUtils';
 
 export default function NotificationDetailsDialog({
   open,
@@ -21,11 +20,7 @@ export default function NotificationDetailsDialog({
   isError,
   error,
 }) {
-  console.log('deleteMe got here and notification is: ');
-  console.log(notification);
-  console.log('deleteMe got here and buttons are: ');
-  console.log(buttons);
-
+  const intl = useIntl();
   const onCloseDialog = () => {
     onClose();
   };
@@ -51,7 +46,6 @@ export default function NotificationDetailsDialog({
   );
   const individual2Nickname =
     individual2NicknameObject?.value || 'Unnamed individual';
-  // const path = get(currentNotificationSchema, 'path', '');
 
   return (
     <StandardDialog
@@ -73,42 +67,16 @@ export default function NotificationDetailsDialog({
         />
       </DialogContent>
       <DialogActions style={{ padding: '0px 24px 24px 24px' }}>
-        {buttons.map(currentButton => {
-          // const NotificationButtonComponent =
-          //   notificationButtons[notificationButton];
-          // const notificationButtonOptionProps = {
-          //   onCloseDialog,
-          //   path,
-          // };
-          return (
-            <div>
-              <Button
-                display="primary"
-                id={get(currentButton, 'buttonId')}
-                loading={get(currentButton, 'loading')}
-                onClick={
-                  get(currentButton, 'onClick')
-                  //   async () => {
-                  //   const response = await patchCollaborationsAsync(
-                  //     collaborationId,
-                  //     [
-                  //       {
-                  //         op: 'replace',
-                  //         path,
-                  //         value: 'declined',
-                  //       },
-                  //     ],
-                  //   );
-                  //   if (response?.status === 200) {
-                  //     onCloseDialog();
-                  //     queryClient.invalidateQueries(queryKeys.me);
-                  //   }
-                  // }
-                }
-              />
-            </div>
-          );
-        })}
+        {buttons.map(currentButton => (
+          <div>
+            <Button
+              display="primary"
+              id={get(currentButton, 'buttonId')}
+              loading={get(currentButton, 'loading')}
+              onClick={get(currentButton, 'onClick')}
+            />
+          </div>
+        ))}
       </DialogActions>
       {isError && (
         <CustomAlert

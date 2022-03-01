@@ -1,10 +1,7 @@
 import React from 'react';
-import { useIntl } from 'react-intl';
 import { useQueryClient } from 'react-query';
 import { get } from 'lodash-es';
 
-// import Button from '../../Button';
-// import CustomAlert from '../../Alert';
 import usePatchCollaboration from '../../../models/collaboration/usePatchCollaboration';
 import queryKeys from '../../../constants/queryKeys';
 import { notificationSchema } from '../../../constants/notificationSchema';
@@ -15,7 +12,6 @@ export default function NotificationIndividualMergeDialog({
   onClose,
   notification,
 }) {
-  const intl = useIntl();
   const queryClient = useQueryClient();
   const notificationType = notification?.message_type;
   const currentNotificationSchema = get(
@@ -25,14 +21,14 @@ export default function NotificationIndividualMergeDialog({
   const path = get(currentNotificationSchema, 'path');
   const {
     patchCollaborationsAsync,
-    loading,
     error,
     isError,
   } = usePatchCollaboration(); // TODO once individual merge is fleshed out, change this
-  //TODO will likely need individual IDs
+  // TODO will likely need individual IDs
   const grantOnClickFn = async () => {
-    const response = await patchCollaborationsAsync(collaborationId, [
-      //TODO this will change
+    const temp = 'changeMe';
+    const response = await patchCollaborationsAsync(temp, [
+      // TODO this will change
       {
         op: 'replace',
         path,
@@ -44,8 +40,9 @@ export default function NotificationIndividualMergeDialog({
       queryClient.invalidateQueries(queryKeys.me);
     }
   };
+  const temp = 'changeMe';
   const declineOnClickFn = async () => {
-    const response = await patchCollaborationsAsync(collaborationId, [
+    const response = await patchCollaborationsAsync(temp, [
       // TODO this will change
       {
         op: 'replace',
@@ -54,14 +51,13 @@ export default function NotificationIndividualMergeDialog({
       },
     ]);
     if (response?.status === 200) {
-      // onCloseDialog();
       onClose();
       queryClient.invalidateQueries(queryKeys.me); // TODO this might change
     }
   };
   const availableButtons = [
     {
-      name: 'grant', //TODO allow instead of grant?
+      name: 'grant', // TODO allow instead of grant?
       buttonId: 'GRANT_ACCESS',
       onClick: grantOnClickFn,
     },
@@ -81,11 +77,7 @@ export default function NotificationIndividualMergeDialog({
         currentNotificationSchema,
         'moreDetailedDescription',
       )}
-      buttons={availableButtons} //   currentNotificationSchema, // availableButtons={get(
-      //   'availableButtons',
-      //   [],
-      // ).filter(candidateButton => candidateButton !== 'view')}
-      // path={path}
+      buttons={availableButtons}
       isError={isError}
       error={error}
     />

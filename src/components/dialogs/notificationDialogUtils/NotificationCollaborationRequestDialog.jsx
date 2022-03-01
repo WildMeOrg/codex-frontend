@@ -1,10 +1,7 @@
 import React from 'react';
-import { useIntl } from 'react-intl';
 import { useQueryClient } from 'react-query';
 import { get } from 'lodash-es';
 
-// import Button from '../../Button';
-// import CustomAlert from '../../Alert';
 import usePatchCollaboration from '../../../models/collaboration/usePatchCollaboration';
 import queryKeys from '../../../constants/queryKeys';
 import { notificationSchema } from '../../../constants/notificationSchema';
@@ -15,7 +12,6 @@ export default function NotificationCollaborationRequestDialog({
   onClose,
   notification,
 }) {
-  const intl = useIntl();
   const queryClient = useQueryClient();
   const notificationType = notification?.message_type;
   const currentNotificationSchema = get(
@@ -25,7 +21,6 @@ export default function NotificationCollaborationRequestDialog({
   const path = get(currentNotificationSchema, 'path');
   const {
     patchCollaborationsAsync,
-    loading,
     error,
     isError,
   } = usePatchCollaboration();
@@ -42,7 +37,6 @@ export default function NotificationCollaborationRequestDialog({
       },
     ]);
     if (response?.status === 200) {
-      // onCloseDialog();
       onClose();
       queryClient.invalidateQueries(queryKeys.me);
     }
@@ -56,7 +50,6 @@ export default function NotificationCollaborationRequestDialog({
       },
     ]);
     if (response?.status === 200) {
-      // onCloseDialog();
       onClose();
       queryClient.invalidateQueries(queryKeys.me);
     }
@@ -83,45 +76,9 @@ export default function NotificationCollaborationRequestDialog({
         currentNotificationSchema,
         'moreDetailedDescription',
       )}
-      buttons={availableButtons} //   currentNotificationSchema, // availableButtons={get(
-      //   'availableButtons',
-      //   [],
-      // ).filter(candidateButton => candidateButton !== 'view')}
-      // path={path}
+      buttons={availableButtons}
       isError={isError}
       error={error}
     />
   );
-  // <div>
-  //   <Button
-  //     display="basic"
-  //     id="DECLINE_REQUEST"
-  //     loading={loading}
-  //     onClick={async () => {
-  //       const response = await patchCollaborationsAsync(
-  //         collaborationId,
-  //         [
-  //           {
-  //             op: 'replace',
-  //             path,
-  //             value: 'declined',
-  //           },
-  //         ],
-  //       );
-  //       if (response?.status === 200) {
-  //         onCloseDialog();
-  //         queryClient.invalidateQueries(queryKeys.me);
-  //       }
-  //     }}
-  //   />
-  //   {isError && (
-  //     <CustomAlert
-  //       severity="error"
-  //       titleId="SERVER_ERROR"
-  //       description={
-  //         error || intl.formatMessage({ id: 'UNKNOWN_ERROR' })
-  //       }
-  //     />
-  //   )}
-  // </div>
 }
