@@ -48,9 +48,9 @@ export default function UserManagement() {
   } = useGetUsers();
 
   const {
-    allCollaborationData,
-    allCollaborationsLoading,
-    allCollaborationsError,
+    data: allCollaborationData,
+    loading: allCollaborationsLoading,
+    error: allCollaborationsError,
   } = useGetAllCollaborations();
 
   const [newUserEmail, setNewUserEmail] = useState('');

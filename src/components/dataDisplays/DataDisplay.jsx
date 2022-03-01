@@ -48,6 +48,8 @@ export default function DataDisplay({
   onSelectRow = Function.prototype,
   hideFilterSearch = false,
   showNoResultsBao = false,
+  noResultsTextId,
+  noResultsText,
   renderExpandedRow,
   variant = 'primary',
   idKey = 'id',
@@ -123,7 +125,10 @@ export default function DataDisplay({
     visibleColumnNames.includes(column.name),
   );
 
-  const noResults = showNoResultsBao && data && data.length === 0;
+  const noData = !loading && data && data?.length === 0;
+  const useNoResultsUI =
+    noResultsText || noResultsTextId || showNoResultsBao;
+  const noResults = useNoResultsUI && noData;
 
   return (
     <div {...rest}>
@@ -316,15 +321,21 @@ export default function DataDisplay({
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            marginTop: 40,
           }}
         >
-          <BaoDetective
-            style={{ width: 240 }}
-            themeColor={themeColor}
-          />
-          <Text style={{ marginTop: 12 }}>
-            Your search did not match any records.
+          {showNoResultsBao && (
+            <BaoDetective
+              style={{ width: 240, marginTop: 40 }}
+              themeColor={themeColor}
+            />
+          )}
+          <Text
+            id={noResultsTextId}
+            variant="body2"
+            style={{ marginTop: 12 }}
+          >
+            {noResultsText ||
+              'Your search did not match any records.'}
           </Text>
         </div>
       )}

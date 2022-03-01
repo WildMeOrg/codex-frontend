@@ -9,7 +9,6 @@ import ViewMap from '@material-ui/icons/Language';
 
 import { formatLocationFromSighting } from '../../utils/formatters';
 import useOptions from '../../hooks/useOptions';
-import Text from '../Text';
 import ActionIcon from '../ActionIcon';
 import { cellRendererTypes } from '../dataDisplays/cellRenderers';
 import DataDisplay from '../dataDisplays/DataDisplay';
@@ -18,7 +17,7 @@ import SightingMapView from '../cards/SightingMapView';
 
 export default function SightingsCard({
   title,
-  titleId = 'SIGHTINGS',
+  titleId,
   sightings,
   columns = ['date', 'location', 'actions'],
   onDelete,
@@ -131,20 +130,14 @@ export default function SightingsCard({
         </div>
       }
     >
-      {noSightings && !loading && (
-        <Text
-          variant="body2"
-          id={noSightingsMsg}
-          style={{ marginTop: 12 }}
-        />
-      )}
-      {!noSightings && !showMapView && (
+      {!showMapView && (
         <DataDisplay
           noTitleBar
           tableSize="medium"
           columns={filteredColumns}
           data={sightings}
           loading={loading}
+          noResultsTextId={noSightingsMsg}
         />
       )}
       {!noSightings && showMapView && (
