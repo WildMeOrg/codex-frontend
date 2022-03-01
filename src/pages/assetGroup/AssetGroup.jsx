@@ -13,12 +13,12 @@ import queryKeys from '../../constants/queryKeys';
 import MainColumn from '../../components/MainColumn';
 import LoadingScreen from '../../components/LoadingScreen';
 import SadScreen from '../../components/SadScreen';
-import Button from '../../components/Button';
 import Text from '../../components/Text';
 import Link from '../../components/Link';
 import MoreMenu from '../../components/MoreMenu';
 import ConfirmDelete from '../../components/ConfirmDelete';
 import EntityHeader from '../../components/EntityHeader';
+import AGSTable from './AGSTable';
 
 export default function AssetGroup() {
   const { id } = useParams();
@@ -57,9 +57,6 @@ export default function AssetGroup() {
     );
 
   const dateCreated = get(data, 'created');
-  const agSightingIds = get(data, 'asset_group_sightings', []).map(
-    a => get(a, 'guid'),
-  );
 
   const sightingCreator = data?.creator;
   const creatorName =
@@ -86,13 +83,6 @@ export default function AssetGroup() {
         messageId="CONFIRM_DELETE_BULK_IMPORT_DESCRIPTION"
       />
       <EntityHeader
-        // renderAvatar={
-        //   <FeaturedPhoto
-        //     assets={assets}
-        //     loading={loading}
-        //     editable={assets.length > 0}
-        //   />
-        // }
         name={intl.formatMessage(
           { id: 'ENTITY_HEADER_BULK_IMPORT_DATE' },
           {
@@ -101,7 +91,7 @@ export default function AssetGroup() {
         )}
         renderOptions={
           <div style={{ display: 'flex' }}>
-            <Button id="SUBSCRIBE" display="primary" />
+            {/* <Button id="SUBSCRIBE" display="primary" /> */}
             <MoreMenu
               menuId="sighting-actions"
               items={[
@@ -124,24 +114,9 @@ export default function AssetGroup() {
           </Text>
         )}
       </EntityHeader>
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          margin: 16,
-        }}
-      >
-        {agSightingIds
-          ? agSightingIds.map(agSightingId => (
-              <Link
-                to={`/pending-sightings/${agSightingId}`}
-                key={agSightingId}
-              >
-                {agSightingId}
-              </Link>
-            ))
-          : null}
-      </div>
+      <AGSTable
+        assetGroupSightings={get(data, 'asset_group_sightings', [])}
+      />
     </MainColumn>
   );
 }

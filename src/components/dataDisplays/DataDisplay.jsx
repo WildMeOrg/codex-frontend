@@ -43,6 +43,7 @@ export default function DataDisplay({
   columns,
   data,
   title,
+  titleId,
   onPrint,
   initiallySelectedRow = null,
   onSelectRow = Function.prototype,
@@ -209,6 +210,7 @@ export default function DataDisplay({
                 margin:
                   variant === 'secondary' ? '12px 0 0 12px' : 'unset',
               }}
+              id={titleId}
             >
               {title}
             </Text>
