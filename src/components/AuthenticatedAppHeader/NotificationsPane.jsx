@@ -79,6 +79,9 @@ export default function NotificationsPane({
               notificationSchema,
               notificationType,
             );
+            const showViewButton =
+              currentNotificationSchema?.viewInNotificationPane &&
+              refreshNotifications !== undefined;
             const senderName = get(
               notification,
               'sender_name',
@@ -107,30 +110,24 @@ export default function NotificationsPane({
                       intl,
                     )}
                   </div>
-                  {get(
-                    currentNotificationSchema,
-                    'viewInNotificationPane',
-                  ) &&
-                    refreshNotifications !== undefined && (
-                      <Button
-                        display="basic"
-                        id="VIEW"
-                        onClick={async () => {
-                          const clickedNotificationType =
-                            notification?.message_type;
-                          const notificationDialog =
-                            notificationTypes[
-                              clickedNotificationType
-                            ];
-                          setActiveCollaborationNotification({
-                            notification,
-                            dialog: notificationDialog,
-                          });
-                          await markRead(get(notification, 'guid'));
-                          refreshNotifications();
-                        }}
-                      />
-                    )}
+                  {showViewButton && (
+                    <Button
+                      display="basic"
+                      id="VIEW"
+                      onClick={async () => {
+                        const clickedNotificationType =
+                          notification?.message_type;
+                        const notificationDialog =
+                          notificationTypes[clickedNotificationType];
+                        setActiveCollaborationNotification({
+                          notification,
+                          dialog: notificationDialog,
+                        });
+                        await markRead(get(notification, 'guid'));
+                        refreshNotifications();
+                      }}
+                    />
+                  )}
                 </Grid>
                 <Grid
                   item
@@ -142,7 +139,9 @@ export default function NotificationsPane({
                   }}
                 >
                   <Text
-                    style={{ color: theme.palette.text.secondary }}
+                    style={{
+                      color: theme.palette.text.secondary,
+                    }}
                   >
                     {intl.formatMessage(
                       { id: 'TIME_SINCE' },

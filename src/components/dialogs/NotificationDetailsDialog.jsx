@@ -17,8 +17,8 @@ export default function NotificationDetailsDialog({
   titleId,
   moreDetailedDescription,
   buttons,
-  isError,
-  error,
+  isError = false,
+  error = null,
 }) {
   const intl = useIntl();
   const onCloseDialog = () => {

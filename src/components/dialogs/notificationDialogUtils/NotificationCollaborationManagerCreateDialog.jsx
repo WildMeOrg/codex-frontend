@@ -13,7 +13,7 @@ export default function NotificationCollaborationManagerCreateDialog({
     notificationSchema,
     notificationType,
   );
-  const avaialableButtons = [];
+  const availableButtons = [];
   return (
     <NotificationDetailsDialog
       open={open}
@@ -24,9 +24,7 @@ export default function NotificationCollaborationManagerCreateDialog({
         currentNotificationSchema,
         'moreDetailedDescription',
       )}
-      buttons={avaialableButtons}
-      isError={false}
-      error=""
+      buttons={availableButtons}
     />
   );
 }

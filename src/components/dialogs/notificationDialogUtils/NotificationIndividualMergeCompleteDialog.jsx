@@ -25,8 +25,6 @@ export default function NotificationIndividualMergeCompleteDialog({
         'moreDetailedDescription',
       )}
       buttons={availableButtons}
-      isError={false}
-      error=""
     />
   );
 }

@@ -13,7 +13,7 @@ export default function NotificationCollaborationMangerRevokeDialog({
     notificationSchema,
     notificationType,
   );
-  const avaialableButtons = [];
+  const availableButtons = [];
   return (
     <NotificationDetailsDialog
       open={open}
@@ -24,9 +24,7 @@ export default function NotificationCollaborationMangerRevokeDialog({
         currentNotificationSchema,
         'moreDetailedDescription',
       )}
-      buttons={avaialableButtons}
-      isError={false}
-      error=""
+      buttons={availableButtons}
     />
   );
 }
