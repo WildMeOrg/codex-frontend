@@ -9,14 +9,16 @@ import Divider from '@material-ui/core/Divider';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import { useTheme } from '@material-ui/core/styles';
 
-// import usePatchNotification from '../../models/notification/usePatchNotification';
+import usePatchNotification from '../../models/notification/usePatchNotification';
 import NotificationDetailsDialog from '../dialogs/NotificationDetailsDialog';
 import Link from '../Link';
 import Text from '../Text';
+import Button from '../Button';
 import shane from '../../assets/shane.jpg';
 import { notificationSchema } from '../../constants/notificationSchema';
 import { calculatePrettyTimeElapsedSince } from '../../utils/formatters';
-import { notificationButtons } from '../dialogs/notificationDialogUtils';
+import { notificationTypes } from '../dialogs/notificationDialogUtils';
+// import { notificationButtons } from '../dialogs/notificationDialogUtils';
 
 function renderDisplayTextBasedOnMessageType(
   currentNotificationSchema,
@@ -46,24 +48,29 @@ export default function NotificationsPane({
     activeCollaborationNotification,
     setActiveCollaborationNotification,
   ] = useState(null);
+  const { markRead } = usePatchNotification();
 
   return (
     <Popover
       open={Boolean(anchorEl)}
-      anchorOrigin={{
-        vertical: 'bottom',
-        horizontal: 'right',
-      }}
+      anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
       PaperProps={{ style: { marginTop: -8 } }}
       transformOrigin={{ horizontal: 'right', vertical: 'top' }}
       anchorEl={anchorEl}
       onClose={() => setAnchorEl(null)}
     >
-      <NotificationDetailsDialog
+      {/* <NotificationDetailsDialog
         open={Boolean(activeCollaborationNotification)}
         onClose={() => setActiveCollaborationNotification(null)}
         notification={activeCollaborationNotification}
-      />
+      /> */}
+      {Boolean(activeCollaborationNotification) && (
+        <activeCollaborationNotification.dialog
+          open={Boolean(activeCollaborationNotification)}
+          onClose={() => setActiveCollaborationNotification(null)}
+          notification={activeCollaborationNotification?.notification}
+        />
+      )}
       <Grid container direction="column">
         <Grid item style={{ padding: 16 }}>
           <Text style={{ fontWeight: 'bold' }} id="NOTIFICATIONS" />
@@ -84,22 +91,22 @@ export default function NotificationsPane({
               'sender_name',
               'Unnamed User',
             );
-            const availableButtons = get(
-              currentNotificationSchema,
-              'availableButtons',
-              [],
-            );
-            let RequestNotificationButton;
-            if (
-              availableButtons.length > 0 &&
-              availableButtons.includes('view')
-            ) {
-              RequestNotificationButton = notificationButtons.view;
-            }
-            const notificationButtonOptionProps = {
-              refreshNotifications,
-              setActiveCollaborationNotification,
-            };
+            // const availableButtons = get(
+            //   currentNotificationSchema,
+            //   'availableButtons',
+            //   [],
+            // );
+            // let RequestNotificationButton;
+            // if (
+            //   availableButtons.length > 0 &&
+            //   availableButtons.includes('view')
+            // ) {
+            //   RequestNotificationButton = notificationButtons.view;
+            // }
+            // const notificationButtonOptionProps = {
+            //   refreshNotifications,
+            //   setActiveCollaborationNotification,
+            // };
             const createdDate = notification?.created;
             const timeSince = calculatePrettyTimeElapsedSince(
               createdDate,
@@ -123,13 +130,36 @@ export default function NotificationsPane({
                       intl,
                     )}
                   </div>
-                  {availableButtons.includes('view') &&
+                  {get(
+                    currentNotificationSchema,
+                    'viewInNotificationPane',
+                  ) &&
                     refreshNotifications !== undefined && (
-                      <RequestNotificationButton
-                        notification={notification}
-                        {...notificationButtonOptionProps}
+                      <Button
+                        display="basic"
+                        id="VIEW"
+                        onClick={async () => {
+                          // alert('hi');
+                          const clickedNotificationType =
+                            notification?.message_type;
+                          const NotificationDialog =
+                            notificationTypes[
+                              clickedNotificationType
+                            ];
+                          setActiveCollaborationNotification({
+                            notification: notification,
+                            dialog: NotificationDialog,
+                          });
+                          await markRead(get(notification, 'guid'));
+                          refreshNotifications();
+                        }}
                       />
-                    )}
+                    )
+                  // <RequestNotificationButton
+                  //   notification={notification}
+                  //   {...notificationButtonOptionProps}
+                  // />
+                  }
                 </Grid>
                 <Grid
                   item
@@ -141,9 +171,7 @@ export default function NotificationsPane({
                   }}
                 >
                   <Text
-                    style={{
-                      color: theme.palette.text.secondary,
-                    }}
+                    style={{ color: theme.palette.text.secondary }}
                   >
                     {intl.formatMessage(
                       { id: 'TIME_SINCE' },

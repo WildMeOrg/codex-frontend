@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useIntl } from 'react-intl';
 import { get } from 'lodash-es';
 
@@ -14,7 +14,7 @@ import CircleIcon from '@material-ui/icons/Lens';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 
 import useDocumentTitle from '../../hooks/useDocumentTitle';
-import NotificationDetailsDialog from '../../components/dialogs/NotificationDetailsDialog';
+// import NotificationDetailsDialog from '../../components/dialogs/NotificationDetailsDialog';
 import MainColumn from '../../components/MainColumn';
 import LoadingScreen from '../../components/LoadingScreen';
 import Text from '../../components/Text';
@@ -22,6 +22,7 @@ import useNotifications from '../../models/notification/useNotifications';
 import usePatchNotification from '../../models/notification/usePatchNotification';
 import { calculatePrettyTimeElapsedSince } from '../../utils/formatters';
 import { notificationSchema } from '../../constants/notificationSchema';
+import { notificationTypes } from '../../components/dialogs/notificationDialogUtils';
 
 export default function Notifications() {
   const intl = useIntl();
@@ -42,10 +43,44 @@ export default function Notifications() {
     setActiveCollaborationNotification,
   ] = useState(null);
 
+  // const [
+  //   currentNotificationDialog,
+  //   setCurrentNotificationDialog,
+  // ] = useState(null);
+
+  // let clickedNotificationType;
+  // let NotificationDialog;
+  // let NotificationDialog =
+  //   notificationTypes['collaboration_approved']; //populate it with something so that it's not undefined
+
+  // useEffect(
+  //   () => {
+  //     // console.log('deleteMe got here c0 useEffect called');
+  //     clickedNotificationType =
+  //       activeCollaborationNotification?.message_type;
+  //     NotificationDialog = notificationTypes[clickedNotificationType];
+  //     // console.log('deleteMe got here and NotificationDialog is: ');
+  //     // console.log('deleteMe got here a0');
+  //     // console.log('deleteMe activeCollaborationNotification is: ');
+  //     // console.log(activeCollaborationNotification);
+  //     // notificationType =
+  //     //   activeCollaborationNotification?.message_type;
+  //     // console.log(
+  //     //   'deleteMe got here a1 and notificationType is: ' +
+  //     //     notificationType,
+  //     // );
+  //     // NotificationDialog = notificationTypes?.notificationType;
+  //     console.log('deleteMe got here a2 and NotificationDialog is: ');
+  //     console.log(NotificationDialog);
+  //   },
+  //   [activeCollaborationNotification],
+  // );
+
   const safeNotifications = notifications || [];
 
   if (notificationsLoading) return <LoadingScreen />;
 
+  console.log('deleteMe got here c0 re-render');
   return (
     <MainColumn
       style={{
@@ -54,11 +89,16 @@ export default function Notifications() {
         maxWidth: 1000,
       }}
     >
-      <NotificationDetailsDialog
-        open={Boolean(activeCollaborationNotification)}
-        onClose={() => setActiveCollaborationNotification(null)}
-        notification={activeCollaborationNotification}
-      />
+      {!notificationsLoading &&
+        Boolean(activeCollaborationNotification) && (
+          <activeCollaborationNotification.dialog
+            open={Boolean(activeCollaborationNotification)}
+            onClose={() => setActiveCollaborationNotification(null)}
+            notification={
+              activeCollaborationNotification?.notification
+            }
+          />
+        )}
       <Grid container direction="column" style={{ padding: 32 }}>
         <Grid item>
           <Text id="NOTIFICATIONS" variant="h4" />
@@ -78,6 +118,12 @@ export default function Notifications() {
                   notificationSchema,
                   notificationType,
                 );
+                // const NotificationDialog =
+                //   notificationTypes[notificationType];
+                // console.log(
+                //   'deleteMe got here and NotificationDialog is: ',
+                // );
+                // console.log(NotificationDialog);
                 const read = get(notification, 'is_read', false);
                 const senderName = get(
                   notification,
@@ -137,18 +183,17 @@ export default function Notifications() {
                 );
                 const howLongAgoText = (
                   <Text
-                    // key={notification?.guid + '_howLongAgo'}
-                    style={{
-                      color: read
-                        ? theme.palette.text.secondary
-                        : theme.palette.text.primary,
-                      fontSize: '14px',
-                    }}
+                    style={
+                      {
+                        color: read
+                          ? theme.palette.text.secondary
+                          : theme.palette.text.primary,
+                        fontSize: '14px',
+                      } // key={notification?.guid + '_howLongAgo'}
+                    }
                   >
                     {intl.formatMessage(
-                      {
-                        id: 'TIME_SINCE',
-                      },
+                      { id: 'TIME_SINCE' },
                       { timeSince },
                     )}
                   </Text>
@@ -158,9 +203,21 @@ export default function Notifications() {
                   <ListItem
                     key={get(notification, 'guid')}
                     onClick={async () => {
-                      setActiveCollaborationNotification(
-                        notification,
+                      const clickedNotificationType =
+                        notification?.message_type;
+                      const NotificationDialog =
+                        notificationTypes[clickedNotificationType];
+                      console.log(
+                        'deleteMe got here and NotificationDialog is: ',
                       );
+                      // setCurrentNotificationDialog(
+                      //   NotificationDialog,
+                      // );
+                      console.log(NotificationDialog);
+                      setActiveCollaborationNotification({
+                        notification: notification,
+                        dialog: NotificationDialog,
+                      });
                       await markRead(get(notification, 'guid'));
                       refreshNotifications();
                     }}

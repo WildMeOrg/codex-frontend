@@ -6,19 +6,25 @@ import DialogActions from '@material-ui/core/DialogActions';
 
 import StandardDialog from '../StandardDialog';
 import Text from '../Text';
-import { notificationSchema } from '../../constants/notificationSchema';
-import { notificationButtons } from './notificationDialogUtils';
+import Button from '../Button';
+import CustomAlert from '../Alert';
+// import { notificationSchema } from '../../constants/notificationSchema';
+// import { notificationButtons } from './notificationDialogUtils';
 
 export default function NotificationDetailsDialog({
   open,
   onClose,
   notification,
+  titleId,
+  moreDetailedDescription,
+  buttons,
+  isError,
+  error,
 }) {
-  const notificationType = notification?.message_type;
-  const currentNotificationSchema = get(
-    notificationSchema,
-    notificationType,
-  );
+  console.log('deleteMe got here and notification is: ');
+  console.log(notification);
+  console.log('deleteMe got here and buttons are: ');
+  console.log(buttons);
 
   const onCloseDialog = () => {
     onClose();
@@ -45,18 +51,18 @@ export default function NotificationDetailsDialog({
   );
   const individual2Nickname =
     individual2NicknameObject?.value || 'Unnamed individual';
-  const path = get(currentNotificationSchema, 'path', '');
+  // const path = get(currentNotificationSchema, 'path', '');
 
   return (
     <StandardDialog
       open={open}
       onClose={onCloseDialog}
-      titleId={get(currentNotificationSchema, 'titleId')}
+      titleId={titleId}
     >
       <DialogContent>
         <Text
           style={{ marginBottom: 20 }}
-          id={currentNotificationSchema?.moreDetailedDescription}
+          id={moreDetailedDescription}
           values={{
             userName: senderName,
             user1Name,
@@ -67,24 +73,52 @@ export default function NotificationDetailsDialog({
         />
       </DialogContent>
       <DialogActions style={{ padding: '0px 24px 24px 24px' }}>
-        {get(currentNotificationSchema, 'availableButtons', [])
-          .filter(candidateButton => candidateButton !== 'view')
-          .map(notificationButton => {
-            const NotificationButtonComponent =
-              notificationButtons[notificationButton];
-            const notificationButtonOptionProps = {
-              onCloseDialog,
-              path,
-            };
-            return (
-              <NotificationButtonComponent
-                key={notification?.guid}
-                notification={notification}
-                {...notificationButtonOptionProps}
+        {buttons.map(currentButton => {
+          // const NotificationButtonComponent =
+          //   notificationButtons[notificationButton];
+          // const notificationButtonOptionProps = {
+          //   onCloseDialog,
+          //   path,
+          // };
+          return (
+            <div>
+              <Button
+                display="primary"
+                id={get(currentButton, 'buttonId')}
+                loading={get(currentButton, 'loading')}
+                onClick={
+                  get(currentButton, 'onClick')
+                  //   async () => {
+                  //   const response = await patchCollaborationsAsync(
+                  //     collaborationId,
+                  //     [
+                  //       {
+                  //         op: 'replace',
+                  //         path,
+                  //         value: 'declined',
+                  //       },
+                  //     ],
+                  //   );
+                  //   if (response?.status === 200) {
+                  //     onCloseDialog();
+                  //     queryClient.invalidateQueries(queryKeys.me);
+                  //   }
+                  // }
+                }
               />
-            );
-          })}
+            </div>
+          );
+        })}
       </DialogActions>
+      {isError && (
+        <CustomAlert
+          severity="error"
+          titleId="SERVER_ERROR"
+          description={
+            error || intl.formatMessage({ id: 'UNKNOWN_ERROR' })
+          }
+        />
+      )}
     </StandardDialog>
   );
 }

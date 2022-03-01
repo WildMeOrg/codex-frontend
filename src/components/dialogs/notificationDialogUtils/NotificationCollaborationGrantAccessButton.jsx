@@ -10,11 +10,17 @@ import queryKeys from '../../../constants/queryKeys';
 
 export default function NotificationCollaborationGrantAccessButton({
   notification,
-  onCloseDialog,
+  onClose,
   path,
+  open,
 }) {
   const intl = useIntl();
   const queryClient = useQueryClient();
+  const notificationType = notification?.message_type;
+  const currentNotificationSchema = get(
+    notificationSchema,
+    notificationType,
+  );
   const {
     patchCollaborationsAsync,
     loading,
@@ -25,6 +31,7 @@ export default function NotificationCollaborationGrantAccessButton({
     'message_values',
     'collaboration_guid',
   ]);
+
   return (
     <div>
       <Button
