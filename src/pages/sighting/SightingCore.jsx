@@ -7,11 +7,6 @@ import { useQueryClient } from 'react-query';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 
-// import SpeciesIcon from '@material-ui/icons/Category';
-// import RegionIcon from '@material-ui/icons/MyLocation';
-// import ContextIcon from '@material-ui/icons/NaturePeople';
-// import SubmitterIcon from '@material-ui/icons/Person';
-
 import {
   getAGSQueryKey,
   getSightingQueryKey,
@@ -23,7 +18,6 @@ import Link from '../../components/Link';
 import Text from '../../components/Text';
 import LoadingScreen from '../../components/LoadingScreen';
 import SadScreen from '../../components/SadScreen';
-import Button from '../../components/Button';
 import MoreMenu from '../../components/MoreMenu';
 import ConfirmDelete from '../../components/ConfirmDelete';
 import EntityHeader from '../../components/EntityHeader';
@@ -32,8 +26,6 @@ import useDeleteSighting from '../../models/sighting/useDeleteSighting';
 import useDeleteAssetGroupSighting from '../../models/assetGroupSighting/useDeleteAssetGroupSighting';
 import useSightingFieldSchemas from '../../models/sighting/useSightingFieldSchemas';
 import { formatDateCustom } from '../../utils/formatters';
-// import AnnotationsGallery from './AnnotationsGallery';
-// import IndividualsGallery from './IndividualsGallery';
 import Annotations from './Annotations';
 import Photographs from './Photographs';
 import OverviewContent from './OverviewContent';
@@ -213,7 +205,7 @@ export default function SightingCore({
         }
         renderOptions={
           <div style={{ display: 'flex' }}>
-            <Button id="SUBSCRIBE" display="primary" />
+            {/* <Button id="SUBSCRIBE" display="primary" /> */}
             <MoreMenu
               menuId="sighting-actions"
               items={[

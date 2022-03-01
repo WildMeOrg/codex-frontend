@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { get, zipObject } from 'lodash-es';
+
 import Grid from '@material-ui/core/Grid';
 
 import useSiteSettings from '../../models/site/useSiteSettings';
@@ -8,7 +9,7 @@ import usePostSettingsAsset from '../../models/site/usePostSettingsAsset';
 
 import CustomAlert from '../../components/Alert';
 import Button from '../../components/Button';
-import ButtonLink from '../../components/ButtonLink';
+import SettingsBreadcrumbs from '../../components/SettingsBreadcrumbs';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import MainColumn from '../../components/MainColumn';
 import Text from '../../components/Text';
@@ -78,12 +79,7 @@ export default function GeneralSettings() {
         style={{ padding: '16px 0 16px 16px' }}
         id="GENERAL_SETTINGS"
       />
-      <ButtonLink
-        href="/admin"
-        style={{ marginTop: 8, width: 'fit-content' }}
-        display="back"
-        id="BACK"
-      />
+      <SettingsBreadcrumbs currentPageTextId="GENERAL_SETTINGS" />
       <Grid
         container
         direction="column"

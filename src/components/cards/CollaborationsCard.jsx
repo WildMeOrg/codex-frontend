@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useIntl } from 'react-intl';
 import { get, partition } from 'lodash-es';
 
-import LinearProgress from '@material-ui/core/LinearProgress';
-
 import useGetMe from '../../models/users/useGetMe';
 import Card from './Card';
 import ActionIcon from '../ActionIcon';
@@ -134,25 +132,15 @@ export default function CollaborationsCard({ userId }) {
           setCollabDialogButtonClickLoading
         }
       />
-      {loading && (
-        <LinearProgress style={{ marginTop: 24, marginBottom: 8 }} />
-      )}
-      {tableData.length === 0 ? (
-        <Text
-          variant="body2"
-          id="NO_COLLABORATIONS"
-          style={{ marginTop: 12 }}
-        />
-      ) : (
-        <DataDisplay
-          loading={loading || collabDialogButtonClickLoading}
-          style={{ marginTop: 12 }}
-          noTitleBar
-          columns={columns}
-          data={tableData}
-          idKey="guid"
-        />
-      )}
+      <DataDisplay
+        loading={loading || collabDialogButtonClickLoading}
+        noResultsTextId="NO_COLLABORATIONS"
+        style={{ marginTop: 12 }}
+        noTitleBar
+        columns={columns}
+        data={tableData}
+        idKey="guid"
+      />
     </Card>
   );
 }
