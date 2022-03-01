@@ -14,13 +14,14 @@ import CircleIcon from '@material-ui/icons/Lens';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 
 import useDocumentTitle from '../../hooks/useDocumentTitle';
-import CollaborationRequestDialog from '../../components/dialogs/CollaborationRequestDialog';
 import MainColumn from '../../components/MainColumn';
 import LoadingScreen from '../../components/LoadingScreen';
 import Text from '../../components/Text';
 import useNotifications from '../../models/notification/useNotifications';
 import usePatchNotification from '../../models/notification/usePatchNotification';
 import { calculatePrettyTimeElapsedSince } from '../../utils/formatters';
+import { notificationSchema } from '../../constants/notificationSchema';
+import { notificationTypes } from '../../components/dialogs/notificationDialogUtils';
 
 export default function Notifications() {
   const intl = useIntl();
@@ -53,11 +54,16 @@ export default function Notifications() {
         maxWidth: 1000,
       }}
     >
-      <CollaborationRequestDialog
-        open={Boolean(activeCollaborationNotification)}
-        onClose={() => setActiveCollaborationNotification(null)}
-        notification={activeCollaborationNotification}
-      />
+      {!notificationsLoading &&
+        Boolean(activeCollaborationNotification) && (
+          <activeCollaborationNotification.dialog
+            open={Boolean(activeCollaborationNotification)}
+            onClose={() => setActiveCollaborationNotification(null)}
+            notification={
+              activeCollaborationNotification?.notification
+            }
+          />
+        )}
       <Grid container direction="column" style={{ padding: 32 }}>
         <Grid item>
           <Text id="NOTIFICATIONS" variant="h4" />
@@ -72,21 +78,46 @@ export default function Notifications() {
           >
             <List>
               {safeNotifications.map(notification => {
+                const notificationType = notification?.message_type;
+                const currentNotificationSchema = get(
+                  notificationSchema,
+                  notificationType,
+                );
                 const read = get(notification, 'is_read', false);
-                const hasSenderName =
-                  get(notification, 'sender_name') &&
-                  get(notification, 'sender_name') !== 'N/A';
                 const senderName = get(
                   notification,
                   'sender_name',
                   'Unnamed User',
                 );
+                const user1Name = get(notification, [
+                  'message_values',
+                  'user1_name',
+                ]);
+                const user2Name = get(notification, [
+                  'message_values',
+                  'user2_name',
+                ]);
+                const individual1Names = notification?.names || []; // TODO flesh out more once this is included in notifications DEX-739
+                const individual1NicknameObject = individual1Names.find(
+                  n => n.context === 'nickname',
+                );
+                const individual1Nickname =
+                  individual1NicknameObject?.value ||
+                  'Unnamed individual';
+                const individual2Names = notification?.names || []; // TODO flesh out more once this is included in notifications DEX-739
+                const individual2NicknameObject = individual2Names.find(
+                  n => n.context === 'nickname',
+                );
+                const individual2Nickname =
+                  individual2NicknameObject?.value ||
+                  'Unnamed individual';
                 const createdDate = notification?.created;
                 const timeSince = calculatePrettyTimeElapsedSince(
                   createdDate,
                 );
-                const senderNameText = (
+                const notificationText = (
                   <Text
+                    key={notification?.guid}
                     style={{
                       color: read
                         ? theme.palette.text.secondary
@@ -96,25 +127,17 @@ export default function Notifications() {
                   >
                     {intl.formatMessage(
                       {
-                        id: 'SENT_YOU_A_COLLABORATION_REQUEST',
+                        id:
+                          currentNotificationSchema?.notificationMessage,
                       },
-                      { senderName },
+                      {
+                        userName: senderName,
+                        user1Name,
+                        user2Name,
+                        individual1Nickname,
+                        individual2Nickname,
+                      },
                     )}
-                  </Text>
-                );
-                const noSenderNameText = (
-                  <Text
-                    style={{
-                      color: read
-                        ? theme.palette.text.secondary
-                        : theme.palette.text.primary,
-                    }}
-                    variant="body2"
-                  >
-                    {intl.formatMessage({
-                      id:
-                        'A_COLLABORATION_WAS_CREATED_ON_YOUR_BEHALF',
-                    })}
                   </Text>
                 );
                 const howLongAgoText = (
@@ -127,9 +150,7 @@ export default function Notifications() {
                     }}
                   >
                     {intl.formatMessage(
-                      {
-                        id: 'TIME_SINCE',
-                      },
+                      { id: 'TIME_SINCE' },
                       { timeSince },
                     )}
                   </Text>
@@ -137,10 +158,16 @@ export default function Notifications() {
 
                 return (
                   <ListItem
+                    key={get(notification, 'guid')}
                     onClick={async () => {
-                      setActiveCollaborationNotification(
+                      const clickedNotificationType =
+                        notification?.message_type;
+                      const notificationDialog =
+                        notificationTypes[clickedNotificationType];
+                      setActiveCollaborationNotification({
                         notification,
-                      );
+                        dialog: notificationDialog,
+                      });
                       await markRead(get(notification, 'guid'));
                       refreshNotifications();
                     }}
@@ -171,15 +198,10 @@ export default function Notifications() {
                               : theme.palette.text.primary,
                             fontWeight: 'bold',
                           }}
-                        >
-                          Collaboration request
-                        </Text>
+                          id={currentNotificationSchema?.titleId}
+                        />
                       }
-                      secondary={
-                        hasSenderName
-                          ? [senderNameText, howLongAgoText]
-                          : [noSenderNameText, howLongAgoText]
-                      }
+                      secondary={[notificationText, howLongAgoText]}
                     />
                   </ListItem>
                 );

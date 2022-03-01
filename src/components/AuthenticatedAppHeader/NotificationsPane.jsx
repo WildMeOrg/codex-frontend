@@ -10,12 +10,28 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import { useTheme } from '@material-ui/core/styles';
 
 import usePatchNotification from '../../models/notification/usePatchNotification';
-import CollaborationRequestDialog from '../dialogs/CollaborationRequestDialog';
 import Link from '../Link';
 import Text from '../Text';
 import Button from '../Button';
 import shane from '../../assets/shane.jpg';
+import { notificationSchema } from '../../constants/notificationSchema';
 import { calculatePrettyTimeElapsedSince } from '../../utils/formatters';
+import { notificationTypes } from '../dialogs/notificationDialogUtils';
+
+function renderDisplayTextBasedOnMessageType(
+  currentNotificationSchema,
+  userName,
+  intl,
+) {
+  return (
+    <Text style={{ maxWidth: 200, margin: '0 20px' }}>
+      {intl.formatMessage(
+        { id: currentNotificationSchema?.notificationMessage },
+        { userName },
+      )}
+    </Text>
+  );
+}
 
 export default function NotificationsPane({
   anchorEl,
@@ -30,26 +46,24 @@ export default function NotificationsPane({
     activeCollaborationNotification,
     setActiveCollaborationNotification,
   ] = useState(null);
-
   const { markRead } = usePatchNotification();
 
   return (
     <Popover
       open={Boolean(anchorEl)}
-      anchorOrigin={{
-        vertical: 'bottom',
-        horizontal: 'right',
-      }}
+      anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
       PaperProps={{ style: { marginTop: -8 } }}
       transformOrigin={{ horizontal: 'right', vertical: 'top' }}
       anchorEl={anchorEl}
       onClose={() => setAnchorEl(null)}
     >
-      <CollaborationRequestDialog
-        open={Boolean(activeCollaborationNotification)}
-        onClose={() => setActiveCollaborationNotification(null)}
-        notification={activeCollaborationNotification}
-      />
+      {Boolean(activeCollaborationNotification) && (
+        <activeCollaborationNotification.dialog
+          open={Boolean(activeCollaborationNotification)}
+          onClose={() => setActiveCollaborationNotification(null)}
+          notification={activeCollaborationNotification?.notification}
+        />
+      )}
       <Grid container direction="column">
         <Grid item style={{ padding: 16 }}>
           <Text style={{ fontWeight: 'bold' }} id="NOTIFICATIONS" />
@@ -60,6 +74,14 @@ export default function NotificationsPane({
           </div>
         ) : (
           notifications.map(notification => {
+            const notificationType = notification?.message_type;
+            const currentNotificationSchema = get(
+              notificationSchema,
+              notificationType,
+            );
+            const showViewButton =
+              currentNotificationSchema?.viewInNotificationPane &&
+              refreshNotifications !== undefined;
             const senderName = get(
               notification,
               'sender_name',
@@ -82,43 +104,30 @@ export default function NotificationsPane({
                 >
                   <div style={{ display: 'flex' }}>
                     <Avatar src={shane} variant="circular" />
-                    {senderName !== 'N/A' && (
-                      <Text
-                        style={{ maxWidth: 200, margin: '0 20px' }}
-                      >
-                        {intl.formatMessage(
-                          {
-                            id: 'SENT_YOU_A_COLLABORATION_REQUEST',
-                          },
-                          { senderName },
-                        )}
-                      </Text>
+                    {renderDisplayTextBasedOnMessageType(
+                      currentNotificationSchema,
+                      senderName,
+                      intl,
                     )}
-                    {senderName === 'N/A' &&
-                      !get(notification, 'sender_guid') && (
-                        <Text
-                          style={
-                            { maxWidth: 200, margin: '0 20px' } // probably fine with one or the other check above?
-                          }
-                        >
-                          {intl.formatMessage({
-                            id:
-                              'A_COLLABORATION_WAS_CREATED_ON_YOUR_BEHALF',
-                          })}
-                        </Text>
-                      )}
                   </div>
-                  <Button
-                    onClick={async () => {
-                      setActiveCollaborationNotification(
-                        notification,
-                      );
-                      await markRead(get(notification, 'guid'));
-                      refreshNotifications();
-                    }}
-                    style={{ maxHeight: 40 }}
-                    id="VIEW"
-                  />
+                  {showViewButton && (
+                    <Button
+                      display="basic"
+                      id="VIEW"
+                      onClick={async () => {
+                        const clickedNotificationType =
+                          notification?.message_type;
+                        const notificationDialog =
+                          notificationTypes[clickedNotificationType];
+                        setActiveCollaborationNotification({
+                          notification,
+                          dialog: notificationDialog,
+                        });
+                        await markRead(get(notification, 'guid'));
+                        refreshNotifications();
+                      }}
+                    />
+                  )}
                 </Grid>
                 <Grid
                   item
@@ -130,7 +139,9 @@ export default function NotificationsPane({
                   }}
                 >
                   <Text
-                    style={{ color: theme.palette.text.secondary }}
+                    style={{
+                      color: theme.palette.text.secondary,
+                    }}
                   >
                     {intl.formatMessage(
                       { id: 'TIME_SINCE' },

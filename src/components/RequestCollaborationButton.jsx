@@ -50,6 +50,7 @@ export default function RequestCollaborationButton({ otherUserId }) {
       }}
       loading={loading}
       disabled={matchingCollaborationPending}
+      display="primary"
       id={
         matchingCollaborationPending
           ? 'COLLABORATION_PENDING'
