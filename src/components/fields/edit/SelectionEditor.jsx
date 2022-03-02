@@ -47,7 +47,7 @@ const SelectionEditor = function(props) {
         onChange={e => {
           onChange(e.target.value);
         }}
-        value={value}
+        value={value || ''}
         multiple={multiselect}
         renderValue={currentValue => {
           if (multiselect) {
