@@ -10,5 +10,6 @@ export default function useNotifications(includeRead = false) {
   return useGet({
     queryKey,
     url: includeRead ? baseUrl : `${baseUrl}/unread`,
+    params: { limit: 100 },
   });
 }
