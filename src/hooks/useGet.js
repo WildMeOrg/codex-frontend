@@ -21,6 +21,7 @@ export default function useGet({
   queryKey,
   url,
   data,
+  params,
   dataAccessor = result => result?.data?.data,
   onSuccess = Function.prototype,
   prependHoustonApiUrl = true,
@@ -39,6 +40,7 @@ export default function useGet({
         url: apiUrl,
         method: 'get',
         data,
+        params,
       });
       const status = response?.status;
       setStatusCode(status);
