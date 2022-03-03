@@ -19,10 +19,6 @@ const sexChoices = [
     labelId: 'FEMALE',
   },
   {
-    value: 'non-binary',
-    labelId: 'NON_BINARY',
-  },
-  {
     value: 'unknown',
     labelId: 'UNKNOWN',
   },

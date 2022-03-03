@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { useIntl } from 'react-intl';
+import { useIntl, FormattedMessage } from 'react-intl';
 import { get } from 'lodash-es';
 
 import { useTheme } from '@material-ui/core/styles';
@@ -14,6 +14,8 @@ import Text from '../Text';
 import ActionIcon from '../ActionIcon';
 import DataDisplay from '../dataDisplays/DataDisplay';
 import Card from './Card';
+import ConfirmDelete from '../ConfirmDelete';
+import useDeleteEncounter from '../../models/encounter/useDeleteEncounter';
 
 /* While this displays an array of encounters, the card will often be 
 "sightings of __individual_name__" or something like that. */
@@ -25,12 +27,22 @@ export default function EncountersCard({
   noDataMessage = 'NO_SIGHTINGS',
 }) {
   const [showMapView, setShowMapView] = useState(false);
+  const [
+    showEncounterDeleteDialog,
+    setShowEncounterDeleteDialog,
+  ] = useState(false);
   const theme = useTheme();
   const { regionOptions } = useOptions();
   const intl = useIntl();
 
   const mapModeClicked = () => setShowMapView(true);
   const listModeClicked = () => setShowMapView(false);
+  const {
+    deleteEncounter,
+    loading: deleteEncounterLoading,
+    error: deleteEncounterError,
+    onClearError: deleteEncounterOnClearError,
+  } = useDeleteEncounter();
 
   const encountersWithLocationData = useMemo(
     () => {
@@ -50,42 +62,52 @@ export default function EncountersCard({
     [get(encounters, 'length')],
   );
 
+  // const removeEncounter = encounterGui => {
+  //   console.log('deleteMe');
+  //   console.log('deleteMe encounter is: ');
+  //   console.log(encounterGui);
+  //   setShowEncounterDeleteDialog(true);
+  // };
+
+  const onCloseConfirmDelete = () => {
+    if (error) setError(null);
+    setShowEncounterDeleteDialog(null);
+  };
+
   const allColumns = [
     {
       reference: 'date',
       name: 'time',
       label: 'Date',
-      options: {
-        cellRenderer: cellRendererTypes.specifiedTime,
-      },
+      options: { cellRenderer: cellRendererTypes.specifiedTime },
     },
     {
       reference: 'location',
       name: 'formattedLocation',
       label: 'Location',
-      options: {
-        cellRenderer: cellRendererTypes.location,
-      },
+      options: { cellRenderer: cellRendererTypes.location },
     },
     {
       reference: 'owner',
       name: 'owner',
       label: 'Owner',
-      options: {
-        cellRenderer: cellRendererTypes.user,
-      },
+      options: { cellRenderer: cellRendererTypes.user },
     },
     {
       reference: 'actions',
       name: 'guid',
       label: 'Actions',
       options: {
-        customBodyRender: (_, encounter) => (
+        customBodyRender: (_, encounter) => [
           <ActionIcon
             variant="view"
             href={`/sightings/${encounter?.sighting}`}
-          />
-        ),
+          />,
+          <ActionIcon
+            variant="delete"
+            onClick={() => setShowEncounterDeleteDialog(true)}
+          />,
+        ],
       },
     },
   ];
@@ -96,7 +118,22 @@ export default function EncountersCard({
 
   const noEncounters = encounters && encounters.length === 0;
 
-  return (
+  return [
+    <ConfirmDelete
+      open={Boolean(showEncounterDeleteDialog)}
+      onClose={onCloseConfirmDelete}
+      title={<FormattedMessage id="REMOVE_CATEGORY" />}
+      onDelete={async () => {
+        console.log('deleteMe got here and encounter is: ');
+        console.log(encounter);
+        debugger;
+        let successful = await deleteEncounter(encounter?.guid);
+        console.log('deleteMe successful is: ');
+        console.log(successful);
+      }}
+      deleteInProgress={deleteEncounterLoading}
+      error={deleteEncounterError}
+    />,
     <Card
       title={title}
       titleId={titleId}
@@ -144,6 +181,6 @@ export default function EncountersCard({
         />
       )}
       {!noEncounters && showMapView && <div>Map goes here</div>}
-    </Card>
-  );
+    </Card>,
+  ];
 }
