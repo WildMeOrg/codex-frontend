@@ -186,9 +186,7 @@ export default function Individual() {
         <CardContainer size="small">
           <GalleryCard
             title={intl.formatMessage(
-              {
-                id: 'PHOTOS_OF',
-              },
+              { id: 'PHOTOS_OF' },
               { name: defaultName },
             )}
             assets={fakeAssets}
@@ -197,6 +195,7 @@ export default function Individual() {
         </CardContainer>
         <CardContainer>
           <EncountersCard
+            individualName={defaultName}
             title={
               <FormattedMessage
                 id="SIGHTINGS_OF"

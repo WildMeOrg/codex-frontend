@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { get, pick } from 'lodash-es';
 
 import AddIcon from '@material-ui/icons/Add';
@@ -55,6 +55,9 @@ export default function Encounters({
     loading: deleteSightingEncounterLoading,
     error: deleteSightingEncounterError,
     onClearError: deleteEncounterOnClearError,
+    setError: deleteEncounterSetError,
+    vulnerableObject,
+    setVulnerableObject,
   } = useDeleteEncounter();
 
   const {
@@ -72,9 +75,14 @@ export default function Encounters({
     createIndividualEncounterId,
     setCreateIndividualEncounterId,
   ] = useState(null);
+
   const [encounterToDelete, setEncounterToDelete] = useState(null);
   const [editEncounterInfo, setEditEncounterInfo] = useState(null);
   const [encounterToAssign, setEncounterToAssign] = useState(null);
+  const [
+    messageForConfirmDelete,
+    setMessageForConfirmDelete,
+  ] = useState(null);
   const [
     encounterToAddAnnotations,
     setEncounterToAddAnnotations,
@@ -84,6 +92,38 @@ export default function Encounters({
 
   const encounterFieldSchemas = useEncounterFieldSchemas();
   const encounters = get(sightingData, 'encounters', []);
+
+  useEffect(
+    () => {
+      setMessageForConfirmDelete(
+        'CONFIRM_DELETE_ENCOUNTER_DESCRIPTION',
+      );
+      if (vulnerableObject) {
+        console.log('deleteMe got here a0');
+        const encounterIdHolder = encounterToDelete;
+        setEncounterToDelete(null);
+        deleteEncounterSetError(null);
+        console.log(vulnerableObject);
+
+        const whichVulnerableObj = get(
+          Object.keys(vulnerableObject),
+          '0',
+        );
+        console.log('deleteMe whichVulnerableObj is: ');
+        console.log(whichVulnerableObj);
+        setMessageForConfirmDelete(
+          whichVulnerableObj === 'vulnerableIndividualGuid'
+            ? 'VULNERABLE_INDIVIDUAL_MESSAGE'
+            : 'VULNERABLE_SIGHTING_MESSAGE',
+        );
+        console.log('deleteMe messageForConfirmDelete is now : ');
+        console.log(messageForConfirmDelete);
+        setEncounterToDelete(encounterIdHolder);
+      }
+    },
+    [vulnerableObject],
+  );
+  console.log('deleteMe re-render happens');
 
   return (
     <div>
@@ -97,6 +137,26 @@ export default function Encounters({
               sightingId,
               encounterToDelete,
             );
+          } else if (vulnerableObject) {
+            console.log('deleteMe got here instead');
+            if (
+              get(Object.keys(vulnerableObject), '0') ===
+              'vulnerableIndividualGuid'
+            ) {
+              successful = await deleteSightingEncounter(
+                encounterToDelete,
+                false,
+                true,
+              );
+            } else {
+              successful = await deleteSightingEncounter(
+                encounterToDelete,
+                true,
+                false,
+              );
+            }
+            console.log('deleteMe got here and successful is: ');
+            console.log(successful);
           } else {
             successful = await deleteSightingEncounter(
               encounterToDelete,
@@ -104,6 +164,7 @@ export default function Encounters({
           }
           if (successful) {
             setEncounterToDelete(null);
+            setVulnerableObject(null);
             refreshSightingData();
           }
         }}
@@ -118,12 +179,8 @@ export default function Encounters({
             ? deleteAgsEncounterOnClearError
             : deleteEncounterOnClearError
         }
-        messageId={
-          encounters.length <= 1
-            ? 'CANNOT_DELETE_FINAL_ENCOUNTER_DESCRIPTION'
-            : 'CONFIRM_DELETE_ENCOUNTER_DESCRIPTION'
-        }
-        deleteDisabled={encounters.length <= 1}
+        messageId={messageForConfirmDelete}
+        // deleteDisabled={encounters.length <= 1}
       />
 
       <CreateIndividualModal

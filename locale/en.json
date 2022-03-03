@@ -983,5 +983,8 @@
   "INDIVIDUAL_MERGE_COMPLETE_TITLE": "Individual merge completed",
   "PHOTOS_OF": "Photos of {name}",
   "MARK_AS_READ": "Mark as read",
-  "DONE": "Done"
+  "DONE": "Done",
+  "ENCOUNTER_DELETE_FROM_INDIVIDUAL_MESSAGE": "Remove this sighting from {individual_name}?",
+  "VULNERABLE_INDIVIDUAL_MESSAGE": "This is the last encounter for this individual. Deleting this encounter will also delete the individual. Are you sure you want to proceed?",
+  "VULNERABLE_SIGHTING_MESSAGE": "This is the last animal for this sighting. Deleting this animal will also delete the sighting. Are you sure you want to proceed?"
 }

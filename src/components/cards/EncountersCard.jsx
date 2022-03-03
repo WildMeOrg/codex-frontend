@@ -20,6 +20,7 @@ import useDeleteEncounter from '../../models/encounter/useDeleteEncounter';
 /* While this displays an array of encounters, the card will often be 
 "sightings of __individual_name__" or something like that. */
 export default function EncountersCard({
+  individualName = null,
   title,
   titleId = 'SIGHTINGS',
   encounters,
@@ -30,7 +31,7 @@ export default function EncountersCard({
   const [
     showEncounterDeleteDialog,
     setShowEncounterDeleteDialog,
-  ] = useState(false);
+  ] = useState({ display: false, endId: null });
   const theme = useTheme();
   const { regionOptions } = useOptions();
   const intl = useIntl();
@@ -62,16 +63,9 @@ export default function EncountersCard({
     [get(encounters, 'length')],
   );
 
-  // const removeEncounter = encounterGui => {
-  //   console.log('deleteMe');
-  //   console.log('deleteMe encounter is: ');
-  //   console.log(encounterGui);
-  //   setShowEncounterDeleteDialog(true);
-  // };
-
   const onCloseConfirmDelete = () => {
-    if (error) setError(null);
-    setShowEncounterDeleteDialog(null);
+    deleteEncounterOnClearError();
+    setShowEncounterDeleteDialog({ display: false, endId: null });
   };
 
   const allColumns = [
@@ -105,7 +99,12 @@ export default function EncountersCard({
           />,
           <ActionIcon
             variant="delete"
-            onClick={() => setShowEncounterDeleteDialog(true)}
+            onClick={() =>
+              setShowEncounterDeleteDialog({
+                display: true,
+                encId: encounter?.guid,
+              })
+            }
           />,
         ],
       },
@@ -120,14 +119,17 @@ export default function EncountersCard({
 
   return [
     <ConfirmDelete
-      open={Boolean(showEncounterDeleteDialog)}
+      open={Boolean(showEncounterDeleteDialog.display)}
       onClose={onCloseConfirmDelete}
       title={<FormattedMessage id="REMOVE_CATEGORY" />}
+      messageId={intl.formatMessage(
+        { id: 'ENCOUNTER_DELETE_FROM_INDIVIDUAL_MESSAGE' },
+        { individual_name: individualName },
+      )}
       onDelete={async () => {
-        console.log('deleteMe got here and encounter is: ');
-        console.log(encounter);
-        debugger;
-        let successful = await deleteEncounter(encounter?.guid);
+        let successful = await deleteEncounter(
+          showEncounterDeleteDialog.encId,
+        );
         console.log('deleteMe successful is: ');
         console.log(successful);
       }}
