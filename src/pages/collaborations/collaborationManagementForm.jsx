@@ -55,8 +55,8 @@ export default function CollaborationManagementForm({
           }
           getOptionLabel={option => {
             const name = get(option, 'full_name', null);
-            if (name) return name;
             const email = get(option, 'email', null);
+            if (name) return name + ' (' + email + ')';
             return (
               intl.formatMessage({
                 id: 'UNNAMED_USER',
@@ -93,8 +93,8 @@ export default function CollaborationManagementForm({
           }
           getOptionLabel={option => {
             const name = get(option, 'full_name', 'guid');
-            if (name) return name;
             const email = get(option, 'email', null);
+            if (name) return name + ' (' + email + ')';
             return (
               intl.formatMessage({
                 id: 'UNNAMED_USER',
