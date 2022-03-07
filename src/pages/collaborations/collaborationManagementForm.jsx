@@ -56,15 +56,21 @@ export default function CollaborationManagementForm({
           getOptionLabel={option => {
             const name = get(option, 'full_name', null);
             const email = get(option, 'email', null);
-            if (name) return name + ' (' + email + ')';
-            return (
-              intl.formatMessage({
-                id: 'UNNAMED_USER',
-              }) +
-              ' (' +
-              email +
-              ')'
-            );
+            const nameLabel = email
+              ? name + ' (' + email + ')'
+              : name;
+            if (name) return nameLabel;
+            const unnamedUserLabel = email
+              ? intl.formatMessage({
+                  id: 'UNNAMED_USER',
+                }) +
+                ' (' +
+                email +
+                ')'
+              : intl.formatMessage({
+                  id: 'UNNAMED_USER',
+                });
+            return unnamedUserLabel;
           }}
           getOptionSelected={(option, val) =>
             option.id ? option.id === val : false
@@ -94,15 +100,21 @@ export default function CollaborationManagementForm({
           getOptionLabel={option => {
             const name = get(option, 'full_name', 'guid');
             const email = get(option, 'email', null);
-            if (name) return name + ' (' + email + ')';
-            return (
-              intl.formatMessage({
-                id: 'UNNAMED_USER',
-              }) +
-              ' (' +
-              email +
-              ')'
-            );
+            const nameLabel = email
+              ? name + ' (' + email + ')'
+              : name;
+            if (name) return nameLabel;
+            const unnamedUserLabel = email
+              ? intl.formatMessage({
+                  id: 'UNNAMED_USER',
+                }) +
+                ' (' +
+                email +
+                ')'
+              : intl.formatMessage({
+                  id: 'UNNAMED_USER',
+                });
+            return unnamedUserLabel;
           }}
           getOptionSelected={(option, val) =>
             option.id ? option.id === val : false
