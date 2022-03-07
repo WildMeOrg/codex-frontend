@@ -26,14 +26,20 @@ export default function NotificationDetailsDialog({
   };
 
   const senderName = get(notification, 'sender_name', 'Unnamed User');
-  const user1Name = get(notification, [
-    'message_values',
-    'user1_name',
-  ]);
-  const user2Name = get(notification, [
-    'message_values',
-    'user2_name',
-  ]);
+  let user1Name = get(
+    notification,
+    ['message_values', 'user1_name'],
+    'Unnamed User',
+  );
+  if (user1Name === '') user1Name = 'Unnamed User';
+  console.log('deleteMe user1Name is: ' + user1Name);
+  let user2Name = get(
+    notification,
+    ['message_values', 'user2_name'],
+    'Unnamed User',
+  );
+  if (user2Name === '') user2Name = 'Unnamed User';
+  console.log('deleteMe user2Name is: ' + user2Name);
   const individual1Names = notification?.names || []; // TODO flesh out more once this is included in notifications DEX-739
   const individual1NicknameObject = individual1Names.find(
     n => n.context === 'nickname',

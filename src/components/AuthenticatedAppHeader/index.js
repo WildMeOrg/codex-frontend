@@ -31,6 +31,8 @@ export default function AppHeader() {
     loading: notificationsLoading,
     refresh: refreshNotifications,
   } = useNotifications();
+  console.log('deleteMe notifications are: ');
+  console.log(notifications);
   const notificationsCount = get(notifications, 'length', 0);
 
   const isSm = useMediaQuery(theme.breakpoints.down('sm'));

@@ -89,14 +89,16 @@ export default function Notifications() {
                   'sender_name',
                   'Unnamed User',
                 );
-                const user1Name = get(notification, [
-                  'message_values',
-                  'user1_name',
-                ]);
-                const user2Name = get(notification, [
-                  'message_values',
-                  'user2_name',
-                ]);
+                const user1Name = get(
+                  notification,
+                  ['message_values', 'user1_name'],
+                  'Unnamed User',
+                );
+                const user2Name = get(
+                  notification,
+                  ['message_values', 'user2_name'],
+                  'Unnamed User',
+                );
                 const individual1Names = notification?.names || []; // TODO flesh out more once this is included in notifications DEX-739
                 const individual1NicknameObject = individual1Names.find(
                   n => n.context === 'nickname',
