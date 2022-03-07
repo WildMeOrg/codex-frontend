@@ -90,6 +90,48 @@ export default function Individual() {
   const [editingProfile, setEditingProfile] = useState(false);
   const [deletingIndividual, setDeletingIndividual] = useState(false);
   const [deleteEncounterId, setDeleteEncounterId] = useState(null);
+  // const [
+  //   messageForConfirmDelete,
+  //   setMessageForConfirmDelete,
+  // ] = useState(null);
+
+  // useEffect(
+  //   () => {
+  //     setMessageForConfirmDelete(
+  //       'CONFIRM_DELETE_ENCOUNTER_DESCRIPTION',
+  //     );
+  //     if (vulnerableObject) {
+  //       console.log('deleteMe got here a0');
+  //       const encounterIdHolder = encounterToDelete;
+  //       setEncounterToDelete(null);
+  //       deleteEncounterSetError(null);
+  //       console.log(vulnerableObject);
+
+  //       const whichVulnerableObj = get(
+  //         Object.keys(vulnerableObject),
+  //         '0',
+  //       );
+  //       console.log('deleteMe whichVulnerableObj is: ');
+  //       console.log(whichVulnerableObj);
+  //       setMessageForConfirmDelete(
+  //         whichVulnerableObj === 'vulnerableIndividualGuid'
+  //           ? 'VULNERABLE_INDIVIDUAL_MESSAGE'
+  //           : 'VULNERABLE_SIGHTING_MESSAGE',
+  //       );
+  //       // setVulnerableObjectsTracker(whichVulnerableObj);
+  //       console.log(
+  //         'deleteMe setting past vulnerable object to: ' +
+  //           whichVulnerableObj,
+  //       );
+  //       setPastVulnerableObject(whichVulnerableObj);
+  //       console.log('deleteMe messageForConfirmDelete is now : ');
+  //       console.log(messageForConfirmDelete);
+  //       setEncounterToDelete(encounterIdHolder);
+  //       deleteEncounterOnClearError();
+  //     }
+  //   },
+  //   [vulnerableObject],
+  // );
 
   if (loading) return <LoadingScreen />;
 
