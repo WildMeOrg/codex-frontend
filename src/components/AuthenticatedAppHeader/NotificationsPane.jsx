@@ -46,7 +46,11 @@ export default function NotificationsPane({
     activeCollaborationNotification,
     setActiveCollaborationNotification,
   ] = useState(null);
-  const { markRead } = usePatchNotification();
+  const {
+    markRead,
+    loading: markReadLoading,
+    success: markReadSuccess,
+  } = usePatchNotification();
 
   return (
     <Popover
@@ -112,7 +116,8 @@ export default function NotificationsPane({
                   </div>
                   {showViewButton && (
                     <Button
-                      display="basic"
+                      key={notification?.guid}
+                      display="primary"
                       id="VIEW"
                       onClick={async () => {
                         const clickedNotificationType =
@@ -123,6 +128,24 @@ export default function NotificationsPane({
                           notification,
                           dialog: notificationDialog,
                         });
+                        await markRead(get(notification, 'guid'));
+                        refreshNotifications();
+                      }}
+                    />
+                  )}
+                  {!showViewButton && (
+                    <Button
+                      display="primary"
+                      id={
+                        markReadSuccess
+                          ? intl.formatMessage({ id: 'DONE' })
+                          : intl.formatMessage({
+                              id: 'MARK_AS_READ',
+                            })
+                      }
+                      disabled={markReadSuccess}
+                      loading={markReadLoading}
+                      onClick={async () => {
                         await markRead(get(notification, 'guid'));
                         refreshNotifications();
                       }}

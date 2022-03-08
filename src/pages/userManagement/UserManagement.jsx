@@ -14,10 +14,10 @@ import MenuItem from '@material-ui/core/MenuItem';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import CustomAlert from '../../components/Alert';
 import MainColumn from '../../components/MainColumn';
-import ButtonLink from '../../components/ButtonLink';
 import LabeledInput from '../../components/LabeledInput';
 import Button from '../../components/Button';
 import Text from '../../components/Text';
+import SettingsBreadcrumbs from '../../components/SettingsBreadcrumbs';
 import usePostUser from '../../models/users/usePostUser';
 import useGetUsers from '../../models/users/useGetUsers';
 import UserEditTable from './UserEditTable';
@@ -64,12 +64,7 @@ export default function UserManagement() {
         style={{ padding: '16px 0 16px 16px' }}
         id="MANAGE_USERS"
       />
-      <ButtonLink
-        href="/admin"
-        style={{ marginTop: 8, width: 'fit-content' }}
-        display="back"
-        id="BACK"
-      />
+      <SettingsBreadcrumbs currentPageTextId="MANAGE_USERS" />
       <Grid
         container
         direction="column"

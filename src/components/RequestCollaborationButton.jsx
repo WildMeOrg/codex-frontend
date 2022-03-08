@@ -7,16 +7,19 @@ import Button from './Button';
 
 export default function RequestCollaborationButton({ otherUserId }) {
   const {
-    requestCollaboration,
+    mutate: requestCollaboration,
     loading: requestCollaborationLoading,
   } = useRequestCollaboration();
   const {
     data: currentUserData,
-    loading: currentUserDataLoading,
+    loading: userDataLoading,
+    isFetching: userDataFetching,
   } = useGetMe();
 
-  const loading =
-    requestCollaborationLoading || currentUserDataLoading;
+  const spinButton =
+    requestCollaborationLoading ||
+    userDataLoading ||
+    userDataFetching;
 
   const currentUserCollaborations = get(
     currentUserData,
@@ -46,11 +49,11 @@ export default function RequestCollaborationButton({ otherUserId }) {
   return (
     <Button
       onClick={async () => {
-        await requestCollaboration(otherUserId);
+        await requestCollaboration({ userGuid: otherUserId });
       }}
-      loading={loading}
-      disabled={matchingCollaborationPending}
-      display="primary"
+      loading={spinButton}
+      disabled={spinButton || matchingCollaborationPending}
+      display="panel"
       id={
         matchingCollaborationPending
           ? 'COLLABORATION_PENDING'

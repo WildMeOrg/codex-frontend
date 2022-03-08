@@ -1,18 +1,10 @@
-import axios from 'axios';
-import { useMutation } from 'react-query';
+import { usePost } from '../../hooks/useMutate';
+import { getAGSQueryKey } from '../../constants/queryKeys';
 
 export default function useCommitAssetGroupSighting() {
-  const mutation = useMutation(async agsId =>
-    axios.request({
-      url: `${__houston_url__}/api/v1/asset_groups/sighting/${agsId}/commit`,
-      method: 'post',
-    }),
-  );
-
-  const commitAgs = agsId => mutation.mutate(agsId);
-
-  return {
-    commitAgs,
-    ...mutation,
-  };
+  return usePost({
+    deriveUrl: ({ agsGuid }) =>
+      `/asset_groups/sighting/${agsGuid}/commit`,
+    deriveQueryKeys: ({ agsGuid }) => [getAGSQueryKey(agsGuid)],
+  });
 }

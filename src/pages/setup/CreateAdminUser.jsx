@@ -30,9 +30,23 @@ export default function CreateAdminUser() {
   const intl = useIntl();
   useDocumentTitle('CODEX_INITIALIZED', { appendSiteName: false });
 
-  useOnEnter(() => {
-    document.querySelector(`#${buttonId}`).click();
-  });
+  const actionDisabled =
+    email === '' || password1 === '' || password2 === '' || loading;
+
+  const createUser = () => {
+    if (actionDisabled) return;
+    if (password1 === password2) {
+      authenticate(email, password1, '/');
+    } else {
+      setError(
+        intl.formatMessage({
+          id: 'PASSWORDS_DO_NOT_MATCH',
+        }),
+      );
+    }
+  };
+
+  useOnEnter(createUser);
 
   return (
     <SimpleFormPage
@@ -111,17 +125,8 @@ export default function CreateAdminUser() {
               domId={buttonId}
               id="CREATE_USER"
               loading={loading}
-              onClick={() => {
-                if (password1 === password2) {
-                  authenticate(email, password1, '/');
-                } else {
-                  setError(
-                    intl.formatMessage({
-                      id: 'PASSWORDS_DO_NOT_MATCH',
-                    }),
-                  );
-                }
-              }}
+              disabled={actionDisabled}
+              onClick={createUser}
               display="primary"
             />
           </Grid>

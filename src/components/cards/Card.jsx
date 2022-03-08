@@ -34,7 +34,7 @@ export default function Card({
           </Text>
           {renderActions}
         </div>
-        {children}
+        <div style={{ overflow: 'scroll' }}>{children}</div>
       </Paper>
     </Grid>
   );

@@ -1,9 +1,43 @@
-import { useState } from 'react';
-import axios from 'axios';
-import { get } from 'lodash-es';
-import { formatError } from '../../utils/formatters';
+// import { useState } from 'react';
+// import axios from 'axios';
+// import { get } from 'lodash-es';
+// import { formatError } from '../../utils/formatters';
 
-export default function usePatchNotification() {
+// import queryKeys from '../../constants/queryKeys';
+import { getNotificationQueryKey } from '../../constants/queryKeys';
+import { usePatch } from '../../hooks/useMutate';
+
+export default function usePatchNotification(notificationId) {
+  const markRead = async notificationId => {
+    const result = await patchNotification(notificationId, [
+    {
+      op: 'replace',
+      path: '/is_read',
+      value: true,
+    },
+    ]);
+
+    return result;
+  //   return usePatch({
+  //     url: `/notifications/${notificationId}`,
+  //     data: [
+  //       {
+  //         op: 'replace',
+  //         path: '/is_read',
+  //         value: true,
+  //       },
+  //     ],
+  //   });
+  // };
+  // const usePatchNotification = usePatch({
+  //   url: `/notifications/${notificationId}`,
+  //   queryKey: getNotificationQueryKey(notificationId),
+  // });
+  // return { usePatchNotification, markRead };
+  return usePatch({
+    url: `/notifications/${notificationId}`,
+    queryKey: getNotificationQueryKey(notificationId),
+  });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);

@@ -107,6 +107,7 @@ export default function useSightingFieldSchemas() {
           labelId: 'SPECIES',
           category: defaultEncounterCategories.animal.name,
           choices: speciesOptions,
+          defaultValue: null,
         }),
         createFieldSchema(fieldTypes.select, {
           name: 'sex',

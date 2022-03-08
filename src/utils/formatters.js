@@ -149,8 +149,8 @@ export const formatHoustonTime = possibleTimeObject => {
   try {
     const houstonTime = format(
       possibleTimeObject,
-      "yyyy-MM-dd'T'hh:mm:ssxxx", // ISO 8601 without "Z" timezones.
-    );
+      "yyyy-MM-dd'T'HH:mm:ssxxx",
+    ); // ISO 8601 without "Z" timezones.
     return houstonTime;
   } catch (error) {
     console.log(

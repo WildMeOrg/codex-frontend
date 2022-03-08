@@ -19,6 +19,9 @@ const Core = function({
   let variant = undefined; // eslint-disable-line
   let color = undefined; // eslint-disable-line
   let roleStyles = {};
+  let spinnerStyles = {
+    color: theme.palette.common.white,
+  };
 
   if (display === 'back') {
     return (
@@ -57,6 +60,9 @@ const Core = function({
 
   if (display === 'panel') {
     variant = 'outlined';
+    spinnerStyles = {
+      color: theme.palette.text.secondary,
+    };
   }
 
   if (display === 'marketing') {
@@ -93,10 +99,7 @@ const Core = function({
         {...rest}
       >
         {loading ? (
-          <CircularProgress
-            size={24}
-            style={{ color: theme.palette.common.white }}
-          />
+          <CircularProgress size={24} style={spinnerStyles} />
         ) : (
           children
         )}
@@ -119,10 +122,7 @@ const Core = function({
       {...rest}
     >
       {loading ? (
-        <CircularProgress
-          size={24}
-          style={{ color: theme.palette.common.white }}
-        />
+        <CircularProgress size={24} style={spinnerStyles} />
       ) : (
         children
       )}

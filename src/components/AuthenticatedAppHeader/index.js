@@ -12,6 +12,7 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import AddIcon from '@material-ui/icons/Add';
 import DropDownIcon from '@material-ui/icons/ArrowDropDown';
 import HomeIcon from '@material-ui/icons/Home';
+import { useQueryClient } from 'react-query';
 
 import useGetMe from '../../models/users/useGetMe';
 import useNotifications from '../../models/notification/useNotifications';
@@ -22,6 +23,7 @@ import HeaderButton from './HeaderButton';
 import NotificationsPane from './NotificationsPane';
 import ActionsPane from './ActionsPane';
 import PopoverButtons from './PopoverButtons';
+import queryKeys from '../../constants/queryKeys';
 
 export default function AppHeader() {
   const theme = useTheme();
@@ -29,10 +31,14 @@ export default function AppHeader() {
   const {
     data: notifications,
     loading: notificationsLoading,
-    refresh: refreshNotifications,
   } = useNotifications();
   console.log('deleteMe notifications are: ');
   console.log(notifications);
+  const queryClient = useQueryClient();
+  const refreshNotifications = () => {
+    queryClient.invalidateQueries(queryKeys.allNotifications);
+    queryClient.invalidateQueries(queryKeys.unreadNotifications);
+  };
   const notificationsCount = get(notifications, 'length', 0);
 
   const isSm = useMediaQuery(theme.breakpoints.down('sm'));

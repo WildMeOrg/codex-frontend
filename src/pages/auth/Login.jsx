@@ -31,6 +31,8 @@ export default function Login({ showBanner, redirect = '/' }) {
     document.querySelector(`#${buttonId}`).click();
   });
 
+  const actionDisabled = loading || email === '' || password === '';
+
   return (
     <SimpleFormPage
       titleId="WELCOME_BACK"
@@ -107,6 +109,7 @@ export default function Login({ showBanner, redirect = '/' }) {
               }}
               display="primary"
               id="LOG_IN"
+              disabled={actionDisabled}
             />
           </Grid>
         </Grid>

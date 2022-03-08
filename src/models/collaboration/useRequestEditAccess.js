@@ -3,7 +3,7 @@ import axios from 'axios';
 import { get } from 'lodash-es';
 import { formatError } from '../../utils/formatters';
 
-export default function useRequestCollaboration() {
+export default function useRequestEditAccess() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
