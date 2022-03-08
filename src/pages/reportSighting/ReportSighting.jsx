@@ -64,7 +64,10 @@ export default function ReportSighting({ authenticated }) {
         />
       ) : null}
       {reporting ? (
-        <ReportForm assetReferences={files} />
+        <ReportForm
+          authenticated={authenticated}
+          assetReferences={files}
+        />
       ) : (
         <>
           <Grid item style={{ marginTop: 20 }}>
