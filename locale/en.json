@@ -983,5 +983,6 @@
   "INDIVIDUAL_MERGE_COMPLETE_TITLE": "Individual merge completed",
   "PHOTOS_OF": "Photos of {name}",
   "MARK_AS_READ": "Mark as read",
-  "DONE": "Done"
+  "DONE": "Done",
+  "VIEW_ALL_NOTIFICATIONS_MORE_DETAIL": "View all notifications in more detail"
 }

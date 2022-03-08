@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useIntl } from 'react-intl';
 import { get } from 'lodash-es';
+import { useQueryClient } from 'react-query';
 
 import { useTheme } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
@@ -22,17 +23,18 @@ import usePatchNotification from '../../models/notification/usePatchNotification
 import { calculatePrettyTimeElapsedSince } from '../../utils/formatters';
 import { notificationSchema } from '../../constants/notificationSchema';
 import { notificationTypes } from '../../components/dialogs/notificationDialogUtils';
+import queryKeys from '../../constants/queryKeys';
 
 export default function Notifications() {
   const intl = useIntl();
   const theme = useTheme();
+  const queryClient = useQueryClient();
 
   useDocumentTitle('NOTIFICATIONS');
 
   const {
     data: notifications,
     loading: notificationsLoading,
-    refresh: refreshNotifications,
   } = useNotifications(true);
 
   const { markRead } = usePatchNotification();
@@ -171,7 +173,12 @@ export default function Notifications() {
                         dialog: notificationDialog,
                       });
                       await markRead(get(notification, 'guid'));
-                      refreshNotifications();
+                      queryClient.invalidateQueries(
+                        queryKeys.allNotifications,
+                      );
+                      queryClient.invalidateQueries(
+                        queryKeys.unreadNotifications,
+                      );
                     }}
                     style={{ cursor: 'pointer' }}
                   >

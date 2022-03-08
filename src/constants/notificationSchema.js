@@ -19,6 +19,8 @@ notificationSchemaPlaceholder[
   notificationMessage: 'A_COLLABORATION_WAS_CREATED_ON_YOUR_BEHALF',
   moreDetailedDescription:
     'A_COLLABORATION_WAS_CREATED_ON_YOUR_BEHALF_MORE_DETAILED',
+  showNotificationDialog: false,
+  buttonPath: '/',
 };
 notificationSchemaPlaceholder[
   notificationTypeNames.collaboration_request
@@ -26,7 +28,7 @@ notificationSchemaPlaceholder[
   titleId: 'COLLABORATION_REQUEST',
   notificationMessage: 'COLLABORATION_VIEW_REQUEST_BRIEF',
   moreDetailedDescription: 'COLLABORATION_VIEW_REQUEST_DESCRIPTION',
-  viewInNotificationPane: true,
+  showNotificationDialog: true,
   path: '/view_permission',
 };
 notificationSchemaPlaceholder[
@@ -35,7 +37,7 @@ notificationSchemaPlaceholder[
   titleId: 'COLLABORATION_APPROVED_TITLE',
   notificationMessage: 'COLLABORATION_APPROVED',
   moreDetailedDescription: 'COLLABORATION_APPROVED',
-  viewInNotificationPane: false,
+  showNotificationDialog: false,
   path: '/view_permission',
 };
 notificationSchemaPlaceholder[
@@ -44,7 +46,7 @@ notificationSchemaPlaceholder[
   titleId: 'COLLABORATION_REVOKE_TITLE',
   notificationMessage: 'COLLABORATION_REVOKE_BRIEF',
   moreDetailedDescription: 'COLLABORATION_REVOKE_BRIEF',
-  viewInNotificationPane: false,
+  showNotificationDialog: false,
 };
 notificationSchemaPlaceholder[
   notificationTypeNames.collaboration_edit_request
@@ -52,7 +54,7 @@ notificationSchemaPlaceholder[
   titleId: 'COLLABORATION_EDIT_REQUEST_TITLE',
   notificationMessage: 'COLLABORATION_EDIT_REQUEST_BRIEF',
   moreDetailedDescription: 'COLLABORATION_EDIT_REQUEST_DESCRIPTION',
-  viewInNotificationPane: true,
+  showNotificationDialog: true,
   path: '/edit_permission',
 };
 notificationSchemaPlaceholder[
@@ -61,7 +63,7 @@ notificationSchemaPlaceholder[
   titleId: 'COLLABORATION_EDIT_APPROVED_TITLE',
   notificationMessage: 'EDIT_COLLABORATION_APPROVED',
   moreDetailedDescription: 'EDIT_COLLABORATION_APPROVED',
-  viewInNotificationPane: false,
+  showNotificationDialog: false,
   path: '/edit_permission',
 };
 notificationSchemaPlaceholder[
@@ -70,7 +72,8 @@ notificationSchemaPlaceholder[
   titleId: 'COLLABORATION_EDIT_REVOKE_TITLE',
   notificationMessage: 'EDIT_COLLABORATION_REVOKED',
   moreDetailedDescription: 'EDIT_COLLABORATION_REVOKED',
-  viewInNotificationPane: false,
+  showNotificationDialog: false,
+  buttonPath: '/',
 };
 notificationSchemaPlaceholder[
   notificationTypeNames.collaboration_manager_revoke
@@ -78,7 +81,8 @@ notificationSchemaPlaceholder[
   titleId: 'COLLABORATION_MANAGER_REVOKE_TITLE',
   notificationMessage: 'COLLABORATION_REVOKED_BY_MANAGER',
   moreDetailedDescription: 'COLLABORATION_REVOKED_BY_MANAGER',
-  viewInNotificationPane: false,
+  showNotificationDialog: false,
+  buttonPath: '/',
 };
 notificationSchemaPlaceholder[
   notificationTypeNames.individual_merge_request
@@ -86,7 +90,7 @@ notificationSchemaPlaceholder[
   titleId: 'INDIVIDUAL_MERGE_REQUEST_TITLE',
   notificationMessage: 'INDIVIDUAL_MERGE_REQUEST_MESSAGE',
   moreDetailedDescription: 'INDIVIDUAL_MERGE_REQUEST_MESSAGE',
-  viewInNotificationPane: true,
+  showNotificationDialog: true,
 };
 notificationSchemaPlaceholder[
   notificationTypeNames.individual_merge_complete
@@ -94,6 +98,7 @@ notificationSchemaPlaceholder[
   titleId: 'INDIVIDUAL_MERGE_COMPLETE_TITLE',
   notificationMessage: 'INDIVIDUALS_MERGE_COMPLETE_MESSAGE',
   moreDetailedDescription: 'INDIVIDUALS_MERGE_COMPLETE_MESSAGE',
-  viewInNotificationPane: false,
+  showNotificationDialog: false,
+  buttonPath: '/individuals/', // TODO figure out how to pass individual ID to this
 };
 export const notificationSchema = notificationSchemaPlaceholder;
