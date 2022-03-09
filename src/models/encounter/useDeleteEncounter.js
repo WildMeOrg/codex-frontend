@@ -45,6 +45,9 @@ export default function useDeleteEncounter() {
         setError(null);
         return true;
       }
+      console.log('deleteMe deleteResponse at this point is:');
+      console.log(deleteResponse);
+      // debugger;
 
       setError(formatError(deleteResponse));
       setSuccess(false);
@@ -52,24 +55,19 @@ export default function useDeleteEncounter() {
     } catch (postError) {
       const vulnerableIndividualGuid =
         postError?.response?.data?.vulnerableIndividualGuid;
-      console.log(
-        'deleteMe vulnerableIndividualGuid is: ' +
-          vulnerableIndividualGuid,
-      );
       const vulnerableSightingGuid =
         postError?.response?.data?.vulnerableSightingGuid;
-      console.log(
-        'deleteMe vulnerableSightingGuid is: ' +
-          vulnerableSightingGuid,
-      );
       const vulnerableOject = vulnerableSightingGuid
         ? { vulnerableSightingGuid }
         : { vulnerableIndividualGuid };
-      console.log('deleteMe vulnerableOject is: ');
-      console.log(vulnerableOject);
       setVulnerableObject(vulnerableOject);
       setLoading(false);
-      setError(formatError(postError));
+      if (vulnerableIndividualGuid || vulnerableSightingGuid) {
+        console.log('deleteMe got here h0');
+        setError(null);
+      } else {
+        setError(formatError(postError));
+      }
       setSuccess(false);
       return false;
     }

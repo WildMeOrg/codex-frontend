@@ -30,6 +30,8 @@ export default function Encounters({
   refreshSightingData,
   pending,
 }) {
+  console.log('deleteMe sightingData is: ');
+  console.log(sightingData);
   const history = useHistory();
   const queryClient = useQueryClient();
   const {
@@ -60,7 +62,7 @@ export default function Encounters({
     loading: deleteSightingEncounterLoading,
     error: deleteSightingEncounterError,
     onClearError: deleteEncounterOnClearError,
-    setError: deleteEncounterSetError,
+    // setError: deleteEncounterSetError,
     vulnerableObject,
     setVulnerableObject,
   } = useDeleteEncounter();
@@ -213,8 +215,6 @@ export default function Encounters({
           //   console.log('deleteMe got here b1.75 ');
           // }
           if (!pending && vulnerableObjStr) {
-            console.log('deleteMe got here b2');
-            debugger;
             successful = await deleteSightingEncounter(
               encounterToDelete,
               true,
@@ -222,20 +222,18 @@ export default function Encounters({
             );
           }
           if (!pending && !vulnerableObjStr) {
-            console.log('deleteMe got here b3');
             successful = await deleteSightingEncounter(
               encounterToDelete,
             );
-            console.log('deleteMe successful is: ');
-            console.log(successful);
           }
           if (successful) {
             setEncounterToDelete(null);
-            const navigateAway = Boolean(vulnerableObject);
+            const navigateAway =
+              Boolean(vulnerableObject) && encounters.length <= 1;
             setVulnerableObject(null);
-            // setPastVulnerableObject(null);
             if (navigateAway) {
               history.push('/');
+              refreshSightingData();
               queryClient.invalidateQueries(queryKeys.me);
             } else {
               refreshSightingData();
@@ -244,15 +242,16 @@ export default function Encounters({
             console.log('deleteMe got here e0');
             console.log('deleteMe error is hi there: ');
             console.log(deleteSightingEncounterError);
-            deleteEncounterSetError(
-              'Encounter could not yet be deleted',
-            );
-            if (vulnerableObject) {
-              console.log('deleteMe got here e1');
-              deleteEncounterSetError(
-                'Cannot delete without additional confirmation',
-              );
-            }
+            // deleteEncounterSetError(
+            //   'Encounter could not yet be deleted',
+            // );
+            // deleteEncounterSetError(null);
+            // if (vulnerableObject) {
+            //   console.log('deleteMe got here e1');
+            //   deleteEncounterSetError(
+            //     'Cannot delete without additional confirmation',
+            //   );
+            // }
             // setEncounterToDelete(encounterId);
             // setEncounterToDelete(null);
           }
