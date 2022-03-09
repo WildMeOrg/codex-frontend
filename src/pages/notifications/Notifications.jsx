@@ -34,8 +34,6 @@ export default function Notifications() {
     loading: notificationsLoading,
     refresh: refreshNotifications,
   } = useNotifications(true);
-  console.log('deleteMe got here a0 and notifications are: ');
-  console.log(notifications);
 
   const { markRead } = usePatchNotification();
 

@@ -130,8 +130,6 @@ export default function EncountersCard({
         let successful = await deleteEncounter(
           showEncounterDeleteDialog.encId,
         );
-        console.log('deleteMe successful is: ');
-        console.log(successful);
       }}
       deleteInProgress={deleteEncounterLoading}
       error={deleteEncounterError}

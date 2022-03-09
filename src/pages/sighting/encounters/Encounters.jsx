@@ -30,8 +30,6 @@ export default function Encounters({
   refreshSightingData,
   pending,
 }) {
-  console.log('deleteMe sightingData is: ');
-  console.log(sightingData);
   const history = useHistory();
   const queryClient = useQueryClient();
   const {
@@ -62,7 +60,6 @@ export default function Encounters({
     loading: deleteSightingEncounterLoading,
     error: deleteSightingEncounterError,
     onClearError: deleteEncounterOnClearError,
-    // setError: deleteEncounterSetError,
     vulnerableObject,
     setVulnerableObject,
   } = useDeleteEncounter();
@@ -86,9 +83,6 @@ export default function Encounters({
   const [encounterToDelete, setEncounterToDelete] = useState(null);
   const [editEncounterInfo, setEditEncounterInfo] = useState(null);
   const [encounterToAssign, setEncounterToAssign] = useState(null);
-  // const [pastVulnerableObject, setPastVulnerableObject] = useState(
-  //   null,
-  // );
   const [
     messageForConfirmDelete,
     setMessageForConfirmDelete,
@@ -109,46 +103,11 @@ export default function Encounters({
         'CONFIRM_DELETE_ENCOUNTER_DESCRIPTION',
       );
       if (vulnerableObject) {
-        console.log('deleteMe got here f0');
-        const encounterIdHolder = encounterToDelete;
-        // setEncounterToDelete(null);
-        // deleteEncounterSetError(null);
-        // deleteAgsEncounterOnClearError();
-        console.log(vulnerableObject);
-
-        const whichVulnerableObj = get(
-          Object.keys(vulnerableObject),
-          '0',
-        );
-        console.log('deleteMe whichVulnerableObj is: ');
-        console.log(whichVulnerableObj);
         setMessageForConfirmDelete('BOTH_VULNERABLE_MESSAGE');
-        // deleteEncounterSetError(
-        //   'Cannot delete without additional confirmation',
-        // );
-        // setVulnerableObjectsTracker(whichVulnerableObj);
-        console.log(
-          'deleteMe setting past vulnerable object to: ' +
-            whichVulnerableObj,
-        );
-        // setPastVulnerableObject(whichVulnerableObj);
-        console.log('deleteMe messageForConfirmDelete is now : ');
-        console.log(messageForConfirmDelete);
-        setEncounterToDelete(encounterIdHolder);
-        deleteEncounterOnClearError();
       }
     },
     [vulnerableObject],
   );
-  console.log('deleteMe re-render happens');
-  // const bothVulnerable =
-  //   vulnerableObject &&
-  //   pastVulnerableObject &&
-  //   vulnerableObject !== pastVulnerableObject;
-  // if (bothVulnerable) {
-  //   console.log('deleteMe got here d0');
-  //   setMessageForConfirmDelete('BOTH_VULNERABLE_MESSAGE');
-  // }
 
   return (
     <div>
@@ -156,64 +115,17 @@ export default function Encounters({
         open={Boolean(encounterToDelete)}
         onClose={() => setEncounterToDelete(null)}
         onDelete={async () => {
-          console.log('deleteMe onDelete is run');
           let successful;
           const vulnObjKeys = vulnerableObject
             ? Object.keys(vulnerableObject)
             : [];
-          // const pastVulnObjKeys = pastVulnerableObject
-          //   ? Object.keys(pastVulnerableObject)
-          //   : [];
           const vulnerableObjStr = get(vulnObjKeys, '0');
-          // const pastVulnerableObjStr = get(pastVulnObjKeys, '0');
-          // const vulnerableIndividual =
-          //   vulnerableObjStr === 'vulnerableIndividualGuid';
-          // console.log(
-          //   'deleteMe vulnerableIndividual is: ' +
-          //     vulnerableIndividual,
-          // );
-          // const vulnerableSighting =
-          //   vulnerableObjStr === 'vulnerableSightingGuid';
-          // console.log(
-          //   'deleteMe vulnerableSighting is: ' + vulnerableSighting,
-          // );
-          // const bothVulnerable =
-          //   vulnerableObject &&
-          //   pastVulnerableObject &&
-          //   vulnerableObjStr !== pastVulnerableObjStr;
-          // console.log(
-          //   'deleteMe bothVulnerable is: ' + bothVulnerable,
-          // );
-          // if (bothVulnerable) {
-          //   console.log('deleteMe got here d0');
-          //   setMessageForConfirmDelete('BOTH_VULNERABLE_MESSAGE'); //TODO may need to put this in the useEffect?
-          // }
           if (pending) {
             successful = await deleteAGSEncounter(
               sightingId,
               encounterToDelete,
             );
           }
-          // if (!pending && vulnerableIndividual && !bothVulnerable) {
-          //   console.log('deleteMe got here b0');
-          //   successful = await deleteSightingEncounter(
-          //     encounterToDelete,
-          //     false,
-          //     true,
-          //   );
-          //   setPastVulnerableObject(vulnerableObject);
-          //   console.log('deleteMe got here b1.5 ');
-          // }
-          // if (!pending && vulnerableSighting && !bothVulnerable) {
-          //   console.log('deleteMe got here b1');
-          //   successful = await deleteSightingEncounter(
-          //     encounterToDelete,
-          //     true,
-          //     false,
-          //   );
-          //   setPastVulnerableObject(vulnerableObject);
-          //   console.log('deleteMe got here b1.75 ');
-          // }
           if (!pending && vulnerableObjStr) {
             successful = await deleteSightingEncounter(
               encounterToDelete,
@@ -238,22 +150,6 @@ export default function Encounters({
             } else {
               refreshSightingData();
             }
-          } else {
-            console.log('deleteMe got here e0');
-            console.log('deleteMe error is hi there: ');
-            console.log(deleteSightingEncounterError);
-            // deleteEncounterSetError(
-            //   'Encounter could not yet be deleted',
-            // );
-            // deleteEncounterSetError(null);
-            // if (vulnerableObject) {
-            //   console.log('deleteMe got here e1');
-            //   deleteEncounterSetError(
-            //     'Cannot delete without additional confirmation',
-            //   );
-            // }
-            // setEncounterToDelete(encounterId);
-            // setEncounterToDelete(null);
           }
         }}
         deleteInProgress={deleteEncounterLoading}
@@ -268,7 +164,6 @@ export default function Encounters({
             : deleteEncounterOnClearError
         }
         messageId={messageForConfirmDelete}
-        // deleteDisabled={encounters.length <= 1}
       />
 
       <CreateIndividualModal
