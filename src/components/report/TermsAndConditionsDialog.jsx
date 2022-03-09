@@ -59,7 +59,11 @@ function ListItem({ children, ...rest }) {
 }
 
 const useStyles = makeStyles(() => ({
-  root: {
+  dialogContent: {
+    marginBottom: 24,
+    borderBottom: 'none',
+  },
+  article: {
     whiteSpace: 'pre-line',
     maxHeight: 400,
     '& dfn': { fontStyle: 'normal' },
@@ -79,8 +83,8 @@ export default function TermsAndConditionsDialog({
       titleId="TERMS_AND_CONDITIONS"
       maxWidth="md"
     >
-      <DialogContent style={{ marginBottom: 24 }}>
-        <article className={classes.root}>
+      <DialogContent dividers className={classes.dialogContent}>
+        <article className={classes.article}>
           <H1 align="center">Codex Terms of Use</H1>
           <Paragraph align="center">
             Updated: <time dateTime="2022-03-03">March 3, 2022</time>
