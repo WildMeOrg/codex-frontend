@@ -93,7 +93,7 @@ export default function Individual() {
 
   if (loading) return <LoadingScreen />;
 
-  if (statusCode === 404)
+  if (statusCode === 404 || (loading === false && !individualData))
     return (
       <SadScreen
         variant="notFoundOcean"
@@ -118,7 +118,6 @@ export default function Individual() {
             id,
             deleteEncounterId,
           );
-
           if (deleteSuccessful) {
             setDeleteEncounterId(null);
             refreshIndividualData();
@@ -195,7 +194,6 @@ export default function Individual() {
         </CardContainer>
         <CardContainer>
           <EncountersCard
-            individualName={defaultName}
             title={
               <FormattedMessage
                 id="SIGHTINGS_OF"
@@ -203,9 +201,9 @@ export default function Individual() {
               />
             }
             columns={['date', 'owner', 'location', 'actions']}
-            onDelete={encounterId =>
-              setDeleteEncounterId(encounterId)
-            }
+            onDelete={encounterId => {
+              setDeleteEncounterId(encounterId);
+            }}
             encounters={get(individualData, 'encounters', [])}
           />
           <RelationshipsCard

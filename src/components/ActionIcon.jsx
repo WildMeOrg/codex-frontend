@@ -35,6 +35,10 @@ const variantMap = {
     labelId: 'COPY',
     component: CopyIcon,
   },
+  removeEncFromIndividual: {
+    labelId: 'DETACH_ENCOUNTER_FROM_INDIVIDUAL',
+    component: DeleteIcon,
+  },
 };
 
 const Core = function({ variant, labelId, ...rest }) {
