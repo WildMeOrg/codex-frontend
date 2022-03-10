@@ -149,6 +149,9 @@ export default function ReportForm({
   const showErrorAlertBox =
     incompleteFields.length > 0 || termsError || postAssetGroupError;
 
+  const hasSightingTypeAndNotAuthenticated =
+    sightingType && !authenticated;
+
   return (
     <>
       <TermsAndConditionsDialog
@@ -215,7 +218,7 @@ export default function ReportForm({
           />
         </>
       )}
-      {sightingType && !authenticated && (
+      {hasSightingTypeAndNotAuthenticated && (
         <Grid item style={{ marginBottom: 12 }}>
           <FormControlLabel
             control={
