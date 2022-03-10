@@ -3,7 +3,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import Typography from '@material-ui/core/Typography';
 import StandardDialog from '../StandardDialog';
 
-function H1({ children, ...rest }) {
+function Header1({ children, ...rest }) {
   return (
     <Typography component="h1" variant="h4" gutterBottom {...rest}>
       {children}
@@ -11,7 +11,7 @@ function H1({ children, ...rest }) {
   );
 }
 
-function H2({ children, ...rest }) {
+function Header2({ children, ...rest }) {
   return (
     <Typography component="h2" variant="h5" gutterBottom {...rest}>
       {children}
@@ -19,7 +19,7 @@ function H2({ children, ...rest }) {
   );
 }
 
-function H3({ children, ...rest }) {
+function Header3({ children, ...rest }) {
   return (
     <Typography component="h3" variant="h6" gutterBottom {...rest}>
       {children}
@@ -27,7 +27,7 @@ function H3({ children, ...rest }) {
   );
 }
 
-function H4({ children, ...rest }) {
+function Header4({ children, ...rest }) {
   return (
     <Typography
       component="h4"
@@ -77,7 +77,7 @@ export default function TermsAndConditionsDialog({
         style={{ marginBottom: 24, borderBottom: 'none' }}
       >
         <article style={{ whiteSpace: 'pre-line', maxHeight: 400 }}>
-          <H1 align="center">Codex Terms of Use</H1>
+          <Header1 align="center">Codex Terms of Use</Header1>
           <Paragraph align="center">
             Updated: <time dateTime="2022-03-03">March 3, 2022</time>
           </Paragraph>
@@ -108,7 +108,7 @@ export default function TermsAndConditionsDialog({
             YOU MAY NOT USE THIS PLATFORM.
           </Paragraph>
           <section>
-            <H2>The Codex Platform</H2>
+            <Header2>The Codex Platform</Header2>
             <Paragraph>
               <Definition>Codex</Definition> is a suite of online
               informational services (the &quot;Services&quot;)
@@ -118,7 +118,7 @@ export default function TermsAndConditionsDialog({
               agencies and approved, accredited researchers.
             </Paragraph>
             <section>
-              <H3>Changes or Modifications</H3>
+              <Header3>Changes or Modifications</Header3>
               <Paragraph>
                 We may change, modify, add or remove portions of these
                 Terms as well as Platform functionality and the
@@ -137,7 +137,7 @@ export default function TermsAndConditionsDialog({
               </Paragraph>
             </section>
             <section>
-              <H3>Authorized Users</H3>
+              <Header3>Authorized Users</Header3>
               <Paragraph>
                 <Definition>Authorized users</Definition> are those
                 persons, and only those persons, who have been issued
@@ -151,7 +151,7 @@ export default function TermsAndConditionsDialog({
               </Paragraph>
             </section>
             <section>
-              <H3>Other Users</H3>
+              <Header3>Other Users</Header3>
               <Paragraph>
                 <Definition>Other users</Definition> are those
                 persons, who, without having a user ID or password,
@@ -162,10 +162,10 @@ export default function TermsAndConditionsDialog({
             </section>
           </section>
           <section>
-            <H2>
+            <Header2>
               Good Faith Data Collection, Reporting, Sharing, and
               Collaboration
-            </H2>
+            </Header2>
             <Paragraph>
               As a user of the Platform, you have the right to submit
               images, data, and content to the Platform. Any Codex
@@ -199,7 +199,7 @@ export default function TermsAndConditionsDialog({
               conservation organizations.
             </Paragraph>
             <section>
-              <H3>User Content</H3>
+              <Header3>User Content</Header3>
               <Paragraph>
                 You may be able to post or upload (in designated areas
                 of the Platform) written content, images, or other
@@ -228,7 +228,7 @@ export default function TermsAndConditionsDialog({
               </Paragraph>
             </section>
             <section>
-              <H3>Ownership of User Content</H3>
+              <Header3>Ownership of User Content</Header3>
               <Paragraph>
                 Wild Me acts as an independent third party providing
                 support software on behalf of the conservation
@@ -264,7 +264,7 @@ export default function TermsAndConditionsDialog({
               </Paragraph>
             </section>
             <section>
-              <H3>Ownership of Website Content</H3>
+              <Header3>Ownership of Website Content</Header3>
               <Typography>
                 As between you and us, we own all intellectual
                 property rights, including without limitation
@@ -325,7 +325,7 @@ export default function TermsAndConditionsDialog({
               </Paragraph>
             </section>
             <section>
-              <H3>Downloading Materials</H3>
+              <Header3>Downloading Materials</Header3>
               <Paragraph>
                 Except as an Authorized User and for the express
                 purpose of research and conservation of these species
@@ -356,7 +356,7 @@ export default function TermsAndConditionsDialog({
               </Paragraph>
             </section>
             <section>
-              <H3>Third-Party Websites</H3>
+              <Header3>Third-Party Websites</Header3>
               <Paragraph>
                 The Website may contain links to third party websites
                 that are not owned or controlled by us. The links to
@@ -370,7 +370,7 @@ export default function TermsAndConditionsDialog({
             </section>
           </section>
           <section>
-            <H2>Account and Security</H2>
+            <Header2>Account and Security</Header2>
             <Paragraph>
               You are solely responsible for your Account, your
               contact information and other information made available
@@ -387,7 +387,9 @@ export default function TermsAndConditionsDialog({
               unauthorized use.
             </Paragraph>
             <section>
-              <H3>Code of Conduct for Using Platform and Services</H3>
+              <Header3>
+                Code of Conduct for Using Platform and Services
+              </Header3>
               <ol type="a">
                 <ListItem>
                   You may not use the Platform for any illegal or
@@ -465,7 +467,7 @@ export default function TermsAndConditionsDialog({
               </ol>
             </section>
             <section>
-              <H3>Privacy</H3>
+              <Header3>Privacy</Header3>
               <Paragraph>
                 By accessing and/or using the Platform, you may
                 provide us with{' '}
@@ -521,7 +523,7 @@ export default function TermsAndConditionsDialog({
                 aggregate to prevent individual identification.
               </Paragraph>
               <section>
-                <H4>Cookies</H4>
+                <Header4>Cookies</Header4>
                 <Paragraph>
                   The cookie files used by the Platform are: Day and
                   time of connection, and LOG: Username, login time
@@ -536,7 +538,7 @@ export default function TermsAndConditionsDialog({
                 </Paragraph>
               </section>
               <section>
-                <H4>Controller</H4>
+                <Header4>Controller</Header4>
                 <Paragraph>
                   The Controller oversees determining the purposes for
                   which personal information is processed and the
@@ -584,7 +586,7 @@ export default function TermsAndConditionsDialog({
                 </Paragraph>
               </section>
               <section>
-                <H4>Host</H4>
+                <Header4>Host</Header4>
                 <Paragraph>
                   The Platform is hosted by Microsoft Corporation,
                   located at the following address: Microsoft
@@ -597,7 +599,7 @@ export default function TermsAndConditionsDialog({
                 </Paragraph>
               </section>
               <section>
-                <H4>Applicable Law</H4>
+                <Header4>Applicable Law</Header4>
                 <Paragraph>
                   We are committed to respect the legislative
                   provisions as specified in:
@@ -626,7 +628,7 @@ export default function TermsAndConditionsDialog({
               </section>
             </section>
             <section>
-              <H3>Termination</H3>
+              <Header3>Termination</Header3>
               <Paragraph>
                 Your rights and privileges under this Agreement will
                 terminate automatically and without need for written
@@ -645,7 +647,7 @@ export default function TermsAndConditionsDialog({
             </section>
           </section>
           <section>
-            <H2>Disclaimer</H2>
+            <Header2>Disclaimer</Header2>
             <Paragraph>
               YOUR USE OF THE PLATFORM, SERVICES AND CONTENT IS
               ENTIRELY AT YOUR OWN RISK. THE PLATFORM, SERVICES AND
@@ -674,7 +676,7 @@ export default function TermsAndConditionsDialog({
             </Paragraph>
           </section>
           <section>
-            <H2>Limitation of Liability</H2>
+            <Header2>Limitation of Liability</Header2>
             <Paragraph>
               WE, INCLUDING OUR EMPLOYEES, AGENTS, OFFICERS AND
               DIRECTORS, WILL NOT BE LIABLE FOR ANY DIRECT, INDIRECT,
@@ -709,7 +711,7 @@ export default function TermsAndConditionsDialog({
             </Paragraph>
           </section>
           <section>
-            <H2>Indemnification</H2>
+            <Header2>Indemnification</Header2>
             <Paragraph>
               You agree to defend, indemnify and hold harmless, us,
               our employees, agents, officers and directors, from and
@@ -728,7 +730,7 @@ export default function TermsAndConditionsDialog({
             </Paragraph>
           </section>
           <section>
-            <H2>Jurisdiction</H2>
+            <Header2>Jurisdiction</Header2>
             <Paragraph>
               These Terms will be governed by and construed in
               accordance with the laws of Oregon, USA without giving
@@ -740,7 +742,7 @@ export default function TermsAndConditionsDialog({
             </Paragraph>
           </section>
           <section>
-            <H2>Assignment</H2>
+            <Header2>Assignment</Header2>
             <Paragraph>
               You may not assign any rights you receive or delegate
               any obligations you have under these Terms, in whole or
@@ -749,7 +751,7 @@ export default function TermsAndConditionsDialog({
             </Paragraph>
           </section>
           <section>
-            <H2>Entire Agreement</H2>
+            <Header2>Entire Agreement</Header2>
             <Paragraph>
               These Terms constitute the entire agreement between you
               and us with respect to the subject matter hereof, and
@@ -759,7 +761,7 @@ export default function TermsAndConditionsDialog({
             </Paragraph>
           </section>
           <section>
-            <H2>Severability</H2>
+            <Header2>Severability</Header2>
             <Paragraph>
               If for any reason a court of competent jurisdiction
               finds any provision or portion of the Terms to be
@@ -768,7 +770,7 @@ export default function TermsAndConditionsDialog({
             </Paragraph>
           </section>
           <section>
-            <H2>Questions</H2>
+            <Header2>Questions</Header2>
             <Paragraph>
               If you have any questions, please email us at:
               info@wildme.org.
