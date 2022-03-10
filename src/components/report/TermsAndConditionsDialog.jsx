@@ -1,7 +1,6 @@
 import React from 'react';
 import DialogContent from '@material-ui/core/DialogContent';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
 import StandardDialog from '../StandardDialog';
 
 function H1({ children, ...rest }) {
@@ -58,24 +57,14 @@ function ListItem({ children, ...rest }) {
   );
 }
 
-const useStyles = makeStyles(() => ({
-  dialogContent: {
-    marginBottom: 24,
-    borderBottom: 'none',
-  },
-  article: {
-    whiteSpace: 'pre-line',
-    maxHeight: 400,
-    '& dfn': { fontStyle: 'normal' },
-  },
-}));
+function Definition({ children }) {
+  return <dfn style={{ fontStyle: 'normal' }}>{children}</dfn>;
+}
 
 export default function TermsAndConditionsDialog({
   visible,
   onClose,
 }) {
-  const classes = useStyles();
-
   return (
     <StandardDialog
       open={visible}
@@ -83,8 +72,11 @@ export default function TermsAndConditionsDialog({
       titleId="TERMS_AND_CONDITIONS"
       maxWidth="md"
     >
-      <DialogContent dividers className={classes.dialogContent}>
-        <article className={classes.article}>
+      <DialogContent
+        dividers
+        style={{ marginBottom: 24, borderBottom: 'none' }}
+      >
+        <article style={{ whiteSpace: 'pre-line', maxHeight: 400 }}>
           <H1 align="center">Codex Terms of Use</H1>
           <Paragraph align="center">
             Updated: <time dateTime="2022-03-03">March 3, 2022</time>
@@ -118,12 +110,12 @@ export default function TermsAndConditionsDialog({
           <section>
             <H2>The Codex Platform</H2>
             <Paragraph>
-              <dfn>Codex</dfn> is a suite of online informational
-              services (the &quot;Services&quot;) provided by us,
-              consisting of software applications and content provided
-              by Wild Me, members of the general public, private and
-              public conservation management agencies and approved,
-              accredited researchers.
+              <Definition>Codex</Definition> is a suite of online
+              informational services (the &quot;Services&quot;)
+              provided by us, consisting of software applications and
+              content provided by Wild Me, members of the general
+              public, private and public conservation management
+              agencies and approved, accredited researchers.
             </Paragraph>
             <section>
               <H3>Changes or Modifications</H3>
@@ -147,9 +139,9 @@ export default function TermsAndConditionsDialog({
             <section>
               <H3>Authorized Users</H3>
               <Paragraph>
-                <dfn>Authorized users</dfn> are those persons, and
-                only those persons, who have been issued a user
-                identifier (&quot;ID&quot;) and password by an
+                <Definition>Authorized users</Definition> are those
+                persons, and only those persons, who have been issued
+                a user identifier (&quot;ID&quot;) and password by an
                 authorized user. Once you receive this information,
                 you are required to create an account on this Platform
                 (your &quot;Account&quot;) and provide your contact
@@ -161,11 +153,11 @@ export default function TermsAndConditionsDialog({
             <section>
               <H3>Other Users</H3>
               <Paragraph>
-                <dfn>Other users</dfn> are those persons, who, without
-                having a user ID or password, choose to upload images
-                to the site. Such users, regardless if they provide a
-                name or email address, are bound by these Terms of
-                Use.
+                <Definition>Other users</Definition> are those
+                persons, who, without having a user ID or password,
+                choose to upload images to the site. Such users,
+                regardless if they provide a name or email address,
+                are bound by these Terms of Use.
               </Paragraph>
             </section>
           </section>
@@ -212,26 +204,26 @@ export default function TermsAndConditionsDialog({
                 You may be able to post or upload (in designated areas
                 of the Platform) written content, images, or other
                 content (collectively{' '}
-                <dfn>&quot;User Content&quot;</dfn>) to the Platform.
-                You are solely responsible for your own User Content
-                and the consequences of posting or publishing it. By
-                uploading or posting User Content to the Platform, you
-                automatically grant us a worldwide, non-exclusive,
-                royalty free, license to use, reproduce, modify,
-                create derivative works of, translate into different
-                languages or formats, publish and republish such User
-                Content on the Platform for the purpose of sharing the
-                User Content with Users as authorized by you and to
-                promote the Platform. You represent and warrant that
-                you own or have the rights to use and grant us the
-                license to use the User Content in the manner
-                contemplated by the Platform and these Terms. This
-                agreement does not transfer any other rights or
-                ownership interests in the User Content. Upon
-                suspension or termination of access, all User Content
-                continues to exist on the site within the limits of
-                these Terms of Use, for the greater good of the
-                species and for continued use in conservation and
+                <Definition>&quot;User Content&quot;</Definition>) to
+                the Platform. You are solely responsible for your own
+                User Content and the consequences of posting or
+                publishing it. By uploading or posting User Content to
+                the Platform, you automatically grant us a worldwide,
+                non-exclusive, royalty free, license to use,
+                reproduce, modify, create derivative works of,
+                translate into different languages or formats, publish
+                and republish such User Content on the Platform for
+                the purpose of sharing the User Content with Users as
+                authorized by you and to promote the Platform. You
+                represent and warrant that you own or have the rights
+                to use and grant us the license to use the User
+                Content in the manner contemplated by the Platform and
+                these Terms. This agreement does not transfer any
+                other rights or ownership interests in the User
+                Content. Upon suspension or termination of access, all
+                User Content continues to exist on the site within the
+                limits of these Terms of Use, for the greater good of
+                the species and for continued use in conservation and
                 research.
               </Paragraph>
             </section>
@@ -278,13 +270,13 @@ export default function TermsAndConditionsDialog({
                 property rights, including without limitation
                 copyright and trade-mark rights, in all materials on
                 or comprising the Platform (
-                <dfn>&quot;Content&quot;</dfn>), including, without
-                limitation, all written, audio visual or other
-                materials and graphical elements on the Platform, but
-                excluding User Content. We grant you a limited license
-                to use, download, print, or reproduce in whole or in
-                part, the Content on this Platform, subject to the
-                following conditions:
+                <Definition>&quot;Content&quot;</Definition>),
+                including, without limitation, all written, audio
+                visual or other materials and graphical elements on
+                the Platform, but excluding User Content. We grant you
+                a limited license to use, download, print, or
+                reproduce in whole or in part, the Content on this
+                Platform, subject to the following conditions:
               </Typography>
               <ul>
                 <ListItem>
@@ -383,15 +375,16 @@ export default function TermsAndConditionsDialog({
               You are solely responsible for your Account, your
               contact information and other information made available
               through your Account or otherwise via this Platform (
-              <dfn>your &quot;Information&quot;</dfn>). You assume all
-              risks associated with your Information, including
-              reliance on its quality, accuracy or reliability by any
-              other person or entity. You must notify Wild Me
-              immediately of any breach of security or unauthorized
-              use of your user account. Although Wild Me will not be
-              liable for your losses caused by any unauthorized use of
-              your user account, you may be liable for the losses of
-              Wild Me or others due to such unauthorized use.
+              <Definition>your &quot;Information&quot;</Definition>).
+              You assume all risks associated with your Information,
+              including reliance on its quality, accuracy or
+              reliability by any other person or entity. You must
+              notify Wild Me immediately of any breach of security or
+              unauthorized use of your user account. Although Wild Me
+              will not be liable for your losses caused by any
+              unauthorized use of your user account, you may be liable
+              for the losses of Wild Me or others due to such
+              unauthorized use.
             </Paragraph>
             <section>
               <H3>Code of Conduct for Using Platform and Services</H3>
@@ -475,14 +468,15 @@ export default function TermsAndConditionsDialog({
               <H3>Privacy</H3>
               <Paragraph>
                 By accessing and/or using the Platform, you may
-                provide us with <dfn>personal information</dfn>,
-                meaning any information that could identify you, such
-                as your name, your mailing address, your email
-                address, your location and your IP address.
-                &quot;Personal information&quot; is a synonym for
-                &quot;personal data&quot; within the meaning of the
-                Regulation 2016/679 of European Union (General Data
-                Protection Regulation).
+                provide us with{' '}
+                <Definition>personal information</Definition>, meaning
+                any information that could identify you, such as your
+                name, your mailing address, your email address, your
+                location and your IP address. &quot;Personal
+                information&quot; is a synonym for &quot;personal
+                data&quot; within the meaning of the Regulation
+                2016/679 of European Union (General Data Protection
+                Regulation).
               </Paragraph>
               <Paragraph>
                 We collect the following personal information: Last
@@ -504,11 +498,11 @@ export default function TermsAndConditionsDialog({
                 <ListItem>Managing the Platform</ListItem>
                 <ListItem>
                   Associating data with its{' '}
-                  <dfn>original observers</dfn>, defined as one or
-                  more individuals responsible for submitting the data
-                  and/or one or more individuals responsible for
-                  collecting related media (photographs, video, etc.),
-                  for future validation
+                  <Definition>original observers</Definition>, defined
+                  as one or more individuals responsible for
+                  submitting the data and/or one or more individuals
+                  responsible for collecting related media
+                  (photographs, video, etc.), for future validation
                 </ListItem>
                 <ListItem>
                   Confirming via email the stored link to the
