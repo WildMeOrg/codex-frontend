@@ -2,64 +2,15 @@ import React from 'react';
 import DialogContent from '@material-ui/core/DialogContent';
 import Typography from '@material-ui/core/Typography';
 import StandardDialog from '../StandardDialog';
-
-function Header1({ children, ...rest }) {
-  return (
-    <Typography component="h1" variant="h4" gutterBottom {...rest}>
-      {children}
-    </Typography>
-  );
-}
-
-function Header2({ children, ...rest }) {
-  return (
-    <Typography component="h2" variant="h5" gutterBottom {...rest}>
-      {children}
-    </Typography>
-  );
-}
-
-function Header3({ children, ...rest }) {
-  return (
-    <Typography component="h3" variant="h6" gutterBottom {...rest}>
-      {children}
-    </Typography>
-  );
-}
-
-function Header4({ children, ...rest }) {
-  return (
-    <Typography
-      component="h4"
-      variant="subtitle2"
-      gutterBottom
-      style={{ fontStyle: 'italic', fontWeight: 'bold' }}
-      {...rest}
-    >
-      {children}
-    </Typography>
-  );
-}
-
-function Paragraph({ children, ...rest }) {
-  return (
-    <Typography paragraph {...rest}>
-      {children}
-    </Typography>
-  );
-}
-
-function ListItem({ children, ...rest }) {
-  return (
-    <Typography component="li" {...rest}>
-      {children}
-    </Typography>
-  );
-}
-
-function Definition({ children }) {
-  return <dfn style={{ fontStyle: 'normal' }}>{children}</dfn>;
-}
+import {
+  Header1,
+  Header2,
+  Header3,
+  Header4,
+  Paragraph,
+  ListItem,
+  Definition,
+} from '../TextContainers';
 
 export default function TermsAndConditionsDialog({
   visible,
