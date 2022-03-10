@@ -201,9 +201,9 @@ export default function Individual() {
               />
             }
             columns={['date', 'owner', 'location', 'actions']}
-            onDelete={encounterId => {
-              setDeleteEncounterId(encounterId);
-            }}
+            onDelete={encounterId =>
+              setDeleteEncounterId(encounterId)
+            }
             encounters={get(individualData, 'encounters', [])}
           />
           <RelationshipsCard

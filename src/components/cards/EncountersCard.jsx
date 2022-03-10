@@ -100,7 +100,7 @@ export default function EncountersCard({
 
   const noEncounters = encounters && encounters.length === 0;
 
-  return [
+  return (
     <Card
       title={title}
       titleId={titleId}
@@ -148,6 +148,6 @@ export default function EncountersCard({
         />
       )}
       {!noEncounters && showMapView && <div>Map goes here</div>}
-    </Card>,
-  ];
+    </Card>
+  );
 }
