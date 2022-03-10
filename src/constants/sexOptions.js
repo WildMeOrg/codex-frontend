@@ -13,6 +13,6 @@ export default [
   },
   {
     value: null,
-    labelId: 'UNSET',
+    labelId: 'BLANK',
   },
 ];
