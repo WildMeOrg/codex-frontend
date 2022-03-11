@@ -28,6 +28,10 @@ export function getIndividualQueryKey(id) {
   return ['individual', id];
 }
 
+export function getMergeConflictsQueryKey(ids) {
+  return ['individualMergeConflicts', ids];
+}
+
 export function getUserQueryKey(id) {
   return ['user', id];
 }

@@ -4,6 +4,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 
 import StandardDialog from '../../components/StandardDialog';
 import Button from '../../components/Button';
+import ButtonLink from '../../components/ButtonLink';
 import IndividualSelector from '../../components/IndividualSelector';
 
 export default function MergeDialog({
@@ -35,12 +36,10 @@ export default function MergeDialog({
       </DialogContent>
       <DialogActions>
         <Button display="basic" onClick={onCloseDialog} id="CLOSE" />
-        <Button
+        <ButtonLink
           display="primary"
           disabled={!selectedIndividualId}
-          onClick={async () => {
-            console.log('clicky');
-          }}
+          href={`/merge?i=${individualGuid}&i=${selectedIndividualId}`}
           id="CONTINUE"
         />
       </DialogActions>

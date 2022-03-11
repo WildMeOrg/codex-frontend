@@ -20,6 +20,7 @@ import Splash from './pages/splash/Splash';
 import AssetGroup from './pages/assetGroup/AssetGroup';
 import User from './pages/user/User';
 import Users from './pages/user/Users';
+import MergeIndividuals from './pages/merge/MergeIndividuals';
 import BulkImport from './pages/bulkImport/BulkImport';
 import BulkImportSuccess from './pages/bulkImport/Success';
 import ReportSighting from './pages/reportSighting/ReportSighting';
@@ -112,6 +113,9 @@ export default function AuthenticatedSwitch() {
                       </Route>
                       <Route path="/individuals">
                         <SearchIndividuals />
+                      </Route>
+                      <Route path="/merge">
+                        <MergeIndividuals />
                       </Route>
                       <Route path="/bulk-imports/:id">
                         <AssetGroup />
