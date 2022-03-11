@@ -87,6 +87,8 @@
   "ASSIGN_CLUSTER_TO_INDIVIDUAL": "Assign animal to individual",
   "ASSIGN_CLUSTER_TO_INDIVIDUAL_DESCRIPTION": "This animal was successfully assigned.",
   "CLUSTER_ASSIGNED": "Animal assigned",
+  "DELETE_INDIVIDUAL": "Delete individual",
+  "MERGE_WITH_ANOTHER_INDIVIDUAL": "Merge with another individual",
   "SPLASH_VIDEO": "Hero video",
   "SPLASH_VIDEO_DESCRIPTION": "Hero videos should be short, designed to display as a background, and well-compressed. Recommended size is 1600 by 900 pixels.",
   "SPLASH_IMAGE": "Hero image",
