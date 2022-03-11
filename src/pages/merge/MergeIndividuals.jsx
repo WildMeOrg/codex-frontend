@@ -81,7 +81,7 @@ export default function MergeIndividuals() {
                 onChange={newNickname =>
                   setFormData({ ...formData, nickname: newNickname })
                 }
-                fieldType="sex"
+                fieldType="nickname"
                 individualData={individualData}
               />
             )}
