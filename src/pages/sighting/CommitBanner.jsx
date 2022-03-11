@@ -16,7 +16,7 @@ export default function CommitBanner({
   sightingData,
   pending,
 }) {
-  const { isFetching: fetchingAGS } = useGetAGS(sightingId);
+  const { isFetching: fetchingAGS } = useGetAGS(sightingId, !pending);
 
   const {
     mutate: commitAgs,
