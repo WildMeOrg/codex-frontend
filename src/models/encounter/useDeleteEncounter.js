@@ -45,10 +45,10 @@ export default function useDeleteEncounter() {
         postError?.response?.data?.vulnerableIndividualGuid;
       const vulnerableSightingGuid =
         postError?.response?.data?.vulnerableSightingGuid;
-      const vulnerableOject = vulnerableSightingGuid
+      const vulnerableObj = vulnerableSightingGuid
         ? { vulnerableSightingGuid }
         : { vulnerableIndividualGuid };
-      setVulnerableObject(vulnerableOject);
+      setVulnerableObject(vulnerableObj);
       setLoading(false);
       if (vulnerableIndividualGuid || vulnerableSightingGuid) {
         setError(null);
