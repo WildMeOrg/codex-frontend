@@ -6,6 +6,7 @@ import { formatError } from '../../utils/formatters';
 export default function useDeleteEncounter() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [vulnerableObject, setVulnerableObject] = useState(null);
   const [success, setSuccess] = useState(false);
 
   const deleteEncounter = async (
@@ -36,13 +37,24 @@ export default function useDeleteEncounter() {
         setError(null);
         return true;
       }
-
       setError(formatError(deleteResponse));
       setSuccess(false);
       return false;
     } catch (postError) {
+      const vulnerableIndividualGuid =
+        postError?.response?.data?.vulnerableIndividualGuid;
+      const vulnerableSightingGuid =
+        postError?.response?.data?.vulnerableSightingGuid;
+      const vulnerableObj = vulnerableSightingGuid
+        ? { vulnerableSightingGuid }
+        : { vulnerableIndividualGuid };
+      setVulnerableObject(vulnerableObj);
       setLoading(false);
-      setError(formatError(postError));
+      if (vulnerableIndividualGuid || vulnerableSightingGuid) {
+        setError(null);
+      } else {
+        setError(formatError(postError));
+      }
       setSuccess(false);
       return false;
     }
@@ -56,5 +68,7 @@ export default function useDeleteEncounter() {
     setError,
     success,
     setSuccess,
+    vulnerableObject,
+    setVulnerableObject,
   };
 }

@@ -23,6 +23,7 @@ export default function EncountersCard({
   encounters,
   columns = ['date', 'location', 'owner', 'actions'],
   noDataMessage = 'NO_SIGHTINGS',
+  onDelete,
 }) {
   const [showMapView, setShowMapView] = useState(false);
   const theme = useTheme();
@@ -50,42 +51,49 @@ export default function EncountersCard({
     [get(encounters, 'length')],
   );
 
+  const tooFewEncounters = encounters.length <= 1;
+
   const allColumns = [
     {
       reference: 'date',
       name: 'time',
       label: 'Date',
-      options: {
-        cellRenderer: cellRendererTypes.specifiedTime,
-      },
+      options: { cellRenderer: cellRendererTypes.specifiedTime },
     },
     {
       reference: 'location',
       name: 'formattedLocation',
       label: 'Location',
-      options: {
-        cellRenderer: cellRendererTypes.location,
-      },
+      options: { cellRenderer: cellRendererTypes.location },
     },
     {
       reference: 'owner',
       name: 'owner',
       label: 'Owner',
-      options: {
-        cellRenderer: cellRendererTypes.user,
-      },
+      options: { cellRenderer: cellRendererTypes.user },
     },
     {
       reference: 'actions',
       name: 'guid',
       label: 'Actions',
       options: {
-        customBodyRender: (_, encounter) => (
+        customBodyRender: (_, encounter) => [
           <ActionIcon
             variant="view"
             href={`/sightings/${encounter?.sighting}`}
-          />
-        ),
+          />,
+          <ActionIcon
+            variant={
+              tooFewEncounters
+                ? 'removeEncFromIndividualDisabled'
+                : 'removeEncFromIndividual'
+            }
+            disabled={tooFewEncounters}
+            onClick={() => {
+              onDelete(encounter?.guid);
+            }}
+          />,
+        ],
       },
     },
   ];
