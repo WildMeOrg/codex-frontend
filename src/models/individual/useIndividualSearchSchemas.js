@@ -1,4 +1,7 @@
 import fieldTypes from '../../constants/fieldTypesNew';
+import sexOptions from '../../constants/sexOptions';
+
+const sexSearchOptions = sexOptions.filter(o => o.value !== null);
 
 export const categories = {
   time: {
@@ -27,22 +30,10 @@ export default function useIndividualSearchSchemas() {
       category: categories.attributes.name,
       fieldType: fieldTypes.select,
       choices: [
-        {
-          value: 'delphinae',
-          label: 'Delphinidae',
-        },
-        {
-          value: 'grampus-griseus',
-          label: 'Grampus Griseus',
-        },
-        {
-          value: 'kogia-sima',
-          label: 'Kogia Sima',
-        },
-        {
-          value: 'Unknown',
-          label: 'Unknown',
-        },
+        { value: 'delphinae', label: 'Delphinidae' },
+        { value: 'grampus-griseus', label: 'Grampus Griseus' },
+        { value: 'kogia-sima', label: 'Kogia Sima' },
+        { value: 'Unknown', label: 'Unknown' },
       ],
       defaultValue: '',
     },
@@ -83,24 +74,7 @@ export default function useIndividualSearchSchemas() {
       labelId: 'SEX',
       category: categories.attributes.name,
       fieldType: fieldTypes.select,
-      choices: [
-        {
-          value: 'male',
-          labelId: 'MALE',
-        },
-        {
-          value: 'female',
-          labelId: 'FEMALE',
-        },
-        {
-          value: 'non-binary',
-          labelId: 'NON_BINARY',
-        },
-        {
-          value: 'unknown',
-          labelId: 'UNKNOWN',
-        },
-      ],
+      choices: sexSearchOptions,
       defaultValue: '',
     },
     {
@@ -110,18 +84,9 @@ export default function useIndividualSearchSchemas() {
       category: categories.attributes.name,
       fieldType: fieldTypes.select,
       choices: [
-        {
-          value: 'alive',
-          labelId: 'ALIVE',
-        },
-        {
-          value: 'dead',
-          labelId: 'DEAD',
-        },
-        {
-          value: 'unknown',
-          labelId: 'UNKNOWN',
-        },
+        { value: 'alive', labelId: 'ALIVE' },
+        { value: 'dead', labelId: 'DEAD' },
+        { value: 'unknown', labelId: 'UNKNOWN' },
       ],
       defaultValue: '',
     },
