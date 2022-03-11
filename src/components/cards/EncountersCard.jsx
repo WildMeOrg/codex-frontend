@@ -83,7 +83,11 @@ export default function EncountersCard({
             href={`/sightings/${encounter?.sighting}`}
           />,
           <ActionIcon
-            variant="removeEncFromIndividual" //note that we can't show a separate tool tip for when this is disabled... because tooltip doesn't work when disabled apparently
+            variant={
+              tooFewEncounters
+                ? 'removeEncFromIndividualDisabled'
+                : 'removeEncFromIndividual'
+            }
             disabled={tooFewEncounters}
             onClick={() => {
               onDelete(encounter?.guid);

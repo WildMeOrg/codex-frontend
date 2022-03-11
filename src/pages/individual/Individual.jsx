@@ -93,7 +93,7 @@ export default function Individual() {
 
   if (loading) return <LoadingScreen />;
 
-  if (statusCode === 404 || (loading === false && !individualData))
+  if (statusCode === 404 || !individualData)
     return (
       <SadScreen
         variant="notFoundOcean"
