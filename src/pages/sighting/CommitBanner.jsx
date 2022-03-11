@@ -1,6 +1,7 @@
 import React from 'react';
 import { get, flatten } from 'lodash-es';
 
+import useGetAGS from '../../models/assetGroupSighting/useGetAGS';
 import useCommitAssetGroupSighting from '../../models/assetGroupSighting/useCommitAssetGroupSighting';
 import Button from '../../components/Button';
 import Alert from '../../components/Alert';
@@ -15,8 +16,10 @@ export default function CommitBanner({
   sightingData,
   pending,
 }) {
+  const { isFetching: fetchingAGS } = useGetAGS(sightingId);
+
   const {
-    commitAgs,
+    mutate: commitAgs,
     isLoading: commitAgsLoading,
   } = useCommitAssetGroupSighting();
 
@@ -38,6 +41,7 @@ export default function CommitBanner({
     sightingData?.curation_start_time,
   );
   const showCommitAlert = detectionComplete && allAnnotationsAssigned;
+  const commitInProgress = commitAgsLoading || fetchingAGS;
 
   if (showCommitAlert) {
     return (
@@ -48,8 +52,8 @@ export default function CommitBanner({
           <Button
             id="COMMIT"
             size="small"
-            loading={commitAgsLoading}
-            onClick={() => commitAgs(sightingId)}
+            loading={commitInProgress}
+            onClick={() => commitAgs({ agsGuid: sightingId })}
             style={{ marginTop: 8, marginRight: 4 }}
           />
         }

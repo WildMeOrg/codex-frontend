@@ -3,26 +3,12 @@ import { get } from 'lodash-es';
 
 import useSiteSettings from '../site/useSiteSettings';
 import fieldTypes from '../../constants/fieldTypesNew';
+import sexOptions from '../../constants/sexOptions';
 import {
   createFieldSchema,
   createCustomFieldSchema,
 } from '../../utils/fieldUtils';
 import { defaultIndividualCategories } from '../../constants/fieldCategories';
-
-const sexChoices = [
-  {
-    value: 'male',
-    labelId: 'MALE',
-  },
-  {
-    value: 'female',
-    labelId: 'FEMALE',
-  },
-  {
-    value: 'unknown',
-    labelId: 'UNKNOWN',
-  },
-];
 
 const statusChoices = [
   {
@@ -84,9 +70,9 @@ export default function useIndividualFieldSchemas() {
           name: 'sex',
           labelId: 'SEX',
           category: defaultIndividualCategories.general.name,
-          choices: sexChoices,
+          choices: sexOptions,
           requiredForIndividualCreation: true,
-          defaultValue: '',
+          defaultValue: null,
         }),
         createFieldSchema(fieldTypes.select, {
           name: 'status',

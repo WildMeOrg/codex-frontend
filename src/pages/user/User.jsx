@@ -1,6 +1,5 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { get } from 'lodash-es';
 
 import useGetUser from '../../models/users/useGetUser';
 import UserProfile from '../../components/UserProfile';
@@ -11,7 +10,7 @@ export default function User() {
   const { id } = useParams();
 
   const { data, loading, refresh } = useGetUser(id);
-  const name = get(data, 'full_name', 'Unnamed user');
+  const name = data?.full_name || 'Unnamed User';
   useDocumentTitle(name, { translateMessage: false });
   if (loading) return <LoadingScreen />;
 

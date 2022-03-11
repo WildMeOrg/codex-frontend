@@ -15,6 +15,7 @@
   "ANNOTATION_CLASS": "Annotation class",
   "INDIVIDUAL_METADATA": "Individual profile",
   "COMMIT": "Commit",
+  "BLANK": " ",
   "ADD_ANNOTATIONS_TO_CLUSTER_TITLE": "Add annotations to animal",
   "ADD_ANNOTATIONS_TO_CLUSTER_BUTTON": "Add annotations",
   "SIGHTING_COMMIT_TITLE": "Ready to commit",

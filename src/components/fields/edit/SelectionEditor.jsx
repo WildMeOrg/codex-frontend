@@ -74,6 +74,7 @@ const SelectionEditor = function(props) {
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'flex-start',
+              minHeight: 42,
             }}
           >
             <Text component="span">{getLabel(option)}</Text>
