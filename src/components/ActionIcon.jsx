@@ -35,12 +35,41 @@ const variantMap = {
     labelId: 'COPY',
     component: CopyIcon,
   },
+  removeEncFromIndividual: {
+    labelId: 'DETACH_ENCOUNTER_FROM_INDIVIDUAL',
+    component: DeleteIcon,
+  },
+  removeEncFromIndividualDisabled: {
+    labelId: 'DETACH_ENCOUNTER_FROM_INDIVIDUAL_DISABLED',
+    component: DeleteIcon,
+  },
 };
 
-const Core = function({ variant, labelId, ...rest }) {
+const Core = function({
+  variant,
+  labelId,
+  disabled = false,
+  ...rest
+}) {
   const intl = useIntl();
   const config = variantMap[variant];
   const label = intl.formatMessage({ id: labelId || config.labelId });
+  if (disabled) {
+    return (
+      <Tooltip title={label}>
+        <span>
+          <IconButton
+            style={{ padding: 4 }}
+            aria-label={label}
+            disabled={disabled}
+            {...rest}
+          >
+            <config.component />
+          </IconButton>
+        </span>
+      </Tooltip>
+    );
+  }
 
   return (
     <Tooltip title={label}>

@@ -5,26 +5,11 @@ import { get, startCase } from 'lodash-es';
 import useSiteSettings from '../site/useSiteSettings';
 import { defaultEncounterCategories } from '../../constants/fieldCategories';
 import fieldTypes from '../../constants/fieldTypesNew';
+import sexOptions from '../../constants/sexOptions';
 import {
   createFieldSchema,
   createCustomFieldSchema,
 } from '../../utils/fieldUtils';
-
-const sexChoices = [
-  // biologists not yet woke
-  {
-    value: 'male',
-    labelId: 'MALE',
-  },
-  {
-    value: 'female',
-    labelId: 'FEMALE',
-  },
-  {
-    value: '',
-    labelId: 'UNKNOWN',
-  },
-];
 
 export default function useSightingFieldSchemas() {
   const intl = useIntl();
@@ -113,7 +98,8 @@ export default function useSightingFieldSchemas() {
           name: 'sex',
           labelId: 'SEX',
           category: defaultEncounterCategories.animal.name,
-          choices: sexChoices,
+          choices: sexOptions,
+          defaultValue: null,
         }),
         ...customFieldSchemas,
       ];

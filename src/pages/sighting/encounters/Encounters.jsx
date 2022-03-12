@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { get, pick } from 'lodash-es';
+import { useHistory } from 'react-router-dom';
+import { useQueryClient } from 'react-query';
 
 import AddIcon from '@material-ui/icons/Add';
 
@@ -12,6 +14,7 @@ import ButtonMenu from '../../../components/ButtonMenu';
 import MoreMenu from '../../../components/MoreMenu';
 import ConfirmDelete from '../../../components/ConfirmDelete';
 import useEncounterFieldSchemas from '../../../models/encounter/useEncounterFieldSchemas';
+import useGetMe from '../../../models/users/useGetMe';
 import useAddEncounter from '../../../models/encounter/useAddEncounter';
 import useDeleteEncounter from '../../../models/encounter/useDeleteEncounter';
 import useAddEncounterToAGS from '../../../models/assetGroupSighting/useAddEncounterToAGS';
@@ -21,12 +24,18 @@ import EditEncounterMetadata from './EditEncounterMetadata';
 import CreateIndividualModal from './CreateIndividualModal';
 import ManuallyAssignModal from './ManuallyAssignModal';
 import AddAnnotationsDialog from './AddAnnotationsDialog';
+import queryKeys from '../../../constants/queryKeys';
+import { getUserSightingsQueryKey } from '../../../constants/queryKeys';
 
 export default function Encounters({
   sightingData,
   refreshSightingData,
   pending,
 }) {
+  const { data, loading: userDataLoading } = useGetMe();
+  const userId = get(data, 'guid');
+  const history = useHistory();
+  const queryClient = useQueryClient();
   const {
     addEncounter: addEncounterToSighting,
     loading: addEncounterToSightingLoading,
@@ -55,6 +64,8 @@ export default function Encounters({
     loading: deleteSightingEncounterLoading,
     error: deleteSightingEncounterError,
     onClearError: deleteEncounterOnClearError,
+    vulnerableObject,
+    setVulnerableObject,
   } = useDeleteEncounter();
 
   const {
@@ -72,9 +83,14 @@ export default function Encounters({
     createIndividualEncounterId,
     setCreateIndividualEncounterId,
   ] = useState(null);
+
   const [encounterToDelete, setEncounterToDelete] = useState(null);
   const [editEncounterInfo, setEditEncounterInfo] = useState(null);
   const [encounterToAssign, setEncounterToAssign] = useState(null);
+  const [
+    messageForConfirmDelete,
+    setMessageForConfirmDelete,
+  ] = useState(null);
   const [
     encounterToAddAnnotations,
     setEncounterToAddAnnotations,
@@ -85,11 +101,27 @@ export default function Encounters({
   const encounterFieldSchemas = useEncounterFieldSchemas();
   const encounters = get(sightingData, 'encounters', []);
 
+  useEffect(
+    () => {
+      const message = vulnerableObject
+        ? 'BOTH_VULNERABLE_MESSAGE'
+        : 'CONFIRM_DELETE_ENCOUNTER_DESCRIPTION';
+      setMessageForConfirmDelete(message);
+    },
+    [vulnerableObject],
+  );
+
   return (
     <div>
       <ConfirmDelete
-        open={Boolean(encounterToDelete)}
-        onClose={() => setEncounterToDelete(null)}
+        open={encounterToDelete && !userDataLoading}
+        onClose={() => {
+          setMessageForConfirmDelete(
+            'CONFIRM_DELETE_ENCOUNTER_DESCRIPTION',
+          );
+          setVulnerableObject(null);
+          setEncounterToDelete(null);
+        }}
         onDelete={async () => {
           let successful;
           if (pending) {
@@ -97,14 +129,34 @@ export default function Encounters({
               sightingId,
               encounterToDelete,
             );
-          } else {
+          }
+          if (!pending && vulnerableObject) {
+            successful = await deleteSightingEncounter(
+              encounterToDelete,
+              true,
+              true,
+            );
+          }
+          if (!pending && !vulnerableObject) {
             successful = await deleteSightingEncounter(
               encounterToDelete,
             );
           }
           if (successful) {
             setEncounterToDelete(null);
-            refreshSightingData();
+            const navigateAway =
+              vulnerableObject && encounters.length <= 1;
+            setVulnerableObject(null);
+            if (navigateAway) {
+              history.push('/');
+              refreshSightingData();
+              queryClient.invalidateQueries(queryKeys.me);
+              queryClient.invalidateQueries(
+                getUserSightingsQueryKey(userId),
+              );
+            } else {
+              refreshSightingData();
+            }
           }
         }}
         deleteInProgress={deleteEncounterLoading}
@@ -118,12 +170,7 @@ export default function Encounters({
             ? deleteAgsEncounterOnClearError
             : deleteEncounterOnClearError
         }
-        messageId={
-          encounters.length <= 1
-            ? 'CANNOT_DELETE_FINAL_ENCOUNTER_DESCRIPTION'
-            : 'CONFIRM_DELETE_ENCOUNTER_DESCRIPTION'
-        }
-        deleteDisabled={encounters.length <= 1}
+        messageId={messageForConfirmDelete}
       />
 
       <CreateIndividualModal

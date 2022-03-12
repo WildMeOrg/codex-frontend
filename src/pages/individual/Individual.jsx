@@ -93,7 +93,7 @@ export default function Individual() {
 
   if (loading) return <LoadingScreen />;
 
-  if (statusCode === 404)
+  if (statusCode === 404 || !individualData)
     return (
       <SadScreen
         variant="notFoundOcean"
@@ -118,7 +118,6 @@ export default function Individual() {
             id,
             deleteEncounterId,
           );
-
           if (deleteSuccessful) {
             setDeleteEncounterId(null);
             refreshIndividualData();
@@ -186,9 +185,7 @@ export default function Individual() {
         <CardContainer size="small">
           <GalleryCard
             title={intl.formatMessage(
-              {
-                id: 'PHOTOS_OF',
-              },
+              { id: 'PHOTOS_OF' },
               { name: defaultName },
             )}
             assets={fakeAssets}

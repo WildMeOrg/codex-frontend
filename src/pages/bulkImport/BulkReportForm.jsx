@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { FormattedMessage } from 'react-intl';
 import { FlatfileButton } from '@flatfile/react';
 import { get } from 'lodash-es';
 import { useHistory } from 'react-router-dom';
@@ -8,8 +7,6 @@ import { useQueryClient } from 'react-query';
 import { useTheme } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import CustomAlert from '../../components/Alert';
 
 import queryKeys from '../../constants/queryKeys';
@@ -22,10 +19,8 @@ import { flatfileKey } from '../../constants/apiKeys';
 
 import LoadingScreen from '../../components/LoadingScreen';
 import InputRow from '../../components/fields/edit/InputRow';
-import TermsAndConditionsDialog from '../../components/report/TermsAndConditionsDialog';
 import Button from '../../components/Button';
 import Text from '../../components/Text';
-import InlineButton from '../../components/InlineButton';
 import BulkFieldBreakdown from './BulkFieldBreakdown';
 
 const minmax = {
@@ -66,9 +61,6 @@ function recordHook(record) {
 export default function BulkReportForm({ assetReferences }) {
   const theme = useTheme();
   const history = useHistory();
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const [termsError, setTermsError] = useState(false);
-  const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [sightingData, setSightingData] = useState(null);
   const [detectionModel, setDetectionModel] = useState('');
   const queryClient = useQueryClient();
@@ -77,12 +69,7 @@ export default function BulkReportForm({ assetReferences }) {
     setEverythingReadyForFlatfile,
   ] = useState(false);
 
-  const {
-    postAssetGroup,
-    loading,
-    error: postError,
-  } = usePostAssetGroup();
-  const error = termsError || postError;
+  const { postAssetGroup, loading, error } = usePostAssetGroup();
 
   const {
     numEncounterFieldsForFlatFile,
@@ -112,10 +99,6 @@ export default function BulkReportForm({ assetReferences }) {
 
   return (
     <>
-      <TermsAndConditionsDialog
-        visible={dialogOpen}
-        onClose={() => setDialogOpen(false)}
-      />
       <div style={{ marginLeft: 12 }}>
         <Text variant="h6" style={{ marginTop: 20 }}>
           Review available fields
@@ -188,38 +171,11 @@ export default function BulkReportForm({ assetReferences }) {
           )}
         </Paper>
       </Grid>
-      <Grid item>
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={acceptedTerms}
-              onChange={() => {
-                setAcceptedTerms(!acceptedTerms);
-                if (!acceptedTerms && termsError)
-                  setTermsError(false);
-              }}
-            />
-          }
-          label={
-            <span>
-              <FormattedMessage id="TERMS_CHECKBOX_1" />
-              <InlineButton onClick={() => setDialogOpen(true)}>
-                <FormattedMessage id="TERMS_CHECKBOX_2" />
-              </InlineButton>
-              <FormattedMessage id="END_OF_SENTENCE" />
-            </span>
-          }
-        />
-      </Grid>
 
       {error && (
         <Grid style={{ marginTop: 12 }} item>
           <CustomAlert severity="error" titleId="SUBMISSION_ERROR">
-            {termsError ? (
-              <Text variant="body2" id="TERMS_ERROR" />
-            ) : (
-              postError
-            )}
+            {error}
           </CustomAlert>
         </Grid>
       )}
@@ -233,29 +189,24 @@ export default function BulkReportForm({ assetReferences }) {
       >
         <Button
           onClick={async () => {
-            // check that terms and conditions were accepted
-            if (acceptedTerms) {
-              const sightings = prepareAssetGroup(
-                sightingData,
-                assetReferences,
-              );
-              const assetGroupData = await postAssetGroup({
-                description: 'Bulk import from user',
-                uploadType: 'bulk',
-                speciesDetectionModel: [detectionModel || null],
-                transactionId: get(assetReferences, [
-                  0,
-                  'transactionId',
-                ]),
-                sightings,
-              });
-              const assetGroupId = get(assetGroupData, 'guid');
-              if (assetGroupId) {
-                history.push(`/bulk-import/success/${assetGroupId}`);
-                queryClient.invalidateQueries(queryKeys.me);
-              }
-            } else {
-              setTermsError(true);
+            const sightings = prepareAssetGroup(
+              sightingData,
+              assetReferences,
+            );
+            const assetGroupData = await postAssetGroup({
+              description: 'Bulk import from user',
+              uploadType: 'bulk',
+              speciesDetectionModel: [detectionModel || null],
+              transactionId: get(assetReferences, [
+                0,
+                'transactionId',
+              ]),
+              sightings,
+            });
+            const assetGroupId = get(assetGroupData, 'guid');
+            if (assetGroupId) {
+              history.push(`/bulk-import/success/${assetGroupId}`);
+              queryClient.invalidateQueries(queryKeys.me);
             }
           }}
           style={{ width: 200 }}

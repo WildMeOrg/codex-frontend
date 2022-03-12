@@ -41,6 +41,7 @@ function getInitialFormValues(schema) {
 }
 
 export default function ReportForm({
+  authenticated,
   assetReferences,
   // exifData,
 }) {
@@ -95,7 +96,7 @@ export default function ReportForm({
     schema => schema.customField,
   );
 
-  const [acceptedTerms, setAcceptedTerms] = useState(false);
+  const [acceptedTerms, setAcceptedTerms] = useState(authenticated);
   // const [exifButtonClicked, setExifButtonClicked] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [incompleteFields, setIncompleteFields] = useState([]);
@@ -147,6 +148,9 @@ export default function ReportForm({
 
   const showErrorAlertBox =
     incompleteFields.length > 0 || termsError || postAssetGroupError;
+
+  const hasSightingTypeAndNotAuthenticated =
+    sightingType && !authenticated;
 
   return (
     <>
@@ -214,7 +218,7 @@ export default function ReportForm({
           />
         </>
       )}
-      {sightingType && (
+      {hasSightingTypeAndNotAuthenticated && (
         <Grid item style={{ marginBottom: 12 }}>
           <FormControlLabel
             control={
