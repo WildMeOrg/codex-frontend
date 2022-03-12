@@ -132,7 +132,7 @@ export default function AppHeader() {
             Icon={NotificationsIcon}
             titleId="NOTIFICATIONS"
             showBadge={Boolean(notificationsCount)}
-            badgeContent={notificationsCount} // onClick={e => setNotificationsAnchorEl(e.currentTarget)}
+            badgeContent={notificationsCount}
             onClick={e => {
               setNotificationsAnchorEl(e.currentTarget);
               setShouldOpenNotificationPane(true);
@@ -144,7 +144,7 @@ export default function AppHeader() {
             setAnchorEl={setNotificationsAnchorEl}
             notifications={notifications || []}
             notificationsLoading={notificationsLoading}
-            refreshNotifications={refreshNotifications} // onClick={() => setShouldOpenNotificationPane(true)}
+            refreshNotifications={refreshNotifications}
             shouldOpen={shouldOpenNotificationPane}
             setShouldOpen={setShouldOpenNotificationPane}
           />
