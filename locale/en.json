@@ -988,5 +988,7 @@
   "VIEW_ALL_NOTIFICATIONS_MORE_DETAIL": "View all notifications in more detail",
   "BOTH_VULNERABLE_MESSAGE": "Deleting this encounter would result in assigned individuals and/or parent sightings being deleted. Are you sure you want to continue?",
   "DETACH_ENCOUNTER_FROM_INDIVIDUAL": "Detach this sighting from this individual",
-  "DETACH_ENCOUNTER_FROM_INDIVIDUAL_DISABLED": "Cannot detach the final sighting from this individual"
+  "DETACH_ENCOUNTER_FROM_INDIVIDUAL_DISABLED": "Cannot detach the final sighting from this individual",
+  "RELATIONSHIP_EDITOR": "Relationship editor",
+  "NEW_RELATIONSHIP": "New relationship category"
 }

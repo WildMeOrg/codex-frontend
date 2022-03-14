@@ -337,9 +337,10 @@ export default function ReportForm({
                   'guid',
                 ]);
                 if (assetGroupSightingId) {
-                  history.push(
-                    `/pending-sightings/${assetGroupSightingId}`,
-                  );
+                  const relativeUrl = authenticated
+                    ? `/pending-sightings/${assetGroupSightingId}`
+                    : '/report/success/';
+                  history.push(relativeUrl);
                 }
               }
             }}

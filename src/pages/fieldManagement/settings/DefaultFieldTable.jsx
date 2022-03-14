@@ -12,7 +12,7 @@ import Text from '../../../components/Text';
 import categoryTypes from '../../../constants/categoryTypes';
 import {
   RegionEditor,
-  RelationshipEditor,
+  RelationshipEditorWrapper,
 } from './defaultFieldComponents/Editors';
 import SpeciesEditor from './defaultFieldComponents/SpeciesEditor';
 import { cellRendererTypes } from '../../../components/dataDisplays/cellRenderers';
@@ -37,7 +37,7 @@ const configurableFields = [
     backendPath: 'relationship_type_roles',
     labelId: 'RELATIONSHIP',
     type: categoryTypes.individual,
-    Editor: RelationshipEditor,
+    Editor: RelationshipEditorWrapper,
   },
 ];
 
@@ -57,8 +57,6 @@ export default function DefaultFieldTable({
   siteSettings,
   siteSettingsVersion,
 }) {
-  console.log('deleteMe siteSettings are: ');
-  console.log(siteSettings);
   const intl = useIntl();
   const [formSettings, setFormSettings] = useState(null);
   const [editField, setEditField] = useState(null);

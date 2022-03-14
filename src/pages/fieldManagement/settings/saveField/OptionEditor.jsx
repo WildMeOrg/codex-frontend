@@ -19,6 +19,8 @@ export default function OptionEditor({
   onChange,
   ...rest
 }) {
+  console.log('deleteMe got here in OptionEditor and value is: ');
+  console.log(value);
   const options = value || [];
   const displayedOptions =
     options.length > 0 ? options : [{ label: '', value: '', id: 6 }];

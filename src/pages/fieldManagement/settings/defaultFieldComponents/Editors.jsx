@@ -1,43 +1,60 @@
 import React from 'react';
-import { get } from 'lodash-es';
+import { get, map } from 'lodash-es';
 
 import TreeEditor from './TreeEditor';
 import ConfigureDefaultField from './ConfigureDefaultField';
-import OptionEditor from '../saveField/OptionEditor';
+import RelationshipEditor from './RelationshipEditor';
 
-// export function RelationshipEditor() {
-//   return null;
-// }
-
-export function RelationshipEditor({
+export function RelationshipEditorWrapper({
   onClose,
   onSubmit,
   formSettings,
   setFormSettings,
+  children,
   ...rest
 }) {
-  const speciesOptions = get(formSettings, 'relationships', []);
-  console.log('deleteMe formSettings are: ');
-  console.log(formSettings);
+  const relationshipOptions = get(formSettings, 'relationships', []);
+  const transformedRelationshipOptions = map(
+    relationshipOptions,
+    (relationshipArr, key) => {
+      let currentObj = {};
+      currentObj['category'] = key;
+      currentObj['relationships'] = relationshipArr;
+      return currentObj;
+    },
+  );
 
   return (
-    <OptionEditor
-      open
-      onClose={onClose}
-      onSubmit={onSubmit}
-      schema={{
-        labelId: 'EDIT_RELATIONSHIPS',
-        descriptionId: 'EDIT_RELATIONSHIPS_DESCRIPTION',
-      }}
-      value={speciesOptions}
-      onChange={newOptions => {
-        setFormSettings({
-          ...formSettings,
-          relationships: newOptions,
-        });
-      }}
-      {...rest}
-    />
+    <ConfigureDefaultField onClose={onClose} onSubmit={onSubmit} open>
+      <RelationshipEditor
+        schema={{ labelId: 'RELATIONSHIPS' }}
+        value={transformedRelationshipOptions}
+        onChange={relationships => {
+          console.log(
+            'deleteMe got into onChange in editors.jsx and relationships is: ',
+          );
+          console.log(relationships);
+          // const newRelationship = {
+          //   ...get(formSettings, 'relationships', {}),
+          //   relationship,
+          // };
+          // console.log(
+          //   'deleteMe got here z0 and newRelationship is: ',
+          // );
+          // console.log(newRelationship);
+          // setFormSettings({
+          //   ...formSettings,
+          //   relationships: newRelationship,
+          // });
+          setFormSettings({
+            ...formSettings,
+            ...relationships,
+          });
+        }}
+        {...rest}
+      />
+      {children}
+    </ConfigureDefaultField>
   );
 }
 
