@@ -57,6 +57,8 @@ export default function DefaultFieldTable({
   siteSettings,
   siteSettingsVersion,
 }) {
+  console.log('deleteMe siteSettings are: ');
+  console.log(siteSettings);
   const intl = useIntl();
   const [formSettings, setFormSettings] = useState(null);
   const [editField, setEditField] = useState(null);
