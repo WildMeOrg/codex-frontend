@@ -18,6 +18,10 @@ export default function RelationshipsEditor({
   minimalLabels = false, // eslint-disable-line no-unused-vars
   ...rest
 }) {
+  console.log(
+    'deleteMe got here relationship editor entered and relationships are: ',
+  );
+  console.log(relationships);
   const sortedRelationships = sortBy(relationships, 'timeCreated');
 
   return (

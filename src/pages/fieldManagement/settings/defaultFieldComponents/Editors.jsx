@@ -3,40 +3,43 @@ import { get } from 'lodash-es';
 
 import TreeEditor from './TreeEditor';
 import ConfigureDefaultField from './ConfigureDefaultField';
+import OptionEditor from '../saveField/OptionEditor';
 
-export function RelationshipEditor() {
-  return null;
-}
-
-// export function RelationshipEditor({
-//   onClose,
-//   onSubmit,
-//   formSettings,
-//   setFormSettings,
-//   ...rest
-// }) {
-//   const speciesOptions = get(formSettings, 'relationships', []);
-
-//   return (
-//     <OptionEditor
-//       open
-//       onClose={onClose}
-//       onSubmit={onSubmit}
-//       schema={{
-//         labelId: 'EDIT_RELATIONSHIPS',
-//         descriptionId: 'EDIT_RELATIONSHIPS_DESCRIPTION',
-//       }}
-//       value={speciesOptions}
-//       onChange={newOptions => {
-//         setFormSettings({
-//           ...formSettings,
-//           relationships: newOptions,
-//         });
-//       }}
-//       {...rest}
-//     />
-//   );
+// export function RelationshipEditor() {
+//   return null;
 // }
+
+export function RelationshipEditor({
+  onClose,
+  onSubmit,
+  formSettings,
+  setFormSettings,
+  ...rest
+}) {
+  const speciesOptions = get(formSettings, 'relationships', []);
+  console.log('deleteMe formSettings are: ');
+  console.log(formSettings);
+
+  return (
+    <OptionEditor
+      open
+      onClose={onClose}
+      onSubmit={onSubmit}
+      schema={{
+        labelId: 'EDIT_RELATIONSHIPS',
+        descriptionId: 'EDIT_RELATIONSHIPS_DESCRIPTION',
+      }}
+      value={speciesOptions}
+      onChange={newOptions => {
+        setFormSettings({
+          ...formSettings,
+          relationships: newOptions,
+        });
+      }}
+      {...rest}
+    />
+  );
+}
 
 export function RegionEditor({
   onClose,

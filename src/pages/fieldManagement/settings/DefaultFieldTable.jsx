@@ -34,7 +34,7 @@ const configurableFields = [
   },
   {
     id: 'relationship',
-    backendPath: 'site.general.relationships',
+    backendPath: 'relationship_type_roles',
     labelId: 'RELATIONSHIP',
     type: categoryTypes.individual,
     Editor: RelationshipEditor,
@@ -46,7 +46,7 @@ function getInitialFormState(siteSettings) {
   const species = get(siteSettings, ['site.species', 'value'], []);
   const relationships = get(
     siteSettings,
-    ['site.general.relationships', 'value'],
+    ['relationship_type_roles', 'value'],
     [],
   );
 
