@@ -43,3 +43,7 @@ export function getUserAgsQueryKey(id) {
 export function getAssetGroupQueryKey(id) {
   return ['assetGroup', id];
 }
+
+export function getNotificationQueryKey(id) {
+  return ['notification', id];
+}

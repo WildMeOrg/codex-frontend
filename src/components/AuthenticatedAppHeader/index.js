@@ -42,6 +42,10 @@ export default function AppHeader() {
   const isSm = useMediaQuery(theme.breakpoints.down('sm'));
 
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [
+    shouldOpenNotificationPane,
+    setShouldOpenNotificationPane,
+  ] = useState(false);
   const [exploreOpen, setExploreOpen] = React.useState(false);
   const [userMenuAnchorEl, setUserMenuAnchorEl] = React.useState(
     null,
@@ -129,7 +133,10 @@ export default function AppHeader() {
             titleId="NOTIFICATIONS"
             showBadge={Boolean(notificationsCount)}
             badgeContent={notificationsCount}
-            onClick={e => setNotificationsAnchorEl(e.currentTarget)}
+            onClick={e => {
+              setNotificationsAnchorEl(e.currentTarget);
+              setShouldOpenNotificationPane(true);
+            }}
             style={{ position: 'relative' }}
           />
           <NotificationsPane
@@ -138,6 +145,8 @@ export default function AppHeader() {
             notifications={notifications || []}
             notificationsLoading={notificationsLoading}
             refreshNotifications={refreshNotifications}
+            shouldOpen={shouldOpenNotificationPane}
+            setShouldOpen={setShouldOpenNotificationPane}
           />
           <HeaderButton
             onClick={e => setUserMenuAnchorEl(e.currentTarget)}

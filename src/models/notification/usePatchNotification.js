@@ -38,6 +38,7 @@ export default function usePatchNotification() {
   };
 
   const markRead = async notificationId => {
+    setLoading(true);
     const result = await patchNotification(notificationId, [
       {
         op: 'replace',
@@ -45,7 +46,7 @@ export default function usePatchNotification() {
         value: true,
       },
     ]);
-
+    setLoading(false);
     return result;
   };
 

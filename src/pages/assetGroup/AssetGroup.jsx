@@ -23,8 +23,8 @@ import AGSTable from './AGSTable';
 export default function AssetGroup() {
   const { id } = useParams();
   const history = useHistory();
-  const intl = useIntl();
   const queryClient = useQueryClient();
+  const intl = useIntl();
 
   const { data, loading, error, statusCode } = useAssetGroup(id);
 
