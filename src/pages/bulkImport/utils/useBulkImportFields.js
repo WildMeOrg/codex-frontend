@@ -32,6 +32,13 @@ const utcOffsetValidator = {
   error: 'Not a valid timezone (UTC offset format)',
 };
 
+function deriveLabel(field, intl) {
+  const label = field?.labelId
+    ? intl.formatMessage({ id: field.labelId })
+    : field.label;
+  return label || 'Label unavailable';
+}
+
 export default function useBulkImportFields() {
   const intl = useIntl();
   const { regionOptions, speciesOptions } = useOptions();
@@ -50,11 +57,7 @@ export default function useBulkImportFields() {
           additionalProperties.validators = [requiredValidator];
         }
         return {
-          label: f.labelId
-            ? intl.formatMessage({
-                id: f.labelId,
-              })
-            : f.label,
+          label: deriveLabel(f, intl),
           key: f.name,
           ...additionalProperties,
         };
@@ -78,9 +81,7 @@ export default function useBulkImportFields() {
           additionalProperties.options = speciesOptions;
         }
         return {
-          label: f.labelId
-            ? intl.formatMessage({ id: f.labelId })
-            : f.label,
+          label: deriveLabel(f, intl),
           key: f.name,
           ...additionalProperties,
         };
