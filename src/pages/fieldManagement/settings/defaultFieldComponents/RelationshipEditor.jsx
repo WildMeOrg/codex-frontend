@@ -101,7 +101,10 @@ function renderSingleRelationship(
 }
 
 function createCategory(allRelationshipsObj) {
-  const newCategoryObj = { category: null, relationships: [] };
+  const newCategoryObj = {
+    category: 'Enter new category name here',
+    relationships: [],
+  };
   allRelationshipsObj.push(newCategoryObj);
   return allRelationshipsObj;
 }

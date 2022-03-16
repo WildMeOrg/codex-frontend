@@ -39,7 +39,11 @@ export function RelationshipEditorWrapper({
   console.log('deleteMe transformedRelationshipOptions are: ');
   console.log(transformedRelationshipOptions);
   const sortedRelationshipOptions = transformedRelationshipOptions.sort(
-    (a, b) => (a.category > b.category ? 1 : -1),
+    (a, b) => {
+      if (a.category === 'Enter new category name here') return -1;
+      if (b.category === 'Enter new category name here') return 1;
+      return a.category > b.category ? 1 : -1;
+    },
   );
   console.log('deleteMe sortedRelationshipOptions is: ');
   console.log(sortedRelationshipOptions);
