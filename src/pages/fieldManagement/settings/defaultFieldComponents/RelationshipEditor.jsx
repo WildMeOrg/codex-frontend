@@ -65,10 +65,15 @@ function renderSingleRelationship(
       <TextInput
         width={240}
         schema={relationship}
-        onChange={newName => {
+        onChange={newRelationshipName => {
           // addRelationshipToCategory(allRelationshipsObj, newName);
           onChange(
-            addRelationshipToCategory(allRelationshipsObj, newName),
+            updateRelationshipInCategory(
+              allRelationshipsObj,
+              currentCategory,
+              relationship,
+              newRelationshipName,
+            ),
           );
         }}
         value={relationship}
@@ -102,11 +107,103 @@ function renderSingleRelationship(
 
 function createCategory(allRelationshipsObj) {
   const newCategoryObj = {
-    category: 'Enter new category name here',
+    category: 'Enter new category name here', // TODO intl format
     relationships: [],
   };
   allRelationshipsObj.push(newCategoryObj);
   return allRelationshipsObj;
+}
+
+function updateRelationshipInCategory(
+  allRelationshipsObj,
+  category,
+  oldRelationshipName,
+  newRelationshipName,
+) {
+  console.log(
+    'deleteMe got here updateRelationshipInCategory entered',
+  );
+  console.log('deleteMe allRelationshipsObj is: ');
+  console.log(allRelationshipsObj);
+  console.log('deleteMe category is: ' + category);
+  console.log(
+    'deleteMe oldRelationshipName is: ' + oldRelationshipName,
+  );
+  console.log(
+    'deleteMe newRelationshipName is: ' + newRelationshipName,
+  );
+  const targetRelationshipCategoryObj = get(
+    filter(
+      allRelationshipsObj,
+      currentRelationshipCategory =>
+        currentRelationshipCategory.category === category,
+    ),
+    '0',
+    {},
+  );
+  console.log(
+    'deleteMe targetRelationshipCategoryObj in updateRelationshipInCategory is: ',
+  );
+  console.log(targetRelationshipCategoryObj);
+  const currentRelationships =
+    targetRelationshipCategoryObj?.relationships;
+  //TODO replace a given value with another
+  const oldRelationshipIndex = currentRelationships.indexOf(
+    oldRelationshipName,
+  );
+  if (oldRelationshipIndex > -1)
+    currentRelationships[oldRelationshipIndex] = newRelationshipName;
+  targetRelationshipCategoryObj.relationships = currentRelationships;
+  const nonTargeCategoryObjects = filter(
+    allRelationshipsObj,
+    currentRelationshipCategory =>
+      currentRelationshipCategory.category !== category,
+  );
+  console.log('deleteMe return from updateCategoryName is: ');
+  console.log([
+    ...nonTargeCategoryObjects,
+    targetRelationshipCategoryObj,
+  ]);
+  return [...nonTargeCategoryObjects, targetRelationshipCategoryObj];
+}
+
+function updateCategoryName(
+  allRelationshipsObj,
+  currentCategoryName,
+  newCategoryName,
+) {
+  console.log('deleteMe got here updateCategoryName entered');
+  console.log('deleteMe allRelationshipsObj is: ');
+  console.log(allRelationshipsObj);
+  console.log(
+    'deleteMe currentCategoryName is: ' + currentCategoryName,
+  );
+  console.log('deleteMe newCategoryName is: ' + newCategoryName);
+  const targetRelationshipCategoryObj = get(
+    filter(
+      allRelationshipsObj,
+      currentRelationshipCategory =>
+        currentRelationshipCategory.category === currentCategoryName,
+    ),
+    '0',
+    {},
+  );
+  console.log(
+    'deleteMe targetRelationshipCategoryObj in addRelationshipToCategory is: ',
+  );
+  console.log(targetRelationshipCategoryObj);
+  targetRelationshipCategoryObj.category = newCategoryName;
+  const nonTargeCategoryObjects = filter(
+    allRelationshipsObj,
+    currentRelationshipCategory =>
+      currentRelationshipCategory.category !== currentCategoryName,
+  );
+  console.log('deleteMe return from updateCategoryName is: ');
+  console.log([
+    ...nonTargeCategoryObjects,
+    targetRelationshipCategoryObj,
+  ]);
+  return [...nonTargeCategoryObjects, targetRelationshipCategoryObj];
 }
 
 function addRelationshipToCategory(
@@ -115,14 +212,30 @@ function addRelationshipToCategory(
   newRelationship,
 ) {
   console.log('deleteMe got here addRelationshipToCategory entered');
-  const targetRelationshipCategoryObj = filter(
-    allRelationshipsObj,
-    currentRelationshipCategory =>
-      currentRelationshipCategory.category === currentCategory,
+  console.log('deleteMe allRelationshipsObj is: ');
+  console.log(allRelationshipsObj);
+  console.log('deleteMe currentCategory is: ' + currentCategory);
+  console.log('deleteMe newRelationship is: ' + newRelationship);
+  const targetRelationshipCategoryObj = get(
+    filter(
+      allRelationshipsObj,
+      currentRelationshipCategory =>
+        currentRelationshipCategory.category === currentCategory,
+    ),
+    '0',
+    {},
   );
-  const modifiedArr = targetRelationshipCategoryObj?.relationships?.push(
-    newRelationship,
+  console.log(
+    'deleteMe targetRelationshipCategoryObj in addRelationshipToCategory is: ',
   );
+  console.log(targetRelationshipCategoryObj);
+  const targetRelationshipArr =
+    targetRelationshipCategoryObj?.relationships;
+  targetRelationshipArr.push(newRelationship);
+  const modifiedArr = targetRelationshipArr;
+  // const modifiedArr = targetRelationshipCategoryObj?.relationships.push(
+  //   newRelationship,
+  // );
   console.log('deleteMe modifiedArr is: ');
   console.log(modifiedArr);
   const nonTargeCategoryObjects = filter(
@@ -147,21 +260,36 @@ function renderSingleRelationshipObj(
   singleRelationshipObj,
   onChange,
 ) {
-  console.log('deleteMe got here singleRelationshipObj are: ');
-  console.log(singleRelationshipObj);
+  // console.log('deleteMe got here singleRelationshipObj are: ');
+  // console.log(singleRelationshipObj);
   const category = singleRelationshipObj?.category;
+  console.log(
+    'deleteMe category in renderSingleRelationshipObj before rendering is: ' +
+      category,
+  );
   const relationships = singleRelationshipObj?.relationships;
-  console.log('deleteMe got here and relationships are: ');
-  console.log(relationships);
+  // let newName;
+  // console.log('deleteMe got here and relationships are: ');
+  // console.log(relationships);
   return (
     <div style={{ marginTop: 10 }}>
       <TextInput
         width={240}
         schema={category}
         onChange={newName => {
+          console.log('deleteMe newName is: ' + newName);
           // addRelationshipToCategory(allRelationshipsObj, newName);
           onChange(
-            addRelationshipToCategory(allRelationshipsObj, newName),
+            updateCategoryName(
+              allRelationshipsObj,
+              category,
+              newName,
+            ),
+            // addRelationshipToCategory(
+            //   allRelationshipsObj,
+            //   category,
+            //   newName,
+            // ),
           );
         }}
         value={category}
@@ -176,7 +304,11 @@ function renderSingleRelationshipObj(
                 // }}
                 onClick={() => {
                   onChange(
-                    createCategory(allRelationshipsObj, category),
+                    addRelationshipToCategory(
+                      allRelationshipsObj,
+                      category,
+                      '',
+                    ),
                   );
                 }}
               >
@@ -215,12 +347,12 @@ export default function RelationshipEditor({
   siteSettings, // unpacking to prevent passing to div
   ...rest
 }) {
-  console.log('deleteMe got here x0 and value is: ');
-  console.log(value);
-  console.log('deleteMe schema is: ');
-  console.log(schema);
-  console.log('deleteMe siteSettings are: ');
-  console.log(siteSettings);
+  // console.log('deleteMe got here x0 and value is: ');
+  // console.log(value);
+  // console.log('deleteMe schema is: ');
+  // console.log(schema);
+  // console.log('deleteMe siteSettings are: ');
+  // console.log(siteSettings);
   // console.log('deleteMe onChange is: ');
   // console.log(onChange);
   return (

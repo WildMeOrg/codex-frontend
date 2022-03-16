@@ -13,16 +13,16 @@ export function RelationshipEditorWrapper({
   children,
   ...rest
 }) {
-  console.log('deleteMe got here w0 and formSettings is: ');
-  console.log(formSettings);
+  // console.log('deleteMe got here w0 and formSettings is: ');
+  // console.log(formSettings);
   // const relationshipOptions = get(formSettings, 'relationships');
   const relationshipOptions =
     get(formSettings, 'relationships') ||
     formSettings.reduce((memo, obj) => {
-      console.log('deleteMe got here and memo is: ');
-      console.log(memo);
-      console.log('deleteMe got here and obj is: ');
-      console.log(obj);
+      // console.log('deleteMe got here and memo is: ');
+      // console.log(memo);
+      // console.log('deleteMe got here and obj is: ');
+      // console.log(obj);
       return { ...memo, ...obj };
     });
   console.log('deleteMe relationshipOptions is: ');
@@ -38,10 +38,11 @@ export function RelationshipEditorWrapper({
   );
   console.log('deleteMe transformedRelationshipOptions are: ');
   console.log(transformedRelationshipOptions);
+  //I can't think of a good way to force the one currently being edited to not sort... any suggestions?
   const sortedRelationshipOptions = transformedRelationshipOptions.sort(
     (a, b) => {
-      if (b.category === 'Enter new category name here') return -1;
-      if (a.category === 'Enter new category name here') return 1;
+      if (b.category === 'Enter new category name here') return -1; // TODO intl format
+      if (a.category === 'Enter new category name here') return 1; // TODO intl format
       return a.category > b.category ? 1 : -1;
     },
   );
