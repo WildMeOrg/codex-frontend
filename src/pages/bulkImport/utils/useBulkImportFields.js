@@ -34,8 +34,10 @@ const utcOffsetValidator = {
 
 function deriveLabel(field, intl) {
   const label = field?.labelId
-    ? intl.formatMessage({ id: field.labelId })
-    : field.label;
+    ? intl.formatMessage({
+        id: field.labelId,
+      })
+    : field?.label;
   return label || 'Label unavailable';
 }
 
