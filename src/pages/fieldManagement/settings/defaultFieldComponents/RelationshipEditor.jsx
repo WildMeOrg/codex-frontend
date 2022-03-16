@@ -100,9 +100,8 @@ function renderSingleRelationship(
   );
 }
 
-function createCategory(allRelationshipsObj, newCategory) {
-  //TODO
-  const newCategoryObj = { category: newCategory, relationships: [] };
+function createCategory(allRelationshipsObj) {
+  const newCategoryObj = { category: null, relationships: [] };
   allRelationshipsObj.push(newCategoryObj);
   return allRelationshipsObj;
 }
@@ -233,7 +232,7 @@ export default function RelationshipEditor({
         <Text variant="h5" id="RELATIONSHIP_EDITOR" />
         <Button
           onClick={() => {
-            onChange(createCategory(value, newCategory));
+            onChange(createCategory(value));
           }}
           style={{ width: 200 }}
           size="small"
