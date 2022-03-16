@@ -13,7 +13,20 @@ export function RelationshipEditorWrapper({
   children,
   ...rest
 }) {
-  const relationshipOptions = get(formSettings, 'relationships', []);
+  console.log('deleteMe got here w0 and formSettings is: ');
+  console.log(formSettings);
+  // const relationshipOptions = get(formSettings, 'relationships');
+  const relationshipOptions =
+    get(formSettings, 'relationships') ||
+    formSettings.reduce((memo, obj) => {
+      console.log('deleteMe got here and memo is: ');
+      console.log(memo);
+      console.log('deleteMe got here and obj is: ');
+      console.log(obj);
+      return { ...memo, ...obj };
+    });
+  console.log('deleteMe relationshipOptions is: ');
+  console.log(relationshipOptions);
   const transformedRelationshipOptions = map(
     relationshipOptions,
     (relationshipArr, key) => {
@@ -23,17 +36,35 @@ export function RelationshipEditorWrapper({
       return currentObj;
     },
   );
+  console.log('deleteMe transformedRelationshipOptions are: ');
+  console.log(transformedRelationshipOptions);
+  const sortedRelationshipOptions = transformedRelationshipOptions.sort(
+    (a, b) => (a.category > b.category ? 1 : -1),
+  );
+  console.log('deleteMe sortedRelationshipOptions is: ');
+  console.log(sortedRelationshipOptions);
 
   return (
     <ConfigureDefaultField onClose={onClose} onSubmit={onSubmit} open>
       <RelationshipEditor
         schema={{ labelId: 'RELATIONSHIPS' }}
-        value={transformedRelationshipOptions}
+        value={sortedRelationshipOptions}
         onChange={relationships => {
           console.log(
             'deleteMe got into onChange in editors.jsx and relationships is: ',
           );
           console.log(relationships);
+
+          const newFormSettings = relationships.map(
+            relationshipOjb => {
+              let newRelationshipOjb = {};
+              newRelationshipOjb[(relationshipOjb?.category)] =
+                relationshipOjb?.relationships;
+              return newRelationshipOjb;
+            },
+          );
+          console.log('deleteMe newFormSettings is: ');
+          console.log(newFormSettings);
           // const newRelationship = {
           //   ...get(formSettings, 'relationships', {}),
           //   relationship,
@@ -46,10 +77,11 @@ export function RelationshipEditorWrapper({
           //   ...formSettings,
           //   relationships: newRelationship,
           // });
-          setFormSettings({
-            ...formSettings,
-            ...relationships,
-          });
+          setFormSettings(
+            // ...formSettings,
+            // ...relationships,
+            newFormSettings,
+          );
         }}
         {...rest}
       />

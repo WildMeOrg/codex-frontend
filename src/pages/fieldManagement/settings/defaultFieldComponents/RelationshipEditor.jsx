@@ -53,19 +53,20 @@ function renderSingleRelationship(
   relationship,
   onChange,
 ) {
-  console.log(
-    'deleteMe got here entered renderSingleRelationshipObj',
-  );
-  console.log('deleteMe allRelationshipsObj is: ');
-  console.log(allRelationshipsObj);
-  console.log('deleteMe relationship is: ');
-  console.log(relationship);
+  // console.log(
+  //   'deleteMe got here entered renderSingleRelationshipObj',
+  // );
+  // console.log('deleteMe allRelationshipsObj is: ');
+  // console.log(allRelationshipsObj);
+  // console.log('deleteMe relationship is: ');
+  // console.log(relationship);
   return (
     <div style={{ marginLeft: 32, marginTop: 10 }}>
       <TextInput
         width={240}
         schema={relationship}
         onChange={newName => {
+          // addRelationshipToCategory(allRelationshipsObj, newName);
           onChange(
             addRelationshipToCategory(allRelationshipsObj, newName),
           );
@@ -77,6 +78,11 @@ function renderSingleRelationship(
             <InputAdornment position="end">
               <DeleteButton
                 onClick={() => {
+                  // deleteRelationship(
+                  //   allRelationshipsObj,
+                  //   currentCategory,
+                  //   relationship,
+                  // );
                   onChange(
                     deleteRelationship(
                       allRelationshipsObj,
@@ -139,6 +145,8 @@ function renderSingleRelationshipObj(
   singleRelationshipObj,
   onChange,
 ) {
+  console.log('deleteMe got here singleRelationshipObj are: ');
+  console.log(singleRelationshipObj);
   const category = singleRelationshipObj?.category;
   const relationships = singleRelationshipObj?.relationships;
   console.log('deleteMe got here and relationships are: ');
@@ -149,6 +157,7 @@ function renderSingleRelationshipObj(
         width={240}
         schema={category}
         onChange={newName => {
+          // addRelationshipToCategory(allRelationshipsObj, newName);
           onChange(
             addRelationshipToCategory(allRelationshipsObj, newName),
           );
@@ -160,6 +169,9 @@ function renderSingleRelationshipObj(
             <InputAdornment position="end">
               <IconButton
                 size="small"
+                // onClick={category => {
+                //   createCategory(allRelationshipsObj, category);
+                // }}
                 onClick={() => {
                   onChange(
                     createCategory(allRelationshipsObj, category),
@@ -174,6 +186,9 @@ function renderSingleRelationshipObj(
                     deleteCategory(allRelationshipsObj, category),
                   );
                 }}
+                // onClick={category => {
+                //   deleteCategory(allRelationshipsObj, category);
+                // }}
               />
             </InputAdornment>
           ),
