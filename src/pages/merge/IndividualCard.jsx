@@ -4,22 +4,20 @@ import { useIntl } from 'react-intl';
 import Paper from '@material-ui/core/Paper';
 import Skeleton from '@material-ui/lab/Skeleton';
 
+import { deriveIndividualName } from '../../utils/nameUtils';
 import defaultIndividualPhoto from '../../assets/defaultIndividual.png';
 import Text from '../../components/Text';
 import sexOptions from '../../constants/sexOptions';
 
-function deriveName(names, context) {
-  const nameObject = names.find(n => n?.context === context) || {};
-  return nameObject?.value;
-}
-
 export default function IndividualCard({ data, mergeConflicts }) {
   const intl = useIntl();
 
-  const safeNames = data?.names || [];
-  const defaultName =
-    deriveName(safeNames, 'defaultName') || 'Unnamed individual';
-  const adoptionName = deriveName(safeNames, 'nickname');
+  const defaultName = deriveIndividualName(
+    data,
+    'defaultName',
+    'Unnamed individual',
+  );
+  const adoptionName = deriveIndividualName(data, 'nickname');
 
   const showSex = mergeConflicts?.sex;
   const sexObject = sexOptions.find(

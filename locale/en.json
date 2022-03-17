@@ -12,6 +12,7 @@
   "LABEL": "Label",
   "TYPE": "Type",
   "FOREST": "Forest",
+  "DATA_UNAVAILABLE": "Data unavailable",
   "ANNOTATION_CLASS": "Annotation class",
   "INDIVIDUAL_METADATA": "Individual profile",
   "COMMIT": "Commit",

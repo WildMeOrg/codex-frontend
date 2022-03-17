@@ -1,12 +1,12 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { get } from 'lodash-es';
 
 import Select from '@material-ui/core/Select';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 
+import { deriveIndividualName } from '../../utils/nameUtils';
 import sexOptions from '../../constants/sexOptions';
 
 const validSexOptions = sexOptions.filter(o => o.value);
@@ -20,13 +20,8 @@ const propertyMap = {
   },
   defaultName: {
     labelId: 'NAME',
-    getProperty: individualData => {
-      const names = get(individualData, 'names', []);
-      const defaultNameObject = names.find(
-        name => name?.context === 'defaultName',
-      );
-      return defaultNameObject?.value;
-    },
+    getProperty: individualData =>
+      deriveIndividualName(individualData, 'defaultName'),
     deriveChoices: names =>
       names.map(name => ({
         label: name,
@@ -34,14 +29,9 @@ const propertyMap = {
       })),
   },
   nickname: {
-    labelId: 'ALIAS', // untested!
-    getProperty: individualData => {
-      const names = get(individualData, 'names', []);
-      const defaultNameObject = names.find(
-        name => name?.context === 'nickname',
-      );
-      return defaultNameObject?.value;
-    },
+    labelId: 'ALIAS',
+    getProperty: individualData =>
+      deriveIndividualName(individualData, 'nickname'),
     deriveChoices: names =>
       names.map(name => ({
         label: name,

@@ -8,6 +8,8 @@ import useDocumentTitle from '../../hooks/useDocumentTitle';
 import MainColumn from '../../components/MainColumn';
 import Text from '../../components/Text';
 import Button from '../../components/Button';
+import SadScreen from '../../components/SadScreen';
+import Alert from '../../components/Alert';
 import useIndividual from '../../models/individual/useIndividual';
 import useMergeIndividuals from '../../models/individual/useMergeIndividuals';
 import useGetMergeConflicts from '../../models/individual/useGetMergeConflicts';
@@ -25,25 +27,35 @@ export default function MergeIndividuals() {
   const searchParams = new URLSearchParams(search);
   const individualIds = searchParams.getAll('i') || [];
 
-  const { data: mergeConflicts } = useGetMergeConflicts(
-    individualIds,
-  );
-  const { data: targetIndividualData } = useIndividual(
-    get(individualIds, '0', null),
-  );
-  const { data: fromIndividualData } = useIndividual(
-    get(individualIds, '1', null),
-  );
+  const {
+    data: mergeConflicts,
+    fetchConflictsError,
+  } = useGetMergeConflicts(individualIds);
+  const {
+    data: targetIndividualData,
+    error: fetchTargetError,
+  } = useIndividual(get(individualIds, '0', null));
+  const {
+    data: fromIndividualData,
+    error: fetchFromError,
+  } = useIndividual(get(individualIds, '1', null));
   const individualData = [targetIndividualData, fromIndividualData];
 
-  const { mutate: mergeIndividuals, loading } = useMergeIndividuals();
+  const {
+    mutate: mergeIndividuals,
+    loading,
+    error: mergeError,
+  } = useMergeIndividuals();
 
   const [formData, setFormData] = useState({});
+
+  const fetchError =
+    fetchConflictsError || fetchTargetError || fetchFromError;
 
   const showSexInput = Boolean(mergeConflicts?.sex);
   const nameContexts = mergeConflicts?.name_contexts || [];
   const showDefaultNameInput = nameContexts.includes('defaultName');
-  const showNicknameInput = nameContexts.includes('Nickname');
+  const showNicknameInput = nameContexts.includes('nickname');
   const showResolveFields =
     showSexInput || showDefaultNameInput || showNicknameInput;
 
@@ -54,7 +66,13 @@ export default function MergeIndividuals() {
     showNicknameInput,
   );
 
-  console.log(targetIndividualData);
+  if (fetchError)
+    return (
+      <SadScreen
+        variant="genericError"
+        subtitleId="DATA_UNAVAILABLE"
+      />
+    );
 
   return (
     <MainColumn
@@ -124,6 +142,15 @@ export default function MergeIndividuals() {
           </Grid>
         )}
         <Grid item style={{ marginTop: 16 }}>
+          {mergeError && (
+            <Alert
+              titleId="SERVER_ERROR"
+              style={{ marginTop: 12, marginBottom: 12 }}
+              severity="error"
+            >
+              {mergeError}
+            </Alert>
+          )}
           <Button
             display="primary"
             id="MERGE_INDIVIDUALS"
