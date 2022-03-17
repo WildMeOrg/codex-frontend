@@ -9,21 +9,14 @@ import MainColumn from '../../components/MainColumn';
 import Text from '../../components/Text';
 import Button from '../../components/Button';
 import useIndividual from '../../models/individual/useIndividual';
+import useMergeIndividuals from '../../models/individual/useMergeIndividuals';
 import useGetMergeConflicts from '../../models/individual/useGetMergeConflicts';
+import {
+  derivePropertyOverrides,
+  isFormComplete,
+} from './utils/formDataUtils';
 import ResolutionSelector from './ResolutionSelector';
 import IndividualCard from './IndividualCard';
-
-function isFormComplete(
-  formData,
-  showSexInput,
-  showDefaultNameInput,
-  showNicknameInput,
-) {
-  if (showSexInput && !formData?.sex) return false;
-  if (showDefaultNameInput && !formData?.defaultName) return false;
-  if (showNicknameInput && !formData?.nickname) return false;
-  return true;
-}
 
 export default function MergeIndividuals() {
   const { search } = useLocation();
@@ -42,6 +35,8 @@ export default function MergeIndividuals() {
     get(individualIds, '1', null),
   );
   const individualData = [individual1Data, individual2Data];
+
+  const { mutate: mergeIndividuals, loading } = useMergeIndividuals();
 
   const [formData, setFormData] = useState({});
 
@@ -130,7 +125,22 @@ export default function MergeIndividuals() {
           <Button
             display="primary"
             id="MERGE_INDIVIDUALS"
-            disabled={!formComplete}
+            loading={loading}
+            disabled={loading || !formComplete}
+            onClick={() => {
+              const propertyOverrides = derivePropertyOverrides(
+                formData,
+                showSexInput,
+                showDefaultNameInput,
+                showNicknameInput,
+              );
+
+              mergeIndividuals({
+                targetIndividualGuid: individual1Data?.guid,
+                fromIndividualGuids: [individual2Data?.guid],
+                propertyOverrides,
+              });
+            }}
           />
         </Grid>
       </Grid>
