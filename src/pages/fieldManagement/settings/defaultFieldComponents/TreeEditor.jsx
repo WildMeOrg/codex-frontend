@@ -122,8 +122,6 @@ export default function TreeEditor({
   siteSettings, // unpacking to prevent passing to div
   ...rest
 }) {
-  // console.log('deleteMe got here x0 and value is: ');
-  // console.log(value);
   return (
     <div {...rest}>
       <div

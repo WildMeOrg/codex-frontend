@@ -13,80 +13,43 @@ export function RelationshipEditorWrapper({
   children,
   ...rest
 }) {
-  // console.log('deleteMe got here w0 and formSettings is: ');
-  // console.log(formSettings);
-  // const relationshipOptions = get(formSettings, 'relationships');
-  const relationshipOptions =
-    get(formSettings, 'relationships') ||
-    formSettings.reduce((memo, obj) => {
-      // console.log('deleteMe got here and memo is: ');
-      // console.log(memo);
-      // console.log('deleteMe got here and obj is: ');
-      // console.log(obj);
-      return { ...memo, ...obj };
-    });
-  console.log('deleteMe relationshipOptions is: ');
-  console.log(relationshipOptions);
+  const relationshipOptions = formSettings
+    ? get(formSettings, 'relationships')
+    : [];
+
   const transformedRelationshipOptions = map(
     relationshipOptions,
     (relationshipArr, key) => {
-      let currentObj = {};
-      currentObj['category'] = key;
-      currentObj['relationships'] = relationshipArr;
+      const currentObj = {};
+      currentObj.category = key;
+      currentObj.relationships = relationshipArr;
       return currentObj;
     },
   );
-  console.log('deleteMe transformedRelationshipOptions are: ');
-  console.log(transformedRelationshipOptions);
-  //I can't think of a good way to force the one currently being edited to not sort... any suggestions?
-  const sortedRelationshipOptions = transformedRelationshipOptions.sort(
-    (a, b) => {
-      if (b.category === 'Enter new category name here') return -1; // TODO intl format
-      if (a.category === 'Enter new category name here') return 1; // TODO intl format
-      return a.category > b.category ? 1 : -1;
-    },
-  );
-  console.log('deleteMe sortedRelationshipOptions is: ');
-  console.log(sortedRelationshipOptions);
 
   return (
-    <ConfigureDefaultField onClose={onClose} onSubmit={onSubmit} open>
+    <ConfigureDefaultField
+      onClose={onClose}
+      onSubmit={() => {
+        onSubmit();
+      }}
+      open
+    >
       <RelationshipEditor
         schema={{ labelId: 'RELATIONSHIPS' }}
-        value={sortedRelationshipOptions}
+        value={transformedRelationshipOptions}
         onChange={relationships => {
-          console.log(
-            'deleteMe got into onChange in editors.jsx and relationships is: ',
-          );
-          console.log(relationships);
-
-          const newFormSettings = relationships.map(
-            relationshipOjb => {
-              let newRelationshipOjb = {};
-              newRelationshipOjb[(relationshipOjb?.category)] =
-                relationshipOjb?.relationships;
-              return newRelationshipOjb;
+          const formSettingObj = {};
+          const reformattedRelationships = relationships.reduce(
+            (memo, obj) => {
+              let currentObj = {};
+              currentObj[(obj?.category)] = obj?.relationships;
+              return { ...memo, ...currentObj };
             },
+            {},
           );
-          console.log('deleteMe newFormSettings is: ');
-          console.log(newFormSettings);
-          // const newRelationship = {
-          //   ...get(formSettings, 'relationships', {}),
-          //   relationship,
-          // };
-          // console.log(
-          //   'deleteMe got here z0 and newRelationship is: ',
-          // );
-          // console.log(newRelationship);
-          // setFormSettings({
-          //   ...formSettings,
-          //   relationships: newRelationship,
-          // });
-          setFormSettings(
-            // ...formSettings,
-            // ...relationships,
-            newFormSettings,
-          );
+          formSettingObj['relationships'] = reformattedRelationships;
+          setFormSettings(formSettingObj);
         }}
         {...rest}
       />

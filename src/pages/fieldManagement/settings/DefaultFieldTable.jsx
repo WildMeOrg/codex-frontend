@@ -115,7 +115,7 @@ export default function DefaultFieldTable({
             onCloseEditor();
           }}
           onSubmit={() => {
-            if (editField.id === 'region') {
+            if (editField?.id === 'region') {
               putSiteSetting(
                 editField.backendPath,
                 formSettings.regions,
@@ -123,10 +123,18 @@ export default function DefaultFieldTable({
                 if (success) onCloseEditor();
               });
             }
-            if (editField.id === 'species') {
+            if (editField?.id === 'species') {
               putSiteSetting(
                 editField.backendPath,
                 formSettings.species,
+              ).then(success => {
+                if (success) onCloseEditor();
+              });
+            }
+            if (editField?.id === 'relationship') {
+              putSiteSetting(
+                editField.backendPath,
+                formSettings.relationships,
               ).then(success => {
                 if (success) onCloseEditor();
               });
