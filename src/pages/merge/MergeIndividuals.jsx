@@ -28,13 +28,13 @@ export default function MergeIndividuals() {
   const { data: mergeConflicts } = useGetMergeConflicts(
     individualIds,
   );
-  const { data: individual1Data } = useIndividual(
+  const { data: targetIndividualData } = useIndividual(
     get(individualIds, '0', null),
   );
-  const { data: individual2Data } = useIndividual(
+  const { data: fromIndividualData } = useIndividual(
     get(individualIds, '1', null),
   );
-  const individualData = [individual1Data, individual2Data];
+  const individualData = [targetIndividualData, fromIndividualData];
 
   const { mutate: mergeIndividuals, loading } = useMergeIndividuals();
 
@@ -54,6 +54,8 @@ export default function MergeIndividuals() {
     showNicknameInput,
   );
 
+  console.log(targetIndividualData);
+
   return (
     <MainColumn
       style={{
@@ -72,9 +74,9 @@ export default function MergeIndividuals() {
           <Text variant="h4" id="MERGE_INDIVIDUALS" />
         </Grid>
         <Grid item>
-          {individualData.map(individual => (
+          {individualData.map((individual, i) => (
             <IndividualCard
-              key={individual?.guid}
+              key={individual?.guid || i}
               data={individual}
               mergeConflicts={mergeConflicts}
             />
@@ -136,8 +138,8 @@ export default function MergeIndividuals() {
               );
 
               mergeIndividuals({
-                targetIndividualGuid: individual1Data?.guid,
-                fromIndividualGuids: [individual2Data?.guid],
+                targetIndividualGuid: targetIndividualData?.guid,
+                fromIndividualGuids: [fromIndividualData?.guid],
                 propertyOverrides,
               });
             }}

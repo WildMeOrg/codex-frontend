@@ -38,7 +38,7 @@ const propertyMap = {
     getProperty: individualData => {
       const names = get(individualData, 'names', []);
       const defaultNameObject = names.find(
-        name => name?.context === 'Nickname',
+        name => name?.context === 'nickname',
       );
       return defaultNameObject?.value;
     },

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useIntl } from 'react-intl';
 
 import Paper from '@material-ui/core/Paper';
 import Skeleton from '@material-ui/lab/Skeleton';
@@ -13,6 +14,8 @@ function deriveName(names, context) {
 }
 
 export default function IndividualCard({ data, mergeConflicts }) {
+  const intl = useIntl();
+
   const safeNames = data?.names || [];
   const defaultName =
     deriveName(safeNames, 'defaultName') || 'Unnamed individual';
@@ -24,8 +27,8 @@ export default function IndividualCard({ data, mergeConflicts }) {
   );
   const sexLabelId = sexObject?.mergeLabelId || sexObject?.labelId;
 
-  const individualPhoto = data?.featuredAssetGuid
-    ? `/api/v1/assets/src/${data?.featuredAssetGuid}`
+  const individualPhotoUrl = data?.featuredAssetGuid
+    ? `/api/v1/assets/src/${data.featuredAssetGuid}`
     : defaultIndividualPhoto;
 
   return (
@@ -33,7 +36,7 @@ export default function IndividualCard({ data, mergeConflicts }) {
       <div style={{ display: 'flex', padding: 20 }}>
         {data ? (
           <img
-            src={individualPhoto}
+            src={individualPhotoUrl}
             alt={defaultName}
             style={{ width: 200, height: 200 }}
           />
@@ -52,14 +55,17 @@ export default function IndividualCard({ data, mergeConflicts }) {
           ) : (
             <Skeleton variant="text" height={30} width={140} />
           )}
-          {data ? (
-            <Text variant="body2">{adoptionName || 'Steve'}</Text>
+          {data && adoptionName ? (
+            <Text variant="body2">{adoptionName}</Text>
           ) : (
             <Skeleton variant="text" height={20} width={80} />
           )}
           {data && showSex && (
             <Text style={{ marginTop: 16 }}>
-              <Text variant="body2" component="span">{`Sex: `}</Text>
+              <Text
+                variant="body2"
+                component="span"
+              >{`${intl.formatMessage({ id: 'SEX' })}: `}</Text>
               <Text
                 variant="body2"
                 component="span"
