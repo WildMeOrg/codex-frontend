@@ -49,7 +49,7 @@ export default function UnauthenticatedSwitch() {
                   }}
                 >
                   <Switch location={location}>
-                    <Route path="/report/success/:id">
+                    <Route path="/report/success">
                       <ReportSuccess />
                     </Route>
                     <Route path="/report">

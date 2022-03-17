@@ -24,7 +24,6 @@ import MergeIndividuals from './pages/merge/MergeIndividuals';
 import BulkImport from './pages/bulkImport/BulkImport';
 import BulkImportSuccess from './pages/bulkImport/Success';
 import ReportSighting from './pages/reportSighting/ReportSighting';
-import ReportSuccess from './pages/reportSighting/Success';
 import Notifications from './pages/notifications/Notifications';
 import FourOhFour from './pages/fourohfour/FourOhFour';
 import useSiteSettings from './models/site/useSiteSettings';
@@ -149,9 +148,6 @@ export default function AuthenticatedSwitch() {
                       </Route>
                       <Route path="/bulk-import">
                         <BulkImport />
-                      </Route>
-                      <Route path="/report/success/:id">
-                        <ReportSuccess authenticated />
                       </Route>
                       <Route path="/report">
                         <ReportSighting authenticated />
