@@ -66,6 +66,7 @@ export default function ResolutionSelector({
     <FormControl style={{ width: 320, marginTop: 12 }}>
       <InputLabel>
         <FormattedMessage id={selectorSchema.labelId} />
+        {' *'}
       </InputLabel>
       <Select
         value={value || ''}

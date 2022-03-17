@@ -11,6 +11,19 @@ import Button from '../../components/Button';
 import useIndividual from '../../models/individual/useIndividual';
 import useGetMergeConflicts from '../../models/individual/useGetMergeConflicts';
 import ResolutionSelector from './ResolutionSelector';
+import IndividualCard from './IndividualCard';
+
+function isFormComplete(
+  formData,
+  showSexInput,
+  showDefaultNameInput,
+  showNicknameInput,
+) {
+  if (showSexInput && !formData?.sex) return false;
+  if (showDefaultNameInput && !formData?.defaultName) return false;
+  if (showNicknameInput && !formData?.nickname) return false;
+  return true;
+}
 
 export default function MergeIndividuals() {
   const { search } = useLocation();
@@ -39,6 +52,13 @@ export default function MergeIndividuals() {
   const showResolveFields =
     showSexInput || showDefaultNameInput || showNicknameInput;
 
+  const formComplete = isFormComplete(
+    formData,
+    showSexInput,
+    showDefaultNameInput,
+    showNicknameInput,
+  );
+
   return (
     <MainColumn
       style={{
@@ -55,6 +75,15 @@ export default function MergeIndividuals() {
       >
         <Grid item>
           <Text variant="h4" id="MERGE_INDIVIDUALS" />
+        </Grid>
+        <Grid item>
+          {individualData.map(individual => (
+            <IndividualCard
+              key={individual?.guid}
+              data={individual}
+              mergeConflicts={mergeConflicts}
+            />
+          ))}
         </Grid>
         {showResolveFields && (
           <Grid
@@ -97,8 +126,12 @@ export default function MergeIndividuals() {
             )}
           </Grid>
         )}
-        <Grid item>
-          <Button display="primary" id="MERGE_INDIVIDUALS" />
+        <Grid item style={{ marginTop: 16 }}>
+          <Button
+            display="primary"
+            id="MERGE_INDIVIDUALS"
+            disabled={!formComplete}
+          />
         </Grid>
       </Grid>
     </MainColumn>
