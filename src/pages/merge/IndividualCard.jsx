@@ -36,7 +36,7 @@ export default function IndividualCard({ data, mergeConflicts }) {
           <img
             src={individualPhotoUrl}
             alt={defaultName}
-            style={{ width: 200, height: 200 }}
+            style={{ width: 200, height: 200, objectFit: 'cover' }}
           />
         ) : (
           <Skeleton variant="rect" width={200} height={200} />
