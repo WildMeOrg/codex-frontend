@@ -65,14 +65,14 @@ export default function CommitBanner({
               const results = await commitAgs({
                 agsGuid: sightingId,
               });
-              if (results?.status === 200 && !userInfoLoading) {
+              if (results?.status === 200) {
                 queryClient.invalidateQueries(
                   queryKeys.assetGroupSightings,
                 );
-
-                queryClient.invalidateQueries(
-                  getUserSightingsQueryKey(userId),
-                );
+                if (!userInfoLoading)
+                  queryClient.invalidateQueries(
+                    getUserSightingsQueryKey(userId),
+                  );
               }
             }}
             style={{ marginTop: 8, marginRight: 4 }}
