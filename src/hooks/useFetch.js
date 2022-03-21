@@ -17,7 +17,7 @@ function formatError(response) {
   }
 }
 
-export default function useGet({
+export default function useFetch({
   queryKey,
   url,
   data,

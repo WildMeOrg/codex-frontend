@@ -1,8 +1,8 @@
 import queryKeys from '../../constants/queryKeys';
-import useGet from '../../hooks/useGet';
+import useFetch from '../../hooks/useFetch';
 
 export default function useGetSiteInfo() {
-  return useGet({
+  return useFetch({
     queryKey: queryKeys.siteInfo,
     url: '/site-settings/site-info/',
   });

@@ -1,7 +1,7 @@
 import { get } from 'lodash-es';
 import * as Sentry from '@sentry/react';
 import queryKeys from '../../constants/queryKeys';
-import useGet from '../../hooks/useGet';
+import useFetch from '../../hooks/useFetch';
 
 export default function useGetMe() {
   function onSuccess(response) {
@@ -14,7 +14,7 @@ export default function useGetMe() {
     }
   }
 
-  return useGet({
+  return useFetch({
     queryKey: queryKeys.me,
     url: '/users/me',
     onSuccess,

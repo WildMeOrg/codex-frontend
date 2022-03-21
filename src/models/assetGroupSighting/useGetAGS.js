@@ -1,8 +1,8 @@
 import { getAGSQueryKey } from '../../constants/queryKeys';
-import useGet from '../../hooks/useGet';
+import useFetch from '../../hooks/useFetch';
 
 export default function useGetAGS(assetGroupSightingId, disabled) {
-  return useGet({
+  return useFetch({
     queryKey: getAGSQueryKey(assetGroupSightingId),
     url: `/asset_groups/sighting/as_sighting/${assetGroupSightingId}`,
     queryOptions: {

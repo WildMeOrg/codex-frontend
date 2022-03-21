@@ -1,8 +1,8 @@
 import { getMergeConflictsQueryKey } from '../../constants/queryKeys';
-import useGet from '../../hooks/useGet';
+import useFetch from '../../hooks/useFetch';
 
-export default function useGetMergeConflicts(individualIds) {
-  return useGet({
+export default function useFetchMergeConflicts(individualIds) {
+  return useFetch({
     queryKey: getMergeConflictsQueryKey(individualIds),
     method: 'post',
     url: `/individuals/merge_conflict_check`,

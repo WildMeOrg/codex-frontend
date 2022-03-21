@@ -1,8 +1,8 @@
 import { getSightingQueryKey } from '../../constants/queryKeys';
-import useGet from '../../hooks/useGet';
+import useFetch from '../../hooks/useFetch';
 
 export default function useSighting(sightingId) {
-  return useGet({
+  return useFetch({
     queryKey: getSightingQueryKey(sightingId),
     url: `/sightings/${sightingId}`,
     queryOptions: {

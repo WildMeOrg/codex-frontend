@@ -1,5 +1,5 @@
 import { getUserAgsQueryKey } from '../../constants/queryKeys';
-import useGet from '../../hooks/useGet';
+import useFetch from '../../hooks/useFetch';
 
 const limit = 20;
 const offset = 0;
@@ -7,7 +7,7 @@ const offset = 0;
 export default function useGetUserUnprocessedAssetGroupSightings(
   userId,
 ) {
-  return useGet({
+  return useFetch({
     queryKey: getUserAgsQueryKey(userId),
     url: `/users/${userId}/asset_group_sightings`,
     data: {

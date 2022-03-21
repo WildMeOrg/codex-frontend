@@ -12,7 +12,7 @@ import SadScreen from '../../components/SadScreen';
 import Alert from '../../components/Alert';
 import useIndividual from '../../models/individual/useIndividual';
 import useMergeIndividuals from '../../models/individual/useMergeIndividuals';
-import useGetMergeConflicts from '../../models/individual/useGetMergeConflicts';
+import useFetchMergeConflicts from '../../models/individual/useFetchMergeConflicts';
 import {
   derivePropertyOverrides,
   isFormComplete,
@@ -30,7 +30,7 @@ export default function MergeIndividuals() {
   const {
     data: mergeConflicts,
     fetchConflictsError,
-  } = useGetMergeConflicts(individualIds);
+  } = useFetchMergeConflicts(individualIds);
   const {
     data: targetIndividualData,
     error: fetchTargetError,

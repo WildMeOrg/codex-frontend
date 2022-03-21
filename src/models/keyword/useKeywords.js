@@ -1,8 +1,8 @@
 import queryKeys from '../../constants/queryKeys';
-import useGet from '../../hooks/useGet';
+import useFetch from '../../hooks/useFetch';
 
 export default function useKeywords() {
-  return useGet({
+  return useFetch({
     queryKey: queryKeys.keywords,
     url: '/keywords/',
   });
