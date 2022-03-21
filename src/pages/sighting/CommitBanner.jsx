@@ -24,7 +24,7 @@ export default function CommitBanner({
   const queryClient = useQueryClient();
   const { data: userData, loading: userInfoLoading } = useGetMe();
   const userId = get(userData, 'guid');
-  const { isFetching: fetchingAGS } = useGetAGS(sightingId);
+  const { isFetching: fetchingAGS } = useGetAGS(sightingId, !pending);
 
   const {
     mutate: commitAgs,

@@ -1,11 +1,11 @@
 import queryKeys from '../../constants/queryKeys';
-import useGet from '../../hooks/useGet';
+import useFetch from '../../hooks/useFetch';
 
 const limit = 20;
 const offset = 0;
 
 export default function useGetUsers() {
-  return useGet({
+  return useFetch({
     queryKey: queryKeys.users,
     url: '/users/',
     data: {

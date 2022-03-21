@@ -1,8 +1,8 @@
 import { getAssetGroupQueryKey } from '../../constants/queryKeys';
-import useGet from '../../hooks/useGet';
+import useFetch from '../../hooks/useFetch';
 
 export default function useAssetGroup(assetGroupId) {
-  return useGet({
+  return useFetch({
     queryKey: getAssetGroupQueryKey(assetGroupId),
     url: `/asset_groups/${assetGroupId}`,
   });
