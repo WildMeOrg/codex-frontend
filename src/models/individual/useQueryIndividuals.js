@@ -15,7 +15,7 @@ export default function useQueryIndividuals() {
       setLoading(true);
       setSearchTerm(queryString);
       const rawResponse = await axios.request({
-        url: `${__houston_url__}/api/v1/search/individuals`,
+        url: `${__houston_url__}/api/v1/search/proxy/individuals`,
         method: 'post',
         data: {
           _source: ['alias', 'name', 'id', 'genus', 'species'],

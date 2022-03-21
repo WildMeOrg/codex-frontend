@@ -54,7 +54,7 @@ export default function useFilterIndividuals(
           );
 
           const rawResponse = await axios.request({
-            url: `${__houston_url__}/api/v1/search/individuals`,
+            url: `${__houston_url__}/api/v1/search/proxy/individuals`,
             method: 'post',
             data: {
               from: pageIndex * resultsPerPage,
