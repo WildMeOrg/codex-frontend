@@ -1,10 +1,15 @@
 import React from 'react';
 import { get, flatten } from 'lodash-es';
+import { useQueryClient } from 'react-query';
 
 import useGetAGS from '../../models/assetGroupSighting/useGetAGS';
 import useCommitAssetGroupSighting from '../../models/assetGroupSighting/useCommitAssetGroupSighting';
 import Button from '../../components/Button';
 import Alert from '../../components/Alert';
+import queryKeys, {
+  getUserSightingsQueryKey,
+} from '../../constants/queryKeys';
+import useGetMe from '../../models/users/useGetMe';
 
 const alertProps = {
   severity: 'info',
@@ -16,6 +21,9 @@ export default function CommitBanner({
   sightingData,
   pending,
 }) {
+  const queryClient = useQueryClient();
+  const { data: userData, loading: userInfoLoading } = useGetMe();
+  const userId = get(userData, 'guid');
   const { isFetching: fetchingAGS } = useGetAGS(sightingId);
 
   const {
@@ -53,7 +61,20 @@ export default function CommitBanner({
             id="COMMIT"
             size="small"
             loading={commitInProgress}
-            onClick={() => commitAgs({ agsGuid: sightingId })}
+            onClick={async () => {
+              const results = await commitAgs({
+                agsGuid: sightingId,
+              });
+              if (results?.status === 200 && !userInfoLoading) {
+                queryClient.invalidateQueries(
+                  queryKeys.assetGroupSightings,
+                );
+
+                queryClient.invalidateQueries(
+                  getUserSightingsQueryKey(userId),
+                );
+              }
+            }}
             style={{ marginTop: 8, marginRight: 4 }}
           />
         }
