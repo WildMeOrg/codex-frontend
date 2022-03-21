@@ -20,7 +20,7 @@ notificationSchemaPlaceholder[
   moreDetailedDescription:
     'A_COLLABORATION_WAS_CREATED_ON_YOUR_BEHALF_MORE_DETAILED',
   showNotificationDialog: false,
-  buttonPath: '/',
+  buttonPath: '/#collab-card',
 };
 notificationSchemaPlaceholder[
   notificationTypeNames.collaboration_request
@@ -39,6 +39,7 @@ notificationSchemaPlaceholder[
   moreDetailedDescription: 'COLLABORATION_APPROVED',
   showNotificationDialog: false,
   path: '/view_permission',
+  buttonPath: '/#collab-card',
 };
 notificationSchemaPlaceholder[
   notificationTypeNames.collaboration_revoke
@@ -47,6 +48,7 @@ notificationSchemaPlaceholder[
   notificationMessage: 'COLLABORATION_REVOKE_BRIEF',
   moreDetailedDescription: 'COLLABORATION_REVOKE_BRIEF',
   showNotificationDialog: false,
+  buttonPath: '/#collab-card',
 };
 notificationSchemaPlaceholder[
   notificationTypeNames.collaboration_edit_request
@@ -65,6 +67,7 @@ notificationSchemaPlaceholder[
   moreDetailedDescription: 'EDIT_COLLABORATION_APPROVED',
   showNotificationDialog: false,
   path: '/edit_permission',
+  buttonPath: '/#collab-card',
 };
 notificationSchemaPlaceholder[
   notificationTypeNames.collaboration_edit_revoke
@@ -73,7 +76,7 @@ notificationSchemaPlaceholder[
   notificationMessage: 'EDIT_COLLABORATION_REVOKED',
   moreDetailedDescription: 'EDIT_COLLABORATION_REVOKED',
   showNotificationDialog: false,
-  buttonPath: '/',
+  buttonPath: '/#collab-card',
 };
 notificationSchemaPlaceholder[
   notificationTypeNames.collaboration_manager_revoke
@@ -82,7 +85,7 @@ notificationSchemaPlaceholder[
   notificationMessage: 'COLLABORATION_REVOKED_BY_MANAGER',
   moreDetailedDescription: 'COLLABORATION_REVOKED_BY_MANAGER',
   showNotificationDialog: false,
-  buttonPath: '/',
+  buttonPath: '/#collab-card',
 };
 notificationSchemaPlaceholder[
   notificationTypeNames.individual_merge_request

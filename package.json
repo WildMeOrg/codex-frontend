@@ -130,6 +130,7 @@
     "react-image-crop": "^8.6.1",
     "react-player": "^2.4.0",
     "react-query": "^3.34.1",
+    "react-router-hash-link": "^2.4.3",
     "react-transition-group": "^4.4.1",
     "uuid": "^3.4.0",
     "webpack-version-file": "^0.1.6"

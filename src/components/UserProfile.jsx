@@ -174,7 +174,12 @@ export default function UserProfile({
               someoneElse ? 'NO_SIGHTINGS_NON_SELF' : 'NO_SIGHTINGS'
             }
           />
-          {!someoneElse && <CollaborationsCard userId={userId} />}
+          {!someoneElse && (
+            <CollaborationsCard
+              htmlId="collab-card"
+              userId={userId}
+            />
+          )}
         </CardContainer>
       </div>
     </MainColumn>
