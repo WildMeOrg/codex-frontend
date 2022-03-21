@@ -1,8 +1,8 @@
 import { getIndividualQueryKey } from '../../constants/queryKeys';
-import useGet from '../../hooks/useGet';
+import useFetch from '../../hooks/useFetch';
 
 export default function useIndividual(individualId) {
-  return useGet({
+  return useFetch({
     queryKey: getIndividualQueryKey(individualId),
     url: `/individuals/${individualId}`,
     queryOptions: {

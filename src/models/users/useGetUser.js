@@ -1,8 +1,8 @@
 import { getUserQueryKey } from '../../constants/queryKeys';
-import useGet from '../../hooks/useGet';
+import useFetch from '../../hooks/useFetch';
 
 export default function useGetUser(userId) {
-  return useGet({
+  return useFetch({
     queryKey: getUserQueryKey(userId),
     url: `/users/${userId}`,
   });

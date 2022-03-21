@@ -31,6 +31,7 @@ import RelationshipsCard from '../../components/cards/RelationshipsCard';
 import CooccurrenceCard from '../../components/cards/CooccurrenceCard';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import EditIndividualMetadata from './EditIndividualMetadata';
+import MergeDialog from './MergeDialog';
 import fakeAssets from './fakeAssets';
 import fakeCoocs from './fakeCoocs';
 import fakeRelationships from './fakeRelationships';
@@ -88,6 +89,7 @@ export default function Individual() {
     translateMessage: false,
   });
   const [editingProfile, setEditingProfile] = useState(false);
+  const [merging, setMerging] = useState(false);
   const [deletingIndividual, setDeletingIndividual] = useState(false);
   const [deleteEncounterId, setDeleteEncounterId] = useState(null);
 
@@ -103,6 +105,11 @@ export default function Individual() {
 
   return (
     <MainColumn fullWidth>
+      <MergeDialog
+        open={merging}
+        onClose={() => setMerging(false)}
+        individualGuid={id}
+      />
       <EditIndividualMetadata
         open={editingProfile}
         onClose={() => setEditingProfile(false)}
@@ -160,19 +167,14 @@ export default function Individual() {
               menuId="individual-actions"
               items={[
                 {
-                  id: 'edit-profile',
-                  onClick: () => setEditingProfile(true),
-                  label: 'Edit profile',
-                },
-                {
-                  id: 'view-history',
-                  onClick: Function.prototype,
-                  label: 'View history',
+                  id: 'merge',
+                  onClick: () => setMerging(true),
+                  labelId: 'MERGE_WITH_ANOTHER_INDIVIDUAL',
                 },
                 {
                   id: 'delete-individual',
                   onClick: () => setDeletingIndividual(true),
-                  label: 'Delete individual',
+                  labelId: 'DELETE_INDIVIDUAL',
                 },
               ]}
             />
