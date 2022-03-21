@@ -1,7 +1,7 @@
 export function deriveIndividualName(
   individualData,
   context = 'defaultName',
-  fallback,
+  fallback = undefined,
 ) {
   const names = individualData?.names || [];
   const nameObject = names.find(n => n?.context === context) || {};
