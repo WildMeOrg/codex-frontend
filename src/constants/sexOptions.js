@@ -14,5 +14,6 @@ export default [
   {
     value: null,
     labelId: 'BLANK',
+    mergeLabelId: 'VALUE_NOT_SET',
   },
 ];
