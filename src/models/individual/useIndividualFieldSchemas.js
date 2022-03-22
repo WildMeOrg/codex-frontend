@@ -10,21 +10,6 @@ import {
 } from '../../utils/fieldUtils';
 import { defaultIndividualCategories } from '../../constants/fieldCategories';
 
-const statusChoices = [
-  {
-    value: 'alive',
-    labelId: 'ALIVE',
-  },
-  {
-    value: 'dead',
-    labelId: 'DEAD',
-  },
-  {
-    value: 'unknown',
-    labelId: 'UNKNOWN',
-  },
-];
-
 export default function useIndividualFieldSchemas() {
   const {
     data,
@@ -73,14 +58,6 @@ export default function useIndividualFieldSchemas() {
           choices: sexOptions,
           requiredForIndividualCreation: true,
           defaultValue: null,
-        }),
-        createFieldSchema(fieldTypes.select, {
-          name: 'status',
-          labelId: 'STATUS',
-          category: defaultIndividualCategories.general.name,
-          choices: statusChoices,
-          requiredForIndividualCreation: true,
-          defaultValue: '',
         }),
         ...customFieldSchemas,
       ];
