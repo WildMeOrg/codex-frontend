@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useIntl } from 'react-intl';
-import { useHistory } from 'react-router-dom';
 import { get } from 'lodash-es';
 import { useQueryClient } from 'react-query';
 
@@ -15,6 +14,7 @@ import usePatchNotification from '../../models/notification/usePatchNotification
 import Link from '../Link';
 import Text from '../Text';
 import Button from '../Button';
+import ButtonLink from '../ButtonLink';
 import shane from '../../assets/shane.jpg';
 import { notificationSchema } from '../../constants/notificationSchema';
 import { calculatePrettyTimeElapsedSince } from '../../utils/formatters';
@@ -45,7 +45,6 @@ export default function NotificationsPane({
   setShouldOpen,
 }) {
   const intl = useIntl();
-  const history = useHistory();
   const queryClient = useQueryClient();
   const theme = useTheme();
   const [
@@ -118,38 +117,53 @@ export default function NotificationsPane({
                       )}
                     </div>
                     <div>
-                      <Button
-                        key={notification?.guid}
-                        display="primary"
-                        id="VIEW"
-                        onClick={async () => {
-                          if (showNotificationDialog) {
-                            const clickedNotificationType =
-                              notification?.message_type;
-                            const notificationDialog =
-                              notificationTypes[
-                                clickedNotificationType
-                              ];
-                            await markRead(get(notification, 'guid'));
-                            refreshNotifications();
-                            setShouldOpen(false);
-                            setActiveCollaborationNotification({
-                              notification,
-                              dialog: notificationDialog,
-                            });
-                          } else {
-                            const path =
-                              currentNotificationSchema?.buttonPath;
+                      {showNotificationDialog && (
+                        <Button
+                          key={notification?.guid}
+                          display="primary"
+                          id="VIEW"
+                          onClick={async () => {
+                            if (showNotificationDialog) {
+                              const clickedNotificationType =
+                                notification?.message_type;
+                              const notificationDialog =
+                                notificationTypes[
+                                  clickedNotificationType
+                                ];
+                              await markRead(
+                                get(notification, 'guid'),
+                              );
+                              refreshNotifications();
+                              setShouldOpen(false);
+                              setActiveCollaborationNotification({
+                                notification,
+                                dialog: notificationDialog,
+                              });
+                            }
+                          }}
+                        />
+                      )}
+                      {!showNotificationDialog && (
+                        <ButtonLink
+                          key={notification?.guid}
+                          display="primary"
+                          isHashLink
+                          href={get(
+                            currentNotificationSchema,
+                            'buttonPath',
+                            '/#collab-card',
+                          )}
+                          id="VIEW"
+                          onClick={async () => {
                             await markRead(get(notification, 'guid'));
                             queryClient.invalidateQueries(
                               queryKeys.me,
                             );
                             refreshNotifications();
                             setShouldOpen(false);
-                            history.push(path);
-                          }
-                        }}
-                      />
+                          }}
+                        />
+                      )}
                     </div>
                   </Grid>
                   <Grid

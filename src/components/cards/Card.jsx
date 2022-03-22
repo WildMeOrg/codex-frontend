@@ -6,11 +6,13 @@ import Text from '../Text';
 export default function Card({
   title,
   titleId,
+  htmlId = null,
   renderActions,
   children,
 }) {
   return (
     <Grid
+      id={htmlId}
       item
       style={{ flex: 'auto', flexBasis: '100%', width: '100%' }}
     >
