@@ -1,5 +1,5 @@
 import React from 'react';
-import { get, map } from 'lodash-es';
+import { get } from 'lodash-es';
 
 import TreeEditor from './TreeEditor';
 import ConfigureDefaultField from './ConfigureDefaultField';
@@ -13,42 +13,20 @@ export function RelationshipEditorWrapper({
   children,
   ...rest
 }) {
-  const relationshipOptions = formSettings
-    ? get(formSettings, 'relationships')
-    : [];
-
-  const transformedRelationshipOptions = map(
-    relationshipOptions,
-    (relationshipArr, key) => {
-      const currentObj = {};
-      currentObj.category = key;
-      currentObj.relationships = relationshipArr;
-      return currentObj;
-    },
+  const transformedRelationshipOptions = get(
+    formSettings,
+    'relationships',
+    formSettings,
   );
 
   return (
-    <ConfigureDefaultField
-      onClose={onClose}
-      onSubmit={() => {
-        onSubmit();
-      }}
-      open
-    >
+    <ConfigureDefaultField onClose={onClose} onSubmit={onSubmit} open>
       <RelationshipEditor
         schema={{ labelId: 'RELATIONSHIPS' }}
         value={transformedRelationshipOptions}
         onChange={relationships => {
           const formSettingObj = {};
-          const reformattedRelationships = relationships.reduce(
-            (memo, obj) => {
-              let currentObj = {};
-              currentObj[(obj?.category)] = obj?.relationships;
-              return { ...memo, ...currentObj };
-            },
-            {},
-          );
-          formSettingObj['relationships'] = reformattedRelationships;
+          formSettingObj['relationships'] = relationships;
           setFormSettings(formSettingObj);
         }}
         {...rest}

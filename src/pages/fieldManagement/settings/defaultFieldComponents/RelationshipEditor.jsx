@@ -1,8 +1,7 @@
 import React from 'react';
-import { useIntl } from 'react-intl';
-import { get, filter } from 'lodash-es';
-
 import { FormattedMessage } from 'react-intl';
+import { get } from 'lodash-es';
+
 import IconButton from '@material-ui/core/IconButton';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import NewChildIcon from '@material-ui/icons/AddCircle';
@@ -11,159 +10,91 @@ import DeleteButton from '../../../../components/DeleteButton';
 import Button from '../../../../components/Button';
 import Text from '../../../../components/Text';
 
-const intl = useIntl();
-
-function recomposeAllRelationshipObjectFromModifiedCategoryObject(
-  currentAllRelationshipObject,
-  modifiedTargetCategoryObj,
-) {
-  const nonTargeCategoryObjects = filter(
-    currentAllRelationshipObject,
-    currentRelationshipCategory =>
-      currentRelationshipCategory.category !==
-      modifiedTargetCategoryObj?.category,
-  );
-  return [...nonTargeCategoryObjects, modifiedTargetCategoryObj];
-}
-
-function deleteCategory(allRelationshipsObj, category) {
-  return allRelationshipsObj.filter(
-    singleRelationshipObj =>
-      singleRelationshipObj?.category !== category,
-  );
+function deleteCategory(allRelationships, category) {
+  delete allRelationships[category];
+  return allRelationships;
 }
 
 function deleteRelationship(
-  allRelationshipsObj,
+  allRelationships,
   currentCategory,
   relationship,
 ) {
-  const targetRelationshipCategoryObjArr = filter(
-    allRelationshipsObj,
-    currentRelationshipCategory =>
-      currentRelationshipCategory.category === currentCategory,
+  const targetRelationshipCategory = get(
+    allRelationships,
+    currentCategory,
   );
-  // if (targetRelationshipCategoryObjArr?.length > 1) return; // TODO how do we handle duplicate relationship categories/types?
-  const targetRelationshipCategoryObj = get(
-    targetRelationshipCategoryObjArr,
-    '0',
-    {},
-  );
-  const modifiedArr = targetRelationshipCategoryObj.relationships.filter(
+  const relationshipsWithoutTarget = targetRelationshipCategory.filter(
     entry => entry !== relationship,
   );
-  const modifiedTargetCategoryObj = {
-    category: currentCategory,
-    relationships: modifiedArr,
-  };
-  return recomposeAllRelationshipObjectFromModifiedCategoryObject(
-    allRelationshipsObj,
-    modifiedTargetCategoryObj,
-  );
+  allRelationships[currentCategory] = relationshipsWithoutTarget;
+  return allRelationships;
 }
 
 function updateRelationshipInCategory(
-  allRelationshipsObj,
+  allRelationships,
   category,
   oldRelationshipName,
   newRelationshipName,
 ) {
-  const targetRelationshipCategoryObj = get(
-    filter(
-      allRelationshipsObj,
-      currentRelationshipCategory =>
-        currentRelationshipCategory?.category === category,
-    ),
-    '0',
-    {},
-  );
-  const currentRelationships =
-    targetRelationshipCategoryObj?.relationships;
+  const currentRelationships = get(allRelationships, category);
+
   const oldRelationshipIndex = currentRelationships?.indexOf(
     oldRelationshipName,
   );
   if (oldRelationshipIndex > -1)
     currentRelationships[oldRelationshipIndex] = newRelationshipName;
-  targetRelationshipCategoryObj.relationships = currentRelationships;
-  return recomposeAllRelationshipObjectFromModifiedCategoryObject(
-    allRelationshipsObj,
-    targetRelationshipCategoryObj,
-  );
+  allRelationships[category] = currentRelationships;
+  return allRelationships;
 }
 
-function createCategory(allRelationshipsObj) {
-  const newCategoryObj = {
-    category: intl.formatMessage({ id: 'ENTER_NEW_CATEGORY_NAME' }),
-    relationships: [],
-  };
-  allRelationshipsObj.push(newCategoryObj);
-  return allRelationshipsObj;
+function createCategory(allRelationships) {
+  console.log(allRelationships);
+  allRelationships[''] = [];
+  return allRelationships;
 }
 
 function updateCategoryName(
-  allRelationshipsObj,
+  allRelationships,
   currentCategoryName,
   newCategoryName,
 ) {
-  const targetRelationshipCategoryObj = get(
-    filter(
-      allRelationshipsObj,
-      currentRelationshipCategory =>
-        currentRelationshipCategory.category === currentCategoryName,
-    ),
-    '0',
-    {},
+  const relationshipNames = get(
+    allRelationships,
+    currentCategoryName,
   );
-  targetRelationshipCategoryObj.category = newCategoryName;
-  return recomposeAllRelationshipObjectFromModifiedCategoryObject(
-    allRelationshipsObj,
-    targetRelationshipCategoryObj,
-  );
+  delete allRelationships[currentCategoryName];
+  allRelationships[newCategoryName] = relationshipNames;
+  return allRelationships;
 }
 
 function addRelationshipToCategory(
-  allRelationshipsObj,
+  allRelationships,
   currentCategory,
   newRelationship,
 ) {
-  const targetRelationshipCategoryObj = get(
-    filter(
-      allRelationshipsObj,
-      currentRelationshipCategory =>
-        currentRelationshipCategory.category === currentCategory,
-    ),
-    '0',
-    {},
-  );
-  const targetRelationshipArr =
-    targetRelationshipCategoryObj?.relationships;
-  targetRelationshipArr.push(newRelationship);
-  const modifiedArr = targetRelationshipArr;
-  const modifiedTargetCategoryObj = {
-    category: currentCategory,
-    relationships: modifiedArr,
-  };
-  return recomposeAllRelationshipObjectFromModifiedCategoryObject(
-    allRelationshipsObj,
-    modifiedTargetCategoryObj,
-  );
+  const currentRelationships = get(allRelationships, currentCategory);
+  if (!currentRelationships.includes(newRelationship))
+    currentRelationships.push(newRelationship);
+  allRelationships[currentCategory] = currentRelationships;
+  return allRelationships;
 }
 
 function renderSingleRelationship(
-  allRelationshipsObj,
+  allRelationships,
   currentCategory,
   relationship,
   onChange,
 ) {
   return (
-    <div style={{ marginLeft: 32, marginTop: 10 }}>
+    <div style={{ marginLeft: 32, marginTop: 10 }} key={relationship}>
       <TextInput
         width={240}
         schema={relationship}
         onChange={newRelationshipName => {
           onChange(
             updateRelationshipInCategory(
-              allRelationshipsObj,
+              allRelationships,
               currentCategory,
               relationship,
               newRelationshipName,
@@ -179,7 +110,7 @@ function renderSingleRelationship(
                 onClick={() => {
                   onChange(
                     deleteRelationship(
-                      allRelationshipsObj,
+                      allRelationships,
                       currentCategory,
                       relationship,
                     ),
@@ -195,27 +126,22 @@ function renderSingleRelationship(
 }
 
 function renderSingleRelationshipObj(
-  allRelationshipsObj,
-  singleRelationshipObj,
+  allRelationships,
+  targetKey,
   onChange,
 ) {
-  const category = singleRelationshipObj?.category;
-  const relationships = singleRelationshipObj?.relationships;
+  const relationships = get(allRelationships, targetKey);
   return (
-    <div style={{ marginTop: 10 }}>
+    <div style={{ marginTop: 10 }} key={targetKey}>
       <TextInput
         width={240}
-        schema={category}
+        schema={targetKey}
         onChange={newName => {
           onChange(
-            updateCategoryName(
-              allRelationshipsObj,
-              category,
-              newName,
-            ),
+            updateCategoryName(allRelationships, targetKey, newName),
           );
         }}
-        value={category}
+        value={targetKey}
         autoFocus
         InputProps={{
           endAdornment: (
@@ -225,8 +151,8 @@ function renderSingleRelationshipObj(
                 onClick={() => {
                   onChange(
                     addRelationshipToCategory(
-                      allRelationshipsObj,
-                      category,
+                      allRelationships,
+                      targetKey,
                       '',
                     ),
                   );
@@ -237,7 +163,7 @@ function renderSingleRelationshipObj(
               <DeleteButton
                 onClick={() => {
                   onChange(
-                    deleteCategory(allRelationshipsObj, category),
+                    deleteCategory(allRelationships, targetKey),
                   );
                 }}
               />
@@ -247,8 +173,8 @@ function renderSingleRelationshipObj(
       />
       {relationships.map(relationship =>
         renderSingleRelationship(
-          allRelationshipsObj,
-          category,
+          allRelationships,
+          targetKey,
           relationship,
           onChange,
         ),
@@ -264,6 +190,11 @@ export default function RelationshipEditor({
   siteSettings, // unpacking to prevent passing to div
   ...rest
 }) {
+  const justRelationshipsFormPart = get(
+    value,
+    'relationships',
+    value,
+  );
   return (
     <div {...rest}>
       <div
@@ -276,7 +207,7 @@ export default function RelationshipEditor({
         <Text variant="h5" id="RELATIONSHIP_EDITOR" />
         <Button
           onClick={() => {
-            onChange(createCategory(value));
+            onChange(createCategory(justRelationshipsFormPart));
           }}
           style={{ width: 200 }}
           size="small"
@@ -291,10 +222,10 @@ export default function RelationshipEditor({
           padding: 20,
         }}
       >
-        {value.map(singleRelationshipObj =>
+        {Object.keys(justRelationshipsFormPart).map(key =>
           renderSingleRelationshipObj(
-            value,
-            singleRelationshipObj,
+            justRelationshipsFormPart,
+            key,
             onChange,
           ),
         )}

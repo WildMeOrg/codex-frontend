@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
-import { get } from 'lodash-es';
+import { get, reduce } from 'lodash-es';
 
 import Grid from '@material-ui/core/Grid';
 import CustomAlert from '../../../components/Alert';
@@ -114,30 +114,57 @@ export default function DefaultFieldTable({
             setFormSettings(getInitialFormState(siteSettings));
             onCloseEditor();
           }}
-          onSubmit={() => {
+          onSubmit={async () => {
             if (editField?.id === 'region') {
-              putSiteSetting(
+              const success = await putSiteSetting(
                 editField.backendPath,
                 formSettings.regions,
-              ).then(success => {
-                if (success) onCloseEditor();
-              });
+              );
+              if (success) onCloseEditor();
             }
             if (editField?.id === 'species') {
-              putSiteSetting(
+              const success = await putSiteSetting(
                 editField.backendPath,
                 formSettings.species,
-              ).then(success => {
-                if (success) onCloseEditor();
-              });
+              );
+              if (success) onCloseEditor();
             }
             if (editField?.id === 'relationship') {
-              putSiteSetting(
+              const newSettings = reduce(
+                formSettings.relationships,
+                (memo, currentRelationships, key) => {
+                  const dedupedRelationships = currentRelationships.filter(
+                    (entry, index) => {
+                      return (
+                        currentRelationships.indexOf(entry) === index
+                      );
+                    },
+                  );
+                  if (
+                    currentRelationships.length >
+                    dedupedRelationships.length
+                  ) {
+                    alert(
+                      intl.formatMessage({
+                        id:
+                          'DUPLICATE_RELATIONSHIPS_FOUND_AND_REMOVED',
+                      }),
+                    );
+                  }
+                  let newRelationshipChunk = {};
+                  newRelationshipChunk[key] = dedupedRelationships;
+                  return { ...memo, ...newRelationshipChunk };
+                },
+                {},
+              );
+              let newSiteSettings = {};
+              newSiteSettings['relationships'] = { ...newSettings };
+              formSettings.relationships = newSiteSettings; // I know that this is bad practice, but just passing newSiteSettings below did not seem to do the trick, and I don't know why
+              const success = await putSiteSetting(
                 editField.backendPath,
                 formSettings.relationships,
-              ).then(success => {
-                if (success) onCloseEditor();
-              });
+              );
+              if (success) onCloseEditor();
             }
           }}
         >
