@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { get, capitalize } from 'lodash-es';
@@ -35,6 +35,10 @@ import MergeDialog from './MergeDialog';
 import fakeAssets from './fakeAssets';
 import fakeCoocs from './fakeCoocs';
 import fakeRelationships from './fakeRelationships';
+import {
+  deriveIndividualName,
+  deriveIndividualNameGuid,
+} from '../../utils/nameUtils';
 
 export default function Individual() {
   const intl = useIntl();
@@ -46,7 +50,7 @@ export default function Individual() {
   const history = useHistory();
   const fieldSchemas = useIndividualFieldSchemas();
 
-  const refreshIndividualData = useMemo(
+  const refreshIndividualData = useCallback(
     () => {
       const queryKey = getIndividualQueryKey(id);
       queryClient.invalidateQueries(queryKey);
@@ -57,22 +61,45 @@ export default function Individual() {
   const metadata = useMemo(
     () => {
       if (!individualData || !fieldSchemas) return null;
-      return fieldSchemas.map(schema => ({
-        ...schema,
-        value: schema.getValue(schema, individualData),
-      }));
+      return fieldSchemas.map(schema => {
+        const augmentedSchema = {
+          ...schema,
+          value: schema.getValue(schema, individualData),
+        };
+
+        if (schema.name === 'defaultName') {
+          augmentedSchema.nameGuid = deriveIndividualNameGuid(
+            individualData,
+            'defaultName',
+          );
+        } else if (schema.name === 'nickname') {
+          augmentedSchema.nameGuid = deriveIndividualNameGuid(
+            individualData,
+            'nickname',
+          );
+        }
+
+        return augmentedSchema;
+      });
     },
     [individualData, fieldSchemas],
   );
 
-  const names = individualData?.names || [];
-  const defaultNameObject = names.find(
-    n => n.context === 'defaultName',
+  const [defaultName, nickname] = useMemo(
+    () => [
+      deriveIndividualName(
+        individualData,
+        'defaultName',
+        'Unnamed individual',
+      ),
+      deriveIndividualName(
+        individualData,
+        'nickname',
+        'Unnamed individual',
+      ),
+    ],
+    [individualData],
   );
-  const defaultName =
-    defaultNameObject?.value || 'Unnamed individual';
-  const nicknameObject = names.find(n => n.context === 'nickname');
-  const nickname = nicknameObject?.value || 'Unnamed individual';
 
   const {
     deleteIndividual,
@@ -195,7 +222,11 @@ export default function Individual() {
             )}
             assets={fakeAssets}
           />
-          <MetadataCard editable metadata={metadata} />
+          <MetadataCard
+            editable
+            metadata={metadata}
+            onEdit={() => setEditingProfile(true)}
+          />
         </CardContainer>
         <CardContainer>
           <EncountersCard

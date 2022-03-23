@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { get, set, pick } from 'lodash-es';
+import { get, set } from 'lodash-es';
 
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -9,6 +9,13 @@ import CustomAlert from '../../components/Alert';
 import InputRow from '../../components/fields/edit/InputRow';
 import Button from '../../components/Button';
 import StandardDialog from '../../components/StandardDialog';
+
+function deriveNameGuid(metadata, schemaName) {
+  const foundSchema = metadata.find(
+    schema => schema.name === schemaName,
+  );
+  return foundSchema?.nameGuid;
+}
 
 function getInitialFormValues(schema, fieldKey) {
   return schema.reduce((memo, field) => {
@@ -123,12 +130,49 @@ export default function EditIndividualMetadata({
           loading={loading}
           display="primary"
           onClick={async () => {
-            const currentPatchableValues = pick(defaultFieldValues, [
-              'names',
-            ]);
+            const names = [];
+            // Always include the defaultName. If it does not already exist, add it.
+            // Otherwise, replace it.
+            const defaultNameGuid = deriveNameGuid(
+              metadata,
+              'defaultName',
+            );
+            const defaultNameProperty = defaultNameGuid
+              ? {
+                  op: 'replace',
+                  value: defaultFieldValues.defaultName,
+                  guid: defaultNameGuid,
+                }
+              : {
+                  op: 'add',
+                  value: defaultFieldValues.defaultName,
+                  context: 'defaultName',
+                };
+            names.push(defaultNameProperty);
+
+            // If there was a nickname, update it with whatever the value is now.
+            // If there was not a nickname, but there is a value now, add it.
+            // If a nickname did not already exist, don't add it.
+            const nicknameGuid = deriveNameGuid(metadata, 'nickname');
+            const nicknameFieldValue = defaultFieldValues.nickname;
+            if (nicknameGuid) {
+              names.push({
+                op: 'replace',
+                value: nicknameFieldValue,
+                guid: nicknameGuid,
+              });
+            } else if (nicknameFieldValue) {
+              names.push({
+                op: 'add',
+                value: nicknameFieldValue,
+                context: 'nickname',
+              });
+            }
+
+            const properties = { sex: defaultFieldValues.sex, names };
             const successfulUpdate = await updateIndividualProperties(
               individualId,
-              currentPatchableValues,
+              properties,
             );
             if (successfulUpdate) {
               refreshIndividualData();

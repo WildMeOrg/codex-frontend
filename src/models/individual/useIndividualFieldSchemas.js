@@ -9,6 +9,7 @@ import {
   createCustomFieldSchema,
 } from '../../utils/fieldUtils';
 import { defaultIndividualCategories } from '../../constants/fieldCategories';
+import { deriveIndividualName } from '../../utils/nameUtils';
 
 export default function useIndividualFieldSchemas() {
   const {
@@ -43,6 +44,8 @@ export default function useIndividualFieldSchemas() {
           requiredForIndividualCreation: true,
           required: true,
           defaultValue: '',
+          getValue: (_, individualData) =>
+            deriveIndividualName(individualData, 'defaultName', ''),
         }),
         createFieldSchema(fieldTypes.string, {
           name: 'nickname',
@@ -50,6 +53,8 @@ export default function useIndividualFieldSchemas() {
           category: defaultIndividualCategories.general.name,
           requiredForIndividualCreation: true,
           defaultValue: '',
+          getValue: (_, individualData) =>
+            deriveIndividualName(individualData, 'nickname', ''),
         }),
         createFieldSchema(fieldTypes.select, {
           name: 'sex',
