@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useIntl } from 'react-intl';
 import { get, set } from 'lodash-es';
 
 import DialogContent from '@material-ui/core/DialogContent';
@@ -9,6 +10,7 @@ import CustomAlert from '../../components/Alert';
 import InputRow from '../../components/fields/edit/InputRow';
 import Button from '../../components/Button';
 import StandardDialog from '../../components/StandardDialog';
+import Text from '../../components/Text';
 
 function deriveNameGuid(metadata, schemaName) {
   const foundSchema = metadata.find(
@@ -37,11 +39,13 @@ export default function EditIndividualMetadata({
   onClose,
   refreshIndividualData,
 }) {
+  const intl = useIntl();
+
   const {
     updateIndividualProperties,
     loading,
-    error,
-    setError,
+    error: patchIndividualError,
+    setError: setPatchIndividualError,
   } = usePatchIndividual();
 
   // hotfix //
@@ -62,6 +66,11 @@ export default function EditIndividualMetadata({
   const [customFieldValues, setCustomFieldValues] = useState(
     getInitialFormValues(customFieldMetadata, 'id'),
   );
+
+  const [formErrors, setFormErrors] = useState([]);
+
+  const showErrorAlert =
+    patchIndividualError || formErrors.length > 0;
 
   return (
     <StandardDialog
@@ -111,9 +120,15 @@ export default function EditIndividualMetadata({
           );
         })}
 
-        {error && (
+        {showErrorAlert && (
           <CustomAlert severity="error" titleId="SUBMISSION_ERROR">
-            {error}
+            {formErrors.length > 0 &&
+              formErrors.map(formError => (
+                <Text variant="body2">{formError}</Text>
+              ))}
+            {patchIndividualError && (
+              <Text variant="body2">{patchIndividualError}</Text>
+            )}
           </CustomAlert>
         )}
       </DialogContent>
@@ -121,7 +136,8 @@ export default function EditIndividualMetadata({
         <Button
           display="basic"
           onClick={() => {
-            setError(null);
+            setPatchIndividualError(null);
+            setFormErrors([]);
             onClose();
           }}
           id="CANCEL"
@@ -130,6 +146,31 @@ export default function EditIndividualMetadata({
           loading={loading}
           display="primary"
           onClick={async () => {
+            // validation
+            const requiredFieldErrors = metadata.reduce(
+              (memo, schema) => {
+                if (!schema?.required) return memo;
+
+                const formObject = schema.customField
+                  ? customFieldValues
+                  : defaultFieldValues;
+
+                if (!formObject[schema.name]) {
+                  memo.push(
+                    `${intl.formatMessage({
+                      id: schema.labelId,
+                    })} is required.`,
+                  );
+                }
+
+                return memo;
+              },
+              [],
+            );
+
+            setFormErrors(requiredFieldErrors);
+            if (requiredFieldErrors.length > 0) return;
+
             const names = [];
             // Always include the defaultName. If it does not already exist, add it.
             // Otherwise, replace it.
