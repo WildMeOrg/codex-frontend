@@ -95,7 +95,7 @@ export default function EditUserMetadata({
         <Button
           display="basic"
           onClick={() => {
-            clearError(null);
+            clearError();
             setPasswordRequired(false);
             setPassword('');
             setFieldValues(getInitialFormValues(metadata));
