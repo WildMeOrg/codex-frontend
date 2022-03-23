@@ -19,7 +19,7 @@ export default function UserDeleteDialog({
   const [touched, setTouched] = useState(true);
   const [password, setPassword] = useState('');
 
-  const { deleteUser, loading, error } = useDeleteUser();
+  const { mutate: deleteUser, loading, error } = useDeleteUser();
 
   function cleanupAndClose() {
     setTouched(true);
@@ -28,7 +28,10 @@ export default function UserDeleteDialog({
   }
 
   async function processDeletion() {
-    const success = await deleteUser(get(userData, 'guid'), password);
+    const success = await deleteUser({
+      userGuid: get(userData, 'guid'),
+      password,
+    });
     if (success) {
       cleanupAndClose();
     }
