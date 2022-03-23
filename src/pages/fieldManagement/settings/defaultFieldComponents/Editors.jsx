@@ -3,9 +3,9 @@ import { get } from 'lodash-es';
 
 import TreeEditor from './TreeEditor';
 import ConfigureDefaultField from './ConfigureDefaultField';
-import RelationshipEditor from './RelationshipEditor';
+import RelationshipEditorCore from './RelationshipEditorCore';
 
-export function RelationshipEditorWrapper({
+export function RelationshipEditor({
   onClose,
   onSubmit,
   formSettings,
@@ -21,13 +21,11 @@ export function RelationshipEditorWrapper({
 
   return (
     <ConfigureDefaultField onClose={onClose} onSubmit={onSubmit} open>
-      <RelationshipEditor
+      <RelationshipEditorCore
         schema={{ labelId: 'RELATIONSHIPS' }}
         value={transformedRelationshipOptions}
         onChange={relationships => {
-          const formSettingObj = {};
-          formSettingObj['relationships'] = relationships;
-          setFormSettings(formSettingObj);
+          setFormSettings({ relationships });
         }}
         {...rest}
       />

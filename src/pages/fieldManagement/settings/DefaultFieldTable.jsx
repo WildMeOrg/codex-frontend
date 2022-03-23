@@ -12,7 +12,7 @@ import Text from '../../../components/Text';
 import categoryTypes from '../../../constants/categoryTypes';
 import {
   RegionEditor,
-  RelationshipEditorWrapper,
+  RelationshipEditor,
 } from './defaultFieldComponents/Editors';
 import SpeciesEditor from './defaultFieldComponents/SpeciesEditor';
 import { cellRendererTypes } from '../../../components/dataDisplays/cellRenderers';
@@ -37,7 +37,7 @@ const configurableFields = [
     backendPath: 'relationship_type_roles',
     labelId: 'RELATIONSHIP',
     type: categoryTypes.individual,
-    Editor: RelationshipEditorWrapper,
+    Editor: RelationshipEditor,
   },
 ];
 
@@ -151,15 +151,14 @@ export default function DefaultFieldTable({
                       }),
                     );
                   }
-                  let newRelationshipChunk = {};
-                  newRelationshipChunk[key] = dedupedRelationships;
-                  return { ...memo, ...newRelationshipChunk };
+                  return { ...memo, [key]: dedupedRelationships };
                 },
                 {},
               );
-              let newSiteSettings = {};
-              newSiteSettings['relationships'] = { ...newSettings };
-              formSettings.relationships = newSiteSettings; // I know that this is bad practice, but just passing newSiteSettings below did not seem to do the trick, and I don't know why
+              const newSiteSettings = {
+                relationships: { ...newSettings },
+              };
+              formSettings.relationships = newSiteSettings; // TODO I know that this is bad practice, but just passing newSiteSettings below did not seem to do the trick, and I don't know why
               const success = await putSiteSetting(
                 editField.backendPath,
                 formSettings.relationships,

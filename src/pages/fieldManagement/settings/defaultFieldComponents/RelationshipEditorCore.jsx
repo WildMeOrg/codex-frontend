@@ -23,6 +23,7 @@ function deleteRelationship(
   const targetRelationshipCategory = get(
     allRelationships,
     currentCategory,
+    [],
   );
   const relationshipsWithoutTarget = targetRelationshipCategory.filter(
     entry => entry !== relationship,
@@ -49,9 +50,7 @@ function updateRelationshipInCategory(
 }
 
 function createCategory(allRelationships) {
-  console.log(allRelationships);
-  allRelationships[''] = [];
-  return allRelationships;
+  return { ...allRelationships, ['']: [] };
 }
 
 function updateCategoryName(
@@ -73,10 +72,15 @@ function addRelationshipToCategory(
   currentCategory,
   newRelationship,
 ) {
-  const currentRelationships = get(allRelationships, currentCategory);
+  const currentRelationships = get(
+    allRelationships,
+    currentCategory,
+    [],
+  );
+  let newRelationships = currentRelationships;
   if (!currentRelationships.includes(newRelationship))
-    currentRelationships.push(newRelationship);
-  allRelationships[currentCategory] = currentRelationships;
+    newRelationships = [...currentRelationships, newRelationship];
+  allRelationships[currentCategory] = newRelationships;
   return allRelationships;
 }
 
@@ -130,7 +134,7 @@ function renderSingleRelationshipObj(
   targetKey,
   onChange,
 ) {
-  const relationships = get(allRelationships, targetKey);
+  const relationships = get(allRelationships, targetKey, []);
   return (
     <div style={{ marginTop: 10 }} key={targetKey}>
       <TextInput
@@ -183,7 +187,7 @@ function renderSingleRelationshipObj(
   );
 }
 
-export default function RelationshipEditor({
+export default function RelationshipEditorCore({
   schema,
   value,
   onChange,
