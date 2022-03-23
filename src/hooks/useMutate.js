@@ -33,6 +33,7 @@ export default function useMutate({
 }) {
   const queryClient = useQueryClient();
   const [displayedError, setDisplayedError] = useState(null);
+  const [success, setSuccess] = useState(null);
   const [statusCode, setStatusCode] = useState(null);
 
   const mutation = useMutation(async mutationArgs => {
@@ -56,6 +57,8 @@ export default function useMutate({
       invalidationKeys.forEach(queryKey => {
         queryClient.invalidateQueries(queryKey);
       });
+      if (displayedError) setDisplayedError(null);
+      setSuccess(true);
       onSuccess(response);
     }
     return response;
@@ -67,6 +70,7 @@ export default function useMutate({
     () => {
       if (error) {
         setDisplayedError(error);
+        if (success) setSuccess(null);
       }
     },
     [error],
@@ -81,9 +85,9 @@ export default function useMutate({
     data: dataAccessor(mutation),
     loading: mutation?.isLoading,
     error: displayedError,
-    clearError: () => {
-      setDisplayedError(null);
-    },
+    clearError: () => setDisplayedError(null),
+    success,
+    clearSuccess: () => setSuccess(null),
   };
 }
 
