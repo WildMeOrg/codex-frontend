@@ -46,10 +46,13 @@ export default function Individual() {
   const history = useHistory();
   const fieldSchemas = useIndividualFieldSchemas();
 
-  function refreshIndividualData() {
-    const queryKey = getIndividualQueryKey(id);
-    queryClient.invalidateQueries(queryKey);
-  }
+  const refreshIndividualData = useMemo(
+    () => {
+      const queryKey = getIndividualQueryKey(id);
+      queryClient.invalidateQueries(queryKey);
+    },
+    [queryClient],
+  );
 
   const metadata = useMemo(
     () => {
