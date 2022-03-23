@@ -7,7 +7,7 @@ import ReactCrop from 'react-image-crop';
 import CustomAlert from '../Alert';
 import 'react-image-crop/dist/ReactCrop.css';
 
-import usePatchUser from '../../models/users/usePatchUser';
+import { useReplaceUserProperty } from '../../models/users/usePatchUser';
 import Button from '../Button';
 import StandardDialog from '../StandardDialog';
 
@@ -27,11 +27,11 @@ export default function CropDialog({
   const [imageData, setImageData] = useState(null);
 
   const {
-    replaceUserProperty,
+    mutate: replaceUserProperty,
     loading: replaceLoading,
     error: replaceError,
-    setError: setReplaceError,
-  } = usePatchUser(userId);
+    clearError: clearReplaceError,
+  } = useReplaceUserProperty();
 
   async function cropProfilePhoto() {
     const transformX = x =>
@@ -39,9 +39,10 @@ export default function CropDialog({
     const transformY = y =>
       (y * imageData.naturalHeight) / imageData.loadedHeight;
 
-    const successful = await replaceUserProperty(
-      '/profile_fileupload_guid',
-      {
+    const successful = await replaceUserProperty({
+      userGuid: userId,
+      path: '/profile_fileupload_guid',
+      value: {
         guid: imageGuid,
         crop: {
           x: transformX(crop.x),
@@ -50,7 +51,8 @@ export default function CropDialog({
           height: transformY(crop.height),
         },
       },
-    );
+    });
+
     if (successful) {
       onClose();
       window.location.reload();
@@ -61,7 +63,7 @@ export default function CropDialog({
     <StandardDialog
       open={open}
       onClose={() => {
-        if (replaceError) setReplaceError(null);
+        if (replaceError) clearReplaceError();
         onClose();
       }}
       titleId="CROP_PROFILE_PHOTO"
