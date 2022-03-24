@@ -33,12 +33,12 @@ export default function UserManagement() {
   useDocumentTitle('MANAGE_USERS');
 
   const {
-    postUser,
+    mutate: postUser,
     error: postUserError,
     loading: postUserLoading,
-    setError: setPostUserError,
+    clearError: clearPostUserError,
     success: postUserSuccess,
-    setSuccess: setPostUserSuccess,
+    clearSuccess: clearPostUserSuccess,
   } = usePostUser();
 
   const {
@@ -165,7 +165,7 @@ export default function UserManagement() {
             </div>
             {Boolean(postUserError) && (
               <CustomAlert
-                onClose={() => setPostUserError(null)}
+                onClose={clearPostUserError}
                 severity="error"
                 titleId="SUBMISSION_ERROR"
                 description={postUserError}
@@ -173,7 +173,7 @@ export default function UserManagement() {
             )}
             {Boolean(postUserSuccess) && (
               <CustomAlert
-                onClose={() => setPostUserSuccess(null)}
+                onClose={clearPostUserSuccess}
                 severity="success"
                 titleId="USER_CREATED_SUCCESSFULLY"
                 description={postUserSuccess}
@@ -184,11 +184,11 @@ export default function UserManagement() {
                 display="primary"
                 loading={postUserLoading}
                 onClick={async () => {
-                  const successful = await postUser(
-                    newUserEmail,
-                    newUserPassword,
-                    newUserRoles,
-                  );
+                  const successful = await postUser({
+                    email: newUserEmail,
+                    password: newUserPassword,
+                    roles: newUserRoles,
+                  });
                   if (successful) {
                     setNewUserEmail('');
                     setNewUserPassword('');

@@ -8,7 +8,7 @@ import TextField from '@material-ui/core/TextField';
 
 import useOnEnter from '../../hooks/useOnEnter';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
-import usePatchUser from '../../models/users/usePatchUser';
+import { useReplaceUserProperties } from '../../models/users/usePatchUser';
 import CustomAlert from '../../components/Alert';
 import Text from '../../components/Text';
 import Button from '../../components/Button';
@@ -22,10 +22,10 @@ export default function ProfileSetup({ userData }) {
   const [name, setName] = useState('');
 
   const {
-    replaceUserProperties,
+    mutate: replaceUserProperties,
     loading: replaceLoading,
     error: replaceError,
-  } = usePatchUser(get(userData, 'guid'));
+  } = useReplaceUserProperties();
 
   useDocumentTitle('SET_UP_PROFILE');
 
@@ -37,7 +37,10 @@ export default function ProfileSetup({ userData }) {
           value: name,
         },
       ];
-      await replaceUserProperties(properties);
+      await replaceUserProperties({
+        userGuid: get(userData, 'guid'),
+        properties,
+      });
     } else {
       setNoNameError(true);
     }

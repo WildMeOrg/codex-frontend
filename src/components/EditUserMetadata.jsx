@@ -5,7 +5,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 
 import CustomAlert from './Alert';
-import usePatchUser from '../models/users/usePatchUser';
+import { useReplaceUserProperties } from '../models/users/usePatchUser';
 import InputRow from './fields/edit/InputRow';
 import Button from './Button';
 import PasswordVerificationAlert from './PasswordVerificationAlert';
@@ -27,11 +27,11 @@ export default function EditUserMetadata({
   onClose,
 }) {
   const {
-    replaceUserProperties,
+    mutate: replaceUserProperties,
     loading,
     error,
-    setError,
-  } = usePatchUser(userId);
+    clearError,
+  } = useReplaceUserProperties();
 
   const [fieldValues, setFieldValues] = useState({});
   const [passwordRequired, setPasswordRequired] = useState(false);
@@ -95,7 +95,7 @@ export default function EditUserMetadata({
         <Button
           display="basic"
           onClick={() => {
-            setError(null);
+            clearError();
             setPasswordRequired(false);
             setPassword('');
             setFieldValues(getInitialFormValues(metadata));
@@ -129,12 +129,13 @@ export default function EditUserMetadata({
                 }),
               );
 
-              const successfulUpdate = await replaceUserProperties(
-                patchValues,
+              const response = await replaceUserProperties({
+                userGuid: userId,
+                properties: patchValues,
                 password,
-              );
-              if (successfulUpdate) {
-                setError(null);
+              });
+              if (response?.status === 200) {
+                clearError();
                 setPasswordRequired(false);
                 setPassword('');
                 onClose();
