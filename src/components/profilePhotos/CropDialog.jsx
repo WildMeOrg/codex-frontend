@@ -39,7 +39,7 @@ export default function CropDialog({
     const transformY = y =>
       (y * imageData.naturalHeight) / imageData.loadedHeight;
 
-    const successful = await replaceUserProperty({
+    const result = await replaceUserProperty({
       userGuid: userId,
       path: '/profile_fileupload_guid',
       value: {
@@ -53,7 +53,7 @@ export default function CropDialog({
       },
     });
 
-    if (successful) {
+    if (result?.status === 200) {
       onClose();
       window.location.reload();
     }

@@ -29,7 +29,7 @@ export default function UserDeleteDialog({
 
   async function processDeletion() {
     const success = await deleteUser({
-      userGuid: get(userData, 'guid'),
+      userGuid: userData?.guid,
       password,
     });
     if (success) {

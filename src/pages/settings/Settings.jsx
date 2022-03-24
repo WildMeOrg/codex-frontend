@@ -37,7 +37,7 @@ export default function Settings() {
     mutate: replaceUserProperty,
     loading,
     error,
-    clearError: clearError,
+    clearError,
   } = useReplaceUserProperty();
   const schemas = useNotificationSettingsSchemas();
 

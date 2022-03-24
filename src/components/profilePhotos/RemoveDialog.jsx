@@ -23,11 +23,11 @@ export default function RemoveDialog({ open, onClose, userId }) {
   };
 
   async function removeProfilePhoto() {
-    const successful = await removeUserProperty({
+    const result = await removeUserProperty({
       userGuid: userId,
       path: '/profile_fileupload_guid',
     });
-    if (successful) onCloseDialog();
+    if (result?.status === 200) onCloseDialog();
   }
 
   return (

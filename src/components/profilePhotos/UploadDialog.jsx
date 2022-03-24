@@ -21,12 +21,12 @@ export default function UploadDialog({ open, onClose, userId }) {
   } = useReplaceUserProperty();
 
   async function submitProfilePhoto() {
-    const successful = await replaceUserProperty({
+    const result = await replaceUserProperty({
       userGuid: userId,
       path: '/profile_fileupload_guid',
       value: profileAsset,
     });
-    if (successful) onClose(true);
+    if (result?.status === 200) onClose(true);
   }
 
   return (

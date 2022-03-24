@@ -134,7 +134,7 @@ export default function EditUserMetadata({
                 properties: patchValues,
                 password,
               });
-              if (response.status === 200) {
+              if (response?.status === 200) {
                 clearError();
                 setPasswordRequired(false);
                 setPassword('');

@@ -43,13 +43,13 @@ export default function UserEditDialog({ open, onClose, userData }) {
       value: formValues[propertyId],
     }));
 
-    const success = await replaceUserProperties({
+    const result = await replaceUserProperties({
       userGuid: get(userData, 'guid'),
       properties,
       password,
     });
 
-    if (success) cleanupAndClose();
+    if (result?.status === 200) cleanupAndClose();
   }
 
   return (
