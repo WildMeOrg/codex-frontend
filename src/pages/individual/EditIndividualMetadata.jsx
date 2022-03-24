@@ -156,10 +156,14 @@ export default function EditIndividualMetadata({
                   : defaultFieldValues;
 
                 if (!formObject[schema.name]) {
+                  const intlFieldName = intl.formatMessage({
+                    id: schema.labelId,
+                  });
                   memo.push(
-                    `${intl.formatMessage({
-                      id: schema.labelId,
-                    })} is required.`,
+                    intl.formatMessage(
+                      { id: 'IS_REQUIRED' },
+                      { field: intlFieldName },
+                    ),
                   );
                 }
 
