@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { get, capitalize } from 'lodash-es';
+import { get, capitalize, map } from 'lodash-es';
 import { useQueryClient } from 'react-query';
 
 import { getIndividualQueryKey } from '../../constants/queryKeys';
@@ -65,6 +65,18 @@ export default function Individual() {
   );
 
   const names = individualData?.names || [];
+  const encounters = get(individualData, 'encounters', []);
+
+  const assetSources = map(encounters, encounter => {
+    const annotations = get(encounter, 'annotations');
+    const assetSourcesFromAnnotations = map(
+      annotations,
+      annotation => annotation?.asset_src,
+    );
+    return assetSourcesFromAnnotations;
+  });
+  console.log('deleteMe assetSources are: ');
+  console.log(assetSources);
   const defaultNameObject = names.find(
     n => n.context === 'defaultName',
   );
@@ -208,7 +220,7 @@ export default function Individual() {
             onDelete={encounterId =>
               setDeleteEncounterId(encounterId)
             }
-            encounters={get(individualData, 'encounters', [])}
+            encounters={encounters}
           />
           <RelationshipsCard
             title="Relationships"
