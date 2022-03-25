@@ -39,6 +39,8 @@ function getProgressText(intl, startDate) {
 }
 
 export default function StatusCard({ sightingData }) {
+  console.log('deleteMe sightingData is: ');
+  console.log(sightingData);
   const intl = useIntl();
 
   const photoCount = get(sightingData, ['assets', 'length'], 0);
