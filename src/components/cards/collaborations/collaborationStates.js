@@ -34,12 +34,12 @@ export default {
     actionVerificationMessage2:
       'Are you sure you want to deny access?',
     getActionPatch2: testKey =>
-      buildCollaborationPatch(testKey, 'declined'),
+      buildCollaborationPatch(testKey, 'denied'),
   },
   blocked: {
     viewDisablesEdit: true,
     test: (testKey, collaboration) =>
-      ['declined', 'revoked'].includes(
+      ['denied', 'revoked'].includes(
         get(collaboration, ['otherUserData', testKey]),
       ),
     currentStateMessage:
@@ -48,7 +48,7 @@ export default {
   blocking: {
     viewDisablesEdit: true,
     test: (testKey, collaboration) =>
-      ['declined', 'revoked'].includes(
+      ['denied', 'revoked'].includes(
         get(collaboration, ['thisUserData', testKey]),
       ),
     currentStateMessage: 'You have revoked access.',
