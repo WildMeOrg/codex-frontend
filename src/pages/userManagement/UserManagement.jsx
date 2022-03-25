@@ -43,8 +43,6 @@ export default function UserManagement() {
 
   const {
     data: userData,
-    loading: userDataLoading,
-    error: userDataError,
   } = useGetUsers();
 
   const {
@@ -217,11 +215,7 @@ export default function UserManagement() {
               flexDirection: 'column',
             }}
           >
-            <UserEditTable
-              data={userData}
-              loading={userDataLoading}
-              usersError={userDataError}
-            />
+            <UserEditTable />
           </Paper>
         </Grid>
         <Grid item style={{ width: '100%' }}>
