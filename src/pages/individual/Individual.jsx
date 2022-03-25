@@ -74,9 +74,11 @@ export default function Individual() {
       annotation => annotation?.asset_src,
     );
     return assetSourcesFromAnnotations;
-  });
+  }); // TODO check that it works if there's more than one encounter after the "can't add a second encounter to an individual" issue is resolved
   console.log('deleteMe assetSources are: ');
   console.log(assetSources);
+  console.log('deleteMe fakeAssets are: ');
+  console.log(fakeAssets);
   const defaultNameObject = names.find(
     n => n.context === 'defaultName',
   );
