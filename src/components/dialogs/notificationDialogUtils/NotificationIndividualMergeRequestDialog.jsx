@@ -47,7 +47,7 @@ export default function NotificationIndividualMergeDialog({
       {
         op: 'replace',
         path,
-        value: 'declined',
+        value: 'denied',
       },
     ]);
     if (response?.status === 200) {
