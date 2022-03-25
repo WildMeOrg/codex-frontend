@@ -20,50 +20,53 @@ export default function NotificationCollaborationEditRequestDialog({
   );
   const path = get(currentNotificationSchema, 'path');
   const {
-    patchCollaborationsAsync,
+    mutate: patchCollaboration,
     error,
     isError,
   } = usePatchCollaboration();
-  const collaborationId = get(notification, [
+  const collaborationGuid = get(notification, [
     'message_values',
     'collaboration_guid',
   ]);
-  const grantOnClickFn = async () => {
-    const response = await patchCollaborationsAsync(collaborationId, [
-      {
-        op: 'replace',
-        path,
-        value: 'approved',
-      },
-    ]);
+  const onClickGrant = async () => {
+    const response = await patchCollaboration({
+      collaborationGuid,
+      operations: [
+        {
+          op: 'replace',
+          path,
+          value: 'approved',
+        },
+      ],
+    });
     if (response?.status === 200) {
       onClose();
       queryClient.invalidateQueries(queryKeys.me);
     }
   };
-  const declineOnClickFn = async () => {
-    const response = await patchCollaborationsAsync(collaborationId, [
-      {
-        op: 'replace',
-        path,
-        value: 'declined',
-      },
-    ]);
-    if (response?.status === 200) {
-      onClose();
-      queryClient.invalidateQueries(queryKeys.me);
-    }
+  const onClickDecline = async () => {
+    const response = await patchCollaboration({
+      collaborationGuid,
+      operations: [
+        {
+          op: 'replace',
+          path,
+          value: 'declined',
+        },
+      ],
+    });
+    if (response?.status === 200) onClose();
   };
   const availableButtons = [
     {
       name: 'grant',
       buttonId: 'GRANT_ACCESS',
-      onClick: grantOnClickFn,
+      onClick: onClickGrant,
     },
     {
       name: 'decline',
       buttonId: 'DECLINE_REQUEST',
-      onClick: declineOnClickFn,
+      onClick: onClickDecline,
     },
   ];
   return (

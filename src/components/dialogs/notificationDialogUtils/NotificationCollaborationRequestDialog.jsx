@@ -1,9 +1,7 @@
 import React from 'react';
-import { useQueryClient } from 'react-query';
 import { get } from 'lodash-es';
 
 import usePatchCollaboration from '../../../models/collaboration/usePatchCollaboration';
-import queryKeys from '../../../constants/queryKeys';
 import { notificationSchema } from '../../../constants/notificationSchema';
 import NotificationDetailsDialog from '../NotificationDetailsDialog';
 
@@ -12,7 +10,6 @@ export default function NotificationCollaborationRequestDialog({
   onClose,
   notification,
 }) {
-  const queryClient = useQueryClient();
   const notificationType = notification?.message_type;
   const currentNotificationSchema = get(
     notificationSchema,
@@ -20,50 +17,50 @@ export default function NotificationCollaborationRequestDialog({
   );
   const path = get(currentNotificationSchema, 'path');
   const {
-    patchCollaborationsAsync,
+    mutate: patchCollaboration,
     error,
     isError,
   } = usePatchCollaboration();
-  const collaborationId = get(notification, [
+  const collaborationGuid = get(notification, [
     'message_values',
     'collaboration_guid',
   ]);
-  const grantOnClickFn = async () => {
-    const response = await patchCollaborationsAsync(collaborationId, [
-      {
-        op: 'replace',
-        path,
-        value: 'approved',
-      },
-    ]);
-    if (response?.status === 200) {
-      onClose();
-      queryClient.invalidateQueries(queryKeys.me);
-    }
+  const onClickGrant = async () => {
+    const response = await patchCollaboration({
+      collaborationGuid,
+      operations: [
+        {
+          op: 'replace',
+          path,
+          value: 'approved',
+        },
+      ],
+    });
+    if (response?.status === 200) onClose();
   };
-  const declineOnClickFn = async () => {
-    const response = await patchCollaborationsAsync(collaborationId, [
-      {
-        op: 'replace',
-        path,
-        value: 'declined',
-      },
-    ]);
-    if (response?.status === 200) {
-      onClose();
-      queryClient.invalidateQueries(queryKeys.me);
-    }
+  const onClickDecline = async () => {
+    const response = await patchCollaboration({
+      collaborationGuid,
+      operations: [
+        {
+          op: 'replace',
+          path,
+          value: 'declined',
+        },
+      ],
+    });
+    if (response?.status === 200) onClose();
   };
   const availableButtons = [
     {
       name: 'grant',
       buttonId: 'GRANT_ACCESS',
-      onClick: grantOnClickFn,
+      onClick: onClickGrant,
     },
     {
       name: 'decline',
       buttonId: 'DECLINE_REQUEST',
-      onClick: declineOnClickFn,
+      onClick: onClickDecline,
     },
   ];
   return (

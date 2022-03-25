@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { get } from 'lodash-es';
-import { useQueryClient } from 'react-query';
 
 import DialogActions from '@material-ui/core/DialogActions';
 
@@ -12,7 +11,6 @@ import Text from '../../Text';
 import StandardDialog from '../../StandardDialog';
 import PermissionBlock from './PermissionBlock';
 import collaborationStates from './collaborationStates';
-import queryKeys from '../../../constants/queryKeys';
 
 const collaborationSchemas = Object.values(collaborationStates);
 
@@ -22,16 +20,15 @@ export default function CollaborationsDialog({
   activeCollaboration,
   setCollabDialogButtonClickLoading = null,
 }) {
-  const queryClient = useQueryClient();
   const {
-    requestEditAccess,
+    mutate: requestEditAccess,
     loading: requestLoading,
     error: requestError,
-    setError: setRequestError,
+    clearError: clearRequestError,
   } = useRequestEditAccess();
 
   const {
-    patchCollaborationsAsync,
+    mutate: patchCollaboration,
     isLoading: patchLoading,
     error: patchError,
   } = usePatchCollaboration();
@@ -50,7 +47,7 @@ export default function CollaborationsDialog({
 
   function cleanupAndClose() {
     setRequest(null);
-    setRequestError(null);
+    clearRequestError();
     onClose();
   }
 
@@ -112,25 +109,21 @@ export default function CollaborationsDialog({
             onClick={async () => {
               if (setCollabDialogButtonClickLoading)
                 setCollabDialogButtonClickLoading(true);
-              let requestEditAccessSuccessful;
-              let isPatchSuccessful;
+              let requestSuccessful;
               if (request.sendEditRequest) {
-                requestEditAccessSuccessful = await requestEditAccess(
-                  activeCollaboration.guid,
-                );
+                const response = await requestEditAccess({
+                  collaborationGuid: activeCollaboration.guid,
+                });
+                requestSuccessful = response?.status === 200;
               } else {
-                const collabPatchResponse = await patchCollaborationsAsync(
-                  activeCollaboration.guid,
-                  request.actionPatch,
-                );
-                isPatchSuccessful =
-                  collabPatchResponse?.status === 200;
+                const response = await patchCollaboration({
+                  collaborationGuid: activeCollaboration.guid,
+                  operations: request.actionPatch,
+                });
+                requestSuccessful = response?.status === 200;
               }
 
-              if (isPatchSuccessful || requestEditAccessSuccessful) {
-                cleanupAndClose();
-                queryClient.invalidateQueries(queryKeys.me);
-              }
+              if (requestSuccessful) cleanupAndClose();
             }}
             loading={loading}
             id="SAVE"

@@ -41,9 +41,7 @@ export default function UserManagement() {
     clearSuccess: clearPostUserSuccess,
   } = usePostUser();
 
-  const {
-    data: userData,
-  } = useGetUsers();
+  const { data: userData } = useGetUsers();
 
   const {
     data: allCollaborationData,
