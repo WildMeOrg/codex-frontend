@@ -43,6 +43,8 @@ export default function Individual() {
   const { data: individualData, statusCode, loading } = useIndividual(
     id,
   );
+  console.log('deleteMe individualData is: ');
+  console.log(individualData);
   const history = useHistory();
   const fieldSchemas = useIndividualFieldSchemas();
 
