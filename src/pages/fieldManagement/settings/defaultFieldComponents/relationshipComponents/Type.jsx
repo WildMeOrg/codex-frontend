@@ -1,5 +1,6 @@
 import React from 'react';
-import { get } from 'lodash-es';
+import { get, omit } from 'lodash-es';
+import { v4 as uuid } from 'uuid';
 
 import InputAdornment from '@material-ui/core/InputAdornment';
 import IconButton from '@material-ui/core/IconButton';
@@ -9,43 +10,47 @@ import TextInput from '../../../../../components/inputs/TextInput';
 import DeleteButton from '../../../../../components/DeleteButton';
 import Role from './Role';
 
-function deleteCategory(relationships, category) {
-  delete relationships[category];
-  return relationships;
+function deleteType(relationships, typeGuid) {
+  return omit(relationships, [typeGuid]);
 }
 
-function updateCategoryName(
-  relationships,
-  currentCategoryName,
-  newCategoryName,
-) {
-  const relationshipNames = get(relationships, currentCategoryName);
-  delete relationships[currentCategoryName];
-  relationships[newCategoryName] = relationshipNames;
-  return relationships;
-}
-
-function addRole(relationships, category) {
-  const currentRoles = get(relationships, category, []);
+function updateType(relationships, typeGuid, newTypeLabel) {
+  const type = get(relationships, typeGuid, {});
   return {
     ...relationships,
-    [category]: [...currentRoles, ''],
+    [typeGuid]: {
+      ...type,
+      label: newTypeLabel,
+    },
   };
 }
 
-export default function Type({ relationships, category, onChange }) {
-  const roles = get(relationships, category, []);
+function addRole(relationships, typeGuid) {
+  const type = get(relationships, typeGuid, {});
+  const currentRoles = type?.roles || [];
+  return {
+    ...relationships,
+    [typeGuid]: {
+      ...type,
+      roles: [...currentRoles, { guid: uuid(), label: '' }],
+    },
+  };
+}
+
+export default function Type({ relationships, type, onChange }) {
+  const typeLabel = type?.label || '';
+  const typeGuid = type?.guid;
+  const roles = get(type, 'roles', []);
+
   return (
     <div style={{ marginTop: 10 }}>
       <TextInput
         width={240}
         schema={{ labelId: 'TYPE' }}
-        onChange={newName => {
-          onChange(
-            updateCategoryName(relationships, category, newName),
-          );
+        onChange={newLabel => {
+          onChange(updateType(relationships, typeGuid, newLabel));
         }}
-        value={category}
+        value={typeLabel}
         autoFocus
         InputProps={{
           endAdornment: (
@@ -53,14 +58,14 @@ export default function Type({ relationships, category, onChange }) {
               <IconButton
                 size="small"
                 onClick={() => {
-                  onChange(addRole(relationships, category));
+                  onChange(addRole(relationships, typeGuid));
                 }}
               >
                 <NewChildIcon />
               </IconButton>
               <DeleteButton
                 onClick={() => {
-                  onChange(deleteCategory(relationships, category));
+                  onChange(deleteType(relationships, typeGuid));
                 }}
               />
             </InputAdornment>
@@ -69,8 +74,9 @@ export default function Type({ relationships, category, onChange }) {
       />
       {roles.map(role => (
         <Role
+          key={role?.guid}
           relationships={relationships}
-          category={category}
+          typeGuid={typeGuid}
           value={role}
           onChange={onChange}
         />

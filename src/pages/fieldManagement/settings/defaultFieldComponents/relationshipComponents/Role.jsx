@@ -6,44 +6,71 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import TextInput from '../../../../../components/inputs/TextInput';
 import DeleteButton from '../../../../../components/DeleteButton';
 
-function deleteRole(relationships, category, role) {
-  const currentRoles = get(relationships, category, []);
-  const newRoles = currentRoles.filter(entry => entry !== role);
-  relationships[category] = newRoles;
+function deleteRole(relationships, typeGuid, roleGuid) {
+  const currentType = get(relationships, typeGuid);
+  const currentRoles = currentType?.roles;
+  if (currentType && currentRoles) {
+    const newRoles = currentRoles.filter(r => r?.guid !== roleGuid);
+    return {
+      ...relationships,
+      [typeGuid]: {
+        ...currentType,
+        roles: newRoles,
+      },
+    };
+  }
   return relationships;
 }
 
-function updateRole(
+function updateRoleLabel(
   relationships,
-  category,
-  oldRoleName,
-  newRoleName,
+  typeGuid,
+  roleGuid,
+  newRoleLabel,
 ) {
-  const currentRoles = get(relationships, category);
-
-  const oldRoleIndex = currentRoles?.indexOf(oldRoleName);
-  if (oldRoleIndex > -1) currentRoles[oldRoleIndex] = newRoleName;
-  relationships[category] = currentRoles;
+  const currentType = get(relationships, typeGuid);
+  const currentRoles = currentType?.roles;
+  if (currentType && currentRoles) {
+    const newRoles = currentRoles.map(r => {
+      if (r?.guid === roleGuid) return { ...r, label: newRoleLabel };
+      return r;
+    });
+    return {
+      ...relationships,
+      [typeGuid]: {
+        ...currentType,
+        roles: newRoles,
+      },
+    };
+  }
   return relationships;
 }
 
 export default function Role({
   relationships,
-  category,
+  typeGuid,
   value,
   onChange,
 }) {
+  const roleGuid = value?.guid;
+  const roleLabel = value?.label || '';
+
   return (
     <div style={{ marginLeft: 32, marginTop: 10 }}>
       <TextInput
         width={240}
         schema={{ labelId: 'ROLE' }}
-        onChange={newValue => {
+        onChange={newLabel => {
           onChange(
-            updateRole(relationships, category, value, newValue),
+            updateRoleLabel(
+              relationships,
+              typeGuid,
+              roleGuid,
+              newLabel,
+            ),
           );
         }}
-        value={value}
+        value={roleLabel}
         autoFocus
         InputProps={{
           endAdornment: (
@@ -51,7 +78,7 @@ export default function Role({
               <DeleteButton
                 onClick={() => {
                   onChange(
-                    deleteRole(relationships, category, value),
+                    deleteRole(relationships, typeGuid, roleGuid),
                   );
                 }}
               />
