@@ -3,40 +3,36 @@ import { get } from 'lodash-es';
 
 import TreeEditor from './TreeEditor';
 import ConfigureDefaultField from './ConfigureDefaultField';
+import RelationshipEditorCore from './RelationshipEditorCore';
 
-export function RelationshipEditor() {
-  return null;
+export function RelationshipEditor({
+  onClose,
+  onSubmit,
+  formSettings,
+  setFormSettings,
+  children,
+  ...rest
+}) {
+  const transformedRelationshipOptions = get(
+    formSettings,
+    'relationships',
+    formSettings,
+  );
+
+  return (
+    <ConfigureDefaultField onClose={onClose} onSubmit={onSubmit} open>
+      <RelationshipEditorCore
+        schema={{ labelId: 'RELATIONSHIPS' }}
+        value={transformedRelationshipOptions}
+        onChange={relationships => {
+          setFormSettings({ relationships });
+        }}
+        {...rest}
+      />
+      {children}
+    </ConfigureDefaultField>
+  );
 }
-
-// export function RelationshipEditor({
-//   onClose,
-//   onSubmit,
-//   formSettings,
-//   setFormSettings,
-//   ...rest
-// }) {
-//   const speciesOptions = get(formSettings, 'relationships', []);
-
-//   return (
-//     <OptionEditor
-//       open
-//       onClose={onClose}
-//       onSubmit={onSubmit}
-//       schema={{
-//         labelId: 'EDIT_RELATIONSHIPS',
-//         descriptionId: 'EDIT_RELATIONSHIPS_DESCRIPTION',
-//       }}
-//       value={speciesOptions}
-//       onChange={newOptions => {
-//         setFormSettings({
-//           ...formSettings,
-//           relationships: newOptions,
-//         });
-//       }}
-//       {...rest}
-//     />
-//   );
-// }
 
 export function RegionEditor({
   onClose,

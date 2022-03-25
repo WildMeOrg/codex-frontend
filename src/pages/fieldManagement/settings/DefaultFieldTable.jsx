@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
-import { get } from 'lodash-es';
+import { get, reduce } from 'lodash-es';
 
 import Grid from '@material-ui/core/Grid';
 import CustomAlert from '../../../components/Alert';
@@ -34,7 +34,7 @@ const configurableFields = [
   },
   {
     id: 'relationship',
-    backendPath: 'site.general.relationships',
+    backendPath: 'relationship_type_roles',
     labelId: 'RELATIONSHIP',
     type: categoryTypes.individual,
     Editor: RelationshipEditor,
@@ -46,7 +46,7 @@ function getInitialFormState(siteSettings) {
   const species = get(siteSettings, ['site.species', 'value'], []);
   const relationships = get(
     siteSettings,
-    ['site.general.relationships', 'value'],
+    ['relationship_type_roles', 'value'],
     [],
   );
 
@@ -114,22 +114,56 @@ export default function DefaultFieldTable({
             setFormSettings(getInitialFormState(siteSettings));
             onCloseEditor();
           }}
-          onSubmit={() => {
-            if (editField.id === 'region') {
-              putSiteSetting(
+          onSubmit={async () => {
+            if (editField?.id === 'region') {
+              const success = await putSiteSetting(
                 editField.backendPath,
                 formSettings.regions,
-              ).then(success => {
-                if (success) onCloseEditor();
-              });
+              );
+              if (success) onCloseEditor();
             }
-            if (editField.id === 'species') {
-              putSiteSetting(
+            if (editField?.id === 'species') {
+              const success = await putSiteSetting(
                 editField.backendPath,
                 formSettings.species,
-              ).then(success => {
-                if (success) onCloseEditor();
-              });
+              );
+              if (success) onCloseEditor();
+            }
+            if (editField?.id === 'relationship') {
+              const newSettings = reduce(
+                formSettings.relationships,
+                (memo, currentRelationships, key) => {
+                  const dedupedRelationships = currentRelationships.filter(
+                    (entry, index) => {
+                      return (
+                        currentRelationships.indexOf(entry) === index
+                      );
+                    },
+                  );
+                  if (
+                    currentRelationships.length >
+                    dedupedRelationships.length
+                  ) {
+                    alert(
+                      intl.formatMessage({
+                        id:
+                          'DUPLICATE_RELATIONSHIPS_FOUND_AND_REMOVED',
+                      }),
+                    );
+                  }
+                  return { ...memo, [key]: dedupedRelationships };
+                },
+                {},
+              );
+              const newSiteSettings = {
+                relationships: { ...newSettings },
+              };
+              formSettings.relationships = newSiteSettings; // TODO I know that this is bad practice, but just passing newSiteSettings below did not seem to do the trick, and I don't know why
+              const success = await putSiteSetting(
+                editField.backendPath,
+                formSettings.relationships,
+              );
+              if (success) onCloseEditor();
             }
           }}
         >
