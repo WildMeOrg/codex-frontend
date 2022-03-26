@@ -55,7 +55,7 @@ export default function Individual() {
       const queryKey = getIndividualQueryKey(id);
       queryClient.invalidateQueries(queryKey);
     },
-    [queryClient],
+    [queryClient, id],
   );
 
   const metadata = useMemo(

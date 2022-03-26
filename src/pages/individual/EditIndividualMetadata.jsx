@@ -124,7 +124,9 @@ export default function EditIndividualMetadata({
           <CustomAlert severity="error" titleId="SUBMISSION_ERROR">
             {formErrors.length > 0 &&
               formErrors.map(formError => (
-                <Text variant="body2">{formError}</Text>
+                <Text key={formError} variant="body2">
+                  {formError}
+                </Text>
               ))}
             {patchIndividualError && (
               <Text variant="body2">{patchIndividualError}</Text>
@@ -177,7 +179,6 @@ export default function EditIndividualMetadata({
             setFormErrors(requiredFieldErrors);
             if (requiredFieldErrors.length > 0) return;
 
-            const names = [];
             // Always include the defaultName. If it does not already exist, add it.
             // Otherwise, replace it.
             const defaultNameGuid = deriveNameGuid(
@@ -195,7 +196,8 @@ export default function EditIndividualMetadata({
                   value: defaultFieldValues.defaultName,
                   context: 'defaultName',
                 };
-            names.push(defaultNameProperty);
+
+            const names = [defaultNameProperty];
 
             // If there was a nickname, update it with whatever the value is now.
             // If there was not a nickname, but there is a value now, add it.
