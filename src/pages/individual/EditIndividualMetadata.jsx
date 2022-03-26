@@ -149,20 +149,22 @@ export default function EditIndividualMetadata({
             // validation
             const requiredFieldErrors = metadata.reduce(
               (memo, schema) => {
-                if (!schema?.required) return memo;
+                // TODO: Once custom fields can be edited, include them in validation
+                if (
+                  schema &&
+                  (!schema.required || schema.customField)
+                )
+                  return memo;
 
-                const formObject = schema.customField
-                  ? customFieldValues
-                  : defaultFieldValues;
+                if (!defaultFieldValues[schema.name]) {
+                  const fieldName = schema.labelId
+                    ? intl.formatMessage({ id: schema.labelId })
+                    : schema.label;
 
-                if (!formObject[schema.name]) {
-                  const intlFieldName = intl.formatMessage({
-                    id: schema.labelId,
-                  });
                   memo.push(
                     intl.formatMessage(
                       { id: 'IS_REQUIRED' },
-                      { field: intlFieldName },
+                      { field: fieldName },
                     ),
                   );
                 }
