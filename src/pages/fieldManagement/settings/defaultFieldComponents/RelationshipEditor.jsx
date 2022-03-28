@@ -8,7 +8,7 @@ import Text from '../../../../components/Text';
 import Alert from '../../../../components/Alert';
 import Type from './relationshipComponents/Type';
 
-function createCategory(relationships) {
+function createType(relationships) {
   const newRelationshipGuid = uuid();
   return {
     ...relationships,
@@ -20,7 +20,7 @@ function validateRelationships(relationships) {
   let errors = [];
   const types = Object.values(relationships);
   const typeLabels = types.map(t => t?.label);
-  const emptyTypeLabels = typeLabels.filter(label => label === '');
+  const emptyTypeLabels = typeLabels.filter(label => !label);
   if (emptyTypeLabels.length > 0)
     errors.push('One or more relationship types are missing labels.');
   const uniqueTypeLabels = uniq(typeLabels);
@@ -31,7 +31,11 @@ function validateRelationships(relationships) {
   types.forEach(type => {
     const typeLabel = type?.label;
     const roleLabels = get(type, 'roles', []).map(r => r?.label);
-    const emptyRoleLabels = roleLabels.filter(label => label === '');
+    if (roleLabels.length === 0)
+      errors.push(
+        `Each relationship type must have at least one role.`,
+      );
+    const emptyRoleLabels = roleLabels.filter(label => !label);
     if (emptyRoleLabels.length > 0)
       errors.push(
         `One or more roles for the type ${typeLabel} are missing labels.`,
@@ -54,7 +58,7 @@ export default function RelationshipEditor({
   const [formErrors, setFormErrors] = useState(null);
 
   function setRelationships(relationships) {
-    setFormSettings({ relationships });
+    setFormSettings({ ...formSettings, relationships });
   }
 
   const relationships = get(formSettings, ['relationships'], {});
@@ -79,7 +83,7 @@ export default function RelationshipEditor({
         <Text variant="h5" id="RELATIONSHIP_EDITOR" />
         <Button
           onClick={() => {
-            setRelationships(createCategory(relationships));
+            setRelationships(createType(relationships));
           }}
           style={{ width: 200 }}
           size="small"
@@ -105,7 +109,9 @@ export default function RelationshipEditor({
       {formErrors && (
         <Alert severity="error" titleId="AN_ERROR_OCCURRED">
           {formErrors.map(error => (
-            <Text variant="body2">{error}</Text>
+            <Text key={error} variant="body2">
+              {error}
+            </Text>
           ))}
         </Alert>
       )}

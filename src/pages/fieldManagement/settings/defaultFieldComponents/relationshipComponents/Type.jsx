@@ -41,6 +41,7 @@ export default function Type({ relationships, type, onChange }) {
   const typeLabel = type?.label || '';
   const typeGuid = type?.guid;
   const roles = get(type, 'roles', []);
+  const safeRoles = roles.filter(r => r?.guid);
 
   return (
     <div style={{ marginTop: 10 }}>
@@ -72,9 +73,9 @@ export default function Type({ relationships, type, onChange }) {
           ),
         }}
       />
-      {roles.map(role => (
+      {safeRoles.map(role => (
         <Role
-          key={role?.guid}
+          key={role.guid}
           relationships={relationships}
           typeGuid={typeGuid}
           value={role}
