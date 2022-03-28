@@ -66,9 +66,10 @@ export default function useMutate({
         ...fetchKeys,
         ...deriveFetchKeys(mutationArgs),
       ];
-      fetches.forEach(async queryKey => {
+
+      for (const queryKey of fetches) {
         await queryClient.refetchQueries(queryKey);
-      });
+      }
 
       if (displayedError) setDisplayedError(null);
       setSuccess(true);
