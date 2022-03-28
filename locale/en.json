@@ -997,5 +997,6 @@
   "DETACH_ENCOUNTER_FROM_INDIVIDUAL_DISABLED": "Cannot detach the final sighting from this individual",
   "RELATIONSHIP_EDITOR": "Relationship editor",
   "NEW_RELATIONSHIP": "Add relationship category",
-  "DUPLICATE_RELATIONSHIPS_FOUND_AND_REMOVED": "Duplicate relationships in one or more categories identified and removed"
+  "DUPLICATE_RELATIONSHIPS_FOUND_AND_REMOVED": "Duplicate relationships in one or more categories identified and removed",
+  "UNNAMED_INDIVIDUAL": "Unnamed individual"
 }

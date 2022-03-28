@@ -90,12 +90,12 @@ export default function Individual() {
       deriveIndividualName(
         individualData,
         'defaultName',
-        'Unnamed individual',
+        intl.formatMessage({ id: 'UNNAMED_INDIVIDUAL' }),
       ),
       deriveIndividualName(
         individualData,
         'nickname',
-        'Unnamed individual',
+        intl.formatMessage({ id: 'UNNAMED_INDIVIDUAL' }),
       ),
     ],
     [individualData],
