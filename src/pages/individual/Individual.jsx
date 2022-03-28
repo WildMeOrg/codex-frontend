@@ -106,11 +106,11 @@ export default function Individual() {
     ).filter(entry => entry?.number < 9);
     return assetSourcesFromAnnotations;
   }); // TODO check that it works if there's more than one encounter after the "can't add a second encounter to an individual" issue is resolved
-  console.log('deleteMe assetSources are: ');
-  console.log(assetSources);
   console.log('deleteMe fakeAssets are: ');
   console.log(fakeAssets);
   assetSources = fakeAssets.filter(entry => entry?.number < 9);
+  console.log('deleteMe assetSources are: ');
+  console.log(assetSources);
 
   const [defaultName, nickname] = useMemo(
     () => [
