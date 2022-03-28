@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { get, set, pick } from 'lodash-es';
+import { useIntl } from 'react-intl';
+import { get, set } from 'lodash-es';
 
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -9,6 +10,14 @@ import CustomAlert from '../../components/Alert';
 import InputRow from '../../components/fields/edit/InputRow';
 import Button from '../../components/Button';
 import StandardDialog from '../../components/StandardDialog';
+import Text from '../../components/Text';
+
+function deriveNameGuid(metadata, schemaName) {
+  const foundSchema = metadata.find(
+    schema => schema.name === schemaName,
+  );
+  return foundSchema?.nameGuid;
+}
 
 function getInitialFormValues(schema, fieldKey) {
   return schema.reduce((memo, field) => {
@@ -30,11 +39,13 @@ export default function EditIndividualMetadata({
   onClose,
   refreshIndividualData,
 }) {
+  const intl = useIntl();
+
   const {
     updateIndividualProperties,
     loading,
-    error,
-    setError,
+    error: patchIndividualError,
+    setError: setPatchIndividualError,
   } = usePatchIndividual();
 
   // hotfix //
@@ -55,6 +66,11 @@ export default function EditIndividualMetadata({
   const [customFieldValues, setCustomFieldValues] = useState(
     getInitialFormValues(customFieldMetadata, 'id'),
   );
+
+  const [formErrors, setFormErrors] = useState([]);
+
+  const showErrorAlert =
+    patchIndividualError || formErrors.length > 0;
 
   return (
     <StandardDialog
@@ -104,9 +120,17 @@ export default function EditIndividualMetadata({
           );
         })}
 
-        {error && (
+        {showErrorAlert && (
           <CustomAlert severity="error" titleId="SUBMISSION_ERROR">
-            {error}
+            {formErrors.length > 0 &&
+              formErrors.map(formError => (
+                <Text key={formError} variant="body2">
+                  {formError}
+                </Text>
+              ))}
+            {patchIndividualError && (
+              <Text variant="body2">{patchIndividualError}</Text>
+            )}
           </CustomAlert>
         )}
       </DialogContent>
@@ -114,7 +138,8 @@ export default function EditIndividualMetadata({
         <Button
           display="basic"
           onClick={() => {
-            setError(null);
+            setPatchIndividualError(null);
+            setFormErrors([]);
             onClose();
           }}
           id="CANCEL"
@@ -123,12 +148,80 @@ export default function EditIndividualMetadata({
           loading={loading}
           display="primary"
           onClick={async () => {
-            const currentPatchableValues = pick(defaultFieldValues, [
-              'names',
-            ]);
+            // validation
+            const requiredFieldErrors = metadata.reduce(
+              (memo, schema) => {
+                // TODO: Once custom fields can be edited, include them in validation
+                if (
+                  schema &&
+                  (!schema.required || schema.customField)
+                )
+                  return memo;
+
+                if (!defaultFieldValues[schema.name]) {
+                  const fieldName = schema.labelId
+                    ? intl.formatMessage({ id: schema.labelId })
+                    : schema.label;
+
+                  memo.push(
+                    intl.formatMessage(
+                      { id: 'IS_REQUIRED' },
+                      { field: fieldName },
+                    ),
+                  );
+                }
+
+                return memo;
+              },
+              [],
+            );
+
+            setFormErrors(requiredFieldErrors);
+            if (requiredFieldErrors.length > 0) return;
+
+            // Always include the defaultName. If it does not already exist, add it.
+            // Otherwise, replace it.
+            const defaultNameGuid = deriveNameGuid(
+              metadata,
+              'defaultName',
+            );
+            const defaultNameProperty = defaultNameGuid
+              ? {
+                  op: 'replace',
+                  value: defaultFieldValues.defaultName,
+                  guid: defaultNameGuid,
+                }
+              : {
+                  op: 'add',
+                  value: defaultFieldValues.defaultName,
+                  context: 'defaultName',
+                };
+
+            const names = [defaultNameProperty];
+
+            // If there was a nickname, update it with whatever the value is now.
+            // If there was not a nickname, but there is a value now, add it.
+            // If a nickname did not already exist, don't add it.
+            const nicknameGuid = deriveNameGuid(metadata, 'nickname');
+            const nicknameFieldValue = defaultFieldValues.nickname;
+            if (nicknameGuid) {
+              names.push({
+                op: 'replace',
+                value: nicknameFieldValue,
+                guid: nicknameGuid,
+              });
+            } else if (nicknameFieldValue) {
+              names.push({
+                op: 'add',
+                value: nicknameFieldValue,
+                context: 'nickname',
+              });
+            }
+
+            const properties = { sex: defaultFieldValues.sex, names };
             const successfulUpdate = await updateIndividualProperties(
               individualId,
-              currentPatchableValues,
+              properties,
             );
             if (successfulUpdate) {
               refreshIndividualData();
