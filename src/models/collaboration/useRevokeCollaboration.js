@@ -56,7 +56,7 @@ export default function useRevokeCollaboration() {
     isError,
     isLoading,
     error: collabPatchError,
-  } = revokeCollaboration;
+  } = mutation;
 
   const error = collabPatchError
     ? collabPatchError.toJSON().message

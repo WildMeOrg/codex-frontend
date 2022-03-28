@@ -1,9 +1,7 @@
 import React from 'react';
-import { useQueryClient } from 'react-query';
 import { get } from 'lodash-es';
 
 import usePatchCollaboration from '../../../models/collaboration/usePatchCollaboration';
-import queryKeys from '../../../constants/queryKeys';
 import { notificationSchema } from '../../../constants/notificationSchema';
 import NotificationDetailsDialog from '../NotificationDetailsDialog';
 
@@ -12,7 +10,6 @@ export default function NotificationCollaborationEditRequestDialog({
   onClose,
   notification,
 }) {
-  const queryClient = useQueryClient();
   const notificationType = notification?.message_type;
   const currentNotificationSchema = get(
     notificationSchema,
@@ -39,10 +36,7 @@ export default function NotificationCollaborationEditRequestDialog({
         },
       ],
     });
-    if (response?.status === 200) {
-      onClose();
-      queryClient.invalidateQueries(queryKeys.me);
-    }
+    if (response?.status === 200) onClose();
   };
   const onClickDecline = async () => {
     const response = await patchCollaboration({
