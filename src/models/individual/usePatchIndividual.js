@@ -53,11 +53,27 @@ export default function usePatchIndividual() {
     individualId,
     dictionary,
   ) => {
-    const operations = Object.keys(dictionary).map(propertyKey => ({
-      op: 'replace',
-      path: `/${propertyKey}`,
-      value: dictionary[propertyKey],
-    }));
+    // names must be handled separately because (1) multiple request with the path /names could be
+    // required, and (2) a name may need to be added or replaced.
+    const { names = [], ...dictionaryWithoutNames } = dictionary;
+
+    let operations = Object.keys(dictionaryWithoutNames).map(
+      propertyKey => ({
+        op: 'replace',
+        path: `/${propertyKey}`,
+        value: dictionaryWithoutNames[propertyKey],
+      }),
+    );
+
+    if (names.length > 0) {
+      const nameOperations = names.map(({ op, ...value }) => ({
+        op,
+        path: '/names',
+        value,
+      }));
+      operations = [...operations, ...nameOperations];
+    }
+
     return patchIndividual(individualId, operations);
   };
 

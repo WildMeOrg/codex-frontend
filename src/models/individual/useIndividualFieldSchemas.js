@@ -9,21 +9,7 @@ import {
   createCustomFieldSchema,
 } from '../../utils/fieldUtils';
 import { defaultIndividualCategories } from '../../constants/fieldCategories';
-
-const statusChoices = [
-  {
-    value: 'alive',
-    labelId: 'ALIVE',
-  },
-  {
-    value: 'dead',
-    labelId: 'DEAD',
-  },
-  {
-    value: 'unknown',
-    labelId: 'UNKNOWN',
-  },
-];
+import { deriveIndividualName } from '../../utils/nameUtils';
 
 export default function useIndividualFieldSchemas() {
   const {
@@ -58,6 +44,8 @@ export default function useIndividualFieldSchemas() {
           requiredForIndividualCreation: true,
           required: true,
           defaultValue: '',
+          getValue: (_, individualData) =>
+            deriveIndividualName(individualData, 'defaultName', ''),
         }),
         createFieldSchema(fieldTypes.string, {
           name: 'nickname',
@@ -65,6 +53,8 @@ export default function useIndividualFieldSchemas() {
           category: defaultIndividualCategories.general.name,
           requiredForIndividualCreation: true,
           defaultValue: '',
+          getValue: (_, individualData) =>
+            deriveIndividualName(individualData, 'nickname', ''),
         }),
         createFieldSchema(fieldTypes.select, {
           name: 'sex',
@@ -73,14 +63,6 @@ export default function useIndividualFieldSchemas() {
           choices: sexOptions,
           requiredForIndividualCreation: true,
           defaultValue: null,
-        }),
-        createFieldSchema(fieldTypes.select, {
-          name: 'status',
-          labelId: 'STATUS',
-          category: defaultIndividualCategories.general.name,
-          choices: statusChoices,
-          requiredForIndividualCreation: true,
-          defaultValue: '',
         }),
         ...customFieldSchemas,
       ];

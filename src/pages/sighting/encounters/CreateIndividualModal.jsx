@@ -133,6 +133,7 @@ export default function CreateIndividualModal({
                 });
               const individualData = {
                 names,
+                sex: formState?.sex,
               };
               const newId = await postIndividual(
                 individualData,
