@@ -8,7 +8,7 @@ const fakeAssets = [
   {
     id: 2,
     src:
-      'http://prod-upp-image-read.ft.com/c963f918-05a5-11e7-aa5b-6bb07f5c8e12',
+      'https://i.etsystatic.com/13815421/r/il/67160e/2957884734/il_1588xN.2957884734_fj41.jpg',
     filename: 'Zebra',
   },
   {
