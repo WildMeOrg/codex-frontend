@@ -90,25 +90,27 @@ export default function Individual() {
   const names = individualData?.names || [];
   const encounters = get(individualData, 'encounters', []);
 
-  const assetSources = map(encounters, encounter => {
+  // TODO make the below a const when ready
+  let assetSources = map(encounters, encounter => {
     const annotations = get(encounter, 'annotations');
     const assetSourcesFromAnnotations = map(
       annotations,
       (annotation, index) => ({
         number: index,
-        id: annotation?.id,
+        id: annotation?.asset_guid,
         src: annotation?.asset_src,
         alt: annotation?.created
           ? 'Annotation created: ' + annotation?.created
           : 'Annotation image with no creation date',
       }),
-    ); //.filter(entry => entry?.number < 9);
+    ).filter(entry => entry?.number < 9);
     return assetSourcesFromAnnotations;
   }); // TODO check that it works if there's more than one encounter after the "can't add a second encounter to an individual" issue is resolved
   console.log('deleteMe assetSources are: ');
   console.log(assetSources);
   console.log('deleteMe fakeAssets are: ');
   console.log(fakeAssets);
+  assetSources = fakeAssets.filter(entry => entry?.number < 9);
 
   const [defaultName, nickname] = useMemo(
     () => [
@@ -245,7 +247,7 @@ export default function Individual() {
               { id: 'PHOTOS_OF' },
               { name: defaultName },
             )}
-            assets={fakeAssets}
+            assets={assetSources}
           />
           <MetadataCard
             editable
