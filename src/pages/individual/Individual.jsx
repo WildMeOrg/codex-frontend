@@ -94,8 +94,15 @@ export default function Individual() {
     const annotations = get(encounter, 'annotations');
     const assetSourcesFromAnnotations = map(
       annotations,
-      annotation => annotation?.asset_src,
-    );
+      (annotation, index) => ({
+        number: index,
+        id: annotation?.id,
+        src: annotation?.asset_src,
+        alt: annotation?.created
+          ? 'Annotation created: ' + annotation?.created
+          : 'Annotation image with no creation date',
+      }),
+    ); //.filter(entry => entry?.number < 9);
     return assetSourcesFromAnnotations;
   }); // TODO check that it works if there's more than one encounter after the "can't add a second encounter to an individual" issue is resolved
   console.log('deleteMe assetSources are: ');

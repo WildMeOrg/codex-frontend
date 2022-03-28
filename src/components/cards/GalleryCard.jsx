@@ -29,7 +29,7 @@ export default function GalleryCard({
       >
         {assets.map(asset => (
           <ImageListItem key={asset.id} cols={1}>
-            <img src={asset.src} alt={asset.filename} />
+            <img src={asset.src} alt={asset.alt} />
           </ImageListItem>
         ))}
       </ImageList>
