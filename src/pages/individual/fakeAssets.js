@@ -2,7 +2,7 @@ const fakeAssets = [
   {
     number: 1,
     src:
-      'https://i.etsystatic.com/15105231/r/il/ccb5ee/2368432547/il_1588xN.2368432547_ckhh.jpg',
+      'https://markfisherstestbucket.s3.amazonaws.com/testPrint.jpeg',
     alt: 'Zebra',
   },
   {
