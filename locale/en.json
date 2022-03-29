@@ -998,5 +998,6 @@
   "RELATIONSHIP_EDITOR": "Relationship editor",
   "NEW_RELATIONSHIP": "Add relationship category",
   "DUPLICATE_RELATIONSHIPS_FOUND_AND_REMOVED": "Duplicate relationships in one or more categories identified and removed",
-  "UNNAMED_INDIVIDUAL": "Unnamed individual"
+  "UNNAMED_INDIVIDUAL": "Unnamed individual",
+  "FEATURED_ASSET": "Featured asset"
 }

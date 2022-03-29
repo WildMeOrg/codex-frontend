@@ -123,14 +123,10 @@ export default function Individual() {
   const [deletingIndividual, setDeletingIndividual] = useState(false);
   const [deleteEncounterId, setDeleteEncounterId] = useState(null);
   const nicknameIsLegitimate =
-    nickname ===
+    nickname !==
     intl.formatMessage({
       id: 'UNNAMED_INDIVIDUAL',
     });
-
-  console.log(
-    'deleteMe nicknameIsLegitimate is: ' + nicknameIsLegitimate,
-  );
 
   if (loading) return <LoadingScreen />;
 
@@ -220,7 +216,9 @@ export default function Individual() {
           </div>
         }
       >
-        {nickname && <Text>{`Also known as ${nickname}.`}</Text>}
+        {nicknameIsLegitimate && (
+          <Text>{`Also known as ${nickname}.`}</Text>
+        )}
       </EntityHeader>
       <div style={{ display: 'flex', flexWrap: 'wrap' }}>
         <CardContainer size="small">

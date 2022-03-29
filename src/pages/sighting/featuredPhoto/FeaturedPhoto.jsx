@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useIntl } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { get } from 'lodash-es';
 
@@ -14,6 +14,7 @@ export default function FeaturedPhoto({
   defaultPhotoSrc = defaultProfilePhotoSrc,
   size = 150,
 }) {
+  const intl = useIntl();
   const theme = useTheme();
   const [hovered, setHovered] = useState(false);
   const [
@@ -23,6 +24,8 @@ export default function FeaturedPhoto({
   const assets = get(data, 'assets', []);
   const editable = assets.length > 1;
   const featuredPhotoGuid = get(data, ['featuredAssetGuid']);
+  console.log('deleteMe assets are: ');
+  console.log(assets);
   const featuredPhoto = assets.find(
     a => a.guid === featuredPhotoGuid,
   );
@@ -46,16 +49,11 @@ export default function FeaturedPhoto({
         onClose={() => setSelectingFeaturedPhoto(false)}
       />
       {loading ? (
-        <div
-          style={{
-            width: size,
-            height: size,
-          }}
-        />
+        <div style={{ width: size, height: size }} />
       ) : (
         <img
           src={featuredPhotoSrc || defaultPhotoSrc}
-          alt="Featured asset"
+          alt={intl.formatMessage({ id: 'FEATURED_ASSET' })}
           style={{
             objectFit: 'cover',
             width: size,
