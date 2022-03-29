@@ -5,6 +5,6 @@ export default function useRequestCollaboration() {
   return usePost({
     url: '/collaborations/',
     deriveData: ({ userGuid }) => ({ user_guid: userGuid }),
-    queryKeys: [queryKeys.me],
+    fetchKeys: [queryKeys.me],
   });
 }

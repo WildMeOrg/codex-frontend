@@ -21,7 +21,7 @@ export function useReplaceUserProperty() {
   return usePatch({
     deriveUrl: ({ userGuid }) => `/users/${userGuid}`,
     deriveData: ({ path, value }) => [{ op: 'replace', path, value }],
-    deriveQueryKeys: ({ userGuid }) => [
+    deriveFetchKeys: ({ userGuid }) => [
       getUserQueryKey(userGuid),
       queryKeys.me,
       queryKeys.users,
@@ -41,7 +41,7 @@ export function useReplaceUserProperties() {
       const passwordTest = getPasswordTest(password);
       return [...passwordTest, ...propertyData];
     },
-    deriveQueryKeys: ({ userGuid }) => [
+    deriveFetchKeys: ({ userGuid }) => [
       getUserQueryKey(userGuid),
       queryKeys.me,
       queryKeys.users,
@@ -57,7 +57,7 @@ export function useRemoveUserProperty() {
       const passwordTest = getPasswordTest(password);
       return [...passwordTest, ...propertyPatch];
     },
-    deriveQueryKeys: ({ userGuid }) => [
+    deriveFetchKeys: ({ userGuid }) => [
       getUserQueryKey(userGuid),
       queryKeys.me,
       queryKeys.users,

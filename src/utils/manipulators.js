@@ -32,18 +32,3 @@ export const mergeItemById = (inputItem, inputArray) => {
     ...takeRight(inputArray, inputArray.length - matchIndex - 1),
   ];
 };
-
-export const getNthAlphabeticalMemberObjAndMakeLodashReady = (
-  obj,
-  n,
-) => {
-  // derived from https://stackoverflow.com/questions/39483677/how-to-get-first-n-elements-of-an-object-using-lodash
-  const memberObject = Object.keys(obj)
-    .sort()
-    .slice(n - 1, n)
-    .reduce((memo, current) => obj[current], {});
-  // Convert empty strings to undefined so that they get handled appropriately by lodash get later omg this is so silly
-  if (get(memberObject, 'full_name') === '')
-    memberObject.full_name = undefined;
-  return memberObject;
-};
