@@ -32,18 +32,16 @@ function validateRelationships(relationships) {
     const typeLabel = type?.label;
     const roleLabels = get(type, 'roles', []).map(r => r?.label);
     if (roleLabels.length === 0)
-      errors.push(
-        `Each relationship type must have at least one role.`,
-      );
+      errors.push(`Type "${typeLabel}" must have at least one role.`);
     const emptyRoleLabels = roleLabels.filter(label => !label);
     if (emptyRoleLabels.length > 0)
       errors.push(
-        `One or more roles for the type ${typeLabel} are missing labels.`,
+        `One or more roles for the type "${typeLabel}" are missing labels.`,
       );
     const uniqueRoleLabels = uniq(roleLabels);
     if (uniqueRoleLabels.length !== roleLabels.length)
       errors.push(
-        `Two or more roles for the type ${typeLabel} have the same label. Make sure each label is different.`,
+        `Two or more roles for the type "${typeLabel}" have the same label. Make sure each label is different.`,
       );
   });
   return errors.length > 0 ? errors : null;
