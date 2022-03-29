@@ -20,7 +20,7 @@ import MoreMenu from '../../components/MoreMenu';
 import EntityHeader from '../../components/EntityHeader';
 import MainColumn from '../../components/MainColumn';
 import SadScreen from '../../components/SadScreen';
-import Button from '../../components/Button';
+// import Button from '../../components/Button';
 import Text from '../../components/Text';
 import CardContainer from '../../components/cards/CardContainer';
 import EncountersCard from '../../components/cards/EncountersCard';
@@ -192,7 +192,7 @@ export default function Individual() {
         }
         renderOptions={
           <div style={{ display: 'flex' }}>
-            <Button display="primary">SUBSCRIBE</Button>
+            {/* <Button display="primary">SUBSCRIBE</Button> */}
             <MoreMenu
               menuId="individual-actions"
               items={[
