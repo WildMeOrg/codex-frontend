@@ -122,6 +122,15 @@ export default function Individual() {
   const [merging, setMerging] = useState(false);
   const [deletingIndividual, setDeletingIndividual] = useState(false);
   const [deleteEncounterId, setDeleteEncounterId] = useState(null);
+  const nicknameIsLegitimate =
+    nickname ===
+    intl.formatMessage({
+      id: 'UNNAMED_INDIVIDUAL',
+    });
+
+  console.log(
+    'deleteMe nicknameIsLegitimate is: ' + nicknameIsLegitimate,
+  );
 
   if (loading) return <LoadingScreen />;
 
