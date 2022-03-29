@@ -45,7 +45,7 @@ export default function NotificationCollaborationRequestDialog({
         {
           op: 'replace',
           path,
-          value: 'declined',
+          value: 'denied',
         },
       ],
     });

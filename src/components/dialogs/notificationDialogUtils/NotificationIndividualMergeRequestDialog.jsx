@@ -38,7 +38,6 @@ export default function NotificationIndividualMergeDialog({
     });
     if (response?.status === 200) onClose();
   };
-
   const onClickDecline = async () => {
     const temp = 'changeMe';
     const response = await patchCollaboration({
@@ -48,7 +47,7 @@ export default function NotificationIndividualMergeDialog({
         {
           op: 'replace',
           path,
-          value: 'declined',
+          value: 'denied',
         },
       ],
     });
