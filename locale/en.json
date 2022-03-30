@@ -13,6 +13,7 @@
   "TYPE": "Type",
   "FOREST": "Forest",
   "DATA_UNAVAILABLE": "Data unavailable",
+  "DATA_MANAGER": "Data Manager",
   "ANNOTATION_CLASS": "Annotation class",
   "INDIVIDUAL_METADATA": "Individual profile",
   "COMMIT": "Commit",
