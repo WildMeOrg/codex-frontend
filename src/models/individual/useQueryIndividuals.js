@@ -2,6 +2,29 @@ import { useState } from 'react';
 import axios from 'axios';
 import { get } from 'lodash-es';
 import { formatError } from '../../utils/formatters';
+import useFetch from '../../hooks/useFetch';
+import { getIndividualTermQueryKey } from '../../constants/queryKeys';
+
+export function useIndividualTermQuery(searchTerm) {
+  const query = {
+    query_string: {
+      query: `*${searchTerm.toLowerCase()}*`,
+      // fields: ['alias', 'name', 'id'],
+    },
+  };
+
+  console.log(searchTerm, query);
+
+  return useFetch({
+    method: 'post',
+    url: '/individuals/search',
+    queryKey: getIndividualTermQueryKey(searchTerm),
+    data: query,
+    queryOptions: {
+      enabled: Boolean(searchTerm),
+    },
+  });
+}
 
 export default function useQueryIndividuals() {
   const [error, setError] = useState(null);

@@ -18,7 +18,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import ExploreIcon from '@material-ui/icons/FilterList';
 
 import useOnEnter from '../../hooks/useOnEnter';
-import useQueryIndividuals from '../../models/individual/useQueryIndividuals';
+import { useIndividualTermQuery } from '../../models/individual/useQueryIndividuals';
 import Button from '../Button';
 import Text from '../Text';
 import Link from '../Link';
@@ -28,18 +28,17 @@ export default function IndividualsButton() {
   const theme = useTheme();
   const title = intl.formatMessage({ id: 'INDIVIDUALS' });
   const [anchorEl, setAnchorEl] = useState(null);
+  const [inputContent, setInputContent] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
 
   const {
     data: searchResults,
     loading,
     error,
-    searchTerm: lastSearchTerm,
-    queryIndividuals,
-  } = useQueryIndividuals();
+  } = useIndividualTermQuery(searchTerm);
 
   useOnEnter(() => {
-    if (searchTerm !== '') queryIndividuals(searchTerm);
+    if (inputContent !== '') setSearchTerm(inputContent);
   });
 
   const handleClose = () => {
@@ -49,7 +48,7 @@ export default function IndividualsButton() {
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
 
-  const resultsCurrent = lastSearchTerm === searchTerm;
+  const resultsCurrent = inputContent === searchTerm;
   const noResults = searchResults && searchResults.length === 0;
   const mappableSearchResults = resultsCurrent
     ? searchResults || []
@@ -120,9 +119,9 @@ export default function IndividualsButton() {
             placeholder:
               'Search for an individual by name, alias, or guid',
           }}
-          value={searchTerm}
+          value={inputContent}
           onChange={e => {
-            setSearchTerm(e.target.value);
+            setInputContent(e.target.value);
           }}
           fullWidth
         />

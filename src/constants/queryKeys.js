@@ -51,3 +51,7 @@ export function getAssetGroupQueryKey(id) {
 export function getNotificationQueryKey(id) {
   return ['notification', id];
 }
+
+export function getIndividualTermQueryKey(searchTerm) {
+  return ['individualSearch', searchTerm];
+}
