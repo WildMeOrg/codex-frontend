@@ -10,9 +10,10 @@ import CustomAlert from '../../components/Alert';
 import Text from '../../components/Text';
 import DataDisplay from '../../components/dataDisplays/DataDisplay';
 import ActionIcon from '../../components/ActionIcon';
-import usePatchCollaboration from '../../models/collaboration/usePatchCollaboration';
-import { getNthAlphabeticalMemberObjAndMakeLodashReady } from '../../utils/manipulators';
+import useRevokeCollaboration from '../../models/collaboration/useRevokeCollaboration';
 import queryKeys from '../../constants/queryKeys';
+
+const revokedPermission = 'revoked';
 
 export default function UserManagersCollaborationEditTable({
   inputData,
@@ -22,43 +23,18 @@ export default function UserManagersCollaborationEditTable({
   const queryClient = useQueryClient();
   const intl = useIntl();
   const [dismissed, setDismissed] = useState(false);
+
   const {
-    patchCollaborationsAsync,
+    revokeCollaboration,
     error,
     isLoading,
     isError,
     isSuccess,
-  } = usePatchCollaboration();
-  const collabEditPath = '/managed_view_permission';
-  const collabEditOp = 'replace';
-  const revokedPermission = 'revoked';
+  } = useRevokeCollaboration();
+
   async function processRevoke(collaboration) {
     setDismissed(false);
-    const collaborationData = [
-      {
-        op: collabEditOp,
-        path: collabEditPath,
-        value: {
-          user_guid: get(collaboration, 'userOneGuid'),
-          permission: revokedPermission,
-        },
-      },
-    ];
-    const collaborationDataTheOtherWay = [
-      {
-        op: collabEditOp,
-        path: collabEditPath,
-        value: {
-          user_guid: get(collaboration, 'userTwoGuid'),
-          permission: revokedPermission,
-        },
-      },
-    ];
-    const response = await patchCollaborationsAsync(
-      get(collaboration, 'guid'),
-      collaborationData,
-      collaborationDataTheOtherWay,
-    );
+    const response = await revokeCollaboration(collaboration);
     const allOk =
       get(response, ['0', 'status']) === 200 &&
       get(response, ['1', 'status']) === 200;
@@ -69,18 +45,16 @@ export default function UserManagersCollaborationEditTable({
   function tranformDataForCollabTable(originalData) {
     if (!originalData || originalData.length === 0) return null;
     return originalData
-      .map(entry => {
-        const member1 = getNthAlphabeticalMemberObjAndMakeLodashReady(
-          get(entry, 'members'),
-          1,
+      .map(collaboration => {
+        const collaborators = Object.values(
+          get(collaboration, 'members', {}),
         );
-        const member2 = getNthAlphabeticalMemberObjAndMakeLodashReady(
-          get(entry, 'members'),
-          2,
-        );
+        const member1 = get(collaborators, 0, {});
+        const member2 = get(collaborators, 1, {});
+
         // Note: the collaboration API call returned a members OBJECT instead of array of objects, which made some tranformation gymnastics here necessary
         return {
-          guid: get(entry, 'guid'),
+          guid: get(collaboration, 'guid'),
           userOne: get(member1, 'full_name', get(member1, 'email')),
           userOneGuid: get(member1, 'guid'),
           userTwo: get(member2, 'full_name', get(member2, 'email')),

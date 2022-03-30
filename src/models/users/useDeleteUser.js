@@ -17,6 +17,6 @@ export default function useDeleteUser() {
       };
       return [passwordTest, userDeleteData];
     },
-    queryKeys: [queryKeys.users],
+    fetchKeys: [queryKeys.users],
   });
 }

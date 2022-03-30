@@ -1,59 +1,10 @@
-import { useState } from 'react';
-import axios from 'axios';
-import { get } from 'lodash-es';
-import { formatError } from '../../utils/formatters';
+import { usePost } from '../../hooks/useMutate';
+import queryKeys from '../../constants/queryKeys';
 
 export default function useRequestEditAccess() {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(false);
-
-  const requestEditAccess = async collaborationId => {
-    try {
-      setLoading(true);
-      setError(null);
-      const response = await axios({
-        url: `${__houston_url__}/api/v1/collaborations/edit_request/${collaborationId}`,
-        withCredentials: true,
-        method: 'post',
-      });
-      const successful = get(response, 'status') === 200;
-      if (successful) {
-        setSuccess(true);
-        setError(null);
-        setLoading(false);
-        return successful;
-      }
-
-      const backendErrorMessage = response?.message;
-      const errorMessage =
-        backendErrorMessage || formatError(response);
-      setError(errorMessage);
-      setSuccess(false);
-      setLoading(false);
-      return null;
-    } catch (postError) {
-      const backendErrorMessage = get(postError, [
-        'response',
-        'data',
-        'message',
-      ]);
-      const errorMessage =
-        backendErrorMessage || formatError(postError);
-
-      setError(errorMessage);
-      setSuccess(false);
-      setLoading(false);
-      return null;
-    }
-  };
-
-  return {
-    requestEditAccess,
-    loading,
-    error,
-    setError,
-    success,
-    setSuccess,
-  };
+  return usePost({
+    deriveUrl: ({ collaborationGuid }) =>
+      `/collaborations/edit_request/${collaborationGuid}`,
+    fetchKeys: [queryKeys.me],
+  });
 }

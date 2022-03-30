@@ -9,6 +9,7 @@ import DataDisplay from '../../components/dataDisplays/DataDisplay';
 import ActionIcon from '../../components/ActionIcon';
 import UserDeleteDialog from '../../components/dialogs/UserDeleteDialog';
 import Text from '../../components/Text';
+import useGetUsers from '../../models/users/useGetUsers';
 import UserEditDialog from './UserEditDialog';
 import roleSchema from './constants/roleSchema';
 
@@ -21,10 +22,12 @@ function getRoleLabels(user, intl) {
   );
   return translatedRoles.join(', ');
 }
-export default function UserEditTable({ data, loading, usersError }) {
+export default function UserEditTable() {
   const intl = useIntl();
   const [editUser, setEditUser] = useState(null);
   const [deleteUser, setDeleteUser] = useState(null);
+
+  const { data, loading, error: usersError } = useGetUsers();
 
   const tableColumns = [
     {

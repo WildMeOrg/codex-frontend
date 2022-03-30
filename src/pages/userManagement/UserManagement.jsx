@@ -41,11 +41,7 @@ export default function UserManagement() {
     clearSuccess: clearPostUserSuccess,
   } = usePostUser();
 
-  const {
-    data: userData,
-    loading: userDataLoading,
-    error: userDataError,
-  } = useGetUsers();
+  const { data: userData } = useGetUsers();
 
   const {
     data: allCollaborationData,
@@ -217,11 +213,7 @@ export default function UserManagement() {
               flexDirection: 'column',
             }}
           >
-            <UserEditTable
-              data={userData}
-              loading={userDataLoading}
-              usersError={userDataError}
-            />
+            <UserEditTable />
           </Paper>
         </Grid>
         <Grid item style={{ width: '100%' }}>

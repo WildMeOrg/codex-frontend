@@ -9,6 +9,6 @@ export default function usePostUser() {
       password,
       roles,
     }),
-    queryKeys: [queryKeys.users],
+    fetchKeys: [queryKeys.users],
   });
 }

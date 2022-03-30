@@ -3,9 +3,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { get } from 'lodash-es';
 import { TextField } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
-import { useQueryClient } from 'react-query';
 
-import queryKeys from '../../constants/queryKeys';
 import Button from '../../components/Button';
 import CustomAlert from '../../components/Alert';
 import useEstablishCollaborationAsUserManager from '../../models/collaboration/useEstablishCollaborationAsUserManager';
@@ -18,21 +16,20 @@ export default function CollaborationManagementForm({
   userData,
   existingCollaborations,
 }) {
-  const queryClient = useQueryClient();
   const intl = useIntl();
   const [shouldDisplay, setShouldDisplay] = useState(false);
   const [user1, setUser1] = useState(null);
   const [user2, setUser2] = useState(null);
+  const [formError, setFormError] = useState(null);
   const {
-    establishCollaboration,
+    mutate: establishCollaboration,
     loading,
-    error,
-    setError,
+    error: establishCollaborationError,
     success,
   } = useEstablishCollaborationAsUserManager();
-  if (error || success) {
-    queryClient.invalidateQueries(queryKeys.collaborations);
-  }
+
+  const error = establishCollaborationError || formError;
+
   return (
     <div>
       <div
@@ -137,6 +134,7 @@ export default function CollaborationManagementForm({
           size="small"
           style={{ marginBottom: '20px' }}
           loading={loading}
+          id="CREATE_COLLABORATION"
           onClick={async () => {
             if (
               mutuallyRevokedCollabExists(
@@ -145,7 +143,7 @@ export default function CollaborationManagementForm({
                 user2,
               )
             ) {
-              setError(
+              setFormError(
                 intl.formatMessage({
                   id: 'REVOKED_COLLAB_EXISTS',
                 }),
@@ -157,9 +155,12 @@ export default function CollaborationManagementForm({
                 user2,
               )
             ) {
-              await establishCollaboration(user1, user2);
+              await establishCollaboration({
+                user1Guid: user1,
+                user2Guid: user2,
+              });
             } else {
-              setError(
+              setFormError(
                 intl.formatMessage({
                   id: 'COLLABORATION_ALREADY_EXISTS',
                 }),
@@ -167,9 +168,7 @@ export default function CollaborationManagementForm({
             }
             setShouldDisplay(true);
           }}
-        >
-          <FormattedMessage id="CREATE_COLLABORATION" />
-        </Button>
+        />
       </div>
       {success && shouldDisplay && (
         <CustomAlert
