@@ -14,6 +14,8 @@ export default function FeaturedPhoto({
   defaultPhotoSrc = defaultProfilePhotoSrc,
   size = 150,
 }) {
+  console.log('deleteMe data is: ');
+  console.log(data);
   const intl = useIntl();
   const theme = useTheme();
   const [hovered, setHovered] = useState(false);
