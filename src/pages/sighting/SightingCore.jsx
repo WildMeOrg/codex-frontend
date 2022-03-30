@@ -169,7 +169,7 @@ export default function SightingCore({
           <FeaturedPhoto
             data={pending ? null : data}
             loading={loading}
-            refreshSightingData={refreshData}
+            // refreshSightingData={refreshData}
             defaultPhotoSrc={defaultSightingSrc}
           />
         }

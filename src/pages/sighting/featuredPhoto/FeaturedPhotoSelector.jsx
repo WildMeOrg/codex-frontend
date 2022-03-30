@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { FormattedMessage } from 'react-intl';
 import { useTheme } from '@material-ui/core/styles';
 
 import DialogActions from '@material-ui/core/DialogActions';
@@ -16,7 +15,7 @@ export default function FeaturedPhotoSelector({
   assets,
   sightingId,
   currentFeaturedPhotoId,
-  refreshSightingData,
+  // refreshSightingData,
 }) {
   const theme = useTheme();
   const [selectedPhoto, setSelectedPhoto] = useState(
@@ -85,7 +84,7 @@ export default function FeaturedPhotoSelector({
               { featuredAssetGuid: selectedPhoto },
             );
             if (successfulUpdate) {
-              refreshSightingData();
+              // refreshSightingData();
               onClose();
             }
           }}

@@ -189,9 +189,9 @@ export default function Individual() {
         name={defaultName}
         renderAvatar={
           <FeaturedPhoto
-            data={null}
-            loading={false}
-            refreshSightingData={Function.prototype}
+            data={individualData}
+            loading={loading}
+            // refreshSightingData={Function.prototype}
             defaultPhotoSrc={defaultIndividualSrc}
           />
         }
