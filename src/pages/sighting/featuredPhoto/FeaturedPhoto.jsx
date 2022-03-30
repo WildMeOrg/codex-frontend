@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { get, map, reduce } from 'lodash-es';
+import { get, map, reduce, uniq } from 'lodash-es';
 
 import { useTheme } from '@material-ui/core/styles';
 import SvgText from '../../../components/SvgText';
@@ -23,7 +23,7 @@ export default function FeaturedPhoto({
     selectingFeaturedPhoto,
     setSelectingFeaturedPhoto,
   ] = useState(false);
-  const assets = reduce(
+  const allAssets = reduce(
     data?.encounters,
     (memo, encounter) => {
       const newAssets = map(
@@ -35,6 +35,7 @@ export default function FeaturedPhoto({
     },
     [],
   );
+  const assets = uniq(allAssets);
   const editable = assets.length > 1;
   const featuredPhotoGuid = get(data, ['featuredAssetGuid']);
   console.log('deleteMe assets are: ');
