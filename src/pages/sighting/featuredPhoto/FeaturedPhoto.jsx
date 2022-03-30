@@ -23,19 +23,20 @@ export default function FeaturedPhoto({
     selectingFeaturedPhoto,
     setSelectingFeaturedPhoto,
   ] = useState(false);
-  const allAssets = reduce(
-    data?.encounters,
-    (memo, encounter) => {
-      const newAssets = map(
-        get(encounter, 'annotations', []),
-        annotation => annotation?.asset_guid,
-        [],
-      );
-      return [...memo, ...newAssets];
-    },
-    [],
-  );
-  const assets = uniq(allAssets);
+  const assets = get(data, 'assets', []);
+  // const allAssets = reduce(
+  //   data?.encounters,
+  //   (memo, encounter) => {
+  //     const newAssets = map(
+  //       get(encounter, 'annotations', []),
+  //       annotation => annotation?.asset_guid,
+  //       [],
+  //     );
+  //     return [...memo, ...newAssets];
+  //   },
+  //   [],
+  // );
+  // const assets = uniq(allAssets);
   const editable = assets.length > 1;
   const featuredPhotoGuid = get(data, ['featuredAssetGuid']);
   console.log('deleteMe assets are: ');
