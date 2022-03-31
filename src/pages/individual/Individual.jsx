@@ -48,8 +48,14 @@ const transformIndividualDataForFeaturedPhoto = individualData => {
     (memo, encounter) => {
       const newAssets = map(
         get(encounter, 'annotations', []),
+        //   annotation => annotation?.asset_src,
+        // );
         annotation => ({
           src: annotation?.asset_src,
+          guid: annotation?.asset_guid,
+          filename: annotation?.created
+            ? 'Annotation created ' + annotation?.created
+            : 'Annotation with unknown creation date',
         }),
       );
       return [...memo, ...newAssets];
@@ -58,7 +64,11 @@ const transformIndividualDataForFeaturedPhoto = individualData => {
   );
   const assets = uniq(allAssets);
   console.log('deleteMe assets are: ');
+  //TODO uniqify the data
   console.log(assets);
+  const transformedData = map(assets, asset => ({ src: asset }));
+  console.log('deleteMe transformedData are: ');
+  console.log(transformedData);
 
   return individualData;
 };
