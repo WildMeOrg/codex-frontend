@@ -63,16 +63,7 @@ const transformIndividualDataForFeaturedPhoto = individualData => {
     [],
   );
   const assets = uniqBy(allAssets, asset => asset.src);
-  console.log('deleteMe assets are: ');
-  //TODO uniqify the data
-  console.log(assets);
-  const transformedData = map(assets, asset => ({ src: asset }));
-  console.log('deleteMe transformedData are: ');
-  console.log(transformedData);
-
-  debugger;
-
-  return individualData;
+  return assets;
 };
 
 export default function Individual() {
