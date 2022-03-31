@@ -255,7 +255,7 @@ export default function Individual() {
             data={individualDataForFeaturedPhoto}
             loading={loading}
             defaultPhotoSrc={defaultIndividualSrc}
-            refreshSightingData={refreshIndividualData}
+            refreshData={refreshIndividualData}
           />
         }
         renderOptions={
