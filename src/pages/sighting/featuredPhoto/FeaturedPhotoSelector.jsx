@@ -19,12 +19,6 @@ export default function FeaturedPhotoSelector({
   currentFeaturedPhotoId,
   refreshData,
 }) {
-  console.log('deleteMe assets in FeaturePhotoSelector are: ');
-  console.log(assets);
-  console.log('deleteMe sightingId is: ' + sightingId);
-  console.log('deleteMe individualId is: ' + individualId);
-  console.log('deleteMe refreshData is: ');
-  console.log(refreshData);
   const theme = useTheme();
   const [selectedPhoto, setSelectedPhoto] = useState(
     currentFeaturedPhotoId,

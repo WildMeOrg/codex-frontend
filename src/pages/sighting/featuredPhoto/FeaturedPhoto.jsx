@@ -14,8 +14,6 @@ export default function FeaturedPhoto({
   defaultPhotoSrc = defaultProfilePhotoSrc,
   size = 150,
 }) {
-  console.log('deleteMe data is: ');
-  console.log(data);
   const intl = useIntl();
   const theme = useTheme();
   const [hovered, setHovered] = useState(false);
@@ -26,19 +24,10 @@ export default function FeaturedPhoto({
   const assets = get(data, 'assets', []);
   const editable = assets.length > 1;
   const featuredPhotoGuid = get(data, ['featuredAssetGuid']);
-  console.log('deleteMe assets are: ');
-  console.log(assets);
   const featuredPhoto = assets.find(
     a => a.guid === featuredPhotoGuid,
   );
   const featuredPhotoSrc = get(featuredPhoto, 'src');
-  const deleteMeDataNotFromIndividual = !data?.isFromIndividual;
-  console.log(
-    'deleteMe deleteMeDataNotFromIndividual is: ' +
-      deleteMeDataNotFromIndividual,
-  );
-  console.log('deleteMe get(data, id) is: ');
-  console.log(get(data, 'id'));
 
   return (
     <div

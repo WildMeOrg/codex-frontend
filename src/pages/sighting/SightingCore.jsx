@@ -126,10 +126,6 @@ export default function SightingCore({
     sightingCreator?.full_name ||
     intl.formatMessage({ id: 'UNNAMED_USER' });
   const creatorUrl = `/users/${sightingCreator?.guid}`;
-  console.log(
-    'deleteMe data going into the featuredPhoto component is: ',
-  );
-  console.log(data);
 
   return (
     <MainColumn fullWidth>
