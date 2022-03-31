@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useCallback } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { get, capitalize } from 'lodash-es';
+import { get, capitalize, map, reduce, uniq } from 'lodash-es';
 import { useQueryClient } from 'react-query';
 
 import { getIndividualQueryKey } from '../../constants/queryKeys';
@@ -39,6 +39,29 @@ import {
   deriveIndividualName,
   deriveIndividualNameGuid,
 } from '../../utils/nameUtils';
+
+const transformIndividualDataForFeaturedPhoto = individualData => {
+  console.log('deleteMe individualData is: ');
+  console.log(individualData);
+  const allAssets = reduce(
+    individualData?.encounters,
+    (memo, encounter) => {
+      const newAssets = map(
+        get(encounter, 'annotations', []),
+        annotation => ({
+          src: annotation?.asset_src,
+        }),
+      );
+      return [...memo, ...newAssets];
+    },
+    [],
+  );
+  const assets = uniq(allAssets);
+  console.log('deleteMe assets are: ');
+  console.log(assets);
+
+  return individualData;
+};
 
 export default function Individual() {
   const intl = useIntl();
@@ -189,9 +212,10 @@ export default function Individual() {
         name={defaultName}
         renderAvatar={
           <FeaturedPhoto
-            data={individualData}
-            loading={loading}
-            // refreshSightingData={Function.prototype}
+            data={transformIndividualDataForFeaturedPhoto(
+              individualData,
+            )}
+            loading={loading} // refreshSightingData={Function.prototype}
             defaultPhotoSrc={defaultIndividualSrc}
           />
         }

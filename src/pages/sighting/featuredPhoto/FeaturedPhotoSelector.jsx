@@ -13,7 +13,8 @@ export default function FeaturedPhotoSelector({
   open,
   onClose,
   assets,
-  sightingId,
+  sightingId = null,
+  individualId = null,
   currentFeaturedPhotoId,
   // refreshSightingData,
 }) {
@@ -23,6 +24,7 @@ export default function FeaturedPhotoSelector({
   );
 
   const { updateProperties, loading, error } = usePatchSighting();
+  //TODO update individualProperties accommodate
 
   return (
     <StandardDialog

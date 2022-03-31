@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { get, map, reduce, uniq } from 'lodash-es';
+import { get } from 'lodash-es';
 
 import { useTheme } from '@material-ui/core/styles';
 import SvgText from '../../../components/SvgText';
@@ -24,19 +24,6 @@ export default function FeaturedPhoto({
     setSelectingFeaturedPhoto,
   ] = useState(false);
   const assets = get(data, 'assets', []);
-  // const allAssets = reduce(
-  //   data?.encounters,
-  //   (memo, encounter) => {
-  //     const newAssets = map(
-  //       get(encounter, 'annotations', []),
-  //       annotation => annotation?.asset_guid,
-  //       [],
-  //     );
-  //     return [...memo, ...newAssets];
-  //   },
-  //   [],
-  // );
-  // const assets = uniq(allAssets);
   const editable = assets.length > 1;
   const featuredPhotoGuid = get(data, ['featuredAssetGuid']);
   console.log('deleteMe assets are: ');
@@ -58,6 +45,7 @@ export default function FeaturedPhoto({
       <FeaturedPhotoSelector
         currentFeaturedPhotoId={featuredPhotoGuid}
         sightingId={get(data, 'id')}
+        individualId={get(data, 'id')}
         assets={assets}
         open={selectingFeaturedPhoto}
         refreshSightingData={refreshSightingData}
