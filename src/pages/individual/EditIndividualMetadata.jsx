@@ -183,7 +183,7 @@ export default function EditIndividualMetadata({
             // Otherwise, replace it.
             const firstNameGuid = deriveNameGuid(
               metadata,
-              'FirstName',
+              'firstName',
             );
             const firstNameProperty = firstNameGuid
               ? {
@@ -204,7 +204,7 @@ export default function EditIndividualMetadata({
             // If an adoptionName did not already exist, don't add it.
             const adoptionNameGuid = deriveNameGuid(
               metadata,
-              'AdoptionName',
+              'adoptionName',
             );
             const adoptionNameFieldValue =
               defaultFieldValues.adoptionName;
