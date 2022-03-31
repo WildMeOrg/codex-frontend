@@ -90,7 +90,8 @@ export default function Individual() {
 
   const individualDataForFeaturedPhoto = useMemo(
     () => {
-      //TOOD
+      console.log('deleteMe individualData is: ');
+      console.log(individualData);
       const allAssets = reduce(
         individualData?.encounters,
         (memo, encounter) => {
@@ -114,7 +115,7 @@ export default function Individual() {
         assets: assets,
         featuredAssetGuid: individualData?.featuredAssetGuid,
         isFromIndividual: true,
-      };
+      }; // TODO add guid with individual ID herein
     },
     [individualData],
   );
