@@ -17,7 +17,7 @@ export default function FeaturedPhotoSelector({
   sightingId = null,
   individualId = null,
   currentFeaturedPhotoId,
-  // refreshSightingData,
+  refreshData,
 }) {
   console.log('deleteMe assets in FeaturePhotoSelector are: ');
   console.log(assets);
@@ -38,7 +38,6 @@ export default function FeaturedPhotoSelector({
     loading: individualLoading,
     error: individualError,
   } = usePatchIndividual();
-  // TODO update individualProperties accommodate
 
   return (
     <StandardDialog
@@ -95,7 +94,6 @@ export default function FeaturedPhotoSelector({
         <Button
           display="primary"
           onClick={async () => {
-            // TODO handle branching of different individual vs sighting Id
             let successfulUpdate;
             if (sightingId) {
               successfulUpdate = await updateProperties(sightingId, {
@@ -104,11 +102,13 @@ export default function FeaturedPhotoSelector({
             } else {
               successfulUpdate = await updateIndividualProperties(
                 individualId,
-                { featuredAssetGuid: selectedPhoto },
+                {
+                  featuredAssetGuid: selectedPhoto,
+                },
               );
             }
             if (successfulUpdate) {
-              // refreshSightingData();
+              refreshData();
               onClose();
             }
           }}
