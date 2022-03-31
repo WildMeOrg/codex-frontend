@@ -78,9 +78,9 @@ export default function IndividualsDisplay({
       data={individuals}
       title={title}
       loading={loading}
-      onPrint={() => {
-        window.open('/individuals/picturebook', '_blank');
-      }}
+      // onPrint={() => {
+      //   window.open('/individuals/picturebook', '_blank');
+      // }}
       dataCount={hitCount}
       paginatedExternally
       showNoResultsBao
