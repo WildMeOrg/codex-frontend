@@ -8,6 +8,7 @@ import AddIcon from '@material-ui/icons/Add';
 import CustomAlert from '../../../components/Alert';
 import CardContainer from '../../../components/cards/CardContainer';
 import MetadataCard from '../../../components/cards/MetadataCard';
+import Link from '../../../components/Link';
 import Text from '../../../components/Text';
 import Button from '../../../components/Button';
 import ButtonMenu from '../../../components/ButtonMenu';
@@ -24,8 +25,10 @@ import EditEncounterMetadata from './EditEncounterMetadata';
 import CreateIndividualModal from './CreateIndividualModal';
 import ManuallyAssignModal from './ManuallyAssignModal';
 import AddAnnotationsDialog from './AddAnnotationsDialog';
-import queryKeys from '../../../constants/queryKeys';
-import { getUserSightingsQueryKey } from '../../../constants/queryKeys';
+import queryKeys, {
+  getUserSightingsQueryKey,
+} from '../../../constants/queryKeys';
+import { deriveIndividualName } from '../../../utils/nameUtils';
 
 export default function Encounters({
   sightingData,
@@ -210,6 +213,41 @@ export default function Encounters({
             value: schema.getValue(schema, encounter),
           }),
         );
+
+        const individualGuid = encounter?.individual?.guid;
+        const individualName = deriveIndividualName(
+          encounter?.individual,
+          'FirstName',
+          'Unnamed Individual'
+        );
+
+        const actionButtonActions = [
+          {
+            id: 'rerun-id',
+            labelId: 'RERUN_IDENTIFICATION',
+            onClick: Function.prototype,
+          },
+        ];
+
+        const identifyButtonActions = [
+          {
+            id: 'start-id',
+            labelId: 'START_IDENTIFICATION',
+            onClick: Function.prototype,
+          },
+          {
+            id: 'create-new-individual',
+            labelId: 'CREATE_NEW_INDIVIDUAL',
+            onClick: () =>
+              setCreateIndividualEncounterId(encounterId),
+          },
+          {
+            id: 'identify-manually',
+            labelId: 'MANUALLY_ASSIGN',
+            onClick: () => setEncounterToAssign(encounterId),
+          },
+        ];
+
         return (
           <div
             style={{ marginTop: i > 0 ? 20 : 0 }}
@@ -222,52 +260,43 @@ export default function Encounters({
                 alignItems: 'center',
               }}
             >
-              <Text
-                id="ANIMAL_CLUSTER_LABEL"
-                variant="h5"
-                values={{ i: i + 1 }}
-                style={{ marginRight: 20 }}
-              />
+              {individualGuid ? (
+                <Link
+                  newTab
+                  href={`/individuals/${individualGuid}`}
+                  style={{ marginRight: 20 }}
+                >
+                  <Text variant="h5">{individualName}</Text>
+                </Link>
+              ) : (
+                <Text
+                  id="ANIMAL_CLUSTER_LABEL"
+                  variant="h5"
+                  values={{ i: i + 1 }}
+                  style={{ marginRight: 20 }}
+                />
+              )}
               <div style={{ display: 'flex', alignItems: 'center' }}>
                 <ButtonMenu
                   display="primary"
                   size="small"
                   buttonId="identify-animal-cluster"
-                  id="IDENTIFY"
+                  id={individualGuid ? 'ACTIONS' : 'IDENTIFY'}
                   disabled={pending}
-                  actions={[
-                    {
-                      id: 'start-id',
-                      label: 'Kickoff identification',
-                      onClick: Function.prototype,
-                    },
-                    {
-                      id: 'create-new-individual',
-                      label: 'Create new individual',
-                      onClick: () =>
-                        setCreateIndividualEncounterId(encounterId),
-                    },
-                    {
-                      id: 'identify-manually',
-                      label: 'Manually assign',
-                      onClick: () =>
-                        setEncounterToAssign(encounterId),
-                    },
-                  ]}
+                  actions={
+                    individualGuid
+                      ? actionButtonActions
+                      : identifyButtonActions
+                  }
                 />
                 <MoreMenu
                   menuId="cluster-actions"
                   items={[
                     {
-                      id: 'view-history',
-                      onClick: () => {},
-                      label: 'View history',
-                    },
-                    {
                       id: 'delete-cluster',
                       onClick: () =>
                         setEncounterToDelete(encounterId),
-                      label: 'Delete animal',
+                      labelId: 'DELETE_ANIMAL',
                     },
                   ]}
                 />
