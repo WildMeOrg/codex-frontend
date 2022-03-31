@@ -21,6 +21,8 @@ export default function FeaturedPhotoSelector({
 }) {
   console.log('deleteMe assets in FeaturePhotoSelector are: ');
   console.log(assets);
+  console.log('deleteMe sightingId is: ' + sightingId);
+  console.log('deleteMe individualId is: ' + individualId);
   const theme = useTheme();
   const [selectedPhoto, setSelectedPhoto] = useState(
     currentFeaturedPhotoId,
@@ -36,7 +38,7 @@ export default function FeaturedPhotoSelector({
     loading: individualLoading,
     error: individualError,
   } = usePatchIndividual();
-  //TODO update individualProperties accommodate
+  // TODO update individualProperties accommodate
 
   return (
     <StandardDialog
@@ -93,7 +95,7 @@ export default function FeaturedPhotoSelector({
         <Button
           display="primary"
           onClick={async () => {
-            //TODO handle branching of different individual vs sighting Id
+            // TODO handle branching of different individual vs sighting Id
             let successfulUpdate;
             if (sightingId) {
               successfulUpdate = await updateProperties(sightingId, {
@@ -102,7 +104,7 @@ export default function FeaturedPhotoSelector({
             } else {
               successfulUpdate = await updateIndividualProperties(
                 individualId,
-                { eaturedAssetGuid: selectedPhoto },
+                { featuredAssetGuid: selectedPhoto },
               );
             }
             if (successfulUpdate) {

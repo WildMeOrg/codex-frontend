@@ -32,6 +32,13 @@ export default function FeaturedPhoto({
     a => a.guid === featuredPhotoGuid,
   );
   const featuredPhotoSrc = get(featuredPhoto, 'src');
+  const deleteMeDataNotFromIndividual = !data?.isFromIndividual;
+  console.log(
+    'deleteMe deleteMeDataNotFromIndividual is: ' +
+      deleteMeDataNotFromIndividual,
+  );
+  console.log('deleteMe get(data, id) is: ');
+  console.log(get(data, 'id'));
 
   return (
     <div
