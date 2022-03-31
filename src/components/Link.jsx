@@ -46,7 +46,14 @@ export default function Link({
   }
 
   return (
-    <RouterLink to={href} style={styles} onClick={onClick} {...rest}>
+    <RouterLink
+      to={href}
+      style={styles}
+      onClick={onClick}
+      target={newTab ? '_blank' : undefined}
+      rel={newTab ? 'noreferrer' : undefined}
+      {...rest}
+    >
       {children}
     </RouterLink>
   );
