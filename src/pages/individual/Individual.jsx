@@ -11,7 +11,7 @@ import usePatchIndividual from '../../models/individual/usePatchIndividual';
 
 // VERILY BAD HOTFIX //
 import defaultIndividualSrc from '../../assets/defaultIndividual.png';
-import FeaturedPhoto from '../sighting/featuredPhoto/FeaturedPhoto';
+import FeaturedPhoto from '../../components/FeaturedPhoto';
 // VERILY BAD HOTFIX //
 
 import useIndividualFieldSchemas from '../../models/individual/useIndividualFieldSchemas';
@@ -68,9 +68,13 @@ export default function Individual() {
             annotation => ({
               src: annotation?.asset_src,
               guid: annotation?.asset_guid,
-              filename: annotation?.created
-                ? 'Annotation created ' + annotation?.created
-                : 'Annotation with unknown creation date',
+              altText: annotation?.created
+                ? intl.formatMessage({
+                    id: 'ANNOTATION_CREATED',
+                  }) + annotation?.created
+                : intl.formatMessage({
+                    id: 'ANNOTATION_WITH_CREATION_DATE_UNKNOWN',
+                  }),
             }),
           );
           return [...memo, ...newAssets];
@@ -79,9 +83,8 @@ export default function Individual() {
       );
       const assets = uniqBy(allAssets, asset => asset.src);
       return {
-        assets: assets,
+        assets,
         featuredAssetGuid: individualData?.featuredAssetGuid,
-        isFromIndividual: true,
         guid: individualData?.guid,
       };
     },
@@ -122,11 +125,7 @@ export default function Individual() {
         'FirstName',
         intl.formatMessage({ id: 'UNNAMED_INDIVIDUAL' }),
       ),
-      deriveIndividualName(
-        individualData,
-        'AdoptionName',
-        intl.formatMessage({ id: 'UNNAMED_INDIVIDUAL' }),
-      ),
+      deriveIndividualName(individualData, 'AdoptionName'),
     ],
     [individualData],
   );
@@ -152,11 +151,6 @@ export default function Individual() {
   const [merging, setMerging] = useState(false);
   const [deletingIndividual, setDeletingIndividual] = useState(false);
   const [deleteEncounterId, setDeleteEncounterId] = useState(null);
-  const adoptionNameIsLegitimate =
-    adoptionName !==
-    intl.formatMessage({
-      id: 'UNNAMED_INDIVIDUAL',
-    });
 
   if (loading) return <LoadingScreen />;
 
@@ -223,6 +217,7 @@ export default function Individual() {
             loading={loading}
             defaultPhotoSrc={defaultIndividualSrc}
             refreshData={refreshIndividualData}
+            individualId={individualData?.guid}
           />
         }
         renderOptions={
@@ -246,7 +241,7 @@ export default function Individual() {
           </div>
         }
       >
-        {adoptionNameIsLegitimate && (
+        {adoptionName && (
           <Text>{`Also known as ${adoptionName}.`}</Text>
         )}
       </EntityHeader>

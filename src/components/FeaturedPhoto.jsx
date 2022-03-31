@@ -3,8 +3,8 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { get } from 'lodash-es';
 
 import { useTheme } from '@material-ui/core/styles';
-import SvgText from '../../../components/SvgText';
-import defaultProfilePhotoSrc from '../../../assets/defaultProfile.jpg';
+import SvgText from './SvgText';
+import defaultProfilePhotoSrc from '../assets/defaultProfile.jpg';
 import FeaturedPhotoSelector from './FeaturedPhotoSelector';
 
 export default function FeaturedPhoto({
@@ -13,6 +13,8 @@ export default function FeaturedPhoto({
   refreshData,
   defaultPhotoSrc = defaultProfilePhotoSrc,
   size = 150,
+  sightingId = null,
+  individualId = null,
 }) {
   const intl = useIntl();
   const theme = useTheme();
@@ -40,12 +42,8 @@ export default function FeaturedPhoto({
     >
       <FeaturedPhotoSelector
         currentFeaturedPhotoId={featuredPhotoGuid}
-        sightingId={
-          !data?.isFromIndividual ? get(data, 'guid') : null
-        }
-        individualId={
-          data?.isFromIndividual ? get(data, 'guid') : null
-        }
+        sightingId={sightingId}
+        individualId={individualId}
         assets={assets}
         open={selectingFeaturedPhoto}
         refreshData={refreshData}

@@ -4,11 +4,11 @@ import { useTheme } from '@material-ui/core/styles';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 
-import CustomAlert from '../../../components/Alert';
-import usePatchSighting from '../../../models/sighting/usePatchSighting';
-import Button from '../../../components/Button';
-import StandardDialog from '../../../components/StandardDialog';
-import usePatchIndividual from '../../../models/individual/usePatchIndividual';
+import CustomAlert from './Alert';
+import usePatchSighting from '../models/sighting/usePatchSighting';
+import Button from './Button';
+import StandardDialog from './StandardDialog';
+import usePatchIndividual from '../models/individual/usePatchIndividual';
 
 export default function FeaturedPhotoSelector({
   open,
@@ -64,7 +64,7 @@ export default function FeaturedPhotoSelector({
                 width: '100%',
               }}
               onClick={() => setSelectedPhoto(asset.guid)}
-              alt={asset.filename}
+              alt={asset.altText}
               src={asset.src}
               key={asset.guid}
             />

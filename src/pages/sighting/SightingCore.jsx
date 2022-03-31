@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useIntl, FormattedMessage } from 'react-intl';
-import { get } from 'lodash-es';
+import { get, map } from 'lodash-es';
 import { useQueryClient } from 'react-query';
 
 import Tabs from '@material-ui/core/Tabs';
@@ -31,7 +31,7 @@ import Photographs from './Photographs';
 import OverviewContent from './OverviewContent';
 import SightingHistoryDialog from './SightingHistoryDialog';
 import CommitBanner from './CommitBanner';
-import FeaturedPhoto from './featuredPhoto/FeaturedPhoto';
+import FeaturedPhoto from '../../components/FeaturedPhoto';
 import Encounters from './encounters/Encounters';
 
 export default function SightingCore({
@@ -81,6 +81,24 @@ export default function SightingCore({
       }));
     },
     [data, fieldSchemas],
+  );
+
+  const dataForFeaturedPhoto = useMemo(
+    () => {
+      const assets = get(data, ['assets'], []);
+      const modifiedAssets = map(
+        assets,
+        asset => {
+          return { ...asset, altText: asset?.filename };
+        },
+        [],
+      );
+      return {
+        ...data,
+        assets: modifiedAssets,
+      };
+    },
+    [data],
   );
 
   useDocumentTitle(`Sighting ${id}`, { translateMessage: false });
@@ -167,10 +185,11 @@ export default function SightingCore({
       <EntityHeader
         renderAvatar={
           <FeaturedPhoto
-            data={pending ? null : data}
+            data={pending ? null : dataForFeaturedPhoto}
             loading={loading}
             refreshData={refreshData}
             defaultPhotoSrc={defaultSightingSrc}
+            sightingId={data?.guid}
           />
         }
         name={intl.formatMessage(
