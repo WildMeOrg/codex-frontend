@@ -54,7 +54,9 @@ export default function FeaturedPhoto({
         sightingId={
           !data?.isFromIndividual ? get(data, 'guid') : null
         }
-        individualId={data?.isFromIndividual ? get(data, 'id') : null}
+        individualId={
+          data?.isFromIndividual ? get(data, 'guid') : null
+        }
         assets={assets}
         open={selectingFeaturedPhoto}
         // refreshSightingData={refreshSightingData}

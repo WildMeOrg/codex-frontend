@@ -115,7 +115,8 @@ export default function Individual() {
         assets: assets,
         featuredAssetGuid: individualData?.featuredAssetGuid,
         isFromIndividual: true,
-      }; // TODO add guid with individual ID herein
+        guid: individualData?.guid,
+      };
     },
     [individualData],
   );
