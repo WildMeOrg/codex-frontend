@@ -12,12 +12,12 @@ import sexOptions from '../../constants/sexOptions';
 export default function IndividualCard({ data, mergeConflicts }) {
   const intl = useIntl();
 
-  const defaultName = deriveIndividualName(
+  const firstName = deriveIndividualName(
     data,
-    'defaultName',
+    'FirstName',
     'Unnamed individual',
   );
-  const adoptionName = deriveIndividualName(data, 'nickname');
+  const adoptionName = deriveIndividualName(data, 'AdoptionName');
 
   const showSex = mergeConflicts?.sex;
   const sexObject = sexOptions.find(
@@ -35,7 +35,7 @@ export default function IndividualCard({ data, mergeConflicts }) {
         {data ? (
           <img
             src={individualPhotoUrl}
-            alt={defaultName}
+            alt={firstName}
             style={{ width: 200, height: 200, objectFit: 'cover' }}
           />
         ) : (
@@ -49,7 +49,7 @@ export default function IndividualCard({ data, mergeConflicts }) {
           }}
         >
           {data ? (
-            <Text style={{ fontWeight: 'bold' }}>{defaultName}</Text>
+            <Text style={{ fontWeight: 'bold' }}>{firstName}</Text>
           ) : (
             <Skeleton variant="text" height={30} width={140} />
           )}

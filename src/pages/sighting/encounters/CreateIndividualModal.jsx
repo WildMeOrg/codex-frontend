@@ -118,18 +118,18 @@ export default function CreateIndividualModal({
             display="primary"
             loading={loading}
             onClick={async () => {
-              const defaultName = formState?.defaultName;
-              const nickname = formState?.nickname;
+              const firstName = formState?.firstName;
+              const adoptionName = formState?.adoptionName;
               const names = [
                 {
-                  context: 'defaultName',
-                  value: defaultName,
+                  context: 'FirstName',
+                  value: firstName,
                 },
               ];
-              if (nickname)
+              if (adoptionName)
                 names.push({
-                  context: 'nickname',
-                  value: nickname,
+                  context: 'AdoptionName',
+                  value: adoptionName,
                 });
               const individualData = {
                 names,

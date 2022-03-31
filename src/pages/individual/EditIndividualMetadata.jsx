@@ -179,42 +179,46 @@ export default function EditIndividualMetadata({
             setFormErrors(requiredFieldErrors);
             if (requiredFieldErrors.length > 0) return;
 
-            // Always include the defaultName. If it does not already exist, add it.
+            // Always include the firstName. If it does not already exist, add it.
             // Otherwise, replace it.
-            const defaultNameGuid = deriveNameGuid(
+            const firstNameGuid = deriveNameGuid(
               metadata,
-              'defaultName',
+              'FirstName',
             );
-            const defaultNameProperty = defaultNameGuid
+            const firstNameProperty = firstNameGuid
               ? {
                   op: 'replace',
-                  value: defaultFieldValues.defaultName,
-                  guid: defaultNameGuid,
+                  value: defaultFieldValues.firstName,
+                  guid: firstNameGuid,
                 }
               : {
                   op: 'add',
-                  value: defaultFieldValues.defaultName,
-                  context: 'defaultName',
+                  value: defaultFieldValues.firstName,
+                  context: 'FirstName',
                 };
 
-            const names = [defaultNameProperty];
+            const names = [firstNameProperty];
 
-            // If there was a nickname, update it with whatever the value is now.
-            // If there was not a nickname, but there is a value now, add it.
-            // If a nickname did not already exist, don't add it.
-            const nicknameGuid = deriveNameGuid(metadata, 'nickname');
-            const nicknameFieldValue = defaultFieldValues.nickname;
-            if (nicknameGuid) {
+            // If there was an adoptionName, update it with whatever the value is now.
+            // If there was not an adoptionName, but there is a value now, add it.
+            // If an adoptionName did not already exist, don't add it.
+            const adoptionNameGuid = deriveNameGuid(
+              metadata,
+              'AdoptionName',
+            );
+            const adoptionNameFieldValue =
+              defaultFieldValues.adoptionName;
+            if (adoptionNameGuid) {
               names.push({
                 op: 'replace',
-                value: nicknameFieldValue,
-                guid: nicknameGuid,
+                value: adoptionNameFieldValue,
+                guid: adoptionNameGuid,
               });
-            } else if (nicknameFieldValue) {
+            } else if (adoptionNameFieldValue) {
               names.push({
                 op: 'add',
-                value: nicknameFieldValue,
-                context: 'nickname',
+                value: adoptionNameFieldValue,
+                context: 'AdoptionName',
               });
             }
 

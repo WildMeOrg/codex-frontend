@@ -67,15 +67,15 @@ export default function Individual() {
           value: schema.getValue(schema, individualData),
         };
 
-        if (schema.name === 'defaultName') {
+        if (schema.name === 'firstName') {
           augmentedSchema.nameGuid = deriveIndividualNameGuid(
             individualData,
-            'defaultName',
+            'FirstName',
           );
-        } else if (schema.name === 'nickname') {
+        } else if (schema.name === 'adoptionName') {
           augmentedSchema.nameGuid = deriveIndividualNameGuid(
             individualData,
-            'nickname',
+            'AdoptionName',
           );
         }
 
@@ -85,16 +85,16 @@ export default function Individual() {
     [individualData, fieldSchemas],
   );
 
-  const [defaultName, nickname] = useMemo(
+  const [firstName, adoptionName] = useMemo(
     () => [
       deriveIndividualName(
         individualData,
-        'defaultName',
+        'FirstName',
         'Unnamed individual',
       ),
       deriveIndividualName(
         individualData,
-        'nickname',
+        'AdoptionName',
         'Unnamed individual',
       ),
     ],
@@ -115,7 +115,7 @@ export default function Individual() {
     setError: setPatchError,
   } = usePatchIndividual();
 
-  useDocumentTitle(capitalize(defaultName), {
+  useDocumentTitle(capitalize(firstName), {
     translateMessage: false,
   });
   const [editingProfile, setEditingProfile] = useState(false);
@@ -181,7 +181,7 @@ export default function Individual() {
         messageId="CONFIRM_DELETE_INDIVIDUAL"
       />
       <EntityHeader
-        name={defaultName}
+        name={firstName}
         renderAvatar={
           <FeaturedPhoto
             data={null}
@@ -211,14 +211,16 @@ export default function Individual() {
           </div>
         }
       >
-        {nickname && <Text>{`Also known as ${nickname}.`}</Text>}
+        {adoptionName && (
+          <Text>{`Also known as ${adoptionName}.`}</Text>
+        )}
       </EntityHeader>
       <div style={{ display: 'flex', flexWrap: 'wrap' }}>
         <CardContainer size="small">
           <GalleryCard
             title={intl.formatMessage(
               { id: 'PHOTOS_OF' },
-              { name: defaultName },
+              { name: firstName },
             )}
             assets={fakeAssets}
           />
@@ -233,7 +235,7 @@ export default function Individual() {
             title={
               <FormattedMessage
                 id="SIGHTINGS_OF"
-                values={{ name: defaultName }}
+                values={{ name: firstName }}
               />
             }
             columns={['date', 'owner', 'location', 'actions']}
