@@ -63,7 +63,7 @@ const transformIndividualDataForFeaturedPhoto = individualData => {
     [],
   );
   const assets = uniqBy(allAssets, asset => asset.src);
-  return assets;
+  return { assets: { ...assets } };
 };
 
 export default function Individual() {
