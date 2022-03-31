@@ -59,7 +59,7 @@ export default function FeaturedPhoto({
         }
         assets={assets}
         open={selectingFeaturedPhoto}
-        refreshSightingData={refreshData}
+        refreshData={refreshData}
         onClose={() => setSelectingFeaturedPhoto(false)}
       />
       {loading ? (
