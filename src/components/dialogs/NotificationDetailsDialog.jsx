@@ -30,8 +30,8 @@ export default function NotificationDetailsDialog({
     senderName,
     user1Name,
     user2Name,
-    individual1Nickname,
-    individual2Nickname,
+    individual1AdoptionName,
+    individual2AdoptionName,
   } = getNotificationProps(notification);
 
   return (
@@ -48,8 +48,8 @@ export default function NotificationDetailsDialog({
             userName: senderName,
             user1Name,
             user2Name,
-            individual1Nickname,
-            individual2Nickname,
+            individual1AdoptionName,
+            individual2AdoptionName,
           }}
         />
       </DialogContent>

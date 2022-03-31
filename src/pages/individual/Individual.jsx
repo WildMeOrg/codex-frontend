@@ -97,15 +97,15 @@ export default function Individual() {
           value: schema.getValue(schema, individualData),
         };
 
-        if (schema.name === 'defaultName') {
+        if (schema.name === 'firstName') {
           augmentedSchema.nameGuid = deriveIndividualNameGuid(
             individualData,
-            'defaultName',
+            'FirstName',
           );
-        } else if (schema.name === 'nickname') {
+        } else if (schema.name === 'adoptionName') {
           augmentedSchema.nameGuid = deriveIndividualNameGuid(
             individualData,
-            'nickname',
+            'AdoptionName',
           );
         }
 
@@ -115,16 +115,16 @@ export default function Individual() {
     [individualData, fieldSchemas],
   );
 
-  const [defaultName, nickname] = useMemo(
+  const [firstName, adoptionName] = useMemo(
     () => [
       deriveIndividualName(
         individualData,
-        'defaultName',
+        'FirstName',
         intl.formatMessage({ id: 'UNNAMED_INDIVIDUAL' }),
       ),
       deriveIndividualName(
         individualData,
-        'nickname',
+        'AdoptionName',
         intl.formatMessage({ id: 'UNNAMED_INDIVIDUAL' }),
       ),
     ],
@@ -145,15 +145,15 @@ export default function Individual() {
     setError: setPatchError,
   } = usePatchIndividual();
 
-  useDocumentTitle(capitalize(defaultName), {
+  useDocumentTitle(capitalize(firstName), {
     translateMessage: false,
   });
   const [editingProfile, setEditingProfile] = useState(false);
   const [merging, setMerging] = useState(false);
   const [deletingIndividual, setDeletingIndividual] = useState(false);
   const [deleteEncounterId, setDeleteEncounterId] = useState(null);
-  const nicknameIsLegitimate =
-    nickname !==
+  const adoptionNameIsLegitimate =
+    adoptionName !==
     intl.formatMessage({
       id: 'UNNAMED_INDIVIDUAL',
     });
@@ -216,7 +216,7 @@ export default function Individual() {
         messageId="CONFIRM_DELETE_INDIVIDUAL"
       />
       <EntityHeader
-        name={defaultName}
+        name={firstName}
         renderAvatar={
           <FeaturedPhoto
             data={individualDataForFeaturedPhoto}
@@ -246,8 +246,8 @@ export default function Individual() {
           </div>
         }
       >
-        {nicknameIsLegitimate && (
-          <Text>{`Also known as ${nickname}.`}</Text>
+        {adoptionNameIsLegitimate && (
+          <Text>{`Also known as ${adoptionName}.`}</Text>
         )}
       </EntityHeader>
       <div style={{ display: 'flex', flexWrap: 'wrap' }}>
@@ -255,7 +255,7 @@ export default function Individual() {
           <GalleryCard
             title={intl.formatMessage(
               { id: 'PHOTOS_OF' },
-              { name: defaultName },
+              { name: firstName },
             )}
             assets={fakeAssets}
           />
@@ -270,7 +270,7 @@ export default function Individual() {
             title={
               <FormattedMessage
                 id="SIGHTINGS_OF"
-                values={{ name: defaultName }}
+                values={{ name: firstName }}
               />
             }
             columns={['date', 'owner', 'location', 'actions']}

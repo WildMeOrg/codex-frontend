@@ -12,6 +12,10 @@ export default [
     titleId: 'USER_MANAGER',
   },
   {
+    id: 'is_data_manager',
+    titleId: 'DATA_MANAGER',
+  },
+  {
     id: 'is_exporter',
     titleId: 'EXPORTER',
   },
