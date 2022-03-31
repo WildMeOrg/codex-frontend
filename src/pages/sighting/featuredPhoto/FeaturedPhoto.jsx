@@ -10,7 +10,7 @@ import FeaturedPhotoSelector from './FeaturedPhotoSelector';
 export default function FeaturedPhoto({
   data,
   loading,
-  refreshSightingData,
+  // refreshSightingData,
   defaultPhotoSrc = defaultProfilePhotoSrc,
   size = 150,
 }) {
@@ -44,11 +44,11 @@ export default function FeaturedPhoto({
     >
       <FeaturedPhotoSelector
         currentFeaturedPhotoId={featuredPhotoGuid}
-        sightingId={get(data, 'id')}
-        individualId={get(data, 'id')}
+        sightingId={!data?.isFromIndividual ? get(data, 'id') : null}
+        individualId={data?.isFromIndividual ? get(data, 'id') : null}
         assets={assets}
         open={selectingFeaturedPhoto}
-        refreshSightingData={refreshSightingData}
+        // refreshSightingData={refreshSightingData}
         onClose={() => setSelectingFeaturedPhoto(false)}
       />
       {loading ? (

@@ -40,31 +40,35 @@ import {
   deriveIndividualNameGuid,
 } from '../../utils/nameUtils';
 
-const transformIndividualDataForFeaturedPhoto = individualData => {
-  console.log('deleteMe individualData is: ');
-  console.log(individualData);
-  const allAssets = reduce(
-    individualData?.encounters,
-    (memo, encounter) => {
-      const newAssets = map(
-        get(encounter, 'annotations', []),
-        //   annotation => annotation?.asset_src,
-        // );
-        annotation => ({
-          src: annotation?.asset_src,
-          guid: annotation?.asset_guid,
-          filename: annotation?.created
-            ? 'Annotation created ' + annotation?.created
-            : 'Annotation with unknown creation date',
-        }),
-      );
-      return [...memo, ...newAssets];
-    },
-    [],
-  );
-  const assets = uniqBy(allAssets, asset => asset.src);
-  return { assets: assets };
-};
+// const transformIndividualDataForFeaturedPhoto = individualData => {
+//   console.log('deleteMe individualData is: ');
+//   console.log(individualData);
+//   const allAssets = reduce(
+//     individualData?.encounters,
+//     (memo, encounter) => {
+//       const newAssets = map(
+//         get(encounter, 'annotations', []),
+//         //   annotation => annotation?.asset_src,
+//         // );
+//         annotation => ({
+//           src: annotation?.asset_src,
+//           guid: annotation?.asset_guid,
+//           filename: annotation?.created
+//             ? 'Annotation created ' + annotation?.created
+//             : 'Annotation with unknown creation date',
+//         }),
+//       );
+//       return [...memo, ...newAssets];
+//     },
+//     [],
+//   );
+//   const assets = uniqBy(allAssets, asset => asset.src);
+//   return {
+//     assets: assets,
+//     featuredAssetGuid: individualData?.featuredAssetGuid,
+//     isFromIndividual: true,
+//   };
+// };
 
 export default function Individual() {
   const intl = useIntl();
@@ -82,6 +86,37 @@ export default function Individual() {
       queryClient.invalidateQueries(queryKey);
     },
     [queryClient, id],
+  );
+
+  const individualDataForFeaturedPhoto = useMemo(
+    () => {
+      //TOOD
+      const allAssets = reduce(
+        individualData?.encounters,
+        (memo, encounter) => {
+          const newAssets = map(
+            get(encounter, 'annotations', []), //   annotation => annotation?.asset_src,
+            // );
+            annotation => ({
+              src: annotation?.asset_src,
+              guid: annotation?.asset_guid,
+              filename: annotation?.created
+                ? 'Annotation created ' + annotation?.created
+                : 'Annotation with unknown creation date',
+            }),
+          );
+          return [...memo, ...newAssets];
+        },
+        [],
+      );
+      const assets = uniqBy(allAssets, asset => asset.src);
+      return {
+        assets: assets,
+        featuredAssetGuid: individualData?.featuredAssetGuid,
+        isFromIndividual: true,
+      };
+    },
+    [individualData],
   );
 
   const metadata = useMemo(
@@ -215,11 +250,11 @@ export default function Individual() {
         name={defaultName}
         renderAvatar={
           <FeaturedPhoto
-            data={transformIndividualDataForFeaturedPhoto(
-              individualData,
-            )}
-            loading={loading} // refreshSightingData={Function.prototype}
-            defaultPhotoSrc={defaultIndividualSrc}
+            data={individualDataForFeaturedPhoto}
+            loading={loading}
+            defaultPhotoSrc={
+              defaultIndividualSrc // refreshSightingData={Function.prototype}
+            }
           />
         }
         renderOptions={

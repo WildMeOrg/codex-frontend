@@ -8,6 +8,7 @@ import CustomAlert from '../../../components/Alert';
 import usePatchSighting from '../../../models/sighting/usePatchSighting';
 import Button from '../../../components/Button';
 import StandardDialog from '../../../components/StandardDialog';
+import usePatchIndividual from '../../../models/individual/usePatchIndividual';
 
 export default function FeaturedPhotoSelector({
   open,
@@ -18,12 +19,23 @@ export default function FeaturedPhotoSelector({
   currentFeaturedPhotoId,
   // refreshSightingData,
 }) {
+  console.log('deleteMe assets in FeaturePhotoSelector are: ');
+  console.log(assets);
   const theme = useTheme();
   const [selectedPhoto, setSelectedPhoto] = useState(
     currentFeaturedPhotoId,
   );
 
-  const { updateProperties, loading, error } = usePatchSighting();
+  const {
+    updateProperties,
+    loading: sightingLoading,
+    error: sightingError,
+  } = usePatchSighting();
+  const {
+    updateIndividualProperties,
+    loading: individualLoading,
+    error: individualError,
+  } = usePatchIndividual();
   //TODO update individualProperties accommodate
 
   return (
@@ -70,28 +82,36 @@ export default function FeaturedPhotoSelector({
           flexDirection: 'column',
         }}
       >
-        {error && (
+        {(sightingError || individualError) && (
           <CustomAlert
             style={{ marginBottom: 20 }}
             severity="error"
             titleId="ERROR_UPDATING_PROFILE"
-            description={error}
+            description={sightingId ? sightingError : individualError}
           />
         )}
         <Button
           display="primary"
           onClick={async () => {
-            const successfulUpdate = await updateProperties(
-              sightingId,
-              { featuredAssetGuid: selectedPhoto },
-            );
+            //TODO handle branching of different individual vs sighting Id
+            let successfulUpdate;
+            if (sightingId) {
+              successfulUpdate = await updateProperties(sightingId, {
+                featuredAssetGuid: selectedPhoto,
+              });
+            } else {
+              successfulUpdate = await updateIndividualProperties(
+                individualId,
+                { eaturedAssetGuid: selectedPhoto },
+              );
+            }
             if (successfulUpdate) {
               // refreshSightingData();
               onClose();
             }
           }}
           autoFocus
-          loading={loading}
+          loading={sightingId ? sightingLoading : individualLoading}
           disabled={!selectedPhoto}
           id="SAVE"
         />
