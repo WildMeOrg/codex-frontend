@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useCallback } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { get, capitalize, map, reduce, uniq } from 'lodash-es';
+import { get, capitalize, map, reduce, uniqBy } from 'lodash-es';
 import { useQueryClient } from 'react-query';
 
 import { getIndividualQueryKey } from '../../constants/queryKeys';
@@ -62,13 +62,15 @@ const transformIndividualDataForFeaturedPhoto = individualData => {
     },
     [],
   );
-  const assets = uniq(allAssets);
+  const assets = uniqBy(allAssets, asset => asset.src);
   console.log('deleteMe assets are: ');
   //TODO uniqify the data
   console.log(assets);
   const transformedData = map(assets, asset => ({ src: asset }));
   console.log('deleteMe transformedData are: ');
   console.log(transformedData);
+
+  debugger;
 
   return individualData;
 };
