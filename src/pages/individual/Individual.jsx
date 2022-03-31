@@ -87,7 +87,7 @@ export default function Individual() {
     [individualData, fieldSchemas],
   );
 
-  const names = individualData?.names || [];
+  // const names = individualData?.names || [];
   const encounters = get(individualData, 'encounters', []);
 
   // TODO make the below a const when ready
@@ -106,11 +106,15 @@ export default function Individual() {
     ).filter(entry => entry?.number < 9);
     return assetSourcesFromAnnotations;
   }); // TODO check that it works if there's more than one encounter after the "can't add a second encounter to an individual" issue is resolved
-  console.log('deleteMe fakeAssets are: ');
-  console.log(fakeAssets);
-  assetSources = fakeAssets.filter(entry => entry?.number < 9);
   console.log('deleteMe assetSources are: ');
   console.log(assetSources);
+  console.log('deleteMe fakeAssets are: ');
+  console.log(fakeAssets);
+  const firstNineAssetSources = assetSources.filter(
+    entry => entry?.number < 9,
+  );
+  console.log('deleteMe firstNineAssetSources are: ');
+  console.log(firstNineAssetSources);
 
   const [defaultName, nickname] = useMemo(
     () => [
@@ -247,7 +251,7 @@ export default function Individual() {
               { id: 'PHOTOS_OF' },
               { name: defaultName },
             )}
-            assets={assetSources}
+            assets={firstNineAssetSources}
           />
           <MetadataCard
             editable
