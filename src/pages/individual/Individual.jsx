@@ -63,10 +63,7 @@ const transformIndividualDataForFeaturedPhoto = individualData => {
     [],
   );
   const assets = uniqBy(allAssets, asset => asset.src);
-  console.log('deleteMe assets are: ');
-  console.log(assets);
-  debugger;
-  return assets;
+  return { assets: assets };
 };
 
 export default function Individual() {
