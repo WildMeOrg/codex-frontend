@@ -119,26 +119,56 @@ export default function Individual() {
     },
     [individualData, fieldSchemas],
   );
-
-  // const names = individualData?.names || [];
   const encounters = get(individualData, 'encounters', []);
 
-  // TODO make the below a const when ready
-  let assetSources = map(encounters, encounter => {
-    const annotations = get(encounter, 'annotations');
-    const assetSourcesFromAnnotations = map(
-      annotations,
-      (annotation, index) => ({
-        number: index,
-        id: annotation?.asset_guid,
-        src: annotation?.asset_src,
-        alt: annotation?.created
-          ? 'Annotation created: ' + annotation?.created
-          : 'Annotation image with no creation date',
-      }),
-    ).filter(entry => entry?.number < 9);
-    return assetSourcesFromAnnotations;
-  }); // TODO check that it works if there's more than one encounter after the "can't add a second encounter to an individual" issue is resolved
+  const assetSources = useMemo(
+    () => {
+      const modifiedAssets = reduce(
+        encounters,
+        (memo, encounter) => {
+          const annotations = get(encounter, 'annotations');
+          console.log('deleteMe got here and annotations are: ');
+          console.log(annotations);
+          const assetSourcesFromAnnotations = map(
+            annotations,
+            (annotation, index) => ({
+              number: index,
+              id: annotation?.asset_guid,
+              src: annotation?.asset_src,
+              alt: annotation?.created
+                ? 'Annotation created: ' + annotation?.created
+                : 'Annotation image with no creation date',
+            }),
+          );
+          return [...memo, ...assetSourcesFromAnnotations].filter(
+            entry => entry?.number < 9,
+          );
+          //.filter(entry => entry?.number < 9);
+        },
+        [],
+      );
+      // const modifiedAssets = map(encounters, encounter => {
+      //   const annotations = get(encounter, 'annotations');
+      //   const assetSourcesFromAnnotations = map(
+      //     annotations,
+      //     (annotation, index) => ({
+      //       number: index,
+      //       id: annotation?.asset_guid,
+      //       src: annotation?.asset_src,
+      //       alt: annotation?.created
+      //         ? 'Annotation created: ' + annotation?.created
+      //         : 'Annotation image with no creation date',
+      //     }),
+      //   ).filter(entry => entry?.number < 9);
+      //   return assetSourcesFromAnnotations;
+      // }); // TODO check that it works if there's more than one encounter after the "can't add a second encounter to an individual" issue is resolved
+      console.log('deleteMe modifiedAssets are: ');
+      console.log(modifiedAssets);
+      return modifiedAssets;
+    },
+    [individualData],
+  );
+
   console.log('deleteMe assetSources are: ');
   console.log(assetSources);
   console.log('deleteMe fakeAssets are: ');
