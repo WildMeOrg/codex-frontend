@@ -32,7 +32,6 @@ import CooccurrenceCard from '../../components/cards/CooccurrenceCard';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import EditIndividualMetadata from './EditIndividualMetadata';
 import MergeDialog from './MergeDialog';
-import fakeAssets from './fakeAssets';
 import fakeCoocs from './fakeCoocs';
 import fakeRelationships from './fakeRelationships';
 import {
@@ -60,8 +59,6 @@ export default function Individual() {
 
   const individualDataForFeaturedPhoto = useMemo(
     () => {
-      console.log('deleteMe individualData is: ');
-      console.log(individualData);
       const allAssets = reduce(
         individualData?.encounters,
         (memo, encounter) => {
@@ -123,13 +120,11 @@ export default function Individual() {
 
   const assetSources = useMemo(
     () => {
-      const modifiedAssets = reduce(
+      const combinedAssets = reduce(
         encounters,
         (memo, encounter) => {
           const annotations = get(encounter, 'annotations');
-          console.log('deleteMe got here and annotations are: ');
-          console.log(annotations);
-          const assetSourcesFromAnnotations = map(
+          const modifiedAssets = map(
             annotations,
             (annotation, index) => ({
               number: index,
@@ -140,53 +135,21 @@ export default function Individual() {
                 : 'Annotation image with no creation date',
             }),
           );
-          return [...memo, ...assetSourcesFromAnnotations];
-          //.filter(entry => entry?.number < 9);
+          return [...memo, ...modifiedAssets];
         },
         [],
       );
       const uniqueModifiedAssets = uniqBy(
-        modifiedAssets,
+        combinedAssets,
         asset => asset.src,
       );
       const filteredAssets = uniqueModifiedAssets.filter(
         entry => entry?.number < 9,
       );
-      // const assets = uniqBy(allAssets, asset => asset.src);
-      //.filter(
-      //   entry => entry?.number < 9,
-      // );
-      // const modifiedAssets = map(encounters, encounter => {
-      //   const annotations = get(encounter, 'annotations');
-      //   const assetSourcesFromAnnotations = map(
-      //     annotations,
-      //     (annotation, index) => ({
-      //       number: index,
-      //       id: annotation?.asset_guid,
-      //       src: annotation?.asset_src,
-      //       alt: annotation?.created
-      //         ? 'Annotation created: ' + annotation?.created
-      //         : 'Annotation image with no creation date',
-      //     }),
-      //   ).filter(entry => entry?.number < 9);
-      //   return assetSourcesFromAnnotations;
-      // }); // TODO check that it works if there's more than one encounter after the "can't add a second encounter to an individual" issue is resolved
-      console.log('deleteMe filteredAssets are: ');
-      console.log(filteredAssets);
       return filteredAssets;
     },
     [individualData],
   );
-
-  console.log('deleteMe assetSources are: ');
-  console.log(assetSources);
-  console.log('deleteMe fakeAssets are: ');
-  console.log(fakeAssets);
-  const firstNineAssetSources = assetSources.filter(
-    entry => entry?.number < 9,
-  );
-  console.log('deleteMe firstNineAssetSources are: ');
-  console.log(firstNineAssetSources);
 
   const [firstName, adoptionName] = useMemo(
     () => [
@@ -322,7 +285,7 @@ export default function Individual() {
               { id: 'PHOTOS_OF' },
               { name: firstName },
             )}
-            assets={firstNineAssetSources}
+            assets={assetSources}
           />
           <MetadataCard
             editable

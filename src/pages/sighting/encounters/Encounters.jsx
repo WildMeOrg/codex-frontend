@@ -103,8 +103,6 @@ export default function Encounters({
 
   const encounterFieldSchemas = useEncounterFieldSchemas();
   const encounters = get(sightingData, 'encounters', []);
-  console.log('deleteMe encounters are: ');
-  console.log(encounters);
 
   useEffect(
     () => {
@@ -220,7 +218,7 @@ export default function Encounters({
         const individualName = deriveIndividualName(
           encounter?.individual,
           'FirstName',
-          'Unnamed Individual'
+          'Unnamed Individual',
         );
 
         const actionButtonActions = [
