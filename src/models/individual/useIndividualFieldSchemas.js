@@ -38,23 +38,23 @@ export default function useIndividualFieldSchemas() {
 
       return [
         createFieldSchema(fieldTypes.string, {
-          name: 'defaultName',
-          labelId: 'NAME',
+          name: 'firstName',
+          labelId: 'FIRST_NAME',
           category: defaultIndividualCategories.general.name,
           requiredForIndividualCreation: true,
           required: true,
           defaultValue: '',
           getValue: (_, individualData) =>
-            deriveIndividualName(individualData, 'defaultName', ''),
+            deriveIndividualName(individualData, 'FirstName', ''),
         }),
         createFieldSchema(fieldTypes.string, {
-          name: 'nickname',
-          labelId: 'NICKNAMES',
+          name: 'adoptionName',
+          labelId: 'ADOPTION_NAME',
           category: defaultIndividualCategories.general.name,
           requiredForIndividualCreation: true,
           defaultValue: '',
           getValue: (_, individualData) =>
-            deriveIndividualName(individualData, 'nickname', ''),
+            deriveIndividualName(individualData, 'AdoptionName', ''),
         }),
         createFieldSchema(fieldTypes.select, {
           name: 'sex',

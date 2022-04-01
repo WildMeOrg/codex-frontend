@@ -5,7 +5,7 @@ function getNameObject(individualData, context) {
 
 export function deriveIndividualName(
   individualData,
-  context = 'defaultName',
+  context = 'FirstName',
   fallback = undefined,
 ) {
   const nameObject = getNameObject(individualData, context);
@@ -14,7 +14,7 @@ export function deriveIndividualName(
 
 export function deriveIndividualNameGuid(
   individualData,
-  context = 'defaultName',
+  context = 'FirstName',
 ) {
   const nameObject = getNameObject(individualData, context);
   return nameObject?.guid;

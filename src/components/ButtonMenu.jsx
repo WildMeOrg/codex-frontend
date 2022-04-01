@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { FormattedMessage } from 'react-intl';
+
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import DownIcon from '@material-ui/icons/ArrowDropDown';
@@ -41,7 +43,11 @@ export default function ButtonMenu({
               handleClose();
             }}
           >
-            {action.label}
+            {action?.labelId ? (
+              <FormattedMessage id={action.labelId} />
+            ) : (
+              action.label
+            )}
           </MenuItem>
         ))}
       </Menu>

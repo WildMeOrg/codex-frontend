@@ -25,8 +25,10 @@ export default function useMutate({
   deriveData = Function.prototype,
   params,
   deriveParams = Function.prototype,
-  queryKeys = [],
-  deriveQueryKeys = () => [],
+  fetchKeys = [],
+  deriveFetchKeys = () => [],
+  invalidateKeys = [],
+  deriveInvalidateKeys = () => [],
   dataAccessor = result => result?.data?.data,
   onSuccess = Function.prototype,
   prependHoustonApiUrl = true,
@@ -52,11 +54,23 @@ export default function useMutate({
     const status = response?.status;
     setStatusCode(status);
     if (status === 200 || status === 204) {
-      const queryKeysFromArgs = deriveQueryKeys(mutationArgs);
-      const invalidationKeys = [...queryKeys, ...queryKeysFromArgs];
-      invalidationKeys.forEach(queryKey => {
+      const invalidations = [
+        ...invalidateKeys,
+        ...deriveInvalidateKeys(mutationArgs),
+      ];
+      invalidations.forEach(queryKey => {
         queryClient.invalidateQueries(queryKey);
       });
+
+      const fetches = [
+        ...fetchKeys,
+        ...deriveFetchKeys(mutationArgs),
+      ];
+
+      for (const queryKey of fetches) {
+        await queryClient.refetchQueries(queryKey);
+      }
+
       if (displayedError) setDisplayedError(null);
       setSuccess(true);
       onSuccess(response);

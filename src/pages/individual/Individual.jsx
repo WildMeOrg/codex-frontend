@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useCallback } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { get, capitalize, map } from 'lodash-es';
+import { get, capitalize, map, reduce, uniqBy } from 'lodash-es';
 import { useQueryClient } from 'react-query';
 
 import { getIndividualQueryKey } from '../../constants/queryKeys';
@@ -11,7 +11,7 @@ import usePatchIndividual from '../../models/individual/usePatchIndividual';
 
 // VERILY BAD HOTFIX //
 import defaultIndividualSrc from '../../assets/defaultIndividual.png';
-import FeaturedPhoto from '../sighting/featuredPhoto/FeaturedPhoto';
+import FeaturedPhoto from '../../components/FeaturedPhoto';
 // VERILY BAD HOTFIX //
 
 import useIndividualFieldSchemas from '../../models/individual/useIndividualFieldSchemas';
@@ -20,7 +20,7 @@ import MoreMenu from '../../components/MoreMenu';
 import EntityHeader from '../../components/EntityHeader';
 import MainColumn from '../../components/MainColumn';
 import SadScreen from '../../components/SadScreen';
-import Button from '../../components/Button';
+// import Button from '../../components/Button';
 import Text from '../../components/Text';
 import CardContainer from '../../components/cards/CardContainer';
 import EncountersCard from '../../components/cards/EncountersCard';
@@ -60,6 +60,39 @@ export default function Individual() {
     [queryClient, id],
   );
 
+  const individualDataForFeaturedPhoto = useMemo(
+    () => {
+      const allAssets = reduce(
+        individualData?.encounters,
+        (memo, encounter) => {
+          const newAssets = map(
+            get(encounter, 'annotations', []),
+            annotation => ({
+              src: annotation?.asset_src,
+              guid: annotation?.asset_guid,
+              altText: annotation?.created
+                ? intl.formatMessage({
+                    id: 'ANNOTATION_CREATED',
+                  }) + annotation?.created
+                : intl.formatMessage({
+                    id: 'ANNOTATION_WITH_CREATION_DATE_UNKNOWN',
+                  }),
+            }),
+          );
+          return [...memo, ...newAssets];
+        },
+        [],
+      );
+      const assets = uniqBy(allAssets, asset => asset.src);
+      return {
+        assets,
+        featuredAssetGuid: individualData?.featuredAssetGuid,
+        guid: individualData?.guid,
+      };
+    },
+    [individualData],
+  );
+
   const metadata = useMemo(
     () => {
       if (!individualData || !fieldSchemas) return null;
@@ -69,15 +102,15 @@ export default function Individual() {
           value: schema.getValue(schema, individualData),
         };
 
-        if (schema.name === 'defaultName') {
+        if (schema.name === 'firstName') {
           augmentedSchema.nameGuid = deriveIndividualNameGuid(
             individualData,
-            'defaultName',
+            'FirstName',
           );
-        } else if (schema.name === 'nickname') {
+        } else if (schema.name === 'adoptionName') {
           augmentedSchema.nameGuid = deriveIndividualNameGuid(
             individualData,
-            'nickname',
+            'AdoptionName',
           );
         }
 
@@ -116,18 +149,14 @@ export default function Individual() {
   console.log('deleteMe firstNineAssetSources are: ');
   console.log(firstNineAssetSources);
 
-  const [defaultName, nickname] = useMemo(
+  const [firstName, adoptionName] = useMemo(
     () => [
       deriveIndividualName(
         individualData,
-        'defaultName',
-        'Unnamed individual',
+        'FirstName',
+        intl.formatMessage({ id: 'UNNAMED_INDIVIDUAL' }),
       ),
-      deriveIndividualName(
-        individualData,
-        'nickname',
-        'Unnamed individual',
-      ),
+      deriveIndividualName(individualData, 'AdoptionName'),
     ],
     [individualData],
   );
@@ -146,7 +175,7 @@ export default function Individual() {
     setError: setPatchError,
   } = usePatchIndividual();
 
-  useDocumentTitle(capitalize(defaultName), {
+  useDocumentTitle(capitalize(firstName), {
     translateMessage: false,
   });
   const [editingProfile, setEditingProfile] = useState(false);
@@ -212,18 +241,19 @@ export default function Individual() {
         messageId="CONFIRM_DELETE_INDIVIDUAL"
       />
       <EntityHeader
-        name={defaultName}
+        name={firstName}
         renderAvatar={
           <FeaturedPhoto
-            data={null}
-            loading={false}
-            refreshSightingData={Function.prototype}
+            data={individualDataForFeaturedPhoto}
+            loading={loading}
             defaultPhotoSrc={defaultIndividualSrc}
+            refreshData={refreshIndividualData}
+            individualId={individualData?.guid}
           />
         }
         renderOptions={
           <div style={{ display: 'flex' }}>
-            <Button display="primary">SUBSCRIBE</Button>
+            {/* <Button display="primary">SUBSCRIBE</Button> */}
             <MoreMenu
               menuId="individual-actions"
               items={[
@@ -242,14 +272,16 @@ export default function Individual() {
           </div>
         }
       >
-        {nickname && <Text>{`Also known as ${nickname}.`}</Text>}
+        {adoptionName && (
+          <Text>{`Also known as ${adoptionName}.`}</Text>
+        )}
       </EntityHeader>
       <div style={{ display: 'flex', flexWrap: 'wrap' }}>
         <CardContainer size="small">
           <GalleryCard
             title={intl.formatMessage(
               { id: 'PHOTOS_OF' },
-              { name: defaultName },
+              { name: firstName },
             )}
             assets={firstNineAssetSources}
           />
@@ -264,7 +296,7 @@ export default function Individual() {
             title={
               <FormattedMessage
                 id="SIGHTINGS_OF"
-                values={{ name: defaultName }}
+                values={{ name: firstName }}
               />
             }
             columns={['date', 'owner', 'location', 'actions']}
