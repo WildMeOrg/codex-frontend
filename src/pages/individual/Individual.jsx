@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useCallback } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { get, capitalize } from 'lodash-es';
+import { get, capitalize, map, reduce, uniqBy } from 'lodash-es';
 import { useQueryClient } from 'react-query';
 
 import { getIndividualQueryKey } from '../../constants/queryKeys';
@@ -11,7 +11,7 @@ import usePatchIndividual from '../../models/individual/usePatchIndividual';
 
 // VERILY BAD HOTFIX //
 import defaultIndividualSrc from '../../assets/defaultIndividual.png';
-import FeaturedPhoto from '../sighting/featuredPhoto/FeaturedPhoto';
+import FeaturedPhoto from '../../components/FeaturedPhoto';
 // VERILY BAD HOTFIX //
 
 import useIndividualFieldSchemas from '../../models/individual/useIndividualFieldSchemas';
@@ -58,6 +58,39 @@ export default function Individual() {
     [queryClient, id],
   );
 
+  const individualDataForFeaturedPhoto = useMemo(
+    () => {
+      const allAssets = reduce(
+        individualData?.encounters,
+        (memo, encounter) => {
+          const newAssets = map(
+            get(encounter, 'annotations', []),
+            annotation => ({
+              src: annotation?.asset_src,
+              guid: annotation?.asset_guid,
+              altText: annotation?.created
+                ? intl.formatMessage({
+                    id: 'ANNOTATION_CREATED',
+                  }) + annotation?.created
+                : intl.formatMessage({
+                    id: 'ANNOTATION_WITH_CREATION_DATE_UNKNOWN',
+                  }),
+            }),
+          );
+          return [...memo, ...newAssets];
+        },
+        [],
+      );
+      const assets = uniqBy(allAssets, asset => asset.src);
+      return {
+        assets,
+        featuredAssetGuid: individualData?.featuredAssetGuid,
+        guid: individualData?.guid,
+      };
+    },
+    [individualData],
+  );
+
   const metadata = useMemo(
     () => {
       if (!individualData || !fieldSchemas) return null;
@@ -90,13 +123,9 @@ export default function Individual() {
       deriveIndividualName(
         individualData,
         'FirstName',
-        'Unnamed individual',
+        intl.formatMessage({ id: 'UNNAMED_INDIVIDUAL' }),
       ),
-      deriveIndividualName(
-        individualData,
-        'AdoptionName',
-        'Unnamed individual',
-      ),
+      deriveIndividualName(individualData, 'AdoptionName'),
     ],
     [individualData],
   );
@@ -184,10 +213,11 @@ export default function Individual() {
         name={firstName}
         renderAvatar={
           <FeaturedPhoto
-            data={null}
-            loading={false}
-            refreshSightingData={Function.prototype}
+            data={individualDataForFeaturedPhoto}
+            loading={loading}
             defaultPhotoSrc={defaultIndividualSrc}
+            refreshData={refreshIndividualData}
+            individualId={individualData?.guid}
           />
         }
         renderOptions={
