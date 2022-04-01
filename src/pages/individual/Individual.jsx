@@ -1,7 +1,14 @@
 import React, { useState, useMemo, useCallback } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { get, capitalize, map, reduce, uniqBy } from 'lodash-es';
+import {
+  get,
+  capitalize,
+  map,
+  reduce,
+  uniqBy,
+  slice,
+} from 'lodash-es';
 import { useQueryClient } from 'react-query';
 
 import { getIndividualQueryKey } from '../../constants/queryKeys';
@@ -143,10 +150,8 @@ export default function Individual() {
         combinedAssets,
         asset => asset.src,
       );
-      const filteredAssets = uniqueModifiedAssets.filter(
-        entry => entry?.number < 9,
-      );
-      return filteredAssets;
+      const firstNineAssets = slice(uniqueModifiedAsset, 0, 9);
+      return firstNineAssets;
     },
     [individualData],
   );
