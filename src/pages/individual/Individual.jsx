@@ -47,8 +47,6 @@ export default function Individual() {
   const { data: individualData, statusCode, loading } = useIndividual(
     id,
   );
-  console.log('deleteMe individualData is: ');
-  console.log(individualData);
   const history = useHistory();
   const fieldSchemas = useIndividualFieldSchemas();
 
@@ -62,6 +60,8 @@ export default function Individual() {
 
   const individualDataForFeaturedPhoto = useMemo(
     () => {
+      console.log('deleteMe individualData is: ');
+      console.log(individualData);
       const allAssets = reduce(
         individualData?.encounters,
         (memo, encounter) => {
