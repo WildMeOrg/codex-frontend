@@ -14,8 +14,8 @@ export default function FeaturedPhotoSelector({
   open,
   onClose,
   assets,
-  sightingId = null,
-  individualId = null,
+  sightingId,
+  individualId,
   currentFeaturedPhotoId,
   refreshData,
 }) {
@@ -34,6 +34,8 @@ export default function FeaturedPhotoSelector({
     loading: individualLoading,
     error: individualError,
   } = usePatchIndividual();
+
+  const error = sightingError || individualError;
 
   return (
     <StandardDialog
@@ -79,12 +81,12 @@ export default function FeaturedPhotoSelector({
           flexDirection: 'column',
         }}
       >
-        {(sightingError || individualError) && (
+        {error && (
           <CustomAlert
             style={{ marginBottom: 20 }}
             severity="error"
             titleId="ERROR_UPDATING_PROFILE"
-            description={sightingId ? sightingError : individualError}
+            description={error}
           />
         )}
         <Button
