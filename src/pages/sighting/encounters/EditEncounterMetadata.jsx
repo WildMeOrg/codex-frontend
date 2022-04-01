@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useIntl } from 'react-intl';
 import { get } from 'lodash-es';
 
 import DialogContent from '@material-ui/core/DialogContent';
@@ -10,6 +11,7 @@ import CustomAlert from '../../../components/Alert';
 import InputRow from '../../../components/fields/edit/InputRow';
 import Button from '../../../components/Button';
 import StandardDialog from '../../../components/StandardDialog';
+import Text from '../../../components/Text';
 
 function getInitialFormValues(schema, fieldKey) {
   return schema.reduce((memo, field) => {
@@ -32,6 +34,8 @@ export default function EditEncounterMetadata({
   refreshSightingData,
   pending = true,
 }) {
+  const intl = useIntl();
+
   const {
     updateProperties: updateEncounterProperties,
     loading: encounterLoading,
@@ -47,11 +51,12 @@ export default function EditEncounterMetadata({
   } = usePatchAgsEncounter();
 
   const loading = pending ? agsLoading : encounterLoading;
-  const error = pending ? agsError : encounterError;
-  const setError = pending ? setAgsError : setEncounterError;
+  const patchError = pending ? agsError : encounterError;
+  const setPatchError = pending ? setAgsError : setEncounterError;
 
   const [defaultFieldValues, setDefaultFieldValues] = useState({});
   const [customFieldValues, setCustomFieldValues] = useState({});
+  const [formErrors, setFormErrors] = useState([]);
 
   useEffect(
     () => {
@@ -70,6 +75,8 @@ export default function EditEncounterMetadata({
     },
     [get(metadata, 'length')],
   );
+
+  const showErrorAlert = patchError || formErrors.length > 0;
 
   return (
     <StandardDialog
@@ -116,19 +123,24 @@ export default function EditEncounterMetadata({
           );
         })}
 
-        {error && (
-          <CustomAlert
-            severity="error"
-            titleId="SUBMISSION_ERROR"
-            description={error}
-          />
+        {showErrorAlert && (
+          <CustomAlert severity="error" titleId="SUBMISSION_ERROR">
+            {formErrors.length > 0 &&
+              formErrors.map(formError => (
+                <Text key={formError} variant="body2">
+                  {formError}
+                </Text>
+              ))}
+            {patchError && <Text variant="body2">{patchError}</Text>}
+          </CustomAlert>
         )}
       </DialogContent>
       <DialogActions style={{ padding: '0px 24px 24px 24px' }}>
         <Button
           display="basic"
           onClick={() => {
-            setError(null);
+            setPatchError(null);
+            setFormErrors([]);
             onClose();
           }}
           id="CANCEL"
@@ -138,6 +150,37 @@ export default function EditEncounterMetadata({
           display="primary"
           onClick={async () => {
             let successfulUpdate = false;
+
+            // validation
+            const requiredFieldErrors = metadata.reduce(
+              (memo, schema) => {
+                if (!schema?.required) return memo;
+
+                const isEmpty = schema.customField
+                  ? !customFieldValues[schema.id]
+                  : !defaultFieldValues[schema.name];
+
+                if (isEmpty) {
+                  const fieldName = schema.labelId
+                    ? intl.formatMessage({ id: schema.labelId })
+                    : schema.label;
+
+                  memo.push(
+                    intl.formatMessage(
+                      { id: 'INCOMPLETE_FIELD' },
+                      { fieldName },
+                    ),
+                  );
+                }
+
+                return memo;
+              },
+              [],
+            );
+
+            setFormErrors(requiredFieldErrors);
+            if (requiredFieldErrors.length > 0) return;
+
             const properties = {
               ...defaultFieldValues,
               customFields: customFieldValues,
