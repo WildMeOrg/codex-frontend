@@ -138,16 +138,21 @@ export default function EditEncounterMetadata({
           display="primary"
           onClick={async () => {
             let successfulUpdate = false;
+            const properties = {
+              ...defaultFieldValues,
+              customFields: customFieldValues,
+            };
+
             if (pending) {
               successfulUpdate = await updateAgsProperties(
                 sightingId,
                 encounterId,
-                defaultFieldValues,
+                properties,
               );
             } else {
               successfulUpdate = await updateEncounterProperties(
                 encounterId,
-                defaultFieldValues,
+                properties,
               );
             }
             if (successfulUpdate) {
