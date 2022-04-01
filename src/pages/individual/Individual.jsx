@@ -150,7 +150,7 @@ export default function Individual() {
         combinedAssets,
         asset => asset.src,
       );
-      const firstNineAssets = slice(uniqueModifiedAsset, 0, 9);
+      const firstNineAssets = slice(uniqueModifiedAssets, 0, 9);
       return firstNineAssets;
     },
     [individualData],
