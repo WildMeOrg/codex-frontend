@@ -140,13 +140,22 @@ export default function Individual() {
                 : 'Annotation image with no creation date',
             }),
           );
-          return [...memo, ...assetSourcesFromAnnotations].filter(
-            entry => entry?.number < 9,
-          );
+          return [...memo, ...assetSourcesFromAnnotations];
           //.filter(entry => entry?.number < 9);
         },
         [],
       );
+      const uniqueModifiedAssets = uniqBy(
+        modifiedAssets,
+        asset => asset.src,
+      );
+      const filteredAssets = uniqueModifiedAssets.filter(
+        entry => entry?.number < 9,
+      );
+      // const assets = uniqBy(allAssets, asset => asset.src);
+      //.filter(
+      //   entry => entry?.number < 9,
+      // );
       // const modifiedAssets = map(encounters, encounter => {
       //   const annotations = get(encounter, 'annotations');
       //   const assetSourcesFromAnnotations = map(
@@ -162,9 +171,9 @@ export default function Individual() {
       //   ).filter(entry => entry?.number < 9);
       //   return assetSourcesFromAnnotations;
       // }); // TODO check that it works if there's more than one encounter after the "can't add a second encounter to an individual" issue is resolved
-      console.log('deleteMe modifiedAssets are: ');
-      console.log(modifiedAssets);
-      return modifiedAssets;
+      console.log('deleteMe filteredAssets are: ');
+      console.log(filteredAssets);
+      return filteredAssets;
     },
     [individualData],
   );
