@@ -14,9 +14,15 @@ import Link from '../../components/Link';
 import Button from '../../components/Button';
 import UppyDashboard from '../../components/UppyDashboard';
 import ReportForm from './ReportForm';
+import useGetMe from '../../models/users/useGetMe';
 
 export default function ReportSighting({ authenticated }) {
   const intl = useIntl();
+  const {
+    data: currentUserData,
+    loading: userDataLoading,
+    isFetching: userDataFetching,
+  } = useGetMe();
   const [reporting, setReporting] = useState(false);
 
   const { uppy, uploadInProgress, files } = useReportUppyInstance(
@@ -24,6 +30,12 @@ export default function ReportSighting({ authenticated }) {
   );
 
   const noImages = files.length === 0;
+  const isResearcher = currentUserData?.is_researcher;
+  const shouldDisableContinue =
+    userDataLoading ||
+    userDataFetching ||
+    (!isResearcher && noImages) ||
+    uploadInProgress;
   const reportInProgress = files.length > 0;
   useReloadWarning(reportInProgress);
 
@@ -33,7 +45,8 @@ export default function ReportSighting({ authenticated }) {
   };
 
   let continueButtonText = 'CONTINUE';
-  if (noImages) continueButtonText = 'CONTINUE_WITHOUT_PHOTOGRAPHS';
+  if (noImages && isResearcher)
+    continueButtonText = 'CONTINUE_WITHOUT_PHOTOGRAPHS';
   if (uploadInProgress) continueButtonText = 'UPLOAD_IN_PROGRESS';
 
   return (
@@ -96,7 +109,7 @@ export default function ReportSighting({ authenticated }) {
             <Button
               id={continueButtonText}
               display="primary"
-              disabled={uploadInProgress}
+              disabled={shouldDisableContinue}
               onClick={async () => {
                 window.scrollTo(0, 0);
                 setReporting(true);
