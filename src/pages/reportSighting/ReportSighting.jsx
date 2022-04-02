@@ -18,11 +18,7 @@ import useGetMe from '../../models/users/useGetMe';
 
 export default function ReportSighting({ authenticated }) {
   const intl = useIntl();
-  const {
-    data: currentUserData,
-    loading: userDataLoading,
-    isFetching: userDataFetching,
-  } = useGetMe();
+  const { data: currentUserData } = useGetMe();
   const [reporting, setReporting] = useState(false);
 
   const { uppy, uploadInProgress, files } = useReportUppyInstance(
@@ -32,10 +28,7 @@ export default function ReportSighting({ authenticated }) {
   const noImages = files.length === 0;
   const isResearcher = currentUserData?.is_researcher;
   const shouldDisableContinue =
-    userDataLoading ||
-    userDataFetching ||
-    (!isResearcher && noImages) ||
-    uploadInProgress;
+    (!isResearcher && noImages) || uploadInProgress;
   const reportInProgress = files.length > 0;
   useReloadWarning(reportInProgress);
 
