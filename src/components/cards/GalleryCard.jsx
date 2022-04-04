@@ -28,7 +28,7 @@ export default function GalleryCard({
         style={{ marginTop: 8 }}
       >
         {assets.map(asset => (
-          <ImageListItem key={asset.id} cols={1}>
+          <ImageListItem key={asset.guid} cols={1}>
             <img src={asset.src} alt={asset.alt} />
           </ImageListItem>
         ))}

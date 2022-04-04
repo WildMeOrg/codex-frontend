@@ -135,7 +135,7 @@ export default function Individual() {
             annotations,
             (annotation, index) => ({
               number: index,
-              id: annotation?.asset_guid,
+              guid: annotation?.asset_guid,
               src: annotation?.asset_src,
               alt: annotation?.created
                 ? 'Annotation created: ' + annotation?.created
