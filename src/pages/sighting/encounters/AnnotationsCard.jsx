@@ -39,6 +39,7 @@ export default function AnnotationsCard({
     <Card
       title={title}
       titleId={titleId}
+      overflowX="hidden"
       renderActions={
         <IconButton
           aria-label="add annotations"
