@@ -130,7 +130,7 @@ export default function Individual() {
       const combinedAssets = reduce(
         encounters,
         (memo, encounter) => {
-          const annotations = get(encounter, 'annotations');
+          const annotations = get(encounter, 'annotations', []);
           const modifiedAssets = map(
             annotations,
             (annotation, index) => ({
