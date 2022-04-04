@@ -218,7 +218,7 @@ export default function Encounters({
         const individualName = deriveIndividualName(
           encounter?.individual,
           'FirstName',
-          'Unnamed Individual'
+          'Unnamed Individual',
         );
 
         const actionButtonActions = [

@@ -1,7 +1,14 @@
 import React, { useState, useMemo, useCallback } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { get, capitalize, map, reduce, uniqBy } from 'lodash-es';
+import {
+  get,
+  capitalize,
+  map,
+  reduce,
+  uniqBy,
+  slice,
+} from 'lodash-es';
 import { useQueryClient } from 'react-query';
 
 import { getIndividualQueryKey } from '../../constants/queryKeys';
@@ -32,7 +39,6 @@ import CooccurrenceCard from '../../components/cards/CooccurrenceCard';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import EditIndividualMetadata from './EditIndividualMetadata';
 import MergeDialog from './MergeDialog';
-import fakeAssets from './fakeAssets';
 import fakeCoocs from './fakeCoocs';
 import fakeRelationships from './fakeRelationships';
 import {
@@ -116,6 +122,38 @@ export default function Individual() {
       });
     },
     [individualData, fieldSchemas],
+  );
+  const encounters = get(individualData, 'encounters', []);
+
+  const assetSources = useMemo(
+    () => {
+      const combinedAssets = reduce(
+        encounters,
+        (memo, encounter) => {
+          const annotations = get(encounter, 'annotations', []);
+          const modifiedAssets = map(
+            annotations,
+            (annotation, index) => ({
+              number: index,
+              guid: annotation?.asset_guid,
+              src: annotation?.asset_src,
+              alt: annotation?.created
+                ? 'Annotation created: ' + annotation?.created
+                : 'Annotation image with no creation date',
+            }),
+          );
+          return [...memo, ...modifiedAssets];
+        },
+        [],
+      );
+      const uniqueModifiedAssets = uniqBy(
+        combinedAssets,
+        asset => asset.src,
+      );
+      const firstNineAssets = slice(uniqueModifiedAssets, 0, 9);
+      return firstNineAssets;
+    },
+    [individualData],
   );
 
   const [firstName, adoptionName] = useMemo(
@@ -252,7 +290,7 @@ export default function Individual() {
               { id: 'PHOTOS_OF' },
               { name: firstName },
             )}
-            assets={fakeAssets}
+            assets={assetSources}
           />
           <MetadataCard
             editable
@@ -272,7 +310,7 @@ export default function Individual() {
             onDelete={encounterId =>
               setDeleteEncounterId(encounterId)
             }
-            encounters={get(individualData, 'encounters', [])}
+            encounters={encounters}
           />
           <RelationshipsCard
             title="Relationships"
