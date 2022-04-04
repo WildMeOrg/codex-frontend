@@ -40,6 +40,7 @@ export default function AnnotationsCard({
       title={title}
       titleId={titleId}
       overflowX="hidden"
+      maxHeight={400}
       renderActions={
         <IconButton
           aria-label="add annotations"

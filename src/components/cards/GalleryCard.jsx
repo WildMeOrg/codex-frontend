@@ -22,6 +22,7 @@ export default function GalleryCard({
       titleId={titleId}
       renderActions={<Link>See all</Link>}
       overflow={'hidden'}
+      overflowX={'hidden'}
     >
       <ImageList
         cols={3}
