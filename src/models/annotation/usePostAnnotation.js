@@ -32,8 +32,7 @@ export default function usePostAnnotation() {
           },
         },
       });
-      // const successful = get(response, 'status') === 200;
-      const successful = false; // TODO deleteMe
+      const successful = get(response, 'status') === 200;
       const newAnnotationGuid = get(response, ['data', 'guid']);
       if (successful) {
         setSuccess(true);
@@ -42,10 +41,7 @@ export default function usePostAnnotation() {
         return newAnnotationGuid;
       }
 
-      // const backendErrorMessage = response?.message;
-      const backendErrorMessage = 'Boop beep error';
-      console.log('deleteMe backendErrorMessage is: ');
-      console.log(backendErrorMessage);
+      const backendErrorMessage = response?.message;
       const errorMessage =
         backendErrorMessage || formatError(response);
       setError(errorMessage);
@@ -53,8 +49,6 @@ export default function usePostAnnotation() {
       setLoading(false);
       return null;
     } catch (postError) {
-      console.log('deleteMe error caught: ');
-      console.log(postError);
       const backendErrorMessage = get(postError, [
         'response',
         'data',
