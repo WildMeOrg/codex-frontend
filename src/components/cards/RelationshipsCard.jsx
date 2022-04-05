@@ -109,15 +109,15 @@ export default function RelationshipsCard({
     },
   ];
   return [
-    // <StandardDialog
-    //   open={openRelationshipDialog}
-    //   // onClose={} // TOOD () => setOpenRelationshipDialog(false)
-    //   titleId={'ADD_RELATIONSHIP'}
-    // >
-    //   <DialogContent>
-    //     <Text>TODO</Text>
-    //   </DialogContent>
-    // </StandardDialog>,
+    <StandardDialog
+      open={openRelationshipDialog}
+      // onClose={} // TOOD () => setOpenRelationshipDialog(false)
+      titleId={'ADD_RELATIONSHIP'}
+    >
+      <DialogContent>
+        <Text>TODO</Text>
+      </DialogContent>
+    </StandardDialog>,
     <Card
       title={title}
       titleId={titleId}
@@ -191,7 +191,7 @@ export default function RelationshipsCard({
         display="basic"
         startIcon={<AddIcon />}
         size="small"
-        onClick={setOpenRelationshipDialog(true)}
+        onClick={() => setOpenRelationshipDialog(true)}
       />
     </Card>,
   ];
