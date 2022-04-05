@@ -1,79 +1,82 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useTheme } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import AddIcon from '@material-ui/icons/Add';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogActions from '@material-ui/core/DialogActions';
 // import ViewChart from '@material-ui/icons/BubbleChart';
 // import ViewList from '@material-ui/icons/ViewList';
 import Button from '../Button';
 import Card from './Card';
 import Text from '../Text';
-import SvgText from '../SvgText';
-import FemaleIcon from '../svg/FemaleIcon';
-import MaleIcon from '../svg/MaleIcon';
-import SexUnsureIcon from '../svg/SexUnsureIcon';
+// import SvgText from '../SvgText';
+// import FemaleIcon from '../svg/FemaleIcon';
+// import MaleIcon from '../svg/MaleIcon';
+// import SexUnsureIcon from '../svg/SexUnsureIcon';
 import DataDisplay from '../dataDisplays/DataDisplay';
+import StandardDialog from '../StandardDialog';
 
-const linkLength = 35;
+// const linkLength = 35;
 
-const colorMap = {
-  Brother: '#66c2a5',
-  Mother: '#fc8d62',
-  Friend: '#8da0cb',
-};
+// const colorMap = {
+//   Brother: '#66c2a5',
+//   Mother: '#fc8d62',
+//   Friend: '#8da0cb',
+// };
 
-const sexIconMap = {
-  Male: MaleIcon,
-  Female: FemaleIcon,
-  Unsure: SexUnsureIcon,
-};
+// const sexIconMap = {
+//   Male: MaleIcon,
+//   Female: FemaleIcon,
+//   Unsure: SexUnsureIcon,
+// };
 
-const Node = function({
-  x,
-  y,
-  fill,
-  title,
-  subtitle,
-  linkColor,
-  Icon,
-  size = 8,
-}) {
-  const theme = useTheme();
-  const linkStroke = linkColor || theme.palette.grey['900'];
+// const Node = function({
+//   x,
+//   y,
+//   fill,
+//   title,
+//   subtitle,
+//   linkColor,
+//   Icon,
+//   size = 8,
+// }) {
+//   const theme = useTheme();
+//   const linkStroke = linkColor || theme.palette.grey['900'];
 
-  return (
-    <g>
-      <line
-        x1={x}
-        y1={y}
-        x2={50}
-        y2={50}
-        stroke={linkStroke}
-        strokeWidth={0.5}
-      />
-      <circle
-        cx={x}
-        cy={y}
-        r={size}
-        fill={fill}
-        stroke={linkStroke}
-        strokeWidth={0.5}
-      />
-      {Icon && (
-        <Icon
-          style={{ transform: `translate(${x}px, ${y - 5.5}px)` }}
-        />
-      )}
-      <SvgText x={x} y={subtitle ? y + 2.5 : y + 1} fontSize="2.75">
-        {title}
-      </SvgText>
-      {subtitle && (
-        <SvgText x={x} y={y + 5.5} fontSize="2">
-          {subtitle}
-        </SvgText>
-      )}
-    </g>
-  );
-};
+//   return (
+//     <g>
+//       <line
+//         x1={x}
+//         y1={y}
+//         x2={50}
+//         y2={50}
+//         stroke={linkStroke}
+//         strokeWidth={0.5}
+//       />
+//       <circle
+//         cx={x}
+//         cy={y}
+//         r={size}
+//         fill={fill}
+//         stroke={linkStroke}
+//         strokeWidth={0.5}
+//       />
+//       {Icon && (
+//         <Icon
+//           style={{ transform: `translate(${x}px, ${y - 5.5}px)` }}
+//         />
+//       )}
+//       <SvgText x={x} y={subtitle ? y + 2.5 : y + 1} fontSize="2.75">
+//         {title}
+//       </SvgText>
+//       {subtitle && (
+//         <SvgText x={x} y={y + 5.5} fontSize="2">
+//           {subtitle}
+//         </SvgText>
+//       )}
+//     </g>
+//   );
+// };
 
 export default function RelationshipsCard({
   title,
@@ -82,7 +85,11 @@ export default function RelationshipsCard({
   loading,
 }) {
   const theme = useTheme();
-  const backgroundColor = theme.palette.grey['200'];
+  const [
+    openRelationshipDialog,
+    setOpenRelationshipDialog,
+  ] = useState(false);
+  // const backgroundColor = theme.palette.grey['200'];
 
   const relationshipCols = [
     {
@@ -101,7 +108,16 @@ export default function RelationshipsCard({
       label: 'Role',
     },
   ];
-  return (
+  return [
+    <StandardDialog
+      open={openRelationshipDialog}
+      onClose={() => setOpenRelationshipDialog(false)}
+      titleId={'ADD_RELATIONSHIP'}
+    >
+      <DialogContent>
+        <Text>TODO</Text>
+      </DialogContent>
+    </StandardDialog>,
     <Card
       title={title}
       titleId={titleId}
@@ -127,7 +143,7 @@ export default function RelationshipsCard({
         </div>
       }
     >
-      {relationships.length === 0 ? (
+      {/* {relationships.length === 0 ? (
         <Text style={{ marginTop: 8, marginBottom: 12 }}>
           This individual has no relationships.
         </Text>
@@ -169,10 +185,14 @@ export default function RelationshipsCard({
             />
           </svg>
         </div>
-      )}
-      <Button display="basic" startIcon={<AddIcon />} size="small">
-        Add relationship
-      </Button>
-    </Card>
-  );
+      )} */}
+      <Button
+        id="ADD_RELATIONSHIP"
+        display="basic"
+        startIcon={<AddIcon />}
+        size="small"
+        onClick={setOpenRelationshipDialog(true)}
+      />
+    </Card>,
+  ];
 }
