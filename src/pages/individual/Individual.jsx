@@ -315,6 +315,7 @@ export default function Individual() {
           <RelationshipsCard
             title="Relationships"
             relationships={fakeRelationships}
+            loading={false} //TODO add relationshipLoading
           />
           <CooccurrenceCard data={fakeCoocs} />
         </CardContainer>

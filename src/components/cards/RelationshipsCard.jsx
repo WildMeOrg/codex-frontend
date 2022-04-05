@@ -2,8 +2,8 @@ import React from 'react';
 import { useTheme } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import AddIcon from '@material-ui/icons/Add';
-import ViewChart from '@material-ui/icons/BubbleChart';
-import ViewList from '@material-ui/icons/ViewList';
+// import ViewChart from '@material-ui/icons/BubbleChart';
+// import ViewList from '@material-ui/icons/ViewList';
 import Button from '../Button';
 import Card from './Card';
 import Text from '../Text';
@@ -11,6 +11,7 @@ import SvgText from '../SvgText';
 import FemaleIcon from '../svg/FemaleIcon';
 import MaleIcon from '../svg/MaleIcon';
 import SexUnsureIcon from '../svg/SexUnsureIcon';
+import DataDisplay from '../dataDisplays/DataDisplay';
 
 const linkLength = 35;
 
@@ -78,23 +79,50 @@ export default function RelationshipsCard({
   title,
   titleId = 'SIGHTINGS',
   relationships = [],
+  loading,
 }) {
   const theme = useTheme();
   const backgroundColor = theme.palette.grey['200'];
+
+  const relationshipCols = [
+    {
+      reference: 'individual',
+      name: 'individual',
+      label: 'Individual',
+    },
+    {
+      reference: 'type',
+      name: 'type',
+      label: 'Type',
+    },
+    {
+      reference: 'role',
+      name: 'role',
+      label: 'Role',
+    },
+  ];
   return (
     <Card
       title={title}
       titleId={titleId}
       renderActions={
         <div>
-          <IconButton
+          {/* <IconButton
             style={{ color: theme.palette.primary.main }}
             aria-label="View chart"
           >
             <ViewChart />
-          </IconButton>
-          <IconButton aria-label="View list">
-            <ViewList />
+          </IconButton> */}
+          <IconButton
+            aria-label="View list"
+            style={{ color: theme.palette.primary.main }}
+          >
+            <DataDisplay
+              tableSize="medium"
+              columns={relationshipCols}
+              data={relationships}
+              loading={loading}
+            />
           </IconButton>
         </div>
       }
