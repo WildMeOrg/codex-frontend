@@ -125,16 +125,16 @@ export default function AnnotationCreator({
             ref={divRef}
           />
         </div>
-        {error && (
-          <CustomAlert
-            titleId="SERVER_ERROR"
-            style={{ marginTop: 16, marginBottom: 8 }}
-            severity="error"
-          >
-            {error}
-          </CustomAlert>
-        )}
       </DialogContent>
+      {error && (
+        <CustomAlert
+          titleId="SERVER_ERROR"
+          style={{ marginTop: 16, marginBottom: 8 }}
+          severity="error"
+        >
+          {error}
+        </CustomAlert>
+      )}
       <div
         style={{
           display: 'flex',
