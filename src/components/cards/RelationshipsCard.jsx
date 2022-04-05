@@ -111,7 +111,7 @@ export default function RelationshipsCard({
   return [
     <StandardDialog
       open={openRelationshipDialog}
-      onClose={() => setOpenRelationshipDialog(false)}
+      // onClose={} // TOOD () => setOpenRelationshipDialog(false)
       titleId={'ADD_RELATIONSHIP'}
     >
       <DialogContent>
