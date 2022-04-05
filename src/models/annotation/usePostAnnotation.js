@@ -42,6 +42,8 @@ export default function usePostAnnotation() {
       }
 
       const backendErrorMessage = response?.message;
+      console.log('deleteMe backendErrorMessage is: ');
+      console.log(backendErrorMessage);
       const errorMessage =
         backendErrorMessage || formatError(response);
       setError(errorMessage);
@@ -49,6 +51,8 @@ export default function usePostAnnotation() {
       setLoading(false);
       return null;
     } catch (postError) {
+      console.log('deleteMe error caught: ');
+      console.log(postError);
       const backendErrorMessage = get(postError, [
         'response',
         'data',

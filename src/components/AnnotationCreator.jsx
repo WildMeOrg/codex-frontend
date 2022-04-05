@@ -241,6 +241,8 @@ export default function AnnotationCreator({
               viewpoint,
               theta,
             );
+            console.log('deleteMe newAnnotationId is: ');
+            console.log(newAnnotationId);
             if (newAnnotationId) {
               refreshSightingData();
               onClose();
