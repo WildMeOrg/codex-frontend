@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useIntl } from 'react-intl';
 
 import { Autocomplete } from '@material-ui/lab';
 import { useTheme } from '@material-ui/core/styles';
@@ -93,6 +94,7 @@ export default function RelationshipsCard({
   relationships = [],
   loading,
 }) {
+  const intl = useIntl();
   const error = 'DeleteMe';
   console.log('deleteMe title is: ' + title);
   console.log('deleteMe titleId is: ' + titleId);
@@ -164,9 +166,11 @@ export default function RelationshipsCard({
         <Autocomplete
           value={get(types, [0])}
           options={types}
-          renderOption={option => (
-            <Text value={option.guid}>option.label</Text>
-          )}
+          renderOption={option => {
+            console.log('deleteMe option in renderOption is: ');
+            console.log(option);
+            return <Text value={option.guid}>option.label</Text>;
+          }}
           onChange={(_, newValue) => {
             console.log(
               'deleteMe onChange autocomplete for type triggered. newValue is: ',
@@ -174,21 +178,25 @@ export default function RelationshipsCard({
             console.log(newValue);
             onChange(get(newValue, 'guid', ''));
           }}
-          getOptionLabel={option => get(option, 'label', '')}
+          getOptionLabel={option => {
+            console.log('deleteMe option is: ');
+            console.log(option);
+            return get(option, 'label', 'deleteMeShouldNotGetHere');
+          }}
           getOptionSelected={option =>
             option.guid
               ? option.guid === get(types, ['0', 'guid'])
               : false
           }
           renderInput={params => {
-            console.log('deleteMe params are: ');
-            console.log(params);
             return (
               <TextField
                 {...params}
                 style={{ width: 280 }}
                 variant="standard"
-                label={'Test label'}
+                label={intl.formatMessage({
+                  id: 'SELECT_RELATIONSHIP_TYPE',
+                })}
               />
             );
           }}
