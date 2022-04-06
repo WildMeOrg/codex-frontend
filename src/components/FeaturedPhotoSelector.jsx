@@ -1,29 +1,41 @@
 import React, { useState } from 'react';
-import { FormattedMessage } from 'react-intl';
 import { useTheme } from '@material-ui/core/styles';
 
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 
-import CustomAlert from '../../../components/Alert';
-import usePatchSighting from '../../../models/sighting/usePatchSighting';
-import Button from '../../../components/Button';
-import StandardDialog from '../../../components/StandardDialog';
+import CustomAlert from './Alert';
+import usePatchSighting from '../models/sighting/usePatchSighting';
+import Button from './Button';
+import StandardDialog from './StandardDialog';
+import usePatchIndividual from '../models/individual/usePatchIndividual';
 
 export default function FeaturedPhotoSelector({
   open,
   onClose,
   assets,
   sightingId,
+  individualId,
   currentFeaturedPhotoId,
-  refreshSightingData,
+  refreshData,
 }) {
   const theme = useTheme();
   const [selectedPhoto, setSelectedPhoto] = useState(
     currentFeaturedPhotoId,
   );
 
-  const { updateProperties, loading, error } = usePatchSighting();
+  const {
+    updateProperties,
+    loading: sightingLoading,
+    error: sightingError,
+  } = usePatchSighting();
+  const {
+    updateIndividualProperties,
+    loading: individualLoading,
+    error: individualError,
+  } = usePatchIndividual();
+
+  const error = sightingError || individualError;
 
   return (
     <StandardDialog
@@ -54,7 +66,7 @@ export default function FeaturedPhotoSelector({
                 width: '100%',
               }}
               onClick={() => setSelectedPhoto(asset.guid)}
-              alt={asset.filename}
+              alt={asset.altText}
               src={asset.src}
               key={asset.guid}
             />
@@ -80,17 +92,26 @@ export default function FeaturedPhotoSelector({
         <Button
           display="primary"
           onClick={async () => {
-            const successfulUpdate = await updateProperties(
-              sightingId,
-              { featuredAssetGuid: selectedPhoto },
-            );
+            let successfulUpdate;
+            if (sightingId) {
+              successfulUpdate = await updateProperties(sightingId, {
+                featuredAssetGuid: selectedPhoto,
+              });
+            } else {
+              successfulUpdate = await updateIndividualProperties(
+                individualId,
+                {
+                  featuredAssetGuid: selectedPhoto,
+                },
+              );
+            }
             if (successfulUpdate) {
-              refreshSightingData();
+              refreshData();
               onClose();
             }
           }}
           autoFocus
-          loading={loading}
+          loading={sightingId ? sightingLoading : individualLoading}
           disabled={!selectedPhoto}
           id="SAVE"
         />

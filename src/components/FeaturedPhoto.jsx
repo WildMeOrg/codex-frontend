@@ -1,19 +1,22 @@
 import React, { useState } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { get } from 'lodash-es';
 
 import { useTheme } from '@material-ui/core/styles';
-import SvgText from '../../../components/SvgText';
-import defaultProfilePhotoSrc from '../../../assets/defaultProfile.jpg';
+import SvgText from './SvgText';
+import defaultProfilePhotoSrc from '../assets/defaultProfile.jpg';
 import FeaturedPhotoSelector from './FeaturedPhotoSelector';
 
 export default function FeaturedPhoto({
   data,
   loading,
-  refreshSightingData,
+  refreshData,
   defaultPhotoSrc = defaultProfilePhotoSrc,
   size = 150,
+  sightingId = null,
+  individualId = null,
 }) {
+  const intl = useIntl();
   const theme = useTheme();
   const [hovered, setHovered] = useState(false);
   const [
@@ -39,23 +42,19 @@ export default function FeaturedPhoto({
     >
       <FeaturedPhotoSelector
         currentFeaturedPhotoId={featuredPhotoGuid}
-        sightingId={get(data, 'id')}
+        sightingId={sightingId}
+        individualId={individualId}
         assets={assets}
         open={selectingFeaturedPhoto}
-        refreshSightingData={refreshSightingData}
+        refreshData={refreshData}
         onClose={() => setSelectingFeaturedPhoto(false)}
       />
       {loading ? (
-        <div
-          style={{
-            width: size,
-            height: size,
-          }}
-        />
+        <div style={{ width: size, height: size }} />
       ) : (
         <img
           src={featuredPhotoSrc || defaultPhotoSrc}
-          alt="Featured asset"
+          alt={intl.formatMessage({ id: 'FEATURED_ASSET' })}
           style={{
             objectFit: 'cover',
             width: size,

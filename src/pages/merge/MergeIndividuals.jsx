@@ -54,16 +54,16 @@ export default function MergeIndividuals() {
 
   const showSexInput = Boolean(mergeConflicts?.sex);
   const nameContexts = mergeConflicts?.name_contexts || [];
-  const showDefaultNameInput = nameContexts.includes('defaultName');
-  const showNicknameInput = nameContexts.includes('nickname');
+  const showFirstNameInput = nameContexts.includes('FirstName');
+  const showAdoptionNameInput = nameContexts.includes('AdoptionName');
   const showResolveFields =
-    showSexInput || showDefaultNameInput || showNicknameInput;
+    showSexInput || showFirstNameInput || showAdoptionNameInput;
 
   const formComplete = isFormComplete(
     formData,
     showSexInput,
-    showDefaultNameInput,
-    showNicknameInput,
+    showFirstNameInput,
+    showAdoptionNameInput,
   );
 
   if (fetchError)
@@ -106,26 +106,29 @@ export default function MergeIndividuals() {
             style={{ display: 'flex', flexDirection: 'column' }}
           >
             <Text variant="h5" id="RESOLVE_FIELDS" />
-            {showDefaultNameInput && (
+            {showFirstNameInput && (
               <ResolutionSelector
-                value={formData?.defaultName}
-                onChange={newDefaultName =>
+                value={formData?.firstName}
+                onChange={newFirstName =>
                   setFormData({
                     ...formData,
-                    defaultName: newDefaultName,
+                    firstName: newFirstName,
                   })
                 }
-                fieldType="defaultName"
+                fieldType="firstName"
                 individualData={individualData}
               />
             )}
-            {showNicknameInput && (
+            {showAdoptionNameInput && (
               <ResolutionSelector
-                value={formData?.nickname}
-                onChange={newNickname =>
-                  setFormData({ ...formData, nickname: newNickname })
+                value={formData?.adoptionName}
+                onChange={newAdoptionName =>
+                  setFormData({
+                    ...formData,
+                    adoptionName: newAdoptionName,
+                  })
                 }
-                fieldType="nickname"
+                fieldType="adoptionName"
                 individualData={individualData}
               />
             )}
@@ -160,8 +163,8 @@ export default function MergeIndividuals() {
               const propertyOverrides = derivePropertyOverrides(
                 formData,
                 showSexInput,
-                showDefaultNameInput,
-                showNicknameInput,
+                showFirstNameInput,
+                showAdoptionNameInput,
               );
 
               mergeIndividuals({

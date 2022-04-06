@@ -13,7 +13,7 @@ import UserManagement from './pages/userManagement/UserManagement';
 import AdminActions from './pages/adminActions/AdminActions';
 import ControlPanel from './pages/controlPanel/ControlPanel';
 import Individual from './pages/individual/Individual';
-import PictureBook from './pages/individual/PictureBook';
+// import PictureBook from './pages/individual/PictureBook';
 import Sighting from './pages/sighting/Sighting';
 import AssetGroupSighting from './pages/sighting/AssetGroupSighting';
 import Splash from './pages/splash/Splash';
@@ -104,9 +104,9 @@ export default function AuthenticatedSwitch() {
                       <Route path="/admin">
                         <ControlPanel />
                       </Route>
-                      <Route path="/individuals/picturebook">
+                        {/* <Route path="/individuals/picturebook">
                         <PictureBook />
-                      </Route>
+                      </Route> */}
                       <Route path="/individuals/:id">
                         <Individual />
                       </Route>

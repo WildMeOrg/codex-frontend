@@ -3,20 +3,24 @@ import { set } from 'lodash-es';
 export function derivePropertyOverrides(
   formData,
   showSexInput,
-  showDefaultNameInput,
-  showNicknameInput,
+  showFirstNameInput,
+  showAdoptionNameInput,
 ) {
   const overrides = {};
   if (showSexInput) overrides.sex = formData?.sex;
-  if (showDefaultNameInput) {
+  if (showFirstNameInput) {
     set(
       overrides,
-      ['name_context', 'defaultName'],
-      formData?.defaultName,
+      ['name_context', 'FirstName'],
+      formData?.firstName,
     );
   }
-  if (showNicknameInput) {
-    set(overrides, ['name_context', 'nickname'], formData?.nickname);
+  if (showAdoptionNameInput) {
+    set(
+      overrides,
+      ['name_context', 'AdoptionName'],
+      formData?.adoptionName,
+    );
   }
   return overrides;
 }
@@ -24,11 +28,11 @@ export function derivePropertyOverrides(
 export function isFormComplete(
   formData,
   showSexInput,
-  showDefaultNameInput,
-  showNicknameInput,
+  showFirstNameInput,
+  showAdoptionNameInput,
 ) {
   if (showSexInput && !formData?.sex) return false;
-  if (showDefaultNameInput && !formData?.defaultName) return false;
-  if (showNicknameInput && !formData?.nickname) return false;
+  if (showFirstNameInput && !formData?.firstName) return false;
+  if (showAdoptionNameInput && !formData?.adoptionName) return false;
   return true;
 }

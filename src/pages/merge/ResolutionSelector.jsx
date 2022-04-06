@@ -18,20 +18,20 @@ const propertyMap = {
     deriveChoices: sexes =>
       validSexOptions.filter(o => sexes.includes(o.value)),
   },
-  defaultName: {
-    labelId: 'NAME',
+  firstName: {
+    labelId: 'FIRST_NAME',
     getProperty: individualData =>
-      deriveIndividualName(individualData, 'defaultName'),
+      deriveIndividualName(individualData, 'FirstName'),
     deriveChoices: names =>
       names.map(name => ({
         label: name,
         value: name,
       })),
   },
-  nickname: {
-    labelId: 'ALIAS',
+  adoptionName: {
+    labelId: 'ADOPTION_NAME',
     getProperty: individualData =>
-      deriveIndividualName(individualData, 'nickname'),
+      deriveIndividualName(individualData, 'AdoptionName'),
     deriveChoices: names =>
       names.map(name => ({
         label: name,
