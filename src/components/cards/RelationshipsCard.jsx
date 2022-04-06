@@ -181,6 +181,7 @@ export default function RelationshipsCard({
           setSelectedIndividualId={setSelectedIndividualId}
         />
         <Autocomplete
+          style={{ marginTop: 10 }}
           value={currentType}
           options={types}
           renderOption={option => (
@@ -195,8 +196,7 @@ export default function RelationshipsCard({
             console.log(newValue);
             onChangeType(newValue);
           }}
-          getOptionLabel={option => get(option, 'label', '')}
-          // getOptionSelected={option =>
+          getOptionLabel={option => get(option, 'label', '')} // getOptionSelected={option =>
           //   option.guid
           //     ? option.guid === get(types, ['0', 'guid'])
           //     : false
@@ -216,6 +216,7 @@ export default function RelationshipsCard({
         />
         {currentRoles?.length > 0 && (
           <Autocomplete
+            style={{ marginTop: 10 }}
             value={currentRole}
             options={currentRoles}
             renderOption={option => {
@@ -230,12 +231,13 @@ export default function RelationshipsCard({
               console.log(newValue);
               onChangeRole(get(newValue, 'guid', ''));
             }}
-            getOptionLabel={option => {
+            getOptionLabel={(option, wholeObj) => {
               console.log('deleteMe option is: ');
               console.log(option);
+              console.log('deleteMe wholeObj is: ');
+              console.log(wholeObj);
               return get(option, 'label', 'deleteMeShouldNotGetHere');
-            }}
-            // getOptionSelected={option =>
+            }} // getOptionSelected={option =>
             //   option.guid
             //     ? option.guid === get(types, ['0', 'guid'])
             //     : false
