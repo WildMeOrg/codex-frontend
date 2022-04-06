@@ -17,6 +17,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import SearchIcon from '@material-ui/icons/Search';
 import ExploreIcon from '@material-ui/icons/FilterList';
 
+import { deriveIndividualName } from '../../utils/nameUtils';
 import useOnEnter from '../../hooks/useOnEnter';
 import { useIndividualTermQuery } from '../../models/individual/useQueryIndividuals';
 import Button from '../Button';
@@ -36,6 +37,8 @@ export default function IndividualsButton() {
     loading,
     error,
   } = useIndividualTermQuery(searchTerm);
+
+  console.log(searchResults);
 
   useOnEnter(() => {
     if (inputContent !== '') setSearchTerm(inputContent);
@@ -142,23 +145,23 @@ export default function IndividualsButton() {
           />
         )}
         <List dense style={{ maxHeight: 400, overflow: 'scroll' }}>
-          {mappableSearchResults.map(result => {
-            const resultId = get(result, 'id');
-            const aliasString = capitalize(get(result, 'alias'));
-            const nameString = get(result, 'name', '');
-            const displayString = aliasString
-              ? `${nameString} (${aliasString})`
-              : nameString;
-            const alias = get(result, 'alias') || '-';
-            const avatarLetter = alias[0].toUpperCase();
-            const genusString = capitalize(get(result, 'genus', ''));
-            const speciesString = `${genusString} ${get(
-              result,
-              'species',
-              '',
-            )}`;
+          {mappableSearchResults.map(individual =>
+          {
+            const individualGuid = individual?.guid;
+            const adoptionName = deriveIndividualName(individual, 'adoptionName');
+            const defaultName = deriveIndividualName(individual, 'defaultName', 'Unnamed Individual');
+            const displayString = adoptionName
+              ? `${defaultName} (${adoptionName})`
+              : defaultName;
+            const avatarLetter = defaultName[0].toUpperCase();
+            // const genusString = capitalize(get(result, 'genus', ''));
+            // const speciesString = `${genusString} ${get(
+            //   result,
+            //   'species',
+            //   '',
+            // )}`;
             return (
-              <ListItem key={resultId}>
+              <ListItem key={individualGuid}>
                 <ListItemAvatar>
                   <Avatar>{avatarLetter}</Avatar>
                 </ListItemAvatar>
@@ -167,14 +170,14 @@ export default function IndividualsButton() {
                   primary={
                     <Link
                       onClick={handleClose}
-                      href={`/individuals/${resultId}`}
+                      href={`/individuals/${individualGuid}`}
                       noUnderline
                     >
                       {displayString}
                     </Link>
                   }
                   secondary={
-                    <Text variant="caption">{speciesString}</Text>
+                    <Text variant="caption">Created on May 21, 2000</Text>
                   }
                 />
               </ListItem>
