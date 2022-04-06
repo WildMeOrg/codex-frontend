@@ -84,11 +84,18 @@ export default function RelationshipsCard({
   relationships = [],
   loading,
 }) {
+  console.log('deleteMe title is: ' + title);
+  console.log('deleteMe titleId is: ' + titleId);
+  console.log('deleteMe error going into the relationshipCard is: ');
+  console.log(error);
   const theme = useTheme();
   const [
     openRelationshipDialog,
     setOpenRelationshipDialog,
   ] = useState(false);
+  const [selectedIndividualId, setSelectedIndividualId] = useState(
+    null,
+  );
   // const backgroundColor = theme.palette.grey['200'];
 
   const relationshipCols = [
@@ -108,14 +115,29 @@ export default function RelationshipsCard({
       label: 'Role',
     },
   ];
+
+  const onCloseDialog = () => {
+    setSelectedIndividualId(null);
+    setOpenRelationshipDialog(false);
+  };
+
   return [
     <StandardDialog
       open={openRelationshipDialog}
-      // onClose={} // TOOD () => setOpenRelationshipDialog(false)
+      onClose={onCloseDialog}
       titleId={'ADD_RELATIONSHIP'}
     >
       <DialogContent>
-        <Text>TODO</Text>
+        <IndividualSelector
+          setSelectedIndividualId={setSelectedIndividualId}
+        />
+        {error && (
+          <CustomAlert
+            severity="error"
+            titleId="SUBMISSION_ERROR"
+            description={error}
+          />
+        )}
       </DialogContent>
     </StandardDialog>,
     <Card
@@ -143,6 +165,13 @@ export default function RelationshipsCard({
         </div>
       }
     >
+      <Button
+        id="ADD_RELATIONSHIP"
+        display="basic"
+        startIcon={<AddIcon />}
+        size="small"
+        onClick={() => setOpenRelationshipDialog(true)}
+      />
       {/* {relationships.length === 0 ? (
         <Text style={{ marginTop: 8, marginBottom: 12 }}>
           This individual has no relationships.
@@ -186,13 +215,6 @@ export default function RelationshipsCard({
           </svg>
         </div>
       )} */}
-      <Button
-        id="ADD_RELATIONSHIP"
-        display="basic"
-        startIcon={<AddIcon />}
-        size="small"
-        onClick={() => setOpenRelationshipDialog(true)}
-      />
     </Card>,
   ];
 }

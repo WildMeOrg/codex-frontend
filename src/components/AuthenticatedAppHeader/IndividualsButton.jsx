@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
+
 import { get, capitalize } from 'lodash-es';
 
 import { useTheme } from '@material-ui/core/styles';
@@ -80,14 +82,8 @@ export default function IndividualsButton() {
         id={id}
         open={open}
         anchorEl={anchorEl}
-        anchorOrigin={{
-          vertical: 'top',
-          horizontal: 'left',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'left',
-        }}
+        anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'left' }}
         PaperProps={{
           style: {
             width: 600,
@@ -117,8 +113,9 @@ export default function IndividualsButton() {
             ),
             disableUnderline: true,
             autoFocus: true,
-            placeholder:
-              'Search for an individual by name, alias, or guid',
+            placeholder: intl.formatMessage({
+              id: 'SEARCH_INDIVIDUALS_INSTRUCTION',
+            }),
           }}
           value={searchTerm}
           onChange={e => {

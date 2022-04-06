@@ -1008,6 +1008,5 @@
   "RELATIONSHIP_EDITOR": "Relationship types",
   "NEW_RELATIONSHIP_TYPE": "Add type",
   "ANNOTATION_CREATED": "Annotation created ",
-  "ANNOTATION_WITH_CREATION_DATE_UNKNOWN": "Annotation with unknown creation date",
-  "ADD_RELATIONSHIP": "Add relationship"
+  "ANNOTATION_WITH_CREATION_DATE_UNKNOWN": "Annotation with unknown creation date"
 }
