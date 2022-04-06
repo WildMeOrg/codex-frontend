@@ -3,6 +3,7 @@ import { FlatfileButton } from '@flatfile/react';
 import { get } from 'lodash-es';
 import { useHistory } from 'react-router-dom';
 import { useQueryClient } from 'react-query';
+import axios from 'axios';
 
 import { useTheme } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
@@ -141,6 +142,24 @@ export default function BulkReportForm({ assetReferences }) {
             onRecordChange={recordHook}
             onData={async results => {
               setSightingData(results.data);
+            }}
+            fieldHooks={{
+              individual: async values => {
+                try {
+                  const response = await axios.request({
+                    method: 'post',
+                    url: `${__houston_url__}/api/v1/individuals/validate`,
+                    data: values,
+                  });
+                  return response?.data || [];
+                } catch (e) {
+                  console.error(
+                    'Error validating individual names: ',
+                    e,
+                  );
+                  return [];
+                }
+              },
             }}
             render={(importer, launch) => (
               <Button
