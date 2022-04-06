@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+
+import { Autocomplete } from '@material-ui/lab';
 import { useTheme } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import AddIcon from '@material-ui/icons/Add';
@@ -16,7 +18,7 @@ import DataDisplay from '../dataDisplays/DataDisplay';
 import StandardDialog from '../StandardDialog';
 import IndividualSelector from '../IndividualSelector';
 import useSiteSettings from '../../models/site/useSiteSettings';
-// import Text from '../Text';
+import Text from '../Text';
 // import SvgText from '../SvgText';
 // import FemaleIcon from '../svg/FemaleIcon';
 // import MaleIcon from '../svg/MaleIcon';
@@ -105,6 +107,9 @@ export default function RelationshipsCard({
   );
   console.log('deleteMe possibleRelationships are: ');
   console.log(possibleRelationships);
+  const types = Object.values(possibleRelationships);
+  console.log('deleteMe types are: ');
+  console.log(types);
 
   const theme = useTheme();
   const [
@@ -134,6 +139,12 @@ export default function RelationshipsCard({
     },
   ];
 
+  const onChange = () => {
+    console.log(
+      'deleteMe onChange inside RelationshipCard triggered',
+    );
+  };
+
   const onCloseDialog = () => {
     setSelectedIndividualId(null);
     setOpenRelationshipDialog(false);
@@ -148,6 +159,26 @@ export default function RelationshipsCard({
       <DialogContent>
         <IndividualSelector
           setSelectedIndividualId={setSelectedIndividualId}
+        />
+        <Autocomplete
+          value={get(types, [0])}
+          options={types}
+          renderOption={option => (
+            <Text value={option.guid}>option.label</Text>
+          )}
+          onChange={(_, newValue) => {
+            console.log(
+              'deleteMe onChange autocomplete for type triggered. newValue is: ',
+            );
+            console.log(newValue);
+            onChange(get(newValue, 'guid', ''));
+          }}
+          getOptionLabel={option => get(option, 'label', '')}
+          getOptionSelected={option =>
+            option.guid
+              ? option.guid === get(types, ['0', 'guid'])
+              : false
+          }
         />
         {error && (
           <CustomAlert

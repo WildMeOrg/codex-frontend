@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useIntl } from 'react-intl';
-import { useIntl } from 'react-intl';
 
 import { get, capitalize } from 'lodash-es';
 
