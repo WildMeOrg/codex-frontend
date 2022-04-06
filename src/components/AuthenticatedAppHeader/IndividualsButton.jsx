@@ -143,16 +143,26 @@ export default function IndividualsButton() {
           />
         )}
         <List dense style={{ maxHeight: 400, overflow: 'scroll' }}>
-          {mappableSearchResults.map(individual =>
-          {
+          {mappableSearchResults.map(individual => {
             const individualGuid = individual?.guid;
-            const adoptionName = deriveIndividualName(individual, 'AdoptionName');
-            const defaultName = deriveIndividualName(individual, 'FirstName', 'Unnamed Individual');
+            const adoptionName = deriveIndividualName(
+              individual,
+              'AdoptionName',
+            );
+            const defaultName = deriveIndividualName(
+              individual,
+              'FirstName',
+              'Unnamed Individual',
+            );
             const displayString = adoptionName
               ? `${defaultName} (${adoptionName})`
               : defaultName;
             const avatarLetter = defaultName[0].toUpperCase();
-            const createdDate = formatDate(individual?.created, true, 'Unknown date');
+            const createdDate = formatDate(
+              individual?.created,
+              true,
+              'Unknown date',
+            );
 
             return (
               <ListItem key={individualGuid}>

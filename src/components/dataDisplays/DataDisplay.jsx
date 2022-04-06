@@ -161,9 +161,10 @@ export default function DataDisplay({
                   .filter(c =>
                     get(c, 'options.displayInFilter', true),
                   )
-                  .map(c =>
-                  {
-                    const columnLabel = c?.labelId ? intl.formatMessage({ id: c.labelId }) : c.label;
+                  .map(c => {
+                    const columnLabel = c?.labelId
+                      ? intl.formatMessage({ id: c.labelId })
+                      : c.label;
                     return (
                       <FormControlLabel
                         key={c.name}
@@ -173,10 +174,10 @@ export default function DataDisplay({
                             checked={visibleColumnNames.includes(
                               c.name,
                             )}
-                            onClick={() =>
-                            {
-                              if (visibleColumnNames.includes(c.name))
-                              {
+                            onClick={() => {
+                              if (
+                                visibleColumnNames.includes(c.name)
+                              ) {
                                 if (visibleColumnNames.length === 1)
                                   return;
                                 setVisibleColumnNames(
@@ -184,8 +185,7 @@ export default function DataDisplay({
                                     vc => vc !== c.name,
                                   ),
                                 );
-                              } else
-                              {
+                              } else {
                                 setVisibleColumnNames([
                                   ...visibleColumnNames,
                                   c.name,
@@ -194,7 +194,9 @@ export default function DataDisplay({
                             }}
                           />
                         }
-                        label={<Text variant="body2">{columnLabel}</Text>}
+                        label={
+                          <Text variant="body2">{columnLabel}</Text>
+                        }
                       />
                     );
                   })}
@@ -264,7 +266,9 @@ export default function DataDisplay({
               {renderExpandedRow && <TableCell />}
               {visibleColumns.map((c, i) => {
                 const activeSort = c.name === sortColumn;
-                const columnLabel = c?.labelId ? intl.formatMessage({ id: c.labelId }) : c.label;
+                const columnLabel = c?.labelId
+                  ? intl.formatMessage({ id: c.labelId })
+                  : c.label;
                 return (
                   <TableCell
                     key={c.name}

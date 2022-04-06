@@ -5,7 +5,7 @@ export default function useIndividualTermQuery(searchTerm) {
   const query = {
     query_string: {
       query: `*${searchTerm.toLowerCase()}*`,
-      // fields: ['alias', 'name', 'id'],
+      fields: ['adoptionName', 'firstName', 'guid'],
     },
   };
 

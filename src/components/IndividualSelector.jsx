@@ -38,11 +38,14 @@ export default function IndividualSelector({
       name: 'name',
       labelId: 'NAME',
       options: {
-        customBodyRender: (_, individual) =>
-        {
-          const name = deriveIndividualName(individual, 'FirstName', 'Unnamed Individual');
-          return <Text variant="body2">{name}</Text>
-        }
+        customBodyRender: (_, individual) => {
+          const name = deriveIndividualName(
+            individual,
+            'FirstName',
+            'Unnamed Individual',
+          );
+          return <Text variant="body2">{name}</Text>;
+        },
       },
     },
     {
@@ -50,11 +53,14 @@ export default function IndividualSelector({
       labelId: 'ADOPTION_NAME',
       align: 'left',
       options: {
-        customBodyRender: (_, individual) =>
-        {
-          const adoptionName = deriveIndividualName(individual, 'AdoptionName', '-');
-          return <Text variant="body2">{adoptionName}</Text>
-        }
+        customBodyRender: (_, individual) => {
+          const adoptionName = deriveIndividualName(
+            individual,
+            'AdoptionName',
+            '-',
+          );
+          return <Text variant="body2">{adoptionName}</Text>;
+        },
       },
     },
     {
@@ -72,8 +78,7 @@ export default function IndividualSelector({
       <form
         onSubmit={e => {
           e.preventDefault();
-          if (searchTerm !== inputContent)
-          {
+          if (searchTerm !== inputContent) {
             setSearchTerm(searchTerm);
           }
         }}
@@ -90,8 +95,7 @@ export default function IndividualSelector({
           style={{ width: '100%' }}
         />
         <Button
-          onClick={() =>
-          {
+          onClick={() => {
             if (inputContent !== '') setSearchTerm(inputContent);
           }}
           display="primary"
