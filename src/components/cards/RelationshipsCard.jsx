@@ -125,6 +125,8 @@ export default function RelationshipsCard({
         [],
       );
       const _types = Object.values(possibleRelationships);
+      console.log('deleteMe setting roles to: ');
+      console.log(get(_types, 'roles', []));
       setCurrentRoles(get(_types, 'roles', []));
       return _types;
     },
@@ -179,7 +181,7 @@ export default function RelationshipsCard({
           setSelectedIndividualId={setSelectedIndividualId}
         />
         <Autocomplete
-          value={get(types, [0])}
+          value={currentType}
           options={types}
           renderOption={option => (
             <Text value={option.guid}>{option.label}</Text>
@@ -214,7 +216,7 @@ export default function RelationshipsCard({
         />
         {currentRoles?.length > 0 && (
           <Autocomplete
-            value={get(currentRoles, [0])}
+            value={currentRole}
             options={currentRoles}
             renderOption={option => {
               console.log('deleteMe option in renderOption is: ');
