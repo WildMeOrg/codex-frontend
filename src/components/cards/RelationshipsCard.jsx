@@ -184,15 +184,21 @@ export default function RelationshipsCard({
           renderOption={option => (
             <Text value={option.guid}>{option.label}</Text>
           )}
-          onChange={(_, newValue) => {
+          onChange={(deleteMeTmp, newValue) => {
+            console.log(
+              'deleteMe onChange for relationship TYPE called. deleteMeTmp is: ',
+            );
+            console.log(deleteMeTmp);
+            console.log('deleteMe and newValue is: ');
+            console.log(newValue);
             onChangeType(newValue);
           }}
           getOptionLabel={option => get(option, 'label', '')}
-          getOptionSelected={option =>
-            option.guid
-              ? option.guid === get(types, ['0', 'guid'])
-              : false
-          }
+          // getOptionSelected={option =>
+          //   option.guid
+          //     ? option.guid === get(types, ['0', 'guid'])
+          //     : false
+          // }
           renderInput={params => {
             return (
               <TextField
@@ -217,7 +223,7 @@ export default function RelationshipsCard({
             }}
             onChange={(_, newValue) => {
               console.log(
-                'deleteMe onChange autocomplete for type triggered. newValue is: ',
+                'deleteMe onChange for role called. newValue is: ',
               );
               console.log(newValue);
               onChangeRole(get(newValue, 'guid', ''));
@@ -239,7 +245,7 @@ export default function RelationshipsCard({
                   style={{ width: 280 }}
                   variant="standard"
                   label={intl.formatMessage({
-                    id: 'SELECT_RELATIONSHIP_TYPE',
+                    id: 'SELECT_RELATIONSHIP_ROLE',
                   })}
                 />
               );
