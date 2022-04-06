@@ -1,33 +1,34 @@
 import React, { useState } from 'react';
-import { get, capitalize } from 'lodash-es';
-import { useIntl, FormattedMessage } from 'react-intl';
+import { get } from 'lodash-es';
+import { useIntl } from 'react-intl';
 
 import TextField from '@material-ui/core/TextField';
 import SearchIcon from '@material-ui/icons/Search';
 
-import useQueryIndividuals from '../models/individual/useQueryIndividuals';
+import useIndividualTermQuery from '../models/individual/useIndividualTermQuery';
 import DataDisplay from './dataDisplays/DataDisplay';
 import Button from './Button';
 import Text from './Text';
 import CustomAlert from './Alert';
 import { cellRendererTypes } from '../components/dataDisplays/cellRenderers';
+import { deriveIndividualName } from '../utils/nameUtils';
 
 export default function IndividualSelector({
   setSelectedIndividualId,
   width = 520,
 }) {
   const intl = useIntl();
-  const [searchInput, setSearchInput] = useState('');
-  const [searchTerm, setSearchTerm] = useState(null);
+
+  const [inputContent, setInputContent] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
+
   const {
     data: searchResults,
-    searchTerm: lastSearchTerm,
     loading: searchResultsLoading,
     error: searchResultsError,
-    queryIndividuals,
-  } = useQueryIndividuals(searchTerm);
+  } = useIndividualTermQuery(searchTerm);
 
-  const resultsCurrent = lastSearchTerm === searchTerm;
+  const resultsCurrent = inputContent === searchTerm;
   const noResults = searchResults && searchResults.length === 0;
   const canShowTable =
     searchTerm && !searchResultsError && !noResults;
@@ -35,34 +36,33 @@ export default function IndividualSelector({
   const tableColumns = [
     {
       name: 'name',
-      label: intl.formatMessage({
-        id: 'NAME',
-      }),
+      labelId: 'NAME',
+      options: {
+        customBodyRender: (_, individual) =>
+        {
+          const name = deriveIndividualName(individual, 'FirstName', 'Unnamed Individual');
+          return <Text variant="body2">{name}</Text>
+        }
+      },
     },
     {
-      name: 'alias',
-      label: intl.formatMessage({
-        id: 'ALIAS',
-      }),
-      align: 'left',
-      options: { cellRenderer: cellRendererTypes.capitalizedString },
-    },
-    {
-      name: 'speciesString',
-      label: intl.formatMessage({ id: 'SPECIES' }),
+      name: 'adoptionName',
+      labelId: 'ADOPTION_NAME',
       align: 'left',
       options: {
-        customBodyRender: (_, individual) => {
-          const genusString = capitalize(
-            get(individual, 'genus', ''),
-          );
-          const speciesString = `${genusString} ${get(
-            individual,
-            'species',
-            '',
-          )}`;
-          return <Text variant="body2">{speciesString}</Text>;
-        },
+        customBodyRender: (_, individual) =>
+        {
+          const adoptionName = deriveIndividualName(individual, 'AdoptionName', '-');
+          return <Text variant="body2">{adoptionName}</Text>
+        }
+      },
+    },
+    {
+      name: 'created',
+      labelId: 'CREATED',
+      align: 'left',
+      options: {
+        cellRenderer: cellRendererTypes.date,
       },
     },
   ];
@@ -72,16 +72,16 @@ export default function IndividualSelector({
       <form
         onSubmit={e => {
           e.preventDefault();
-          if (searchInput !== lastSearchTerm) {
-            setSearchTerm(searchInput);
-            queryIndividuals(searchInput);
+          if (searchTerm !== inputContent)
+          {
+            setSearchTerm(searchTerm);
           }
         }}
         style={{ display: 'flex', alignItems: 'center' }}
       >
         <TextField
-          value={searchInput}
-          onChange={e => setSearchInput(e.target.value)}
+          value={inputContent}
+          onChange={e => setInputContent(e.target.value)}
           label={intl.formatMessage({
             id: 'SEARCH_INDIVIDUALS_INSTRUCTION',
           })}
@@ -90,14 +90,16 @@ export default function IndividualSelector({
           style={{ width: '100%' }}
         />
         <Button
-          onClick={() => setSearchTerm(searchInput)}
+          onClick={() =>
+          {
+            if (inputContent !== '') setSearchTerm(inputContent);
+          }}
           display="primary"
           loading={searchResultsLoading}
           style={{ marginLeft: 12 }}
           type="submit"
-        >
-          <FormattedMessage id="SEARCH" />
-        </Button>
+          id="SEARCH"
+        />
       </form>
       {searchResultsError && (
         <CustomAlert
@@ -117,6 +119,7 @@ export default function IndividualSelector({
       )}
       {canShowTable && (
         <DataDisplay
+          idKey="guid"
           paperStyles={{ maxHeight: 360 }}
           style={{ marginTop: 12 }}
           noTitleBar
@@ -124,7 +127,7 @@ export default function IndividualSelector({
           columns={tableColumns}
           data={searchResults || []}
           onSelectRow={selectedIndividual => {
-            setSelectedIndividualId(get(selectedIndividual, 'id'));
+            setSelectedIndividualId(get(selectedIndividual, 'guid'));
           }}
         />
       )}

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useIntl } from 'react-intl';
-import { get, capitalize } from 'lodash-es';
 
 import { useTheme } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
@@ -18,8 +17,9 @@ import SearchIcon from '@material-ui/icons/Search';
 import ExploreIcon from '@material-ui/icons/FilterList';
 
 import { deriveIndividualName } from '../../utils/nameUtils';
+import { formatDate } from '../../utils/formatters';
 import useOnEnter from '../../hooks/useOnEnter';
-import { useIndividualTermQuery } from '../../models/individual/useQueryIndividuals';
+import useIndividualTermQuery from '../../models/individual/useIndividualTermQuery';
 import Button from '../Button';
 import Text from '../Text';
 import Link from '../Link';
@@ -37,8 +37,6 @@ export default function IndividualsButton() {
     loading,
     error,
   } = useIndividualTermQuery(searchTerm);
-
-  console.log(searchResults);
 
   useOnEnter(() => {
     if (inputContent !== '') setSearchTerm(inputContent);
@@ -148,18 +146,14 @@ export default function IndividualsButton() {
           {mappableSearchResults.map(individual =>
           {
             const individualGuid = individual?.guid;
-            const adoptionName = deriveIndividualName(individual, 'adoptionName');
-            const defaultName = deriveIndividualName(individual, 'defaultName', 'Unnamed Individual');
+            const adoptionName = deriveIndividualName(individual, 'AdoptionName');
+            const defaultName = deriveIndividualName(individual, 'FirstName', 'Unnamed Individual');
             const displayString = adoptionName
               ? `${defaultName} (${adoptionName})`
               : defaultName;
             const avatarLetter = defaultName[0].toUpperCase();
-            // const genusString = capitalize(get(result, 'genus', ''));
-            // const speciesString = `${genusString} ${get(
-            //   result,
-            //   'species',
-            //   '',
-            // )}`;
+            const createdDate = formatDate(individual?.created, true, 'Unknown date');
+
             return (
               <ListItem key={individualGuid}>
                 <ListItemAvatar>
@@ -177,7 +171,7 @@ export default function IndividualsButton() {
                     </Link>
                   }
                   secondary={
-                    <Text variant="caption">Created on May 21, 2000</Text>
+                    <Text variant="caption">{`Created on ${createdDate}`}</Text>
                   }
                 />
               </ListItem>
