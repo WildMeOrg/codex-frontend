@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import { Autocomplete } from '@material-ui/lab';
 import { useTheme } from '@material-ui/core/styles';
+import { TextField } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import AddIcon from '@material-ui/icons/Add';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -179,6 +180,18 @@ export default function RelationshipsCard({
               ? option.guid === get(types, ['0', 'guid'])
               : false
           }
+          renderInput={params => {
+            console.log('deleteMe params are: ');
+            console.log(params);
+            return (
+              <TextField
+                {...params}
+                style={{ width: 280 }}
+                variant="standard"
+                label={'Test label'}
+              />
+            );
+          }}
         />
         {error && (
           <CustomAlert
