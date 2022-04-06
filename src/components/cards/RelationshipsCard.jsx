@@ -95,7 +95,8 @@ export default function RelationshipsCard({
 }) {
   const intl = useIntl();
   const noRelationships = relationships && relationships.length === 0;
-  const error = 'DeleteMe';
+  // const error = 'DeleteMe';
+  const error = null;
   const {
     data: siteSettings,
     loading: loadingRelationships,
@@ -111,6 +112,8 @@ export default function RelationshipsCard({
     null,
   );
   const [currentRoles, setCurrentRoles] = useState(null);
+  console.log('deleteMe got here and currentRoles is: ');
+  console.log(currentRoles);
   const [currentType, setCurrentType] = useState(null);
   const [currentRole, setCurrentRole] = useState(null);
   const allValid = selectedIndividualId && currentType && currentRole;
@@ -310,7 +313,7 @@ export default function RelationshipsCard({
         />
       )}
       <Button
-        style={{ paddingTop: 10 }}
+        style={{ marginTop: 16 }}
         id="ADD_RELATIONSHIP"
         display="primary"
         startIcon={<AddIcon />}
