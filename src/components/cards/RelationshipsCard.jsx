@@ -3,18 +3,24 @@ import { useTheme } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import AddIcon from '@material-ui/icons/Add';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogActions from '@material-ui/core/DialogActions';
+// import DialogActions from '@material-ui/core/DialogActions';
 // import ViewChart from '@material-ui/icons/BubbleChart';
 // import ViewList from '@material-ui/icons/ViewList';
+
+import { get } from 'lodash-es';
+
 import Button from '../Button';
 import Card from './Card';
-import Text from '../Text';
+import CustomAlert from '../Alert';
+import DataDisplay from '../dataDisplays/DataDisplay';
+import StandardDialog from '../StandardDialog';
+import IndividualSelector from '../IndividualSelector';
+import useSiteSettings from '../../models/site/useSiteSettings';
+// import Text from '../Text';
 // import SvgText from '../SvgText';
 // import FemaleIcon from '../svg/FemaleIcon';
 // import MaleIcon from '../svg/MaleIcon';
 // import SexUnsureIcon from '../svg/SexUnsureIcon';
-import DataDisplay from '../dataDisplays/DataDisplay';
-import StandardDialog from '../StandardDialog';
 
 // const linkLength = 35;
 
@@ -84,10 +90,22 @@ export default function RelationshipsCard({
   relationships = [],
   loading,
 }) {
+  const error = 'DeleteMe';
   console.log('deleteMe title is: ' + title);
   console.log('deleteMe titleId is: ' + titleId);
-  console.log('deleteMe error going into the relationshipCard is: ');
-  console.log(error);
+  const {
+    data: siteSettings,
+    loading: loadingRelationships,
+    error: relationshipsError,
+  } = useSiteSettings();
+  const possibleRelationships = get(
+    siteSettings,
+    ['relationship_type_roles', 'value'],
+    [],
+  );
+  console.log('deleteMe possibleRelationships are: ');
+  console.log(possibleRelationships);
+
   const theme = useTheme();
   const [
     openRelationshipDialog,
