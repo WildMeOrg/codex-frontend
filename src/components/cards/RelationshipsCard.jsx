@@ -102,32 +102,6 @@ export default function RelationshipsCard({
     error: relationshipsError,
   } = useSiteSettings();
 
-  const { possibleRelationships, types } = useMemo(
-    () => {
-      const _possibleRelationships = get(
-        siteSettings,
-        ['relationship_type_roles', 'value'],
-        [],
-      );
-      const _types = Object.values(_possibleRelationships);
-      return {
-        possibleRelationships: _possibleRelationships,
-        types: _types,
-      };
-    },
-    [siteSettings],
-  );
-  // const possibleRelationships = get(
-  //   siteSettings,
-  //   ['relationship_type_roles', 'value'],
-  //   [],
-  // );
-  console.log('deleteMe possibleRelationships are: ');
-  console.log(possibleRelationships);
-  // const types = Object.values(possibleRelationships);
-  console.log('deleteMe types are: ');
-  console.log(types);
-
   const theme = useTheme();
   const [
     openRelationshipDialog,
@@ -140,6 +114,19 @@ export default function RelationshipsCard({
   const [currentType, setCurrentType] = useState(null);
   const [currentRole, setCurrentRole] = useState(null);
   const allValid = selectedIndividualId && currentType && currentRole;
+  const types = useMemo(
+    () => {
+      const possibleRelationships = get(
+        siteSettings,
+        ['relationship_type_roles', 'value'],
+        [],
+      );
+      const _types = Object.values(possibleRelationships);
+      setCurrentRoles(get(_types, 'roles', []));
+      return _types;
+    },
+    [siteSettings],
+  );
   // const backgroundColor = theme.palette.grey['200'];
 
   const relationshipCols = [
@@ -237,11 +224,11 @@ export default function RelationshipsCard({
               console.log(option);
               return get(option, 'label', 'deleteMeShouldNotGetHere');
             }}
-            getOptionSelected={option =>
-              option.guid
-                ? option.guid === get(types, ['0', 'guid'])
-                : false
-            }
+            // getOptionSelected={option =>
+            //   option.guid
+            //     ? option.guid === get(types, ['0', 'guid'])
+            //     : false
+            // }
             renderInput={params => {
               return (
                 <TextField
@@ -291,7 +278,7 @@ export default function RelationshipsCard({
       </DialogActions>
     </StandardDialog>,
     <Card
-      titleId={'ADD_RELATIONSHIP'}
+      titleId={'RELATIONSHIPS'}
       renderActions={
         <div>
           {/* <IconButton
@@ -316,7 +303,6 @@ export default function RelationshipsCard({
       )}
       {!noRelationships && (
         <DataDisplay
-          noTitleBar
           tableSize="medium"
           columns={relationshipCols}
           data={relationships}
@@ -324,8 +310,9 @@ export default function RelationshipsCard({
         />
       )}
       <Button
+        style={{ paddingTop: 10 }}
         id="ADD_RELATIONSHIP"
-        display="basic"
+        display="primary"
         startIcon={<AddIcon />}
         size="small"
         onClick={() => setOpenRelationshipDialog(true)}
