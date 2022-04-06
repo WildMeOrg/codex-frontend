@@ -313,7 +313,6 @@ export default function Individual() {
             encounters={encounters}
           />
           <RelationshipsCard
-            title="Relationships"
             relationships={fakeRelationships}
             loading={false} //TODO add relationshipLoading
           />

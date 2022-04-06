@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useIntl } from 'react-intl';
 
 import { Autocomplete } from '@material-ui/lab';
@@ -89,8 +89,6 @@ import Text from '../Text';
 // };
 
 export default function RelationshipsCard({
-  title,
-  titleId = 'SIGHTINGS',
   relationships = [],
   loading,
   noDataMessage = 'NO_RELATIONSHIPS',
@@ -98,21 +96,35 @@ export default function RelationshipsCard({
   const intl = useIntl();
   const noRelationships = relationships && relationships.length === 0;
   const error = 'DeleteMe';
-  console.log('deleteMe title is: ' + title);
-  console.log('deleteMe titleId is: ' + titleId);
   const {
     data: siteSettings,
     loading: loadingRelationships,
     error: relationshipsError,
   } = useSiteSettings();
-  const possibleRelationships = get(
-    siteSettings,
-    ['relationship_type_roles', 'value'],
-    [],
+
+  const { possibleRelationships, types } = useMemo(
+    () => {
+      const _possibleRelationships = get(
+        siteSettings,
+        ['relationship_type_roles', 'value'],
+        [],
+      );
+      const _types = Object.values(_possibleRelationships);
+      return {
+        possibleRelationships: _possibleRelationships,
+        types: _types,
+      };
+    },
+    [siteSettings],
   );
+  // const possibleRelationships = get(
+  //   siteSettings,
+  //   ['relationship_type_roles', 'value'],
+  //   [],
+  // );
   console.log('deleteMe possibleRelationships are: ');
   console.log(possibleRelationships);
-  const types = Object.values(possibleRelationships);
+  // const types = Object.values(possibleRelationships);
   console.log('deleteMe types are: ');
   console.log(types);
 
@@ -279,8 +291,7 @@ export default function RelationshipsCard({
       </DialogActions>
     </StandardDialog>,
     <Card
-      title={title}
-      titleId={titleId}
+      titleId={'ADD_RELATIONSHIP'}
       renderActions={
         <div>
           {/* <IconButton
@@ -292,27 +303,26 @@ export default function RelationshipsCard({
           <IconButton
             aria-label="View list"
             style={{ color: theme.palette.primary.main }}
-          >
-            {noRelationships && (
-              <Text
-                variant="body2"
-                id={noDataMessage}
-                style={{ marginTop: 12 }}
-              />
-            )}
-            {!noRelationships && (
-              <DataDisplay
-                noTitleBar
-                tableSize="medium"
-                columns={relationshipCols}
-                data={relationships}
-                loading={loading}
-              />
-            )}
-          </IconButton>
+          />
         </div>
       }
     >
+      {noRelationships && (
+        <Text
+          variant="body2"
+          id={noDataMessage}
+          style={{ marginTop: 12 }}
+        />
+      )}
+      {!noRelationships && (
+        <DataDisplay
+          noTitleBar
+          tableSize="medium"
+          columns={relationshipCols}
+          data={relationships}
+          loading={loading}
+        />
+      )}
       <Button
         id="ADD_RELATIONSHIP"
         display="basic"
