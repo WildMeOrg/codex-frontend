@@ -7,7 +7,7 @@ import { TextField } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import AddIcon from '@material-ui/icons/Add';
 import DialogContent from '@material-ui/core/DialogContent';
-// import DialogActions from '@material-ui/core/DialogActions';
+import DialogActions from '@material-ui/core/DialogActions';
 // import ViewChart from '@material-ui/icons/BubbleChart';
 // import ViewList from '@material-ui/icons/ViewList';
 
@@ -93,8 +93,10 @@ export default function RelationshipsCard({
   titleId = 'SIGHTINGS',
   relationships = [],
   loading,
+  noDataMessage = 'NO_RELATIONSHIPS',
 }) {
   const intl = useIntl();
+  const noRelationships = relationships && relationships.length === 0;
   const error = 'DeleteMe';
   console.log('deleteMe title is: ' + title);
   console.log('deleteMe titleId is: ' + titleId);
@@ -122,6 +124,10 @@ export default function RelationshipsCard({
   const [selectedIndividualId, setSelectedIndividualId] = useState(
     null,
   );
+  const [currentRoles, setCurrentRoles] = useState(null);
+  const [currentType, setCurrentType] = useState(null);
+  const [currentRole, setCurrentRole] = useState(null);
+  const allValid = selectedIndividualId && currentType && currentRole;
   // const backgroundColor = theme.palette.grey['200'];
 
   const relationshipCols = [
@@ -130,27 +136,34 @@ export default function RelationshipsCard({
       name: 'individual',
       label: 'Individual',
     },
-    {
-      reference: 'type',
-      name: 'type',
-      label: 'Type',
-    },
-    {
-      reference: 'role',
-      name: 'role',
-      label: 'Role',
-    },
+    { reference: 'type', name: 'type', label: 'Type' },
+    { reference: 'role', name: 'role', label: 'Role' },
   ];
 
-  const onChange = () => {
+  const onChangeType = newType => {
     console.log(
-      'deleteMe onChange inside RelationshipCard triggered',
+      'deleteMe onChangeType inside RelationshipCard triggered and newType is: ',
     );
+    console.log(newType);
+    setCurrentType(newType);
+    setCurrentRoles(get(newType, 'roles', []));
+  };
+
+  const onChangeRole = newRole => {
+    console.log(
+      'deleteMe onChangeRole inside RelationshipCard triggered and newRole is: ',
+    );
+    console.log(newRole);
+    setCurrentRole(newRole);
   };
 
   const onCloseDialog = () => {
     setSelectedIndividualId(null);
     setOpenRelationshipDialog(false);
+  };
+
+  const onSubmit = () => {
+    //TODO post relationship
   };
 
   return [
@@ -166,23 +179,13 @@ export default function RelationshipsCard({
         <Autocomplete
           value={get(types, [0])}
           options={types}
-          renderOption={option => {
-            console.log('deleteMe option in renderOption is: ');
-            console.log(option);
-            return <Text value={option.guid}>option.label</Text>;
-          }}
+          renderOption={option => (
+            <Text value={option.guid}>{option.label}</Text>
+          )}
           onChange={(_, newValue) => {
-            console.log(
-              'deleteMe onChange autocomplete for type triggered. newValue is: ',
-            );
-            console.log(newValue);
-            onChange(get(newValue, 'guid', ''));
+            onChangeType(newValue);
           }}
-          getOptionLabel={option => {
-            console.log('deleteMe option is: ');
-            console.log(option);
-            return get(option, 'label', 'deleteMeShouldNotGetHere');
-          }}
+          getOptionLabel={option => get(option, 'label', '')}
           getOptionSelected={option =>
             option.guid
               ? option.guid === get(types, ['0', 'guid'])
@@ -201,14 +204,79 @@ export default function RelationshipsCard({
             );
           }}
         />
-        {error && (
-          <CustomAlert
-            severity="error"
-            titleId="SUBMISSION_ERROR"
-            description={error}
+        {currentRoles?.length > 0 && (
+          <Autocomplete
+            value={get(currentRoles, [0])}
+            options={currentRoles}
+            renderOption={option => {
+              console.log('deleteMe option in renderOption is: ');
+              console.log(option);
+              return <Text value={option.guid}>{option.label}</Text>;
+            }}
+            onChange={(_, newValue) => {
+              console.log(
+                'deleteMe onChange autocomplete for type triggered. newValue is: ',
+              );
+              console.log(newValue);
+              onChangeRole(get(newValue, 'guid', ''));
+            }}
+            getOptionLabel={option => {
+              console.log('deleteMe option is: ');
+              console.log(option);
+              return get(option, 'label', 'deleteMeShouldNotGetHere');
+            }}
+            getOptionSelected={option =>
+              option.guid
+                ? option.guid === get(types, ['0', 'guid'])
+                : false
+            }
+            renderInput={params => {
+              return (
+                <TextField
+                  {...params}
+                  style={{ width: 280 }}
+                  variant="standard"
+                  label={intl.formatMessage({
+                    id: 'SELECT_RELATIONSHIP_TYPE',
+                  })}
+                />
+              );
+            }}
           />
         )}
       </DialogContent>
+      <DialogActions
+        style={{
+          padding: '0px 24px 24px 24px',
+          display: 'flex',
+          alignItems: 'flex-end',
+          flexDirection: 'column',
+        }}
+      >
+        {error && (
+          <CustomAlert
+            style={{ margin: '20px 0', width: '100%' }}
+            severity="error"
+            titleId="SERVER_ERROR"
+          >
+            {error}
+          </CustomAlert>
+        )}
+        <div>
+          <Button
+            display="basic"
+            onClick={onCloseDialog}
+            id="CANCEL"
+          />
+          <Button
+            display="primary"
+            onClick={() => onSubmit()}
+            loading={loading}
+            disabled={!allValid}
+            id="ADD_RELATIONSHIP"
+          />
+        </div>
+      </DialogActions>
     </StandardDialog>,
     <Card
       title={title}
@@ -225,12 +293,22 @@ export default function RelationshipsCard({
             aria-label="View list"
             style={{ color: theme.palette.primary.main }}
           >
-            <DataDisplay
-              tableSize="medium"
-              columns={relationshipCols}
-              data={relationships}
-              loading={loading}
-            />
+            {noRelationships && (
+              <Text
+                variant="body2"
+                id={noDataMessage}
+                style={{ marginTop: 12 }}
+              />
+            )}
+            {!noRelationships && (
+              <DataDisplay
+                noTitleBar
+                tableSize="medium"
+                columns={relationshipCols}
+                data={relationships}
+                loading={loading}
+              />
+            )}
           </IconButton>
         </div>
       }
