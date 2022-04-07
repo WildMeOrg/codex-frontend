@@ -181,7 +181,9 @@ export default function RelationshipsCard({
           setSelectedIndividualId={setSelectedIndividualId}
         />
         <Autocomplete
-          style={{ marginTop: 10 }}
+          id="types"
+          clearOnEscape
+          style={{ marginTop: 12 }}
           value={currentType}
           options={types}
           renderOption={option => (
@@ -196,9 +198,7 @@ export default function RelationshipsCard({
             console.log(newValue);
             onChangeType(newValue);
           }}
-          getOptionLabel={option => get(option, 'label', '')} // getOptionSelected={option =>
-          //   option.guid
-          //     ? option.guid === get(types, ['0', 'guid'])
+          getOptionLabel={option => get(option, 'label', '')} //     ? option.guid === get(types, ['0', 'guid']) //   option.guid // getOptionSelected={option =>
           //     : false
           // }
           renderInput={params => {
@@ -216,28 +216,38 @@ export default function RelationshipsCard({
         />
         {currentRoles?.length > 0 && (
           <Autocomplete
-            style={{ marginTop: 10 }}
+            id="roles"
+            clearOnEscape
+            style={{ marginTop: 12 }}
             value={currentRole}
             options={currentRoles}
             renderOption={option => {
               console.log('deleteMe option in renderOption is: ');
               console.log(option);
-              return <Text value={option}>{option.label}</Text>;
+              return <Text value={option.guid}>{option.label}</Text>;
             }}
             onChange={(_, newValue) => {
               console.log(
                 'deleteMe onChange for role called. newValue is: ',
               );
               console.log(newValue);
-              onChangeRole(get(newValue, 'guid', ''));
+              onChangeRole(newValue);
             }}
             getOptionLabel={option => {
               console.log('deleteMe option is: ');
               console.log(option);
-              return get(option, 'label', 'deleteMeShouldNotGetHere');
-            }} // getOptionSelected={option =>
-            //   option.guid
-            //     ? option.guid === get(types, ['0', 'guid'])
+              return get(option, 'label', '');
+            }}
+            getOptionSelected={(option, val) => {
+              console.log(
+                'deleteMe option in getOptionSelected is: ',
+              );
+              console.log(option);
+              console.log('deleteMe val is: ');
+              console.log(val);
+              return option.guid ? option.guid === val : false;
+            }}
+            //     ? option.guid === get(types, ['0', 'guid']) //   option.guid // getOptionSelected={option =>
             //     : false
             // }
             renderInput={params => {
