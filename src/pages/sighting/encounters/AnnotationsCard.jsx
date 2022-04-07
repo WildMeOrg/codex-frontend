@@ -61,7 +61,7 @@ export default function AnnotationsCard({
         sightingData={sightingData}
       />
       {annotationReferences.length > 0 ? (
-        <Grid container spacing={2}>
+        <Grid style={{ margin: '8px 0' }} container spacing={2}>
           {annotationReferences.map(annotationReference => {
             const matchingAsset = assets.find(
               asset =>
