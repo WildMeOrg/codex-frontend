@@ -222,7 +222,7 @@ export default function RelationshipsCard({
             renderOption={option => {
               console.log('deleteMe option in renderOption is: ');
               console.log(option);
-              return <Text value={option.guid}>{option.label}</Text>;
+              return <Text value={option}>{option.label}</Text>;
             }}
             onChange={(_, newValue) => {
               console.log(
@@ -231,11 +231,9 @@ export default function RelationshipsCard({
               console.log(newValue);
               onChangeRole(get(newValue, 'guid', ''));
             }}
-            getOptionLabel={(option, wholeObj) => {
+            getOptionLabel={option => {
               console.log('deleteMe option is: ');
               console.log(option);
-              console.log('deleteMe wholeObj is: ');
-              console.log(wholeObj);
               return get(option, 'label', 'deleteMeShouldNotGetHere');
             }} // getOptionSelected={option =>
             //   option.guid
