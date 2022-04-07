@@ -22,11 +22,7 @@ export default function usePostIndividual() {
         },
       });
       const successful = get(response, 'status') === 200;
-      const newIndividualGuid = get(response, [
-        'data',
-        'result',
-        'id',
-      ]);
+      const newIndividualGuid = get(response, ['data', 'guid']);
       if (successful) {
         setSuccess(true);
         setError(null);

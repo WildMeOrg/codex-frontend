@@ -104,7 +104,7 @@ export default function AuthenticatedSwitch() {
                       <Route path="/admin">
                         <ControlPanel />
                       </Route>
-                        {/* <Route path="/individuals/picturebook">
+                      {/* <Route path="/individuals/picturebook">
                         <PictureBook />
                       </Route> */}
                       <Route path="/individuals/:id">

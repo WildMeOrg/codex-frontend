@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useIntl } from 'react-intl';
-import { get, capitalize } from 'lodash-es';
 
 import { useTheme } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
@@ -17,8 +16,10 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import SearchIcon from '@material-ui/icons/Search';
 import ExploreIcon from '@material-ui/icons/FilterList';
 
+import { deriveIndividualName } from '../../utils/nameUtils';
+import { formatDate } from '../../utils/formatters';
 import useOnEnter from '../../hooks/useOnEnter';
-import useQueryIndividuals from '../../models/individual/useQueryIndividuals';
+import useIndividualTermQuery from '../../models/individual/useIndividualTermQuery';
 import Button from '../Button';
 import Text from '../Text';
 import Link from '../Link';
@@ -28,18 +29,17 @@ export default function IndividualsButton() {
   const theme = useTheme();
   const title = intl.formatMessage({ id: 'INDIVIDUALS' });
   const [anchorEl, setAnchorEl] = useState(null);
+  const [inputContent, setInputContent] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
 
   const {
     data: searchResults,
     loading,
     error,
-    searchTerm: lastSearchTerm,
-    queryIndividuals,
-  } = useQueryIndividuals();
+  } = useIndividualTermQuery(searchTerm);
 
   useOnEnter(() => {
-    if (searchTerm !== '') queryIndividuals(searchTerm);
+    if (inputContent !== '') setSearchTerm(inputContent);
   });
 
   const handleClose = () => {
@@ -49,7 +49,7 @@ export default function IndividualsButton() {
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
 
-  const resultsCurrent = lastSearchTerm === searchTerm;
+  const resultsCurrent = inputContent === searchTerm;
   const noResults = searchResults && searchResults.length === 0;
   const mappableSearchResults = resultsCurrent
     ? searchResults || []
@@ -117,12 +117,13 @@ export default function IndividualsButton() {
             ),
             disableUnderline: true,
             autoFocus: true,
-            placeholder:
-              'Search for an individual by name, alias, or guid',
+            placeholder: intl.formatMessage({
+              id: 'SEARCH_INDIVIDUALS_INSTRUCTION',
+            }),
           }}
-          value={searchTerm}
+          value={inputContent}
           onChange={e => {
-            setSearchTerm(e.target.value);
+            setInputContent(e.target.value);
           }}
           fullWidth
         />
@@ -143,23 +144,29 @@ export default function IndividualsButton() {
           />
         )}
         <List dense style={{ maxHeight: 400, overflow: 'scroll' }}>
-          {mappableSearchResults.map(result => {
-            const resultId = get(result, 'id');
-            const aliasString = capitalize(get(result, 'alias'));
-            const nameString = get(result, 'name', '');
-            const displayString = aliasString
-              ? `${nameString} (${aliasString})`
-              : nameString;
-            const alias = get(result, 'alias') || '-';
-            const avatarLetter = alias[0].toUpperCase();
-            const genusString = capitalize(get(result, 'genus', ''));
-            const speciesString = `${genusString} ${get(
-              result,
-              'species',
-              '',
-            )}`;
+          {mappableSearchResults.map(individual => {
+            const individualGuid = individual?.guid;
+            const adoptionName = deriveIndividualName(
+              individual,
+              'AdoptionName',
+            );
+            const defaultName = deriveIndividualName(
+              individual,
+              'FirstName',
+              'Unnamed Individual',
+            );
+            const displayString = adoptionName
+              ? `${defaultName} (${adoptionName})`
+              : defaultName;
+            const avatarLetter = defaultName[0].toUpperCase();
+            const createdDate = formatDate(
+              individual?.created,
+              true,
+              'Unknown date',
+            );
+
             return (
-              <ListItem key={resultId}>
+              <ListItem key={individualGuid}>
                 <ListItemAvatar>
                   <Avatar>{avatarLetter}</Avatar>
                 </ListItemAvatar>
@@ -168,14 +175,14 @@ export default function IndividualsButton() {
                   primary={
                     <Link
                       onClick={handleClose}
-                      href={`/individuals/${resultId}`}
+                      href={`/individuals/${individualGuid}`}
                       noUnderline
                     >
                       {displayString}
                     </Link>
                   }
                   secondary={
-                    <Text variant="caption">{speciesString}</Text>
+                    <Text variant="caption">{`Created on ${createdDate}`}</Text>
                   }
                 />
               </ListItem>
