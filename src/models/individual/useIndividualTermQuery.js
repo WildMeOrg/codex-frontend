@@ -4,7 +4,7 @@ import { getIndividualTermQueryKey } from '../../constants/queryKeys';
 export default function useIndividualTermQuery(searchTerm) {
   const query = {
     query_string: {
-      query: `*${searchTerm.toLowerCase()}*`,
+      query: `*${searchTerm}*`,
       fields: ['adoptionName', 'firstName', 'guid'],
     },
   };

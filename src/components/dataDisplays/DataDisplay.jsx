@@ -164,7 +164,7 @@ export default function DataDisplay({
                   .map(c => {
                     const columnLabel = c?.labelId
                       ? intl.formatMessage({ id: c.labelId })
-                      : c.label;
+                      : c?.label;
                     return (
                       <FormControlLabel
                         key={c.name}
@@ -268,7 +268,7 @@ export default function DataDisplay({
                 const activeSort = c.name === sortColumn;
                 const columnLabel = c?.labelId
                   ? intl.formatMessage({ id: c.labelId })
-                  : c.label;
+                  : c?.label;
                 return (
                   <TableCell
                     key={c.name}

@@ -117,8 +117,9 @@ export default function IndividualsButton() {
             ),
             disableUnderline: true,
             autoFocus: true,
-            placeholder:
-              'Search for an individual by name, alias, or guid',
+            placeholder: intl.formatMessage({
+              id: 'SEARCH_INDIVIDUALS_INSTRUCTION',
+            }),
           }}
           value={inputContent}
           onChange={e => {
