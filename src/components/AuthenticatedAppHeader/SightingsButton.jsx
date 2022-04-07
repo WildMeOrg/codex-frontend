@@ -10,7 +10,7 @@ import Text from '../Text';
 import SearchButton from './SearchButton';
 import SearchResult from './SearchResult';
 
-export default function IndividualsButton() {
+export default function SightingsButton() {
   const [inputContent, setInputContent] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -30,13 +30,13 @@ export default function IndividualsButton() {
   return (
     <SearchButton
       loading={loading}
-      buttonLabelId="INDIVIDUALS"
+      buttonLabelId="SIGHTINGS"
       inputValue={inputContent}
       onChangeInputValue={setInputContent}
       onSearch={setSearchTerm}
-      instructionsLabelId="SEARCH_INDIVIDUALS_INSTRUCTION"
-      linkLabelId="EXPLORE_INDIVIDUALS"
-      linkHref="/individuals"
+      instructionsLabelId="SEARCH_SIGHTINGS_INSTRUCTION"
+      linkLabelId="EXPLORE_SIGHTINGS"
+      linkHref="/sightings"
     >
       {closePopover => (
         <>

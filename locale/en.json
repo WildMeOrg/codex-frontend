@@ -172,6 +172,7 @@
   "SETTINGS_AND_PRIVACY": "My settings & privacy",
   "SEARCH_ITIS_SPECIES": "Search ITIS species",
   "SEARCH_INDIVIDUALS_INSTRUCTION": "Search for an individual by name or guid",
+  "SEARCH_SIGHTINGS_INSTRUCTION": "Search for a sighting by region or guid",
   "PRAIRIE": "Prairie",
   "EDIT_USER_METADATA": "Edit user metadata",
   "EDIT_SIGHTING_METADATA": "Edit sighting metadata",
