@@ -933,6 +933,7 @@
   "ADD_COLLABORATOR": "Add collaborator",
   "LOADING": "Loading",
   "INDIVIDUAL_SEARCH_NO_RESULTS": "Your search \"{searchTerm}\" did not match any individuals.",
+  "SIGHTING_SEARCH_NO_RESULTS": "Your search \"{searchTerm}\" did not match any sightings.",
   "SEARCH_SERVER_ERROR": "A server error occurred while attempting to search.",
   "CONFIGURATION_SITE_NAME_LABEL": "Site name",
   "CONFIGURATION_SITE_NAME_DESCRIPTION": "The name of this site, excluding domain name suffix (ie. PandaMatcher, NOT pandamatcher.org).",
