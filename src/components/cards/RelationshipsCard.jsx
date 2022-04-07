@@ -85,6 +85,7 @@ export default function RelationshipsCard({
     <Card
       title={title}
       titleId={titleId}
+      maxHeight={600}
       renderActions={
         <div>
           <IconButton
