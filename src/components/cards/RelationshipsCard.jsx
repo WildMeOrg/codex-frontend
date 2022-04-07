@@ -145,19 +145,12 @@ export default function RelationshipsCard({
   ];
 
   const onChangeType = newType => {
-    console.log(
-      'deleteMe onChangeType inside RelationshipCard triggered and newType is: ',
-    );
-    console.log(newType);
     setCurrentType(newType);
+    setCurrentRole(null);
     setCurrentRoles(get(newType, 'roles', []));
   };
 
   const onChangeRole = newRole => {
-    console.log(
-      'deleteMe onChangeRole inside RelationshipCard triggered and newRole is: ',
-    );
-    console.log(newRole);
     setCurrentRole(newRole);
   };
 
@@ -189,18 +182,8 @@ export default function RelationshipsCard({
           renderOption={option => (
             <Text value={option.guid}>{option.label}</Text>
           )}
-          onChange={(deleteMeTmp, newValue) => {
-            console.log(
-              'deleteMe onChange for relationship TYPE called. deleteMeTmp is: ',
-            );
-            console.log(deleteMeTmp);
-            console.log('deleteMe and newValue is: ');
-            console.log(newValue);
-            onChangeType(newValue);
-          }}
+          onChange={(_, newValue) => onChangeType(newValue)}
           getOptionLabel={option => get(option, 'label', '')} //     ? option.guid === get(types, ['0', 'guid']) //   option.guid // getOptionSelected={option =>
-          //     : false
-          // }
           renderInput={params => {
             return (
               <TextField
@@ -221,35 +204,14 @@ export default function RelationshipsCard({
             style={{ marginTop: 12 }}
             value={currentRole}
             options={currentRoles}
-            renderOption={option => {
-              console.log('deleteMe option in renderOption is: ');
-              console.log(option);
-              return <Text value={option.guid}>{option.label}</Text>;
-            }}
-            onChange={(_, newValue) => {
-              console.log(
-                'deleteMe onChange for role called. newValue is: ',
-              );
-              console.log(newValue);
-              onChangeRole(newValue);
-            }}
-            getOptionLabel={option => {
-              console.log('deleteMe option is: ');
-              console.log(option);
-              return get(option, 'label', '');
-            }}
-            getOptionSelected={(option, val) => {
-              console.log(
-                'deleteMe option in getOptionSelected is: ',
-              );
-              console.log(option);
-              console.log('deleteMe val is: ');
-              console.log(val);
-              return option.guid ? option.guid === val : false;
-            }}
-            //     ? option.guid === get(types, ['0', 'guid']) //   option.guid // getOptionSelected={option =>
-            //     : false
-            // }
+            renderOption={option => (
+              <Text value={option.guid}>{option.label}</Text>
+            )}
+            onChange={(_, newValue) => onChangeRole(newValue)}
+            getOptionLabel={option => get(option, 'label', '')}
+            getOptionSelected={(option, val) =>
+              option.guid ? option.guid === val : false
+            }
             renderInput={params => {
               return (
                 <TextField
