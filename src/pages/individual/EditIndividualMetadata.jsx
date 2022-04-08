@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useIntl } from 'react-intl';
-import { get, set } from 'lodash-es';
+import { get, isEmpty, set } from 'lodash-es';
 
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -223,6 +223,11 @@ export default function EditIndividualMetadata({
             }
 
             const properties = { sex: defaultFieldValues.sex, names };
+
+            if (!isEmpty(customFieldValues)) {
+              properties.customFields = customFieldValues;
+            }
+
             const successfulUpdate = await updateIndividualProperties(
               individualId,
               properties,
