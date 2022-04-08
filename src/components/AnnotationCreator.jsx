@@ -192,10 +192,7 @@ export default function AnnotationCreator({
         <CustomAlert
           titleId="SERVER_ERROR"
           style={{
-            marginTop: 16,
-            marginBottom: 8,
-            marginLeft: 'auto',
-            marginRight: 'auto',
+            margin: '16px auto 8px auto',
             maxHeight: '80vh',
             width: 600,
             padding: '0 40px',
