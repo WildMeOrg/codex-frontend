@@ -196,8 +196,10 @@ export default function AnnotationCreator({
           style={{
             marginTop: 16,
             marginBottom: 8,
+            marginLeft: 'auto',
+            marginRight: 'auto',
             maxHeight: '80vh',
-            width: '100%',
+            width: 600,
             padding: '0 40px',
           }}
           severity="error"
