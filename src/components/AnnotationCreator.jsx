@@ -125,15 +125,6 @@ export default function AnnotationCreator({
             ref={divRef}
           />
         </div>
-        {error && (
-          <CustomAlert
-            titleId="SERVER_ERROR"
-            style={{ marginTop: 16, marginBottom: 8 }}
-            severity="error"
-          >
-            {error}
-          </CustomAlert>
-        )}
       </DialogContent>
       <div
         style={{
@@ -167,15 +158,9 @@ export default function AnnotationCreator({
         />
         <Popover
           open={Boolean(anchorEl)}
-          anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'right',
-          }}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
           PaperProps={{ style: { marginTop: 4 } }}
-          transformOrigin={{
-            vertical: 'top',
-            horizontal: 'right',
-          }}
+          transformOrigin={{ vertical: 'top', horizontal: 'right' }}
           anchorEl={anchorEl}
           id="viewpoint-help-tooltip"
           onClose={handleViewpointInfoClose}
@@ -184,11 +169,7 @@ export default function AnnotationCreator({
         </Popover>
       </div>
 
-      <div
-        style={{
-          margin: '4px auto 8px auto',
-        }}
-      >
+      <div style={{ margin: '4px auto 8px auto' }}>
         <FormControl required style={{ width: 240 }}>
           <InputLabel>
             <FormattedMessage id="ANNOTATION_CLASS" />
@@ -207,6 +188,20 @@ export default function AnnotationCreator({
           </Select>
         </FormControl>
       </div>
+      {error && (
+        <CustomAlert
+          titleId="SERVER_ERROR"
+          style={{
+            margin: '16px auto 8px auto',
+            maxHeight: '80vh',
+            width: 600,
+            padding: '0 40px',
+          }}
+          severity="error"
+        >
+          {error}
+        </CustomAlert>
+      )}
       <DialogActions style={{ padding: '0px 24px 24px 24px' }}>
         <Button display="basic" onClick={onClose} id="CANCEL" />
         <Button
