@@ -231,16 +231,16 @@ export default function AnnotationCreator({
           }}
           id="SAVE"
         />
-        {error && (
-          <CustomAlert
-            titleId="SERVER_ERROR"
-            style={{ marginTop: 16, marginBottom: 8 }}
-            severity="error"
-          >
-            {error}
-          </CustomAlert>
-        )}
       </DialogActions>
+      {error && (
+        <CustomAlert
+          titleId="SERVER_ERROR"
+          style={{ marginTop: 16, marginBottom: 8 }}
+          severity="error"
+        >
+          {error}
+        </CustomAlert>
+      )}
     </StandardDialog>
   );
 }
