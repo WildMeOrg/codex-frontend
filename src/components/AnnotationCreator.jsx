@@ -39,7 +39,9 @@ export default function AnnotationCreator({
   const [anchorEl, setAnchorEl] = useState(null);
   const theme = useTheme();
 
-  const { postAnnotation, loading, error } = usePostAnnotation();
+  // const { postAnnotation, loading, error } = usePostAnnotation();
+  const { postAnnotation, loading } = usePostAnnotation();
+  const error = 'Ack!';
   const IAClassOptions = useIAClassOptions(sightingData);
 
   const handleViewpointInfoClick = event => {
@@ -229,16 +231,16 @@ export default function AnnotationCreator({
           }}
           id="SAVE"
         />
+        {error && (
+          <CustomAlert
+            titleId="SERVER_ERROR"
+            style={{ marginTop: 16, marginBottom: 8 }}
+            severity="error"
+          >
+            {error}
+          </CustomAlert>
+        )}
       </DialogActions>
-      {error && (
-        <CustomAlert
-          titleId="SERVER_ERROR"
-          style={{ marginTop: 16, marginBottom: 8 }}
-          severity="error"
-        >
-          {error}
-        </CustomAlert>
-      )}
     </StandardDialog>
   );
 }
