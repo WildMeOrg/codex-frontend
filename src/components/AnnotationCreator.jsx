@@ -191,6 +191,15 @@ export default function AnnotationCreator({
         </FormControl>
       </div>
       <DialogActions style={{ padding: '0px 24px 24px 24px' }}>
+        {error && (
+          <CustomAlert
+            titleId="SERVER_ERROR"
+            style={{ marginTop: 16, marginBottom: 8 }}
+            severity="error"
+          >
+            {error}
+          </CustomAlert>
+        )}
         <Button display="basic" onClick={onClose} id="CANCEL" />
         <Button
           display="primary"
@@ -232,15 +241,6 @@ export default function AnnotationCreator({
           id="SAVE"
         />
       </DialogActions>
-      {error && (
-        <CustomAlert
-          titleId="SERVER_ERROR"
-          style={{ marginTop: 16, marginBottom: 8 }}
-          severity="error"
-        >
-          {error}
-        </CustomAlert>
-      )}
     </StandardDialog>
   );
 }
