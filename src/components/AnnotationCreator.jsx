@@ -39,9 +39,7 @@ export default function AnnotationCreator({
   const [anchorEl, setAnchorEl] = useState(null);
   const theme = useTheme();
 
-  // const { postAnnotation, loading, error } = usePostAnnotation();
-  const { postAnnotation, loading } = usePostAnnotation();
-  const error = 'Ack!';
+  const { postAnnotation, loading, error } = usePostAnnotation();
   const IAClassOptions = useIAClassOptions(sightingData);
 
   const handleViewpointInfoClick = event => {
