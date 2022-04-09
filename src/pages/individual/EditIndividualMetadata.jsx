@@ -72,12 +72,24 @@ export default function EditIndividualMetadata({
   const showErrorAlert =
     patchIndividualError || formErrors.length > 0;
 
+  function handleClose() {
+    setDefaultFieldValues(
+      getInitialFormValues(defaultFieldMetadata, 'name'),
+    );
+    setCustomFieldValues(
+      getInitialFormValues(customFieldMetadata, 'id'),
+    );
+    setPatchIndividualError(null);
+    setFormErrors([]);
+    onClose();
+  }
+
   return (
     <StandardDialog
       PaperProps={{ style: { width: 800 } }}
       maxWidth="lg"
       open={open}
-      onClose={onClose}
+      onClose={handleClose}
       titleId="EDIT_INDIVIDUAL_METADATA"
     >
       <DialogContent style={{ minWidth: 200 }}>
@@ -135,15 +147,7 @@ export default function EditIndividualMetadata({
         )}
       </DialogContent>
       <DialogActions style={{ padding: '0px 24px 24px 24px' }}>
-        <Button
-          display="basic"
-          onClick={() => {
-            setPatchIndividualError(null);
-            setFormErrors([]);
-            onClose();
-          }}
-          id="CANCEL"
-        />
+        <Button display="basic" onClick={handleClose} id="CANCEL" />
         <Button
           loading={loading}
           display="primary"
