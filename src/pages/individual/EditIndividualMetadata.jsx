@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { get, isEmpty, set } from 'lodash-es';
 
@@ -17,6 +17,14 @@ function deriveNameGuid(metadata, schemaName) {
     schema => schema.name === schemaName,
   );
   return foundSchema?.nameGuid;
+}
+
+function getDefaultFieldMetadata(metadata = []) {
+  return metadata.filter(field => !field.customField);
+}
+
+function getCustomFieldMetadata(metadata = []) {
+  return metadata.filter(field => field.customField);
 }
 
 function getInitialFormValues(schema, fieldKey) {
@@ -52,19 +60,12 @@ export default function EditIndividualMetadata({
   metadata = metadata || [];
   // hotfix //
 
-  const defaultFieldMetadata = metadata.filter(
-    field => !field.customField,
-  );
-  const customFieldMetadata = metadata.filter(
-    field => field.customField,
-  );
-
   const [defaultFieldValues, setDefaultFieldValues] = useState(
-    getInitialFormValues(defaultFieldMetadata, 'name'),
+    getInitialFormValues(getDefaultFieldMetadata(metadata), 'name'),
   );
 
   const [customFieldValues, setCustomFieldValues] = useState(
-    getInitialFormValues(customFieldMetadata, 'id'),
+    getInitialFormValues(getCustomFieldMetadata(metadata), 'id'),
   );
 
   const [formErrors, setFormErrors] = useState([]);
@@ -72,17 +73,23 @@ export default function EditIndividualMetadata({
   const showErrorAlert =
     patchIndividualError || formErrors.length > 0;
 
-  function handleClose() {
-    setDefaultFieldValues(
-      getInitialFormValues(defaultFieldMetadata, 'name'),
-    );
-    setCustomFieldValues(
-      getInitialFormValues(customFieldMetadata, 'id'),
-    );
-    setPatchIndividualError(null);
-    setFormErrors([]);
-    onClose();
-  }
+  const handleClose = useCallback(
+    () => {
+      setDefaultFieldValues(
+        getInitialFormValues(
+          getDefaultFieldMetadata(metadata),
+          'name',
+        ),
+      );
+      setCustomFieldValues(
+        getInitialFormValues(getCustomFieldMetadata(metadata), 'id'),
+      );
+      setPatchIndividualError(null);
+      setFormErrors([]);
+      onClose();
+    },
+    [metadata, setPatchIndividualError, onClose],
+  );
 
   return (
     <StandardDialog
