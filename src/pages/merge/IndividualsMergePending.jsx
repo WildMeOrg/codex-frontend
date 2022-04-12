@@ -9,7 +9,7 @@ import Typography from '@material-ui/core/Typography';
 
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import useIndividualMergeRequest from '../../models/individual/useIndividualMergeRequest';
-import BaoConfused from '../../components/svg/BaoConfused';
+import BaoLetter from '../../components/svg/BaoLetter';
 import BaoSpills from '../../components/svg/BaoSpills';
 import ButtonLink from '../../components/ButtonLink';
 import CustomAlert from '../../components/Alert';
@@ -21,8 +21,8 @@ import { formatDateCustom } from '../../utils/formatters';
  * Because the Bao SVGs have different dimensions, these widths were selected
  * to keep the Bao characters approximately the same size on the page.
  */
-const baoSpillsWidth = 430;
-const baoConfusedWidth = 280;
+const baoSpillsWidth = 410;
+const baoLetterWidth = 380;
 
 function Bao({ isError }) {
   const theme = useTheme();
@@ -31,12 +31,12 @@ function Bao({ isError }) {
   return isError ? (
     <BaoSpills
       themeColor={themeColor}
-      style={{ width: baoSpillsWidth, margin: '72px 8px 20px 0' }}
+      style={{ width: baoSpillsWidth, margin: '48px 8px 20px 0' }}
     />
   ) : (
-    <BaoConfused
+    <BaoLetter
       themeColor={themeColor}
-      style={{ width: baoConfusedWidth, margin: '16px 8px 20px 0' }}
+      style={{ width: baoLetterWidth, margin: '48px 8px 20px 0' }}
     />
   );
 }
