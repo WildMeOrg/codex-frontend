@@ -21,25 +21,10 @@ import { formatDateCustom } from '../../utils/formatters';
  * Because the Bao SVGs have different dimensions, these widths were selected
  * to keep the Bao characters approximately the same size on the page.
  */
-const baoSpillsWidth = 410;
-const baoLetterWidth = 380;
-
-function Bao({ isError }) {
-  const theme = useTheme();
-  const themeColor = theme.palette.primary.main;
-
-  return isError ? (
-    <BaoSpills
-      themeColor={themeColor}
-      style={{ width: baoSpillsWidth, margin: '48px 8px 20px 0' }}
-    />
-  ) : (
-    <BaoLetter
-      themeColor={themeColor}
-      style={{ width: baoLetterWidth, margin: '48px 8px 20px 0' }}
-    />
-  );
-}
+const baoOptions = {
+  spills: { component: BaoSpills, width: 410 },
+  letter: { component: BaoLetter, width: 380 },
+};
 
 function MergeRequestLoadingParagraph() {
   return (
@@ -57,54 +42,28 @@ function MergeRequestLoadingParagraph() {
   );
 }
 
-function MergeRequestContent({ loading, data }) {
-  const intl = useIntl();
-
-  const deadline = data?.eta;
-  const formattedDeadline = deadline
-    ? formatDateCustom(deadline, 'LLLL do')
-    : intl.formatMessage({ id: 'DATE_MISSING' });
-
-  return (
-    <>
-      {loading ? (
-        <MergeRequestLoadingParagraph />
-      ) : (
-        <Text
-          variant="subtitle2"
-          style={{ padding: '0 16px 8px 16px', maxWidth: 400 }}
-          id="INDIVIDUALS_MERGE_PENDING_DESCRIPTION"
-          values={{ deadlineDate: formattedDeadline }}
-        />
-      )}
-      <Grid
-        container
-        spacing={2}
-        direction="column"
-        style={{ padding: 16, maxWidth: 340 }}
-      >
-        <Grid item style={{ position: 'relative' }}>
-          <ButtonLink
-            style={{ width: '100%' }}
-            display="primary"
-            href="/"
-            id="RETURN_HOME"
-          />
-        </Grid>
-      </Grid>
-    </>
-  );
-}
-
 export default function IndividualsMergePending() {
   useDocumentTitle('INDIVIDUALS_MERGE_PENDING_TITLE');
   const { guid: mergeRequestGuid } = useParams();
+  const intl = useIntl();
+  const theme = useTheme();
+  const themeColor = theme.palette.primary.main;
 
   const {
     data: mergeRequestData,
     loading: mergeRequestLoading,
     error: mergeRequestError,
   } = useIndividualMergeRequest(mergeRequestGuid);
+
+  const deadline = mergeRequestData?.eta;
+  const formattedDeadline = deadline
+    ? formatDateCustom(deadline, 'LLLL do')
+    : intl.formatMessage({ id: 'DATE_MISSING' });
+
+  const {
+    component: BaoComponent,
+    width: baoWidth,
+  } = mergeRequestError ? baoOptions.spills : baoOptions.letter;
 
   return (
     <MainColumn
@@ -120,16 +79,40 @@ export default function IndividualsMergePending() {
         style={{ padding: '32px 0 8px 16px' }}
         id="INDIVIDUALS_MERGE_PENDING_TITLE"
       />
-      <Bao isError={Boolean(mergeRequestError)} />
-      {mergeRequestError ? (
+      <BaoComponent
+        themeColor={themeColor}
+        style={{ width: baoWidth, margin: '48px 8px 20px 0' }}
+      />
+      {mergeRequestLoading && <MergeRequestLoadingParagraph />}
+      {mergeRequestError && (
         <CustomAlert severity="error">
           {mergeRequestError}
         </CustomAlert>
-      ) : (
-        <MergeRequestContent
-          loading={mergeRequestLoading}
-          data={mergeRequestData}
+      )}
+      {mergeRequestData && (
+        <Text
+          variant="subtitle2"
+          style={{ padding: '0 16px 8px 16px', maxWidth: 400 }}
+          id="INDIVIDUALS_MERGE_PENDING_DESCRIPTION"
+          values={{ deadlineDate: formattedDeadline }}
         />
+      )}
+      {!mergeRequestError && (
+        <Grid
+          container
+          spacing={2}
+          direction="column"
+          style={{ padding: 16, maxWidth: 340 }}
+        >
+          <Grid item style={{ position: 'relative' }}>
+            <ButtonLink
+              style={{ width: '100%' }}
+              display="primary"
+              href="/"
+              id="RETURN_HOME"
+            />
+          </Grid>
+        </Grid>
       )}
     </MainColumn>
   );
