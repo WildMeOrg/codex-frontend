@@ -431,7 +431,6 @@
   "FIELD_LABEL": "Field label",
   "FIELD_DESCRIPTION": "Field description",
   "REQUIRED": "Required",
-  "IS_REQUIRED": "{field} is required",
   "JOBS": "Jobs",
   "CHOOSE_ON_MAP": "Choose on map",
   "DECIMAL_LATITUDE": "Decimal Latitude",

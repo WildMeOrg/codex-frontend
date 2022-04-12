@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useIntl } from 'react-intl';
-import { get, set } from 'lodash-es';
+import { get, isEmpty, set } from 'lodash-es';
 
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -17,6 +17,14 @@ function deriveNameGuid(metadata, schemaName) {
     schema => schema.name === schemaName,
   );
   return foundSchema?.nameGuid;
+}
+
+function getDefaultFieldMetadata(metadata = []) {
+  return metadata.filter(field => !field.customField);
+}
+
+function getCustomFieldMetadata(metadata = []) {
+  return metadata.filter(field => field.customField);
 }
 
 function getInitialFormValues(schema, fieldKey) {
@@ -52,19 +60,12 @@ export default function EditIndividualMetadata({
   metadata = metadata || [];
   // hotfix //
 
-  const defaultFieldMetadata = metadata.filter(
-    field => !field.customField,
-  );
-  const customFieldMetadata = metadata.filter(
-    field => field.customField,
-  );
-
   const [defaultFieldValues, setDefaultFieldValues] = useState(
-    getInitialFormValues(defaultFieldMetadata, 'name'),
+    getInitialFormValues(getDefaultFieldMetadata(metadata), 'name'),
   );
 
   const [customFieldValues, setCustomFieldValues] = useState(
-    getInitialFormValues(customFieldMetadata, 'id'),
+    getInitialFormValues(getCustomFieldMetadata(metadata), 'id'),
   );
 
   const [formErrors, setFormErrors] = useState([]);
@@ -72,12 +73,30 @@ export default function EditIndividualMetadata({
   const showErrorAlert =
     patchIndividualError || formErrors.length > 0;
 
+  const handleClose = useCallback(
+    () => {
+      setDefaultFieldValues(
+        getInitialFormValues(
+          getDefaultFieldMetadata(metadata),
+          'name',
+        ),
+      );
+      setCustomFieldValues(
+        getInitialFormValues(getCustomFieldMetadata(metadata), 'id'),
+      );
+      setPatchIndividualError(null);
+      setFormErrors([]);
+      onClose();
+    },
+    [metadata, setPatchIndividualError, onClose],
+  );
+
   return (
     <StandardDialog
       PaperProps={{ style: { width: 800 } }}
       maxWidth="lg"
       open={open}
-      onClose={onClose}
+      onClose={handleClose}
       titleId="EDIT_INDIVIDUAL_METADATA"
     >
       <DialogContent style={{ minWidth: 200 }}>
@@ -135,15 +154,7 @@ export default function EditIndividualMetadata({
         )}
       </DialogContent>
       <DialogActions style={{ padding: '0px 24px 24px 24px' }}>
-        <Button
-          display="basic"
-          onClick={() => {
-            setPatchIndividualError(null);
-            setFormErrors([]);
-            onClose();
-          }}
-          id="CANCEL"
-        />
+        <Button display="basic" onClick={handleClose} id="CANCEL" />
         <Button
           loading={loading}
           display="primary"
@@ -151,22 +162,21 @@ export default function EditIndividualMetadata({
             // validation
             const requiredFieldErrors = metadata.reduce(
               (memo, schema) => {
-                // TODO: Once custom fields can be edited, include them in validation
-                if (
-                  schema &&
-                  (!schema.required || schema.customField)
-                )
-                  return memo;
+                if (!schema?.required) return memo;
 
-                if (!defaultFieldValues[schema.name]) {
+                const isFieldEmpty = schema.customField
+                  ? !customFieldValues[schema.id]
+                  : !defaultFieldValues[schema.name];
+
+                if (isFieldEmpty) {
                   const fieldName = schema.labelId
                     ? intl.formatMessage({ id: schema.labelId })
                     : schema.label;
 
                   memo.push(
                     intl.formatMessage(
-                      { id: 'IS_REQUIRED' },
-                      { field: fieldName },
+                      { id: 'INCOMPLETE_FIELD' },
+                      { fieldName },
                     ),
                   );
                 }
@@ -223,6 +233,11 @@ export default function EditIndividualMetadata({
             }
 
             const properties = { sex: defaultFieldValues.sex, names };
+
+            if (!isEmpty(customFieldValues)) {
+              properties.customFields = customFieldValues;
+            }
+
             const successfulUpdate = await updateIndividualProperties(
               individualId,
               properties,
