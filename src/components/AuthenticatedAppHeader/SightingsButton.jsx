@@ -19,7 +19,7 @@ export default function SightingsButton() {
   } = useSightingTermQuery(searchTerm);
 
   const resultsCurrent = inputContent === searchTerm;
-  const noResults = searchResults && searchResults.length === 0;
+  const noResults = searchResults?.length === 0;
   const mappableSearchResults = resultsCurrent
     ? searchResults || []
     : [];
@@ -38,7 +38,7 @@ export default function SightingsButton() {
     >
       {closePopover => (
         <>
-          {showDivider ? <Divider /> : null}
+          {showDivider && <Divider />}
           {resultsCurrent && noResults && (
             <Text
               variant="body2"

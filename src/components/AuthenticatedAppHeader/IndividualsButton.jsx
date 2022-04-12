@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useIntl, FormattedMessage } from 'react-intl';
 
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
@@ -11,6 +12,8 @@ import SearchButton from './SearchButton';
 import SearchResult from './SearchResult';
 
 export default function IndividualsButton() {
+  const intl = useIntl();
+
   const [inputContent, setInputContent] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -21,7 +24,7 @@ export default function IndividualsButton() {
   } = useIndividualTermQuery(searchTerm);
 
   const resultsCurrent = inputContent === searchTerm;
-  const noResults = searchResults && searchResults.length === 0;
+  const noResults = searchResults?.length === 0;
   const mappableSearchResults = resultsCurrent
     ? searchResults || []
     : [];
@@ -40,7 +43,7 @@ export default function IndividualsButton() {
     >
       {closePopover => (
         <>
-          {showDivider ? <Divider /> : null}
+          {showDivider && <Divider />}
           {resultsCurrent && noResults && (
             <Text
               variant="body2"
@@ -66,7 +69,7 @@ export default function IndividualsButton() {
               const defaultName = deriveIndividualName(
                 individual,
                 'FirstName',
-                'Unnamed Individual',
+                intl.formatMessage({ id: 'UNNAMED_INDIVIDUAL' }),
               );
               const displayString = adoptionName
                 ? `${defaultName} (${adoptionName})`
@@ -75,7 +78,7 @@ export default function IndividualsButton() {
               const createdDate = formatDate(
                 individual?.created,
                 true,
-                'Unknown date',
+                intl.formatMessage({ id: 'UNKNOWN_DATE' }),
               );
 
               return (
@@ -85,7 +88,12 @@ export default function IndividualsButton() {
                   href={`/individuals/${individualGuid}`}
                   onClick={closePopover}
                   primaryText={displayString}
-                  secondaryText={`Created on ${createdDate}`}
+                  secondaryText={
+                    <FormattedMessage
+                      id="CREATED_ON_DATE"
+                      values={{ createdDate }}
+                    />
+                  }
                 />
               );
             })}
