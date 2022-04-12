@@ -55,3 +55,7 @@ export function getNotificationQueryKey(id) {
 export function getIndividualTermQueryKey(searchTerm) {
   return ['individualSearch', searchTerm];
 }
+
+export function getSightingTermQueryKey(searchTerm) {
+  return ['sightingSearch', searchTerm];
+}
