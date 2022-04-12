@@ -162,7 +162,7 @@ export default function EditIndividualMetadata({
             // validation
             const requiredFieldErrors = metadata.reduce(
               (memo, schema) => {
-                if (!schema.required) return memo;
+                if (!schema?.required) return memo;
 
                 const isFieldEmpty = schema.customField
                   ? !customFieldValues[schema.id]
