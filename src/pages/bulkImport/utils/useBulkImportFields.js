@@ -102,7 +102,7 @@ export default function useBulkImportFields() {
       label: intl.formatMessage({
         id: 'INDIVIDUAL_NAME',
       }),
-      key: 'individualName',
+      key: 'individual',
     },
     {
       label: intl.formatMessage({
@@ -168,7 +168,9 @@ export default function useBulkImportFields() {
       })),
     },
     {
-      label: intl.formatMessage({ id: 'TIMEZONE' }),
+      label: intl.formatMessage({
+        id: 'TIMEZONE',
+      }),
       key: 'utcOffset',
       validators: [utcOffsetValidator],
     },

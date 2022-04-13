@@ -13,49 +13,47 @@ import queryKeys from '../../constants/queryKeys';
 import usePostAssetGroup from '../../models/assetGroup/usePostAssetGroup';
 import useSightingFieldSchemas from '../../models/sighting/useSightingFieldSchemas';
 import useEncounterFieldSchemas from '../../models/encounter/useEncounterFieldSchemas';
-import prepareAssetGroup from './utils/prepareAssetGroup';
-import useBulkImportFields from './utils/useBulkImportFields';
 import { flatfileKey } from '../../constants/apiKeys';
-
 import LoadingScreen from '../../components/LoadingScreen';
 import InputRow from '../../components/fields/edit/InputRow';
 import Button from '../../components/Button';
 import Text from '../../components/Text';
+
 import BulkFieldBreakdown from './BulkFieldBreakdown';
+import prepareAssetGroup from './utils/prepareAssetGroup';
+import useBulkImportFields from './utils/useBulkImportFields';
+import validateIndividualNames from './utils/validateIndividualNames';
+import validateMinMax from './utils/validateMinMax';
 
-const minmax = {
-  decimalLatitude: [-180, 180],
-  decimalLongitude: [-180, 180],
-  timeYear: [1900, 2021],
-  timeMonth: [1, 12],
-  timeDay: [1, 31],
-  timeHour: [0, 24],
-  timeMinutes: [0, 60],
-  timeSeconds: [0, 60],
-};
-const minmaxKeys = Object.keys(minmax);
+async function onRecordChange(record, recordIndex) {
+  const messages = validateMinMax(record);
 
-function recordHook(record) {
-  const recordHookResponse = {};
-  minmaxKeys.forEach(key => {
-    if (record[key]) {
-      const value = parseFloat(record[key]);
-      const min = minmax[key][0];
-      const max = minmax[key][1];
-      if (value < min || value > max) {
-        recordHookResponse[key] = {
-          info: [
-            {
-              message: `Value must be between ${min} and ${max}`,
-              level: 'error',
-            },
-          ],
+  const individual = record?.individual;
+  if (individual) {
+    try {
+      const validationResponse = await validateIndividualNames([
+        [individual, recordIndex],
+      ]);
+      const nameMessage = get(validationResponse, [0, 0]);
+
+      if (nameMessage)
+        return {
+          ...messages,
+          individual: nameMessage,
         };
-      }
+    } catch (e) {
+      console.error(
+        `Error validating individual name "${individual}" at ${recordIndex}`,
+        e,
+      );
     }
-  });
+  }
 
-  return recordHookResponse;
+  return messages;
+}
+
+function onRecordInit(record) {
+  return validateMinMax(record);
 }
 
 export default function BulkReportForm({ assetReferences }) {
@@ -137,10 +135,23 @@ export default function BulkReportForm({ assetReferences }) {
                 primaryButtonColor: theme.palette.primary.main,
               },
             }}
-            onRecordInit={recordHook}
-            onRecordChange={recordHook}
+            onRecordInit={onRecordInit}
+            onRecordChange={onRecordChange}
             onData={async results => {
               setSightingData(results.data);
+            }}
+            fieldHooks={{
+              individual: async values => {
+                try {
+                  return await validateIndividualNames(values);
+                } catch (e) {
+                  console.error(
+                    'Error validating individual names: ',
+                    e,
+                  );
+                  return [];
+                }
+              },
             }}
             render={(importer, launch) => (
               <Button
