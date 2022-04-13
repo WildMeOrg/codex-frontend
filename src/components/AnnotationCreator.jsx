@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { get } from 'lodash-es';
+import { get, pick } from 'lodash-es';
 import { FormattedMessage } from 'react-intl';
 import BboxAnnotator from 'bboxjs';
 
@@ -20,6 +20,7 @@ import Button from './Button';
 import Text from './Text';
 import StandardDialog from './StandardDialog';
 import CustomAlert from './Alert';
+import useAddEncounter from '../models/encounter/useAddEncounter';
 
 function percentageToPixels(percentValue, scalar) {
   const pixelValue = 0.01 * scalar * percentValue;
@@ -38,6 +39,13 @@ export default function AnnotationCreator({
   const [rect, setRect] = useState({});
   const [anchorEl, setAnchorEl] = useState(null);
   const theme = useTheme();
+
+  const {
+    addEncounter: addEncounterToSighting,
+    loading: addEncounterToSightingLoading,
+    error: addEncounterToSightingError,
+    setError: setAddEncounterError,
+  } = useAddEncounter();
 
   const { postAnnotation, loading, error } = usePostAnnotation();
   const IAClassOptions = useIAClassOptions(sightingData);
@@ -229,6 +237,23 @@ export default function AnnotationCreator({
               ),
             ];
             const theta = get(rect, 'theta', 0);
+
+            const copiedProperties = pick(sightingData, [
+              'time',
+              'timeSpecificity',
+              'locationId',
+            ]);
+            const sightingId = get(sightingData, 'guid');
+            const results = await addEncounterToSighting(
+              sightingId,
+              copiedProperties,
+            );
+            console.log(
+              'deleteMe got here and encounter results are: ',
+            );
+            console.log(results);
+            debugger;
+
             const newAnnotationId = await postAnnotation(
               assetId,
               IAClass,
