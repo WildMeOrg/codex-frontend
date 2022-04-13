@@ -1,12 +1,12 @@
 const minmax = {
   decimalLatitude: [-180, 180],
   decimalLongitude: [-180, 180],
-  timeYear: [1900, 2021],
+  timeYear: [1900, 2099],
   timeMonth: [1, 12],
   timeDay: [1, 31],
-  timeHour: [0, 24],
-  timeMinutes: [0, 60],
-  timeSeconds: [0, 60],
+  timeHour: [0, 23],
+  timeMinutes: [0, 59],
+  timeSeconds: [0, 59],
 };
 const minmaxKeys = Object.keys(minmax);
 

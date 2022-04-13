@@ -30,16 +30,23 @@ async function onRecordChange(record, recordIndex) {
 
   const individual = record?.individual;
   if (individual) {
-    const validationResponse = await validateIndividualNames([
-      [individual, recordIndex],
-    ]);
-    const nameMessage = get(validationResponse, [0, 0]);
+    try {
+      const validationResponse = await validateIndividualNames([
+        [individual, recordIndex],
+      ]);
+      const nameMessage = get(validationResponse, [0, 0]);
 
-    if (nameMessage)
-      return {
-        ...messages,
-        individual: nameMessage,
-      };
+      if (nameMessage)
+        return {
+          ...messages,
+          individual: nameMessage,
+        };
+    } catch (e) {
+      console.error(
+        `Error validating individual name "${individual}" at ${recordIndex}`,
+        e,
+      );
+    }
   }
 
   return messages;
