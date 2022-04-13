@@ -244,6 +244,7 @@ export default function AnnotationCreator({
               'locationId',
             ]);
             const sightingId = get(sightingData, 'guid');
+            debugger;
             const encounterCreationSuccessful = await addEncounterToSighting(
               sightingId,
               copiedProperties,
@@ -252,8 +253,9 @@ export default function AnnotationCreator({
               'deleteMe got here and encounter encounterCreationSuccessful are: ',
             );
             console.log(encounterCreationSuccessful);
-            if (encounterCreationSuccessful) refreshSightingData();
             debugger;
+            if (encounterCreationSuccessful) refreshSightingData();
+            // debugger;
 
             const newAnnotationId = await postAnnotation(
               assetId,
