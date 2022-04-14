@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { get, pick } from 'lodash-es';
+import { get, pick, map } from 'lodash-es';
 import { FormattedMessage } from 'react-intl';
 import BboxAnnotator from 'bboxjs';
 
@@ -21,6 +21,7 @@ import Text from './Text';
 import StandardDialog from './StandardDialog';
 import CustomAlert from './Alert';
 import useAddEncounter from '../models/encounter/useAddEncounter';
+import useAddAnnotationsToSightingEncounter from '../models/encounter/useAddAnnotationsToSightingEncounter';
 
 function percentageToPixels(percentValue, scalar) {
   const pixelValue = 0.01 * scalar * percentValue;
@@ -46,6 +47,13 @@ export default function AnnotationCreator({
     error: addEncounterToSightingError,
     setError: setAddEncounterError,
   } = useAddEncounter();
+
+  const {
+    addAnnotationsToSightingEncounter,
+    error: addToSightingEncounterError,
+    isLoading: addToSightingEncounterLoading,
+    onClearError: onClearAddToSightingEncounterError,
+  } = useAddAnnotationsToSightingEncounter();
 
   const { postAnnotation, loading, error } = usePostAnnotation();
   const IAClassOptions = useIAClassOptions(sightingData);
@@ -237,13 +245,20 @@ export default function AnnotationCreator({
               ),
             ];
             const theta = get(rect, 'theta', 0);
-
+            //TODO all this only if pending
             const copiedProperties = pick(sightingData, [
               'time',
               'timeSpecificity',
               'locationId',
             ]);
             const sightingId = get(sightingData, 'guid');
+            const encounterGuidsBeforeCreation = map(
+              get(sightingData, 'encounters'),
+              encounter => encounter.guid,
+              [],
+            );
+            console.log('deleteMe encounterGuidsBeforeCreation is: ');
+            console.log(encounterGuidsBeforeCreation);
             debugger;
             const encounterCreationSuccessful = await addEncounterToSighting(
               sightingId,
@@ -253,9 +268,36 @@ export default function AnnotationCreator({
               'deleteMe got here and encounter encounterCreationSuccessful are: ',
             );
             console.log(encounterCreationSuccessful);
+            refreshSightingData(); //TODO come back and test whether this is necessary
+            const encounterGuidsAfterCreation = map(
+              get(sightingData, 'encounters'),
+              encounter => encounter.guid,
+              [],
+            );
+            console.log('deleteMe encounterGuidsAfterCreation is : ');
+            console.log(encounterGuidsAfterCreation);
+            const newEncounterGuids = encounterGuidsAfterCreation.filter(
+              item =>
+                encounterGuidsBeforeCreation.indexOf(item.id) === -1,
+            );
+            console.log('deleteMe newEncounterGuids are: ');
+            console.log(newEncounterGuids);
+
             debugger;
-            if (encounterCreationSuccessful) refreshSightingData();
-            // debugger;
+            if (
+              encounterCreationSuccessful &&
+              newEncounterGuids.length < 2
+            ) {
+              // const result = await addAnnotationsToSightingEncounter(
+              //   get(newEncounterGuids, [0]),
+              //   selectedAnnotations,
+              // );
+              // console.log(
+              //   'deleteMe result from addAnnotationsToSightingEncounter is: ',
+              // );
+              // console.log(result);
+            }
+            debugger;
 
             const newAnnotationId = await postAnnotation(
               assetId,
@@ -264,6 +306,7 @@ export default function AnnotationCreator({
               viewpoint,
               theta,
             );
+            debugger;
             if (newAnnotationId) {
               refreshSightingData();
               onClose();
