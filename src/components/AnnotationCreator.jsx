@@ -271,31 +271,28 @@ export default function AnnotationCreator({
             );
             console.log(encounterCreationSuccessful);
             refreshSightingData(); //TODO come back and test whether this is necessary
-            const {
-              data: updatedSightingData,
-              loading: updatedSightingLoading,
-              error: updatedSightingError,
-              statusCode: updatedSightingStatusCode,
-            } = useSighting(sightingId);
-            if (!updatedSightingLoading && !updatedSightingError) {
-              const encounterGuidsAfterCreation = map(
-                get(updatedSightingData, 'encounters'),
-                encounter => encounter.guid,
-                [],
-              );
-              console.log(
-                'deleteMe encounterGuidsAfterCreation is : ',
-              );
-              console.log(encounterGuidsAfterCreation);
-              const newEncounterGuids = encounterGuidsAfterCreation.filter(
-                item =>
-                  encounterGuidsBeforeCreation.indexOf(item.id) ===
-                  -1,
-              );
-              console.log('deleteMe newEncounterGuids are: ');
-              console.log(newEncounterGuids);
-              // TODO pull the  newEncounterGuids.length stuff in if this doesn't cause an infinite loop
-            }
+            // const {
+            //   data: updatedSightingData,
+            //   loading: updatedSightingLoading,
+            //   error: updatedSightingError,
+            //   statusCode: updatedSightingStatusCode,
+            // } = useSighting(sightingId);
+            // if (!updatedSightingLoading && !updatedSightingError) {
+            // const encounterGuidsAfterCreation = map(
+            //   get(updatedSightingData, 'encounters'),
+            //   encounter => encounter.guid,
+            //   [],
+            // );
+            // console.log('deleteMe encounterGuidsAfterCreation is : ');
+            // console.log(encounterGuidsAfterCreation);
+            // const newEncounterGuids = encounterGuidsAfterCreation.filter(
+            //   item =>
+            //     encounterGuidsBeforeCreation.indexOf(item.id) === -1,
+            // );
+            // console.log('deleteMe newEncounterGuids are: ');
+            // console.log(newEncounterGuids);
+            // TODO pull the  newEncounterGuids.length stuff in if this doesn't cause an infinite loop
+            // }
 
             // debugger;
             // if (
