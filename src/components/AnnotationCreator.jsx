@@ -22,6 +22,7 @@ import StandardDialog from './StandardDialog';
 import CustomAlert from './Alert';
 import useAddEncounter from '../models/encounter/useAddEncounter';
 import useAddAnnotationsToSightingEncounter from '../models/encounter/useAddAnnotationsToSightingEncounter';
+import useSighting from '../models/sighting/useSighting';
 
 function percentageToPixels(percentValue, scalar) {
   const pixelValue = 0.01 * scalar * percentValue;
@@ -35,6 +36,7 @@ export default function AnnotationCreator({
   sightingData,
   refreshSightingData,
 }) {
+  console.log('deleteMe AnnotationCreator happens');
   const [viewpoint, setViewpoint] = useState('');
   const [IAClass, setIAClass] = useState('');
   const [rect, setRect] = useState({});
@@ -269,35 +271,47 @@ export default function AnnotationCreator({
             );
             console.log(encounterCreationSuccessful);
             refreshSightingData(); //TODO come back and test whether this is necessary
-            const encounterGuidsAfterCreation = map(
-              get(sightingData, 'encounters'),
-              encounter => encounter.guid,
-              [],
-            );
-            console.log('deleteMe encounterGuidsAfterCreation is : ');
-            console.log(encounterGuidsAfterCreation);
-            const newEncounterGuids = encounterGuidsAfterCreation.filter(
-              item =>
-                encounterGuidsBeforeCreation.indexOf(item.id) === -1,
-            );
-            console.log('deleteMe newEncounterGuids are: ');
-            console.log(newEncounterGuids);
-
-            debugger;
-            if (
-              encounterCreationSuccessful &&
-              newEncounterGuids.length < 2
-            ) {
-              // const result = await addAnnotationsToSightingEncounter(
-              //   get(newEncounterGuids, [0]),
-              //   selectedAnnotations,
-              // );
-              // console.log(
-              //   'deleteMe result from addAnnotationsToSightingEncounter is: ',
-              // );
-              // console.log(result);
+            const {
+              data: updatedSightingData,
+              loading: updatedSightingLoading,
+              error: updatedSightingError,
+              statusCode: updatedSightingStatusCode,
+            } = useSighting(sightingId);
+            if (!updatedSightingLoading && !updatedSightingError) {
+              const encounterGuidsAfterCreation = map(
+                get(updatedSightingData, 'encounters'),
+                encounter => encounter.guid,
+                [],
+              );
+              console.log(
+                'deleteMe encounterGuidsAfterCreation is : ',
+              );
+              console.log(encounterGuidsAfterCreation);
+              const newEncounterGuids = encounterGuidsAfterCreation.filter(
+                item =>
+                  encounterGuidsBeforeCreation.indexOf(item.id) ===
+                  -1,
+              );
+              console.log('deleteMe newEncounterGuids are: ');
+              console.log(newEncounterGuids);
+              // TODO pull the  newEncounterGuids.length stuff in if this doesn't cause an infinite loop
             }
-            debugger;
+
+            // debugger;
+            // if (
+            //   encounterCreationSuccessful &&
+            //   newEncounterGuids.length < 2
+            // ) {
+            //   // const result = await addAnnotationsToSightingEncounter(
+            //   //   get(newEncounterGuids, [0]),
+            //   //   selectedAnnotations,
+            //   // );
+            //   // console.log(
+            //   //   'deleteMe result from addAnnotationsToSightingEncounter is: ',
+            //   // );
+            //   // console.log(result);
+            // }
+            // debugger;
 
             const newAnnotationId = await postAnnotation(
               assetId,
@@ -306,6 +320,7 @@ export default function AnnotationCreator({
               viewpoint,
               theta,
             );
+            console.log('deleteMe check that this worked');
             debugger;
             if (newAnnotationId) {
               refreshSightingData();
