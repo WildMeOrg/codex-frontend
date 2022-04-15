@@ -10,7 +10,7 @@ import queryKeys, {
   getUserSightingsQueryKey,
 } from '../../constants/queryKeys';
 import useGetMe from '../../models/users/useGetMe';
-import MatchingSetDialog from './components/MatchingSetDialog';
+import CommitDialog from './identification/CommitDialog';
 
 const alertProps = {
   severity: 'info',
@@ -57,8 +57,7 @@ export default function CommitBanner({
   if (showCommitAlert) {
     return (
       <>
-        <MatchingSetDialog
-          titleId="COMMIT_SIGHTING"
+        <CommitDialog
           open={dialogOpen}
           onClose={() => setDialogOpen(false)}
         />

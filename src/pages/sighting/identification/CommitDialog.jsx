@@ -5,38 +5,18 @@ import { get } from 'lodash-es';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 
-import LocationIdEditor from '../../../components/fields/edit/LocationIdEditor';
-import SelectionEditor from '../../../components/fields/edit/SelectionEditor';
 import CustomAlert from '../../../components/Alert';
 import RadioChoice from '../../../components/RadioChoice';
-import InputRow from '../../../components/fields/edit/InputRow';
 import Button from '../../../components/Button';
 import StandardDialog from '../../../components/StandardDialog';
 import Text from '../../../components/Text';
-import fieldTypes from '../../../constants/fieldTypesNew';
 import useSightingFieldSchemas from '../../../models/sighting/useSightingFieldSchemas';
+import CustomMatchingSetForm from './CustomMatchingSetForm';
 
 const jobModes = {
   default: 'default',
   custom: 'custom',
   none: 'none',
-};
-
-const algorithmSchema = {
-  labelId: 'ALGORITHMS',
-  descriptionId: 'ALGORITHMS_DESCRIPTION',
-  fieldType: fieldTypes.multiselect,
-  required: true,
-  choices: [
-    {
-      label: 'Hotspotter',
-      value: 'hotspotter_nosv',
-    },
-    {
-      label: 'Groth bitch',
-      value: 'whynot',
-    },
-  ],
 };
 
 const jobModeChoices = [
@@ -54,34 +34,15 @@ const jobModeChoices = [
   },
 ];
 
-export default function MatchingSetDialog({
-  open,
-  onClose,
-  titleId,
-}) {
+export default function CommitDialog({ open, onClose }) {
   const intl = useIntl();
 
+  const [idConfig, setIdConfig] = useState(null);
+
   const sightingFieldSchemas = useSightingFieldSchemas();
-  const locationIdSchema = useMemo(
-    () => {
-      if (!sightingFieldSchemas) return null;
-      const matchingSchema = sightingFieldSchemas.find(
-        schema => schema.name === 'locationId',
-      );
-      if (!matchingSchema) return null;
-      return {
-        ...matchingSchema,
-        descriptionId: 'REGION_MATCHING_SET_DESCRIPTION',
-        required: false,
-      };
-    },
-    [sightingFieldSchemas],
-  );
 
   const [mode, setMode] = useState(jobModes.custom);
   // const [mode, setMode] = useState(jobModes.default);
-  const [region, setRegion] = useState('');
-  const [algorithms, setAlgorithms] = useState([]);
 
   return (
     <StandardDialog
@@ -89,7 +50,7 @@ export default function MatchingSetDialog({
       maxWidth="xl"
       open={open}
       onClose={onClose}
-      titleId={titleId}
+      titleId="COMMIT_SIGHTING"
     >
       <DialogContent style={{ minWidth: 200 }}>
         <RadioChoice
@@ -99,27 +60,10 @@ export default function MatchingSetDialog({
           choices={jobModeChoices}
         />
         {mode === jobModes.custom && (
-          <>
-            <InputRow schema={algorithmSchema}>
-              <SelectionEditor
-                schema={algorithmSchema}
-                minimalLabels
-                value={algorithms}
-                onChange={setAlgorithms}
-              />
-            </InputRow>
-            <InputRow
-              loading={!locationIdSchema}
-              schema={locationIdSchema}
-            >
-              <LocationIdEditor
-                schema={locationIdSchema}
-                minimalLabels
-                value={region}
-                onChange={setRegion}
-              />
-            </InputRow>
-          </>
+          <CustomMatchingSetForm
+            idConfig={idConfig}
+            setIdConfig={setIdConfig}
+          />
         )}
         {false && (
           <CustomAlert severity="error" titleId="SUBMISSION_ERROR">

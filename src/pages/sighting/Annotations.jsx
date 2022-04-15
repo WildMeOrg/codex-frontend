@@ -12,6 +12,7 @@ import AnnotatedPhotograph from '../../components/AnnotatedPhotograph';
 import AnnotationEditor from '../../components/AnnotationEditor';
 import Text from '../../components/Text';
 import ConfirmDelete from '../../components/ConfirmDelete';
+import KickoffAnnotationDialog from './identification/KickoffAnnotationDialog';
 import AnnotationDetail from './AnnotationDetail';
 import MoreAnnotationMenu from './MoreAnnotationMenu';
 import Keywords from './Keywords';
@@ -33,6 +34,8 @@ export default function Annotations({ assets, refreshSightingData }) {
   const [editId, setEditId] = useState(null);
   const [deleteId, setDeleteId] = useState(null);
   const [anchorInfo, setAnchorInfo] = useState(null);
+  const [idDialogOpen, setIdDialogOpen] = useState(false);
+
   const {
     deleteAnnotation,
     loading: deleteInProgress,
@@ -72,6 +75,10 @@ export default function Annotations({ assets, refreshSightingData }) {
         margin: '0 20px',
       }}
     >
+      <KickoffAnnotationDialog
+        open={idDialogOpen}
+        onClose={() => setIdDialogOpen(false)}
+      />
       <AnnotationDetail
         annotation={detailAnnotation}
         open={Boolean(detailId)}
@@ -83,6 +90,7 @@ export default function Annotations({ assets, refreshSightingData }) {
         anchorEl={get(anchorInfo, 'element')}
         open={Boolean(get(anchorInfo, 'element'))}
         onClose={() => setAnchorInfo(null)}
+        onClickStartIdentification={() => setIdDialogOpen(true)}
         onClickEditAnnotation={() => {
           setEditId(clickedAnnotationId);
           setAnchorInfo(null);

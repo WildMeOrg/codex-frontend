@@ -107,6 +107,7 @@
   "CONFIRM_REMOVE_CLUSTER_FROM_INDIVIDUAL": "Are you sure you want to unassign this sighting?",
   "VIEW_NEW_INDIVIDUAL": "View new individual",
   "VIEW_INDIVIDUAL": "View individual",
+  "VIEW_IDENTIFICATION_RESULTS": "View identification results",
   "USER_DATA_ERROR": "User data could not be loaded.",
   "DEACTIVATION_SENSITIVE_ACTION_DESCRIPTION": "User deactivation is a sensitive action. You must enter your password to continue.",
   "SENSITIVE_USER_DATA_CHANGE_DESCRIPTION": "Updating these user properties is considered a sensitive action. You must enter your password to continue.",
