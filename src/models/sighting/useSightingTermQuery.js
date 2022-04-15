@@ -10,6 +10,7 @@ export default function useSightingTermQuery(searchTerm) {
         'verbatimLocality',
         'owners.full_name',
         'comments',
+        'locationId_value',
       ],
     },
   };
