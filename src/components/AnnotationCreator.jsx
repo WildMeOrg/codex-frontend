@@ -261,15 +261,15 @@ export default function AnnotationCreator({
             );
             console.log('deleteMe encounterGuidsBeforeCreation is: ');
             console.log(encounterGuidsBeforeCreation);
-            // debugger;
-            const encounterCreationSuccessful = await addEncounterToSighting(
+            // debugger; deleteMe
+            const encounterCreationResponse = await addEncounterToSighting(
               sightingId,
               copiedProperties,
             );
             console.log(
-              'deleteMe got here and encounter encounterCreationSuccessful are: ',
+              'deleteMe got here and encounter encounterCreationResponse are: ',
             );
-            console.log(encounterCreationSuccessful);
+            console.log(encounterCreationResponse);
             refreshSightingData(); //TODO come back and test whether this is necessary
             const encounterGuid = null; //TODO deleteMe upon further advancement
             // const {
@@ -279,23 +279,27 @@ export default function AnnotationCreator({
             //   statusCode: updatedSightingStatusCode,
             // } = useSighting(sightingId);
             // if (!updatedSightingLoading && !updatedSightingError) {
-            // const encounterGuidsAfterCreation = map(
-            //   get(updatedSightingData, 'encounters'),
-            //   encounter => encounter.guid,
-            //   [],
-            // );
-            // console.log('deleteMe encounterGuidsAfterCreation is : ');
-            // console.log(encounterGuidsAfterCreation);
-            // const newEncounterGuids = encounterGuidsAfterCreation.filter(
-            //   item =>
-            //     encounterGuidsBeforeCreation.indexOf(item.id) === -1,
-            // );
-            // console.log('deleteMe newEncounterGuids are: ');
-            // console.log(newEncounterGuids);
+            const encounterGuidsAfterCreation = map(
+              get(
+                encounterCreationResponse,
+                ['response', 'encounters'],
+                [],
+              ),
+              encounter => encounter.guid,
+              [],
+            );
+            console.log('deleteMe encounterGuidsAfterCreation is : ');
+            console.log(encounterGuidsAfterCreation);
+            const newEncounterGuids = encounterGuidsAfterCreation.filter(
+              item =>
+                encounterGuidsBeforeCreation.indexOf(item.id) === -1,
+            );
+            console.log('deleteMe newEncounterGuids are: ');
+            console.log(newEncounterGuids);
             // TODO pull the  newEncounterGuids.length stuff in if this doesn't cause an infinite loop
             // }
 
-            // debugger;
+            // debugger; deleteMe
             // if (
             //   encounterCreationSuccessful &&
             //   newEncounterGuids.length < 2
@@ -309,7 +313,7 @@ export default function AnnotationCreator({
             //   // );
             //   // console.log(result);
             // }
-            // debugger;
+            // debugger; deleteMe
 
             const newAnnotationId = await postAnnotation(
               assetId,
@@ -320,7 +324,7 @@ export default function AnnotationCreator({
               encounterGuid,
             );
             console.log('deleteMe check that this worked');
-            // debugger;
+            // debugger; deleteMe
             if (newAnnotationId) {
               refreshSightingData();
               onClose();

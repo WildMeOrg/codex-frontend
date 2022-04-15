@@ -25,14 +25,14 @@ export default function useAddEncounter() {
       });
       console.log('deleteMe got here patchResponse is: ');
       console.log(patchResponse);
-      debugger;
+      // debugger; deleteMe
       const responseStatus = get(patchResponse, 'status');
       const successful = responseStatus === 200;
       if (successful) {
         setLoading(false);
         setSuccess(true);
         setError(null);
-        return true;
+        return { success: true, response: patchResponse };
       }
 
       setError(formatError(patchResponse));
@@ -42,7 +42,7 @@ export default function useAddEncounter() {
       setLoading(false);
       setError(formatError(postError));
       setSuccess(false);
-      return false;
+      return { success: false, response: postError };
     }
   };
 
