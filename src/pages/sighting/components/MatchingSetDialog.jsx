@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useIntl } from 'react-intl';
 import { get } from 'lodash-es';
 
@@ -7,13 +7,14 @@ import DialogActions from '@material-ui/core/DialogActions';
 
 import LocationIdEditor from '../../../components/fields/edit/LocationIdEditor';
 import SelectionEditor from '../../../components/fields/edit/SelectionEditor';
-import fieldTypes from '../../../constants/fieldTypesNew';
 import CustomAlert from '../../../components/Alert';
 import RadioChoice from '../../../components/RadioChoice';
 import InputRow from '../../../components/fields/edit/InputRow';
 import Button from '../../../components/Button';
 import StandardDialog from '../../../components/StandardDialog';
 import Text from '../../../components/Text';
+import fieldTypes from '../../../constants/fieldTypesNew';
+import useSightingFieldSchemas from '../../../models/sighting/useSightingFieldSchemas';
 
 const jobModes = {
   default: 'default',
@@ -60,6 +61,23 @@ export default function MatchingSetDialog({
 }) {
   const intl = useIntl();
 
+  const sightingFieldSchemas = useSightingFieldSchemas();
+  const locationIdSchema = useMemo(
+    () => {
+      if (!sightingFieldSchemas) return null;
+      const matchingSchema = sightingFieldSchemas.find(
+        schema => schema.name === 'locationId',
+      );
+      if (!matchingSchema) return null;
+      return {
+        ...matchingSchema,
+        descriptionId: 'REGION_MATCHING_SET_DESCRIPTION',
+        required: false,
+      };
+    },
+    [sightingFieldSchemas],
+  );
+
   const [mode, setMode] = useState(jobModes.custom);
   // const [mode, setMode] = useState(jobModes.default);
   const [region, setRegion] = useState('');
@@ -68,7 +86,7 @@ export default function MatchingSetDialog({
   return (
     <StandardDialog
       PaperProps={{ style: { width: 800 } }}
-      maxWidth="lg"
+      maxWidth="xl"
       open={open}
       onClose={onClose}
       titleId={titleId}
@@ -88,6 +106,17 @@ export default function MatchingSetDialog({
                 minimalLabels
                 value={algorithms}
                 onChange={setAlgorithms}
+              />
+            </InputRow>
+            <InputRow
+              loading={!locationIdSchema}
+              schema={locationIdSchema}
+            >
+              <LocationIdEditor
+                schema={locationIdSchema}
+                minimalLabels
+                value={region}
+                onChange={setRegion}
               />
             </InputRow>
           </>
@@ -110,7 +139,7 @@ export default function MatchingSetDialog({
           loading={false}
           display="primary"
           onClick={Function.prototype}
-          id="SAVE"
+          id="COMMIT_SIGHTING"
         />
       </DialogActions>
     </StandardDialog>
