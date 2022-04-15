@@ -14,6 +14,7 @@ export default function usePostAnnotation() {
     rect,
     viewpoint,
     theta = 0,
+    encounterGuid = null,
   ) => {
     try {
       setLoading(true);
@@ -25,6 +26,7 @@ export default function usePostAnnotation() {
         data: {
           viewpoint,
           asset_guid: assetId,
+          encounter_guid: encounterGuid,
           ia_class: iaClass,
           bounds: {
             theta,

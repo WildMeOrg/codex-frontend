@@ -261,7 +261,7 @@ export default function AnnotationCreator({
             );
             console.log('deleteMe encounterGuidsBeforeCreation is: ');
             console.log(encounterGuidsBeforeCreation);
-            debugger;
+            // debugger;
             const encounterCreationSuccessful = await addEncounterToSighting(
               sightingId,
               copiedProperties,
@@ -271,6 +271,7 @@ export default function AnnotationCreator({
             );
             console.log(encounterCreationSuccessful);
             refreshSightingData(); //TODO come back and test whether this is necessary
+            const encounterGuid = null; //TODO deleteMe upon further advancement
             // const {
             //   data: updatedSightingData,
             //   loading: updatedSightingLoading,
@@ -316,9 +317,10 @@ export default function AnnotationCreator({
               coords,
               viewpoint,
               theta,
+              encounterGuid,
             );
             console.log('deleteMe check that this worked');
-            debugger;
+            // debugger;
             if (newAnnotationId) {
               refreshSightingData();
               onClose();

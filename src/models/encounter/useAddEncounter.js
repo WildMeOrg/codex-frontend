@@ -23,6 +23,9 @@ export default function useAddEncounter() {
         method: 'patch',
         data: [operation],
       });
+      console.log('deleteMe got here patchResponse is: ');
+      console.log(patchResponse);
+      debugger;
       const responseStatus = get(patchResponse, 'status');
       const successful = responseStatus === 200;
       if (successful) {
