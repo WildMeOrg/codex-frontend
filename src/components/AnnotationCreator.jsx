@@ -282,7 +282,7 @@ export default function AnnotationCreator({
             const encounterGuidsAfterCreation = map(
               get(
                 encounterCreationResponse,
-                ['response', 'encounters'],
+                ['response', 'data', 'encounters'],
                 [],
               ),
               encounter => encounter.guid,
@@ -314,6 +314,8 @@ export default function AnnotationCreator({
             //   // console.log(result);
             // }
             // debugger; deleteMe
+
+            // TODO deleteMe handle case where this is an AGS instead of a sighting
 
             const newAnnotationId = await postAnnotation(
               assetId,

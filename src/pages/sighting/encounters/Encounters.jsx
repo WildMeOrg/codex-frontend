@@ -352,7 +352,7 @@ export default function Encounters({
             'timeSpecificity',
             'locationId',
           ]);
-          await addEncounter(sightingId, copiedProperties);
+          await addEncounter(sightingId, copiedProperties); //TODO umm... do we really want this just going if there's an error?
           refreshSightingData();
         }}
         startIcon={<AddIcon />}
