@@ -291,8 +291,7 @@ export default function AnnotationCreator({
             console.log('deleteMe encounterGuidsAfterCreation is : ');
             console.log(encounterGuidsAfterCreation);
             const newEncounterGuids = encounterGuidsAfterCreation.filter(
-              item =>
-                encounterGuidsBeforeCreation.indexOf(item.id) === -1,
+              enc => encounterGuidsBeforeCreation.indexOf(enc) === -1,
             );
             console.log('deleteMe newEncounterGuids are: ');
             console.log(newEncounterGuids);
