@@ -5,7 +5,13 @@ export default function useSightingTermQuery(searchTerm) {
   const query = {
     query_string: {
       query: `*${searchTerm}*`,
-      fields: ['guid'],
+      fields: [
+        'guid',
+        'verbatimLocality',
+        'owners.full_name',
+        'comments',
+        'locationId_value',
+      ],
     },
   };
 
