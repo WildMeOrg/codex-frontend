@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { get, flatten } from 'lodash-es';
 import { useQueryClient } from 'react-query';
 
@@ -10,6 +10,7 @@ import queryKeys, {
   getUserSightingsQueryKey,
 } from '../../constants/queryKeys';
 import useGetMe from '../../models/users/useGetMe';
+import MatchingSetDialog from './components/MatchingSetDialog';
 
 const alertProps = {
   severity: 'info',
@@ -21,6 +22,8 @@ export default function CommitBanner({
   sightingData,
   pending,
 }) {
+  const [dialogOpen, setDialogOpen] = useState(false);
+
   const queryClient = useQueryClient();
   const { data: userData, loading: userInfoLoading } = useGetMe();
   const userId = get(userData, 'guid');
@@ -53,33 +56,43 @@ export default function CommitBanner({
 
   if (showCommitAlert) {
     return (
-      <Alert
-        titleId="SIGHTING_COMMIT_TITLE"
-        descriptionId="SIGHTING_COMMIT_DESCRIPTION"
-        action={
-          <Button
-            id="COMMIT"
-            size="small"
-            loading={commitInProgress}
-            onClick={async () => {
-              const results = await commitAgs({
-                agsGuid: sightingId,
-              });
-              if (results?.status === 200) {
-                queryClient.invalidateQueries(
-                  queryKeys.assetGroupSightings,
-                );
-                if (!userInfoLoading)
-                  queryClient.invalidateQueries(
-                    getUserSightingsQueryKey(userId),
-                  );
-              }
-            }}
-            style={{ marginTop: 8, marginRight: 4 }}
-          />
-        }
-        {...alertProps}
-      />
+      <>
+        <MatchingSetDialog
+          titleId="COMMIT_SIGHTING"
+          open={dialogOpen}
+          onClose={() => setDialogOpen(false)}
+        />
+        <Alert
+          titleId="SIGHTING_COMMIT_TITLE"
+          descriptionId="SIGHTING_COMMIT_DESCRIPTION"
+          action={
+            <Button
+              id="COMMIT"
+              size="small"
+              loading={commitInProgress}
+              onClick={() => setDialogOpen(true)}
+              // onClick={async () =>
+              // {
+              //   const results = await commitAgs({
+              //     agsGuid: sightingId,
+              //   });
+              //   if (results?.status === 200)
+              //   {
+              //     queryClient.invalidateQueries(
+              //       queryKeys.assetGroupSightings,
+              //     );
+              //     if (!userInfoLoading)
+              //       queryClient.invalidateQueries(
+              //         getUserSightingsQueryKey(userId),
+              //       );
+              //   }
+              // }}
+              style={{ marginTop: 8, marginRight: 4 }}
+            />
+          }
+          {...alertProps}
+        />
+      </>
     );
   }
 

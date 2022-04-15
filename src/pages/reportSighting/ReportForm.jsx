@@ -23,6 +23,7 @@ import useEncounterFieldSchemas from '../../models/encounter/useEncounterFieldSc
 // import { getLocationSuggestion } from '../../utils/exif';
 import Button from '../../components/Button';
 import Text from '../../components/Text';
+import RadioChoice from '../../components/RadioChoice';
 import InlineButton from '../../components/InlineButton';
 import TermsAndConditionsDialog from '../../components/report/TermsAndConditionsDialog';
 import {
@@ -39,6 +40,17 @@ function getInitialFormValues(schema) {
     return memo;
   }, {});
 }
+
+const radioChoices = [
+  {
+    labelId: 'ONE_ANIMAL',
+    value: 'one',
+  },
+  {
+    labelId: 'MULTIPLE_ANIMALS',
+    value: 'multiple',
+  },
+];
 
 export default function ReportForm({
   authenticated,
@@ -158,34 +170,12 @@ export default function ReportForm({
         visible={dialogOpen}
         onClose={() => setDialogOpen(false)}
       />
-      <FormGroup style={{ margin: '12px 0 24px 12px' }}>
-        <Text
-          style={{ margin: '24px 0 8px 0', fontWeight: 'bold' }}
-          component="legend"
-          id="SIGHTING_RADIO_QUESTION"
-        />
-        <RadioGroup
-          aria-label="sighting-type"
-          name="sightingType"
-          value={sightingType}
-          onChange={e => setSightingType(e.target.value)}
-        >
-          <FormControlLabel
-            value="one"
-            control={<Radio />}
-            label={intl.formatMessage({
-              id: 'ONE_ANIMAL',
-            })}
-          />
-          <FormControlLabel
-            value="multiple"
-            control={<Radio />}
-            label={intl.formatMessage({
-              id: 'MULTIPLE_ANIMALS',
-            })}
-          />
-        </RadioGroup>
-      </FormGroup>
+      <RadioChoice
+        titleId="SIGHTING_RADIO_QUESTION"
+        value={sightingType}
+        onChange={setSightingType}
+        choices={radioChoices}
+      />
       {sightingType && (
         <>
           <FieldCollections
