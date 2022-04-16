@@ -1,16 +1,16 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import { useIntl } from 'react-intl';
-import { get } from 'lodash-es';
 
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 
+import usePatchAGS from '../../../models/assetGroupSighting/usePatchAGS';
+import useCommitAssetGroupSighting from '../../../models/assetGroupSighting/useCommitAssetGroupSighting';
 import CustomAlert from '../../../components/Alert';
 import RadioChoice from '../../../components/RadioChoice';
 import Button from '../../../components/Button';
 import StandardDialog from '../../../components/StandardDialog';
 import Text from '../../../components/Text';
-import useSightingFieldSchemas from '../../../models/sighting/useSightingFieldSchemas';
 import CustomMatchingSetForm from './CustomMatchingSetForm';
 
 const jobModes = {
@@ -25,24 +25,35 @@ const jobModeChoices = [
     value: jobModes.default,
   },
   {
-    labelId: 'IDENTIFICATION_MODE_CUSTOM_SETTINGS',
-    value: jobModes.custom,
-  },
-  {
     labelId: 'IDENTIFICATION_MODE_NO_ID',
     value: jobModes.none,
   },
+  {
+    labelId: 'IDENTIFICATION_MODE_CUSTOM_SETTINGS',
+    value: jobModes.custom,
+  },
 ];
 
-export default function CommitDialog({ open, onClose }) {
+export default function CommitDialog({ agsGuid, open, onClose }) {
   const intl = useIntl();
 
   const [idConfig, setIdConfig] = useState(null);
-
-  const sightingFieldSchemas = useSightingFieldSchemas();
-
   const [mode, setMode] = useState(jobModes.custom);
   // const [mode, setMode] = useState(jobModes.default);
+
+  const {
+    mutate: patchAgs,
+    loading: patchAgsLoading,
+    error: patchAgsError,
+  } = usePatchAGS();
+
+  const {
+    mutate: commitAgs,
+    loading: commitAgsLoading,
+    error: commitAgsError,
+  } = useCommitAssetGroupSighting();
+
+  const error = patchAgsError || commitAgsError;
 
   return (
     <StandardDialog
@@ -65,9 +76,9 @@ export default function CommitDialog({ open, onClose }) {
             setIdConfig={setIdConfig}
           />
         )}
-        {false && (
-          <CustomAlert severity="error" titleId="SUBMISSION_ERROR">
-            <Text variant="body2">There was an error</Text>
+        {error && (
+          <CustomAlert severity="error" titleId="SERVER_ERROR">
+            <Text variant="body2">{error}</Text>
           </CustomAlert>
         )}
       </DialogContent>
@@ -80,9 +91,42 @@ export default function CommitDialog({ open, onClose }) {
           id="CANCEL"
         />
         <Button
-          loading={false}
+          loading={patchAgsLoading || commitAgsLoading}
           display="primary"
-          onClick={Function.prototype}
+          onClick={async () => {
+            let idConfigPatchValue = idConfig;
+            if (mode === jobModes.default) {
+              idConfigPatchValue = {
+                algorithms: ['hotspotter_nosv'],
+                matching_set: null,
+              };
+            } else if (mode === jobModes.none) {
+              idConfigPatchValue = {
+                algorithms: [],
+                matching_set: null,
+              };
+            }
+
+            const idConfigPatchResult = await patchAgs({
+              agsGuid,
+              data: [
+                {
+                  op: 'replace',
+                  path: '/idConfigs',
+                  value: idConfigPatchValue,
+                },
+              ],
+            });
+            console.log(idConfigPatchResult);
+
+            const resultIsSuccessful =
+              idConfigPatchResult?.status === 200;
+            if (resultIsSuccessful) {
+              await commitAgs({ agsGuid });
+              /* change will get picked up and page will change from
+               * /pending-sightings/<guid> to /sightings/<new-guid> */
+            }
+          }}
           id="COMMIT_SIGHTING"
         />
       </DialogActions>

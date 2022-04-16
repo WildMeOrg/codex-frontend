@@ -174,7 +174,7 @@
   "IDENTIFICATION_MODE_CUSTOM_SETTINGS": "Customize settings for this identification job",
   "IDENTIFICATION_MODE_NO_ID": "Do not start an identification job",
   "ALGORITHMS": "Algorithms",
-  "ALGORITHMS_DESCRIPTION": "Select the identification algorithms you would like to run. The best algorithms for this species have been selected by default.",
+  "ALGORITHMS_DESCRIPTION": "Select the identification algorithms you would like to run.",
   "FIRST_NAME": "First name",
   "ADOPTION_NAME": "Adoption name",
   "ALIAS": "Alias",
