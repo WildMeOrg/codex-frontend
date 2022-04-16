@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { get, pick, map } from 'lodash-es';
+import { get, pick, map, filter } from 'lodash-es';
 import { FormattedMessage } from 'react-intl';
 import BboxAnnotator from 'bboxjs';
 
@@ -290,45 +290,51 @@ export default function AnnotationCreator({
             );
             console.log('deleteMe encounterGuidsAfterCreation is : ');
             console.log(encounterGuidsAfterCreation);
-            const newEncounterGuids = encounterGuidsAfterCreation.filter(
+            const newEncounterGuids = filter(
+              encounterGuidsAfterCreation,
               enc => encounterGuidsBeforeCreation.indexOf(enc) === -1,
+              [],
             );
             console.log('deleteMe newEncounterGuids are: ');
             console.log(newEncounterGuids);
-            // TODO pull the  newEncounterGuids.length stuff in if this doesn't cause an infinite loop
-            // }
-
-            // debugger; deleteMe
-            // if (
-            //   encounterCreationSuccessful &&
-            //   newEncounterGuids.length < 2
-            // ) {
-            //   // const result = await addAnnotationsToSightingEncounter(
-            //   //   get(newEncounterGuids, [0]),
-            //   //   selectedAnnotations,
-            //   // );
-            //   // console.log(
-            //   //   'deleteMe result from addAnnotationsToSightingEncounter is: ',
-            //   // );
-            //   // console.log(result);
-            // }
-            // debugger; deleteMe
 
             // TODO deleteMe handle case where this is an AGS instead of a sighting
+            if (
+              encounterCreationResponse?.success &&
+              newEncounterGuids?.length < 2 &&
+              newEncounterGuids?.length > 0
+            ) {
+              console.log(
+                'deleteMe got here and encounter creation was successful and there is only one new encounter guid',
+              );
+              const newAnnotationId = await postAnnotation(
+                assetId,
+                IAClass,
+                coords,
+                viewpoint,
+                theta,
+                newEncounterGuids[0],
+              );
+              console.log(
+                'deleteMe check that this worked and newAnnotationId is: ' +
+                  newAnnotationId,
+              );
 
-            const newAnnotationId = await postAnnotation(
-              assetId,
-              IAClass,
-              coords,
-              viewpoint,
-              theta,
-              encounterGuid,
-            );
-            console.log('deleteMe check that this worked');
-            // debugger; deleteMe
-            if (newAnnotationId) {
-              refreshSightingData();
-              onClose();
+              // debugger; deleteMe
+              if (newAnnotationId) {
+                const result = await addAnnotationsToSightingEncounter(
+                  newEncounterGuids[0],
+                  newAnnotationId,
+                );
+                console.log(
+                  'deleteMe result from addAnnotationsToSightingEncounter is: ',
+                );
+                console.log(result);
+                refreshSightingData();
+                onClose();
+              }
+            } else {
+              //TODO handle an error where there are more than one new encounters and/or the response was not successful
             }
           }}
           id="SAVE"
