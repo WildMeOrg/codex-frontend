@@ -324,7 +324,7 @@ export default function AnnotationCreator({
               if (newAnnotationId) {
                 const result = await addAnnotationsToSightingEncounter(
                   newEncounterGuids[0],
-                  newAnnotationId,
+                  [newAnnotationId],
                 );
                 console.log(
                   'deleteMe result from addAnnotationsToSightingEncounter is: ',
