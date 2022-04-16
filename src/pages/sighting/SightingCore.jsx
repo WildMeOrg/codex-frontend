@@ -269,6 +269,7 @@ export default function SightingCore({
           assets={assets}
           sightingData={data}
           refreshSightingData={refreshData}
+          pending={pending}
         />
       )}
       {activeTab === '#annotations' && (

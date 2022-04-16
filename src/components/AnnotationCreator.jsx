@@ -22,11 +22,49 @@ import StandardDialog from './StandardDialog';
 import CustomAlert from './Alert';
 import useAddEncounter from '../models/encounter/useAddEncounter';
 import useAddAnnotationsToSightingEncounter from '../models/encounter/useAddAnnotationsToSightingEncounter';
-import useSighting from '../models/sighting/useSighting';
 
 function percentageToPixels(percentValue, scalar) {
   const pixelValue = 0.01 * scalar * percentValue;
   return Math.round(Math.max(pixelValue, 0));
+}
+
+async function createEncounter(sightingData) {
+  const copiedProperties = pick(sightingData, [
+    'time',
+    'timeSpecificity',
+    'locationId',
+  ]);
+  const sightingId = get(sightingData, 'guid');
+  const encounterGuidsBeforeCreation = map(
+    get(sightingData, 'encounters'),
+    encounter => encounter.guid,
+    [],
+  );
+  const encounterCreationResponse = await addEncounterToSighting(
+    sightingId,
+    copiedProperties,
+  );
+  const encounterGuidsAfterCreation = map(
+    get(
+      encounterCreationResponse,
+      ['response', 'data', 'encounters'],
+      [],
+    ),
+    encounter => encounter.guid,
+    [],
+  );
+  const newEncounterGuids = filter(
+    encounterGuidsAfterCreation,
+    enc => encounterGuidsBeforeCreation.indexOf(enc) === -1,
+    [],
+  );
+  console.log('deleteMe newEncounterGuids are: ');
+  console.log(newEncounterGuids);
+  //TODO deleteMe send off an error if length !==1?
+  return encounterCreationResponse?.success &&
+    newEncounterGuids?.length === 1
+    ? newEncounterGuids
+    : [];
 }
 
 export default function AnnotationCreator({
@@ -35,6 +73,7 @@ export default function AnnotationCreator({
   onClose,
   sightingData,
   refreshSightingData,
+  pending,
 }) {
   console.log('deleteMe AnnotationCreator happens');
   const [viewpoint, setViewpoint] = useState('');
@@ -247,94 +286,40 @@ export default function AnnotationCreator({
               ),
             ];
             const theta = get(rect, 'theta', 0);
-            //TODO all this only if pending
-            const copiedProperties = pick(sightingData, [
-              'time',
-              'timeSpecificity',
-              'locationId',
-            ]);
-            const sightingId = get(sightingData, 'guid');
-            const encounterGuidsBeforeCreation = map(
-              get(sightingData, 'encounters'),
-              encounter => encounter.guid,
-              [],
+            const newEncounterGuids = pending
+              ? []
+              : createEncounter(sightingData);
+            const newEncounterGuid = get(newEncounterGuids, [0]);
+
+            console.log(
+              'deleteMe got here and encounter creation was successful and there is only one new encounter guid',
             );
-            console.log('deleteMe encounterGuidsBeforeCreation is: ');
-            console.log(encounterGuidsBeforeCreation);
-            // debugger; deleteMe
-            const encounterCreationResponse = await addEncounterToSighting(
-              sightingId,
-              copiedProperties,
+            const newAnnotationId = await postAnnotation(
+              assetId,
+              IAClass,
+              coords,
+              viewpoint,
+              theta,
+              pending ? null : newEncounterGuid,
             );
             console.log(
-              'deleteMe got here and encounter encounterCreationResponse are: ',
+              'deleteMe check that this worked and newAnnotationId is: ' +
+                newAnnotationId,
             );
-            console.log(encounterCreationResponse);
-            refreshSightingData(); //TODO come back and test whether this is necessary
-            const encounterGuid = null; //TODO deleteMe upon further advancement
-            // const {
-            //   data: updatedSightingData,
-            //   loading: updatedSightingLoading,
-            //   error: updatedSightingError,
-            //   statusCode: updatedSightingStatusCode,
-            // } = useSighting(sightingId);
-            // if (!updatedSightingLoading && !updatedSightingError) {
-            const encounterGuidsAfterCreation = map(
-              get(
-                encounterCreationResponse,
-                ['response', 'data', 'encounters'],
-                [],
-              ),
-              encounter => encounter.guid,
-              [],
-            );
-            console.log('deleteMe encounterGuidsAfterCreation is : ');
-            console.log(encounterGuidsAfterCreation);
-            const newEncounterGuids = filter(
-              encounterGuidsAfterCreation,
-              enc => encounterGuidsBeforeCreation.indexOf(enc) === -1,
-              [],
-            );
-            console.log('deleteMe newEncounterGuids are: ');
-            console.log(newEncounterGuids);
 
-            // TODO deleteMe handle case where this is an AGS instead of a sighting
-            if (
-              encounterCreationResponse?.success &&
-              newEncounterGuids?.length < 2 &&
-              newEncounterGuids?.length > 0
-            ) {
-              console.log(
-                'deleteMe got here and encounter creation was successful and there is only one new encounter guid',
-              );
-              const newAnnotationId = await postAnnotation(
-                assetId,
-                IAClass,
-                coords,
-                viewpoint,
-                theta,
-                newEncounterGuids[0],
-              );
-              console.log(
-                'deleteMe check that this worked and newAnnotationId is: ' +
-                  newAnnotationId,
-              );
-
-              // debugger; deleteMe
-              if (newAnnotationId) {
+            if (newAnnotationId) {
+              if (!pending && newEncounterGuid) {
                 const result = await addAnnotationsToSightingEncounter(
-                  newEncounterGuids[0],
+                  newEncounterGuid,
                   [newAnnotationId],
                 );
                 console.log(
                   'deleteMe result from addAnnotationsToSightingEncounter is: ',
                 );
                 console.log(result);
-                refreshSightingData();
-                onClose();
               }
-            } else {
-              //TODO handle an error where there are more than one new encounters and/or the response was not successful
+              refreshSightingData();
+              onClose();
             }
           }}
           id="SAVE"
