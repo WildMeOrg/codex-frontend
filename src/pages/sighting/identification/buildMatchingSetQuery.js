@@ -29,9 +29,9 @@ export default function buildMatchingSetQuery(regionSchema, region) {
           bool: {
             minimum_should_match: 1,
             should: [
-              matchRegions.map(region => ({
+              matchRegions.map(r => ({
                 term: {
-                  locationId: region?.id,
+                  locationId: r?.id,
                 },
               })),
             ],

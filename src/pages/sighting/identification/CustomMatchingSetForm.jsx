@@ -29,8 +29,6 @@ export default function CustomMatchingSetForm({
   const [algorithms, setAlgorithms] = useState([]);
   const [region, setRegion] = useState('');
 
-  // console.log(algorithms, region);
-
   useEffect(
     () => {
       setIdConfig({

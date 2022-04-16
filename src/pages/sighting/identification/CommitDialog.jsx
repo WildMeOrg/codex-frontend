@@ -85,9 +85,7 @@ export default function CommitDialog({ agsGuid, open, onClose }) {
       <DialogActions style={{ padding: '0px 24px 24px 24px' }}>
         <Button
           display="basic"
-          onClick={() => {
-            onClose();
-          }}
+          onClick={onClose}
           id="CANCEL"
         />
         <Button
