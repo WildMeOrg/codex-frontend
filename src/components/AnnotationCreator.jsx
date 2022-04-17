@@ -297,7 +297,7 @@ export default function AnnotationCreator({
             console.log(pending);
             const newEncounterGuids = pending
               ? []
-              : createEncounter(sightingData);
+              : await createEncounter(sightingData);
             console.log('deleteMe newEncounterGuids are: ');
             console.log(newEncounterGuids);
             const newEncounterGuid = get(newEncounterGuids, [0]);
