@@ -28,7 +28,7 @@ function percentageToPixels(percentValue, scalar) {
   return Math.round(Math.max(pixelValue, 0));
 }
 
-async function createEncounter(sightingData) {
+async function createEncounter(sightingData, addEncounterToSighting) {
   const copiedProperties = pick(sightingData, [
     'time',
     'timeSpecificity',
@@ -297,7 +297,10 @@ export default function AnnotationCreator({
             console.log(pending);
             const newEncounterGuids = pending
               ? []
-              : await createEncounter(sightingData);
+              : await createEncounter(
+                  sightingData,
+                  addEncounterToSighting,
+                );
             console.log('deleteMe newEncounterGuids are: ');
             console.log(newEncounterGuids);
             const newEncounterGuid = get(newEncounterGuids, [0]);
