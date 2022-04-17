@@ -40,10 +40,14 @@ async function createEncounter(sightingData) {
     encounter => encounter.guid,
     [],
   );
+  console.log('deleteMe encounterGuidsBeforeCreation is: ');
+  console.log(encounterGuidsBeforeCreation);
   const encounterCreationResponse = await addEncounterToSighting(
     sightingId,
     copiedProperties,
   );
+  console.log('deleteMe encounterCreationResponse is: ');
+  console.log(encounterCreationResponse);
   const encounterGuidsAfterCreation = map(
     get(
       encounterCreationResponse,
@@ -53,6 +57,8 @@ async function createEncounter(sightingData) {
     encounter => encounter.guid,
     [],
   );
+  console.log('deleteMe encounterGuidsAfterCreation is: ');
+  console.log(encounterGuidsAfterCreation);
   const newEncounterGuids = filter(
     encounterGuidsAfterCreation,
     enc => encounterGuidsBeforeCreation.indexOf(enc) === -1,
@@ -285,9 +291,15 @@ export default function AnnotationCreator({
               ),
             ];
             const theta = get(rect, 'theta', 0);
+            console.log(
+              'deleteMe pending before newEncounterGuids call is: ',
+            );
+            console.log(pending);
             const newEncounterGuids = pending
               ? []
               : createEncounter(sightingData);
+            console.log('deleteMe newEncounterGuids are: ');
+            console.log(newEncounterGuids);
             const newEncounterGuid = get(newEncounterGuids, [0]);
             console.log('deleteMe newEncounterGuid is: ');
             console.log(newEncounterGuid);
