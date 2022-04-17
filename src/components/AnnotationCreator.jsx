@@ -292,9 +292,6 @@ export default function AnnotationCreator({
             console.log('deleteMe newEncounterGuid is: ');
             console.log(newEncounterGuid);
 
-            console.log(
-              'deleteMe got here and encounter creation was successful and there is only one new encounter guid',
-            );
             const newAnnotationId = await postAnnotation(
               assetId,
               IAClass,
