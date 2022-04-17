@@ -20,6 +20,8 @@ export default function usePostAnnotation() {
       const additionalProperties = encounterGuid
         ? { encounter_guid: encounterGuid }
         : {};
+      console.log('deleteMe additionalProperties is: ');
+      console.log(additionalProperties);
       setLoading(true);
       setError(null);
       const response = await axios({
