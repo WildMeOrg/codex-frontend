@@ -294,14 +294,22 @@ export default function AnnotationCreator({
             console.log(
               'deleteMe got here and encounter creation was successful and there is only one new encounter guid',
             );
-            const newAnnotationId = await postAnnotation(
-              assetId,
-              IAClass,
-              coords,
-              viewpoint,
-              theta,
-              pending ? null : newEncounterGuid,
-            );
+            const newAnnotationId = pending
+              ? await postAnnotation(
+                  assetId,
+                  IAClass,
+                  coords,
+                  viewpoint,
+                  theta,
+                )
+              : await postAnnotation(
+                  assetId,
+                  IAClass,
+                  coords,
+                  viewpoint,
+                  theta,
+                  newEncounterGuid,
+                );
             console.log(
               'deleteMe check that this worked and newAnnotationId is: ' +
                 newAnnotationId,

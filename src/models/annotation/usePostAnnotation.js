@@ -17,6 +17,9 @@ export default function usePostAnnotation() {
     encounterGuid = null,
   ) => {
     try {
+      const additionalProperties = encounterGuid
+        ? { encounter_guid: encounterGuid }
+        : {};
       setLoading(true);
       setError(null);
       const response = await axios({
@@ -32,8 +35,25 @@ export default function usePostAnnotation() {
             theta,
             rect,
           },
+          ...additionalProperties,
         },
       });
+
+      // const response = await axios({
+      //   url: `${__houston_url__}/api/v1/annotations/`,
+      //   withCredentials: true,
+      //   method: 'post',
+      //   data: {
+      //     viewpoint,
+      //     asset_guid: assetId,
+      //     encounter_guid: encounterGuid,
+      //     ia_class: iaClass,
+      //     bounds: {
+      //       theta,
+      //       rect,
+      //     },
+      //   },
+      // });
       const successful = get(response, 'status') === 200;
       const newAnnotationGuid = get(response, ['data', 'guid']);
       if (successful) {
