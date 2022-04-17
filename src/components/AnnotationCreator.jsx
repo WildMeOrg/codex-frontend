@@ -75,7 +75,6 @@ export default function AnnotationCreator({
   refreshSightingData,
   pending,
 }) {
-  console.log('deleteMe AnnotationCreator happens');
   const [viewpoint, setViewpoint] = useState('');
   const [IAClass, setIAClass] = useState('');
   const [rect, setRect] = useState({});
@@ -290,6 +289,8 @@ export default function AnnotationCreator({
               ? []
               : createEncounter(sightingData);
             const newEncounterGuid = get(newEncounterGuids, [0]);
+            console.log('deleteMe newEncounterGuid is: ');
+            console.log(newEncounterGuid);
 
             console.log(
               'deleteMe got here and encounter creation was successful and there is only one new encounter guid',
