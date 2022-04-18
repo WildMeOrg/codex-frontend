@@ -279,11 +279,15 @@ export default function AnnotationCreator({
             padding: '0 40px',
           }}
         >
-          {errors.map(error => (
-            <Text key={error} variant="body2">
-              {error}
-            </Text>
-          ))}
+          {errors.map(error => {
+            console.log('deleteMe all errors are: ');
+            console.log(errors);
+            return (
+              <Text key={error} variant="body2">
+                {error}
+              </Text>
+            );
+          })}
         </Alert>
       )}
       <DialogActions style={{ padding: '0px 24px 24px 24px' }}>
