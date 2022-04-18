@@ -28,12 +28,7 @@ function percentageToPixels(percentValue, scalar) {
   return Math.round(Math.max(pixelValue, 0));
 }
 
-async function createEncounter(
-  sightingData,
-  addEncounterToSighting,
-  errors,
-  setErrors,
-) {
+async function createEncounter(sightingData, addEncounterToSighting) {
   const copiedProperties = pick(sightingData, [
     'time',
     'timeSpecificity',
@@ -63,21 +58,6 @@ async function createEncounter(
     enc => encounterGuidsBeforeCreation.indexOf(enc) === -1,
     [],
   );
-  if (newEncounterGuids?.length !== 1) {
-    console.log('deleteMe errors are: ');
-    console.log(errors);
-    setErrors(prevErrors => [
-      ...prevErrors,
-      'More or fewer than one encounter were created',
-    ]);
-  }
-  // TODO deleteMe delete the setErrors below
-  console.log('deleteMe errors are: ');
-  console.log(errors);
-  setErrors(prevErrors => [
-    ...prevErrors,
-    'More or fewer than one encounter were created',
-  ]);
   return encounterCreationResponse?.success &&
     newEncounterGuids?.length === 1
     ? newEncounterGuids
@@ -122,11 +102,12 @@ export default function AnnotationCreator({
     onClose();
   };
   const closeIfNoErrors = () => {
-    console.log('deleteMe errors are: ');
-    console.log(errors);
-    console.log('deleteMe ');
-    debugger;
-    if (!errors) onClose();
+    if (
+      !addEncounterToSightingError &&
+      !addToSightingEncounterError &&
+      !postAnnotationError
+    )
+      onClose(); // errors seems to stay an empty array here indefinitely, and I'm not sure why. Otherwise, I'd have used !errors
   };
   const IAClassOptions = useIAClassOptions(sightingData);
 
@@ -286,13 +267,11 @@ export default function AnnotationCreator({
             padding: '0 40px',
           }}
         >
-          {errors.map(error => {
-            return (
-              <Text key={error} variant="body2">
-                {error}
-              </Text>
-            );
-          })}
+          {errors.map(error => (
+            <Text key={error} variant="body2">
+              {error}
+            </Text>
+          ))}
         </Alert>
       )}
       <DialogActions style={{ padding: '0px 24px 24px 24px' }}>
@@ -378,13 +357,8 @@ export default function AnnotationCreator({
                       addToSightingEncounterError,
                     ];
                   });
-                  if (errors?.length) {
-                    console.log('deleteMe errors are 2.0: ');
-                    console.log(errors);
-                  }
                 }
                 closeIfNoErrors();
-                // if (errors?.length < 1) onClose(); //TODO
               }
               refreshSightingData();
               if (pending) onClose();
