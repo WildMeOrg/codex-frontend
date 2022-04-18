@@ -53,6 +53,7 @@ export default function CommitDialog({ agsGuid, open, onClose }) {
     error: commitAgsError,
   } = useCommitAssetGroupSighting();
 
+  console.log(idConfig);
   const error = patchAgsError || commitAgsError;
 
   return (
@@ -83,26 +84,21 @@ export default function CommitDialog({ agsGuid, open, onClose }) {
         )}
       </DialogContent>
       <DialogActions style={{ padding: '0px 24px 24px 24px' }}>
-        <Button
-          display="basic"
-          onClick={onClose}
-          id="CANCEL"
-        />
+        <Button display="basic" onClick={onClose} id="CANCEL" />
         <Button
           loading={patchAgsLoading || commitAgsLoading}
           display="primary"
           onClick={async () => {
-            let idConfigPatchValue = idConfig;
+            let idConfigPatchValue = [idConfig];
             if (mode === jobModes.default) {
-              idConfigPatchValue = {
-                algorithms: ['hotspotter_nosv'],
-                matching_set: null,
-              };
+              idConfigPatchValue = [
+                {
+                  algorithms: ['hotspotter_nosv'],
+                  matching_set: null,
+                },
+              ];
             } else if (mode === jobModes.none) {
-              idConfigPatchValue = {
-                algorithms: [],
-                matching_set: null,
-              };
+              idConfigPatchValue = [];
             }
 
             const idConfigPatchResult = await patchAgs({
@@ -115,7 +111,6 @@ export default function CommitDialog({ agsGuid, open, onClose }) {
                 },
               ],
             });
-            console.log(idConfigPatchResult);
 
             const resultIsSuccessful =
               idConfigPatchResult?.status === 200;

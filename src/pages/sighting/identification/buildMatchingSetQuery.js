@@ -1,25 +1,42 @@
-import { get } from 'lodash-es';
-import { collapseChoices } from '../../../utils/formatters';
+import { flattenDeep, get } from 'lodash-es';
 
-// function addAncestors(regions, region, ancestors, inMatchingSubtree) {
-//   const descendants = get(regions, locationID, []);
-//   if (inMatchingSubtree) {
-//     const newAncestors = regions.
-//   }
-// }
+function addChildMatches(rootRegion, matchId, insideRegion) {
+  const matchFound = rootRegion?.id === matchId;
+  const insideRegionNew = matchFound || insideRegion;
+  const parentMatch = insideRegionNew ? [rootRegion] : [];
+  const children = rootRegion?.locationID || [];
 
-// function getAncestorsFlat(regions, region) {
-//   const descendants = get(regions, locationID, []);
+  return [
+    ...parentMatch,
+    ...children.map(child =>
+      addChildMatches(child, matchId, insideRegionNew),
+    ),
+  ];
+}
 
-// }
+function getMatchWithChildren(regions, matchId) {
+  const matchingRegionTree = regions.map(region => {
+    const topLevelMatch = region?.id === matchId;
+    const parentMatch = topLevelMatch ? [region] : [];
+    const children = region?.locationID || [];
+
+    return [
+      ...parentMatch,
+      ...children.map(child =>
+        addChildMatches(child, matchId, topLevelMatch),
+      ),
+    ];
+  });
+  return flattenDeep(matchingRegionTree);
+}
 
 export default function buildMatchingSetQuery(regionSchema, region) {
   if (region === '' || !regionSchema) return {};
 
-  /* This is wrong, we need to only match choices that are descendants of the region in question. But for now... */
-  const matchRegions = collapseChoices(
-    get(regionSchema, 'choices', []),
-    0,
+  const regionChoices = get(regionSchema, 'choices', []);
+  const matchWithChildren = getMatchWithChildren(
+    regionChoices,
+    region,
   );
 
   return {
@@ -28,13 +45,11 @@ export default function buildMatchingSetQuery(regionSchema, region) {
         {
           bool: {
             minimum_should_match: 1,
-            should: [
-              matchRegions.map(r => ({
-                term: {
-                  locationId: r?.id,
-                },
-              })),
-            ],
+            should: matchWithChildren.map(r => ({
+              term: {
+                locationId: r?.id,
+              },
+            })),
           },
         },
       ],

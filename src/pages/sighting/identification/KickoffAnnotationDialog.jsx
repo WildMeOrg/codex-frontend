@@ -35,11 +35,7 @@ export default function KickoffAnnotationDialog({ open, onClose }) {
         )}
       </DialogContent>
       <DialogActions style={{ padding: '0px 24px 24px 24px' }}>
-        <Button
-          display="basic"
-          onClick={onClose}
-          id="CANCEL"
-        />
+        <Button display="basic" onClick={onClose} id="CANCEL" />
         <Button
           loading={false}
           display="primary"

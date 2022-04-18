@@ -9,9 +9,15 @@ const methods = {
   delete: 'delete',
 };
 
-function formatError(response) {
+function formatError(failureObject) {
   try {
-    return response?.error ? response.error.toJSON().message : null;
+    const jsError = failureObject?.error;
+    if (jsError) return jsError.toJSON().message;
+    const houstonErrorMessage =
+      failureObject?.response?.data?.message;
+    if (houstonErrorMessage) return houstonErrorMessage;
+    const browserErrorMessage = failureObject?.message;
+    return browserErrorMessage || null;
   } catch (e) {
     return 'Error could not be formatted as JSON';
   }
@@ -81,6 +87,7 @@ export default function useMutate({
       return response;
     } catch (error) {
       setStatusCode(error?.response?.status);
+      setDisplayedError(formatError(error));
       return error?.response;
     }
   });
