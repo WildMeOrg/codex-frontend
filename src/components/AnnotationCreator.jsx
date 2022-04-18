@@ -121,6 +121,12 @@ export default function AnnotationCreator({
     setErrors([]);
     onClose();
   };
+  const closeIfNoErrors = () => {
+    console.log('deleteMe errors are: ');
+    console.log(errors);
+    debugger;
+    if (!errors) onClose();
+  };
   const IAClassOptions = useIAClassOptions(sightingData);
 
   const handleViewpointInfoClick = event => {
@@ -280,8 +286,6 @@ export default function AnnotationCreator({
           }}
         >
           {errors.map(error => {
-            console.log('deleteMe all errors are: ');
-            console.log(errors);
             return (
               <Text key={error} variant="body2">
                 {error}
@@ -368,7 +372,8 @@ export default function AnnotationCreator({
                   console.log('deleteMe errors are: ');
                   console.log(errors);
                 }
-                // if (errors?.length < 1) onClose();
+                closeIfNoErrors();
+                // if (errors?.length < 1) onClose(); //TODO
               }
               refreshSightingData();
               if (pending) onClose();
