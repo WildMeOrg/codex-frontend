@@ -23,9 +23,6 @@ export default function useAddEncounter() {
         method: 'patch',
         data: [operation],
       });
-      console.log('deleteMe got here patchResponse is: ');
-      console.log(patchResponse);
-      // debugger; deleteMe
       const responseStatus = get(patchResponse, 'status');
       const successful = responseStatus === 200;
       if (successful) {
@@ -46,10 +43,12 @@ export default function useAddEncounter() {
     }
   };
 
+  const tmpError = 'addEncounter error'; //deleteMe
+
   return {
     addEncounter,
     loading,
-    error,
+    error: tmpError,
     setError,
     success,
     setSuccess,

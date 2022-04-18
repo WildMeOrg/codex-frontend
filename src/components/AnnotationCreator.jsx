@@ -19,7 +19,7 @@ import usePostAnnotation from '../models/annotation/usePostAnnotation';
 import Button from './Button';
 import Text from './Text';
 import StandardDialog from './StandardDialog';
-import CustomAlert from './Alert';
+import Alert from './Alert';
 import useAddEncounter from '../models/encounter/useAddEncounter';
 import useAddAnnotationsToSightingEncounter from '../models/encounter/useAddAnnotationsToSightingEncounter';
 
@@ -28,7 +28,12 @@ function percentageToPixels(percentValue, scalar) {
   return Math.round(Math.max(pixelValue, 0));
 }
 
-async function createEncounter(sightingData, addEncounterToSighting) {
+async function createEncounter(
+  sightingData,
+  addEncounterToSighting,
+  errors,
+  setErrors,
+) {
   const copiedProperties = pick(sightingData, [
     'time',
     'timeSpecificity',
@@ -40,14 +45,10 @@ async function createEncounter(sightingData, addEncounterToSighting) {
     encounter => encounter.guid,
     [],
   );
-  console.log('deleteMe encounterGuidsBeforeCreation is: ');
-  console.log(encounterGuidsBeforeCreation);
   const encounterCreationResponse = await addEncounterToSighting(
     sightingId,
     copiedProperties,
   );
-  console.log('deleteMe encounterCreationResponse is: ');
-  console.log(encounterCreationResponse);
   const encounterGuidsAfterCreation = map(
     get(
       encounterCreationResponse,
@@ -57,16 +58,21 @@ async function createEncounter(sightingData, addEncounterToSighting) {
     encounter => encounter.guid,
     [],
   );
-  console.log('deleteMe encounterGuidsAfterCreation is: ');
-  console.log(encounterGuidsAfterCreation);
   const newEncounterGuids = filter(
     encounterGuidsAfterCreation,
     enc => encounterGuidsBeforeCreation.indexOf(enc) === -1,
     [],
   );
-  console.log('deleteMe newEncounterGuids are: ');
-  console.log(newEncounterGuids);
-  //TODO deleteMe send off an error if length !==1?
+  if (newEncounterGuids?.length !== 1)
+    setErrors(
+      ...errors,
+      'More or fewer than one encounter were created',
+    );
+  //TODO deleteMe delete the setErrors below
+  setErrors(
+    ...errors,
+    'More or fewer than one encounter were created',
+  );
   return encounterCreationResponse?.success &&
     newEncounterGuids?.length === 1
     ? newEncounterGuids
@@ -85,23 +91,31 @@ export default function AnnotationCreator({
   const [IAClass, setIAClass] = useState('');
   const [rect, setRect] = useState({});
   const [anchorEl, setAnchorEl] = useState(null);
+  const [errors, setErrors] = useState(null);
   const theme = useTheme();
-
   const {
     addEncounter: addEncounterToSighting,
     loading: addEncounterToSightingLoading,
     error: addEncounterToSightingError,
-    setError: setAddEncounterError,
   } = useAddEncounter();
-
   const {
     addAnnotationsToSightingEncounter,
     error: addToSightingEncounterError,
     isLoading: addToSightingEncounterLoading,
-    onClearError: onClearAddToSightingEncounterError,
   } = useAddAnnotationsToSightingEncounter();
-
-  const { postAnnotation, loading, error } = usePostAnnotation();
+  const {
+    postAnnotation,
+    loading: postAnnotationLoading,
+    error: postAnnotationError,
+  } = usePostAnnotation();
+  const spinButton =
+    addEncounterToSightingLoading ||
+    addToSightingEncounterLoading ||
+    postAnnotationLoading;
+  const onCancel = () => {
+    setErrors(null);
+    onClose();
+  };
   const IAClassOptions = useIAClassOptions(sightingData);
 
   const handleViewpointInfoClick = event => {
@@ -170,7 +184,7 @@ export default function AnnotationCreator({
     <StandardDialog
       fullScreen
       open
-      onClose={onClose}
+      onClose={onCancel}
       titleId={titleId}
     >
       <DialogContent>
@@ -230,7 +244,6 @@ export default function AnnotationCreator({
           <Text style={{ padding: 12 }} id="VIEWPOINT_INFO" />
         </Popover>
       </div>
-
       <div style={{ margin: '4px auto 8px auto' }}>
         <FormControl required style={{ width: 240 }}>
           <InputLabel>
@@ -250,26 +263,30 @@ export default function AnnotationCreator({
           </Select>
         </FormControl>
       </div>
-      {error && (
-        <CustomAlert
-          titleId="SERVER_ERROR"
+      {errors && (
+        <Alert
+          severity="error"
+          titleId="AN_ERROR_OCCURRED"
           style={{
             margin: '16px auto 8px auto',
             maxHeight: '80vh',
             width: 600,
             padding: '0 40px',
           }}
-          severity="error"
         >
-          {error}
-        </CustomAlert>
+          {errors.map(error => (
+            <Text key={error} variant="body2">
+              {error}
+            </Text>
+          ))}
+        </Alert>
       )}
       <DialogActions style={{ padding: '0px 24px 24px 24px' }}>
-        <Button display="basic" onClick={onClose} id="CANCEL" />
+        <Button display="basic" onClick={onCancel} id="CANCEL" />
         <Button
           display="primary"
-          loading={loading}
-          disabled={!viewpoint || !IAClass}
+          loading={spinButton}
+          disabled={spinButton || !viewpoint || !IAClass}
           onClick={async () => {
             const assetId = get(asset, 'guid');
             const coords = [
@@ -291,21 +308,17 @@ export default function AnnotationCreator({
               ),
             ];
             const theta = get(rect, 'theta', 0);
-            console.log(
-              'deleteMe pending before newEncounterGuids call is: ',
-            );
-            console.log(pending);
             const newEncounterGuids = pending
               ? []
               : await createEncounter(
                   sightingData,
                   addEncounterToSighting,
+                  errors,
+                  setErrors,
                 );
-            console.log('deleteMe newEncounterGuids are: ');
-            console.log(newEncounterGuids);
+            if (addEncounterToSightingError)
+              setErrors(...errors, addEncounterToSightingError);
             const newEncounterGuid = get(newEncounterGuids, [0]);
-            console.log('deleteMe newEncounterGuid is: ');
-            console.log(newEncounterGuid);
 
             const newAnnotationId = await postAnnotation(
               assetId,
@@ -315,13 +328,10 @@ export default function AnnotationCreator({
               theta,
               newEncounterGuid,
             );
-            console.log(
-              'deleteMe check that this worked and newAnnotationId is: ' +
-                newAnnotationId,
-            );
-
+            if (postAnnotationError)
+              setErrors(...errors, postAnnotationError);
             if (newAnnotationId) {
-              if (!pending && newEncounterGuid) {
+              if (newEncounterGuid) {
                 const result = await addAnnotationsToSightingEncounter(
                   newEncounterGuid,
                   [newAnnotationId],
@@ -330,6 +340,8 @@ export default function AnnotationCreator({
                   'deleteMe result from addAnnotationsToSightingEncounter is: ',
                 );
                 console.log(result);
+                if (addToSightingEncounterError)
+                  setErrors(...errors, addToSightingEncounterError);
               }
               refreshSightingData();
               onClose();
