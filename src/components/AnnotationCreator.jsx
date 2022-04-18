@@ -343,6 +343,7 @@ export default function AnnotationCreator({
                 if (addToSightingEncounterError)
                   setErrors([...errors, addToSightingEncounterError]);
               }
+              debugger;
               refreshSightingData();
               onClose();
             }
