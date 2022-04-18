@@ -91,7 +91,7 @@ export default function AnnotationCreator({
   const [IAClass, setIAClass] = useState('');
   const [rect, setRect] = useState({});
   const [anchorEl, setAnchorEl] = useState(null);
-  const [errors, setErrors] = useState(null);
+  const [errors, setErrors] = useState([]);
   const theme = useTheme();
   const {
     addEncounter: addEncounterToSighting,
