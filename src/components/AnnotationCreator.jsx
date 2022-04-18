@@ -64,15 +64,15 @@ async function createEncounter(
     [],
   );
   if (newEncounterGuids?.length !== 1)
-    setErrors(
+    setErrors([
       ...errors,
       'More or fewer than one encounter were created',
-    );
-  //TODO deleteMe delete the setErrors below
-  setErrors(
+    ]);
+  // TODO deleteMe delete the setErrors below
+  setErrors([
     ...errors,
     'More or fewer than one encounter were created',
-  );
+  ]);
   return encounterCreationResponse?.success &&
     newEncounterGuids?.length === 1
     ? newEncounterGuids
@@ -317,7 +317,7 @@ export default function AnnotationCreator({
                   setErrors,
                 );
             if (addEncounterToSightingError)
-              setErrors(...errors, addEncounterToSightingError);
+              setErrors([...errors, addEncounterToSightingError]);
             const newEncounterGuid = get(newEncounterGuids, [0]);
 
             const newAnnotationId = await postAnnotation(
@@ -341,7 +341,7 @@ export default function AnnotationCreator({
                 );
                 console.log(result);
                 if (addToSightingEncounterError)
-                  setErrors(...errors, addToSightingEncounterError);
+                  setErrors([...errors, addToSightingEncounterError]);
               }
               refreshSightingData();
               onClose();
