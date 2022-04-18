@@ -329,7 +329,7 @@ export default function AnnotationCreator({
               newEncounterGuid,
             );
             if (postAnnotationError)
-              setErrors(...errors, postAnnotationError);
+              setErrors([...errors, postAnnotationError]);
             if (newAnnotationId) {
               if (newEncounterGuid) {
                 const result = await addAnnotationsToSightingEncounter(
