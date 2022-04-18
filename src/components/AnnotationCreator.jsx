@@ -310,8 +310,6 @@ export default function AnnotationCreator({
               : await createEncounter(
                   sightingData,
                   addEncounterToSighting,
-                  errors,
-                  setErrors,
                 );
             if (addEncounterToSightingError)
               setErrors(prevErrors => [

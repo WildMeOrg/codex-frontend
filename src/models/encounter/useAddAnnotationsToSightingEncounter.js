@@ -40,14 +40,12 @@ export default function useAddAnnotationsToSightingEncounter() {
     [error],
   );
 
-  const tmpError = 'add annotation to sighting encounter error';
-
   return {
     ...mutation,
     addAnnotationsToSightingEncounter,
     onClearError: () => {
       setDisplayedError(null);
     },
-    error: tmpError,
+    error: displayedError,
   };
 }

@@ -43,12 +43,10 @@ export default function useAddEncounter() {
     }
   };
 
-  const tmpError = 'addEncounter error'; //deleteMe
-
   return {
     addEncounter,
     loading,
-    error: tmpError,
+    error,
     setError,
     success,
     setSuccess,

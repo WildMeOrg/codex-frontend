@@ -85,12 +85,10 @@ export default function usePostAnnotation() {
     }
   };
 
-  const tmpError = 'post annotation error';
-
   return {
     postAnnotation,
     loading,
-    error: tmpError,
+    error,
     setError,
     success,
     setSuccess,
