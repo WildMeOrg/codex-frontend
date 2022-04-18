@@ -325,14 +325,12 @@ export default function AnnotationCreator({
                   errors,
                   setErrors,
                 );
-            if (addEncounterToSightingError) {
-              console.log('deleteMe errors are: ');
-              console.log(errors);
+            if (addEncounterToSightingError)
               setErrors(prevErrors => [
                 ...prevErrors,
                 addEncounterToSightingError,
               ]);
-            }
+
             const newEncounterGuid = get(newEncounterGuids, [0]);
 
             const newAnnotationId = await postAnnotation(
@@ -343,35 +341,27 @@ export default function AnnotationCreator({
               theta,
               newEncounterGuid,
             );
-            if (postAnnotationError) {
-              console.log('deleteMe errors are: ');
-              console.log(errors);
+            if (postAnnotationError)
               setErrors(prevErrors => [
                 ...prevErrors,
                 postAnnotationError,
               ]);
-            }
+
             if (newAnnotationId) {
               if (newEncounterGuid) {
-                const result = await addAnnotationsToSightingEncounter(
+                await addAnnotationsToSightingEncounter(
                   newEncounterGuid,
                   [newAnnotationId],
                 );
-                console.log(
-                  'deleteMe result from addAnnotationsToSightingEncounter is: ',
-                );
-                console.log(result);
-                if (addToSightingEncounterError) {
-                  console.log('deleteMe errors are: ');
-                  console.log(errors);
+                if (addToSightingEncounterError)
                   setErrors(prevErrors => [
                     ...prevErrors,
                     addToSightingEncounterError,
                   ]);
-                }
+                if (errors?.length < 1) onClose();
               }
               refreshSightingData();
-              // onClose();
+              if (pending) onClose();
             }
           }}
           id="SAVE"
