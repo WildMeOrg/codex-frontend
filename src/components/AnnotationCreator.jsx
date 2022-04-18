@@ -124,6 +124,7 @@ export default function AnnotationCreator({
   const closeIfNoErrors = () => {
     console.log('deleteMe errors are: ');
     console.log(errors);
+    console.log('deleteMe ');
     debugger;
     if (!errors) onClose();
   };
@@ -362,6 +363,10 @@ export default function AnnotationCreator({
                   [newAnnotationId],
                 );
                 if (addToSightingEncounterError) {
+                  console.log(
+                    'deleteMe addToSightingEncounterError is: ' +
+                      addToSightingEncounterError,
+                  );
                   console.log('deleteMe got here');
                   console.log('deleteMe errors are: ');
                   console.log(errors);
@@ -369,8 +374,10 @@ export default function AnnotationCreator({
                     ...prevErrors,
                     addToSightingEncounterError,
                   ]);
-                  console.log('deleteMe errors are: ');
-                  console.log(errors);
+                  if (errors?.length) {
+                    console.log('deleteMe errors are 2.0: ');
+                    console.log(errors);
+                  }
                 }
                 closeIfNoErrors();
                 // if (errors?.length < 1) onClose(); //TODO
