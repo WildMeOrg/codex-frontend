@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useIntl } from 'react-intl';
 
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -35,25 +34,23 @@ const jobModeChoices = [
 ];
 
 export default function CommitDialog({ agsGuid, open, onClose }) {
-  const intl = useIntl();
-
   const [idConfig, setIdConfig] = useState(null);
-  const [mode, setMode] = useState(jobModes.custom);
-  // const [mode, setMode] = useState(jobModes.default);
+  const [mode, setMode] = useState(jobModes.default);
 
   const {
     mutate: patchAgs,
     loading: patchAgsLoading,
     error: patchAgsError,
+    clearError: clearPatchAgsError,
   } = usePatchAGS();
 
   const {
     mutate: commitAgs,
     loading: commitAgsLoading,
     error: commitAgsError,
+    clearError: clearCommitAgsError,
   } = useCommitAssetGroupSighting();
 
-  console.log(idConfig);
   const error = patchAgsError || commitAgsError;
 
   return (
@@ -68,7 +65,11 @@ export default function CommitDialog({ agsGuid, open, onClose }) {
         <RadioChoice
           titleId="IDENTIFICATION_SETTINGS"
           value={mode}
-          onChange={setMode}
+          onChange={newMode => {
+            setMode(newMode);
+            if (patchAgsError) clearPatchAgsError();
+            if (commitAgsError) clearCommitAgsError();
+          }}
           choices={jobModeChoices}
         />
         {mode === jobModes.custom && (
@@ -116,8 +117,6 @@ export default function CommitDialog({ agsGuid, open, onClose }) {
               idConfigPatchResult?.status === 200;
             if (resultIsSuccessful) {
               await commitAgs({ agsGuid });
-              /* change will get picked up and page will change from
-               * /pending-sightings/<guid> to /sightings/<new-guid> */
             }
           }}
           id="COMMIT_SIGHTING"

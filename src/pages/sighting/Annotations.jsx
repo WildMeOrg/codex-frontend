@@ -25,7 +25,11 @@ const useStyles = makeStyles({
   },
 });
 
-export default function Annotations({ assets, refreshSightingData }) {
+export default function Annotations({
+  assets,
+  refreshSightingData,
+  pending,
+}) {
   const theme = useTheme();
   const isSm = useMediaQuery(theme.breakpoints.down('xs'));
   const classes = useStyles();
@@ -33,8 +37,8 @@ export default function Annotations({ assets, refreshSightingData }) {
   const [detailId, setDetailId] = useState(null);
   const [editId, setEditId] = useState(null);
   const [deleteId, setDeleteId] = useState(null);
+  const [matchId, setMatchId] = useState(null);
   const [anchorInfo, setAnchorInfo] = useState(null);
-  const [idDialogOpen, setIdDialogOpen] = useState(false);
 
   const {
     deleteAnnotation,
@@ -76,8 +80,9 @@ export default function Annotations({ assets, refreshSightingData }) {
       }}
     >
       <KickoffAnnotationDialog
-        open={idDialogOpen}
-        onClose={() => setIdDialogOpen(false)}
+        annotationGuid={matchId}
+        open={Boolean(matchId)}
+        onClose={() => setMatchId(null)}
       />
       <AnnotationDetail
         annotation={detailAnnotation}
@@ -87,10 +92,14 @@ export default function Annotations({ assets, refreshSightingData }) {
       />
       <MoreAnnotationMenu
         id="image-actions-menu"
+        pending={pending}
         anchorEl={get(anchorInfo, 'element')}
         open={Boolean(get(anchorInfo, 'element'))}
         onClose={() => setAnchorInfo(null)}
-        onClickStartIdentification={() => setIdDialogOpen(true)}
+        onClickStartIdentification={() => {
+          setMatchId(clickedAnnotationId);
+          setAnchorInfo(null);
+        }}
         onClickEditAnnotation={() => {
           setEditId(clickedAnnotationId);
           setAnchorInfo(null);
