@@ -1,14 +1,34 @@
 import React, { forwardRef } from 'react';
 import { get } from 'lodash-es';
+
 import { formatDate } from '../../../utils/formatters';
+import OverflowController from './OverflowController';
 import Text from '../../Text';
 
-function DateRenderer({ datum, accessor = 'created' }, ref) {
+function Core({ value, ...rest }, ref) {
   return (
-    <Text component="span" variant="body2" ref={ref}>
-      {formatDate(get(datum, accessor, ''))}
+    <Text component="span" variant="body2" ref={ref} {...rest}>
+      {value}
     </Text>
   );
 }
 
-export default forwardRef(DateRenderer);
+const CoreForwardRef = forwardRef(Core);
+
+export default function DateRenderer({
+  datum,
+  accessor = 'created',
+  noWrap = false,
+}) {
+  const formattedValue = formatDate(get(datum, accessor, ''));
+
+  const coreComponent = <CoreForwardRef value={formattedValue} />;
+
+  return noWrap ? (
+    <OverflowController title={formattedValue}>
+      {coreComponent}
+    </OverflowController>
+  ) : (
+    coreComponent
+  );
+}

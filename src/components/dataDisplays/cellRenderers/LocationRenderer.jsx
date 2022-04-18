@@ -10,42 +10,15 @@ import StandardDialog from '../../StandardDialog';
 import SinglePoint from '../../maps/SinglePoint';
 import Button from '../../Button';
 import Text from '../../Text';
+import OverflowController from './OverflowController';
 
-function LocationRenderer(
-  {
-    datum,
-    locatationIdProperty = 'locationId',
-    latProperty = 'decimalLatitude',
-    lngProperty = 'decimalLongitude',
-    freeformProperty = 'verbatimLocality',
-  },
-  ref,
-) {
-  const intl = useIntl();
-  const { regionOptions } = useOptions();
+function Core({ value, lat, lng, ...rest }, ref) {
   const [dialogOpen, setDialogOpen] = useState(false);
-
-  const locationId = get(datum, locatationIdProperty);
-  const lat = get(datum, latProperty);
-  const lng = get(datum, lngProperty);
-  const freeform = get(datum, freeformProperty);
-
-  const matchingLocationIdObject = regionOptions.find(
-    opt => opt?.value === locationId,
-  );
-  const regionLabel =
-    matchingLocationIdObject?.label ||
-    intl.formatMessage({
-      id: 'REGION_NAME_REMOVED',
-    });
-  const text = freeform
-    ? `${regionLabel} (${freeform})`
-    : regionLabel;
 
   if (!lat || !lng)
     return (
-      <Text variant="body2" ref={ref}>
-        {text}
+      <Text variant="body2" ref={ref} {...rest}>
+        {value}
       </Text>
     );
 
@@ -77,11 +50,53 @@ function LocationRenderer(
         display="link"
         onClick={() => setDialogOpen(true)}
         ref={ref}
+        {...rest}
       >
-        {text}
+        {value}
       </Button>
     </>
   );
 }
 
-export default forwardRef(LocationRenderer);
+const CoreForwardRef = forwardRef(Core);
+
+export default function LocationRenderer({
+  datum,
+  locatationIdProperty = 'locationId',
+  latProperty = 'decimalLatitude',
+  lngProperty = 'decimalLongitude',
+  freeformProperty = 'verbatimLocality',
+  noWrap = false,
+}) {
+  const intl = useIntl();
+  const { regionOptions } = useOptions();
+
+  const locationId = get(datum, locatationIdProperty);
+  const lat = get(datum, latProperty);
+  const lng = get(datum, lngProperty);
+  const freeform = get(datum, freeformProperty);
+
+  const matchingLocationIdObject = regionOptions.find(
+    opt => opt?.value === locationId,
+  );
+  const regionLabel =
+    matchingLocationIdObject?.label ||
+    intl.formatMessage({
+      id: 'REGION_NAME_REMOVED',
+    });
+  const text = freeform
+    ? `${regionLabel} (${freeform})`
+    : regionLabel;
+
+  const coreComponent = (
+    <CoreForwardRef value={text} lat={lat} lng={lng} />
+  );
+
+  return noWrap ? (
+    <OverflowController title={text}>
+      {coreComponent}
+    </OverflowController>
+  ) : (
+    coreComponent
+  );
+}
