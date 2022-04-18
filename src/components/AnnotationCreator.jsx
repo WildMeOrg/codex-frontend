@@ -113,7 +113,7 @@ export default function AnnotationCreator({
     addToSightingEncounterLoading ||
     postAnnotationLoading;
   const onCancel = () => {
-    setErrors(null);
+    setErrors([]);
     onClose();
   };
   const IAClassOptions = useIAClassOptions(sightingData);
