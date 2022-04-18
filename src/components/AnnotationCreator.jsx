@@ -342,26 +342,14 @@ export default function AnnotationCreator({
                   [newAnnotationId],
                 );
                 if (addToSightingEncounterError) {
-                  console.log(
-                    'deleteMe addToSightingEncounterError is: ' +
-                      addToSightingEncounterError,
-                  );
-                  console.log('deleteMe got here');
-                  console.log('deleteMe errors are: ');
-                  console.log(errors);
-                  setErrors(prevErrors => {
-                    console.log('deleteMe prevErrors are:');
-                    console.log(prevErrors);
-                    return [
-                      ...prevErrors,
-                      addToSightingEncounterError,
-                    ];
-                  });
+                  setErrors(prevErrors => [
+                    ...prevErrors,
+                    addToSightingEncounterError,
+                  ]);
                 }
-                closeIfNoErrors();
               }
               refreshSightingData();
-              if (pending) onClose();
+              closeIfNoErrors();
             }
           }}
           id="SAVE"
