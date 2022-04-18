@@ -177,7 +177,7 @@ export default function AnnotationCreator({
     <StandardDialog
       fullScreen
       open
-      onClose={() => onCancel(errors)}
+      onClose={onCancel}
       titleId={titleId}
     >
       <DialogContent>
@@ -275,11 +275,7 @@ export default function AnnotationCreator({
         </Alert>
       )}
       <DialogActions style={{ padding: '0px 24px 24px 24px' }}>
-        <Button
-          display="basic"
-          onClick={() => onCancel(errors)}
-          id="CANCEL"
-        />
+        <Button display="basic" onClick={onCancel} id="CANCEL" />
         <Button
           display="primary"
           loading={spinButton}

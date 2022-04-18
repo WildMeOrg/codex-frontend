@@ -34,7 +34,7 @@ export default function useAddEncounter() {
 
       setError(formatError(patchResponse));
       setSuccess(false);
-      return false;
+      return { success: false, response: formatError(patchResponse) };
     } catch (postError) {
       setLoading(false);
       setError(formatError(postError));
