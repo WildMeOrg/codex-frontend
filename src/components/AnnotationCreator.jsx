@@ -353,12 +353,18 @@ export default function AnnotationCreator({
                   newEncounterGuid,
                   [newAnnotationId],
                 );
-                if (addToSightingEncounterError)
+                if (addToSightingEncounterError) {
+                  console.log('deleteMe got here');
+                  console.log('deleteMe errors are: ');
+                  console.log(errors);
                   setErrors(prevErrors => [
                     ...prevErrors,
                     addToSightingEncounterError,
                   ]);
-                if (errors?.length < 1) onClose();
+                  console.log('deleteMe errors are: ');
+                  console.log(errors);
+                }
+                // if (errors?.length < 1) onClose();
               }
               refreshSightingData();
               if (pending) onClose();
