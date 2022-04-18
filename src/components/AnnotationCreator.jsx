@@ -370,10 +370,14 @@ export default function AnnotationCreator({
                   console.log('deleteMe got here');
                   console.log('deleteMe errors are: ');
                   console.log(errors);
-                  setErrors(prevErrors => [
-                    ...prevErrors,
-                    addToSightingEncounterError,
-                  ]);
+                  setErrors(prevErrors => {
+                    console.log('deleteMe prevErrors are:');
+                    console.log(prevErrors);
+                    return [
+                      ...prevErrors,
+                      addToSightingEncounterError,
+                    ];
+                  });
                   if (errors?.length) {
                     console.log('deleteMe errors are 2.0: ');
                     console.log(errors);
