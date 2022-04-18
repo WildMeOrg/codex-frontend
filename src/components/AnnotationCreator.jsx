@@ -63,14 +63,19 @@ async function createEncounter(
     enc => encounterGuidsBeforeCreation.indexOf(enc) === -1,
     [],
   );
-  if (newEncounterGuids?.length !== 1)
-    setErrors([
-      ...errors,
+  if (newEncounterGuids?.length !== 1) {
+    console.log('deleteMe errors are: ');
+    console.log(errors);
+    setErrors(prevErrors => [
+      ...prevErrors,
       'More or fewer than one encounter were created',
     ]);
+  }
   // TODO deleteMe delete the setErrors below
-  setErrors([
-    ...errors,
+  console.log('deleteMe errors are: ');
+  console.log(errors);
+  setErrors(prevErrors => [
+    ...prevErrors,
     'More or fewer than one encounter were created',
   ]);
   return encounterCreationResponse?.success &&
@@ -184,7 +189,7 @@ export default function AnnotationCreator({
     <StandardDialog
       fullScreen
       open
-      onClose={onCancel}
+      onClose={() => onCancel(errors)}
       titleId={titleId}
     >
       <DialogContent>
@@ -282,7 +287,11 @@ export default function AnnotationCreator({
         </Alert>
       )}
       <DialogActions style={{ padding: '0px 24px 24px 24px' }}>
-        <Button display="basic" onClick={onCancel} id="CANCEL" />
+        <Button
+          display="basic"
+          onClick={() => onCancel(errors)}
+          id="CANCEL"
+        />
         <Button
           display="primary"
           loading={spinButton}
@@ -316,8 +325,14 @@ export default function AnnotationCreator({
                   errors,
                   setErrors,
                 );
-            if (addEncounterToSightingError)
-              setErrors([...errors, addEncounterToSightingError]);
+            if (addEncounterToSightingError) {
+              console.log('deleteMe errors are: ');
+              console.log(errors);
+              setErrors(prevErrors => [
+                ...prevErrors,
+                addEncounterToSightingError,
+              ]);
+            }
             const newEncounterGuid = get(newEncounterGuids, [0]);
 
             const newAnnotationId = await postAnnotation(
@@ -328,8 +343,14 @@ export default function AnnotationCreator({
               theta,
               newEncounterGuid,
             );
-            if (postAnnotationError)
-              setErrors([...errors, postAnnotationError]);
+            if (postAnnotationError) {
+              console.log('deleteMe errors are: ');
+              console.log(errors);
+              setErrors(prevErrors => [
+                ...prevErrors,
+                postAnnotationError,
+              ]);
+            }
             if (newAnnotationId) {
               if (newEncounterGuid) {
                 const result = await addAnnotationsToSightingEncounter(
@@ -340,8 +361,14 @@ export default function AnnotationCreator({
                   'deleteMe result from addAnnotationsToSightingEncounter is: ',
                 );
                 console.log(result);
-                if (addToSightingEncounterError)
-                  setErrors([...errors, addToSightingEncounterError]);
+                if (addToSightingEncounterError) {
+                  console.log('deleteMe errors are: ');
+                  console.log(errors);
+                  setErrors(prevErrors => [
+                    ...prevErrors,
+                    addToSightingEncounterError,
+                  ]);
+                }
               }
               refreshSightingData();
               // onClose();
