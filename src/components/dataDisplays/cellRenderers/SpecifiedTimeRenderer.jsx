@@ -1,15 +1,18 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { get } from 'lodash-es';
 
 import { formatDateCustom } from '../../../utils/formatters';
 import timePrecisionMap from '../../../constants/timePrecisionMap';
 import Text from '../../Text';
 
-export default function SpecifiedTimeRenderer({
-  datum,
-  timeProperty = 'time',
-  specificityProperty = 'timeSpecificity',
-}) {
+function SpecifiedTimeRenderer(
+  {
+    datum,
+    timeProperty = 'time',
+    specificityProperty = 'timeSpecificity',
+  },
+  ref,
+) {
   const time = get(datum, timeProperty);
   const specificity = get(datum, specificityProperty);
 
@@ -20,8 +23,10 @@ export default function SpecifiedTimeRenderer({
   );
 
   return (
-    <Text variant="body2">
+    <Text variant="body2" ref={ref}>
       {formatDateCustom(time, formatSpecification)}
     </Text>
   );
 }
+
+export default forwardRef(SpecifiedTimeRenderer);

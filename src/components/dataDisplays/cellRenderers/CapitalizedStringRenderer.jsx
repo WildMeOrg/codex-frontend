@@ -1,9 +1,15 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 
 import { capitalize } from 'lodash-es';
 
 import Text from '../../Text';
 
-export default function CapitalizedStringRenderer({ value }) {
-  return <Text variant="body2">{capitalize(value)}</Text>;
+function CapitalizedStringRenderer({ value }, ref) {
+  return (
+    <Text variant="body2" ref={ref}>
+      {capitalize(value)}
+    </Text>
+  );
 }
+
+export default forwardRef(CapitalizedStringRenderer);

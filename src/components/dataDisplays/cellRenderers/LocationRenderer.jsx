@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { forwardRef, useState } from 'react';
 import { get } from 'lodash-es';
 import { useIntl } from 'react-intl';
 
@@ -11,13 +11,16 @@ import SinglePoint from '../../maps/SinglePoint';
 import Button from '../../Button';
 import Text from '../../Text';
 
-export default function LocationRenderer({
-  datum,
-  locatationIdProperty = 'locationId',
-  latProperty = 'decimalLatitude',
-  lngProperty = 'decimalLongitude',
-  freeformProperty = 'verbatimLocality',
-}) {
+function LocationRenderer(
+  {
+    datum,
+    locatationIdProperty = 'locationId',
+    latProperty = 'decimalLatitude',
+    lngProperty = 'decimalLongitude',
+    freeformProperty = 'verbatimLocality',
+  },
+  ref,
+) {
   const intl = useIntl();
   const { regionOptions } = useOptions();
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -39,7 +42,12 @@ export default function LocationRenderer({
     ? `${regionLabel} (${freeform})`
     : regionLabel;
 
-  if (!lat || !lng) return <Text variant="body2">{text}</Text>;
+  if (!lat || !lng)
+    return (
+      <Text variant="body2" ref={ref}>
+        {text}
+      </Text>
+    );
 
   return (
     <>
@@ -65,9 +73,15 @@ export default function LocationRenderer({
           </>
         )}
       </StandardDialog>
-      <Button display="link" onClick={() => setDialogOpen(true)}>
+      <Button
+        display="link"
+        onClick={() => setDialogOpen(true)}
+        ref={ref}
+      >
         {text}
       </Button>
     </>
   );
 }
+
+export default forwardRef(LocationRenderer);
