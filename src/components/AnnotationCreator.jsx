@@ -274,15 +274,11 @@ export default function AnnotationCreator({
             padding: '0 40px',
           }}
         >
-          {errors.map(error => {
-            console.log('deleteMe current error is: ');
-            console.log(error);
-            return (
-              <Text key={error} variant="body2">
-                {error}
-              </Text>
-            );
-          })}
+          {errors.map(error => (
+            <Text key={error} variant="body2">
+              {error}
+            </Text>
+          ))}
         </Alert>
       )}
       <DialogActions style={{ padding: '0px 24px 24px 24px' }}>
@@ -347,9 +343,8 @@ export default function AnnotationCreator({
                 if (addToSightingEncounterError)
                   setErrors([...errors, addToSightingEncounterError]);
               }
-              debugger;
               refreshSightingData();
-              onClose();
+              // onClose();
             }
           }}
           id="SAVE"
