@@ -256,7 +256,7 @@ export default function AnnotationCreator({
           </Select>
         </FormControl>
       </div>
-      {errors && (
+      {errors?.length && (
         <Alert
           severity="error"
           titleId="AN_ERROR_OCCURRED"
@@ -267,7 +267,6 @@ export default function AnnotationCreator({
             padding: '0 40px',
           }}
         >
-          {errors}
           {errors.map(error => (
             <Text key={error} variant="body2">
               {error}
