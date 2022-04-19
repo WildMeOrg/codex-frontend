@@ -22,7 +22,8 @@ import BannerLogo from '../BannerLogo';
 import HeaderButton from './HeaderButton';
 import NotificationsPane from './NotificationsPane';
 import ActionsPane from './ActionsPane';
-import PopoverButtons from './PopoverButtons';
+import IndividualsButton from './IndividualsButton';
+import SightingsButton from './SightingsButton';
 import queryKeys from '../../constants/queryKeys';
 
 export default function AppHeader() {
@@ -103,7 +104,8 @@ export default function AppHeader() {
         ) : (
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <BannerLogo href="/" onClick={handleClick} />
-            <PopoverButtons />
+            <IndividualsButton />
+            <SightingsButton />
           </div>
         )}
 

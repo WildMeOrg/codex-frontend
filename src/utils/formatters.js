@@ -59,7 +59,7 @@ export const formatFilename = (input, characterLimit = 40) => {
   return `${head}...${tail}`;
 };
 
-export const formatDate = (input, fancy) => {
+export const formatDate = (input, fancy = false, fallback = '') => {
   const formatter = fancy ? 'PP' : 'yyyy-MM-dd HH:mm';
   try {
     const jsDate =
@@ -68,7 +68,7 @@ export const formatDate = (input, fancy) => {
     return formattedDate;
   } catch (error) {
     console.error(error);
-    return '';
+    return fallback;
   }
 };
 

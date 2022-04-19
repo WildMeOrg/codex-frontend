@@ -21,6 +21,7 @@ import AssetGroup from './pages/assetGroup/AssetGroup';
 import User from './pages/user/User';
 import Users from './pages/user/Users';
 import MergeIndividuals from './pages/merge/MergeIndividuals';
+import IndividualsMergePending from './pages/merge/IndividualsMergePending';
 import BulkImport from './pages/bulkImport/BulkImport';
 import BulkImportSuccess from './pages/bulkImport/Success';
 import ReportSighting from './pages/reportSighting/ReportSighting';
@@ -104,7 +105,7 @@ export default function AuthenticatedSwitch() {
                       <Route path="/admin">
                         <ControlPanel />
                       </Route>
-                        {/* <Route path="/individuals/picturebook">
+                      {/* <Route path="/individuals/picturebook">
                         <PictureBook />
                       </Route> */}
                       <Route path="/individuals/:id">
@@ -112,6 +113,9 @@ export default function AuthenticatedSwitch() {
                       </Route>
                       <Route path="/individuals">
                         <SearchIndividuals />
+                      </Route>
+                      <Route path="/pending-merges/:guid">
+                        <IndividualsMergePending />
                       </Route>
                       <Route path="/merge">
                         <MergeIndividuals />

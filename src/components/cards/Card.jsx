@@ -7,6 +7,9 @@ export default function Card({
   title,
   titleId,
   htmlId = null,
+  maxHeight = 360,
+  overflow = 'auto',
+  overflowX = 'auto',
   renderActions,
   children,
 }) {
@@ -16,11 +19,7 @@ export default function Card({
       item
       style={{ flex: 'auto', flexBasis: '100%', width: '100%' }}
     >
-      <Paper
-        style={{
-          padding: 16,
-        }}
-      >
+      <Paper style={{ padding: 16 }}>
         <div
           style={{
             display: 'flex',
@@ -36,7 +35,9 @@ export default function Card({
           </Text>
           {renderActions}
         </div>
-        <div style={{ overflow: 'scroll' }}>{children}</div>
+        <div style={{ overflow, maxHeight, overflowX }}>
+          {children}
+        </div>
       </Paper>
     </Grid>
   );

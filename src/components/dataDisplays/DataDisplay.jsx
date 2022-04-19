@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { get, sortBy } from 'lodash-es';
+import { useIntl } from 'react-intl';
 
 import { useTheme } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -67,6 +68,7 @@ export default function DataDisplay({
   cellStyles = {},
   ...rest
 }) {
+  const intl = useIntl();
   const theme = useTheme();
   const themeColor = theme.palette.primary.main;
 
@@ -159,36 +161,45 @@ export default function DataDisplay({
                   .filter(c =>
                     get(c, 'options.displayInFilter', true),
                   )
-                  .map(c => (
-                    <FormControlLabel
-                      key={c.name}
-                      control={
-                        <Checkbox
-                          size="small"
-                          checked={visibleColumnNames.includes(
-                            c.name,
-                          )}
-                          onClick={() => {
-                            if (visibleColumnNames.includes(c.name)) {
-                              if (visibleColumnNames.length === 1)
-                                return;
-                              setVisibleColumnNames(
-                                visibleColumnNames.filter(
-                                  vc => vc !== c.name,
-                                ),
-                              );
-                            } else {
-                              setVisibleColumnNames([
-                                ...visibleColumnNames,
-                                c.name,
-                              ]);
-                            }
-                          }}
-                        />
-                      }
-                      label={<Text variant="body2">{c.label}</Text>}
-                    />
-                  ))}
+                  .map(c => {
+                    const columnLabel = c?.labelId
+                      ? intl.formatMessage({ id: c.labelId })
+                      : c?.label;
+                    return (
+                      <FormControlLabel
+                        key={c.name}
+                        control={
+                          <Checkbox
+                            size="small"
+                            checked={visibleColumnNames.includes(
+                              c.name,
+                            )}
+                            onClick={() => {
+                              if (
+                                visibleColumnNames.includes(c.name)
+                              ) {
+                                if (visibleColumnNames.length === 1)
+                                  return;
+                                setVisibleColumnNames(
+                                  visibleColumnNames.filter(
+                                    vc => vc !== c.name,
+                                  ),
+                                );
+                              } else {
+                                setVisibleColumnNames([
+                                  ...visibleColumnNames,
+                                  c.name,
+                                ]);
+                              }
+                            }}
+                          />
+                        }
+                        label={
+                          <Text variant="body2">{columnLabel}</Text>
+                        }
+                      />
+                    );
+                  })}
               </Grid>
             </Paper>
           </Fade>
@@ -255,6 +266,9 @@ export default function DataDisplay({
               {renderExpandedRow && <TableCell />}
               {visibleColumns.map((c, i) => {
                 const activeSort = c.name === sortColumn;
+                const columnLabel = c?.labelId
+                  ? intl.formatMessage({ id: c.labelId })
+                  : c?.label;
                 return (
                   <TableCell
                     key={c.name}
@@ -272,7 +286,7 @@ export default function DataDisplay({
                         setSortColumn(c.name);
                       }}
                     >
-                      {c.label}
+                      {columnLabel}
                     </TableSortLabel>
                   </TableCell>
                 );

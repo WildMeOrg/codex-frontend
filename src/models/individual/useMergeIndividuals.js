@@ -15,9 +15,15 @@ export default function useMergeIndividuals() {
       },
     }),
     onSuccess: response => {
-      const mergedIndividualGuid = response?.data?.targetId;
+      const {
+        targetId: mergedIndividualGuid,
+        request_id: mergeRequestGuid,
+      } = response?.data ?? {};
+
       if (mergedIndividualGuid) {
         history.push(`/individuals/${mergedIndividualGuid}`);
+      } else if (mergeRequestGuid) {
+        history.push(`/pending-merges/${mergeRequestGuid}`);
       }
     },
   });

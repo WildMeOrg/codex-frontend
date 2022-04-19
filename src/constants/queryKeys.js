@@ -28,6 +28,10 @@ export function getIndividualQueryKey(id) {
   return ['individual', id];
 }
 
+export function getIndividualMergeRequestQueryKey(guid) {
+  return ['individualMergeRequest', guid];
+}
+
 export function getMergeConflictsQueryKey(ids) {
   return ['individualMergeConflicts', ids];
 }
@@ -50,4 +54,12 @@ export function getAssetGroupQueryKey(id) {
 
 export function getNotificationQueryKey(id) {
   return ['notification', id];
+}
+
+export function getIndividualTermQueryKey(searchTerm) {
+  return ['individualSearch', searchTerm];
+}
+
+export function getSightingTermQueryKey(searchTerm) {
+  return ['sightingSearch', searchTerm];
 }

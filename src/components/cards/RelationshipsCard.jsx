@@ -92,6 +92,8 @@ export default function RelationshipsCard({
   relationships = [],
   loading,
   noDataMessage = 'NO_RELATIONSHIPS',
+  title,
+  titleId,
 }) {
   const intl = useIntl();
   const noRelationships = relationships && relationships.length === 0;
@@ -261,7 +263,9 @@ export default function RelationshipsCard({
       </DialogActions>
     </StandardDialog>,
     <Card
-      titleId={'RELATIONSHIPS'}
+      title={title}
+      titleId={titleId}
+      maxHeight={600}
       renderActions={
         <div>
           {/* <IconButton
