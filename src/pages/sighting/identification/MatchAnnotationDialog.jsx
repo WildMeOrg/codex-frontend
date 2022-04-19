@@ -10,7 +10,7 @@ import StandardDialog from '../../../components/StandardDialog';
 import Text from '../../../components/Text';
 import CustomMatchingSetForm from './CustomMatchingSetForm';
 
-export default function KickoffAnnotationDialog({
+export default function MatchAnnotationDialog({
   annotationGuid,
   open,
   onClose,

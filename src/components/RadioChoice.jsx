@@ -16,6 +16,10 @@ export default function RadioChoice({
   choices = [],
 }) {
   const intl = useIntl();
+  const groupName = titleId
+    ? intl.formatMessage({ id: titleId })
+    : title;
+  const groupAriaLabel = `${groupName}-choices`;
 
   return (
     <FormGroup style={{ margin: '12px 0 24px 12px' }}>
@@ -27,8 +31,8 @@ export default function RadioChoice({
         {title}
       </Text>
       <RadioGroup
-        aria-label="sighting-type"
-        name="sightingType"
+        aria-label={groupAriaLabel}
+        name={groupName}
         value={value}
         onChange={e => onChange(e.target.value)}
       >

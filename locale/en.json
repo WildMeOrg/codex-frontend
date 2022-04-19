@@ -17,7 +17,7 @@
   "ANNOTATION_CLASS": "Annotation class",
   "INDIVIDUAL_METADATA": "Individual profile",
   "COMMIT": "Commit",
-  "REGION_MATCHING_SET_DESCRIPTION": "Select the region you will like to match against. Sub-regions will be included in the matching set. If no region is selected, all regions will be matched against.",
+  "REGION_MATCHING_SET_DESCRIPTION": "Select the region you would like to match against. Sub-regions will be included in the matching set. If no region is selected, all regions will be matched against.",
   "CREATED": "Created",
   "BLANK": " ",
   "ADD_ANNOTATIONS_TO_CLUSTER_TITLE": "Add annotations to animal",

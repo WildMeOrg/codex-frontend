@@ -12,7 +12,7 @@ import AnnotatedPhotograph from '../../components/AnnotatedPhotograph';
 import AnnotationEditor from '../../components/AnnotationEditor';
 import Text from '../../components/Text';
 import ConfirmDelete from '../../components/ConfirmDelete';
-import KickoffAnnotationDialog from './identification/KickoffAnnotationDialog';
+import MatchAnnotationDialog from './identification/MatchAnnotationDialog';
 import AnnotationDetail from './AnnotationDetail';
 import MoreAnnotationMenu from './MoreAnnotationMenu';
 import Keywords from './Keywords';
@@ -79,7 +79,7 @@ export default function Annotations({
         margin: '0 20px',
       }}
     >
-      <KickoffAnnotationDialog
+      <MatchAnnotationDialog
         annotationGuid={matchId}
         open={Boolean(matchId)}
         onClose={() => setMatchId(null)}

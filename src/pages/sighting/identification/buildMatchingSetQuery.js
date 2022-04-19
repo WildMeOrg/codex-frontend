@@ -4,12 +4,12 @@ function addChildMatches(rootRegion, matchId, insideRegion) {
   const matchFound = rootRegion?.id === matchId;
   const insideRegionNew = matchFound || insideRegion;
   const parentMatch = insideRegionNew ? [rootRegion] : [];
-  const children = rootRegion?.locationID || [];
+  const regionDescendants = rootRegion?.locationID || [];
 
   return [
     ...parentMatch,
-    ...children.map(child =>
-      addChildMatches(child, matchId, insideRegionNew),
+    ...regionDescendants.map(descendant =>
+      addChildMatches(descendant, matchId, insideRegionNew),
     ),
   ];
 }
@@ -18,12 +18,12 @@ function getMatchWithChildren(regions, matchId) {
   const matchingRegionTree = regions.map(region => {
     const topLevelMatch = region?.id === matchId;
     const parentMatch = topLevelMatch ? [region] : [];
-    const children = region?.locationID || [];
+    const regionDescendants = region?.locationID || [];
 
     return [
       ...parentMatch,
-      ...children.map(child =>
-        addChildMatches(child, matchId, topLevelMatch),
+      ...regionDescendants.map(descendant =>
+        addChildMatches(descendant, matchId, topLevelMatch),
       ),
     ];
   });
