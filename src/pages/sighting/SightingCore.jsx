@@ -275,6 +275,7 @@ export default function SightingCore({
         <Annotations
           assets={assets}
           refreshSightingData={refreshData}
+          pending={pending}
         />
       )}
       {activeTab === '#individuals' && (

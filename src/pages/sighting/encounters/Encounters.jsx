@@ -117,7 +117,7 @@ export default function Encounters({
   return (
     <div>
       <ConfirmDelete
-        open={encounterToDelete && !userDataLoading}
+        open={Boolean(encounterToDelete && !userDataLoading)}
         onClose={() => {
           setMessageForConfirmDelete(
             'CONFIRM_DELETE_ENCOUNTER_DESCRIPTION',
@@ -231,8 +231,8 @@ export default function Encounters({
 
         const identifyButtonActions = [
           {
-            id: 'start-id',
-            labelId: 'START_IDENTIFICATION',
+            id: 'view-id-results',
+            labelId: 'VIEW_IDENTIFICATION_RESULTS',
             onClick: Function.prototype,
           },
           {

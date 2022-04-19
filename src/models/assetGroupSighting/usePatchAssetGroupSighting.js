@@ -4,6 +4,8 @@ import { get } from 'lodash-es';
 import { formatError } from '../../utils/formatters';
 import formatPropertiesForPatch from '../../utils/formatPropertiesForPatch';
 
+/* ATTENTION: THIS FUNCTION IS DEPRECATED. INSTEAD USE usePatchAGS.js */
+
 export default function usePatchAssetGroupSighting() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
