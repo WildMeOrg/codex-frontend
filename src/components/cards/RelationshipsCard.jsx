@@ -101,6 +101,7 @@ export default function RelationshipsCard({
   title,
   titleId,
 }) {
+  console.log('deleteMe self guid is: ' + individualGuid);
   const intl = useIntl();
   const noRelationships = relationships && relationships.length === 0;
   // const error = 'DeleteMe';
@@ -153,9 +154,9 @@ export default function RelationshipsCard({
               individualMember.individual_guid !== individualGuid,
           );
           console.log(
-            'deleteMe got here and nonSelfIndividualMember is: ' +
-              nonSelfIndividualMember,
+            'deleteMe got here and nonSelfIndividualMember is: ',
           );
+          console.log(nonSelfIndividualMember);
           nonSelfIndividualMember.individual_first_name = 'deleteMe';
           // const targetIndividualFirstName = deriveIndividualName(
           //   individualData,
