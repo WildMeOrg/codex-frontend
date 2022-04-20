@@ -101,8 +101,6 @@ export default function RelationshipsCard({
   console.log('deleteMe self guid is: ' + individualGuid);
   const intl = useIntl();
   const noRelationships = relationships && relationships.length === 0;
-  // const error = 'DeleteMe';
-  const error = null;
   const {
     data: siteSettings,
     loading: loadingRelationships,
@@ -117,6 +115,9 @@ export default function RelationshipsCard({
     clearSuccess: clearPostRelationshipSuccess,
   } = usePostRelationship();
 
+  const errors = [relationshipsError, postRelationshipError];
+  const hasActualError =
+    errors.filter(error => Boolean(error)).length > 0;
   const theme = useTheme();
   const [
     openRelationshipDialog,
@@ -211,12 +212,15 @@ export default function RelationshipsCard({
   const onCloseDialog = () => {
     setSelectedIndividualId(null);
     setOpenRelationshipDialog(false);
+    setCurrentType(null);
+    setCurrentRole1(null);
+    setCurrentRole2(null);
   };
 
   const onSubmit = async () => {
     console.log('deleteMe onsubmit clicked!');
     //TODO post relationship
-    const successful = await postRelationship({
+    const response = await postRelationship({
       individual_1_guid: individualGuid,
       individual_2_guid: selectedIndividualId,
       individual_1_role_guid: currentRole1?.guid,
@@ -224,7 +228,9 @@ export default function RelationshipsCard({
       type_guid: currentType?.guid,
     });
     console.log('deleteMe successful for postRelationship is: ');
-    console.log(successful);
+    if (response?.status === 200) {
+      onCloseDialog();
+    }
   };
 
   return [
@@ -247,8 +253,9 @@ export default function RelationshipsCard({
             <Text value={option.guid}>{option.label}</Text>
           )}
           onChange={(_, newValue) => onChangeType(newValue)}
-          getOptionLabel={option => get(option, 'label', '')} //     ? option.guid === get(types, ['0', 'guid']) //   option.guid // getOptionSelected={option =>
+          getOptionLabel={option => get(option, 'label', '')}
           renderInput={params => {
+            //     ? option.guid === get(types, ['0', 'guid']) //   option.guid // getOptionSelected={option =>
             return (
               <TextField
                 {...params}
@@ -282,9 +289,11 @@ export default function RelationshipsCard({
                   {...params}
                   style={{ width: 280 }}
                   variant="standard"
-                  label={intl.formatMessage({
-                    id: 'SELECT_RELATIONSHIP_ROLE_1',
-                    values: {
+                  label={intl.formatMessage(
+                    {
+                      id: 'SELECT_RELATIONSHIP_ROLE_1',
+                    },
+                    {
                       ind2: relationshipTableData?.nonSelfFirstName
                         ? relationshipTableData?.nonSelfFirstName
                         : 'UNNAMED_INDIVIDUAL',
@@ -292,7 +301,7 @@ export default function RelationshipsCard({
                         ? individualFirstName
                         : 'UNNAMED_INDIVIDUAL',
                     },
-                  })}
+                  )}
                 />
               );
             }}
@@ -344,13 +353,17 @@ export default function RelationshipsCard({
           flexDirection: 'column',
         }}
       >
-        {error && (
+        {hasActualError && (
           <CustomAlert
             style={{ margin: '20px 0', width: '100%' }}
             severity="error"
             titleId="SERVER_ERROR"
           >
-            {error}
+            {errors.map(error => (
+              <Text key={error} variant="body2">
+                {error}
+              </Text>
+            ))}
           </CustomAlert>
         )}
         <div>
@@ -403,6 +416,7 @@ export default function RelationshipsCard({
           loading={loading}
         />
       )}
+
       <Button
         style={{ marginTop: 16 }}
         id="ADD_RELATIONSHIP"
