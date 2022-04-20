@@ -313,10 +313,11 @@ export default function Individual() {
             encounters={encounters}
           />
           <RelationshipsCard
-            relationships={fakeRelationships}
-            loading={false}
-            titleId="RELATIONSHIPS" //TODO add relationshipLoading
-          />
+            relationships={individualData?.relationships}
+            individualGuid={id}
+            loading={loading}
+            titleId="RELATIONSHIPS"
+          />{' '}
           <CooccurrenceCard data={fakeCoocs} />
         </CardContainer>
       </div>

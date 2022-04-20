@@ -11,7 +11,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 // import ViewChart from '@material-ui/icons/BubbleChart';
 // import ViewList from '@material-ui/icons/ViewList';
 
-import { get } from 'lodash-es';
+import { get, map, filter } from 'lodash-es';
 
 import Button from '../Button';
 import Card from './Card';
@@ -21,6 +21,11 @@ import StandardDialog from '../StandardDialog';
 import IndividualSelector from '../IndividualSelector';
 import useSiteSettings from '../../models/site/useSiteSettings';
 import Text from '../Text';
+import {
+  deriveIndividualName,
+  deriveIndividualNameGuid,
+} from '../../utils/nameUtils';
+import useIndividual from '../../models/individual/useIndividual';
 // import SvgText from '../SvgText';
 // import FemaleIcon from '../svg/FemaleIcon';
 // import MaleIcon from '../svg/MaleIcon';
@@ -90,6 +95,7 @@ import Text from '../Text';
 
 export default function RelationshipsCard({
   relationships = [],
+  individualGuid,
   loading,
   noDataMessage = 'NO_RELATIONSHIPS',
   title,
@@ -134,12 +140,61 @@ export default function RelationshipsCard({
     },
     [siteSettings],
   );
+  const relationshipTableData = useMemo(
+    () => {
+      //TOOD
+      console.log('deleteMe in relationshipTableData');
+      return map(
+        relationships,
+        relationship => {
+          let nonSelfIndividualMember = filter(
+            get(relationship, 'individual_members'),
+            individualMember =>
+              individualMember.individual_guid !== individualGuid,
+          );
+          console.log(
+            'deleteMe got here and nonSelfIndividualMember is: ' +
+              nonSelfIndividualMember,
+          );
+          nonSelfIndividualMember.individual_first_name = 'deleteMe';
+          // const targetIndividualFirstName = deriveIndividualName(
+          //   individualData,
+          //   'FirstName',
+          //   intl.formatMessage({ id: 'UNNAMED_INDIVIDUAL' }),
+          // );
+
+          //       const { data: individualData, statusCode, loading } = useIndividual(
+          //   id,
+          // );
+
+          //TODO LEFT OFF HERE
+          return {
+            guid: relationship?.guid,
+            nonSelfFirstName:
+              nonSelfIndividualMember?.individual_first_name,
+            nonSelfGuid: nonSelfIndividualMember?.individual_guid,
+            type: relationship.typeLabel,
+            role: nonSelfIndividualMember?.individual_role_label,
+          };
+        },
+        [],
+      );
+    },
+    [relationships],
+  );
+  console.log('deleteMe relationshipTableData is: ');
+  console.log(relationshipTableData);
+  // const {
+  //   data: individualData,
+  //   statusCode,
+  //   loading: targetIndividualLoading,
+  // } = useIndividual(targetIndividualGuid);
   // const backgroundColor = theme.palette.grey['200'];
 
   const relationshipCols = [
     {
-      reference: 'individual',
-      name: 'individual',
+      reference: 'nonSelfFirstName',
+      name: 'nonSelfFirstName',
       label: 'Individual',
     },
     { reference: 'type', name: 'type', label: 'Type' },
@@ -292,7 +347,7 @@ export default function RelationshipsCard({
         <DataDisplay
           tableSize="medium"
           columns={relationshipCols}
-          data={relationships}
+          data={relationshipTableData}
           loading={loading}
         />
       )}
