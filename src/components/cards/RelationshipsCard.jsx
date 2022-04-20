@@ -178,7 +178,7 @@ export default function RelationshipsCard({
             nonSelfFirstName:
               nonSelfIndividualMember?.individual_first_name,
             nonSelfGuid: nonSelfIndividualMember?.individual_guid,
-            type: relationship.typeLabel,
+            type: relationship.type_label,
             role: nonSelfIndividualMember?.individual_role_label,
           };
         },
