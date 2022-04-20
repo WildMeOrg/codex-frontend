@@ -237,7 +237,7 @@ export default function RelationshipsCard({
           return [
             <ActionIcon
               variant="view"
-              href={`/individuals/${relationship?.guid}`}
+              href={`/individuals/${relationship?.nonSelfGuid}`}
             />,
             <ActionIcon
               variant={'delete'}

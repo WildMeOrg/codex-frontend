@@ -3,7 +3,8 @@ import { getIndividualQueryKey } from '../../constants/queryKeys';
 
 export default function useDeleteRelationship() {
   return useDelete({
-    deriveUrl: ({ relationshipGuid }) => `/users/${relationshipGuid}`,
+    deriveUrl: ({ relationshipGuid }) =>
+      `/relationships/${relationshipGuid}`,
     deriveFetchKeys: ({ individualGuid }) => [
       getIndividualQueryKey(individualGuid),
     ],
