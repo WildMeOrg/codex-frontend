@@ -59,7 +59,7 @@ export default function IndividualsButton() {
               style={{ padding: '16px 0 0 48px' }}
             />
           )}
-          <List dense style={{ maxHeight: 400, overflow: 'scroll' }}>
+          <List dense style={{ maxHeight: 400, overflow: 'auto' }}>
             {mappableSearchResults.map(individual => {
               const individualGuid = individual?.guid;
               const adoptionName = deriveIndividualName(
