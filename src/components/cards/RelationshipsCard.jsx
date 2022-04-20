@@ -98,7 +98,9 @@ export default function RelationshipsCard({
   title,
   titleId,
 }) {
-  console.log('deleteMe self guid is: ' + individualGuid);
+  console.log(
+    'deleteMe individualFirstName is: ' + individualFirstName,
+  );
   const intl = useIntl();
   const noRelationships = relationships && relationships.length === 0;
   const {
@@ -111,11 +113,14 @@ export default function RelationshipsCard({
     error: postRelationshipError,
     loading: postRelationshipLoading,
     clearError: clearPostRelationshipError,
-    success: postRelationshipSuccess,
     clearSuccess: clearPostRelationshipSuccess,
   } = usePostRelationship();
 
-  const errors = [relationshipsError, postRelationshipError];
+  const errors = [
+    'temp error hi',
+    relationshipsError,
+    postRelationshipError,
+  ];
   const hasActualError =
     errors.filter(error => Boolean(error)).length > 0;
   const theme = useTheme();
@@ -154,28 +159,35 @@ export default function RelationshipsCard({
   );
   const relationshipTableData = useMemo(
     () => {
-      //TOOD
-      console.log('deleteMe in relationshipTableData');
       return map(
         relationships,
         relationship => {
+          const selfIndividualMembers = filter(
+            get(relationship, 'individual_members'),
+            individualMember =>
+              individualMember.individual_guid !== individualGuid,
+            [],
+          );
+          const selfIndividualMember = get(selfIndividualMembers, [
+            0,
+          ]);
           const nonSelfIndividualMembers = filter(
             get(relationship, 'individual_members'),
             individualMember =>
               individualMember.individual_guid !== individualGuid,
+            [],
           );
-          let nonSelfIndividualMember = get(
+          const nonSelfIndividualMember = get(
             nonSelfIndividualMembers,
             [0],
-          ); // TODO deleteMe change to const once the hard-coded assignment below is fixed
-          nonSelfIndividualMember.individual_first_name = 'deleteMe';
+          );
           return {
             guid: relationship?.guid,
             nonSelfFirstName:
               nonSelfIndividualMember?.individual_first_name,
             nonSelfGuid: nonSelfIndividualMember?.individual_guid,
-            type: relationship.type_label,
-            role: nonSelfIndividualMember?.individual_role_label,
+            type: relationship?.type_label,
+            role: selfIndividualMember?.individual_role_label,
           };
         },
         [],
@@ -218,8 +230,6 @@ export default function RelationshipsCard({
   };
 
   const onSubmit = async () => {
-    console.log('deleteMe onsubmit clicked!');
-    //TODO post relationship
     const response = await postRelationship({
       individual_1_guid: individualGuid,
       individual_2_guid: selectedIndividualId,
@@ -229,7 +239,7 @@ export default function RelationshipsCard({
     });
     console.log('deleteMe successful for postRelationship is: ');
     if (response?.status === 200) {
-      onCloseDialog();
+      // onCloseDialog(); // TODO deleteMe comment this back in after error troubleshooting is done
     }
   };
 
@@ -290,9 +300,7 @@ export default function RelationshipsCard({
                   style={{ width: 280 }}
                   variant="standard"
                   label={intl.formatMessage(
-                    {
-                      id: 'SELECT_RELATIONSHIP_ROLE_1',
-                    },
+                    { id: 'SELECT_RELATIONSHIP_ROLE_1' },
                     {
                       ind2: relationshipTableData?.nonSelfFirstName
                         ? relationshipTableData?.nonSelfFirstName
@@ -332,8 +340,6 @@ export default function RelationshipsCard({
                       ind1: individualFirstName
                         ? individualFirstName
                         : 'UNNAMED_INDIVIDUAL',
-                    },
-                    {
                       ind2: relationshipTableData?.nonSelfFirstName
                         ? relationshipTableData?.nonSelfFirstName
                         : 'UNNAMED_INDIVIDUAL',
@@ -375,7 +381,11 @@ export default function RelationshipsCard({
           <Button
             display="primary"
             onClick={() => onSubmit()}
-            loading={loading}
+            loading={
+              loading ||
+              loadingRelationships ||
+              postRelationshipLoading
+            }
             disabled={!allValid}
             id="ADD_RELATIONSHIP"
           />
@@ -421,6 +431,7 @@ export default function RelationshipsCard({
         style={{ marginTop: 16 }}
         id="ADD_RELATIONSHIP"
         display="primary"
+        loading={loading || loadingRelationships}
         startIcon={<AddIcon />}
         size="small"
         onClick={() => setOpenRelationshipDialog(true)}
