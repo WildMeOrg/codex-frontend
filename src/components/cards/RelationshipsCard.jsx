@@ -116,11 +116,13 @@ export default function RelationshipsCard({
     clearSuccess: clearPostRelationshipSuccess,
   } = usePostRelationship();
 
-  const errors = [
+  const [errors, setErrors] = useState([]);
+  setErrors(prevErrors => [
+    ...prevErrors,
     'temp error hi',
     relationshipsError,
     postRelationshipError,
-  ];
+  ]);
   const hasActualError =
     errors.filter(error => Boolean(error)).length > 0;
   const theme = useTheme();
@@ -131,6 +133,10 @@ export default function RelationshipsCard({
   const [selectedIndividualId, setSelectedIndividualId] = useState(
     null,
   );
+  const [
+    selectedIndividualFirstName,
+    setSelectedIndividualFirstName,
+  ] = useState(null);
   const [currentRoles, setCurrentRoles] = useState(null);
   console.log('deleteMe got here and currentRoles is: ');
   console.log(currentRoles);
@@ -162,15 +168,15 @@ export default function RelationshipsCard({
       return map(
         relationships,
         relationship => {
-          const selfIndividualMembers = filter(
-            get(relationship, 'individual_members'),
-            individualMember =>
-              individualMember.individual_guid !== individualGuid,
-            [],
-          );
-          const selfIndividualMember = get(selfIndividualMembers, [
-            0,
-          ]);
+          // const selfIndividualMembers = filter(
+          //   get(relationship, 'individual_members'),
+          //   individualMember =>
+          //     individualMember.individual_guid !== individualGuid,
+          //   [],
+          // );
+          // const selfIndividualMember = get(selfIndividualMembers, [
+          //   0,
+          // ]);
           const nonSelfIndividualMembers = filter(
             get(relationship, 'individual_members'),
             individualMember =>
@@ -187,7 +193,7 @@ export default function RelationshipsCard({
               nonSelfIndividualMember?.individual_first_name,
             nonSelfGuid: nonSelfIndividualMember?.individual_guid,
             type: relationship?.type_label,
-            role: selfIndividualMember?.individual_role_label,
+            role: nonSelfIndividualMember?.individual_role_label,
           };
         },
         [],
@@ -223,10 +229,12 @@ export default function RelationshipsCard({
 
   const onCloseDialog = () => {
     setSelectedIndividualId(null);
+    setSelectedIndividualFirstName(null);
     setOpenRelationshipDialog(false);
     setCurrentType(null);
     setCurrentRole1(null);
     setCurrentRole2(null);
+    setErrors([]);
   };
 
   const onSubmit = async () => {
@@ -252,6 +260,9 @@ export default function RelationshipsCard({
       <DialogContent>
         <IndividualSelector
           setSelectedIndividualId={setSelectedIndividualId}
+          setSelectedIndividualFirstName={
+            setSelectedIndividualFirstName
+          }
         />
         <Autocomplete
           id="types"
@@ -302,12 +313,16 @@ export default function RelationshipsCard({
                   label={intl.formatMessage(
                     { id: 'SELECT_RELATIONSHIP_ROLE_1' },
                     {
-                      ind2: relationshipTableData?.nonSelfFirstName
-                        ? relationshipTableData?.nonSelfFirstName
-                        : 'UNNAMED_INDIVIDUAL',
+                      ind2: selectedIndividualFirstName
+                        ? selectedIndividualFirstName
+                        : intl.formatMessage({
+                            id: 'UNNAMED_INDIVIDUAL',
+                          }),
                       ind1: individualFirstName
                         ? individualFirstName
-                        : 'UNNAMED_INDIVIDUAL',
+                        : intl.formatMessage({
+                            id: 'UNNAMED_INDIVIDUAL',
+                          }),
                     },
                   )}
                 />
@@ -339,10 +354,14 @@ export default function RelationshipsCard({
                     {
                       ind1: individualFirstName
                         ? individualFirstName
-                        : 'UNNAMED_INDIVIDUAL',
-                      ind2: relationshipTableData?.nonSelfFirstName
-                        ? relationshipTableData?.nonSelfFirstName
-                        : 'UNNAMED_INDIVIDUAL',
+                        : intl.formatMessage({
+                            id: 'UNNAMED_INDIVIDUAL',
+                          }),
+                      ind2: selectedIndividualFirstName
+                        ? selectedIndividualFirstName
+                        : intl.formatMessage({
+                            id: 'UNNAMED_INDIVIDUAL',
+                          }),
                     },
                   )}
                 />
