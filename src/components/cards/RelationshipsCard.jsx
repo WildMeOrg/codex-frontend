@@ -21,11 +21,7 @@ import StandardDialog from '../StandardDialog';
 import IndividualSelector from '../IndividualSelector';
 import useSiteSettings from '../../models/site/useSiteSettings';
 import Text from '../Text';
-import {
-  deriveIndividualName,
-  deriveIndividualNameGuid,
-} from '../../utils/nameUtils';
-import useIndividual from '../../models/individual/useIndividual';
+import usePostRelationship from '../../models/relationships/usePostRelationship';
 // import SvgText from '../SvgText';
 // import FemaleIcon from '../svg/FemaleIcon';
 // import MaleIcon from '../svg/MaleIcon';
@@ -96,6 +92,7 @@ import useIndividual from '../../models/individual/useIndividual';
 export default function RelationshipsCard({
   relationships = [],
   individualGuid,
+  individualFirstName,
   loading,
   noDataMessage = 'NO_RELATIONSHIPS',
   title,
@@ -111,6 +108,14 @@ export default function RelationshipsCard({
     loading: loadingRelationships,
     error: relationshipsError,
   } = useSiteSettings();
+  const {
+    mutate: postRelationship,
+    error: postRelationshipError,
+    loading: postRelationshipLoading,
+    clearError: clearPostRelationshipError,
+    success: postRelationshipSuccess,
+    clearSuccess: clearPostRelationshipSuccess,
+  } = usePostRelationship();
 
   const theme = useTheme();
   const [
@@ -124,8 +129,13 @@ export default function RelationshipsCard({
   console.log('deleteMe got here and currentRoles is: ');
   console.log(currentRoles);
   const [currentType, setCurrentType] = useState(null);
-  const [currentRole, setCurrentRole] = useState(null);
-  const allValid = selectedIndividualId && currentType && currentRole;
+  const [currentRole1, setCurrentRole1] = useState(null);
+  const [currentRole2, setCurrentRole2] = useState(null);
+  const allValid =
+    selectedIndividualId &&
+    currentType &&
+    currentRole1 &&
+    currentRole2;
   const types = useMemo(
     () => {
       const possibleRelationships = get(
@@ -156,23 +166,8 @@ export default function RelationshipsCard({
           let nonSelfIndividualMember = get(
             nonSelfIndividualMembers,
             [0],
-          );
-          console.log(
-            'deleteMe got here and nonSelfIndividualMember is: ',
-          );
-          console.log(nonSelfIndividualMember);
+          ); // TODO deleteMe change to const once the hard-coded assignment below is fixed
           nonSelfIndividualMember.individual_first_name = 'deleteMe';
-          // const targetIndividualFirstName = deriveIndividualName(
-          //   individualData,
-          //   'FirstName',
-          //   intl.formatMessage({ id: 'UNNAMED_INDIVIDUAL' }),
-          // );
-
-          //       const { data: individualData, statusCode, loading } = useIndividual(
-          //   id,
-          // );
-
-          //TODO LEFT OFF HERE
           return {
             guid: relationship?.guid,
             nonSelfFirstName:
@@ -187,14 +182,6 @@ export default function RelationshipsCard({
     },
     [relationships],
   );
-  console.log('deleteMe relationshipTableData is: ');
-  console.log(relationshipTableData);
-  // const {
-  //   data: individualData,
-  //   statusCode,
-  //   loading: targetIndividualLoading,
-  // } = useIndividual(targetIndividualGuid);
-  // const backgroundColor = theme.palette.grey['200'];
 
   const relationshipCols = [
     {
@@ -208,12 +195,17 @@ export default function RelationshipsCard({
 
   const onChangeType = newType => {
     setCurrentType(newType);
-    setCurrentRole(null);
+    setCurrentRole1(null);
+    setCurrentRole2(null);
     setCurrentRoles(get(newType, 'roles', []));
   };
 
-  const onChangeRole = newRole => {
-    setCurrentRole(newRole);
+  const onChangeRole1 = newRole => {
+    setCurrentRole1(newRole);
+  };
+
+  const onChangeRole2 = newRole => {
+    setCurrentRole2(newRole);
   };
 
   const onCloseDialog = () => {
@@ -221,8 +213,18 @@ export default function RelationshipsCard({
     setOpenRelationshipDialog(false);
   };
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
+    console.log('deleteMe onsubmit clicked!');
     //TODO post relationship
+    const successful = await postRelationship({
+      individual_1_guid: individualGuid,
+      individual_2_guid: selectedIndividualId,
+      individual_1_role_guid: currentRole1,
+      individual_2_role_guid: currentRole2,
+      type_guid: currentType,
+    });
+    console.log('deleteMe successful for postRelationship is: ');
+    console.log(successful);
   };
 
   return [
@@ -259,17 +261,17 @@ export default function RelationshipsCard({
             );
           }}
         />
-        {currentRoles?.length > 0 && (
+        {currentRoles?.length > 0 && [
           <Autocomplete
-            id="roles"
+            id="roles1"
             clearOnEscape
             style={{ marginTop: 12 }}
-            value={currentRole}
+            value={currentRole1}
             options={currentRoles}
             renderOption={option => (
               <Text value={option.guid}>{option.label}</Text>
             )}
-            onChange={(_, newValue) => onChangeRole(newValue)}
+            onChange={(_, newValue) => onChangeRole1(newValue)}
             getOptionLabel={option => get(option, 'label', '')}
             getOptionSelected={(option, val) =>
               option.guid ? option.guid === val : false
@@ -280,14 +282,61 @@ export default function RelationshipsCard({
                   {...params}
                   style={{ width: 280 }}
                   variant="standard"
-                  label={intl.formatMessage({
-                    id: 'SELECT_RELATIONSHIP_ROLE',
-                  })}
+                  label={intl.formatMessage(
+                    { id: 'SELECT_RELATIONSHIP_ROLE_1' },
+                    {
+                      ind2: relationshipTableData?.nonSelfFirstName
+                        ? relationshipTableData?.nonSelfFirstName
+                        : 'UNNAMED_INDIVIDUAL',
+                    },
+                    {
+                      ind1: individualFirstName
+                        ? individualFirstName
+                        : 'UNNAMED_INDIVIDUAL',
+                    },
+                  )}
                 />
               );
             }}
-          />
-        )}
+          />,
+          <Autocomplete
+            id="roles2"
+            clearOnEscape
+            style={{ marginTop: 12 }}
+            value={currentRole2}
+            options={currentRoles}
+            renderOption={option => (
+              <Text value={option.guid}>{option.label}</Text>
+            )}
+            onChange={(_, newValue) => onChangeRole2(newValue)}
+            getOptionLabel={option => get(option, 'label', '')}
+            getOptionSelected={(option, val) =>
+              option.guid ? option.guid === val : false
+            }
+            renderInput={params => {
+              return (
+                <TextField
+                  {...params}
+                  style={{ width: 280 }}
+                  variant="standard"
+                  label={intl.formatMessage(
+                    { id: 'SELECT_RELATIONSHIP_ROLE_2' },
+                    {
+                      ind1: individualFirstName
+                        ? individualFirstName
+                        : 'UNNAMED_INDIVIDUAL',
+                    },
+                    {
+                      ind2: relationshipTableData?.nonSelfFirstName
+                        ? relationshipTableData?.nonSelfFirstName
+                        : 'UNNAMED_INDIVIDUAL',
+                    },
+                  )}
+                />
+              );
+            }}
+          />,
+        ]}
       </DialogContent>
       <DialogActions
         style={{

@@ -315,6 +315,11 @@ export default function Individual() {
           <RelationshipsCard
             relationships={individualData?.relationships}
             individualGuid={id}
+            individualFirstName={deriveIndividualName(
+              individualData,
+              'FirstName',
+              'Unnamed Individual',
+            )}
             loading={loading}
             titleId="RELATIONSHIPS"
           />{' '}
