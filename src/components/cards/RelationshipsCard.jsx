@@ -21,7 +21,9 @@ import StandardDialog from '../StandardDialog';
 import IndividualSelector from '../IndividualSelector';
 import useSiteSettings from '../../models/site/useSiteSettings';
 import Text from '../Text';
+import ActionIcon from '../ActionIcon';
 import usePostRelationship from '../../models/relationships/usePostRelationship';
+import useDeleteRelationships from '../../models/relationships/useDeleteRelationship';
 // import SvgText from '../SvgText';
 // import FemaleIcon from '../svg/FemaleIcon';
 // import MaleIcon from '../svg/MaleIcon';
@@ -113,6 +115,12 @@ export default function RelationshipsCard({
     clearSuccess: clearPostRelationshipSuccess,
   } = usePostRelationship();
 
+  const {
+    mutate: deleteRelationship,
+    error: deleteRelationshipError,
+    clearError: clearDeleteRelationshipError,
+  } = useDeleteRelationships();
+
   // const [errors, setErrors] = useState([]);
   // setErrors(prevErrors => [
   //   ...prevErrors,
@@ -198,6 +206,16 @@ export default function RelationshipsCard({
     [relationships],
   );
 
+  const onDelete = async relationshipGuid => {
+    console.log('deleteMe got here onDelete entered');
+    const response = await deleteRelationship({
+      relationshipGuid,
+      individualGuid,
+    });
+    console.log('deleteMe response from relationship delete is: ');
+    console.log(response);
+  };
+
   const relationshipCols = [
     {
       reference: 'nonSelfFirstName',
@@ -206,6 +224,31 @@ export default function RelationshipsCard({
     },
     { reference: 'type', name: 'type', label: 'Type' },
     { reference: 'role', name: 'role', label: 'Role' },
+    {
+      reference: 'actions',
+      name: 'guid',
+      label: 'Actions',
+      options: {
+        customBodyRender: (_, relationship) => {
+          console.log(
+            'deleteMe relationship in customBodyRender is: ',
+          );
+          console.log(relationship);
+          return [
+            <ActionIcon
+              variant="view"
+              href={`/individuals/${relationship?.guid}`}
+            />,
+            <ActionIcon
+              variant={'delete'}
+              onClick={() => {
+                onDelete(relationship?.guid);
+              }}
+            />,
+          ];
+        },
+      },
+    },
   ];
 
   const onChangeType = newType => {
