@@ -3,10 +3,9 @@ import React, { useState } from 'react';
 import Hidden from '@material-ui/core/Hidden';
 import Drawer from '@material-ui/core/Drawer';
 
-import useIndividualSearchSchemas from '../../models/individual/useIndividualSearchSchemas';
 import useFilterIndividuals from '../../models/individual/useFilterIndividuals';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
-import FilterPanel from '../../components/FilterPanel';
+import FilterPanel from './search/FilterPanel';
 import SearchFilterList from '../../components/SearchFilterList';
 import Button from '../../components/Button';
 import Text from '../../components/Text';
@@ -35,8 +34,6 @@ export default function SearchIndividuals() {
     loading,
     updateFilters,
   } = useFilterIndividuals(formFilters, page, rowsPerPage);
-
-  const schemas = useIndividualSearchSchemas();
 
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
 
@@ -85,7 +82,6 @@ export default function SearchIndividuals() {
           formFilters={formFilters}
           setFormFilters={setFormFilters}
           updateFilters={updateFilters}
-          schema={schemas}
         />
         <Hidden smUp>
           <Button

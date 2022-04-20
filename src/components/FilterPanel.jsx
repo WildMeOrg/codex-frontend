@@ -1,8 +1,10 @@
 import React from 'react';
+
 import Accordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+
 import Text from './Text';
 import OptionTermFilter from './filterFields/OptionTermFilter';
 import DateRangeFilter from './filterFields/DateRangeFilter';
@@ -56,24 +58,30 @@ export default function FilterPanel({
         <SubstringFilter
           labelId="INDIVIDUAL_NAME"
           onChange={handleFilterChange}
-          queryTerms={['alias', 'name', 'id']}
-          filterId="name"
+          queryTerms={['firstName']}
+          filterId="firstName"
         />
         <SubstringFilter
+          labelId="ADOPTION_NAME"
+          onChange={handleFilterChange}
+          queryTerms={['adoptionName']}
+          filterId="adoptionName"
+        />
+        {/* <SubstringFilter
           labelId="SPECIES"
           onChange={handleFilterChange}
           queryTerms={['taxonomy']}
           filterId="species"
           style={{ marginTop: 4 }}
-        />
-        <PointDistanceFilter
+        /> */}
+        {/* <PointDistanceFilter
           nested
           labelId="DISTANCE_FROM_POINT"
           queryTerm="encounters.point"
           onChange={handleFilterChange}
           filterId="geodistance"
           style={{ marginTop: 20 }}
-        />
+        /> */}
         <OptionTermFilter
           labelId="SEX"
           onChange={handleFilterChange}
@@ -90,7 +98,11 @@ export default function FilterPanel({
               value: 'female',
             },
             {
-              label: 'Either',
+              label: 'Unknown',
+              value: 'unknown',
+            },
+            {
+              label: 'Unspecified',
               value: '',
             },
           ]}
@@ -101,7 +113,7 @@ export default function FilterPanel({
           labelId="HAS_ANNOTATIONS"
           onChange={handleFilterChange}
           onClearFilter={clearFilter}
-          queryTerm="encounters.has_annotation"
+          queryTerm="has_annotations"
           filterId="annotation"
           queryType="term"
           choices={[
@@ -141,16 +153,10 @@ export default function FilterPanel({
               filterId="last_sighting"
             />
             <DateRangeFilter
-              labelId="BIRTH_DATE_RANGE"
+              labelId="CREATION_DATE_RANGE"
               onChange={handleFilterChange}
               queryTerm="birth"
-              filterId="birth"
-            />
-            <DateRangeFilter
-              labelId="DEATH_DATE_RANGE"
-              onChange={handleFilterChange}
-              queryTerm="death"
-              filterId="death"
+              filterId="created"
             />
           </div>
         </AccordionDetails>
