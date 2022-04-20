@@ -1019,5 +1019,6 @@
   "SELECT_RELATIONSHIP_TYPE": "Select relationship type",
   "SELECT_RELATIONSHIP_ROLE_1": "Select relationship from {ind1}'s perspective",
   "SELECT_RELATIONSHIP_ROLE_2": "Select relationship from {ind2}'s perspective",
-  "NO_RELATIONSHIPS": "This individual currently has no known relationships"
+  "NO_RELATIONSHIPS": "This individual currently has no known relationships",
+  "CONFIRM_REMOVE_RELATIONSHIP": "Are you sure you want to delete this relationship?"
 }

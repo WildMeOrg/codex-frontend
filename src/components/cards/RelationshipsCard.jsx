@@ -23,6 +23,7 @@ import useSiteSettings from '../../models/site/useSiteSettings';
 import Text from '../Text';
 import ActionIcon from '../ActionIcon';
 import usePostRelationship from '../../models/relationships/usePostRelationship';
+import ConfirmDelete from '../../components/ConfirmDelete';
 import useDeleteRelationships from '../../models/relationships/useDeleteRelationship';
 // import SvgText from '../SvgText';
 // import FemaleIcon from '../svg/FemaleIcon';
@@ -117,6 +118,7 @@ export default function RelationshipsCard({
 
   const {
     mutate: deleteRelationship,
+    loading: deleteRelationshipLoading,
     error: deleteRelationshipError,
     clearError: clearDeleteRelationshipError,
   } = useDeleteRelationships();
@@ -132,6 +134,10 @@ export default function RelationshipsCard({
   const hasActualError =
     errors.filter(error => Boolean(error)).length > 0;
   const theme = useTheme();
+  const [confirmDeleteDialog, setConfirmDeleteDialog] = useState({
+    relationshipGuid: null,
+    open: false,
+  });
   const [
     openRelationshipDialog,
     setOpenRelationshipDialog,
@@ -214,6 +220,11 @@ export default function RelationshipsCard({
     });
     console.log('deleteMe response from relationship delete is: ');
     console.log(response);
+    if (response?.status === 200)
+      setConfirmDeleteDialog({
+        realtionshipGuid: null,
+        open: false,
+      });
   };
 
   const relationshipCols = [
@@ -242,7 +253,10 @@ export default function RelationshipsCard({
             <ActionIcon
               variant={'delete'}
               onClick={() => {
-                onDelete(relationship?.guid);
+                setConfirmDeleteDialog({
+                  relationshipGuid: relationship?.guid,
+                  open: true,
+                });
               }}
             />,
           ];
@@ -291,6 +305,22 @@ export default function RelationshipsCard({
   };
 
   return [
+    <ConfirmDelete
+      open={confirmDeleteDialog?.open}
+      onClose={() =>
+        setConfirmDeleteDialog({
+          realtionshipGuid: null,
+          open: false,
+        })
+      }
+      onDelete={async () => {
+        onDelete(confirmDeleteDialog?.relationshipGuid);
+      }}
+      deleteInProgress={deleteRelationshipLoading}
+      error={deleteRelationshipError}
+      onClearError={clearDeleteRelationshipError}
+      messageId="CONFIRM_REMOVE_RELATIONSHIP"
+    />,
     <StandardDialog
       open={openRelationshipDialog}
       onClose={onCloseDialog}
