@@ -290,41 +290,6 @@ export default function RelationshipsCard({
             id="roles1"
             clearOnEscape
             style={{ marginTop: 12 }}
-            value={currentRole1}
-            options={currentRoles}
-            renderOption={option => (
-              <Text value={option.guid}>{option.label}</Text>
-            )}
-            onChange={(_, newValue) => onChangeRole1(newValue)}
-            getOptionLabel={option => get(option, 'label', '')}
-            getOptionSelected={(option, val) =>
-              option.guid ? option.guid === val : false
-            }
-            renderInput={params => {
-              return (
-                <TextField
-                  {...params}
-                  style={{ width: 280 }}
-                  variant="standard"
-                  label={intl.formatMessage(
-                    { id: 'SELECT_RELATIONSHIP_ROLE_1' },
-                    {
-                      ind2: selectedIndividualFirstName,
-                      ind1: individualFirstName
-                        ? individualFirstName
-                        : intl.formatMessage({
-                            id: 'UNNAMED_INDIVIDUAL',
-                          }),
-                    },
-                  )}
-                />
-              );
-            }}
-          />,
-          <Autocomplete
-            id="roles2"
-            clearOnEscape
-            style={{ marginTop: 12 }}
             value={currentRole2}
             options={currentRoles}
             renderOption={option => (
@@ -342,13 +307,48 @@ export default function RelationshipsCard({
                   style={{ width: 280 }}
                   variant="standard"
                   label={intl.formatMessage(
-                    { id: 'SELECT_RELATIONSHIP_ROLE_2' },
+                    { id: 'SELECT_RELATIONSHIP_ROLE_1' },
                     {
+                      // ind2: selectedIndividualFirstName, // deleteMe
                       ind1: individualFirstName
                         ? individualFirstName
                         : intl.formatMessage({
                             id: 'UNNAMED_INDIVIDUAL',
                           }),
+                    },
+                  )}
+                />
+              );
+            }}
+          />,
+          <Autocomplete
+            id="roles2"
+            clearOnEscape
+            style={{ marginTop: 12 }}
+            value={currentRole1}
+            options={currentRoles}
+            renderOption={option => (
+              <Text value={option.guid}>{option.label}</Text>
+            )}
+            onChange={(_, newValue) => onChangeRole1(newValue)}
+            getOptionLabel={option => get(option, 'label', '')}
+            getOptionSelected={(option, val) =>
+              option.guid ? option.guid === val : false
+            }
+            renderInput={params => {
+              return (
+                <TextField
+                  {...params}
+                  style={{ width: 280 }}
+                  variant="standard"
+                  label={intl.formatMessage(
+                    { id: 'SELECT_RELATIONSHIP_ROLE_2' },
+                    {
+                      // ind1: individualFirstName // deleteMe
+                      //   ? individualFirstName
+                      //   : intl.formatMessage({
+                      //       id: 'UNNAMED_INDIVIDUAL',
+                      //     }),
                       ind2: selectedIndividualFirstName,
                     },
                   )}
