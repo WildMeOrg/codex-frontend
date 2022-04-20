@@ -219,9 +219,9 @@ export default function RelationshipsCard({
     const successful = await postRelationship({
       individual_1_guid: individualGuid,
       individual_2_guid: selectedIndividualId,
-      individual_1_role_guid: currentRole1,
-      individual_2_role_guid: currentRole2,
-      type_guid: currentType,
+      individual_1_role_guid: currentRole1?.guid,
+      individual_2_role_guid: currentRole2?.guid,
+      type_guid: currentType?.guid,
     });
     console.log('deleteMe successful for postRelationship is: ');
     console.log(successful);
@@ -282,19 +282,17 @@ export default function RelationshipsCard({
                   {...params}
                   style={{ width: 280 }}
                   variant="standard"
-                  label={intl.formatMessage(
-                    { id: 'SELECT_RELATIONSHIP_ROLE_1' },
-                    {
+                  label={intl.formatMessage({
+                    id: 'SELECT_RELATIONSHIP_ROLE_1',
+                    values: {
                       ind2: relationshipTableData?.nonSelfFirstName
                         ? relationshipTableData?.nonSelfFirstName
                         : 'UNNAMED_INDIVIDUAL',
-                    },
-                    {
                       ind1: individualFirstName
                         ? individualFirstName
                         : 'UNNAMED_INDIVIDUAL',
                     },
-                  )}
+                  })}
                 />
               );
             }}
