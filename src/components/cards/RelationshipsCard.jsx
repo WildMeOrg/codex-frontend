@@ -98,9 +98,6 @@ export default function RelationshipsCard({
   title,
   titleId,
 }) {
-  console.log(
-    'deleteMe individualFirstName is: ' + individualFirstName,
-  );
   const intl = useIntl();
   const noRelationships = relationships && relationships.length === 0;
   const {
@@ -116,13 +113,14 @@ export default function RelationshipsCard({
     clearSuccess: clearPostRelationshipSuccess,
   } = usePostRelationship();
 
-  const [errors, setErrors] = useState([]);
-  setErrors(prevErrors => [
-    ...prevErrors,
-    'temp error hi',
-    relationshipsError,
-    postRelationshipError,
-  ]);
+  // const [errors, setErrors] = useState([]);
+  // setErrors(prevErrors => [
+  //   ...prevErrors,
+  //   'temp error hi',
+  //   relationshipsError,
+  //   postRelationshipError,
+  // ]);
+  const errors = ['deleteMe'];
   const hasActualError =
     errors.filter(error => Boolean(error)).length > 0;
   const theme = useTheme();
@@ -138,8 +136,6 @@ export default function RelationshipsCard({
     setSelectedIndividualFirstName,
   ] = useState(null);
   const [currentRoles, setCurrentRoles] = useState(null);
-  console.log('deleteMe got here and currentRoles is: ');
-  console.log(currentRoles);
   const [currentType, setCurrentType] = useState(null);
   const [currentRole1, setCurrentRole1] = useState(null);
   const [currentRole2, setCurrentRole2] = useState(null);
@@ -234,7 +230,7 @@ export default function RelationshipsCard({
     setCurrentType(null);
     setCurrentRole1(null);
     setCurrentRole2(null);
-    setErrors([]);
+    // setErrors([]);
   };
 
   const onSubmit = async () => {
