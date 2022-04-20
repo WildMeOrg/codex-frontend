@@ -309,11 +309,7 @@ export default function RelationshipsCard({
                   label={intl.formatMessage(
                     { id: 'SELECT_RELATIONSHIP_ROLE_1' },
                     {
-                      ind2: selectedIndividualFirstName
-                        ? selectedIndividualFirstName
-                        : intl.formatMessage({
-                            id: 'UNNAMED_INDIVIDUAL',
-                          }),
+                      ind2: selectedIndividualFirstName,
                       ind1: individualFirstName
                         ? individualFirstName
                         : intl.formatMessage({
@@ -353,11 +349,7 @@ export default function RelationshipsCard({
                         : intl.formatMessage({
                             id: 'UNNAMED_INDIVIDUAL',
                           }),
-                      ind2: selectedIndividualFirstName
-                        ? selectedIndividualFirstName
-                        : intl.formatMessage({
-                            id: 'UNNAMED_INDIVIDUAL',
-                          }),
+                      ind2: selectedIndividualFirstName,
                     },
                   )}
                 />

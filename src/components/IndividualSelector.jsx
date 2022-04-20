@@ -133,9 +133,13 @@ export default function IndividualSelector({
           data={searchResults || []}
           onSelectRow={selectedIndividual => {
             setSelectedIndividualId(get(selectedIndividual, 'guid'));
-            console.log('deleteMe selectedIndividual is: ');
-            console.log(selectedIndividual);
-            // setSelectedIndividualFirstName(get(selectedIndividual))
+            setSelectedIndividualFirstName(
+              deriveIndividualName(
+                selectedIndividual,
+                'FirstName',
+                intl.formatMessage({ id: 'UNNAMED_INDIVIDUAL' }),
+              ),
+            );
           }}
         />
       )}
