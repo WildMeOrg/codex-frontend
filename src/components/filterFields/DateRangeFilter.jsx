@@ -104,7 +104,7 @@ export default function DateRangeFilter({
               {translatedLabel}
             </Text>
             {description && (
-            <Text
+              <Text
                 variant="caption"
                 color="textSecondary"
                 id={descriptionId}

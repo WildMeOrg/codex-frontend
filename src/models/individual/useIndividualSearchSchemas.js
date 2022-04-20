@@ -60,8 +60,7 @@ export default function useIndividualSearchSchemas() {
         filterId: 'annotation',
         choices: hasAnnotationOptions,
       },
-    },
-    // {
+    }, // {
     //   id: 'taxonomy',
     //   labelId: 'SPECIES',
     //   FilterComponent: OptionTermFilter,
@@ -85,7 +84,7 @@ export default function useIndividualSearchSchemas() {
     // },
     {
       id: 'lastSeen',
-      labelId: 'SIGHTING_DATE_RANGE',
+      labelId: 'LAST_SIGHTING_DATE_RANGE',
       FilterComponent: DateRangeFilter,
       filterComponentProps: {
         queryTerm: 'last_sighting',
