@@ -148,10 +148,14 @@ export default function RelationshipsCard({
       return map(
         relationships,
         relationship => {
-          let nonSelfIndividualMember = filter(
+          const nonSelfIndividualMembers = filter(
             get(relationship, 'individual_members'),
             individualMember =>
               individualMember.individual_guid !== individualGuid,
+          );
+          let nonSelfIndividualMember = get(
+            nonSelfIndividualMembers,
+            [0],
           );
           console.log(
             'deleteMe got here and nonSelfIndividualMember is: ',
