@@ -116,7 +116,6 @@ export function usePost(args) {
   return useMutate({
     method: methods.post,
     ...args,
-    error: 'ack!', //deleteMe
   });
 }
 

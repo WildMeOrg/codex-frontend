@@ -109,10 +109,11 @@ export default function RelationshipsCard({
   } = useSiteSettings();
   const {
     mutate: postRelationship,
-    error: postRelationshipError,
+    // error: postRelationshipError,
     loading: postRelationshipLoading,
     clearError: clearPostRelationshipError,
   } = usePostRelationship();
+  const postRelationshipError = 'deleteMe ack';
 
   const {
     mutate: deleteRelationship,
