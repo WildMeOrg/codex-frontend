@@ -331,7 +331,6 @@ export default function RelationshipsCard({
             onChange={(_, newValue) => onChangeType(newValue)}
             getOptionLabel={option => get(option, 'label', '')}
             renderInput={params => {
-              //     ? option.guid === get(types, ['0', 'guid']) //   option.guid // getOptionSelected={option =>
               return (
                 <TextField
                   {...params}

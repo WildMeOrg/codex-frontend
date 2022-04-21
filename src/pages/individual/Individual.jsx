@@ -27,7 +27,6 @@ import MoreMenu from '../../components/MoreMenu';
 import EntityHeader from '../../components/EntityHeader';
 import MainColumn from '../../components/MainColumn';
 import SadScreen from '../../components/SadScreen';
-// import Button from '../../components/Button';
 import Text from '../../components/Text';
 import CardContainer from '../../components/cards/CardContainer';
 import EncountersCard from '../../components/cards/EncountersCard';
@@ -40,7 +39,6 @@ import useDocumentTitle from '../../hooks/useDocumentTitle';
 import EditIndividualMetadata from './EditIndividualMetadata';
 import MergeDialog from './MergeDialog';
 import fakeCoocs from './fakeCoocs';
-import fakeRelationships from './fakeRelationships';
 import {
   deriveIndividualName,
   deriveIndividualNameGuid,
