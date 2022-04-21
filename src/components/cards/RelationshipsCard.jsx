@@ -333,102 +333,108 @@ export default function RelationshipsCard({
             setSelectedIndividualFirstName
           }
         />
-        <Autocomplete
-          id="types"
-          clearOnEscape
-          style={{ marginTop: 12, width: 'fit-content' }}
-          value={currentType}
-          options={types}
-          renderOption={option => (
-            <Text value={option.guid}>{option.label}</Text>
-          )}
-          onChange={(_, newValue) => onChangeType(newValue)}
-          getOptionLabel={option => get(option, 'label', '')}
-          renderInput={params => {
-            //     ? option.guid === get(types, ['0', 'guid']) //   option.guid // getOptionSelected={option =>
-            return (
-              <TextField
-                {...params}
-                style={{ width: 280 }}
-                variant="standard"
-                label={intl.formatMessage({
-                  id: 'SELECT_RELATIONSHIP_TYPE',
-                })}
-              />
-            );
-          }}
-        />
-        {currentRoles?.length > 0 && [
+        <div id="rel-type" style={{ width: 'fit-content' }}>
           <Autocomplete
-            id="roles1"
-            clearOnEscape
-            style={{ marginTop: 12, width: 'fit-content' }}
-            value={currentRole2}
-            options={currentRoles}
-            renderOption={option => (
-              <Text value={option.guid}>{option.label}</Text>
-            )}
-            onChange={(_, newValue) => onChangeRole2(newValue)}
-            getOptionLabel={option => get(option, 'label', '')}
-            getOptionSelected={(option, val) =>
-              option.guid ? option.guid === val : false
-            }
-            renderInput={params => {
-              return (
-                <TextField
-                  {...params}
-                  style={{ width: 280 }}
-                  variant="standard"
-                  label={intl.formatMessage(
-                    { id: 'SELECT_RELATIONSHIP_ROLE_1' },
-                    {
-                      // ind2: selectedIndividualFirstName, // deleteMe
-                      ind1: individualFirstName
-                        ? individualFirstName
-                        : intl.formatMessage({
-                            id: 'UNNAMED_INDIVIDUAL',
-                          }),
-                    },
-                  )}
-                />
-              );
-            }}
-          />,
-          <Autocomplete
-            id="roles2"
+            id="types"
             clearOnEscape
             style={{ marginTop: 12 }}
-            value={currentRole1}
-            options={currentRoles}
+            value={currentType}
+            options={types}
             renderOption={option => (
               <Text value={option.guid}>{option.label}</Text>
             )}
-            onChange={(_, newValue) => onChangeRole1(newValue)}
+            onChange={(_, newValue) => onChangeType(newValue)}
             getOptionLabel={option => get(option, 'label', '')}
-            getOptionSelected={(option, val) =>
-              option.guid ? option.guid === val : false
-            }
             renderInput={params => {
+              //     ? option.guid === get(types, ['0', 'guid']) //   option.guid // getOptionSelected={option =>
               return (
                 <TextField
                   {...params}
                   style={{ width: 280 }}
                   variant="standard"
-                  label={intl.formatMessage(
-                    { id: 'SELECT_RELATIONSHIP_ROLE_2' },
-                    {
-                      // ind1: individualFirstName // deleteMe
-                      //   ? individualFirstName
-                      //   : intl.formatMessage({
-                      //       id: 'UNNAMED_INDIVIDUAL',
-                      //     }),
-                      ind2: selectedIndividualFirstName,
-                    },
-                  )}
+                  label={intl.formatMessage({
+                    id: 'SELECT_RELATIONSHIP_TYPE',
+                  })}
                 />
               );
             }}
-          />,
+          />
+        </div>
+        {currentRoles?.length > 0 && [
+          <div id="roles1-div" style={{ width: 'fit-content' }}>
+            <Autocomplete
+              id="roles1"
+              clearOnEscape
+              style={{ marginTop: 12, width: 'fit-content' }}
+              value={currentRole2}
+              options={currentRoles}
+              renderOption={option => (
+                <Text value={option.guid}>{option.label}</Text>
+              )}
+              onChange={(_, newValue) => onChangeRole2(newValue)}
+              getOptionLabel={option => get(option, 'label', '')}
+              getOptionSelected={(option, val) =>
+                option.guid ? option.guid === val : false
+              }
+              renderInput={params => {
+                return (
+                  <TextField
+                    {...params}
+                    style={{ width: 280 }}
+                    variant="standard"
+                    label={intl.formatMessage(
+                      { id: 'SELECT_RELATIONSHIP_ROLE_1' },
+                      {
+                        // ind2: selectedIndividualFirstName, // deleteMe
+                        ind1: individualFirstName
+                          ? individualFirstName
+                          : intl.formatMessage({
+                              id: 'UNNAMED_INDIVIDUAL',
+                            }),
+                      },
+                    )}
+                  />
+                );
+              }}
+            />
+          </div>,
+          <div id="roles2-div" style={{ width: 'fit-content' }}>
+            <Autocomplete
+              id="roles2"
+              clearOnEscape
+              style={{ marginTop: 12 }}
+              value={currentRole1}
+              options={currentRoles}
+              renderOption={option => (
+                <Text value={option.guid}>{option.label}</Text>
+              )}
+              onChange={(_, newValue) => onChangeRole1(newValue)}
+              getOptionLabel={option => get(option, 'label', '')}
+              getOptionSelected={(option, val) =>
+                option.guid ? option.guid === val : false
+              }
+              renderInput={params => {
+                return (
+                  <TextField
+                    {...params}
+                    style={{ width: 280 }}
+                    variant="standard"
+                    label={intl.formatMessage(
+                      { id: 'SELECT_RELATIONSHIP_ROLE_2' },
+                      {
+                        // ind1: individualFirstName // deleteMe
+                        //   ? individualFirstName
+                        //   : intl.formatMessage({
+                        //       id: 'UNNAMED_INDIVIDUAL',
+                        //     }),
+                        ind2: selectedIndividualFirstName,
+                      },
+                    )}
+                  />
+                );
+              }}
+            />
+          </div>,
         ]}
       </DialogContent>
       <DialogActions

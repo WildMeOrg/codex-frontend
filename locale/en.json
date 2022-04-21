@@ -1017,8 +1017,8 @@
   "ANNOTATION_CREATED": "Annotation created ",
   "ANNOTATION_WITH_CREATION_DATE_UNKNOWN": "Annotation with unknown creation date",
   "SELECT_RELATIONSHIP_TYPE": "Select relationship type",
-  "SELECT_RELATIONSHIP_ROLE_1": "Select relationship from {ind1}'s perspective",
-  "SELECT_RELATIONSHIP_ROLE_2": "Select relationship from {ind2}'s perspective",
+  "SELECT_RELATIONSHIP_ROLE_1": "Select role from {ind1}'s perspective",
+  "SELECT_RELATIONSHIP_ROLE_2": "Select role from {ind2}'s perspective",
   "NO_RELATIONSHIPS": "This individual currently has no known relationships",
   "CONFIRM_REMOVE_RELATIONSHIP": "Are you sure you want to delete this relationship?"
 }
