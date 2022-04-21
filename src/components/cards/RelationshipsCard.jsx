@@ -2,28 +2,28 @@ import React, { useState, useMemo } from 'react';
 import { useIntl } from 'react-intl';
 
 import { Autocomplete } from '@material-ui/lab';
-import { useTheme } from '@material-ui/core/styles';
 import { TextField } from '@material-ui/core';
-import IconButton from '@material-ui/core/IconButton';
 import AddIcon from '@material-ui/icons/Add';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
+// import { useTheme } from '@material-ui/core/styles';
+// import IconButton from '@material-ui/core/IconButton';
 // import ViewChart from '@material-ui/icons/BubbleChart';
 // import ViewList from '@material-ui/icons/ViewList';
 
-import { get, map, filter } from 'lodash-es';
+import { get, map, find } from 'lodash-es';
 
 import Button from '../Button';
 import Card from './Card';
 import CustomAlert from '../Alert';
-import DataDisplay from '../dataDisplays/DataDisplay';
 import StandardDialog from '../StandardDialog';
 import IndividualSelector from '../IndividualSelector';
 import useSiteSettings from '../../models/site/useSiteSettings';
 import Text from '../Text';
-import ActionIcon from '../ActionIcon';
 import usePostRelationship from '../../models/relationships/usePostRelationship';
-import ConfirmDelete from '../../components/ConfirmDelete';
+import ConfirmDelete from '../ConfirmDelete';
+import RelationshipDisplay from '../dataDisplays/RelationshipDisplay';
+import RelationshipRoleAutocomplete from '../inputs/RelationshipRoleAutocomplete';
 import useDeleteRelationships from '../../models/relationships/useDeleteRelationship';
 
 // Keeping this in because it will be re-implemented post-MVP
@@ -123,7 +123,7 @@ export default function RelationshipsCard({
     clearError: clearDeleteRelationshipError,
   } = useDeleteRelationships();
 
-  const theme = useTheme();
+  // const theme = useTheme();
   const [confirmDeleteDialog, setConfirmDeleteDialog] = useState({
     relationshipGuid: null,
     open: false,
@@ -162,29 +162,19 @@ export default function RelationshipsCard({
     [siteSettings],
   );
   const relationshipTableData = useMemo(
-    () => {
-      return map(
+    () =>
+      map(
         relationships,
         relationship => {
-          // keeping this in until we after QA and confirm for certain that this would not be needed (I have a note in the ticket to come back and clean this up)
-          // const selfIndividualMembers = filter(
-          //   get(relationship, 'individual_members'),
-          //   individualMember =>
-          //     individualMember.individual_guid !== individualGuid,
-          //   [],
-          // );
-          // const selfIndividualMember = get(selfIndividualMembers, [
-          //   0,
-          // ]);
-          const nonSelfIndividualMembers = filter(
+          const selfIndividualMember = find(
+            get(relationship, 'individual_members'),
+            individualMember =>
+              individualMember.individual_guid === individualGuid,
+          );
+          const nonSelfIndividualMember = find(
             get(relationship, 'individual_members'),
             individualMember =>
               individualMember.individual_guid !== individualGuid,
-            [],
-          );
-          const nonSelfIndividualMember = get(
-            nonSelfIndividualMembers,
-            [0],
           );
           return {
             guid: relationship?.guid,
@@ -192,12 +182,11 @@ export default function RelationshipsCard({
               nonSelfIndividualMember?.individual_first_name,
             nonSelfGuid: nonSelfIndividualMember?.individual_guid,
             type: relationship?.type_label,
-            role: nonSelfIndividualMember?.individual_role_label,
+            role: selfIndividualMember?.individual_role_label,
           };
         },
         [],
-      );
-    },
+      ),
     [relationships],
   );
 
@@ -212,41 +201,6 @@ export default function RelationshipsCard({
         open: false,
       });
   };
-
-  const relationshipCols = [
-    {
-      reference: 'nonSelfFirstName',
-      name: 'nonSelfFirstName',
-      label: 'Individual',
-    },
-    { reference: 'type', name: 'type', label: 'Type' },
-    { reference: 'role', name: 'role', label: 'Role' },
-    {
-      reference: 'actions',
-      name: 'guid',
-      label: 'Actions',
-      options: {
-        customBodyRender: (_, relationship) => {
-          return [
-            <ActionIcon
-              variant="view"
-              href={`/individuals/${relationship?.nonSelfGuid}`}
-              linkProps={{ newTab: true }}
-            />,
-            <ActionIcon
-              variant={'delete'}
-              onClick={() => {
-                setConfirmDeleteDialog({
-                  relationshipGuid: relationship?.guid,
-                  open: true,
-                });
-              }}
-            />,
-          ];
-        },
-      },
-    },
-  ];
 
   const onChangeType = newType => {
     setCurrentType(newType);
@@ -286,6 +240,9 @@ export default function RelationshipsCard({
     }
   };
 
+  const showRoleSelectors =
+    selectedIndividualId && currentRoles?.length > 0;
+
   return [
     <ConfirmDelete
       open={confirmDeleteDialog?.open}
@@ -306,7 +263,7 @@ export default function RelationshipsCard({
     <StandardDialog
       open={openRelationshipDialog}
       onClose={onCloseDialog}
-      titleId={'ADD_RELATIONSHIP'}
+      titleId="ADD_RELATIONSHIP"
     >
       <DialogContent>
         <IndividualSelector
@@ -315,110 +272,50 @@ export default function RelationshipsCard({
             setSelectedIndividualFirstName
           }
         />
-        <div
-          id="rel-type"
-          style={{ width: 'fit-content', minWidth: 470 }}
-        >
-          <Autocomplete
-            id="types"
-            clearOnEscape
-            style={{ marginTop: 12 }}
-            value={currentType}
-            options={types}
-            renderOption={option => (
-              <Text value={option.guid}>{option.label}</Text>
-            )}
-            onChange={(_, newValue) => onChangeType(newValue)}
-            getOptionLabel={option => get(option, 'label', '')}
-            renderInput={params => {
-              return (
+        {selectedIndividualId && (
+          <div
+            id="relationship-type"
+            style={{ width: 'fit-content', minWidth: 470 }}
+          >
+            <Autocomplete
+              id="types"
+              clearOnEscape
+              style={{ marginTop: 12 }}
+              value={currentType}
+              options={types}
+              renderOption={option => (
+                <Text value={option.guid}>{option.label}</Text>
+              )}
+              onChange={(_, newValue) => onChangeType(newValue)}
+              getOptionLabel={option => get(option, 'label', '')}
+              renderInput={params => (
                 <TextField
                   {...params}
-                  style={{ width: 280 }}
+                  style={{ minWidth: 470, width: 'fit-content' }}
                   variant="standard"
                   label={intl.formatMessage({
                     id: 'SELECT_RELATIONSHIP_TYPE',
                   })}
                 />
-              );
-            }}
-          />
-        </div>
-        {currentRoles?.length > 0 && [
-          <div
-            id="roles1-div"
-            style={{ width: 'fit-content', minWidth: 470 }}
-          >
-            <Autocomplete
-              id="roles1"
-              clearOnEscape
-              style={{ marginTop: 12, width: 'fit-content' }}
-              value={currentRole2}
-              options={currentRoles}
-              renderOption={option => (
-                <Text value={option.guid}>{option.label}</Text>
               )}
-              onChange={(_, newValue) => onChangeRole2(newValue)}
-              getOptionLabel={option => get(option, 'label', '')}
-              getOptionSelected={(option, val) =>
-                option.guid ? option.guid === val : false
-              }
-              renderInput={params => {
-                return (
-                  <TextField
-                    {...params}
-                    style={{ width: 280 }}
-                    variant="standard"
-                    label={intl.formatMessage(
-                      { id: 'SELECT_RELATIONSHIP_ROLE_1' },
-                      {
-                        ind1: individualFirstName
-                          ? individualFirstName
-                          : intl.formatMessage({
-                              id: 'UNNAMED_INDIVIDUAL',
-                            }),
-                      },
-                    )}
-                  />
-                );
-              }}
             />
-          </div>,
-          <div
-            id="roles2-div"
-            style={{ width: 'fit-content', minWidth: 470 }}
-          >
-            <Autocomplete
-              id="roles2"
-              clearOnEscape
-              style={{ marginTop: 12 }}
-              value={currentRole1}
-              options={currentRoles}
-              renderOption={option => (
-                <Text value={option.guid}>{option.label}</Text>
-              )}
-              onChange={(_, newValue) => onChangeRole1(newValue)}
-              getOptionLabel={option => get(option, 'label', '')}
-              getOptionSelected={(option, val) =>
-                option.guid ? option.guid === val : false
-              }
-              renderInput={params => {
-                return (
-                  <TextField
-                    {...params}
-                    style={{ width: 280 }}
-                    variant="standard"
-                    label={intl.formatMessage(
-                      { id: 'SELECT_RELATIONSHIP_ROLE_2' },
-                      {
-                        ind2: selectedIndividualFirstName,
-                      },
-                    )}
-                  />
-                );
-              }}
-            />
-          </div>,
+          </div>
+        )}
+        {showRoleSelectors && [
+          <RelationshipRoleAutocomplete
+            id="roles1"
+            value={currentRole1}
+            options={currentRoles}
+            onChangeRole={onChangeRole1}
+            individualFirstName={individualFirstName}
+          />,
+          <RelationshipRoleAutocomplete
+            id="roles2"
+            value={currentRole2}
+            options={currentRoles}
+            onChangeRole={onChangeRole2}
+            individualFirstName={selectedIndividualFirstName}
+          />,
         ]}
       </DialogContent>
       <DialogActions
@@ -435,9 +332,7 @@ export default function RelationshipsCard({
             severity="error"
             titleId="SERVER_ERROR"
           >
-            <Text key={postRelationshipError} variant="body2">
-              {postRelationshipError}
-            </Text>
+            <Text variant="body2">{postRelationshipError}</Text>
           </CustomAlert>
         )}
         <div>
@@ -448,7 +343,7 @@ export default function RelationshipsCard({
           />
           <Button
             display="primary"
-            onClick={() => onSubmit()}
+            onClick={onSubmit}
             loading={
               loading ||
               loadingRelationships ||
@@ -460,25 +355,21 @@ export default function RelationshipsCard({
         </div>
       </DialogActions>
     </StandardDialog>,
-    <Card
-      title={title}
-      titleId={titleId}
-      maxHeight={600}
-      renderActions={
-        <div>
-          {/* <IconButton
-            style={{ color: theme.palette.primary.main }}
-            aria-label="View chart"
-          >
-            <ViewChart />
-          </IconButton> */}
-          <IconButton
-            aria-label="View list"
-            style={{ color: theme.palette.primary.main }}
-          />
-        </div>
-      }
-    >
+    <Card title={title} titleId={titleId} maxHeight={600}>
+      {/* // renderActions={
+      //   <div>
+      //     <IconButton
+      //       style={{ color: theme.palette.primary.main }}
+      //       aria-label="View chart"
+      //     >
+      //       <ViewChart />
+      //     </IconButton>
+      //     <IconButton
+      //       aria-label="View list"
+      //       style={{ color: theme.palette.primary.main }}
+      //     />
+      //   </div>
+      // } */}
       {noRelationships && (
         <Text
           variant="body2"
@@ -487,11 +378,11 @@ export default function RelationshipsCard({
         />
       )}
       {!noRelationships && (
-        <DataDisplay
+        <RelationshipDisplay
           tableSize="medium"
-          columns={relationshipCols}
           data={relationshipTableData}
           loading={loading}
+          setConfirmDeleteDialog={setConfirmDeleteDialog}
         />
       )}
 
