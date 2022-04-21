@@ -53,8 +53,6 @@ export default function RelationshipEditor({
   formSettings,
   setFormSettings,
 }) {
-  console.log('deleteMe formSettings are: ');
-  console.log(formSettings);
   const [formErrors, setFormErrors] = useState(null);
 
   function setRelationships(relationships) {
@@ -62,8 +60,6 @@ export default function RelationshipEditor({
   }
 
   const relationships = get(formSettings, ['relationships'], {});
-  console.log('deleteMe relationships are: ');
-  console.log(relationships);
 
   return (
     <ConfigureDefaultField

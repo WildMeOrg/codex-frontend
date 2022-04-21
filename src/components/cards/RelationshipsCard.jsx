@@ -25,6 +25,8 @@ import ActionIcon from '../ActionIcon';
 import usePostRelationship from '../../models/relationships/usePostRelationship';
 import ConfirmDelete from '../../components/ConfirmDelete';
 import useDeleteRelationships from '../../models/relationships/useDeleteRelationship';
+
+// Keeping this in because it will be re-implemented post-MVP
 // import SvgText from '../SvgText';
 // import FemaleIcon from '../svg/FemaleIcon';
 // import MaleIcon from '../svg/MaleIcon';
@@ -109,11 +111,10 @@ export default function RelationshipsCard({
   } = useSiteSettings();
   const {
     mutate: postRelationship,
-    // error: postRelationshipError,
+    error: postRelationshipError,
     loading: postRelationshipLoading,
     clearError: clearPostRelationshipError,
   } = usePostRelationship();
-  const postRelationshipError = 'deleteMe ack';
 
   const {
     mutate: deleteRelationship,
@@ -122,19 +123,6 @@ export default function RelationshipsCard({
     clearError: clearDeleteRelationshipError,
   } = useDeleteRelationships();
 
-  console.log('deleteMe postRelationshipError is: ');
-  console.log(postRelationshipError);
-
-  // const [errors, setErrors] = useState([]);
-  // setErrors(prevErrors => [
-  //   ...prevErrors,
-  //   'temp error hi',
-  //   relationshipsError,
-  //   postRelationshipError,
-  // ]);
-  // const errors = ['deleteMe'];
-  // const hasActualError =
-  //   errors.filter(error => Boolean(error)).length > 0;
   const theme = useTheme();
   const [confirmDeleteDialog, setConfirmDeleteDialog] = useState({
     relationshipGuid: null,
@@ -168,8 +156,6 @@ export default function RelationshipsCard({
         [],
       );
       const _types = Object.values(possibleRelationships);
-      console.log('deleteMe setting roles to: ');
-      console.log(get(_types, 'roles', []));
       setCurrentRoles(get(_types, 'roles', []));
       return _types;
     },
@@ -180,6 +166,7 @@ export default function RelationshipsCard({
       return map(
         relationships,
         relationship => {
+          // keeping this in until we after QA and confirm for certain that this would not be needed (I have a note in the ticket to come back and clean this up)
           // const selfIndividualMembers = filter(
           //   get(relationship, 'individual_members'),
           //   individualMember =>
@@ -215,13 +202,10 @@ export default function RelationshipsCard({
   );
 
   const onDelete = async relationshipGuid => {
-    console.log('deleteMe got here onDelete entered');
     const response = await deleteRelationship({
       relationshipGuid,
       individualGuid,
     });
-    console.log('deleteMe response from relationship delete is: ');
-    console.log(response);
     if (response?.status === 204)
       setConfirmDeleteDialog({
         realtionshipGuid: null,
@@ -243,10 +227,6 @@ export default function RelationshipsCard({
       label: 'Actions',
       options: {
         customBodyRender: (_, relationship) => {
-          console.log(
-            'deleteMe relationship in customBodyRender is: ',
-          );
-          console.log(relationship);
           return [
             <ActionIcon
               variant="view"
@@ -301,9 +281,8 @@ export default function RelationshipsCard({
       individual_2_role_guid: currentRole2?.guid,
       type_guid: currentType?.guid,
     });
-    console.log('deleteMe successful for postRelationship is: ');
     if (response?.status === 200) {
-      // onCloseDialog(); // TODO deleteMe comment this back in after error troubleshooting is done
+      onCloseDialog();
     }
   };
 
@@ -394,7 +373,6 @@ export default function RelationshipsCard({
                     label={intl.formatMessage(
                       { id: 'SELECT_RELATIONSHIP_ROLE_1' },
                       {
-                        // ind2: selectedIndividualFirstName, // deleteMe
                         ind1: individualFirstName
                           ? individualFirstName
                           : intl.formatMessage({
@@ -434,11 +412,6 @@ export default function RelationshipsCard({
                     label={intl.formatMessage(
                       { id: 'SELECT_RELATIONSHIP_ROLE_2' },
                       {
-                        // ind1: individualFirstName // deleteMe
-                        //   ? individualFirstName
-                        //   : intl.formatMessage({
-                        //       id: 'UNNAMED_INDIVIDUAL',
-                        //     }),
                         ind2: selectedIndividualFirstName,
                       },
                     )}
