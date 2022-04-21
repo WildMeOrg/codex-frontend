@@ -220,7 +220,7 @@ export default function RelationshipsCard({
     });
     console.log('deleteMe response from relationship delete is: ');
     console.log(response);
-    if (response?.status === 200)
+    if (response?.status === 204)
       setConfirmDeleteDialog({
         realtionshipGuid: null,
         open: false,
@@ -336,7 +336,7 @@ export default function RelationshipsCard({
         <Autocomplete
           id="types"
           clearOnEscape
-          style={{ marginTop: 12 }}
+          style={{ marginTop: 12, width: 'fit-content' }}
           value={currentType}
           options={types}
           renderOption={option => (
@@ -362,7 +362,7 @@ export default function RelationshipsCard({
           <Autocomplete
             id="roles1"
             clearOnEscape
-            style={{ marginTop: 12 }}
+            style={{ marginTop: 12, width: 'fit-content' }}
             value={currentRole2}
             options={currentRoles}
             renderOption={option => (
