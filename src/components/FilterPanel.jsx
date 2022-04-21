@@ -19,18 +19,15 @@ export default function FilterPanel({
   schemas,
   formFilters,
   setFormFilters,
-  updateFilters,
 }) {
   const handleFilterChange = filter => {
     setFilter(filter, formFilters, setFormFilters);
-    updateFilters();
   };
   const clearFilter = filterId => {
     const newFormFilters = formFilters.filter(
       f => f.filterId !== filterId,
     );
     setFormFilters(newFormFilters);
-    updateFilters();
   };
 
   const safeSchemas = schemas || [];

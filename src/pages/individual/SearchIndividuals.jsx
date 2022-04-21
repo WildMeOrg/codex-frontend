@@ -15,10 +15,12 @@ export default function SearchIndividuals() {
 
   const {
     data: searchResults,
-    hitCount,
     loading,
-    updateFilters,
-  } = useFilterIndividuals(formFilters, page, rowsPerPage);
+  } = useFilterIndividuals({
+    queries: formFilters,
+    page,
+    rowsPerPage,
+  });
 
   const schemas = useIndividualSearchSchemas();
 
@@ -29,7 +31,6 @@ export default function SearchIndividuals() {
         <FilterPanel
           formFilters={formFilters}
           setFormFilters={setFormFilters}
-          updateFilters={updateFilters}
           schemas={schemas}
         />
       }
@@ -37,7 +38,6 @@ export default function SearchIndividuals() {
         <SearchFilterList
           formFilters={formFilters}
           setFormFilters={setFormFilters}
-          updateFilters={updateFilters}
         />
       }
     >
@@ -49,7 +49,6 @@ export default function SearchIndividuals() {
         onChangePage={(_, newPage) => setPage(newPage)}
         rowsPerPage={rowsPerPage}
         loading={loading}
-        hitCount={hitCount}
       />
     </SearchPage>
   );
