@@ -38,7 +38,7 @@ export default function useSightingSearchSchemas() {
       FilterComponent: SubstringFilter,
       filterComponentProps: {
         filterId: 'comments',
-        queryTerms: ['coments'],
+        queryTerms: ['comments'],
       },
     },
     {
