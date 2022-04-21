@@ -1,118 +1,108 @@
-import fieldTypes from '../../constants/fieldTypesNew';
+import OptionTermFilter from '../../components/filterFields/OptionTermFilter';
+import SubstringFilter from '../../components/filterFields/SubstringFilter';
+import DateRangeFilter from '../../components/filterFields/DateRangeFilter';
 import sexOptions from '../../constants/sexOptions';
 
-const sexSearchOptions = sexOptions.filter(o => o.value !== null);
+const labeledSexOptions = sexOptions.map(o => ({
+  labelId: o?.filterLabelId || o.labelId,
+  value: o.value,
+}));
 
-export const categories = {
-  time: {
-    name: 'time',
-    labelId: 'TIME',
+const hasAnnotationOptions = [
+  {
+    label: 'Yes',
+    value: 'yes',
+    queryValue: true,
   },
-  location: {
-    name: 'location',
-    labelId: 'LOCATION',
+  {
+    label: 'No',
+    value: 'no',
+    queryValue: true,
+    clause: 'must_not',
   },
-  attributes: {
-    name: 'attributes',
-    labelId: 'ATTRIBUTES',
+  {
+    label: 'Either',
+    value: '',
   },
-  relationships: {
-    name: 'relationships',
-    labelId: 'RELATIONSHIPS',
-  },
-};
+];
 
 export default function useIndividualSearchSchemas() {
   return [
     {
-      name: 'species',
-      labelId: 'SPECIES',
-      category: categories.attributes.name,
-      fieldType: fieldTypes.select,
-      choices: [
-        { value: 'delphinae', label: 'Delphinidae' },
-        { value: 'grampus-griseus', label: 'Grampus Griseus' },
-        { value: 'kogia-sima', label: 'Kogia Sima' },
-        { value: 'Unknown', label: 'Unknown' },
-      ],
-      defaultValue: '',
+      id: 'firstName',
+      labelId: 'INDIVIDUAL_NAME',
+      FilterComponent: SubstringFilter,
+      filterComponentProps: {
+        filterId: 'firstName',
+        queryTerms: ['firstName'],
+      },
     },
     {
-      name: 'sightingDateRange',
-      labelId: 'SIGHTING_DATE_RANGE',
-      descriptionId: 'SIGHTING_DATE_RANGE_DESCRIPTION',
-      category: categories.time.name,
-      fieldType: fieldTypes.daterange,
-      defaultValue: [null, null],
+      id: 'adoptionName',
+      labelId: 'ADOPTION_NAME',
+      FilterComponent: SubstringFilter,
+      filterComponentProps: {
+        filterId: 'adoptionName',
+        queryTerms: ['adoptionName'],
+      },
     },
     {
-      name: 'birthDateRange',
-      labelId: 'BIRTH_DATE_RANGE',
-      descriptionId: 'BIRTH_DATE_RANGE_DESCRIPTION',
-      category: categories.time.name,
-      fieldType: fieldTypes.daterange,
-      defaultValue: [null, null],
-    },
-    {
-      name: 'deathDateRange',
-      labelId: 'DEATH_DATE_RANGE',
-      descriptionId: 'DEATH_DATE_RANGE_DESCRIPTION',
-      category: categories.time.name,
-      fieldType: fieldTypes.daterange,
-      defaultValue: [null, null],
-    },
-    {
-      name: 'location',
-      labelId: 'LOCATION',
-      descriptionId: 'LOCATION_DESCRIPTION',
-      category: categories.location.name,
-      fieldType: fieldTypes.area,
-      defaultValue: null,
-    },
-    {
-      name: 'sex',
+      id: 'sex',
       labelId: 'SEX',
-      category: categories.attributes.name,
-      fieldType: fieldTypes.select,
-      choices: sexSearchOptions,
-      defaultValue: '',
+      FilterComponent: OptionTermFilter,
+      filterComponentProps: {
+        queryTerm: 'sex',
+        filterId: 'sex',
+        choices: labeledSexOptions,
+      },
     },
     {
-      name: 'status',
-      labelId: 'STATUS',
-      descriptionId: 'STATUS_INDIVIDUALS_DESCRIPTION',
-      category: categories.attributes.name,
-      fieldType: fieldTypes.select,
-      choices: [
-        { value: 'alive', labelId: 'ALIVE' },
-        { value: 'dead', labelId: 'DEAD' },
-        { value: 'unknown', labelId: 'UNKNOWN' },
-      ],
-      defaultValue: '',
+      id: 'hasAnnotations',
+      labelId: 'HAS_ANNOTATIONS',
+      FilterComponent: OptionTermFilter,
+      filterComponentProps: {
+        queryType: 'term',
+        queryTerm: 'has_annotations',
+        filterId: 'annotation',
+        choices: hasAnnotationOptions,
+      },
+    }, //   labelId: 'SPECIES', //   id: 'taxonomy', // {
+    //   FilterComponent: OptionTermFilter,
+    //   filterComponentProps: {
+    //     queryType: 'term',
+    //     queryTerm: 'taxonomy_guid',
+    //     filterId: 'taxonomy_guid',
+    //     choices: taxonomyOptions,
+    //   },
+    // },
+    // {
+    //   id: 'gps',
+    //   labelId: 'DISTANCE_FROM_POINT',
+    //   FilterComponent: PointDistanceFilter,
+    //   filterComponentProps: {
+    //     nested: true,
+    //     queryTerm: 'encounters.point',
+    //     filterId: 'geodistance',
+    //     style: {{ marginTop: 16 }},
+    //   },
+    // },
+    {
+      id: 'lastSeen',
+      labelId: 'LAST_SIGHTING_DATE_RANGE',
+      FilterComponent: DateRangeFilter,
+      filterComponentProps: {
+        queryTerm: 'last_seen',
+        filterId: 'last_seen',
+      },
     },
     {
-      name: 'name_contains',
-      labelId: 'NAME_CONTAINS',
-      descriptionId: 'NAME_CONTAINS_DESCRIPTION',
-      category: categories.attributes.name,
-      fieldType: fieldTypes.string,
-      defaultValue: '',
-    },
-    {
-      name: 'has_media',
-      labelId: 'HAS_MEDIA',
-      descriptionId: 'HAS_MEDIA_INDIVIDUALS_DESCRIPTION',
-      category: categories.attributes.name,
-      fieldType: fieldTypes.boolean,
-      defaultValue: null,
-    },
-    {
-      name: 'max_years_between_sightings',
-      labelId: 'MAX_YEARS_BETWEEN_SIGHTINGS',
-      descriptionId: 'MAX_YEARS_BETWEEN_SIGHTINGS_DESCRIPTION',
-      category: categories.attributes.name,
-      fieldType: fieldTypes.comparator,
-      defaultValue: { comparator: '', value: '' },
+      id: 'created',
+      labelId: 'CREATION_DATE_RANGE',
+      FilterComponent: DateRangeFilter,
+      filterComponentProps: {
+        queryTerm: 'created',
+        filterId: 'created',
+      },
     },
   ];
 }
