@@ -8,7 +8,10 @@ export default function useSightingSearchSchemas() {
       id: 'owner',
       labelId: 'OWNER',
       FilterComponent: SubstringFilter,
-      filterComponentProps: { queryTerms: ['owners.full_name'] },
+      filterComponentProps: {
+        filterId: 'owner',
+        queryTerms: ['owners.full_name'],
+      },
     },
     {
       id: 'region',
@@ -25,6 +28,7 @@ export default function useSightingSearchSchemas() {
       labelId: 'LOCATION',
       FilterComponent: SubstringFilter,
       filterComponentProps: {
+        filterId: 'verbatimLocality',
         queryTerms: ['verbatimLocality', 'locationId_value'],
       },
     },
@@ -32,16 +36,16 @@ export default function useSightingSearchSchemas() {
       id: 'comments',
       labelId: 'NOTES',
       FilterComponent: SubstringFilter,
-      filterComponentProps: { queryTerms: ['coments'] },
+      filterComponentProps: {
+        filterId: 'comments',
+        queryTerms: ['coments'],
+      },
     },
     {
       id: 'time',
       labelId: 'SIGHTING_DATE_RANGE',
       FilterComponent: DateRangeFilter,
-      filterComponentProps: {
-        queryTerm: 'time',
-        filterId: 'time',
-      },
+      filterComponentProps: { queryTerm: 'time', filterId: 'time' },
     },
   ];
 }

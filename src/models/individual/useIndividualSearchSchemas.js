@@ -32,13 +32,19 @@ export default function useIndividualSearchSchemas() {
       id: 'firstName',
       labelId: 'INDIVIDUAL_NAME',
       FilterComponent: SubstringFilter,
-      filterComponentProps: { queryTerms: ['firstName'] },
+      filterComponentProps: {
+        filterId: 'firstName',
+        queryTerms: ['firstName'],
+      },
     },
     {
       id: 'adoptionName',
       labelId: 'ADOPTION_NAME',
       FilterComponent: SubstringFilter,
-      filterComponentProps: { queryTerms: ['adoptionName'] },
+      filterComponentProps: {
+        filterId: 'adoptionName',
+        queryTerms: ['adoptionName'],
+      },
     },
     {
       id: 'sex',
@@ -60,9 +66,7 @@ export default function useIndividualSearchSchemas() {
         filterId: 'annotation',
         choices: hasAnnotationOptions,
       },
-    }, // {
-    //   id: 'taxonomy',
-    //   labelId: 'SPECIES',
+    }, //   labelId: 'SPECIES', //   id: 'taxonomy', // {
     //   FilterComponent: OptionTermFilter,
     //   filterComponentProps: {
     //     queryType: 'term',
@@ -87,8 +91,8 @@ export default function useIndividualSearchSchemas() {
       labelId: 'LAST_SIGHTING_DATE_RANGE',
       FilterComponent: DateRangeFilter,
       filterComponentProps: {
-        queryTerm: 'last_sighting',
-        filterId: 'last_sighting',
+        queryTerm: 'last_seen',
+        filterId: 'last_seen',
       },
     },
     {
