@@ -106,14 +106,12 @@ export default function RelationshipsCard({
   const {
     data: siteSettings,
     loading: loadingRelationships,
-    error: relationshipsError,
   } = useSiteSettings();
   const {
     mutate: postRelationship,
     error: postRelationshipError,
     loading: postRelationshipLoading,
     clearError: clearPostRelationshipError,
-    clearSuccess: clearPostRelationshipSuccess,
   } = usePostRelationship();
 
   const {
@@ -130,9 +128,9 @@ export default function RelationshipsCard({
   //   relationshipsError,
   //   postRelationshipError,
   // ]);
-  const errors = ['deleteMe'];
-  const hasActualError =
-    errors.filter(error => Boolean(error)).length > 0;
+  // const errors = ['deleteMe'];
+  // const hasActualError =
+  //   errors.filter(error => Boolean(error)).length > 0;
   const theme = useTheme();
   const [confirmDeleteDialog, setConfirmDeleteDialog] = useState({
     relationshipGuid: null,
@@ -248,6 +246,7 @@ export default function RelationshipsCard({
           return [
             <ActionIcon
               variant="view"
+              newTab
               href={`/individuals/${relationship?.nonSelfGuid}`}
             />,
             <ActionIcon
@@ -287,7 +286,7 @@ export default function RelationshipsCard({
     setCurrentType(null);
     setCurrentRole1(null);
     setCurrentRole2(null);
-    // setErrors([]);
+    clearPostRelationshipError();
   };
 
   const onSubmit = async () => {
@@ -445,17 +444,15 @@ export default function RelationshipsCard({
           flexDirection: 'column',
         }}
       >
-        {hasActualError && (
+        {postRelationshipError && (
           <CustomAlert
             style={{ margin: '20px 0', width: '100%' }}
             severity="error"
             titleId="SERVER_ERROR"
           >
-            {errors.map(error => (
-              <Text key={error} variant="body2">
-                {error}
-              </Text>
-            ))}
+            <Text key={postRelationshipError} variant="body2">
+              {postRelationshipError}
+            </Text>
           </CustomAlert>
         )}
         <div>
