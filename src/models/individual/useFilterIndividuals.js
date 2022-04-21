@@ -43,8 +43,6 @@ export default function useFilterIndividuals({
     },
   };
 
-  console.log(compositeQuery);
-
   return useFetch({
     method: 'post',
     queryKey: getIndividualFilterQueryKey(queries, page, rowsPerPage),

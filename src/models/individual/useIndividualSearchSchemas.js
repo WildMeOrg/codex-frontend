@@ -4,7 +4,7 @@ import DateRangeFilter from '../../components/filterFields/DateRangeFilter';
 import sexOptions from '../../constants/sexOptions';
 
 const labeledSexOptions = sexOptions.map(o => ({
-  label: o?.filterLabelId || o.labelId,
+  labelId: o?.filterLabelId || o.labelId,
   value: o.value,
 }));
 

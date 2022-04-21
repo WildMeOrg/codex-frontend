@@ -17,7 +17,9 @@ export default function IndividualsDisplay({
   ...rest
 }) {
   const intl = useIntl();
-  const title = hitCount ? `${hitCount} matching individuals` : 'Matching individuals';
+  const title = hitCount
+    ? `${hitCount} matching individuals`
+    : 'Matching individuals';
 
   const columns = [
     {
@@ -26,8 +28,7 @@ export default function IndividualsDisplay({
         id: 'NAME',
       }),
       options: {
-        customBodyRender: (_, individual) =>
-        {
+        customBodyRender: (_, individual) => {
           const name = deriveIndividualName(
             individual,
             'FirstName',
@@ -46,8 +47,7 @@ export default function IndividualsDisplay({
       labelId: 'ADOPTION_NAME',
       align: 'left',
       options: {
-        customBodyRender: (_, individual) =>
-        {
+        customBodyRender: (_, individual) => {
           const adoptionName = deriveIndividualName(
             individual,
             'AdoptionName',

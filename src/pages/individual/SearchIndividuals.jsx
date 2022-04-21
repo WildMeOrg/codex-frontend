@@ -13,10 +13,7 @@ export default function SearchIndividuals() {
   const [page, setPage] = useState(0);
   const [formFilters, setFormFilters] = useState([]);
 
-  const {
-    data: searchResults,
-    loading,
-  } = useFilterIndividuals({
+  const { data: searchResults, loading } = useFilterIndividuals({
     queries: formFilters,
     page,
     rowsPerPage,
