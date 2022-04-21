@@ -8,7 +8,6 @@ const noWrapStyles = {
   whiteSpace: 'nowrap',
   overflow: 'hidden',
   textOverflow: 'ellipsis',
-  width: '100%',
 };
 
 export default function OverflowController({ title, children }) {
