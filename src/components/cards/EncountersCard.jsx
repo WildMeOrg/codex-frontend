@@ -58,31 +58,56 @@ export default function EncountersCard({
       reference: 'date',
       name: 'time',
       label: 'Date',
-      options: { cellRenderer: cellRendererTypes.specifiedTime },
+      options: {
+        cellRenderer: cellRendererTypes.specifiedTime,
+        cellRendererProps: { noWrap: true },
+        width: '20%',
+      },
     },
     {
       reference: 'location',
       name: 'formattedLocation',
       label: 'Location',
-      options: { cellRenderer: cellRendererTypes.location },
+      options: {
+        cellRenderer: cellRendererTypes.location,
+        cellRendererProps: { noWrap: true },
+      },
     },
     {
       reference: 'owner',
       name: 'owner',
       label: 'Owner',
-      options: { cellRenderer: cellRendererTypes.user },
+      options: {
+        cellRenderer: cellRendererTypes.user,
+        cellRendererProps: { noWrap: true },
+      },
     },
     {
       reference: 'actions',
       name: 'guid',
       label: 'Actions',
       options: {
+        width: (function buildWidth() {
+          const numberOfActions = 2;
+          // the following values were determined by inspecting the resulting DOM elements.
+          const actionWidth = '1.5rem';
+          const totalActionPadding = `${numberOfActions *
+            theme.spacing(1)}px`;
+          const tableCellPadding = `${theme.spacing(4)}px`;
+          const actionLabelWidth = '73px';
+
+          const actionTdWidth = `calc(${numberOfActions} * ${actionWidth} + ${totalActionPadding} + ${tableCellPadding})`;
+          const actionThWidth = `calc(${actionLabelWidth} + ${tableCellPadding})`;
+          return `max(${actionTdWidth}, ${actionThWidth})`;
+        })(),
         customBodyRender: (_, encounter) => [
           <ActionIcon
+            key="view"
             variant="view"
             href={`/sightings/${encounter?.sighting}`}
           />,
           <ActionIcon
+            key="remove"
             variant={
               tooFewEncounters
                 ? 'removeEncFromIndividualDisabled'
@@ -149,6 +174,7 @@ export default function EncountersCard({
           tableSize="medium"
           columns={filteredColumns}
           data={encountersWithLocationData}
+          tableStyles={{ tableLayout: 'fixed' }}
         />
       )}
       {!noEncounters && showMapView && <div>Map goes here</div>}
