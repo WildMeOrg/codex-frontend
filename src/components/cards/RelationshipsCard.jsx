@@ -121,6 +121,9 @@ export default function RelationshipsCard({
     clearError: clearDeleteRelationshipError,
   } = useDeleteRelationships();
 
+  console.log('deleteMe postRelationshipError is: ');
+  console.log(postRelationshipError);
+
   // const [errors, setErrors] = useState([]);
   // setErrors(prevErrors => [
   //   ...prevErrors,
@@ -246,8 +249,8 @@ export default function RelationshipsCard({
           return [
             <ActionIcon
               variant="view"
-              newTab
               href={`/individuals/${relationship?.nonSelfGuid}`}
+              linkProps={{ newTab: true }}
             />,
             <ActionIcon
               variant={'delete'}
@@ -332,7 +335,10 @@ export default function RelationshipsCard({
             setSelectedIndividualFirstName
           }
         />
-        <div id="rel-type" style={{ width: 'fit-content' }}>
+        <div
+          id="rel-type"
+          style={{ width: 'fit-content', minWidth: 470 }}
+        >
           <Autocomplete
             id="types"
             clearOnEscape
@@ -360,7 +366,10 @@ export default function RelationshipsCard({
           />
         </div>
         {currentRoles?.length > 0 && [
-          <div id="roles1-div" style={{ width: 'fit-content' }}>
+          <div
+            id="roles1-div"
+            style={{ width: 'fit-content', minWidth: 470 }}
+          >
             <Autocomplete
               id="roles1"
               clearOnEscape
@@ -397,7 +406,10 @@ export default function RelationshipsCard({
               }}
             />
           </div>,
-          <div id="roles2-div" style={{ width: 'fit-content' }}>
+          <div
+            id="roles2-div"
+            style={{ width: 'fit-content', minWidth: 470 }}
+          >
             <Autocomplete
               id="roles2"
               clearOnEscape
