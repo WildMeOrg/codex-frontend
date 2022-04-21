@@ -22,13 +22,13 @@ export default function DateRenderer({
 }) {
   const formattedValue = formatDate(get(datum, accessor, ''));
 
-  const coreComponent = <CoreForwardRef value={formattedValue} />;
+  const CoreComponent = <CoreForwardRef value={formattedValue} />;
 
   return noWrap ? (
     <OverflowController title={formattedValue}>
-      {coreComponent}
+      {CoreComponent}
     </OverflowController>
   ) : (
-    coreComponent
+    CoreComponent
   );
 }

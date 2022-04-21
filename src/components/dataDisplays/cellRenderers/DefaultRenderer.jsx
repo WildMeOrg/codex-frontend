@@ -15,12 +15,12 @@ export default function DefaultRenderer({
   value = '',
   noWrap = false,
 }) {
-  const coreComponent = <CoreForwardRef value={value} />;
+  const CoreComponent = <CoreForwardRef value={value} />;
   return noWrap ? (
     <OverflowController title={value}>
-      {coreComponent}
+      {CoreComponent}
     </OverflowController>
   ) : (
-    coreComponent
+    CoreComponent
   );
 }

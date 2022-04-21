@@ -33,13 +33,13 @@ export default function SpecifiedTimeRenderer({
 
   const formattedValue = formatDateCustom(time, formatSpecification);
 
-  const coreComponent = <CoreForwardRef value={formattedValue} />;
+  const CoreComponent = <CoreForwardRef value={formattedValue} />;
 
   return noWrap ? (
     <OverflowController title={formattedValue}>
-      {coreComponent}
+      {CoreComponent}
     </OverflowController>
   ) : (
-    coreComponent
+    CoreComponent
   );
 }

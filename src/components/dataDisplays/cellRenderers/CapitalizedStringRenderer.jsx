@@ -20,13 +20,13 @@ export default function CapitalizedStringRenderer({
 }) {
   const capitalizedValue = capitalize(value);
 
-  const coreComponent = <CoreForwardRef value={capitalizedValue} />;
+  const CoreComponent = <CoreForwardRef value={capitalizedValue} />;
 
   return noWrap ? (
     <OverflowController title={capitalizedValue}>
-      {coreComponent}
+      {CoreComponent}
     </OverflowController>
   ) : (
-    coreComponent
+    CoreComponent
   );
 }
