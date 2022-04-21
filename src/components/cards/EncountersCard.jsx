@@ -8,6 +8,7 @@ import ViewList from '@material-ui/icons/ViewList';
 import ViewMap from '@material-ui/icons/Language';
 
 import { formatLocationFromSighting } from '../../utils/formatters';
+import useActionsColumnWidth from '../../hooks/useActionsColumnWidth';
 import useOptions from '../../hooks/useOptions';
 import { cellRendererTypes } from '../dataDisplays/cellRenderers';
 import Text from '../Text';
@@ -87,19 +88,7 @@ export default function EncountersCard({
       name: 'guid',
       label: 'Actions',
       options: {
-        width: (function buildWidth() {
-          const numberOfActions = 2;
-          // the following values were determined by inspecting the resulting DOM elements.
-          const actionWidth = '1.5rem';
-          const totalActionPadding = `${numberOfActions *
-            theme.spacing(1)}px`;
-          const tableCellPadding = `${theme.spacing(4)}px`;
-          const actionLabelWidth = '73px';
-
-          const actionTdWidth = `calc(${numberOfActions} * ${actionWidth} + ${totalActionPadding} + ${tableCellPadding})`;
-          const actionThWidth = `calc(${actionLabelWidth} + ${tableCellPadding})`;
-          return `max(${actionTdWidth}, ${actionThWidth})`;
-        })(),
+        width: useActionsColumnWidth(2),
         customBodyRender: (_, encounter) => [
           <ActionIcon
             key="view"
