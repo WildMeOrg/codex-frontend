@@ -22,16 +22,16 @@ export default function AddAnnotationsDialog({
   const [selectedAnnotations, setSelectedAnnotations] = useState([]);
 
   const {
-    addAnnotationsToSightingEncounter,
+    mutate: addAnnotationsToSightingEncounter,
     error: addToSightingEncounterError,
-    isLoading: addToSightingEncounterLoading,
+    loading: addToSightingEncounterLoading,
     onClearError: onClearAddToSightingEncounterError,
   } = useAddAnnotationsToSightingEncounter();
 
   const {
-    addAnnotationsToAGSEncounter,
+    mutate: addAnnotationsToAGSEncounter,
     error: addToAGSEncounterError,
-    isLoading: addToAGSEncounterLoading,
+    loading: addToAGSEncounterLoading,
     onClearError: onClearAddToAGSEncounterError,
   } = useAddAnnotationsToAGSEncounter();
 
@@ -143,16 +143,17 @@ export default function AddAnnotationsDialog({
           onClick={async () => {
             let result;
             if (pending) {
-              result = await addAnnotationsToAGSEncounter(
-                sightingId,
-                encounterId,
-                selectedAnnotations,
-              );
+              result = await addAnnotationsToAGSEncounter({
+                agsGuid: sightingId,
+                encounterGuid: encounterId,
+                annotationGuids: selectedAnnotations,
+              });
             } else {
-              result = await addAnnotationsToSightingEncounter(
-                encounterId,
-                selectedAnnotations,
-              );
+              result = await addAnnotationsToSightingEncounter({
+                sightingGuid: sightingId,
+                encounterGuid: encounterId,
+                annotationGuids: selectedAnnotations,
+              });
             }
             if (result?.status === 200) onCloseDialog();
           }}
