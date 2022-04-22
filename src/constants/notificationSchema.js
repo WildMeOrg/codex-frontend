@@ -92,7 +92,8 @@ notificationSchemaPlaceholder[
 ] = {
   titleId: 'INDIVIDUAL_MERGE_REQUEST_TITLE',
   notificationMessage: 'INDIVIDUAL_MERGE_REQUEST_MESSAGE',
-  moreDetailedDescription: 'INDIVIDUAL_MERGE_REQUEST_MESSAGE',
+  moreDetailedDescription:
+    'INDIVIDUAL_MERGE_REQUEST_MESSAGE_DETAILED',
   showNotificationDialog: true,
 };
 notificationSchemaPlaceholder[

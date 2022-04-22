@@ -159,7 +159,7 @@ export default function MergeIndividuals() {
             id="MERGE_INDIVIDUALS"
             loading={loading}
             disabled={loading || !formComplete}
-            onClick={() => {
+            onClick={async () => {
               const propertyOverrides = derivePropertyOverrides(
                 formData,
                 showSexInput,
@@ -167,11 +167,14 @@ export default function MergeIndividuals() {
                 showAdoptionNameInput,
               );
 
-              mergeIndividuals({
+              const result = await mergeIndividuals({
                 targetIndividualGuid: targetIndividualData?.guid,
                 fromIndividualGuids: [fromIndividualData?.guid],
                 propertyOverrides,
               });
+
+              console.log('deleteMe result of mergeIndividual is: ');
+              console.log(result);
             }}
           />
         </Grid>
