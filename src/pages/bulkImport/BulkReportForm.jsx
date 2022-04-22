@@ -28,27 +28,39 @@ import {
   validateAssetStrings,
 } from './utils/flatfileValidators';
 
-async function onRecordChange(record, recordIndex) {
-  const messages = validateMinMax(record);
+async function onRecordChange(record, recordIndex, filenames) {
+  let messages = validateMinMax(record);
 
   const individual = record?.individual;
   if (individual) {
     try {
-      const validationResponse = await validateIndividualNames([
+      const nameValidationResponse = await validateIndividualNames([
         [individual, recordIndex],
       ]);
-      const nameMessage = get(validationResponse, [0, 0]);
+      const nameMessage = get(nameValidationResponse, [0, 0]);
 
-      if (nameMessage)
-        return {
+      if (nameMessage) {
+        messages = {
           ...messages,
           individual: nameMessage,
         };
+      }
     } catch (e) {
       console.error(
         `Error validating individual name "${individual}" at ${recordIndex}`,
         e,
       );
+    }
+  }
+
+  const assetString = record?.assetReferences;
+  if (assetString) {
+    const assetValidationResponse = validateAssetStrings(filenames, [
+      [assetString, recordIndex],
+    ]);
+    const assetMessage = get(assetValidationResponse, [0, 0]);
+    if (assetMessage) {
+      messages = { ...messages, assetReferences: assetMessage };
     }
   }
 
@@ -142,7 +154,9 @@ export default function BulkReportForm({ assetReferences }) {
               },
             }}
             onRecordInit={onRecordInit}
-            onRecordChange={onRecordChange}
+            onRecordChange={(record, recordIndex) =>
+              onRecordChange(record, recordIndex, filenames)
+            }
             onData={async results => {
               setSightingData(results.data);
             }}
