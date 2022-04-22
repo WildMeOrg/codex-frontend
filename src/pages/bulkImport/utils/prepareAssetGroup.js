@@ -1,6 +1,7 @@
 import { get, omit } from 'lodash-es';
 import { v4 as uuid } from 'uuid';
 import { formatHoustonTime } from '../../../utils/formatters';
+import parseAssetString from './parseAssetString';
 
 function updateTimes(encounter) {
   const year = get(encounter, 'timeYear', 0);
@@ -46,9 +47,7 @@ export default function prepareAssetGroup(
       'assetReferences',
       '',
     );
-    const sightingAssets = sightingAssetInput
-      .split(',')
-      .map(a => a.trim());
+    const sightingAssets = parseAssetString(sightingAssetInput);
     const matchingAssets = simpleAssetReferences.filter(path =>
       sightingAssets.includes(path),
     );
