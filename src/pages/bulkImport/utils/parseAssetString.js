@@ -1,3 +1,6 @@
 export default function parseAssetString(assetString) {
-  return assetString.split(',').map(a => a.trim());
+  const phrasesBetweenCommas = assetString
+    .split(',')
+    .map(a => a.trim());
+  return phrasesBetweenCommas.filter(phrase => phrase !== '');
 }

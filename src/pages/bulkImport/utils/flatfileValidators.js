@@ -47,34 +47,39 @@ export function validateMinMax(record) {
 }
 
 export function validateAssetStrings(filenames, assetStringInputs) {
-  return assetStringInputs.map(assetStringInput => {
-    const [assetString, rowIndex] = assetStringInput;
-    const assets = parseAssetString(assetString);
-    const [matchedAssets, unmatchedAssets] = partition(assets, a =>
-      filenames.includes(a),
-    );
+  const validationMessages = assetStringInputs.map(
+    assetStringInput => {
+      const [assetString, rowIndex] = assetStringInput;
+      const assets = parseAssetString(assetString);
+      if (assets.length === 0) return null;
+      const [matchedAssets, unmatchedAssets] = partition(assets, a =>
+        filenames.includes(a),
+      );
 
-    const matchedAssetsString = matchedAssets.join(', ');
-    const unmatchedAssetsString = unmatchedAssets.join(', ');
-    const matchedAssetsMessage = `The following asset(s) were found: ${matchedAssetsString}.`;
-    const unmatchedAssetsMessage = ` The following asset(s) were not found and will be ignored: ${unmatchedAssetsString}.`;
+      const matchedAssetsString = matchedAssets.join(', ');
+      const unmatchedAssetsString = unmatchedAssets.join(', ');
+      const matchedAssetsMessage = `The following asset(s) were found: ${matchedAssetsString}.`;
+      const unmatchedAssetsMessage = ` The following asset(s) were not found and will be ignored: ${unmatchedAssetsString}.`;
 
-    let message =
-      matchedAssets.length > 0 ? matchedAssetsMessage : '';
-    message = message.concat(
-      unmatchedAssets.length > 0 ? unmatchedAssetsMessage : '',
-    );
+      let message =
+        matchedAssets.length > 0 ? matchedAssetsMessage : '';
+      message = message.concat(
+        unmatchedAssets.length > 0 ? unmatchedAssetsMessage : '',
+      );
 
-    const level = unmatchedAssets.length > 0 ? 'warning' : 'info';
+      const level = unmatchedAssets.length > 0 ? 'warning' : 'info';
 
-    const rowMessage = {
-      info: [
-        {
-          message,
-          level,
-        },
-      ],
-    };
-    return [rowMessage, rowIndex];
-  });
+      const rowMessage = {
+        info: [
+          {
+            message,
+            level,
+          },
+        ],
+      };
+      return [rowMessage, rowIndex];
+    },
+  );
+
+  return validationMessages.filter(message => message);
 }
