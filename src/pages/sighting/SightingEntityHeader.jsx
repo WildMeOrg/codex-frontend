@@ -2,6 +2,9 @@ import React, { useMemo, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { get, map } from 'lodash-es';
 
+import Chip from '@material-ui/core/Chip';
+import DoneIcon from '@material-ui/icons/Done';
+
 import Link from '../../components/Link';
 import Tabs from '../../components/Tabs';
 import Text from '../../components/Text';
@@ -44,6 +47,8 @@ export default function SightingEntityHeader({
   const intl = useIntl();
 
   const [reviewDialogOpen, setReviewDialogOpen] = useState(false);
+
+  const sightingIsReviewed = Boolean(data?.review_time);
 
   const dataForFeaturedPhoto = useMemo(
     () => {
@@ -122,7 +127,7 @@ export default function SightingEntityHeader({
                 {
                   id: 'mark-reviewed',
                   onClick: () => setReviewDialogOpen(true),
-                  disabled: pending,
+                  disabled: pending || sightingIsReviewed,
                   label: 'Mark sighting reviewed',
                 },
                 {
@@ -140,6 +145,14 @@ export default function SightingEntityHeader({
             {intl.formatMessage({ id: 'REPORTED_BY' })}
             <Link to={creatorUrl}>{creatorName}</Link>
           </Text>
+        )}
+        {sightingIsReviewed && (
+          <Chip
+            icon={<DoneIcon />}
+            variant="outlined"
+            label="Reviewed"
+            style={{ marginTop: 8 }}
+          />
         )}
       </EntityHeader>
     </>
