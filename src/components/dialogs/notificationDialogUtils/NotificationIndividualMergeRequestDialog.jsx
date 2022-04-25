@@ -12,7 +12,8 @@ export default function NotificationIndividualMergeDialog({
   notification,
 }) {
   const notificationType = notification?.message_type;
-  //TODO get mergeRequestId from the notification
+  const mergeRequestId = notification?.message_values?.request_id;
+  console.log('deleteMe mergeRequestId is: ' + mergeRequestId);
   const currentNotificationSchema = get(
     notificationSchema,
     notificationType,
@@ -33,12 +34,16 @@ export default function NotificationIndividualMergeDialog({
   const error = blockError ? blockError : allowError;
   const isError = blockError || allowError;
 
-  const onClickAllow = async mergeRequestId => {
-    const response = await allowMerge({ mergeRequestId });
+  const onClickAllow = async requestId => {
+    const response = await allowMerge({
+      mergeRequestId: requestId,
+    });
     if (response?.status === 200) onClose();
   };
-  const onClickBlock = async matchAnnotation => {
-    const response = await blockMerge({ matchAnnotation });
+  const onClickBlock = async requestId => {
+    const response = await blockMerge({
+      mergeRequestId: requestId,
+    });
     if (response?.status === 200) onClose();
   };
   const availableButtons = [

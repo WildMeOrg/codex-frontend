@@ -27,7 +27,8 @@ export const getNotificationProps = notification => {
   const yourIndividualName =
     notification?.message_values?.user2_name || 'Unnamed Individual'; //TODO fix deleteMe
   const theirIndividualName =
-    notification?.message_values?.user2_name || 'Unnamed Individual'; //TODO fix deleteMe
+    notification?.message_values?.target_individual_name ||
+    'Unnamed Individual';
   return {
     senderName,
     user1Name,
