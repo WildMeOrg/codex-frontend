@@ -38,7 +38,9 @@ export default function NotificationIndividualMergeDialog({
     // const response = await allowMerge({
     //   requestId: requestId,
     // });
-    const response = await allowMerge(requestId);
+    const response = await allowMerge({
+      mergeRequestId: requestId,
+    });
     if (response?.status === 200) onClose();
   };
   const onClickBlock = async requestId => {
