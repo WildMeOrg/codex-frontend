@@ -5,7 +5,7 @@ export const bulkImportCategories = {
   },
   sighting: {
     name: 'sighting',
-    fields: ['sightingId', 'assets', 'locationId'],
+    fields: ['sightingId', 'assetReferences', 'locationId'],
   },
   shared: {
     name: 'shared',
@@ -50,5 +50,5 @@ export const bulkFieldSchemas = [
   { name: 'timeMinutes', labelId: 'TIME_MINUTES' },
   { name: 'timeSeconds', labelId: 'TIME_SECONDS' },
   { name: 'utcOffset', labelId: 'TIMEZONE' },
-  { name: 'assets', labelId: 'ASSETS' },
+  { name: 'assetReferences', labelId: 'ASSETS' },
 ];
