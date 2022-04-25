@@ -81,6 +81,14 @@ export default function prepareAssetGroup(
       'verbatimLocality',
     );
 
+    if (get(newEncounter, 'comments')) {
+      assignIfPresent(
+        newEncounter,
+        sightings[sightingId],
+        'comments',
+      );
+    }
+
     if (!sightingTimeSpecificityTracker[sightingId]) {
       assignIfPresent(
         newEncounter,
@@ -114,6 +122,7 @@ export default function prepareAssetGroup(
       'timeHour',
       'timeMinutes',
       'timeSeconds',
+      'comments',
     ]);
     sightings[sightingId].encounters.push(finalEncounter);
   });

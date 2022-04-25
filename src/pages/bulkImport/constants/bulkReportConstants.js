@@ -5,7 +5,12 @@ export const bulkImportCategories = {
   },
   sighting: {
     name: 'sighting',
-    fields: ['sightingId', 'assetReferences', 'locationId'],
+    fields: [
+      'sightingId',
+      'assetReferences',
+      'locationId',
+      'comments',
+    ],
   },
   shared: {
     name: 'shared',
