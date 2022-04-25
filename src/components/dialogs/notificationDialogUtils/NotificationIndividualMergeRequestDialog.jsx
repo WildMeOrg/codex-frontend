@@ -13,7 +13,7 @@ export default function NotificationIndividualMergeDialog({
 }) {
   const notificationType = notification?.message_type;
   const mergeRequestId = notification?.message_values?.request_id;
-  console.log('deleteMe mergeRequestId is: ' + mergeRequestId);
+  // console.log('deleteMe mergeRequestId is: ' + mergeRequestId);
   const currentNotificationSchema = get(
     notificationSchema,
     notificationType,
@@ -35,20 +35,30 @@ export default function NotificationIndividualMergeDialog({
   const isError = blockError || allowError;
 
   const onClickAllow = async requestId => {
-    const response = await allowMerge({
-      mergeRequestId: requestId,
-    });
+    // const response = await allowMerge({
+    //   requestId: requestId,
+    // });
+    const response = await allowMerge(requestId);
     if (response?.status === 200) onClose();
   };
   const onClickBlock = async requestId => {
-    const response = await blockMerge({
-      mergeRequestId: requestId,
-    });
+    // const response = await blockMerge({
+    //   requestId: requestId,
+    // });
+    const response = await blockMerge(requestId);
     if (response?.status === 200) onClose();
   };
   const availableButtons = [
-    { name: 'allow', buttonId: 'ALLOW_MERGE', onClick: onClickAllow },
-    { name: 'block', buttonId: 'BLOCK_MERGE', onClick: onClickBlock },
+    {
+      name: 'allow',
+      buttonId: 'ALLOW_MERGE',
+      onClick: () => onClickAllow(mergeRequestId),
+    },
+    {
+      name: 'block',
+      buttonId: 'BLOCK_MERGE',
+      onClick: () => onClickBlock(mergeRequestId),
+    },
   ];
   return (
     <NotificationDetailsDialog

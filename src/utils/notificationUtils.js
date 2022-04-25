@@ -19,10 +19,6 @@ export const getNotificationProps = notification => {
   //   'AdoptionName',
   //   'Unnamed individual',
   // );
-  console.log(
-    'deleteMe notification going into notificationUtils is: ',
-  );
-  console.log(notification);
 
   const yourIndividualName =
     notification?.message_values?.user2_name || 'Unnamed Individual'; //TODO fix deleteMe
