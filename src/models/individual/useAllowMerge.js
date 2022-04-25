@@ -3,8 +3,11 @@ import queryKeys from '../../constants/queryKeys';
 
 export default function useAllowMerge() {
   return usePost({
-    deriveUrl: ({ mergeRequestId }) =>
-      `/individuals/merge_requests/${mergeRequestId}`,
+    deriveUrl: mergeRequestId => {
+      console.log('deleteMe mergeRequestId in useAllowMerge is: ');
+      console.log(mergeRequestId);
+      return `/individuals/merge_requests/${mergeRequestId}`;
+    },
     data: {
       vote: 'allow',
     },
