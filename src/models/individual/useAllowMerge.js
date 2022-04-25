@@ -5,7 +5,7 @@ export default function useAllowMerge() {
   // console.log('deleteMe mergeRequestId is useAllowMerge call is: ');
   // console.log(mergeRequestId);
   return usePost({
-    deriveUrl: mergeRequestId => {
+    deriveUrl: ({ mergeRequestId }) => {
       console.log('deleteMe mergeRequestId in useAllowMerge is: ');
       console.log(mergeRequestId);
       return `/individuals/merge_requests/${mergeRequestId}`;
