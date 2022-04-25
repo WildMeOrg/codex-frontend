@@ -139,7 +139,7 @@ export default function SightingCore({
         data={data}
         loading={loading}
         pending={pending}
-        id={id}
+        guid={id}
         setHistoryOpen={setHistoryOpen}
         setDeleteDialogOpen={setDeleteDialogOpen}
       />

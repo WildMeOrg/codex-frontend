@@ -1,13 +1,7 @@
 import React, { useMemo } from 'react';
 import { useIntl } from 'react-intl';
 import { get, map } from 'lodash-es';
-import { useQueryClient } from 'react-query';
 
-import
-{
-  getAGSQueryKey,
-  getSightingQueryKey,
-} from '../../constants/queryKeys';
 import timePrecisionMap from '../../constants/timePrecisionMap';
 import defaultSightingSrc from '../../assets/defaultSighting.png';
 import Link from '../../components/Link';
@@ -42,21 +36,12 @@ export default function SightingEntityHeader({
   data,
   loading,
   pending,
-  id,
+  guid,
   setHistoryOpen,
   setDeleteDialogOpen,
 })
 {
   const intl = useIntl();
-  const queryClient = useQueryClient();
-
-  function refreshData()
-  {
-    const queryKey = pending
-      ? getAGSQueryKey(id)
-      : getSightingQueryKey(id);
-    queryClient.invalidateQueries(queryKey);
-  }
 
   const dataForFeaturedPhoto = useMemo(
     () =>
@@ -102,7 +87,6 @@ export default function SightingEntityHeader({
         <FeaturedPhoto
           data={pending ? null : dataForFeaturedPhoto}
           loading={loading}
-          refreshData={refreshData}
           defaultPhotoSrc={defaultSightingSrc}
           sightingId={data?.guid}
         />
