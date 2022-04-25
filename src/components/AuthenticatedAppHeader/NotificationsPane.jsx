@@ -44,10 +44,10 @@ export default function NotificationsPane({
   shouldOpen,
   setShouldOpen,
 }) {
-  console.log(
-    'deleteMe notifications in the notificaitons pane are: ',
-  );
-  console.log(notifications);
+  // console.log(
+  //   'deleteMe notifications in the notificaitons pane are: ',
+  // );
+  // console.log(notifications);
   const intl = useIntl();
   const queryClient = useQueryClient();
   const theme = useTheme();
