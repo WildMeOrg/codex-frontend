@@ -1,11 +1,8 @@
 import React, { useMemo, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useIntl, FormattedMessage } from 'react-intl';
+import { useIntl } from 'react-intl';
 import { get, map } from 'lodash-es';
 import { useQueryClient } from 'react-query';
-
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
 
 import {
   getAGSQueryKey,
@@ -15,6 +12,7 @@ import timePrecisionMap from '../../constants/timePrecisionMap';
 import defaultSightingSrc from '../../assets/defaultSighting.png';
 import MainColumn from '../../components/MainColumn';
 import Link from '../../components/Link';
+import Tabs from '../../components/Tabs';
 import Text from '../../components/Text';
 import LoadingScreen from '../../components/LoadingScreen';
 import SadScreen from '../../components/SadScreen';
@@ -33,6 +31,25 @@ import SightingHistoryDialog from './SightingHistoryDialog';
 import CommitBanner from './CommitBanner';
 import FeaturedPhoto from '../../components/FeaturedPhoto';
 import Encounters from './encounters/Encounters';
+
+const tabItems = [
+  {
+    labelId: 'OVERVIEW',
+    value: 'overview',
+  },
+  {
+    labelId: 'PHOTOGRAPHS',
+    value: 'photographs',
+  },
+  {
+    labelId: 'ANNOTATIONS',
+    value: 'annotations',
+  },
+  {
+    labelId: 'ANIMALS',
+    value: 'individuals',
+  },
+]
 
 export default function SightingCore({
   data,
@@ -202,25 +219,8 @@ export default function SightingCore({
             onChange={(_, newValue) => {
               window.location.hash = newValue;
             }}
-            variant="scrollable"
-          >
-            <Tab
-              label={<FormattedMessage id="OVERVIEW" />}
-              value="overview"
-            />
-            <Tab
-              label={<FormattedMessage id="PHOTOGRAPHS" />}
-              value="photographs"
-            />
-            <Tab
-              label={<FormattedMessage id="ANNOTATIONS" />}
-              value="annotations"
-            />
-            <Tab
-              label={<FormattedMessage id="ANIMALS" />}
-              value="individuals"
-            />
-          </Tabs>
+            items={tabItems}
+          />
         }
         renderOptions={
           <div style={{ display: 'flex' }}>
