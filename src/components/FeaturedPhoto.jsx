@@ -10,7 +10,7 @@ import FeaturedPhotoSelector from './FeaturedPhotoSelector';
 export default function FeaturedPhoto({
   data,
   loading,
-  refreshData,
+  refreshData = Function.prototype,
   defaultPhotoSrc = defaultProfilePhotoSrc,
   size = 150,
   sightingId = null,
