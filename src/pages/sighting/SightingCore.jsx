@@ -49,7 +49,7 @@ const tabItems = [
     labelId: 'ANIMALS',
     value: 'individuals',
   },
-]
+];
 
 export default function SightingCore({
   data,

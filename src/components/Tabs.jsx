@@ -9,21 +9,19 @@ export default function CustomTabs({
   onChange,
   variant = 'scrollable',
   items = [],
-})
-{
+}) {
   const intl = useIntl();
 
   return (
-    <Tabs
-      value={value}
-      onChange={onChange}
-      variant={variant}
-    >
-      {items.map(item =>
-      {
-        const label = item?.labelId ? intl.formatMessage({ id: item.labelId }) : item.label;
-        return <Tab key={item.value} label={label} value={item.value} />
+    <Tabs value={value} onChange={onChange} variant={variant}>
+      {items.map(item => {
+        const label = item?.labelId
+          ? intl.formatMessage({ id: item.labelId })
+          : item.label;
+        return (
+          <Tab key={item.value} label={label} value={item.value} />
+        );
       })}
     </Tabs>
-  )
+  );
 }
