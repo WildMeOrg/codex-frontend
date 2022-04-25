@@ -102,7 +102,7 @@ export default function useBulkImportFields() {
       label: intl.formatMessage({
         id: 'INDIVIDUAL_NAME',
       }),
-      key: 'individual',
+      key: 'firstName',
     },
     {
       label: intl.formatMessage({

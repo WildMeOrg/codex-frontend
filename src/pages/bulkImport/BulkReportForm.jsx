@@ -31,23 +31,23 @@ import {
 async function onRecordChange(record, recordIndex, filenames) {
   let messages = validateMinMax(record);
 
-  const individual = record?.individual;
-  if (individual) {
+  const firstName = record?.firstName;
+  if (firstName) {
     try {
       const nameValidationResponse = await validateIndividualNames([
-        [individual, recordIndex],
+        [firstName, recordIndex],
       ]);
       const nameMessage = get(nameValidationResponse, [0, 0]);
 
       if (nameMessage) {
         messages = {
           ...messages,
-          individual: nameMessage,
+          firstName: nameMessage,
         };
       }
     } catch (e) {
       console.error(
-        `Error validating individual name "${individual}" at ${recordIndex}`,
+        `Error validating individual name "${firstName}" at ${recordIndex}`,
         e,
       );
     }
@@ -161,7 +161,7 @@ export default function BulkReportForm({ assetReferences }) {
               setSightingData(results.data);
             }}
             fieldHooks={{
-              individual: async values => {
+              firstName: async values => {
                 try {
                   return await validateIndividualNames(values);
                 } catch (e) {
