@@ -96,8 +96,10 @@ export default function Notifications() {
                   senderName,
                   user1Name,
                   user2Name,
-                  individual1AdoptionName,
-                  individual2AdoptionName,
+                  yourIndividualName,
+                  theirIndividualName,
+                  // individual1AdoptionName,
+                  // individual2AdoptionName,
                 } = getNotificationProps(notification);
                 const createdDate = notification?.created;
                 const timeSince = calculatePrettyTimeElapsedSince(
@@ -122,8 +124,10 @@ export default function Notifications() {
                         userName: senderName,
                         user1Name,
                         user2Name,
-                        individual1AdoptionName,
-                        individual2AdoptionName,
+                        yourIndividualName,
+                        theirIndividualName,
+                        // individual1AdoptionName,
+                        // individual2AdoptionName,
                       },
                     )}
                   </Text>

@@ -29,9 +29,10 @@ export default function NotificationDetailsDialog({
   const {
     senderName,
     user1Name,
-    user2Name,
-    individual1AdoptionName,
-    individual2AdoptionName,
+    user2Name, // individual1AdoptionName, // TODO deleteMe
+    // individual2AdoptionName, // TODO deleteMe
+    yourIndividualName,
+    theirIndividualName,
   } = getNotificationProps(notification);
 
   return (
@@ -48,8 +49,10 @@ export default function NotificationDetailsDialog({
             userName: senderName,
             user1Name,
             user2Name,
-            individual1AdoptionName,
-            individual2AdoptionName,
+            // individual1AdoptionName,
+            // individual2AdoptionName,
+            yourIndividualName,
+            theirIndividualName,
           }}
         />
       </DialogContent>

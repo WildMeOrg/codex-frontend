@@ -1,7 +1,8 @@
 import React from 'react';
 import { get } from 'lodash-es';
 
-import usePatchCollaboration from '../../../models/collaboration/usePatchCollaboration';
+import useBlockMerge from '../../../models/individual/useBlockMerge';
+import useAllowMerge from '../../../models/individual/useAllowMerge';
 import { notificationSchema } from '../../../constants/notificationSchema';
 import NotificationDetailsDialog from '../NotificationDetailsDialog';
 
@@ -11,59 +12,38 @@ export default function NotificationIndividualMergeDialog({
   notification,
 }) {
   const notificationType = notification?.message_type;
+  //TODO get mergeRequestId from the notification
   const currentNotificationSchema = get(
     notificationSchema,
     notificationType,
   );
-  const path = get(currentNotificationSchema, 'path');
+  // const path = get(currentNotificationSchema, 'path');
   const {
-    mutate: patchCollaboration,
-    error,
-    isError,
-  } = usePatchCollaboration(); // TODO once individual merge is fleshed out, change this
-  // TODO will likely need individual IDs
+    mutate: blockMerge,
+    error: blockError,
+    loading: blockLoading,
+  } = useBlockMerge();
 
-  const onClickGrant = async () => {
-    const temp = 'changeMe';
-    const response = await patchCollaboration({
-      collaborationGuid: temp,
-      operations: [
-        // TODO this will change
-        {
-          op: 'replace',
-          path,
-          value: 'approved',
-        },
-      ],
-    });
+  const {
+    mutate: allowMerge,
+    error: allowError,
+    loading: allowLoading,
+  } = useAllowMerge();
+
+  const error = blockError ? blockError : allowError;
+  const isError = blockError || allowError;
+
+  const onClickAllow = async mergeRequestId => {
+    const response = await allowMerge({ mergeRequestId });
     if (response?.status === 200) onClose();
   };
-  const onClickDecline = async () => {
-    const temp = 'changeMe';
-    const response = await patchCollaboration({
-      collaborationGuid: temp,
-      operations: [
-        // TODO this will change
-        {
-          op: 'replace',
-          path,
-          value: 'denied',
-        },
-      ],
-    });
+  const onClickBlock = async matchAnnotation => {
+    const response = await blockMerge({ matchAnnotation });
     if (response?.status === 200) onClose();
   };
   const availableButtons = [
-    {
-      name: 'grant', // TODO allow instead of grant?
-      buttonId: 'GRANT_ACCESS',
-      onClick: onClickGrant,
-    },
-    {
-      name: 'decline',
-      buttonId: 'DECLINE_REQUEST',
-      onClick: onClickDecline,
-    },
+    { name: 'allow', buttonId: 'ALLOW_MERGE', onClick: onClickAllow },
+    { name: 'block', buttonId: 'BLOCK_MERGE', onClick: onClickBlock },
   ];
   return (
     <NotificationDetailsDialog

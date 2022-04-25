@@ -1,4 +1,4 @@
-import { deriveIndividualName } from './nameUtils';
+// import { deriveIndividualName } from './nameUtils';
 
 export const getNotificationProps = notification => {
   const senderName = notification?.sender_name || 'Unnamed User';
@@ -8,22 +8,31 @@ export const getNotificationProps = notification => {
     notification?.message_values?.user2_name || 'Unnamed User';
 
   // TODO flesh out more once this is included in notifications DEX-739
-  const individual1AdoptionName = deriveIndividualName(
-    notification,
-    'AdoptionName',
-    'Unnamed individual',
-  );
+  // const individual1AdoptionName = deriveIndividualName( // TODO deleteMe
+  //   notification,
+  //   'AdoptionName',
+  //   'Unnamed individual',
+  // );
 
-  const individual2AdoptionName = deriveIndividualName(
-    notification,
-    'AdoptionName',
-    'Unnamed individual',
+  // const individual2AdoptionName = deriveIndividualName( // TODO deleteMe
+  //   notification,
+  //   'AdoptionName',
+  //   'Unnamed individual',
+  // );
+  console.log(
+    'deleteMe notification going into notificationUtils is: ',
   );
+  console.log(notification);
+
+  const yourIndividualName =
+    notification?.message_values?.user2_name || 'Unnamed Individual'; //TODO fix deleteMe
+  const theirIndividualName =
+    notification?.message_values?.user2_name || 'Unnamed Individual'; //TODO fix deleteMe
   return {
     senderName,
     user1Name,
     user2Name,
-    individual1AdoptionName,
-    individual2AdoptionName,
+    yourIndividualName,
+    theirIndividualName,
   };
 };
