@@ -1,7 +1,9 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
+
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
+
 import CustomAlert from './Alert';
 import Button from './Button';
 import Text from './Text';
