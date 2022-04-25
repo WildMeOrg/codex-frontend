@@ -4,7 +4,7 @@ import queryKeys from '../../constants/queryKeys';
 export default function useBlockMerge() {
   return usePost({
     deriveUrl: ({ mergeRequestId }) =>
-      `/individuals/merge_requests/${mergeRequestId}`,
+      `/individuals/merge_request/${mergeRequestId}`,
     data: {
       vote: 'block',
     },
