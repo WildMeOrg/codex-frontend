@@ -103,6 +103,6 @@ notificationSchemaPlaceholder[
   notificationMessage: 'INDIVIDUALS_MERGE_COMPLETE_MESSAGE',
   moreDetailedDescription: 'INDIVIDUALS_MERGE_COMPLETE_MESSAGE',
   showNotificationDialog: false,
-  buttonPath: '/individuals/', // TODO figure out how to pass individual ID to this
+  // buttonPath: '/individuals/', // TODO figure out how to pass individual ID to this deleteMe
 };
 export const notificationSchema = notificationSchemaPlaceholder;

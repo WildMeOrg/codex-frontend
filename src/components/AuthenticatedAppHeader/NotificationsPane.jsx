@@ -24,13 +24,14 @@ import queryKeys from '../../constants/queryKeys';
 function renderDisplayTextBasedOnMessageType(
   currentNotificationSchema,
   userName,
+  theirIndividualName,
   intl,
 ) {
   return (
     <Text style={{ maxWidth: 200, margin: '0 20px' }}>
       {intl.formatMessage(
         { id: currentNotificationSchema?.notificationMessage },
-        { userName },
+        { userName, theirIndividualName },
       )}
     </Text>
   );
@@ -85,6 +86,7 @@ export default function NotificationsPane({
           ) : (
             notifications.map(notification => {
               const notificationType = notification?.message_type;
+              // TODO deleteMe maybe get the merged individual's guid
               const currentNotificationSchema = get(
                 notificationSchema,
                 notificationType,
@@ -96,6 +98,12 @@ export default function NotificationsPane({
                 notification,
                 'sender_name',
                 'Unnamed User',
+              );
+              // TODO get yourIndividualName deleteMe
+              const theirIndividualName = get(
+                notification,
+                ['message_values', 'target_individual_name'],
+                'Unnamed Individual',
               );
               const createdDate = notification?.created;
               const timeSince = calculatePrettyTimeElapsedSince(
@@ -117,6 +125,7 @@ export default function NotificationsPane({
                       {renderDisplayTextBasedOnMessageType(
                         currentNotificationSchema,
                         senderName,
+                        theirIndividualName,
                         intl,
                       )}
                     </div>
