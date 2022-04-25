@@ -9,7 +9,7 @@ import Button from '../../../components/Button';
 import Text from '../../../components/Text';
 import Alert from '../../../components/Alert';
 
-export default function SightingHistoryDialog({
+export default function ReviewSightingDialog({
   sightingGuid,
   open,
   onClose,
@@ -21,10 +21,15 @@ export default function SightingHistoryDialog({
     clearError,
   } = useReviewSighting();
 
+  function handleClose() {
+    clearError();
+    onClose();
+  }
+
   return (
     <StandardDialog
       open={open}
-      onClose={onClose}
+      onClose={handleClose}
       titleId="MARK_SIGHTING_REVIEWED"
       PaperProps={{
         style: { width: 680, maxWidth: '90%' },
@@ -44,7 +49,7 @@ export default function SightingHistoryDialog({
         )}
       </DialogContent>
       <DialogActions style={{ padding: '8px 24px 24px 24px' }}>
-        <Button display="basic" onClick={onClose} id="CANCEL" />
+        <Button display="basic" onClick={handleClose} id="CANCEL" />
         <Button
           loading={loading}
           display="primary"

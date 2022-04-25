@@ -73,12 +73,17 @@ export default function EditSightingMetadata({
     [get(metadata, 'length')],
   );
 
+  function handleClose() {
+    clearError();
+    onClose();
+  }
+
   return (
     <StandardDialog
       PaperProps={{ style: { width: 800 } }}
       maxWidth="lg"
       open={open}
-      onClose={onClose}
+      onClose={handleClose}
       titleId="EDIT_SIGHTING_METADATA"
     >
       <DialogContent style={{ minWidth: 200 }}>
@@ -125,14 +130,7 @@ export default function EditSightingMetadata({
         )}
       </DialogContent>
       <DialogActions style={{ padding: '0px 24px 24px 24px' }}>
-        <Button
-          display="basic"
-          onClick={() => {
-            clearError();
-            onClose();
-          }}
-          id="CANCEL"
-        />
+        <Button display="basic" onClick={handleClose} id="CANCEL" />
         <Button
           loading={loading}
           display="primary"
