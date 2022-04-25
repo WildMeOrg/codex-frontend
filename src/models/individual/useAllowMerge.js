@@ -8,7 +8,7 @@ export default function useAllowMerge() {
     deriveUrl: ({ mergeRequestId }) => {
       console.log('deleteMe mergeRequestId in useAllowMerge is: ');
       console.log(mergeRequestId);
-      return `/individuals/merge_requests/${mergeRequestId}`;
+      return `/individuals/merge_request/${mergeRequestId}`;
     },
     // url: `/individuals/merge_requests/${mergeRequestId}`,
     data: { vote: 'allow' },
