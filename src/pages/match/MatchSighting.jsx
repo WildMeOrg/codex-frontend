@@ -1,15 +1,31 @@
 import React, { useMemo, useState } from 'react';
+import { useIntl, FormattedMessage } from 'react-intl';
 import { useParams } from 'react-router-dom';
 import { get } from 'lodash-es';
 
+import { formatDate } from '../../utils/formatters';
 import useSighting from '../../models/sighting/useSighting';
 import useMatchResults from '../../models/matching/useMatchResults';
 import MainColumn from '../../components/MainColumn';
+import ButtonLink from '../../components/ButtonLink';
+import ButtonMenu from '../../components/ButtonMenu';
 import Text from '../../components/Text';
 import QueryAnnotationsTable from './QueryAnnotationsTable';
 import ImageCard from './ImageCard';
 
+const buttonActions = [
+  {
+    id: 'create-new-individual',
+    labelId: 'CREATE_NEW_INDIVIDUAL'
+  },
+  {
+    id: 'mark-unidentifiable',
+    labelId: 'MARK_UNIDENTIFIABLE'
+  },
+]
+
 export default function MatchSighting() {
+  const intl = useIntl();
   const { sightingGuid } = useParams();
 
   const {
@@ -53,17 +69,31 @@ export default function MatchSighting() {
   );
 
   console.log(sightingData);
-  console.log(matchResults);
-  console.log(selectedQueryAnnotation);
-  console.log(queryAnnotations);
+  // console.log(matchResults);
+  // console.log(selectedQueryAnnotation);
+  // console.log(queryAnnotations);
+
+  const idCompleteTime = sightingData?.unreviewed_start_time;
+  const formattedIdTime = formatDate(idCompleteTime, true, 'Unknown time')
 
   return (
     <MainColumn fullWidth>
-      <Text variant="h4">Review match candidates</Text>
+      <div style={{ padding: '16px 0', display: 'flex', justifyContent: 'space-between' }}>
+        <div>
+          <ButtonLink
+            href={`/sightings/${sightingGuid}`}
+            display="back"
+            id="BACK_TO_SIGHTING"
+          />
+          <Text variant="h4">Review match candidates</Text>
+          <Text variant="subtitle2" id="IDENTIFICATION_FINISHED_TIME" values={{ time: formattedIdTime }} style={{ padding: '2px 0 0 2px' }} />
+        </div>
+        <ButtonMenu buttonId="match-actions" style={{ marginTop: 44 }} actions={buttonActions}>Actions</ButtonMenu>
+      </div>
       <div style={{ display: 'flex' }}>
-        <div style={{ maxWidth: '40vw' }}>
+        <div style={{ width: '50%', paddingRight: 4 }}>
           <ImageCard
-            titleId="FILENAME"
+            titleId="SELECTED_QUERY_ANNOTATION"
             annotation={selectedQueryAnnotation}
           />
           <QueryAnnotationsTable
@@ -72,10 +102,15 @@ export default function MatchSighting() {
             setSelectedQueryAnnotation={setSelectedQueryAnnotation}
           />
         </div>
-        <div style={{ maxWidth: '40vw' }}>
+        <div style={{ width: '50%', paddingLeft: 4 }}>
           <ImageCard
-            titleId="FILENAME"
+            titleId="SELECTED_MATCH_CANDIDATE"
             annotation={selectedQueryAnnotation}
+          />
+          <QueryAnnotationsTable
+            queryAnnotations={queryAnnotations}
+            selectedQueryAnnotation={selectedQueryAnnotation}
+            setSelectedQueryAnnotation={setSelectedQueryAnnotation}
           />
         </div>
       </div>

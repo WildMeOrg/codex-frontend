@@ -34,6 +34,15 @@ export default function ButtonMenu({
         open={Boolean(anchorEl)}
         onClose={handleClose}
         id={buttonId}
+        getContentAnchorEl={null}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'right',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
       >
         {actions.map(action => (
           <MenuItem
