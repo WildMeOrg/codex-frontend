@@ -36,7 +36,6 @@ export default function prepareAssetGroup(
   assetReferences,
 ) {
   const sightings = {};
-  const sightingTimeSpecificityTracker = {};
   const simpleAssetReferences = assetReferences.map(a => a.path);
   encounters.forEach(encounter => {
     const newEncounter = updateTimes(encounter);
@@ -89,14 +88,11 @@ export default function prepareAssetGroup(
       );
     }
 
-    if (!sightingTimeSpecificityTracker[sightingId]) {
-      assignIfPresent(
-        newEncounter,
-        sightings[sightingId],
-        'timeSpecificity',
-      );
-      sightingTimeSpecificityTracker[sightingId] = true;
-    }
+    assignIfPresent(
+      newEncounter,
+      sightings[sightingId],
+      'timeSpecificity',
+    );
 
     assignIfPresent(newEncounter, sightings[sightingId], 'time');
 
