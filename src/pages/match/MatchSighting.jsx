@@ -5,7 +5,10 @@ import { get } from 'lodash-es';
 
 import { formatDate } from '../../utils/formatters';
 import useSighting from '../../models/sighting/useSighting';
+import useDocumentTitle from '../../hooks/useDocumentTitle';
 import useMatchResults from '../../models/matching/useMatchResults';
+import LoadingScreen from '../../components/LoadingScreen';
+import SadScreen from '../../components/SadScreen';
 import MainColumn from '../../components/MainColumn';
 import ButtonLink from '../../components/ButtonLink';
 import ButtonMenu from '../../components/ButtonMenu';
@@ -45,6 +48,8 @@ export default function MatchSighting() {
     setSelectedQueryAnnotation,
   ] = useState(null);
 
+  useDocumentTitle(`Match results for sighting ${sightingGuid}`, { translateMessage: false });
+
   const queryAnnotations = useMemo(
     () => {
       const annotationData = get(matchResults, 'annotation_data', {});
@@ -67,6 +72,12 @@ export default function MatchSighting() {
     },
     [matchResults],
   );
+
+  const loading = sightingDataLoading || matchResultsLoading;
+  const error = sightingDataError || matchResultsError;
+
+  if (loading) return <LoadingScreen />;
+  if (error) return <SadScreen variant="genericError" />;
 
   console.log(sightingData);
   // console.log(matchResults);
