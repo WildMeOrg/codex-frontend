@@ -86,7 +86,8 @@ export default function NotificationsPane({
           ) : (
             notifications.map(notification => {
               const notificationType = notification?.message_type;
-              // TODO deleteMe maybe get the merged individual's guid
+              const mergedIndividualGuid =
+                notification?.message_values?.target_individual_guid;
               const currentNotificationSchema = get(
                 notificationSchema,
                 notificationType,

@@ -49,13 +49,13 @@ export default function NotificationIndividualMergeDialog({
       name: 'allow',
       buttonId: 'ALLOW_MERGE',
       onClick: () => onClickAllow(mergeRequestId),
-      loading: { allowLoading },
+      loading: allowLoading,
     },
     {
       name: 'block',
       buttonId: 'BLOCK_MERGE',
       onClick: () => onClickBlock(mergeRequestId),
-      loading: { blockLoading },
+      loading: blockLoading,
     },
   ];
   return (
