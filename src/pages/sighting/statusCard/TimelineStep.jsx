@@ -20,6 +20,7 @@ export default function TimelineStep({
   finishedText,
   skippedText,
   failedText,
+  children,
 }) {
   const theme = useTheme();
 
@@ -50,6 +51,7 @@ export default function TimelineStep({
       <TimelineContent>
         <Text variant="h6" id={titleId} />
         <Text variant="caption">{descriptionText}</Text>
+        {children}
       </TimelineContent>
     </TimelineItem>
   );

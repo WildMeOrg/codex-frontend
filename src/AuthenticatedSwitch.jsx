@@ -139,7 +139,7 @@ export default function AuthenticatedSwitch() {
                       <Route path="/sightings">
                         <SearchSightings />
                       </Route>
-                      <Route path="/sighting-match/:sightingGuid">
+                      <Route path="/match-results/:sightingGuid">
                         <MatchSighting />
                       </Route>
                       <Route path="/users/:id">
