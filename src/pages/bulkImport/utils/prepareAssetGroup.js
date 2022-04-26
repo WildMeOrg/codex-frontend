@@ -98,17 +98,7 @@ export default function prepareAssetGroup(
       sightingTimeSpecificityTracker[sightingId] = true;
     }
 
-    const time = get(sightings, [sightingId, 'time']);
-    // const timeAfter = newEncounter.time < time; // removed for MVP, where we just take the first time and ignore the rest for the same sightingId
-    if (!time) {
-      // || timeAfter removed this condition for MVP, where we just take the first time and ignore the rest for the same sightingId
-      assignIfPresent(
-        newEncounter,
-        sightings[sightingId],
-        'time',
-        'time',
-      );
-    }
+    assignIfPresent(newEncounter, sightings[sightingId], 'time');
 
     if (!get(sightings, [sightingId, 'encounters']))
       sightings[sightingId].encounters = [];
