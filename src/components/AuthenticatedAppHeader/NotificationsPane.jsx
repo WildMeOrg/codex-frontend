@@ -194,11 +194,14 @@ export default function NotificationsPane({
                           key={notification?.guid}
                           display="primary"
                           isHashLink
-                          href={get(
-                            currentNotificationSchema,
-                            'buttonPath',
-                            '/#collab-card',
-                          )}
+                          href={
+                            customButtonPath ||
+                            get(
+                              currentNotificationSchema,
+                              'buttonPath',
+                              '/#collab-card',
+                            )
+                          }
                           id="VIEW"
                           onClick={async () => {
                             await markRead(get(notification, 'guid'));
@@ -222,9 +225,7 @@ export default function NotificationsPane({
                     }}
                   >
                     <Text
-                      style={{
-                        color: theme.palette.text.secondary,
-                      }}
+                      style={{ color: theme.palette.text.secondary }}
                     >
                       {intl.formatMessage(
                         { id: 'TIME_SINCE' },
