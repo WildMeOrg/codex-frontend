@@ -25,13 +25,24 @@ function renderDisplayTextBasedOnMessageType(
   currentNotificationSchema,
   userName,
   theirIndividualName,
+  //TODO deleteMe add the other individual name
   intl,
 ) {
+  console.log(
+    'deleteMe entered renderDisplayTextBasedOnMessageType and userName is: ',
+  );
+  console.log(userName);
+  console.log('deleteMe and theirIndividualName is: ');
+  console.log(theirIndividualName);
   return (
     <Text style={{ maxWidth: 200, margin: '0 20px' }}>
       {intl.formatMessage(
         { id: currentNotificationSchema?.notificationMessage },
-        { userName, theirIndividualName },
+        {
+          userName,
+          theirIndividualName,
+          //TODO deleteMe add the other individual name here
+        },
       )}
     </Text>
   );
@@ -100,12 +111,18 @@ export default function NotificationsPane({
                 'sender_name',
                 'Unnamed User',
               );
+              console.log(
+                'deleteMe senderName in notificationPane is: ',
+              );
+              console.log(senderName);
               // TODO get yourIndividualName deleteMe
               const theirIndividualName = get(
                 notification,
                 ['message_values', 'target_individual_name'],
                 'Unnamed Individual',
               );
+              console.log('deleteMe theirIndividualName is: ');
+              console.log(theirIndividualName);
               const createdDate = notification?.created;
               const timeSince = calculatePrettyTimeElapsedSince(
                 createdDate,
