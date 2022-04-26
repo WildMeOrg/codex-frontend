@@ -35,11 +35,11 @@ import MetadataCard from '../../components/cards/MetadataCard';
 import GalleryCard from '../../components/cards/GalleryCard';
 import ConfirmDelete from '../../components/ConfirmDelete';
 import RelationshipsCard from '../../components/cards/RelationshipsCard';
-import CooccurrenceCard from '../../components/cards/CooccurrenceCard';
+// import CooccurrenceCard from '../../components/cards/CooccurrenceCard';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import EditIndividualMetadata from './EditIndividualMetadata';
 import MergeDialog from './MergeDialog';
-import fakeCoocs from './fakeCoocs';
+// import fakeCoocs from './fakeCoocs';
 import fakeRelationships from './fakeRelationships';
 import {
   deriveIndividualName,
@@ -316,7 +316,7 @@ export default function Individual() {
             title="Relationships"
             relationships={fakeRelationships}
           />
-          <CooccurrenceCard data={fakeCoocs} />
+          {/* <CooccurrenceCard data={fakeCoocs} /> */}
         </CardContainer>
       </div>
     </MainColumn>
