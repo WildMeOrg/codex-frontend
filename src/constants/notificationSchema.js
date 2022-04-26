@@ -104,6 +104,5 @@ notificationSchemaPlaceholder[
   moreDetailedDescription: 'INDIVIDUALS_MERGE_COMPLETE_MESSAGE',
   showNotificationDialog: false,
   deriveButtonPath: individualId => `/individuals/${individualId}`,
-  // buttonPath: '/individuals/', // TODO figure out how to pass individual ID to this deleteMe
 };
 export const notificationSchema = notificationSchemaPlaceholder;
