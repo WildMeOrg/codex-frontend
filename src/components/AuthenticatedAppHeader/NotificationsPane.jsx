@@ -24,6 +24,7 @@ import queryKeys from '../../constants/queryKeys';
 function renderDisplayTextBasedOnMessageType(
   currentNotificationSchema,
   userName,
+  yourIndividualName,
   theirIndividualName,
   //TODO deleteMe add the other individual name
   intl,
@@ -40,6 +41,7 @@ function renderDisplayTextBasedOnMessageType(
         { id: currentNotificationSchema?.notificationMessage },
         {
           userName,
+          yourIndividualName,
           theirIndividualName,
           //TODO deleteMe add the other individual name here
         },
@@ -116,6 +118,7 @@ export default function NotificationsPane({
               );
               console.log(senderName);
               // TODO get yourIndividualName deleteMe
+              const yourIndividualName = 'deleteMe';
               const theirIndividualName = get(
                 notification,
                 ['message_values', 'target_individual_name'],
@@ -143,6 +146,7 @@ export default function NotificationsPane({
                       {renderDisplayTextBasedOnMessageType(
                         currentNotificationSchema,
                         senderName,
+                        yourIndividualName,
                         theirIndividualName,
                         intl,
                       )}
