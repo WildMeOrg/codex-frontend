@@ -167,14 +167,11 @@ export default function MergeIndividuals() {
                 showAdoptionNameInput,
               );
 
-              const result = await mergeIndividuals({
+              await mergeIndividuals({
                 targetIndividualGuid: targetIndividualData?.guid,
                 fromIndividualGuids: [fromIndividualData?.guid],
                 propertyOverrides,
               });
-
-              console.log('deleteMe result of mergeIndividual is: ');
-              console.log(result);
             }}
           />
         </Grid>

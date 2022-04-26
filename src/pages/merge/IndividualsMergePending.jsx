@@ -54,8 +54,6 @@ export default function IndividualsMergePending() {
     loading: mergeRequestLoading,
     error: mergeRequestError,
   } = useIndividualMergeRequest(mergeRequestGuid);
-  console.log('deleteMe mergeRequestData is: ');
-  console.log(mergeRequestData);
 
   const deadline = mergeRequestData?.eta;
   const formattedDeadline = deadline

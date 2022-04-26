@@ -29,8 +29,7 @@ export default function NotificationDetailsDialog({
   const {
     senderName,
     user1Name,
-    user2Name, // individual1AdoptionName, // TODO deleteMe
-    // individual2AdoptionName, // TODO deleteMe
+    user2Name,
     yourIndividualName,
     theirIndividualName,
   } = getNotificationProps(notification);

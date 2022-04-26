@@ -7,21 +7,8 @@ export const getNotificationProps = notification => {
   const user2Name =
     notification?.message_values?.user2_name || 'Unnamed User';
 
-  // TODO flesh out more once this is included in notifications DEX-739
-  // const individual1AdoptionName = deriveIndividualName( // TODO deleteMe
-  //   notification,
-  //   'AdoptionName',
-  //   'Unnamed individual',
-  // );
-
-  // const individual2AdoptionName = deriveIndividualName( // TODO deleteMe
-  //   notification,
-  //   'AdoptionName',
-  //   'Unnamed individual',
-  // );
-
   const yourIndividualName =
-    notification?.message_values?.user2_name || 'Unnamed Individual'; //TODO fix deleteMe
+    notification?.message_values?.user2_name || 'Unnamed Individual'; //TODO update after DEX-927 is resolved
   const theirIndividualName =
     notification?.message_values?.target_individual_name ||
     'Unnamed Individual';

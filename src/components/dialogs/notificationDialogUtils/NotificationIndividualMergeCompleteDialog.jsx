@@ -22,7 +22,11 @@ export default function NotificationIndividualMergeCompleteDialog({
   const onClickView = () =>
     history.push(`/individuals/${mergedIndividualGuid}`);
   const availableButtons = [
-    { name: 'view', buttonId: 'VIEW', onClick: onClickView },
+    {
+      name: 'view',
+      buttonId: 'VIEW_INDIVIDUAL',
+      onClick: onClickView,
+    },
   ];
   return (
     <NotificationDetailsDialog

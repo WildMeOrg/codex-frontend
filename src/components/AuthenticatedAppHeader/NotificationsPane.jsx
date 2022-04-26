@@ -19,6 +19,7 @@ import shane from '../../assets/shane.jpg';
 import { notificationSchema } from '../../constants/notificationSchema';
 import { calculatePrettyTimeElapsedSince } from '../../utils/formatters';
 import { notificationTypes } from '../dialogs/notificationDialogUtils';
+import { formatDateCustom } from '../../utils/formatters';
 import queryKeys from '../../constants/queryKeys';
 
 function renderDisplayTextBasedOnMessageType(
@@ -26,15 +27,9 @@ function renderDisplayTextBasedOnMessageType(
   userName,
   yourIndividualName,
   theirIndividualName,
-  // TODO deleteMe add the other individual name
+  formattedDeadline,
   intl,
 ) {
-  console.log(
-    'deleteMe entered renderDisplayTextBasedOnMessageType and userName is: ',
-  );
-  console.log(userName);
-  console.log('deleteMe and theirIndividualName is: ');
-  console.log(theirIndividualName);
   return (
     <Text style={{ maxWidth: 200, margin: '0 20px' }}>
       {intl.formatMessage(
@@ -43,7 +38,7 @@ function renderDisplayTextBasedOnMessageType(
           userName,
           yourIndividualName,
           theirIndividualName,
-          // TODO deleteMe add the other individual name here
+          formattedDeadline,
         },
       )}
     </Text>
@@ -58,10 +53,6 @@ export default function NotificationsPane({
   shouldOpen,
   setShouldOpen,
 }) {
-  // console.log(
-  //   'deleteMe notifications in the notificaitons pane are: ',
-  // );
-  // console.log(notifications);
   const intl = useIntl();
   const queryClient = useQueryClient();
   const theme = useTheme();
@@ -101,6 +92,12 @@ export default function NotificationsPane({
               const notificationType = notification?.message_type;
               const mergedIndividualGuid =
                 notification?.message_values?.target_individual_guid;
+              //TODO implement deadline after DEX-927 is resolved
+              // const deadline = notification?.message_values?.eta;
+              // const formattedDeadline = deadline ? formatDateCustom(deadline, 'LLLL do') : intl.formatMessage(
+              //       { id: 'DATE_MISSING' },
+              //     );
+              const formattedDeadline = 'deleteMe';
               const currentNotificationSchema = get(
                 notificationSchema,
                 notificationType,
@@ -113,19 +110,13 @@ export default function NotificationsPane({
                 'sender_name',
                 'Unnamed User',
               );
-              console.log(
-                'deleteMe senderName in notificationPane is: ',
-              );
-              console.log(senderName);
-              // TODO get yourIndividualName deleteMe
+              // TODO get yourIndividualName after DEX-927 is resolved
               const yourIndividualName = 'deleteMe';
               const theirIndividualName = get(
                 notification,
                 ['message_values', 'target_individual_name'],
                 'Unnamed Individual',
               );
-              console.log('deleteMe theirIndividualName is: ');
-              console.log(theirIndividualName);
               const deriveButtonPath = get(
                 currentNotificationSchema,
                 'deriveButtonPath',
@@ -135,8 +126,6 @@ export default function NotificationsPane({
                 customButtonPath = deriveButtonPath(
                   mergedIndividualGuid,
                 );
-              console.log('deleteMe customButtonPath is: ');
-              console.log(customButtonPath);
               const createdDate = notification?.created;
               const timeSince = calculatePrettyTimeElapsedSince(
                 createdDate,
@@ -159,6 +148,7 @@ export default function NotificationsPane({
                         senderName,
                         yourIndividualName,
                         theirIndividualName,
+                        formattedDeadline,
                         intl,
                       )}
                     </div>
