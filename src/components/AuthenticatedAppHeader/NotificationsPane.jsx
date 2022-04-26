@@ -26,7 +26,7 @@ function renderDisplayTextBasedOnMessageType(
   userName,
   yourIndividualName,
   theirIndividualName,
-  //TODO deleteMe add the other individual name
+  // TODO deleteMe add the other individual name
   intl,
 ) {
   console.log(
@@ -43,7 +43,7 @@ function renderDisplayTextBasedOnMessageType(
           userName,
           yourIndividualName,
           theirIndividualName,
-          //TODO deleteMe add the other individual name here
+          // TODO deleteMe add the other individual name here
         },
       )}
     </Text>
@@ -126,6 +126,17 @@ export default function NotificationsPane({
               );
               console.log('deleteMe theirIndividualName is: ');
               console.log(theirIndividualName);
+              const deriveButtonPath = get(
+                currentNotificationSchema,
+                'deriveButtonPath',
+              );
+              let customButtonPath;
+              if (deriveButtonPath)
+                customButtonPath = deriveButtonPath(
+                  mergedIndividualGuid,
+                );
+              console.log('deleteMe customButtonPath is: ');
+              console.log(customButtonPath);
               const createdDate = notification?.created;
               const timeSince = calculatePrettyTimeElapsedSince(
                 createdDate,
