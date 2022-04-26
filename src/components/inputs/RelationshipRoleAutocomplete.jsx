@@ -6,17 +6,28 @@ import { Autocomplete } from '@material-ui/lab';
 import { get } from 'lodash-es';
 
 import Text from '../Text';
+import { deriveIndividualName } from '../../utils/nameUtils';
+import useIndividual from '../../models/individual/useIndividual';
 
 export default function RelationshipRoleAutocomplete({
   id,
   value,
   options,
   onChangeRole,
-  individualFirstName,
+  individualId,
 }) {
   const intl = useIntl();
+  const { data: individualData, loading } = useIndividual(
+    individualId,
+  );
+  const individualFirstName = deriveIndividualName(
+    individualData,
+    'FirstName',
+    intl.formatMessage({ id: 'UNNAMED_INDIVIDUAL' }),
+  );
   return (
     <Autocomplete
+      loading={loading}
       id={id}
       clearOnEscape
       style={{ marginTop: 12, width: 'fit-content' }}
@@ -27,9 +38,7 @@ export default function RelationshipRoleAutocomplete({
       )}
       onChange={(_, newValue) => onChangeRole(newValue)}
       getOptionLabel={option => get(option, 'label', '')}
-      getOptionSelected={(option, val) =>
-        option.guid ? option.guid === val : false
-      }
+      getOptionSelected={(option, val) => option.guid === val.guid}
       renderInput={params => (
         <TextField
           {...params}
@@ -37,13 +46,7 @@ export default function RelationshipRoleAutocomplete({
           variant="standard"
           label={intl.formatMessage(
             { id: 'SELECT_RELATIONSHIP_ROLE' },
-            {
-              ind:
-                individualFirstName ||
-                intl.formatMessage({
-                  id: 'UNNAMED_INDIVIDUAL',
-                }),
-            },
+            { ind: individualFirstName },
           )}
         />
       )}

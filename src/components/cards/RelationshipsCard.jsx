@@ -97,14 +97,14 @@ import useDeleteRelationships from '../../models/relationships/useDeleteRelation
 export default function RelationshipsCard({
   relationships = [],
   individualGuid,
-  individualFirstName,
   loading,
   noDataMessage = 'NO_RELATIONSHIPS',
   title,
   titleId,
 }) {
   const intl = useIntl();
-  const noRelationships = relationships && relationships.length === 0;
+  const noRelationships =
+    Array.isArray(relationships) && relationships.length === 0;
   const {
     data: siteSettings,
     loading: loadingRelationships,
@@ -135,10 +135,6 @@ export default function RelationshipsCard({
   const [selectedIndividualId, setSelectedIndividualId] = useState(
     null,
   );
-  const [
-    selectedIndividualFirstName,
-    setSelectedIndividualFirstName,
-  ] = useState(null);
   const [currentRoles, setCurrentRoles] = useState(null);
   const [currentType, setCurrentType] = useState(null);
   const [currentRole1, setCurrentRole1] = useState(null);
@@ -153,7 +149,7 @@ export default function RelationshipsCard({
       const possibleRelationships = get(
         siteSettings,
         ['relationship_type_roles', 'value'],
-        [],
+        {},
       );
       const _types = Object.values(possibleRelationships);
       setCurrentRoles(get(_types, 'roles', []));
@@ -172,7 +168,7 @@ export default function RelationshipsCard({
               individualMember.individual_guid === individualGuid,
           );
           const nonSelfIndividualMember = find(
-            get(relationship, 'individual_members'),
+            get(relationship, 'individual_members', []),
             individualMember =>
               individualMember.individual_guid !== individualGuid,
           );
@@ -219,12 +215,12 @@ export default function RelationshipsCard({
 
   const onCloseDialog = () => {
     setSelectedIndividualId(null);
-    setSelectedIndividualFirstName(null);
     setOpenRelationshipDialog(false);
     setCurrentType(null);
     setCurrentRole1(null);
     setCurrentRole2(null);
     clearPostRelationshipError();
+    clearDeleteRelationshipError();
   };
 
   const onSubmit = async () => {
@@ -268,9 +264,6 @@ export default function RelationshipsCard({
       <DialogContent>
         <IndividualSelector
           setSelectedIndividualId={setSelectedIndividualId}
-          setSelectedIndividualFirstName={
-            setSelectedIndividualFirstName
-          }
         />
         {selectedIndividualId && (
           <div
@@ -307,14 +300,14 @@ export default function RelationshipsCard({
             value={currentRole1}
             options={currentRoles}
             onChangeRole={onChangeRole1}
-            individualFirstName={individualFirstName}
+            individualId={individualGuid}
           />,
           <RelationshipRoleAutocomplete
             id="roles2"
             value={currentRole2}
             options={currentRoles}
             onChangeRole={onChangeRole2}
-            individualFirstName={selectedIndividualFirstName}
+            individualId={selectedIndividualId}
           />,
         ]}
       </DialogContent>

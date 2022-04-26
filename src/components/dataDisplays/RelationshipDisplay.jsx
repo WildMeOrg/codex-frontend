@@ -7,20 +7,19 @@ export default function RelationshipDisplay({
   data,
   loading,
   setConfirmDeleteDialog,
-  ...rest
 }) {
   const relationshipCols = [
     {
       reference: 'nonSelfFirstName',
       name: 'nonSelfFirstName',
-      label: 'Individual',
+      labelId: 'Individual',
     },
-    { reference: 'type', name: 'type', label: 'Type' },
-    { reference: 'role', name: 'role', label: 'Role' },
+    { reference: 'type', name: 'type', labelId: 'Type' },
+    { reference: 'role', name: 'role', labelId: 'Role' },
     {
       reference: 'actions',
       name: 'guid',
-      label: 'Actions',
+      labelId: 'Actions',
       options: {
         customBodyRender: (_, relationship) => {
           return [
@@ -30,7 +29,7 @@ export default function RelationshipDisplay({
               linkProps={{ newTab: true }}
             />,
             <ActionIcon
-              variant={'delete'}
+              variant="delete"
               onClick={() => {
                 setConfirmDeleteDialog({
                   relationshipGuid: relationship?.guid,

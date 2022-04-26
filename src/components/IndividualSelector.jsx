@@ -15,7 +15,6 @@ import { deriveIndividualName } from '../utils/nameUtils';
 
 export default function IndividualSelector({
   setSelectedIndividualId,
-  setSelectedIndividualFirstName,
   width = 520,
 }) {
   const intl = useIntl();
@@ -133,13 +132,6 @@ export default function IndividualSelector({
           data={searchResults || []}
           onSelectRow={selectedIndividual => {
             setSelectedIndividualId(get(selectedIndividual, 'guid'));
-            setSelectedIndividualFirstName(
-              deriveIndividualName(
-                selectedIndividual,
-                'FirstName',
-                intl.formatMessage({ id: 'UNNAMED_INDIVIDUAL' }),
-              ),
-            );
           }}
         />
       )}
