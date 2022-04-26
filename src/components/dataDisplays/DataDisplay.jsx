@@ -65,6 +65,7 @@ export default function DataDisplay({
   rowsPerPage,
   dataCount, // in a paginated table there will be more data than provided to the data prop
   paperStyles = {},
+  tableStyles = {},
   cellStyles = {},
   ...rest
 }) {
@@ -257,10 +258,22 @@ export default function DataDisplay({
         style={paperStyles}
       >
         <Table
-          style={{ minWidth: 10 }}
+          style={{ minWidth: 10, ...tableStyles }}
           size={tableSize}
           aria-label={title}
         >
+          <colgroup>
+            {columns.map(c => (
+              <col
+                key={c.name}
+                style={
+                  get(c, 'options.width')
+                    ? { width: c.options.width }
+                    : {}
+                }
+              />
+            ))}
+          </colgroup>
           <TableHead>
             <TableRow>
               {renderExpandedRow && <TableCell />}
