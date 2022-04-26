@@ -185,9 +185,12 @@ export default function BulkReportForm({ assetReferences }) {
             )}
           />
           {sightingData ? (
-            <Text variant="body2" style={{ margin: '8px 0 8px 4px' }}>
-              {`${sightingData.length} sightings imported.`}
-            </Text>
+            <Text
+              id="ENCOUNTERS_IMPORTED_COUNT"
+              values={{ encounterCount: sightingData.length }}
+              variant="body2"
+              style={{ margin: '8px 0 8px 4px' }}
+            />
           ) : null}
 
           {detectionModelField && (
