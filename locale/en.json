@@ -1025,5 +1025,9 @@
   "RELATIONSHIP_EDITOR": "Relationship types",
   "NEW_RELATIONSHIP_TYPE": "Add type",
   "ANNOTATION_CREATED": "Annotation created ",
-  "ANNOTATION_WITH_CREATION_DATE_UNKNOWN": "Annotation with unknown creation date"
+  "ANNOTATION_WITH_CREATION_DATE_UNKNOWN": "Annotation with unknown creation date",
+  "SELECT_RELATIONSHIP_TYPE": "Select relationship type",
+  "SELECT_RELATIONSHIP_ROLE": "Select role from {ind}'s perspective",
+  "NO_RELATIONSHIPS": "This individual currently has no known relationships",
+  "CONFIRM_REMOVE_RELATIONSHIP": "Are you sure you want to delete this relationship?"
 }
