@@ -21,7 +21,7 @@ const columns = [
     align: 'left',
   },
   {
-    name: 'top_score',
+    name: 'topScore',
     labelId: 'SCORE',
     align: 'left',
     options: {
@@ -44,6 +44,7 @@ export default function QueryAnnotationsTable({
       columns={columns}
       hideDownloadCsv
       hideFilterColumns
+      // initiallySelectedRow={selectedQueryAnnotation?.guid}
       onSelectRow={nextSelection => {
         if (nextSelection) {
           setSelectedQueryAnnotation(nextSelection);

@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
 import { useParams } from 'react-router-dom';
-import { get } from 'lodash-es';
+import { get, maxBy } from 'lodash-es';
 
 import Chip from '@material-ui/core/Chip';
 import Fab from '@material-ui/core/Fab';
@@ -52,10 +52,6 @@ export default function MatchSighting() {
 
   const [reviewDialogOpen, setReviewDialogOpen] = useState(false);
 
-  useDocumentTitle(`Match results for sighting ${sightingGuid}`, {
-    translateMessage: false,
-  });
-
   const queryAnnotations = useMemo(
     () => {
       const annotationData = get(matchResults, 'annotation_data', {});
@@ -66,6 +62,12 @@ export default function MatchSighting() {
       );
       return originalQueryAnnotations.map((annotSageData, index) =>
       {
+        const hotspotterAnnotationScores = get(
+          annotSageData,
+          ['algorithms', 'hotspotter_nosv', 'scores_by_annotation'],
+          [],
+        );
+        const topScoreAnnotation = maxBy(hotspotterAnnotationScores, 'score');
         const annotHoustonData = get(
           annotationData,
           annotSageData?.guid,
@@ -74,6 +76,7 @@ export default function MatchSighting() {
         return {
           ...annotHoustonData,
           ...annotSageData,
+          topScore: topScoreAnnotation?.score,
           index
         };
       });
@@ -103,6 +106,10 @@ export default function MatchSighting() {
     },
     [matchResults, selectedQueryAnnotation],
   );
+
+  useDocumentTitle(`Match results for sighting ${sightingGuid}`, {
+    translateMessage: false,
+  });
 
   const loading = sightingDataLoading || matchResultsLoading;
   const error = sightingDataError || matchResultsError;

@@ -1,8 +1,11 @@
 import React from 'react';
-import { round } from 'lodash-es';
+import { isNaN, round } from 'lodash-es';
 
 import Text from '../../Text';
 
-export default function FloatRenderer({ value, precision = 2 }) {
-  return <Text variant="body2">{round(value, precision)}</Text>;
+export default function FloatRenderer({ value, precision = 2, fallback = '-' })
+{
+  const roundedNumber = round(value, precision);
+  const displayNumber = isNaN(roundedNumber) ? fallback : roundedNumber;
+  return <Text variant="body2">{displayNumber}</Text>;
 }

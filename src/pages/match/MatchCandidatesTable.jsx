@@ -35,7 +35,7 @@ export default function MatchCandidatesTable({
   // selectedMatchCandidate,
   setSelectedMatchCandidate,
 }) {
-  // console.log(matchCandidates);
+
   return (
     <DataDisplay
       idKey="guid"
@@ -46,6 +46,7 @@ export default function MatchCandidatesTable({
       noResultsTextId="NO_MATCH_CANDIDATES"
       hideDownloadCsv
       hideFilterColumns
+      // initiallySelectedRow={selectedMatchCandidate?.guid}
       onSelectRow={nextSelection => {
         if (nextSelection) {
           setSelectedMatchCandidate(nextSelection);
