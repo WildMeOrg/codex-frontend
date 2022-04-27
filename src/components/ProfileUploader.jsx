@@ -17,7 +17,7 @@ export default function ProfileUploader({ title, onComplete }) {
   const assetSubmissionId = useMemo(uuid, []);
 
   useEffect(() => {
-    const uppyInstance = Uppy({
+    const uppyInstance = new Uppy({
       meta: { type: 'test' },
       restrictions: {
         maxNumberOfFiles: 1,
