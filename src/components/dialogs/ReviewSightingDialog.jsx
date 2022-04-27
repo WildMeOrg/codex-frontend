@@ -3,11 +3,11 @@ import React from 'react';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 
-import useReviewSighting from '../../../models/sighting/useReviewSighting';
-import StandardDialog from '../../../components/StandardDialog';
-import Button from '../../../components/Button';
-import Text from '../../../components/Text';
-import Alert from '../../../components/Alert';
+import useReviewSighting from '../../models/sighting/useReviewSighting';
+import StandardDialog from '../StandardDialog';
+import Button from '../Button';
+import Text from '../Text';
+import Alert from '../Alert';
 
 export default function ReviewSightingDialog({
   sightingGuid,

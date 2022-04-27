@@ -21,6 +21,7 @@ export default function CollapsibleRow({
   datum,
   renderExpandedRow,
   cellStyles = {},
+  rowIndex,
   ...rest
 }) {
   const [open, setOpen] = useState(false);
@@ -67,7 +68,7 @@ export default function CollapsibleRow({
               }}
             >
               {customCellRenderer ? (
-                customCellRenderer(cellValue, datum)
+                customCellRenderer(cellValue, datum, rowIndex)
               ) : (
                 <RequestedCellRenderer
                   value={cellValue}

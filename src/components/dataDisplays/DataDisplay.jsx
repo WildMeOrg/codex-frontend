@@ -49,6 +49,8 @@ export default function DataDisplay({
   initiallySelectedRow = null,
   onSelectRow = Function.prototype,
   hideFilterSearch = false,
+  hideFilterColumns = false,
+  hideDownloadCsv = false,
   showNoResultsBao = false,
   noResultsTextId,
   noResultsText,
@@ -228,7 +230,7 @@ export default function DataDisplay({
             </Text>
           </Grid>
           <Grid item>
-            {variant === 'primary' && (
+            {variant === 'primary' && !hideDownloadCsv && (
               <IconButton
                 onClick={() => sendCsv(visibleColumns, visibleData)}
                 size="small"
@@ -241,14 +243,16 @@ export default function DataDisplay({
                 <Print style={{ marginRight: 4 }} />
               </IconButton>
             )}
-            <IconButton
-              onClick={event => {
-                setAnchorEl(anchorEl ? null : event.currentTarget);
-              }}
-              size="small"
-            >
-              <FilterList />
-            </IconButton>
+            {!hideFilterColumns && (
+              <IconButton
+                onClick={event => {
+                  setAnchorEl(anchorEl ? null : event.currentTarget);
+                }}
+                size="small"
+              >
+                <FilterList />
+              </IconButton>
+            )}
           </Grid>
         </Grid>
       )}
@@ -308,7 +312,7 @@ export default function DataDisplay({
           </TableHead>
           <TableBody>
             {!loading &&
-              sortedData?.map(datum => (
+              sortedData?.map((datum, rowIndex) => (
                 <CollapsibleRow
                   key={get(datum, idKey)}
                   onClick={() => {
@@ -325,6 +329,7 @@ export default function DataDisplay({
                   cellStyles={cellStyles}
                   columns={visibleColumns}
                   renderExpandedRow={renderExpandedRow}
+                  rowIndex={rowIndex}
                 />
               ))}
           </TableBody>
