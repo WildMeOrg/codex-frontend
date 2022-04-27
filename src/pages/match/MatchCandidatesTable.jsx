@@ -41,7 +41,9 @@ export default function MatchCandidatesTable({
       hideDownloadCsv
       hideFilterColumns
       onSelectRow={nextSelection => {
-        setSelectedMatchCandidate(nextSelection);
+        if (nextSelection) {
+          setSelectedMatchCandidate(nextSelection);
+        }
       }}
     />
   );

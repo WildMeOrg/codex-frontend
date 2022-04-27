@@ -38,8 +38,10 @@ export default function QueryAnnotationsTable({
       columns={columns}
       hideDownloadCsv
       hideFilterColumns
-      onSelectRow={selectedQueryAnnotation => {
-        setSelectedQueryAnnotation(selectedQueryAnnotation);
+      onSelectRow={nextSelection => {
+        if (nextSelection) {
+          setSelectedQueryAnnotation(nextSelection);
+        }
       }}
     />
   );

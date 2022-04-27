@@ -5,6 +5,7 @@ import { get, map } from 'lodash-es';
 import Chip from '@material-ui/core/Chip';
 import DoneIcon from '@material-ui/icons/Done';
 
+import ReviewSightingDialog from '../../components/dialogs/ReviewSightingDialog';
 import Link from '../../components/Link';
 import Tabs from '../../components/Tabs';
 import Text from '../../components/Text';
@@ -14,7 +15,6 @@ import FeaturedPhoto from '../../components/FeaturedPhoto';
 import { formatDateCustom } from '../../utils/formatters';
 import timePrecisionMap from '../../constants/timePrecisionMap';
 import defaultSightingSrc from '../../assets/defaultSighting.png';
-import ReviewSightingDialog from './dialogs/ReviewSightingDialog';
 
 const tabItems = [
   {

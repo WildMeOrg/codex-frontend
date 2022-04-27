@@ -3,13 +3,15 @@ import { useIntl, FormattedMessage } from 'react-intl';
 import { useParams } from 'react-router-dom';
 import { get } from 'lodash-es';
 
+import Chip from '@material-ui/core/Chip';
 import Fab from '@material-ui/core/Fab';
-import MatchIcon from '@material-ui/icons/Done';
+import DoneIcon from '@material-ui/icons/Done';
 
-import { formatDate } from '../../utils/formatters';
 import useSighting from '../../models/sighting/useSighting';
-import useDocumentTitle from '../../hooks/useDocumentTitle';
 import useMatchResults from '../../models/matching/useMatchResults';
+import { formatDate } from '../../utils/formatters';
+import useDocumentTitle from '../../hooks/useDocumentTitle';
+import ReviewSightingDialog from '../../components/dialogs/ReviewSightingDialog';
 import LoadingScreen from '../../components/LoadingScreen';
 import SadScreen from '../../components/SadScreen';
 import MainColumn from '../../components/MainColumn';
@@ -21,17 +23,6 @@ import MatchCandidatesTable from './MatchCandidatesTable';
 import ImageCard from './ImageCard';
 
 const spaceBetweenColumns = 16;
-
-const buttonActions = [
-  {
-    id: 'create-new-individual',
-    labelId: 'CREATE_NEW_INDIVIDUAL',
-  },
-  {
-    id: 'mark-unidentifiable',
-    labelId: 'MARK_UNIDENTIFIABLE',
-  },
-];
 
 export default function MatchSighting() {
   const intl = useIntl();
@@ -58,6 +49,8 @@ export default function MatchSighting() {
     selectedMatchCandidate,
     setSelectedMatchCandidate,
   ] = useState(null);
+
+  const [reviewDialogOpen, setReviewDialogOpen] = useState(false);
 
   useDocumentTitle(`Match results for sighting ${sightingGuid}`, {
     translateMessage: false,
@@ -113,6 +106,14 @@ export default function MatchSighting() {
   if (loading) return <LoadingScreen />;
   if (error) return <SadScreen variant="genericError" />;
 
+  const buttonActions = [
+    {
+      id: 'mark-sighting-reviewed',
+      labelId: 'MARK_SIGHTING_REVIEWED',
+      onClick: () => setReviewDialogOpen(true),
+    },
+  ];
+
   const idCompleteTime = sightingData?.unreviewed_start_time;
   const formattedIdTime = formatDate(
     idCompleteTime,
@@ -120,6 +121,7 @@ export default function MatchSighting() {
     'Unknown time',
   );
 
+  const sightingIsReviewed = Boolean(sightingData?.review_time);
   const matchPossible =
     selectedMatchCandidate && selectedQueryAnnotation;
 
@@ -128,6 +130,11 @@ export default function MatchSighting() {
       fullWidth
       style={{ maxWidth: 'unset', padding: '0 16px' }}
     >
+      <ReviewSightingDialog
+        open={reviewDialogOpen}
+        onClose={() => setReviewDialogOpen(false)}
+        sightingGuid={sightingGuid}
+      />
       <div
         style={{
           padding: '16px 0',
@@ -148,6 +155,14 @@ export default function MatchSighting() {
             values={{ time: formattedIdTime }}
             style={{ padding: '2px 0 0 2px' }}
           />
+          {sightingIsReviewed && (
+            <Chip
+              icon={<DoneIcon />}
+              variant="outlined"
+              label="Reviewed"
+              style={{ marginTop: 8 }}
+            />
+          )}
         </div>
         <ButtonMenu
           buttonId="match-actions"
@@ -193,11 +208,16 @@ export default function MatchSighting() {
       </div>
       {matchPossible && (
         <Fab
-          style={{ position: 'fixed', bottom: 16, right: 16 }}
+          style={{
+            position: 'fixed',
+            bottom: 16,
+            right: 40,
+            zIndex: 1,
+          }}
           color="primary"
           variant="extended"
         >
-          <MatchIcon style={{ marginRight: 4 }} />
+          <DoneIcon style={{ marginRight: 4 }} />
           <FormattedMessage id="CONFIRM_MATCH" />
         </Fab>
       )}
