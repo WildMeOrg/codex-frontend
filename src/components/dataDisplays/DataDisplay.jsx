@@ -49,6 +49,8 @@ export default function DataDisplay({
   initiallySelectedRow = null,
   onSelectRow = Function.prototype,
   hideFilterSearch = false,
+  hideFilterColumns = false,
+  hideDownloadCsv = false,
   showNoResultsBao = false,
   noResultsTextId,
   noResultsText,
@@ -227,7 +229,7 @@ export default function DataDisplay({
             </Text>
           </Grid>
           <Grid item>
-            {variant === 'primary' && (
+            {variant === 'primary' && !hideDownloadCsv && (
               <IconButton
                 onClick={() => sendCsv(visibleColumns, visibleData)}
                 size="small"
@@ -240,14 +242,16 @@ export default function DataDisplay({
                 <Print style={{ marginRight: 4 }} />
               </IconButton>
             )}
-            <IconButton
-              onClick={event => {
-                setAnchorEl(anchorEl ? null : event.currentTarget);
-              }}
-              size="small"
-            >
-              <FilterList />
-            </IconButton>
+            {!hideFilterColumns && (
+              <IconButton
+                onClick={event => {
+                  setAnchorEl(anchorEl ? null : event.currentTarget);
+                }}
+                size="small"
+              >
+                <FilterList />
+              </IconButton>
+            )}
           </Grid>
         </Grid>
       )}

@@ -517,6 +517,7 @@
   "WELCOME_BACK": "Welcome back!",
   "LOG_IN_INSTRUCTIONS": "If your account was migrated from a Wildbook, log in using the email address and password from your Wildbook account.",
   "NEW_REGION": "Add region",
+  "NO_MATCH_CANDIDATES": "There are no match candidates for this annotation.",
   "USERNAME_OR_EMAIL": "Username or email",
   "PASSWORD": "Password",
   "BASIC_INPUTS": "BASIC FIELDS",

@@ -15,7 +15,7 @@ const columns = [
     align: 'left',
   },
   {
-    name: 'top_score',
+    name: 'score',
     labelId: 'SCORE',
     align: 'left',
     options: {
@@ -24,22 +24,24 @@ const columns = [
   },
 ];
 
-export default function QueryAnnotationsTable({
-  queryAnnotations,
-  // selectedQueryAnnotation,
-  setSelectedQueryAnnotation,
+export default function MatchCandidatesTable({
+  matchCandidates,
+  // selectedMatchCandidate,
+  setSelectedMatchCandidate,
 }) {
+  // console.log(matchCandidates);
   return (
     <DataDisplay
       idKey="guid"
-      title="Query annotations"
-      data={queryAnnotations}
+      title="Match candidates"
+      data={matchCandidates}
       // variant="secondary"
       columns={columns}
+      noResultsTextId="NO_MATCH_CANDIDATES"
       hideDownloadCsv
       hideFilterColumns
-      onSelectRow={selectedQueryAnnotation => {
-        setSelectedQueryAnnotation(selectedQueryAnnotation);
+      onSelectRow={nextSelection => {
+        setSelectedMatchCandidate(nextSelection);
       }}
     />
   );
