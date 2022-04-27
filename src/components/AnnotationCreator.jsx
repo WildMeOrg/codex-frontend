@@ -37,20 +37,22 @@ async function createEncounter(sightingData, addEncounterToSighting) {
   const sightingId = get(sightingData, 'guid');
   const encounterGuidsBeforeCreation = map(
     get(sightingData, 'encounters'),
-    encounter => encounter.guid,
+    encounter => encounter?.guid,
     [],
   );
-  const encounterCreationResponse = await addEncounterToSighting(
-    sightingId,
-    copiedProperties,
-  );
+  const encounterCreationResponse = await addEncounterToSighting({
+    sightingGuid: sightingId,
+    operations: [
+      {
+        op: 'add',
+        path: '/encounters',
+        value: copiedProperties,
+      },
+    ],
+  });
   const encounterGuidsAfterCreation = map(
-    get(
-      encounterCreationResponse,
-      ['response', 'data', 'encounters'],
-      [],
-    ),
-    encounter => encounter.guid,
+    get(encounterCreationResponse, ['data', 'encounters'], []),
+    encounter => encounter?.guid,
     [],
   );
   const newEncounterGuids = filter(
@@ -58,7 +60,7 @@ async function createEncounter(sightingData, addEncounterToSighting) {
     enc => encounterGuidsBeforeCreation.indexOf(enc) === -1,
     [],
   );
-  return encounterCreationResponse?.success &&
+  return encounterCreationResponse?.status === 200 &&
     newEncounterGuids?.length === 1
     ? newEncounterGuids
     : [];
@@ -69,45 +71,38 @@ export default function AnnotationCreator({
   asset,
   onClose,
   sightingData,
-  refreshSightingData,
   pending,
 }) {
   const [viewpoint, setViewpoint] = useState('');
   const [IAClass, setIAClass] = useState('');
   const [rect, setRect] = useState({});
   const [anchorEl, setAnchorEl] = useState(null);
-  const [errors, setErrors] = useState([]);
   const theme = useTheme();
   const {
-    addEncounter: addEncounterToSighting,
-    loading: addEncounterToSightingLoading,
+    mutate: addEncounterToSighting,
+    isLoading: addEncounterToSightingLoading,
     error: addEncounterToSightingError,
   } = useAddEncounter();
   const {
     addAnnotationsToSightingEncounter,
-    error: addToSightingEncounterError,
-    isLoading: addToSightingEncounterLoading,
+    error: addAnnotationsToSightingEncounterError,
+    isLoading: addAnnotationToSightingEncounterLoading,
   } = useAddAnnotationsToSightingEncounter();
   const {
-    postAnnotation,
-    loading: postAnnotationLoading,
+    mutate: postAnnotation,
+    isLoading: postAnnotationLoading,
     error: postAnnotationError,
   } = usePostAnnotation();
-  const spinButton =
+  const loading =
     addEncounterToSightingLoading ||
-    addToSightingEncounterLoading ||
+    addAnnotationToSightingEncounterLoading ||
     postAnnotationLoading;
+  const hasErrors =
+    addEncounterToSightingError ||
+    addAnnotationsToSightingEncounterError ||
+    postAnnotationError;
   const onCancel = () => {
-    setErrors([]);
     onClose();
-  };
-  const closeIfNoErrors = () => {
-    if (
-      !addEncounterToSightingError &&
-      !addToSightingEncounterError &&
-      !postAnnotationError
-    )
-      onClose(); // errors seems to stay an empty array here indefinitely, and I'm not sure why. Otherwise, I'd have used !errors
   };
   const IAClassOptions = useIAClassOptions(sightingData);
 
@@ -256,7 +251,7 @@ export default function AnnotationCreator({
           </Select>
         </FormControl>
       </div>
-      {errors?.length && (
+      {hasErrors && (
         <Alert
           severity="error"
           titleId="AN_ERROR_OCCURRED"
@@ -267,19 +262,32 @@ export default function AnnotationCreator({
             padding: '0 40px',
           }}
         >
-          {errors.map(error => (
-            <Text key={error} variant="body2">
-              {error}
+          {addEncounterToSightingError && (
+            <Text key={addEncounterToSightingError} variant="body2">
+              {addEncounterToSightingError}
             </Text>
-          ))}
+          )}
+          {addAnnotationsToSightingEncounterError && (
+            <Text
+              key={addAnnotationsToSightingEncounterError}
+              variant="body2"
+            >
+              {addAnnotationsToSightingEncounterError}
+            </Text>
+          )}
+          {postAnnotationError && (
+            <Text key={postAnnotationError} variant="body2">
+              {postAnnotationError}
+            </Text>
+          )}
         </Alert>
       )}
       <DialogActions style={{ padding: '0px 24px 24px 24px' }}>
         <Button display="basic" onClick={onCancel} id="CANCEL" />
         <Button
           display="primary"
-          loading={spinButton}
-          disabled={spinButton || !viewpoint || !IAClass}
+          loading={loading}
+          disabled={loading || !viewpoint || !IAClass}
           onClick={async () => {
             const assetId = get(asset, 'guid');
             const coords = [
@@ -307,43 +315,36 @@ export default function AnnotationCreator({
                   sightingData,
                   addEncounterToSighting,
                 );
-            if (addEncounterToSightingError)
-              setErrors(prevErrors => [
-                ...prevErrors,
-                addEncounterToSightingError,
-              ]);
 
             const newEncounterGuid = get(newEncounterGuids, [0]);
 
-            const newAnnotationId = await postAnnotation(
-              assetId,
-              IAClass,
-              coords,
+            const postAnnotationResponse = await postAnnotation({
               viewpoint,
+              asset_guid: assetId,
+              ia_class: IAClass,
+              rect: coords,
               theta,
-              newEncounterGuid,
-            );
-            if (postAnnotationError)
-              setErrors(prevErrors => [
-                ...prevErrors,
-                postAnnotationError,
-              ]);
-
+              encounterGuid: newEncounterGuid,
+            });
+            const newAnnotationId =
+              postAnnotationResponse?.data?.guid;
+            let addAnnotationsToSightingEncounterResponse;
             if (newAnnotationId) {
               if (newEncounterGuid) {
-                await addAnnotationsToSightingEncounter(
+                // this doesn't happen if pending or if encounter creation failed or even if extra encouter Guids were created
+                addAnnotationsToSightingEncounterResponse = await addAnnotationsToSightingEncounter(
                   newEncounterGuid,
                   [newAnnotationId],
                 );
-                if (addToSightingEncounterError) {
-                  setErrors(prevErrors => [
-                    ...prevErrors,
-                    addToSightingEncounterError,
-                  ]);
-                }
               }
-              refreshSightingData();
-              closeIfNoErrors();
+              // hasErrors doesn't get information from inside the onClick call, but that's ok, because all three potential calls have info that we can use to check success
+              const allSucceeded = pending
+                ? postAnnotationResponse?.status === 200
+                : newEncounterGuids &&
+                  postAnnotationResponse?.status === 200 &&
+                  addAnnotationsToSightingEncounterResponse?.status ===
+                    200;
+              if (allSucceeded) onClose();
             }
           }}
           id="SAVE"

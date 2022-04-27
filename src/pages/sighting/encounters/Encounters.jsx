@@ -40,14 +40,14 @@ export default function Encounters({
   const history = useHistory();
   const queryClient = useQueryClient();
   const {
-    addEncounter: addEncounterToSighting,
-    loading: addEncounterToSightingLoading,
+    mutate: addEncounterToSighting,
+    isLoading: addEncounterToSightingLoading,
     error: addEncounterToSightingError,
     setError: setAddEncounterError,
   } = useAddEncounter();
 
   const {
-    addEncounterToAGS,
+    mutate: addEncounterToAGS,
     isLoading: addEncounterToAGSLoading,
     error: addEncounterToAGSError,
   } = useAddEncounterToAGS();
@@ -352,8 +352,16 @@ export default function Encounters({
             'timeSpecificity',
             'locationId',
           ]);
-          await addEncounter(sightingId, copiedProperties); // Do we really want to proceed as usual if there's an error here?
-          refreshSightingData();
+          await addEncounter({
+            sightingGuid: sightingId,
+            operations: [
+              {
+                op: 'add',
+                path: '/encounters',
+                value: copiedProperties,
+              },
+            ],
+          });
         }}
         startIcon={<AddIcon />}
         style={{ margin: '12px 0px 20px 20px' }}
