@@ -64,7 +64,8 @@ export default function MatchSighting() {
         'query_annotations',
         [],
       );
-      return originalQueryAnnotations.map(annotSageData => {
+      return originalQueryAnnotations.map((annotSageData, index) =>
+      {
         const annotHoustonData = get(
           annotationData,
           annotSageData?.guid,
@@ -73,6 +74,7 @@ export default function MatchSighting() {
         return {
           ...annotHoustonData,
           ...annotSageData,
+          index
         };
       });
     },
@@ -86,7 +88,8 @@ export default function MatchSighting() {
         ['algorithms', 'hotspotter_nosv', 'scores_by_annotation'],
         [],
       );
-      return hotspotterAnnotationScores.map(scoreObject => {
+      return hotspotterAnnotationScores.map((scoreObject, index) =>
+      {
         const matchingAnnotation = get(matchResults, [
           'annotation_data',
           scoreObject?.guid,
@@ -94,6 +97,7 @@ export default function MatchSighting() {
         return {
           ...matchingAnnotation,
           ...scoreObject,
+          index
         };
       });
     },

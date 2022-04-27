@@ -299,7 +299,7 @@ export default function DataDisplay({
           </TableHead>
           <TableBody>
             {!loading &&
-              sortedData?.map(datum => (
+              sortedData?.map((datum, rowIndex) => (
                 <CollapsibleRow
                   key={get(datum, idKey)}
                   onClick={() => {
@@ -316,6 +316,7 @@ export default function DataDisplay({
                   cellStyles={cellStyles}
                   columns={visibleColumns}
                   renderExpandedRow={renderExpandedRow}
+                  rowIndex={rowIndex}
                 />
               ))}
           </TableBody>

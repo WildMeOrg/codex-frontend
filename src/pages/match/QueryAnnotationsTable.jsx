@@ -5,10 +5,16 @@ import { cellRendererTypes } from '../../components/dataDisplays/cellRenderers';
 
 const columns = [
   {
-    // name: 'filename',
-    name: 'image_url',
-    labelId: 'FILENAME',
+    name: 'index',
+    labelId: 'ANNOTATION',
+    options: {
+      customBodyRender: i => `Q${i + 1}`,
+    }
   },
+  // {
+  //   name: 'filename',
+  //   labelId: 'FILENAME',
+  // },
   {
     name: 'viewpoint',
     labelId: 'VIEWPOINT',
