@@ -29,7 +29,7 @@ export default function UploadManager({
   fileRef.current = files;
 
   useEffect(() => {
-    const uppyInstance = Uppy({
+    const uppyInstance = new Uppy({
       meta: { type: 'Report sightings image upload' },
       restrictions: {
         allowedFileTypes: ['.jpg', '.jpeg', '.png'],

@@ -56,7 +56,7 @@ export default function FileInput({
           ? schema.allowedFileTypes
           : null;
     }
-    const uppyInstance = Uppy({
+    const uppyInstance = new Uppy({
       meta: { type: 'test' },
       restrictions: {
         maxNumberOfFiles: 100,

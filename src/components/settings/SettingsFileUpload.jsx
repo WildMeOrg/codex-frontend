@@ -36,7 +36,7 @@ export default function SettingsFileUpload({
   const assetSubmissionId = useMemo(uuid, []);
 
   useEffect(() => {
-    const uppyInstance = Uppy({
+    const uppyInstance = new Uppy({
       meta: { type: settingName },
       restrictions: {
         maxNumberOfFiles: 1,
