@@ -1,6 +1,6 @@
+import { hot } from 'react-hot-loader/root'; // Needs to be imported before React
 import React from 'react';
 import { render } from 'react-dom';
-import { hot } from 'react-hot-loader/root';
 import * as Sentry from '@sentry/react';
 import { get } from 'lodash-es';
 
@@ -21,6 +21,8 @@ if (!__DEV__) {
 
 const root = document.getElementById('root');
 
+// react-hot-loader automatically ensures that it is not executed in production
+// and has a minimal footprint
 const Main = hot(() => <App />);
 
 const load = () => render(<Main />, root);
