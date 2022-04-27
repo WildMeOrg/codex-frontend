@@ -731,6 +731,7 @@
   "MARK_SIGHTING_REVIEWED_CONFIRMATION": "Are you sure you want to mark this sighting reviewed? This action cannot be undone.",
   "MATCH_COUNT": "{matchCount} {matchCount, plural, =0 {matches} one {match} other {matches}}",
   "PHOTO_COUNT": "{photoCount} {photoCount, plural, =0 {photographs} one {photograph} other {photographs}}",
+  "ENCOUNTERS_IMPORTED_COUNT": "{encounterCount} {encounterCount, plural, =0 {encounters} one {encounter} other {encounters}} imported.",
   "READY_FOR_REVIEW": "Ready for Identification Review",
   "CHANGE_PHOTO": "Change Photo",
   "1": "1",
