@@ -8,6 +8,7 @@ import ViewList from '@material-ui/icons/ViewList';
 import ViewMap from '@material-ui/icons/Language';
 
 import { formatLocationFromSighting } from '../../utils/formatters';
+import useActionsColumnWidth from '../../hooks/useActionsColumnWidth';
 import useOptions from '../../hooks/useOptions';
 import { cellRendererTypes } from '../dataDisplays/cellRenderers';
 import Text from '../Text';
@@ -58,31 +59,44 @@ export default function EncountersCard({
       reference: 'date',
       name: 'time',
       label: 'Date',
-      options: { cellRenderer: cellRendererTypes.specifiedTime },
+      options: {
+        cellRenderer: cellRendererTypes.specifiedTime,
+        cellRendererProps: { noWrap: true },
+        width: '20%',
+      },
     },
     {
       reference: 'location',
       name: 'formattedLocation',
       label: 'Location',
-      options: { cellRenderer: cellRendererTypes.location },
+      options: {
+        cellRenderer: cellRendererTypes.location,
+        cellRendererProps: { noWrap: true },
+      },
     },
     {
       reference: 'owner',
       name: 'owner',
       label: 'Owner',
-      options: { cellRenderer: cellRendererTypes.user },
+      options: {
+        cellRenderer: cellRendererTypes.user,
+        cellRendererProps: { noWrap: true },
+      },
     },
     {
       reference: 'actions',
       name: 'guid',
       label: 'Actions',
       options: {
+        width: useActionsColumnWidth(2),
         customBodyRender: (_, encounter) => [
           <ActionIcon
+            key="view"
             variant="view"
             href={`/sightings/${encounter?.sighting}`}
           />,
           <ActionIcon
+            key="remove"
             variant={
               tooFewEncounters
                 ? 'removeEncFromIndividualDisabled'
@@ -149,6 +163,7 @@ export default function EncountersCard({
           tableSize="medium"
           columns={filteredColumns}
           data={encountersWithLocationData}
+          tableStyles={{ tableLayout: 'fixed' }}
         />
       )}
       {!noEncounters && showMapView && <div>Map goes here</div>}

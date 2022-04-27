@@ -41,7 +41,7 @@ docker-compose build
 docker-compose up -d
 ```
 
-Note: `docker-compose pull` takes a very long time to finish the first time around! But when it's all done you should be able to see the frontend on `localhost:84`. If you see a 502 nginx error instead, you may need to increase the amount of memory available to Docker. 6GB memory and 2GB swap works for my system.
+Note: `docker-compose pull` takes a very long time to finish the first time around! But when it's all done you should be able to see the frontend on `localhost:80`. If you see a 502 nginx error instead, you may need to increase the amount of memory available to Docker. 6GB memory and 2GB swap works for my system.
 
 The following commands are helpful when developing in this manner:
 

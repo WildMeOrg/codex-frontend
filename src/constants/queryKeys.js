@@ -57,9 +57,25 @@ export function getNotificationQueryKey(id) {
 }
 
 export function getIndividualTermQueryKey(searchTerm) {
-  return ['individualSearch', searchTerm];
+  return ['individualQuickSearch', searchTerm];
 }
 
 export function getSightingTermQueryKey(searchTerm) {
-  return ['sightingSearch', searchTerm];
+  return ['sightingQuickSearch', searchTerm];
+}
+
+export function getIndividualFilterQueryKey(
+  filters,
+  page,
+  rowsPerPage,
+) {
+  return ['individualFilterSearch', filters, page, rowsPerPage];
+}
+
+export function getSightingFilterQueryKey(
+  filters,
+  page,
+  rowsPerPage,
+) {
+  return ['sightingFilterSearch', filters, page, rowsPerPage];
 }

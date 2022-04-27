@@ -3,14 +3,20 @@ import { getSightingTermQueryKey } from '../../constants/queryKeys';
 
 export default function useSightingTermQuery(searchTerm) {
   const query = {
-    query_string: {
-      query: `*${searchTerm}*`,
-      fields: [
-        'guid',
-        'verbatimLocality',
-        'owners.full_name',
-        'comments',
-        'locationId_value',
+    bool: {
+      minimum_should_match: 1,
+      should: [
+        { match_phrase_prefix: { guid: { query: searchTerm } } },
+        {
+          query_string: {
+            query: `*${searchTerm}*`,
+            fields: [
+              'verbatimLocality',
+              'owners.full_name',
+              'locationId_value',
+            ],
+          },
+        },
       ],
     },
   };

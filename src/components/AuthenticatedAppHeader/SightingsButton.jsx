@@ -54,7 +54,7 @@ export default function SightingsButton() {
               style={{ padding: '16px 0 0 48px' }}
             />
           )}
-          <List dense style={{ maxHeight: 400, overflow: 'scroll' }}>
+          <List dense style={{ maxHeight: 400, overflow: 'auto' }}>
             {mappableSearchResults.map(sighting => {
               const sightingGuid = sighting?.guid;
 
