@@ -3,9 +3,17 @@ import { getIndividualTermQueryKey } from '../../constants/queryKeys';
 
 export default function useIndividualTermQuery(searchTerm) {
   const query = {
-    query_string: {
-      query: `*${searchTerm}*`,
-      fields: ['adoptionName', 'firstName', 'guid'],
+    bool: {
+      minimum_should_match: 1,
+      should: [
+        { match_phrase_prefix: { guid: { query: searchTerm } } },
+        {
+          query_string: {
+            query: `*${searchTerm}*`,
+            fields: ['adoptionName', 'firstName'],
+          },
+        },
+      ],
     },
   };
 

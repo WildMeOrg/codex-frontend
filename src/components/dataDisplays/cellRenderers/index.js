@@ -4,6 +4,7 @@ import LocationRenderer from './LocationRenderer';
 import SpecifiedTimeRenderer from './SpecifiedTimeRenderer';
 import CapitalizedStringRenderer from './CapitalizedStringRenderer';
 import DateRenderer from './DateRenderer';
+import FloatRenderer from './FloatRenderer';
 
 export const cellRendererTypes = {
   default: 'default',
@@ -12,6 +13,7 @@ export const cellRendererTypes = {
   specifiedTime: 'specifiedTime',
   capitalizedString: 'capitalizedString',
   date: 'date',
+  float: 'float',
 };
 
 export const cellRenderers = {
@@ -21,4 +23,5 @@ export const cellRenderers = {
   [cellRendererTypes.specifiedTime]: SpecifiedTimeRenderer,
   [cellRendererTypes.capitalizedString]: CapitalizedStringRenderer,
   [cellRendererTypes.date]: DateRenderer,
+  [cellRendererTypes.float]: FloatRenderer,
 };

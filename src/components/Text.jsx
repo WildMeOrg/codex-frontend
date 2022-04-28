@@ -1,30 +1,28 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { FormattedMessage } from 'react-intl';
 import Typography from '@material-ui/core/Typography';
 import ResponsiveText from './ResponsiveText';
 
-const Core = function(props) {
+function Core(props, ref) {
   const { responsive = false, ...rest } = props;
-  if (responsive) return <ResponsiveText {...rest} />;
-  return <Typography {...rest} />;
-};
+  if (responsive) return <ResponsiveText ref={ref} {...rest} />;
+  return <Typography ref={ref} {...rest} />;
+}
 
-export default function Text({
-  id,
-  values,
-  domId,
-  children,
-  ...rest
-}) {
+const CoreForwardRef = forwardRef(Core);
+
+function Text({ id, values, domId, children, ...rest }, ref) {
   if (!id)
     return (
-      <Core id={domId} {...rest}>
+      <CoreForwardRef id={domId} ref={ref} {...rest}>
         {children}
-      </Core>
+      </CoreForwardRef>
     );
   return (
-    <Core id={domId} {...rest}>
+    <CoreForwardRef id={domId} ref={ref} {...rest}>
       <FormattedMessage id={id} values={values} />
-    </Core>
+    </CoreForwardRef>
   );
 }
+
+export default forwardRef(Text);

@@ -1,6 +1,7 @@
 import { get, omit } from 'lodash-es';
 import { v4 as uuid } from 'uuid';
 import { formatHoustonTime } from '../../../utils/formatters';
+import parseAssetString from './parseAssetString';
 
 function updateTimes(encounter) {
   const year = get(encounter, 'timeYear', 0);
@@ -35,7 +36,6 @@ export default function prepareAssetGroup(
   assetReferences,
 ) {
   const sightings = {};
-  const sightingTimeSpecificityTracker = {};
   const simpleAssetReferences = assetReferences.map(a => a.path);
   encounters.forEach(encounter => {
     const newEncounter = updateTimes(encounter);
@@ -46,9 +46,7 @@ export default function prepareAssetGroup(
       'assetReferences',
       '',
     );
-    const sightingAssets = sightingAssetInput
-      .split(',')
-      .map(a => a.trim());
+    const sightingAssets = parseAssetString(sightingAssetInput);
     const matchingAssets = simpleAssetReferences.filter(path =>
       sightingAssets.includes(path),
     );
@@ -82,26 +80,21 @@ export default function prepareAssetGroup(
       'verbatimLocality',
     );
 
-    if (!sightingTimeSpecificityTracker[sightingId]) {
+    if (get(newEncounter, 'comments')) {
       assignIfPresent(
         newEncounter,
         sightings[sightingId],
-        'timeSpecificity',
+        'comments',
       );
-      sightingTimeSpecificityTracker[sightingId] = true;
     }
 
-    const time = get(sightings, [sightingId, 'time']);
-    // const timeAfter = newEncounter.time < time; // removed for MVP, where we just take the first time and ignore the rest for the same sightingId
-    if (!time) {
-      // || timeAfter removed this condition for MVP, where we just take the first time and ignore the rest for the same sightingId
-      assignIfPresent(
-        newEncounter,
-        sightings[sightingId],
-        'time',
-        'time',
-      );
-    }
+    assignIfPresent(
+      newEncounter,
+      sightings[sightingId],
+      'timeSpecificity',
+    );
+
+    assignIfPresent(newEncounter, sightings[sightingId], 'time');
 
     if (!get(sightings, [sightingId, 'encounters']))
       sightings[sightingId].encounters = [];
@@ -115,6 +108,7 @@ export default function prepareAssetGroup(
       'timeHour',
       'timeMinutes',
       'timeSeconds',
+      'comments',
     ]);
     sightings[sightingId].encounters.push(finalEncounter);
   });

@@ -11,6 +11,7 @@ import MatchingIcon from '@material-ui/icons/Visibility';
 
 import { formatDate } from '../../../utils/formatters';
 import Card from '../../../components/cards/Card';
+import ButtonLink from '../../../components/ButtonLink';
 import TimelineStep from './TimelineStep';
 import stages from './stages';
 
@@ -47,6 +48,7 @@ export default function StatusCard({ sightingData }) {
   const detectionStartTime = sightingData?.detection_start_time;
   const curationStartTime = sightingData?.curation_start_time;
   const matchingStartTime = sightingData?.identification_start_time;
+  const unreviewedStartTime = sightingData?.unreviewed_start_time;
   const sightingStatus = sightingData?.stage;
 
   const detectionComplete = detectionStartTime && curationStartTime;
@@ -139,14 +141,28 @@ export default function StatusCard({ sightingData }) {
             id: 'WAITING_ELLIPSES',
           })}
           inProgressText={getProgressText(intl, matchingStartTime)}
-          finishedText="Matching finished"
+          finishedText={`Matching finished on ${getDateString(
+            unreviewedStartTime,
+          )}.`}
           skippedText={intl.formatMessage({
             id: 'MATCHING_SKIPPED_MESSAGE',
           })}
           failedText={intl.formatMessage({
             id: 'IDENTIFICATION_FAILED',
           })}
-        />
+        >
+          {matchingComplete && (
+            <div style={{ marginTop: 4 }}>
+              <ButtonLink
+                href={`/match-results/${sightingData?.guid}`}
+                display="panel"
+                size="small"
+              >
+                View match results
+              </ButtonLink>
+            </div>
+          )}
+        </TimelineStep>
       </Timeline>
     </Card>
   );

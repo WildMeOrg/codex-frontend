@@ -30,16 +30,16 @@ export default function MoveAnnotationDialog({
   const assets = get(sightingData, 'assets', []);
 
   const {
-    addAnnotationsToSightingEncounter,
+    mutate: addAnnotationsToSightingEncounter,
     error: addToSightingEncounterError,
-    isLoading: addToSightingEncounterLoading,
+    loading: addToSightingEncounterLoading,
     onClearError: onClearAddToSightingEncounterError,
   } = useAddAnnotationsToSightingEncounter();
 
   const {
-    addAnnotationsToAGSEncounter,
+    mutate: addAnnotationsToAGSEncounter,
     error: addToAGSEncounterError,
-    isLoading: addToAGSEncounterLoading,
+    loading: addToAGSEncounterLoading,
     onClearError: onClearAddToAGSEncounterError,
   } = useAddAnnotationsToAGSEncounter();
 
@@ -169,16 +169,17 @@ export default function MoveAnnotationDialog({
           onClick={async () => {
             let result;
             if (pending) {
-              result = await addAnnotationsToAGSEncounter(
-                sightingId,
-                selectedEncounter?.guid,
-                [annotation?.guid],
-              );
+              result = await addAnnotationsToAGSEncounter({
+                agsGuid: sightingId,
+                encounterGuid: selectedEncounter?.guid,
+                annotationGuids: [annotation?.guid],
+              });
             } else {
-              result = await addAnnotationsToSightingEncounter(
-                selectedEncounter?.guid,
-                [annotation?.guid],
-              );
+              result = await addAnnotationsToSightingEncounter({
+                sightingGuid: sightingId,
+                encounterGuid: selectedEncounter?.guid,
+                annotationGuids: [annotation?.guid],
+              });
             }
             if (result?.status === 200) onCloseDialog();
           }}

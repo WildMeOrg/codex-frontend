@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { hot } from 'react-hot-loader/root';
 import { BrowserRouter, useLocation } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
 // import { ReactQueryDevtools } from 'react-query/devtools';
@@ -73,7 +74,7 @@ function AppWithQueryClient() {
   );
 }
 
-export default function App() {
+function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <AppWithQueryClient />
@@ -81,3 +82,7 @@ export default function App() {
     </QueryClientProvider>
   );
 }
+
+// react-hot-loader automatically ensures that it is not executed in production
+// and has a minimal footprint.
+export default hot(() => <App />);

@@ -27,7 +27,6 @@ import MoreMenu from '../../components/MoreMenu';
 import EntityHeader from '../../components/EntityHeader';
 import MainColumn from '../../components/MainColumn';
 import SadScreen from '../../components/SadScreen';
-// import Button from '../../components/Button';
 import Text from '../../components/Text';
 import CardContainer from '../../components/cards/CardContainer';
 import EncountersCard from '../../components/cards/EncountersCard';
@@ -35,12 +34,10 @@ import MetadataCard from '../../components/cards/MetadataCard';
 import GalleryCard from '../../components/cards/GalleryCard';
 import ConfirmDelete from '../../components/ConfirmDelete';
 import RelationshipsCard from '../../components/cards/RelationshipsCard';
-import CooccurrenceCard from '../../components/cards/CooccurrenceCard';
+// import CooccurrenceCard from '../../components/cards/CooccurrenceCard';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import EditIndividualMetadata from './EditIndividualMetadata';
 import MergeDialog from './MergeDialog';
-import fakeCoocs from './fakeCoocs';
-import fakeRelationships from './fakeRelationships';
 import {
   deriveIndividualName,
   deriveIndividualNameGuid,
@@ -313,10 +310,12 @@ export default function Individual() {
             encounters={encounters}
           />
           <RelationshipsCard
-            title="Relationships"
-            relationships={fakeRelationships}
-          />
-          <CooccurrenceCard data={fakeCoocs} />
+            relationships={individualData?.relationships}
+            individualGuid={id}
+            loading={loading}
+            titleId="RELATIONSHIPS"
+          />{' '}
+          {/* <CooccurrenceCard data={fakeCoocs} /> */}
         </CardContainer>
       </div>
     </MainColumn>

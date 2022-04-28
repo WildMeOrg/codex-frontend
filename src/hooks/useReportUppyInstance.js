@@ -16,7 +16,7 @@ export default function useReportUppyInstance(reportType) {
   fileRef.current = files;
 
   useEffect(() => {
-    const uppyInstance = Uppy({
+    const uppyInstance = new Uppy({
       meta: { type: reportType },
       restrictions: {
         allowedFileTypes: ['.jpg', '.jpeg', '.png'],

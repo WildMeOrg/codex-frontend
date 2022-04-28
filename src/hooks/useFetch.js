@@ -56,15 +56,7 @@ export default function useFetch({
   );
 
   const error = formatError(result);
-
-  useEffect(
-    () => {
-      if (error) {
-        setDisplayedError(error);
-      }
-    },
-    [error],
-  );
+  useEffect(() => setDisplayedError(error), [error]);
 
   return {
     ...result,
