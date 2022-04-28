@@ -17,14 +17,17 @@ import Button from '../Button';
 import ButtonLink from '../ButtonLink';
 import shane from '../../assets/shane.jpg';
 import { notificationSchema } from '../../constants/notificationSchema';
-import { calculatePrettyTimeElapsedSince } from '../../utils/formatters';
+import { getNotificationProps } from '../../utils/notificationUtils';
 import { notificationTypes } from '../dialogs/notificationDialogUtils';
-import { formatDateCustom } from '../../utils/formatters';
+import { calculatePrettyTimeElapsedSince } from '../../utils/formatters';
+// import { formatDateCustom } from '../../utils/formatters'; // TODO comment back in after DEX-927 is resolved
 import queryKeys from '../../constants/queryKeys';
 
 function renderDisplayTextBasedOnMessageType(
   currentNotificationSchema,
   userName,
+  user1Name,
+  user2Name,
   yourIndividualName,
   theirIndividualName,
   formattedDeadline,
@@ -36,6 +39,8 @@ function renderDisplayTextBasedOnMessageType(
         { id: currentNotificationSchema?.notificationMessage },
         {
           userName,
+          user1Name,
+          user2Name,
           yourIndividualName,
           theirIndividualName,
           formattedDeadline,
@@ -92,12 +97,13 @@ export default function NotificationsPane({
               const notificationType = notification?.message_type;
               const mergedIndividualGuid =
                 notification?.message_values?.target_individual_guid;
-              //TODO implement deadline after DEX-927 is resolved
+              // TODO implement deadline after DEX-927 is resolved
               // const deadline = notification?.message_values?.eta;
               // const formattedDeadline = deadline ? formatDateCustom(deadline, 'LLLL do') : intl.formatMessage(
               //       { id: 'DATE_MISSING' },
               //     );
-              const formattedDeadline = 'deleteMe';
+              const formattedDeadline =
+                'two weeks after the merge was requested'; // TODO remove after DEX-927 is resolved
               const currentNotificationSchema = get(
                 notificationSchema,
                 notificationType,
@@ -105,18 +111,13 @@ export default function NotificationsPane({
               const showNotificationDialog =
                 currentNotificationSchema?.showNotificationDialog &&
                 refreshNotifications !== undefined;
-              const senderName = get(
-                notification,
-                'sender_name',
-                'Unnamed User',
-              );
-              // TODO get yourIndividualName after DEX-927 is resolved
-              const yourIndividualName = 'deleteMe';
-              const theirIndividualName = get(
-                notification,
-                ['message_values', 'target_individual_name'],
-                'Unnamed Individual',
-              );
+              const {
+                senderName,
+                user1Name,
+                user2Name,
+                yourIndividualName,
+                theirIndividualName,
+              } = getNotificationProps(notification);
               const deriveButtonPath = get(
                 currentNotificationSchema,
                 'deriveButtonPath',
@@ -146,6 +147,8 @@ export default function NotificationsPane({
                       {renderDisplayTextBasedOnMessageType(
                         currentNotificationSchema,
                         senderName,
+                        user1Name,
+                        user2Name,
                         yourIndividualName,
                         theirIndividualName,
                         formattedDeadline,
@@ -215,7 +218,9 @@ export default function NotificationsPane({
                     }}
                   >
                     <Text
-                      style={{ color: theme.palette.text.secondary }}
+                      style={{
+                        color: theme.palette.text.secondary,
+                      }}
                     >
                       {intl.formatMessage(
                         { id: 'TIME_SINCE' },

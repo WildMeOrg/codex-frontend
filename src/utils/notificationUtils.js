@@ -7,8 +7,11 @@ export const getNotificationProps = notification => {
   const user2Name =
     notification?.message_values?.user2_name || 'Unnamed User';
 
-  const yourIndividualName =
-    notification?.message_values?.user2_name || 'Unnamed Individual'; //TODO update after DEX-927 is resolved
+  const yourIndividualName = 'one of your individuals';
+  // notification?.message_values?.user2_name || 'Unnamed Individual'; //TODO update after DEX-927 is resolved
+  // TODO make a link
+  console.log('deleteMe notification in getNotificationProps is: ');
+  console.log(notification);
   const theirIndividualName =
     notification?.message_values?.target_individual_name ||
     'Unnamed Individual';

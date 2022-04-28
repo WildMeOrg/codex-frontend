@@ -48,8 +48,6 @@ export default function NotificationDetailsDialog({
             userName: senderName,
             user1Name,
             user2Name,
-            // individual1AdoptionName,
-            // individual2AdoptionName,
             yourIndividualName,
             theirIndividualName,
           }}
