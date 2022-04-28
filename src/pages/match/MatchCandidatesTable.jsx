@@ -9,7 +9,7 @@ const columns = [
     labelId: 'ANNOTATION',
     options: {
       customBodyRender: i => `C${i + 1}`,
-    }
+    },
   },
   // {
   //   name: 'filename',
@@ -35,7 +35,6 @@ export default function MatchCandidatesTable({
   // selectedMatchCandidate,
   setSelectedMatchCandidate,
 }) {
-
   return (
     <DataDisplay
       idKey="guid"

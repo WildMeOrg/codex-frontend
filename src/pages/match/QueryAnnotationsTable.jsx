@@ -9,7 +9,7 @@ const columns = [
     labelId: 'ANNOTATION',
     options: {
       customBodyRender: i => `Q${i + 1}`,
-    }
+    },
   },
   // {
   //   name: 'filename',

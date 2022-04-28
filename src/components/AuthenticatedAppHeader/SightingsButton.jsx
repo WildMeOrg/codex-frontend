@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
+import { FormattedMessage } from 'react-intl';
+import { get } from 'lodash-es';
 
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
 
+import { formatDate } from '../../utils/formatters';
 import useSightingTermQuery from '../../models/sighting/useSightingTermQuery';
 import Text from '../Text';
 import SearchButton from './SearchButton';
@@ -58,9 +61,16 @@ export default function SightingsButton() {
             {mappableSearchResults.map(sighting => {
               const sightingGuid = sighting?.guid;
 
+              const ownerName = get(
+                sighting,
+                ['owners', 0, 'full_name'],
+                'Unknown User',
+              );
+              const regionLabel = sighting?.locationId_value;
+              const createdDate = formatDate(sighting?.created, true);
+              const sightingDate = formatDate(sighting?.time, true);
               // Fake text for now since not enough information is coming back
-              const displayString = sightingGuid;
-              const avatarLetter = displayString[0].toUpperCase();
+              const avatarLetter = ownerName[0].toUpperCase();
 
               return (
                 <SearchResult
@@ -68,8 +78,21 @@ export default function SightingsButton() {
                   avatarLetter={avatarLetter}
                   href={`/sightings/${sightingGuid}`}
                   onClick={closePopover}
-                  primaryText={displayString}
-                  secondaryText="Created on May 4, 2002"
+                  primaryText={
+                    <FormattedMessage
+                      values={{
+                        region: regionLabel,
+                        date: sightingDate,
+                      }}
+                      id="SIGHTING_SEARCH_RESULT_PRIMARY_TEXT"
+                    />
+                  }
+                  secondaryText={
+                    <FormattedMessage
+                      values={{ name: ownerName, date: createdDate }}
+                      id="SIGHTING_SEARCH_RESULT_SECONDARY_TEXT"
+                    />
+                  }
                 />
               );
             })}

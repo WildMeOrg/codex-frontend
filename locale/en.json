@@ -523,6 +523,8 @@
   "BASIC_INPUTS": "BASIC FIELDS",
   "COMPOUND_INPUTS": "COMPOUND FIELDS",
   "SPECIAL_INPUTS": "SPECIAL FIELDS",
+  "SIGHTING_SEARCH_RESULT_PRIMARY_TEXT": "{date} sighting in {region}",
+  "SIGHTING_SEARCH_RESULT_SECONDARY_TEXT": "Reported by {name} on {date}",
   "SELECTED_QUERY_ANNOTATION": "Selected query annotation",
   "IDENTIFICATION_FINISHED_TIME": "Identification finished on {time}.",
   "SELECTED_MATCH_CANDIDATE": "Selected match candidate",
