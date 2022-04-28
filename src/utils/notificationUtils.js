@@ -20,7 +20,11 @@ export const getNotificationProps = notification => {
     notification?.message_values?.target_individual_guid;
   console.log('deleteMe theirIndividualGuid is: ');
   console.log(theirIndividualGuid);
-  const theirIndividualContent = <p>Testing</p>;
+  const theirIndividualContent = (
+    <span>
+      <p>Testing</p>
+    </span>
+  );
   // const theirIndividualContent = (
   //   <Link
   //     newTab
