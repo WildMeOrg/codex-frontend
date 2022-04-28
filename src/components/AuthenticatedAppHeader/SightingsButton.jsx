@@ -5,7 +5,10 @@ import { get } from 'lodash-es';
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
 
-import { formatDate } from '../../utils/formatters';
+import {
+  formatDate,
+  formatSpecifiedTime,
+} from '../../utils/formatters';
 import useSightingTermQuery from '../../models/sighting/useSightingTermQuery';
 import Text from '../Text';
 import SearchButton from './SearchButton';
@@ -68,8 +71,10 @@ export default function SightingsButton() {
               );
               const regionLabel = sighting?.locationId_value;
               const createdDate = formatDate(sighting?.created, true);
-              const sightingDate = formatDate(sighting?.time, true);
-              // Fake text for now since not enough information is coming back
+              const sightingDate = formatSpecifiedTime(
+                sighting?.time,
+                sighting?.timeSpecificity,
+              );
               const avatarLetter = ownerName[0].toUpperCase();
 
               return (
