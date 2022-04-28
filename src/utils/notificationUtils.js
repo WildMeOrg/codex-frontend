@@ -1,4 +1,5 @@
-// import { deriveIndividualName } from './nameUtils';
+import React from 'react';
+import Link from '../components/Link';
 
 export const getNotificationProps = notification => {
   const senderName = notification?.sender_name || 'Unnamed User';
@@ -15,11 +16,22 @@ export const getNotificationProps = notification => {
   const theirIndividualName =
     notification?.message_values?.target_individual_name ||
     'Unnamed Individual';
+  const theirIndividualGuid =
+    notification?.message_values?.target_individual_guid;
+  const theirIndividualContent = (
+    <Link
+      newTab
+      external
+      href={`/individuals/${theirIndividualGuid}`}
+    >
+      {theirIndividualName}
+    </Link>
+  );
   return {
     senderName,
     user1Name,
     user2Name,
     yourIndividualName,
-    theirIndividualName,
+    theirIndividualContent,
   };
 };
