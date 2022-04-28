@@ -637,6 +637,7 @@
   "DELETE_ANNOTATION_CONFIRMATION": "Click save to delete this annotation.",
   "DELETE_THIS_ANNOTATION": "Delete this annotation",
   "SUBMITTED_BY": "Submitted by ",
+  "REPORTER": "Reporter",
   "PROJECT_NAME": "Project name",
   "INDIVIDUAL_NOT_FOUND": "Individual not found",
   "START_DATE": "Start date",
