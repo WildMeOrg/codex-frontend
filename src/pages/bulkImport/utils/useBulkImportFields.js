@@ -6,7 +6,9 @@ import useSightingFieldSchemas from '../../../models/sighting/useSightingFieldSc
 import {
   sightingOmitList,
   encounterOmitList,
+  deriveCustomFieldPrefix,
 } from '../constants/bulkReportConstants';
+import categoryTypes from '../../../constants/categoryTypes';
 import timePrecisionMap from '../../../constants/timePrecisionMap';
 import useOptions from '../../../hooks/useOptions';
 
@@ -41,6 +43,13 @@ function deriveLabel(field, intl) {
   return label || 'Label unavailable';
 }
 
+function deriveKey(field, categoryType) {
+  if (!field.customField) return field.name;
+
+  const prefix = deriveCustomFieldPrefix(categoryType);
+  return prefix + field.id;
+}
+
 export default function useBulkImportFields() {
   const intl = useIntl();
   const { regionOptions, speciesOptions } = useOptions();
@@ -60,7 +69,7 @@ export default function useBulkImportFields() {
         }
         return {
           label: deriveLabel(f, intl),
-          key: f.name,
+          key: deriveKey(f, categoryTypes.sighting),
           ...additionalProperties,
         };
       });
@@ -84,7 +93,7 @@ export default function useBulkImportFields() {
         }
         return {
           label: deriveLabel(f, intl),
-          key: f.name,
+          key: deriveKey(f, categoryTypes.encounter),
           ...additionalProperties,
         };
       });
