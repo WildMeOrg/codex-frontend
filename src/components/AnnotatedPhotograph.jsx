@@ -102,7 +102,8 @@ export default function AnnotatedPhotograph({
                 transform: `rotate(${theta}rad)`,
               }}
               fill="none"
-              stroke={theme.palette.common.black}
+              // stroke={theme.palette.common.black}
+              stroke="#ff952c"
               strokeWidth={6}
               vectorEffect="non-scaling-stroke"
               x={x}

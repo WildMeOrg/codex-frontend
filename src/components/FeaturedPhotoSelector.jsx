@@ -25,7 +25,7 @@ export default function FeaturedPhotoSelector({
   );
 
   const {
-    updateProperties,
+    mutate: updateProperties,
     loading: sightingLoading,
     error: sightingError,
   } = usePatchSighting();
@@ -94,9 +94,13 @@ export default function FeaturedPhotoSelector({
           onClick={async () => {
             let successfulUpdate;
             if (sightingId) {
-              successfulUpdate = await updateProperties(sightingId, {
-                featuredAssetGuid: selectedPhoto,
+              const response = await updateProperties({
+                sightingGuid: sightingId,
+                properties: {
+                  featuredAssetGuid: selectedPhoto,
+                },
               });
+              successfulUpdate = response.status === 200;
             } else {
               successfulUpdate = await updateIndividualProperties(
                 individualId,

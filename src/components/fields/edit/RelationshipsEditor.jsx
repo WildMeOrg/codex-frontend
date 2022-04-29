@@ -19,7 +19,6 @@ export default function RelationshipsEditor({
   ...rest
 }) {
   const sortedRelationships = sortBy(relationships, 'timeCreated');
-
   return (
     <div>
       {sortedRelationships.map(relationship => {

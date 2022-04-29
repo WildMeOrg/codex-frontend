@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { get } from 'lodash-es';
 import { useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
@@ -32,14 +32,17 @@ const sizeMap = {
   },
 };
 
-export default function ResponsiveText({
-  variant,
-  children,
-  mobileStyle = {},
-  desktopStyle = {},
-  style = {},
-  ...rest
-}) {
+function ResponsiveText(
+  {
+    variant,
+    children,
+    mobileStyle = {},
+    desktopStyle = {},
+    style = {},
+    ...rest
+  },
+  ref,
+) {
   const theme = useTheme();
   const isSm = useMediaQuery(theme.breakpoints.down('sm'));
   const smallSize = get(sizeMap, [variant, 'mobile'], 12);
@@ -55,9 +58,12 @@ export default function ResponsiveText({
       variant={variant}
       component={component}
       style={{ ...responsiveStyle, ...style }}
+      ref={ref}
       {...rest}
     >
       {children}
     </Typography>
   );
 }
+
+export default forwardRef(ResponsiveText);

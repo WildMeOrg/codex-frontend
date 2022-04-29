@@ -1,11 +1,16 @@
 export const bulkImportCategories = {
   encounter: {
     name: 'animal',
-    fields: ['individualName', 'taxonomy', 'sex'],
+    fields: ['firstName', 'taxonomy', 'sex'],
   },
   sighting: {
     name: 'sighting',
-    fields: ['sightingId', 'assets', 'locationId'],
+    fields: [
+      'sightingId',
+      'assetReferences',
+      'locationId',
+      'comments',
+    ],
   },
   shared: {
     name: 'shared',
@@ -39,7 +44,7 @@ export const encounterOmitList = ['gps', 'specifiedTime'];
 export const bulkFieldSchemas = [
   { name: 'decimalLatitude', labelId: 'DECIMAL_LATITUDE' },
   { name: 'decimalLongitude', labelId: 'DECIMAL_LONGITUDE' },
-  { name: 'individualName', labelId: 'INDIVIDUAL_NAME' },
+  { name: 'firstName', labelId: 'INDIVIDUAL_NAME' },
   { name: 'locationId', labelId: 'REGION' },
   { name: 'timeSpecificity', labelId: 'SIGHTING_TIME_SPECIFICITY' },
   { name: 'sightingId', labelId: 'SIGHTING_ID' },
@@ -50,5 +55,5 @@ export const bulkFieldSchemas = [
   { name: 'timeMinutes', labelId: 'TIME_MINUTES' },
   { name: 'timeSeconds', labelId: 'TIME_SECONDS' },
   { name: 'utcOffset', labelId: 'TIMEZONE' },
-  { name: 'assets', labelId: 'ASSETS' },
+  { name: 'assetReferences', labelId: 'ASSETS' },
 ];

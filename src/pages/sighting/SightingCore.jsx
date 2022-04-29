@@ -1,37 +1,26 @@
 import React, { useMemo, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useIntl, FormattedMessage } from 'react-intl';
-import { get, map } from 'lodash-es';
+import { get } from 'lodash-es';
 import { useQueryClient } from 'react-query';
-
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
 
 import {
   getAGSQueryKey,
   getSightingQueryKey,
 } from '../../constants/queryKeys';
-import timePrecisionMap from '../../constants/timePrecisionMap';
-import defaultSightingSrc from '../../assets/defaultSighting.png';
 import MainColumn from '../../components/MainColumn';
-import Link from '../../components/Link';
-import Text from '../../components/Text';
 import LoadingScreen from '../../components/LoadingScreen';
 import SadScreen from '../../components/SadScreen';
-import MoreMenu from '../../components/MoreMenu';
 import ConfirmDelete from '../../components/ConfirmDelete';
-import EntityHeader from '../../components/EntityHeader';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import useDeleteSighting from '../../models/sighting/useDeleteSighting';
 import useDeleteAssetGroupSighting from '../../models/assetGroupSighting/useDeleteAssetGroupSighting';
 import useSightingFieldSchemas from '../../models/sighting/useSightingFieldSchemas';
-import { formatDateCustom } from '../../utils/formatters';
+import SightingEntityHeader from './SightingEntityHeader';
 import Annotations from './Annotations';
 import Photographs from './Photographs';
 import OverviewContent from './OverviewContent';
 import SightingHistoryDialog from './SightingHistoryDialog';
 import CommitBanner from './CommitBanner';
-import FeaturedPhoto from '../../components/FeaturedPhoto';
 import Encounters from './encounters/Encounters';
 
 export default function SightingCore({
@@ -43,7 +32,6 @@ export default function SightingCore({
   id,
 }) {
   const history = useHistory();
-  const intl = useIntl();
   const queryClient = useQueryClient();
 
   const fieldSchemas = useSightingFieldSchemas();
@@ -83,24 +71,6 @@ export default function SightingCore({
     [data, fieldSchemas],
   );
 
-  const dataForFeaturedPhoto = useMemo(
-    () => {
-      const assets = get(data, ['assets'], []);
-      const modifiedAssets = map(
-        assets,
-        asset => {
-          return { ...asset, altText: asset?.filename };
-        },
-        [],
-      );
-      return {
-        ...data,
-        assets: modifiedAssets,
-      };
-    },
-    [data],
-  );
-
   useDocumentTitle(`Sighting ${id}`, { translateMessage: false });
 
   const [historyOpen, setHistoryOpen] = useState(false);
@@ -126,24 +96,6 @@ export default function SightingCore({
   if (error) return <SadScreen variant="genericError" />;
 
   const assets = get(data, 'assets', []);
-
-  const sightingTime = data?.time;
-  const sightingTimeSpecificity = data?.timeSpecificity;
-  const formatSpecification = get(
-    timePrecisionMap,
-    [sightingTimeSpecificity, 'prettyFormat'],
-    'yyyy-MM-dd',
-  );
-  const sightingDisplayDate = formatDateCustom(
-    sightingTime,
-    formatSpecification,
-  );
-
-  const sightingCreator = data?.creator;
-  const creatorName =
-    sightingCreator?.full_name ||
-    intl.formatMessage({ id: 'UNNAMED_USER' });
-  const creatorUrl = `/users/${sightingCreator?.guid}`;
 
   return (
     <MainColumn fullWidth>
@@ -182,74 +134,15 @@ export default function SightingCore({
         }
         messageId="CONFIRM_DELETE_SIGHTING_DESCRIPTION"
       />
-      <EntityHeader
-        renderAvatar={
-          <FeaturedPhoto
-            data={pending ? null : dataForFeaturedPhoto}
-            loading={loading}
-            refreshData={refreshData}
-            defaultPhotoSrc={defaultSightingSrc}
-            sightingId={data?.guid}
-          />
-        }
-        name={intl.formatMessage(
-          { id: 'ENTITY_HEADER_SIGHTING_DATE' },
-          { date: sightingDisplayDate },
-        )}
-        renderTabs={
-          <Tabs
-            value={activeTab.replace('#', '')}
-            onChange={(_, newValue) => {
-              window.location.hash = newValue;
-            }}
-            variant="scrollable"
-          >
-            <Tab
-              label={<FormattedMessage id="OVERVIEW" />}
-              value="overview"
-            />
-            <Tab
-              label={<FormattedMessage id="PHOTOGRAPHS" />}
-              value="photographs"
-            />
-            <Tab
-              label={<FormattedMessage id="ANNOTATIONS" />}
-              value="annotations"
-            />
-            <Tab
-              label={<FormattedMessage id="ANIMALS" />}
-              value="individuals"
-            />
-          </Tabs>
-        }
-        renderOptions={
-          <div style={{ display: 'flex' }}>
-            {/* <Button id="SUBSCRIBE" display="primary" /> */}
-            <MoreMenu
-              menuId="sighting-actions"
-              items={[
-                {
-                  id: 'view-history',
-                  onClick: () => setHistoryOpen(true),
-                  label: 'View history',
-                },
-                {
-                  id: 'delete-sighting',
-                  onClick: () => setDeleteDialogOpen(true),
-                  label: 'Delete sighting',
-                },
-              ]}
-            />
-          </div>
-        }
-      >
-        {sightingCreator && (
-          <Text variant="body2">
-            {intl.formatMessage({ id: 'REPORTED_BY' })}
-            <Link to={creatorUrl}>{creatorName}</Link>
-          </Text>
-        )}
-      </EntityHeader>
+      <SightingEntityHeader
+        activeTab={activeTab}
+        data={data}
+        loading={loading}
+        pending={pending}
+        guid={id}
+        setHistoryOpen={setHistoryOpen}
+        setDeleteDialogOpen={setDeleteDialogOpen}
+      />
       <CommitBanner
         sightingId={id}
         pending={pending}

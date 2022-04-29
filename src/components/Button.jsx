@@ -1,19 +1,22 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useTheme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import BackIcon from '@material-ui/icons/KeyboardBackspace';
 
-const Core = function({
-  children,
-  display = 'panel',
-  loading = false,
-  style,
-  disabled,
-  size,
-  ...rest
-}) {
+const Core = function(
+  {
+    children,
+    display = 'panel',
+    loading = false,
+    style,
+    disabled,
+    size,
+    ...rest
+  },
+  ref,
+) {
   const theme = useTheme();
 
   let variant = undefined; // eslint-disable-line
@@ -33,6 +36,7 @@ const Core = function({
           padding: '4px 16px',
           ...style,
         }}
+        ref={ref}
         {...rest}
       >
         {children}
@@ -96,6 +100,7 @@ const Core = function({
       <button
         type="button"
         style={{ ...roleStyles, ...style }}
+        ref={ref}
         {...rest}
       >
         {loading ? (
@@ -119,6 +124,7 @@ const Core = function({
       disabled={disabled}
       style={{ ...roleStyles, ...style }}
       size={size}
+      ref={ref}
       {...rest}
     >
       {loading ? (
@@ -130,22 +136,23 @@ const Core = function({
   );
 };
 
-export default function CustomButton({
-  id,
-  domId = undefined,
-  values,
-  children,
-  ...rest
-}) {
+const CoreForwardRef = forwardRef(Core);
+
+function CustomButton(
+  { id, domId = undefined, values, children, ...rest },
+  ref,
+) {
   if (!id)
     return (
-      <Core id={domId} {...rest}>
+      <CoreForwardRef id={domId} ref={ref} {...rest}>
         {children}
-      </Core>
+      </CoreForwardRef>
     );
   return (
-    <Core id={domId} {...rest}>
+    <CoreForwardRef id={domId} ref={ref} {...rest}>
       <FormattedMessage id={id} values={values} />
-    </Core>
+    </CoreForwardRef>
   );
 }
+
+export default forwardRef(CustomButton);

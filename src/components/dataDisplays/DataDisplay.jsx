@@ -49,6 +49,8 @@ export default function DataDisplay({
   initiallySelectedRow = null,
   onSelectRow = Function.prototype,
   hideFilterSearch = false,
+  hideFilterColumns = false,
+  hideDownloadCsv = false,
   showNoResultsBao = false,
   noResultsTextId,
   noResultsText,
@@ -65,6 +67,7 @@ export default function DataDisplay({
   rowsPerPage,
   dataCount, // in a paginated table there will be more data than provided to the data prop
   paperStyles = {},
+  tableStyles = {},
   cellStyles = {},
   ...rest
 }) {
@@ -227,7 +230,7 @@ export default function DataDisplay({
             </Text>
           </Grid>
           <Grid item>
-            {variant === 'primary' && (
+            {variant === 'primary' && !hideDownloadCsv && (
               <IconButton
                 onClick={() => sendCsv(visibleColumns, visibleData)}
                 size="small"
@@ -240,14 +243,16 @@ export default function DataDisplay({
                 <Print style={{ marginRight: 4 }} />
               </IconButton>
             )}
-            <IconButton
-              onClick={event => {
-                setAnchorEl(anchorEl ? null : event.currentTarget);
-              }}
-              size="small"
-            >
-              <FilterList />
-            </IconButton>
+            {!hideFilterColumns && (
+              <IconButton
+                onClick={event => {
+                  setAnchorEl(anchorEl ? null : event.currentTarget);
+                }}
+                size="small"
+              >
+                <FilterList />
+              </IconButton>
+            )}
           </Grid>
         </Grid>
       )}
@@ -257,10 +262,22 @@ export default function DataDisplay({
         style={paperStyles}
       >
         <Table
-          style={{ minWidth: 10 }}
+          style={{ minWidth: 10, ...tableStyles }}
           size={tableSize}
           aria-label={title}
         >
+          <colgroup>
+            {columns.map(c => (
+              <col
+                key={c.name}
+                style={
+                  get(c, 'options.width')
+                    ? { width: c.options.width }
+                    : {}
+                }
+              />
+            ))}
+          </colgroup>
           <TableHead>
             <TableRow>
               {renderExpandedRow && <TableCell />}
@@ -295,7 +312,7 @@ export default function DataDisplay({
           </TableHead>
           <TableBody>
             {!loading &&
-              sortedData?.map(datum => (
+              sortedData?.map((datum, rowIndex) => (
                 <CollapsibleRow
                   key={get(datum, idKey)}
                   onClick={() => {
@@ -312,6 +329,7 @@ export default function DataDisplay({
                   cellStyles={cellStyles}
                   columns={visibleColumns}
                   renderExpandedRow={renderExpandedRow}
+                  rowIndex={rowIndex}
                 />
               ))}
           </TableBody>

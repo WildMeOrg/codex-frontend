@@ -32,6 +32,7 @@ import SearchIndividuals from './pages/individual/SearchIndividuals';
 import SearchSightings from './pages/sighting/SearchSightings';
 import SiteSetup from './pages/setup/SiteSetup';
 import MatchReview from './pages/match/MatchReview';
+import MatchSighting from './pages/match/MatchSighting';
 import AuditLog from './pages/devTools/AuditLog';
 import Welcome from './pages/auth/Welcome';
 import Home from './pages/home/Home';
@@ -137,6 +138,9 @@ export default function AuthenticatedSwitch() {
                       </Route>
                       <Route path="/sightings">
                         <SearchSightings />
+                      </Route>
+                      <Route path="/match-results/:sightingGuid">
+                        <MatchSighting />
                       </Route>
                       <Route path="/users/:id">
                         <User />

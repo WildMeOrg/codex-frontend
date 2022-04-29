@@ -7,17 +7,18 @@ import ButtonLink from '../ButtonLink';
 import Text from '../Text';
 import { cellRendererTypes } from '../dataDisplays/cellRenderers';
 
-export default function SightingsDisplay({ sightings }) {
+export default function SightingsDisplay({ sightings, loading }) {
   const intl = useIntl();
   const title = `${sightings.length} matching sightings`;
 
   const tableData = sightings.map(sighting => {
-    const photoCount = sighting.encounters.reduce((memo, e) => {
+    const encounters = sighting?.encounters || [];
+    const photoCount = encounters.reduce((memo, e) => {
       memo += e.images.length;
       return memo;
     }, 0);
 
-    const individuals = sighting.encounters.reduce((memo, e) => {
+    const individuals = encounters.reduce((memo, e) => {
       const individual = get(e, 'individual.id', null);
       return individual ? [...memo, individual] : null;
     }, []);
@@ -90,6 +91,7 @@ export default function SightingsDisplay({ sightings }) {
       columns={columns}
       data={tableData}
       title={title}
+      loading={loading}
       renderExpandedRow={expandedSighting => (
         <div style={{ display: 'flex' }}>
           <img

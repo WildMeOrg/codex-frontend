@@ -22,30 +22,45 @@ import Text from '../../components/Text';
 import BulkFieldBreakdown from './BulkFieldBreakdown';
 import prepareAssetGroup from './utils/prepareAssetGroup';
 import useBulkImportFields from './utils/useBulkImportFields';
-import validateIndividualNames from './utils/validateIndividualNames';
-import validateMinMax from './utils/validateMinMax';
+import {
+  validateMinMax,
+  validateIndividualNames,
+  validateAssetStrings,
+} from './utils/flatfileValidators';
 
-async function onRecordChange(record, recordIndex) {
-  const messages = validateMinMax(record);
+async function onRecordChange(record, recordIndex, filenames) {
+  let messages = validateMinMax(record);
 
-  const individual = record?.individual;
-  if (individual) {
+  const firstName = record?.firstName;
+  if (firstName) {
     try {
-      const validationResponse = await validateIndividualNames([
-        [individual, recordIndex],
+      const nameValidationResponse = await validateIndividualNames([
+        [firstName, recordIndex],
       ]);
-      const nameMessage = get(validationResponse, [0, 0]);
+      const nameMessage = get(nameValidationResponse, [0, 0]);
 
-      if (nameMessage)
-        return {
+      if (nameMessage) {
+        messages = {
           ...messages,
-          individual: nameMessage,
+          firstName: nameMessage,
         };
+      }
     } catch (e) {
       console.error(
-        `Error validating individual name "${individual}" at ${recordIndex}`,
+        `Error validating individual name "${firstName}" at ${recordIndex}`,
         e,
       );
+    }
+  }
+
+  const assetString = record?.assetReferences;
+  if (assetString) {
+    const assetValidationResponse = validateAssetStrings(filenames, [
+      [assetString, recordIndex],
+    ]);
+    const assetMessage = get(assetValidationResponse, [0, 0]);
+    if (assetMessage) {
+      messages = { ...messages, assetReferences: assetMessage };
     }
   }
 
@@ -95,6 +110,9 @@ export default function BulkReportForm({ assetReferences }) {
 
   if (!everythingReadyForFlatfile) return <LoadingScreen />;
 
+  const safeAssetReferences = assetReferences || [];
+  const filenames = safeAssetReferences.map(a => a?.path);
+
   return (
     <>
       <div style={{ marginLeft: 12 }}>
@@ -136,12 +154,14 @@ export default function BulkReportForm({ assetReferences }) {
               },
             }}
             onRecordInit={onRecordInit}
-            onRecordChange={onRecordChange}
+            onRecordChange={(record, recordIndex) =>
+              onRecordChange(record, recordIndex, filenames)
+            }
             onData={async results => {
               setSightingData(results.data);
             }}
             fieldHooks={{
-              individual: async values => {
+              firstName: async values => {
                 try {
                   return await validateIndividualNames(values);
                 } catch (e) {
@@ -152,6 +172,8 @@ export default function BulkReportForm({ assetReferences }) {
                   return [];
                 }
               },
+              assetReferences: assetStringInputs =>
+                validateAssetStrings(filenames, assetStringInputs),
             }}
             render={(importer, launch) => (
               <Button
@@ -163,9 +185,12 @@ export default function BulkReportForm({ assetReferences }) {
             )}
           />
           {sightingData ? (
-            <Text variant="body2" style={{ margin: '8px 0 8px 4px' }}>
-              {`${sightingData.length} sightings imported.`}
-            </Text>
+            <Text
+              id="ENCOUNTERS_IMPORTED_COUNT"
+              values={{ encounterCount: sightingData.length }}
+              variant="body2"
+              style={{ margin: '8px 0 8px 4px' }}
+            />
           ) : null}
 
           {detectionModelField && (
