@@ -52,7 +52,7 @@ export default function SightingsDisplay({ sightings, loading }) {
             [0, 'full_name'],
             'Unknown User',
           );
-          const ownerGuid = get(owners, [0, 'guid'], 'Unknown User');
+          const ownerGuid = get(owners, [0, 'guid']);
           return (
             <Link href={`/users/${ownerGuid}`}>{ownerName}</Link>
           );
@@ -75,6 +75,7 @@ export default function SightingsDisplay({ sightings, loading }) {
               labelId="VIEW"
               variant="view"
               href={`/sightings/${guid}`}
+              linkProps={{ newTab: true }}
             />
           );
         },
