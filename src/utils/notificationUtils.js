@@ -18,18 +18,15 @@ export const getNotificationProps = notification => {
     notification?.message_values?.target_individual_guid;
   const theirIndividualName = (
     <span>
-      <p>Testing</p>
+      <Link
+        newTab
+        external
+        href={`/individuals/${theirIndividualGuid}`}
+      >
+        {theirIndName}
+      </Link>
     </span>
   );
-  // const theirIndividualName = (
-  //   <Link
-  //     newTab
-  //     external
-  //     href={`/individuals/${theirIndividualGuid}`}
-  //   >
-  //     {theirIndName}
-  //   </Link>
-  // );
 
   // TODO implement deadline after DEX-927 is resolved
   // const deadline = notification?.message_values?.eta;

@@ -97,13 +97,7 @@ export default function NotificationsPane({
               const notificationType = notification?.message_type;
               const mergedIndividualGuid =
                 notification?.message_values?.target_individual_guid;
-              // TODO implement deadline after DEX-927 is resolved
-              // const deadline = notification?.message_values?.eta;
-              // const formattedDeadline = deadline ? formatDateCustom(deadline, 'LLLL do') : intl.formatMessage(
-              //       { id: 'DATE_MISSING' },
-              //     );
-              const formattedDeadline =
-                'two weeks after the merge was requested'; // TODO remove after DEX-927 is resolved
+
               const currentNotificationSchema = get(
                 notificationSchema,
                 notificationType,
@@ -117,6 +111,7 @@ export default function NotificationsPane({
                 user2Name,
                 yourIndividualName,
                 theirIndividualName,
+                formattedDeadline,
               } = getNotificationProps(notification);
               const deriveButtonPath = get(
                 currentNotificationSchema,

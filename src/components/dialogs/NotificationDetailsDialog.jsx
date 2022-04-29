@@ -32,6 +32,7 @@ export default function NotificationDetailsDialog({
     user2Name,
     yourIndividualName,
     theirIndividualName,
+    formattedDeadline,
   } = getNotificationProps(notification);
 
   return (
@@ -50,6 +51,7 @@ export default function NotificationDetailsDialog({
             user2Name,
             yourIndividualName,
             theirIndividualName,
+            formattedDeadline,
           }}
         />
       </DialogContent>
