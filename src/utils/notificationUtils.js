@@ -11,7 +11,6 @@ export const getNotificationProps = notification => {
 
   const yourIndividualName = 'one of the individuals';
   // notification?.message_values?.user2_name || 'Unnamed Individual'; //TODO update after DEX-927 is resolved
-  // TODO make a link
   const theirIndName =
     notification?.message_values?.target_individual_name ||
     'Unnamed Individual';
