@@ -1,32 +1,13 @@
-import axios from 'axios';
-import { useMutation } from 'react-query';
+import { usePatch } from '../../hooks/useMutate';
+import { getAGSQueryKey } from '../../constants/queryKeys';
 
 export default function useAddEncounterToAGS() {
-  const mutation = useMutation(async ({ id, properties }) => {
-    const operation = {
-      op: 'add',
-      path: '/encounters',
-      value: properties,
-    };
-
-    return axios.request({
-      url: `${__houston_url__}/api/v1/asset_groups/sighting/${id}`,
-      method: 'patch',
-      withCredentials: true,
-      data: [operation],
-    });
+  return usePatch({
+    deriveUrl: ({ sightingGuid }) =>
+      `/asset_groups/sighting/${sightingGuid}`,
+    deriveData: ({ operations }) => operations,
+    deriveFetchKeys: ({ sightingGuid }) => [
+      getAGSQueryKey(sightingGuid),
+    ],
   });
-
-  const addEncounterToAGS = (id, properties) =>
-    mutation.mutateAsync({ id, properties });
-
-  const error = mutation?.error
-    ? mutation?.error.toJSON().message
-    : null;
-
-  return {
-    ...mutation,
-    addEncounterToAGS,
-    error,
-  };
 }

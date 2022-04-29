@@ -60,14 +60,16 @@ export default function MatchSighting() {
         'query_annotations',
         [],
       );
-      return originalQueryAnnotations.map((annotSageData, index) =>
-      {
+      return originalQueryAnnotations.map((annotSageData, index) => {
         const hotspotterAnnotationScores = get(
           annotSageData,
           ['algorithms', 'hotspotter_nosv', 'scores_by_annotation'],
           [],
         );
-        const topScoreAnnotation = maxBy(hotspotterAnnotationScores, 'score');
+        const topScoreAnnotation = maxBy(
+          hotspotterAnnotationScores,
+          'score',
+        );
         const annotHoustonData = get(
           annotationData,
           annotSageData?.guid,
@@ -77,7 +79,7 @@ export default function MatchSighting() {
           ...annotHoustonData,
           ...annotSageData,
           topScore: topScoreAnnotation?.score,
-          index
+          index,
         };
       });
     },
@@ -91,8 +93,7 @@ export default function MatchSighting() {
         ['algorithms', 'hotspotter_nosv', 'scores_by_annotation'],
         [],
       );
-      return hotspotterAnnotationScores.map((scoreObject, index) =>
-      {
+      return hotspotterAnnotationScores.map((scoreObject, index) => {
         const matchingAnnotation = get(matchResults, [
           'annotation_data',
           scoreObject?.guid,
@@ -100,7 +101,7 @@ export default function MatchSighting() {
         return {
           ...matchingAnnotation,
           ...scoreObject,
-          index
+          index,
         };
       });
     },

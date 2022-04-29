@@ -56,7 +56,13 @@ export default function useFetch({
   );
 
   const error = formatError(result);
-  useEffect(() => setDisplayedError(error), [error]);
+  useEffect(
+    () => {
+      if (result?.status === 'loading') return;
+      setDisplayedError(error);
+    },
+    [error, result?.status],
+  );
 
   return {
     ...result,
