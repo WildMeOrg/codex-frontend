@@ -110,6 +110,7 @@ export default function AnnotationCreator({
     clearPostAnnotationError();
     onClose();
   };
+  const sightingId = get(sightingData, 'guid');
   const IAClassOptions = useIAClassOptions(sightingData);
 
   const handleViewpointInfoClick = event => {
@@ -333,6 +334,7 @@ export default function AnnotationCreator({
                 // this doesn't happen if pending or if encounter creation failed or even if extra encouter Guids were created
                 addAnnotationsToSightingEncounterResponse = await addAnnotationsToSightingEncounter(
                   {
+                    sightingGuid: sightingId,
                     encounterGuid: newEncounterGuid,
                     annotationGuids: [newAnnotationId],
                   },
