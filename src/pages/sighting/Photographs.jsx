@@ -27,7 +27,7 @@ const useStyles = makeStyles({
 export default function Photographs({
   sightingData,
   assets,
-  refreshSightingData,
+  pending,
 }) {
   const theme = useTheme();
   const intl = useIntl();
@@ -109,7 +109,7 @@ export default function Photographs({
             onClose={() => setNewAnnotationAsset(null)}
             asset={newAnnotationAsset}
             sightingData={sightingData}
-            refreshSightingData={refreshSightingData}
+            pending={pending}
           />
         )}
         <MorePhotoMenu

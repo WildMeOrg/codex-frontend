@@ -161,7 +161,7 @@ export default function SightingCore({
         <Photographs
           assets={assets}
           sightingData={data}
-          refreshSightingData={refreshData}
+          pending={pending}
         />
       )}
       {activeTab === '#annotations' && (
