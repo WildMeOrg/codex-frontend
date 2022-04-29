@@ -1,5 +1,6 @@
 import { get, round, find, some, map } from 'lodash-es';
 import { format, formatDistance } from 'date-fns';
+import timePrecisionMap from '../constants/timePrecisionMap';
 
 export const isMutuallyRevoked = members => {
   const memberViewStates = map(members, member =>
@@ -83,6 +84,15 @@ export const formatDateCustom = (input, formatSpecification) => {
     return '';
   }
 };
+
+export function formatSpecifiedTime(time, timeSpecificity) {
+  const formatSpecification = get(
+    timePrecisionMap,
+    [timeSpecificity, 'intlFormat'],
+    'yyyy-MM-dd',
+  );
+  return formatDateCustom(time, formatSpecification);
+}
 
 const elapsedTimeCache = {};
 export const getElapsedTimeInWords = (

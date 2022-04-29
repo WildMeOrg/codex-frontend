@@ -15,14 +15,16 @@ export default function ImageCard({ titleId, annotation }) {
     siteSettingsVersion,
   } = useSiteSettings();
 
-  const regionChoices = useMemo(() =>
-  {
-    return get(
-      siteSettings,
-      ['site.custom.regions', 'value', 'locationID'],
-      [],
-    );
-  }, [siteSettingsVersion, siteSettings]);
+  const regionChoices = useMemo(
+    () => {
+      return get(
+        siteSettings,
+        ['site.custom.regions', 'value', 'locationID'],
+        [],
+      );
+    },
+    [siteSettingsVersion, siteSettings],
+  );
 
   const lineItemsBlank = !annotation;
 
@@ -39,17 +41,29 @@ export default function ImageCard({ titleId, annotation }) {
         height={420}
       />
       <div style={{ padding: 16 }}>
-        <DataLineItem labelId="INDIVIDUAL" loading={loading} blank={lineItemsBlank}>
+        <DataLineItem
+          labelId="INDIVIDUAL"
+          loading={loading}
+          blank={lineItemsBlank}
+        >
           <Text component="span">Unassigned</Text>
         </DataLineItem>
-        <DataLineItem labelId="REGION" loading={loading} blank={lineItemsBlank}>
+        <DataLineItem
+          labelId="REGION"
+          loading={loading}
+          blank={lineItemsBlank}
+        >
           <LocationIdViewer
             value={annotation?.encounter_location}
             choices={regionChoices}
             variant="body1"
           />
         </DataLineItem>
-        <DataLineItem labelId="SIGHTING_TIME" loading={loading} blank={lineItemsBlank}>
+        <DataLineItem
+          labelId="SIGHTING_TIME"
+          loading={loading}
+          blank={lineItemsBlank}
+        >
           <Text component="span">November 5, 2010</Text>
         </DataLineItem>
       </div>

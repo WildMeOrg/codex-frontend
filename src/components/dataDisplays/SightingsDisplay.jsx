@@ -1,14 +1,12 @@
 import React from 'react';
 import { get } from 'lodash-es';
-import { useIntl, FormattedMessage } from 'react-intl';
-import DataDisplay from './DataDisplay';
+
+import ActionIcon from '../ActionIcon';
 import Link from '../Link';
-import ButtonLink from '../ButtonLink';
-import Text from '../Text';
+import DataDisplay from './DataDisplay';
 import { cellRendererTypes } from '../dataDisplays/cellRenderers';
 
 export default function SightingsDisplay({ sightings, loading }) {
-  const intl = useIntl();
   const title = `${sightings.length} matching sightings`;
 
   const tableData = sightings.map(sighting => {
@@ -32,57 +30,56 @@ export default function SightingsDisplay({ sightings, loading }) {
 
   const columns = [
     {
-      name: 'id',
-      label: intl.formatMessage({
-        id: 'SIGHTING_ID',
-      }),
+      name: 'time',
+      labelId: 'SIGHTING_TIME',
       options: {
-        customBodyRender: value => (
-          <Link href={`/sightings/${value}`}>{value}</Link>
-        ),
+        cellRenderer: cellRendererTypes.specifiedTime,
       },
     },
     {
-      name: 'individuals',
-      label: intl.formatMessage({ id: 'INDIVIDUALS' }),
+      name: 'locationId_value',
+      labelId: 'REGION',
+      align: 'left',
+    },
+    {
+      name: 'owners',
+      labelId: 'REPORTER',
+      align: 'left',
       options: {
-        customBodyRender: individuals => (
-          <span>
-            {individuals.map((id, i) => (
-              <span key={id}>
-                {i !== 0 && ', '}
-                <Link href={`/individuals/${id}`}>{id}</Link>
-              </span>
-            ))}
-          </span>
-        ),
+        customBodyRender: owners => {
+          const ownerName = get(
+            owners,
+            [0, 'full_name'],
+            'Unknown User',
+          );
+          const ownerGuid = get(owners, [0, 'guid']);
+          return (
+            <Link href={`/users/${ownerGuid}`}>{ownerName}</Link>
+          );
+        },
       },
     },
     {
-      name: 'sightingDate',
-      label: intl.formatMessage({ id: 'SIGHTING_DATE' }),
-      options: {
-        cellRenderer: cellRendererTypes.date,
-        cellRendererProps: { accessor: 'lastSeen' },
-      },
-    },
-    {
-      name: 'submissionDate',
-      label: intl.formatMessage({ id: 'SUBMISSION_DATE' }),
+      name: 'created',
+      labelId: 'CREATION_DATE_RANGE',
+      align: 'left',
       options: { cellRenderer: cellRendererTypes.date },
     },
     {
-      name: 'submitter',
-      label: intl.formatMessage({ id: 'SUBMITTED_BY' }),
+      name: 'guid',
+      labelId: 'ACTIONS',
       options: {
-        customBodyRender: value => (
-          <Link href={`/users/${value}`}>{value}</Link>
-        ),
+        customBodyRender: guid => {
+          return (
+            <ActionIcon
+              labelId="VIEW"
+              variant="view"
+              href={`/sightings/${guid}`}
+              linkProps={{ newTab: true }}
+            />
+          );
+        },
       },
-    },
-    {
-      name: 'photoCount',
-      label: intl.formatMessage({ id: 'PHOTOGRAPHS' }),
     },
   ];
 
@@ -92,31 +89,31 @@ export default function SightingsDisplay({ sightings, loading }) {
       data={tableData}
       title={title}
       loading={loading}
-      renderExpandedRow={expandedSighting => (
-        <div style={{ display: 'flex' }}>
-          <img
-            src={expandedSighting.profile}
-            alt="Expanded sighting"
-            style={{
-              width: 200,
-              height: 160,
-              padding: 20,
-            }}
-          />
-          <div style={{ padding: '20px 0' }}>
-            <Text variant="subtitle1" id="SIGHTING_DETAILS" />
-            <Text>Species: Megaptera novaeangliae</Text>
-            <Text>Region: South Sahara</Text>
-            <ButtonLink
-              display="panel"
-              style={{ marginTop: 16 }}
-              href={`/sightings/${expandedSighting.id}`}
-            >
-              <FormattedMessage id="VIEW_SIGHTING" />
-            </ButtonLink>
-          </div>
-        </div>
-      )}
+      // renderExpandedRow={expandedSighting => (
+      //   <div style={{ display: 'flex' }}>
+      //     <img
+      //       src={expandedSighting.profile}
+      //       alt="Expanded sighting"
+      //       style={{
+      //         width: 200,
+      //         height: 160,
+      //         padding: 20,
+      //       }}
+      //     />
+      //     <div style={{ padding: '20px 0' }}>
+      //       <Text variant="subtitle1" id="SIGHTING_DETAILS" />
+      //       <Text>Species: Megaptera novaeangliae</Text>
+      //       <Text>Region: South Sahara</Text>
+      //       <ButtonLink
+      //         display="panel"
+      //         style={{ marginTop: 16 }}
+      //         href={`/sightings/${expandedSighting.id}`}
+      //       >
+      //         <FormattedMessage id="VIEW_SIGHTING" />
+      //       </ButtonLink>
+      //     </div>
+      //   </div>
+      // )}
     />
   );
 }
