@@ -11,34 +11,38 @@ export const getNotificationProps = notification => {
   const yourIndividualName = 'one of your individuals';
   // notification?.message_values?.user2_name || 'Unnamed Individual'; //TODO update after DEX-927 is resolved
   // TODO make a link
-  const theirIndividualName =
+  const theirIndName =
     notification?.message_values?.target_individual_name ||
     'Unnamed Individual';
-  console.log('deleteMe theirIndividualName is: ');
-  console.log(theirIndividualName);
   const theirIndividualGuid =
     notification?.message_values?.target_individual_guid;
-  console.log('deleteMe theirIndividualGuid is: ');
-  console.log(theirIndividualGuid);
-  const theirIndividualContent = (
+  const theirIndividualName = (
     <span>
       <p>Testing</p>
     </span>
   );
-  // const theirIndividualContent = (
+  // const theirIndividualName = (
   //   <Link
   //     newTab
   //     external
   //     href={`/individuals/${theirIndividualGuid}`}
   //   >
-  //     {theirIndividualName}
+  //     {theirIndName}
   //   </Link>
   // );
+
+  // TODO implement deadline after DEX-927 is resolved
+  // const deadline = notification?.message_values?.eta;
+  // const formattedDeadline = deadline ? formatDateCustom(deadline, 'LLLL do') : intl.formatMessage(
+  //       { id: 'DATE_MISSING' },
+  //     );
+  const formattedDeadline = 'two weeks after the merge was requested'; // TODO remove after DEX-927 is resolved
   return {
     senderName,
     user1Name,
     user2Name,
     yourIndividualName,
-    theirIndividualContent,
+    theirIndividualName,
+    formattedDeadline,
   };
 };
