@@ -139,12 +139,11 @@ export default function BulkReportForm({ assetReferences }) {
           }}
         >
           <FlatfileButton
-            devMode
-            managed
-            maxRecords={1000}
             licenseKey={flatfileKey}
             customer={{ userId: 'dev' }}
             settings={{
+              devMode: __DEV__,
+              managed: true,
               disableManualInput: true,
               title: 'Import sightings data',
               type: 'bulk_import',
