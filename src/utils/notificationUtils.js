@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from '../components/Link';
+// import { formatDateCustom } from '../../utils/formatters'; // TODO comment back in after DEX-927 is resolved
 
 export const getNotificationProps = notification => {
   const senderName = notification?.sender_name || 'Unnamed User';
@@ -8,7 +9,7 @@ export const getNotificationProps = notification => {
   const user2Name =
     notification?.message_values?.user2_name || 'Unnamed User';
 
-  const yourIndividualName = 'one of your individuals';
+  const yourIndividualName = 'one of the individuals';
   // notification?.message_values?.user2_name || 'Unnamed Individual'; //TODO update after DEX-927 is resolved
   // TODO make a link
   const theirIndName =

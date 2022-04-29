@@ -37,8 +37,6 @@ export default function Notifications() {
     data: notifications,
     loading: notificationsLoading,
   } = useNotifications(true);
-  console.log('deleteMe notifications in Noticiations.jsx are: ');
-  console.log(notifications);
 
   const { markRead } = usePatchNotification();
 

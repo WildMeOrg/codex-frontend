@@ -20,7 +20,6 @@ import { notificationSchema } from '../../constants/notificationSchema';
 import { getNotificationProps } from '../../utils/notificationUtils';
 import { notificationTypes } from '../dialogs/notificationDialogUtils';
 import { calculatePrettyTimeElapsedSince } from '../../utils/formatters';
-// import { formatDateCustom } from '../../utils/formatters'; // TODO comment back in after DEX-927 is resolved
 import queryKeys from '../../constants/queryKeys';
 
 function renderDisplayTextBasedOnMessageType(
