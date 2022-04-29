@@ -82,16 +82,19 @@ export default function AnnotationCreator({
     mutate: addEncounterToSighting,
     isLoading: addEncounterToSightingLoading,
     error: addEncounterToSightingError,
+    clearError: clearAddEncounterToSightingError,
   } = useAddEncounter();
   const {
-    addAnnotationsToSightingEncounter,
+    mutate: addAnnotationsToSightingEncounter,
     error: addAnnotationsToSightingEncounterError,
     isLoading: addAnnotationToSightingEncounterLoading,
+    clearError: clearAddAnnotationToSightingEncounterError,
   } = useAddAnnotationsToSightingEncounter();
   const {
     mutate: postAnnotation,
     isLoading: postAnnotationLoading,
     error: postAnnotationError,
+    clearError: clearPostAnnotationError,
   } = usePostAnnotation();
   const loading =
     addEncounterToSightingLoading ||
@@ -102,6 +105,9 @@ export default function AnnotationCreator({
     addAnnotationsToSightingEncounterError ||
     postAnnotationError;
   const onCancel = () => {
+    clearAddEncounterToSightingError();
+    clearAddAnnotationToSightingEncounterError();
+    clearPostAnnotationError();
     onClose();
   };
   const IAClassOptions = useIAClassOptions(sightingData);
@@ -208,7 +214,7 @@ export default function AnnotationCreator({
             value={viewpoint}
             onChange={e => setViewpoint(e.target.value)}
           >
-            {viewpointChoices.map(viewpointChoice => (
+            {viewpointChoices?.map(viewpointChoice => (
               <MenuItem value={viewpointChoice.value}>
                 <FormattedMessage id={viewpointChoice.labelId} />
               </MenuItem>
@@ -243,7 +249,7 @@ export default function AnnotationCreator({
             value={IAClass}
             onChange={e => setIAClass(e.target.value)}
           >
-            {IAClassOptions.map(IAClassChoice => (
+            {IAClassOptions?.map(IAClassChoice => (
               <MenuItem value={IAClassChoice.value}>
                 {IAClassChoice.label}
               </MenuItem>
@@ -263,22 +269,15 @@ export default function AnnotationCreator({
           }}
         >
           {addEncounterToSightingError && (
-            <Text key={addEncounterToSightingError} variant="body2">
-              {addEncounterToSightingError}
-            </Text>
+            <Text variant="body2">{addEncounterToSightingError}</Text>
           )}
           {addAnnotationsToSightingEncounterError && (
-            <Text
-              key={addAnnotationsToSightingEncounterError}
-              variant="body2"
-            >
+            <Text variant="body2">
               {addAnnotationsToSightingEncounterError}
             </Text>
           )}
           {postAnnotationError && (
-            <Text key={postAnnotationError} variant="body2">
-              {postAnnotationError}
-            </Text>
+            <Text variant="body2">{postAnnotationError}</Text>
           )}
         </Alert>
       )}
@@ -333,8 +332,10 @@ export default function AnnotationCreator({
               if (newEncounterGuid) {
                 // this doesn't happen if pending or if encounter creation failed or even if extra encouter Guids were created
                 addAnnotationsToSightingEncounterResponse = await addAnnotationsToSightingEncounter(
-                  newEncounterGuid,
-                  [newAnnotationId],
+                  {
+                    encounterGuid: newEncounterGuid,
+                    annotationGuids: [newAnnotationId],
+                  },
                 );
               }
               // hasErrors doesn't get information from inside the onClick call, but that's ok, because all three potential calls have info that we can use to check success
