@@ -4,6 +4,7 @@ import { get } from 'lodash-es';
 import useSiteSettings from '../../models/site/useSiteSettings';
 import AnnotatedPhotograph from '../../components/AnnotatedPhotograph';
 import Text from '../../components/Text';
+import Link from '../../components/Link';
 import Card from '../../components/cards/Card';
 import LocationIdViewer from '../../components/fields/view/LocationIdViewer';
 import DataLineItem from './DataLineItem';
@@ -25,6 +26,9 @@ export default function ImageCard({ titleId, annotation }) {
   }, [siteSettingsVersion, siteSettings]);
 
   const lineItemsBlank = !annotation;
+  const individualName = annotation?.individual_name || 'Unnamed Individual';
+  const individualGuid = annotation?.individual_guid;
+  const assignedToIndividual = individualGuid && individualGuid !== 'None';
 
   return (
     <Card titleId={titleId} maxHeight="unset">
@@ -40,7 +44,9 @@ export default function ImageCard({ titleId, annotation }) {
       />
       <div style={{ padding: 16 }}>
         <DataLineItem labelId="INDIVIDUAL" loading={loading} blank={lineItemsBlank}>
-          <Text component="span">Unassigned</Text>
+          <Text component="span">
+            {assignedToIndividual ? <Link newTab href={`/individuals/${individualGuid}`}>{individualName}</Link> : 'Unassigned'}
+          </Text>
         </DataLineItem>
         <DataLineItem labelId="REGION" loading={loading} blank={lineItemsBlank}>
           <LocationIdViewer

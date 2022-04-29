@@ -53,10 +53,14 @@ export default function IndividualCard({ data, mergeConflicts }) {
           ) : (
             <Skeleton variant="text" height={30} width={140} />
           )}
-          {data && adoptionName ? (
-            <Text variant="body2">{adoptionName}</Text>
-          ) : (
-            <Skeleton variant="text" height={20} width={80} />
+          {adoptionName && (
+            <>
+              {data ? (
+                <Text variant="body2">{adoptionName}</Text>
+              ) : (
+                <Skeleton variant="text" height={20} width={80} />
+              )}
+            </>
           )}
           {data && showSex && (
             <Text style={{ marginTop: 16 }}>

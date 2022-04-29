@@ -199,9 +199,8 @@ export default function MatchSighting() {
           buttonId="match-actions"
           style={{ marginTop: 44 }}
           actions={buttonActions}
-        >
-          Actions
-        </ButtonMenu>
+          id="ACTIONS"
+        />
       </div>
       <div style={{ display: 'flex' }}>
         <div
