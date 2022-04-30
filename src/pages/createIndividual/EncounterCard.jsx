@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import { useLocation } from 'react-router';
+import React, { useMemo } from 'react';
 import { get } from 'lodash-es';
 
 import Paper from '@material-ui/core/Paper';
@@ -7,18 +6,48 @@ import Skeleton from '@material-ui/lab/Skeleton';
 
 import defaultSightingSrc from '../../assets/defaultSighting.png';
 import useEncounter from '../../models/encounter/useEncounter';
+import useSiteSettings from '../../models/site/useSiteSettings';
+import LocationIdViewer from '../../components/fields/view/LocationIdViewer';
 import Text from '../../components/Text';
-import { formatDate } from '../../utils/formatters';
+import Link from '../../components/Link';
+import
+{
+  formatDate,
+  formatSpecifiedTime,
+} from '../../utils/formatters';
 
 export default function EncounterCard({ encounterGuid })
 {
   const {
-    data,
-    loading,
-    error,
-  } = useEncounter(encounterGuid);
+    data: siteSettings,
+    siteSettingsVersion,
+  } = useSiteSettings();
 
-  console.log(data);
+  const regionChoices = useMemo(
+    () =>
+    {
+      return get(
+        siteSettings,
+        ['site.custom.regions', 'value', 'locationID'],
+        [],
+      );
+    },
+    [siteSettingsVersion, siteSettings],
+  );
+
+  const { data, loading, error } = useEncounter(encounterGuid);
+
+  const sightingOwner = get(
+    data,
+    ['owner', 'full_name'],
+    'Unknown User',
+  );
+  const ownerGuid = get(data, ['owner', 'guid'])
+  const sightingTime = formatSpecifiedTime(
+    data?.time,
+    data?.timeSpecificity,
+  );
+  const dataReady = !loading && !error;
 
   return (
     <Paper style={{ margin: '12px 0 20px', maxWidth: 660 }}>
@@ -39,37 +68,48 @@ export default function EncounterCard({ encounterGuid })
             padding: '4px 0 0 16px',
           }}
         >
-          {data ? (
-            <Text style={{ fontWeight: 'bold' }} id="SIGHTING_REPORTED_ON" values={{ date: formatDate(data?.createdHouston, true) }} />
-          ) : (
-            <Skeleton variant="text" height={30} width={140} />
-          )}
-          {data ? (
-            <Text variant="body2" id="ENTITY_HEADER_REGION" values={{ region: data?.locationId }} />
-          ) : (
-            <Skeleton variant="text" height={20} width={80} />
-          )}
-          {data ? (
-            <Text variant="body2" id="ENTITY_HEADER_SPECIES" values={{ species: data?.taxonomy }} />
-          ) : (
-            <Skeleton variant="text" height={20} width={80} />
-          )}
-          {/* {data && showSex && (
-            <Text style={{ marginTop: 16 }}>
+          {dataReady ? (
+            <>
               <Text
-                variant="body2"
-                component="span"
-              >{`${intl.formatMessage({ id: 'SEX' })}: `}</Text>
-              <Text
-                variant="body2"
-                component="span"
                 style={{ fontWeight: 'bold' }}
-                id={sexLabelId}
+                id="SIGHTING_REPORTED_ON"
+                values={{
+                  date: formatDate(data?.createdHouston, true),
+                }}
               />
-            </Text>
-          )} */}
+              <Text
+                variant="body2"
+                id="ENTITY_HEADER_REGION"
+                values={{
+                  region: (
+                    <LocationIdViewer
+                      value={data?.locationId}
+                      choices={regionChoices}
+                    />
+                  ),
+                }}
+              />
+              <Text
+                variant="body2"
+                id="SIGHTING_TIME_COLON"
+                values={{ date: sightingTime }}
+              />
+              <Text
+                variant="body2"
+                id="REPORTER_COLON"
+                values={{ name: <Link href={`/users/${ownerGuid}`}>{sightingOwner}</Link> }}
+              />
+            </>
+          ) : (
+              <>
+                <Skeleton variant="text" height={30} width={140} />
+                <Skeleton variant="text" height={20} width={80} />
+                <Skeleton variant="text" height={20} width={80} />
+                <Skeleton variant="text" height={20} width={80} />
+              </>
+          )}
         </div>
       </div>
     </Paper>
-  )
+  );
 }

@@ -108,25 +108,27 @@ export default function MatchSighting() {
     [matchResults, selectedQueryAnnotation],
   );
 
-  const confirmMatchHref = useMemo(() =>
-  {
-    const individualGuid1 = selectedQueryAnnotation?.individual_guid;
-    const individualGuid2 = selectedMatchCandidate?.individual_guid;
-    const encounterGuid1 = selectedQueryAnnotation?.encounter_guid;
-    const encounterGuid2 = selectedMatchCandidate?.encounter_guid;
-    if (individualGuid1 && individualGuid2)
-    {
-      return `/merge?i=${individualGuid1}&i=${individualGuid2}`
-    } else if (individualGuid1 || individualGuid2)
-    {
-      const individualGuid = individualGuid1 || individualGuid2;
-      const encounterGuid = individualGuid1 ? encounterGuid2 : encounterGuid1;
-      return `/assign-annotations?i=${individualGuid}&e${encounterGuid}`;
-    } else
-    {
-      return `/create-individual?e=${encounterGuid1}&e=${encounterGuid2}`;
-    }
-  }, [selectedQueryAnnotation, selectedMatchCandidate]) 
+  const confirmMatchHref = useMemo(
+    () => {
+      const individualGuid1 =
+        selectedQueryAnnotation?.individual_guid;
+      const individualGuid2 = selectedMatchCandidate?.individual_guid;
+      const encounterGuid1 = selectedQueryAnnotation?.encounter_guid;
+      const encounterGuid2 = selectedMatchCandidate?.encounter_guid;
+      if (individualGuid1 && individualGuid2) {
+        return `/merge?i=${individualGuid1}&i=${individualGuid2}`;
+      } else if (individualGuid1 || individualGuid2) {
+        const individualGuid = individualGuid1 || individualGuid2;
+        const encounterGuid = individualGuid1
+          ? encounterGuid2
+          : encounterGuid1;
+        return `/assign-annotations?i=${individualGuid}&e${encounterGuid}`;
+      } else {
+        return `/create-individual?e=${encounterGuid1}&e=${encounterGuid2}`;
+      }
+    },
+    [selectedQueryAnnotation, selectedMatchCandidate],
+  );
 
   useDocumentTitle(`Match results for sighting ${sightingGuid}`, {
     translateMessage: false,

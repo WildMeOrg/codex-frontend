@@ -14,9 +14,7 @@ import useIndividual from '../../models/individual/useIndividual';
 import usePostIndividual from '../../models/individual/usePostIndividual';
 import EncounterCard from './EncounterCard';
 
-export default function CreateIndividual()
-{
-
+export default function CreateIndividual() {
   const { search } = useLocation();
   useDocumentTitle('CREATE_INDIVIDUAL');
 
@@ -46,8 +44,7 @@ export default function CreateIndividual()
   //   showAdoptionNameInput,
   // );
 
-  async function postIndividual()
-  {
+  async function postIndividual() {
     console.log('here we gooo!');
   }
 

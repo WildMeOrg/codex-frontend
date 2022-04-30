@@ -1,8 +1,7 @@
 import { getEncounterQueryKey } from '../../constants/queryKeys';
 import useFetch from '../../hooks/useFetch';
 
-export default function useEncounter(encounterGuid)
-{
+export default function useEncounter(encounterGuid) {
   return useFetch({
     queryKey: getEncounterQueryKey(encounterGuid),
     url: `/encounters/${encounterGuid}`,

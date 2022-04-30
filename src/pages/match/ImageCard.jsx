@@ -28,9 +28,11 @@ export default function ImageCard({ titleId, annotation }) {
   );
 
   const lineItemsBlank = !annotation;
-  const individualName = annotation?.individual_name || 'Unnamed Individual';
+  const individualName =
+    annotation?.individual_name || 'Unnamed Individual';
   const individualGuid = annotation?.individual_guid;
-  const assignedToIndividual = individualGuid && individualGuid !== 'None';
+  const assignedToIndividual =
+    individualGuid && individualGuid !== 'None';
 
   return (
     <Card titleId={titleId} maxHeight="unset">
@@ -45,9 +47,19 @@ export default function ImageCard({ titleId, annotation }) {
         height={420}
       />
       <div style={{ padding: 16 }}>
-        <DataLineItem labelId="INDIVIDUAL" loading={loading} blank={lineItemsBlank}>
+        <DataLineItem
+          labelId="INDIVIDUAL"
+          loading={loading}
+          blank={lineItemsBlank}
+        >
           <Text component="span">
-            {assignedToIndividual ? <Link newTab href={`/individuals/${individualGuid}`}>{individualName}</Link> : 'Unassigned'}
+            {assignedToIndividual ? (
+              <Link newTab href={`/individuals/${individualGuid}`}>
+                {individualName}
+              </Link>
+            ) : (
+              'Unassigned'
+            )}
           </Text>
         </DataLineItem>
         <DataLineItem

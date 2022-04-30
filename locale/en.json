@@ -487,6 +487,8 @@
   "BULK_SIGHTING_EMAIL_CONSENT": "I would like to receive email updates about these sightings.",
   "UPLOAD_A_FILE": "Upload a file",
   "ENTITY_HEADER_SPECIES": "Species: {species}",
+  "SIGHTING_TIME_COLON": "Sighting time: {date}",
+  "REPORTER_COLON": "Reporter: {name}",
   "ENTITY_HEADER_SIGHTING_DATE": "Sighting from {date}",
   "ENTITY_HEADER_BULK_IMPORT_DATE": "Bulk import from {date}",
   "ENTITY_HEADER_REGION": "Region: {region}",
