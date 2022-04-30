@@ -29,8 +29,9 @@ export default function NotificationIndividualMergeDialog({
     loading: allowLoading,
   } = useAllowMerge();
 
-  const error = blockError || allowError;
   const isError = blockError || allowError;
+
+  const error = blockError ? blockError : allowError; // eslint-disable-line
 
   const onClickAllow = async requestId => {
     const response = await allowMerge({

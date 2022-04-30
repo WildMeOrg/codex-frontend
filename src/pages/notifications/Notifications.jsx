@@ -18,6 +18,7 @@ import useDocumentTitle from '../../hooks/useDocumentTitle';
 import MainColumn from '../../components/MainColumn';
 import LoadingScreen from '../../components/LoadingScreen';
 import Text from '../../components/Text';
+import Link from '../../components/Link';
 import useNotifications from '../../models/notification/useNotifications';
 import usePatchNotification from '../../models/notification/usePatchNotification';
 import { calculatePrettyTimeElapsedSince } from '../../utils/formatters';
@@ -88,11 +89,12 @@ export default function Notifications() {
                 );
                 const read = get(notification, 'is_read', false);
                 const {
-                  senderName,
+                  userName,
                   user1Name,
                   user2Name,
                   yourIndividualName,
-                  theirIndividualName,
+                  theirIndName,
+                  theirIndividualGuid,
                   formattedDeadline,
                 } = getNotificationProps(notification);
                 const createdDate = notification?.created;
@@ -115,11 +117,20 @@ export default function Notifications() {
                           currentNotificationSchema?.notificationMessage,
                       },
                       {
-                        userName: senderName,
+                        userName,
                         user1Name,
                         user2Name,
                         yourIndividualName,
-                        theirIndividualName,
+                        theirIndividualName: (
+                          <span>
+                            <Link
+                              newTab
+                              href={`/individuals/${theirIndividualGuid}`}
+                            >
+                              {theirIndName}
+                            </Link>
+                          </span>
+                        ),
                         formattedDeadline,
                       },
                     )}

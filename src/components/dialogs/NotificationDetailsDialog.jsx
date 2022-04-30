@@ -7,6 +7,8 @@ import DialogActions from '@material-ui/core/DialogActions';
 
 import StandardDialog from '../StandardDialog';
 import Text from '../Text';
+import Link from '../Link';
+import ButtonLink from '../ButtonLink';
 import Button from '../Button';
 import CustomAlert from '../Alert';
 import { getNotificationProps } from '../../utils/notificationUtils';
@@ -27,11 +29,12 @@ export default function NotificationDetailsDialog({
   };
 
   const {
-    senderName,
+    userName,
     user1Name,
     user2Name,
     yourIndividualName,
-    theirIndividualName,
+    theirIndName,
+    theirIndividualGuid,
     formattedDeadline,
   } = getNotificationProps(notification);
 
@@ -46,11 +49,20 @@ export default function NotificationDetailsDialog({
           style={{ marginBottom: 20 }}
           id={moreDetailedDescription}
           values={{
-            userName: senderName,
+            userName,
             user1Name,
             user2Name,
             yourIndividualName,
-            theirIndividualName,
+            theirIndividualName: (
+              <span>
+                <Link
+                  newTab
+                  href={`/individuals/${theirIndividualGuid}`}
+                >
+                  {theirIndName}
+                </Link>
+              </span>
+            ),
             formattedDeadline,
           }}
         />
@@ -58,12 +70,22 @@ export default function NotificationDetailsDialog({
       <DialogActions style={{ padding: '0px 24px 24px 24px' }}>
         {buttons.map(currentButton => (
           <div>
-            <Button
-              display="primary"
-              id={get(currentButton, 'buttonId')}
-              loading={get(currentButton, 'loading')}
-              onClick={get(currentButton, 'onClick')}
-            />
+            {get(currentButton, 'onClick') && (
+              <Button
+                display="primary"
+                id={get(currentButton, 'buttonId')}
+                loading={get(currentButton, 'loading')}
+                onClick={get(currentButton, 'onClick')}
+              />
+            )}
+            {get(currentButton, 'href') && (
+              <ButtonLink
+                display="primary"
+                id={get(currentButton, 'buttonId')}
+                loading={get(currentButton, 'loading')}
+                href={get(currentButton, 'href')}
+              />
+            )}
           </div>
         ))}
       </DialogActions>

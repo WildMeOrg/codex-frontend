@@ -15,39 +15,13 @@ import Link from '../Link';
 import Text from '../Text';
 import Button from '../Button';
 import ButtonLink from '../ButtonLink';
+import NotificationPaneDisplayText from './NoticiationPaneDisplayText';
 import shane from '../../assets/shane.jpg';
 import { notificationSchema } from '../../constants/notificationSchema';
 import { getNotificationProps } from '../../utils/notificationUtils';
 import { notificationTypes } from '../dialogs/notificationDialogUtils';
 import { calculatePrettyTimeElapsedSince } from '../../utils/formatters';
 import queryKeys from '../../constants/queryKeys';
-
-function renderDisplayTextBasedOnMessageType(
-  currentNotificationSchema,
-  userName,
-  user1Name,
-  user2Name,
-  yourIndividualName,
-  theirIndividualName,
-  formattedDeadline,
-  intl,
-) {
-  return (
-    <Text style={{ maxWidth: 200, margin: '0 20px' }}>
-      {intl.formatMessage(
-        { id: currentNotificationSchema?.notificationMessage },
-        {
-          userName,
-          user1Name,
-          user2Name,
-          yourIndividualName,
-          theirIndividualName,
-          formattedDeadline,
-        },
-      )}
-    </Text>
-  );
-}
 
 export default function NotificationsPane({
   anchorEl,
@@ -105,22 +79,26 @@ export default function NotificationsPane({
                 currentNotificationSchema?.showNotificationDialog &&
                 refreshNotifications !== undefined;
               const {
-                senderName,
+                userName,
                 user1Name,
                 user2Name,
                 yourIndividualName,
-                theirIndividualName,
+                theirIndName,
+                theirIndividualGuid,
                 formattedDeadline,
               } = getNotificationProps(notification);
               const deriveButtonPath = get(
                 currentNotificationSchema,
                 'deriveButtonPath',
               );
-              let customButtonPath;
-              if (deriveButtonPath)
-                customButtonPath = deriveButtonPath(
-                  mergedIndividualGuid,
-                );
+              const defaultButtonPath = get(
+                currentNotificationSchema,
+                'buttonPath',
+                '/#collab-card',
+              );
+              const buttonPath = deriveButtonPath
+                ? deriveButtonPath(mergedIndividualGuid)
+                : defaultButtonPath;
               const createdDate = notification?.created;
               const timeSince = calculatePrettyTimeElapsedSince(
                 createdDate,
@@ -138,16 +116,18 @@ export default function NotificationsPane({
                   >
                     <div style={{ display: 'flex' }}>
                       <Avatar src={shane} variant="circular" />
-                      {renderDisplayTextBasedOnMessageType(
-                        currentNotificationSchema,
-                        senderName,
-                        user1Name,
-                        user2Name,
-                        yourIndividualName,
-                        theirIndividualName,
-                        formattedDeadline,
-                        intl,
-                      )}
+                      <NotificationPaneDisplayText
+                        currentNotificationSchema={
+                          currentNotificationSchema
+                        }
+                        userName={userName}
+                        user1Name={user1Name}
+                        user2Name={user2Name}
+                        yourIndividualName={yourIndividualName}
+                        theirIndName={theirIndName}
+                        theirIndividualGuid={theirIndividualGuid}
+                        formattedDeadline={formattedDeadline}
+                      />
                     </div>
                     <div>
                       {showNotificationDialog && (
@@ -181,14 +161,7 @@ export default function NotificationsPane({
                           key={notification?.guid}
                           display="primary"
                           isHashLink
-                          href={
-                            customButtonPath ||
-                            get(
-                              currentNotificationSchema,
-                              'buttonPath',
-                              '/#collab-card',
-                            )
-                          }
+                          href={buttonPath}
                           id="VIEW"
                           onClick={async () => {
                             await markRead(get(notification, 'guid'));
@@ -212,9 +185,7 @@ export default function NotificationsPane({
                     }}
                   >
                     <Text
-                      style={{
-                        color: theme.palette.text.secondary,
-                      }}
+                      style={{ color: theme.palette.text.secondary }}
                     >
                       {intl.formatMessage(
                         { id: 'TIME_SINCE' },
