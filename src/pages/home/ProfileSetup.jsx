@@ -46,7 +46,13 @@ export default function ProfileSetup({ userData }) {
     }
   }
 
-  useOnEnter(saveProfile);
+  // useOnEnter(saveProfile);
+
+  useOnEnter(() => {
+    if (!replaceLoading && name !== '')
+      document.querySelector(`#${buttonId}`).click();
+    // saveProfile();
+  });
 
   return (
     <SimpleFormPage
