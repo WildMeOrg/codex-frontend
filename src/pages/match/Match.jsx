@@ -38,10 +38,7 @@ export default function Match({ setMatching }) {
 
   if (!sighting)
     return (
-      <SadScreen
-        variant="notFoundOcean"
-        subtitleId="PAGE_NOT_FOUND"
-      />
+      <SadScreen variant="notFound" subtitleId="PAGE_NOT_FOUND" />
     );
 
   return (

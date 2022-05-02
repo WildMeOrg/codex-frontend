@@ -29,25 +29,27 @@ export default function useFetch({
   queryOptions = {},
 }) {
   const [displayedError, setDisplayedError] = useState(null);
+  const [displayedLoading, setDisplayedLoading] = useState(queryOptions.disabled ? false : true);
   const [statusCode, setStatusCode] = useState(null);
 
-  const apiUrl = prependHoustonApiUrl
-    ? `${__houston_url__}/api/v1${url}`
-    : url;
+  const apiUrl = prependHoustonApiUrl ? `${__houston_url__}/api/v1${url}` : url;
   const result = useQuery(
     queryKey,
     async () => {
-      const response = await axios.request({
-        url: apiUrl,
-        method,
-        data,
-        params,
-      });
-      const status = response?.status;
-      setStatusCode(status);
-      if (status === 200) onSuccess(response);
-      return response;
-    },
+                  const response = await axios.request(
+                    {
+                      url: apiUrl,
+                      method,
+                      data,
+                      params,
+                    },
+                  );
+                  const status = response?.status;
+
+                  setStatusCode(status);
+                  if (status === 200) onSuccess(response);
+                  return response;
+                },
     {
       staleTime: Infinity,
       cacheTime: Infinity,
@@ -56,23 +58,22 @@ export default function useFetch({
   );
 
   const error = formatError(result);
+  const statusCodeFromError = result?.error?.response?.status;
   useEffect(
     () => {
-      if (result?.status === 'loading') return;
-      setDisplayedError(error);
+      if (result?.status === 'loading') {
+        setDisplayedLoading(true);
+      } else {
+        if (statusCode !== statusCodeFromError)
+          setStatusCode(statusCodeFromError);
+        if (displayedError !== error) setDisplayedError(error);
+        setDisplayedLoading(false);
+      }
     },
-    [error, result?.status],
+    [error, result?.status, statusCodeFromError],
   );
 
-  return {
-    ...result,
-    statusCode,
-    data: dataAccessor(result),
-    loading: result?.isLoading,
-    error: displayedError,
-    clearError: () => {
+  return { ...result, statusCode, data: dataAccessor(result), isLoading: displayedLoading, loading: displayedLoading, error: displayedError, clearError: () => {
       setDisplayedError(null);
-    },
-    refresh: refreshNoop,
-  };
+    }, refresh: refreshNoop };
 }
