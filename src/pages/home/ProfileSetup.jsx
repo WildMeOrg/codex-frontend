@@ -54,8 +54,10 @@ export default function ProfileSetup({ userData }) {
 
   useOnEnter(() => {
     console.log('deleteMe useOnEnter entered');
+    debugger;
     if (!replaceLoading && name !== '') {
       console.log('deleteMe user replace properties');
+      debugger;
       document.querySelector(`#${buttonId}`).click();
     }
 
