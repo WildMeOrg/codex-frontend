@@ -29,27 +29,29 @@ export default function useFetch({
   queryOptions = {},
 }) {
   const [displayedError, setDisplayedError] = useState(null);
-  const [displayedLoading, setDisplayedLoading] = useState(queryOptions.disabled ? false : true);
+  const [displayedLoading, setDisplayedLoading] = useState(
+    queryOptions.disabled ? false : true,
+  );
   const [statusCode, setStatusCode] = useState(null);
 
-  const apiUrl = prependHoustonApiUrl ? `${__houston_url__}/api/v1${url}` : url;
+  const apiUrl = prependHoustonApiUrl
+    ? `${__houston_url__}/api/v1${url}`
+    : url;
   const result = useQuery(
     queryKey,
     async () => {
-                  const response = await axios.request(
-                    {
-                      url: apiUrl,
-                      method,
-                      data,
-                      params,
-                    },
-                  );
-                  const status = response?.status;
+      const response = await axios.request({
+        url: apiUrl,
+        method,
+        data,
+        params,
+      });
+      const status = response?.status;
 
-                  setStatusCode(status);
-                  if (status === 200) onSuccess(response);
-                  return response;
-                },
+      setStatusCode(status);
+      if (status === 200) onSuccess(response);
+      return response;
+    },
     {
       staleTime: Infinity,
       cacheTime: Infinity,
@@ -73,7 +75,16 @@ export default function useFetch({
     [error, result?.status, statusCodeFromError],
   );
 
-  return { ...result, statusCode, data: dataAccessor(result), isLoading: displayedLoading, loading: displayedLoading, error: displayedError, clearError: () => {
+  return {
+    ...result,
+    statusCode,
+    data: dataAccessor(result),
+    isLoading: displayedLoading,
+    loading: displayedLoading,
+    error: displayedError,
+    clearError: () => {
       setDisplayedError(null);
-    }, refresh: refreshNoop };
+    },
+    refresh: refreshNoop,
+  };
 }

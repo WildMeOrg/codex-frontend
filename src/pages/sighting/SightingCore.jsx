@@ -78,17 +78,18 @@ export default function SightingCore({
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const activeTab = window.location.hash || '#overview';
 
-  if (error)
-  {
-    return <SadScreen
-      statusCode={statusCode}
-      variantOverrides={{
-        [errorTypes.notFound]: {
-          subtitleId: 'SIGHTING_NOT_FOUND',
-          descriptionId: 'SIGHTING_NOT_FOUND_DESCRIPTION'
-        }
-      }}
-    />
+  if (error) {
+    return (
+      <SadScreen
+        statusCode={statusCode}
+        variantOverrides={{
+          [errorTypes.notFound]: {
+            subtitleId: 'SIGHTING_NOT_FOUND',
+            descriptionId: 'SIGHTING_NOT_FOUND_DESCRIPTION',
+          },
+        }}
+      />
+    );
   }
   if (loading) return <LoadingScreen />;
 

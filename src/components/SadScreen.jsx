@@ -12,13 +12,11 @@ export default function SadScreen({
   variant,
   variantOverrides,
   ...rest
-})
-{
+}) {
   const theme = useTheme();
 
   const errorSchema = useMemo(
-    () =>
-    {
+    () => {
       let displayVariant = variant || errorTypes.genericError;
       if (statusCode === 404) displayVariant = errorTypes.notFound;
       if (statusCode === 403)
@@ -26,7 +24,11 @@ export default function SadScreen({
       if (statusCode === 401)
         displayVariant = errorTypes.notAuthenticated;
       const propOverrides = pickBy(rest, prop => prop !== undefined);
-      const variantSpecificOverrides = get(variantOverrides, displayVariant, {});
+      const variantSpecificOverrides = get(
+        variantOverrides,
+        displayVariant,
+        {},
+      );
       return {
         ...errorSchemas[displayVariant],
         ...propOverrides,
@@ -71,7 +73,10 @@ export default function SadScreen({
           <Text variant="h4" id={errorSchema.subtitleId}>
             {errorSchema.subtitle}
           </Text>
-          <Text style={{ maxWidth: 400, marginTop: 16 }} id={errorSchema.descriptionId}>
+          <Text
+            style={{ maxWidth: 400, marginTop: 16 }}
+            id={errorSchema.descriptionId}
+          >
             {errorSchema.description}
           </Text>
         </Paper>

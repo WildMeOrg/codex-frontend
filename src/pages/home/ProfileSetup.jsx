@@ -69,8 +69,7 @@ export default function ProfileSetup({ userData }) {
               variant="outlined"
               id="name"
               error={noNameError}
-              onChange={e =>
-              {
+              onChange={e => {
                 setName(e.target.value);
                 if (noNameError) setNoNameError(false);
               }}
@@ -91,10 +90,7 @@ export default function ProfileSetup({ userData }) {
           </FormControl>
         </Grid>
         {replaceError && (
-          <CustomAlert
-            severity="error"
-            description={replaceError}
-          />
+          <CustomAlert severity="error" description={replaceError} />
         )}
         <Grid item style={{ position: 'relative' }}>
           <Button
