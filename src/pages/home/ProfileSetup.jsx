@@ -21,9 +21,20 @@ export default function ProfileSetup({ userData }) {
   const [noNameError, setNoNameError] = useState(false);
   const [name, setName] = useState('');
   const [mounted, setMounted] = useState(false);
+  const onPageLoad = () => {
+    setMounted(true);
+  };
 
   useEffect(() => {
-    setMounted(true);
+    // Check if the page has already loaded
+    if (document.readyState === 'complete') {
+      console.log('deleteMe document readiness is complete');
+      onPageLoad();
+    } else {
+      window.addEventListener('load', onPageLoad);
+      // Remove the event listener when component unmounts
+      return () => window.removeEventListener('load', onPageLoad);
+    }
   }, []);
 
   const {
