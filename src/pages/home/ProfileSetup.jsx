@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { get } from 'lodash-es';
 
@@ -20,6 +20,11 @@ const buttonId = 'saveProfile';
 export default function ProfileSetup({ userData }) {
   const [noNameError, setNoNameError] = useState(false);
   const [name, setName] = useState('');
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const {
     mutate: replaceUserProperties,
@@ -49,7 +54,6 @@ export default function ProfileSetup({ userData }) {
         'deleteMe response from replaceUserProperties is: ',
       );
       console.log(response);
-      debugger;
     } else {
       setNoNameError(true);
     }
@@ -58,15 +62,13 @@ export default function ProfileSetup({ userData }) {
   // useOnEnter(saveProfile);
 
   useOnEnter(() => {
-    console.log('deleteMe useOnEnter entered');
-    debugger;
-    if (!replaceLoading && name !== '') {
-      console.log('deleteMe user replace properties');
-      debugger;
-      document.querySelector(`#${buttonId}`).click();
-    }
+    // console.log('deleteMe useOnEnter entered');
+    // if (!replaceLoading && name !== '') {
+    //   console.log('deleteMe user replace properties');
+    //   document.querySelector(`#${buttonId}`).click();
+    // }
 
-    // saveProfile();
+    saveProfile();
   });
 
   return (
@@ -124,7 +126,7 @@ export default function ProfileSetup({ userData }) {
               onClick={saveProfile}
               display="primary"
               id="SAVE_PROFILE"
-              disabled={replaceLoading || name === ''}
+              disabled={replaceLoading || name === '' || !mounted}
             />
           </Grid>
         </Grid>

@@ -5,10 +5,8 @@ export default function useOnEnter(callback) {
     console.log('deleteMe keyup entered;');
     if (e.key === 'Enter') {
       console.log('deleteMe Enter was typed');
-      debugger;
       e.preventDefault();
       callback(e);
-      debugger;
     }
   }
 
