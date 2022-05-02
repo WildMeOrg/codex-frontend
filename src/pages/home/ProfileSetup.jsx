@@ -73,7 +73,11 @@ export default function ProfileSetup({ userData }) {
   // useOnEnter(saveProfile);
 
   useOnEnter(() => {
-    // console.log('deleteMe useOnEnter entered');
+    console.log('deleteMe useOnEnter entered');
+    console.log('deleteMe name is: ');
+    console.log(name);
+    console.log('deleteMe pageReady is: ');
+    console.log(pageReady);
     // if (!replaceLoading && name !== '') {
     //   console.log('deleteMe user replace properties');
     //   document.querySelector(`#${buttonId}`).click();
