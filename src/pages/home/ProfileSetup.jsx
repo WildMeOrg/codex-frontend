@@ -41,10 +41,15 @@ export default function ProfileSetup({ userData }) {
           value: name,
         },
       ];
-      await replaceUserProperties({
+      const response = await replaceUserProperties({
         userGuid: get(userData, 'guid'),
         properties,
       });
+      console.log(
+        'deleteMe response from replaceUserProperties is: ',
+      );
+      console.log(response);
+      debugger;
     } else {
       setNoNameError(true);
     }
