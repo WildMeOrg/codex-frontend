@@ -78,16 +78,16 @@ export default function ProfileSetup({ userData }) {
     console.log(name);
     console.log('deleteMe pageReady is: ');
     console.log(pageReady);
-    // if (!replaceLoading && name !== '') {
-    //   console.log('deleteMe user replace properties');
-    //   document.querySelector(`#${buttonId}`).click();
-    // }
-    if (name !== '' && pageReady && !replaceLoading) {
-      console.log('deleteMe calling save');
-      saveProfile();
-    } else {
-      console.log('deleteMe things were not ready yet');
+    if (!replaceLoading && name !== '' && pageReady) {
+      console.log('deleteMe user replace properties');
+      document.querySelector(`#${buttonId}`).click();
     }
+    // if (name !== '' && pageReady && !replaceLoading) {
+    //   console.log('deleteMe calling save');
+    //   saveProfile();
+    // } else {
+    //   console.log('deleteMe things were not ready yet');
+    // }
   });
 
   return (
