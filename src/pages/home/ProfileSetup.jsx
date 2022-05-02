@@ -82,7 +82,7 @@ export default function ProfileSetup({ userData }) {
     //   console.log('deleteMe user replace properties');
     //   document.querySelector(`#${buttonId}`).click();
     // }
-    if (name === '' && pageReady) {
+    if (name !== '' && pageReady && !replaceLoading) {
       console.log('deleteMe calling save');
       saveProfile();
     } else {
