@@ -78,7 +78,8 @@ export default function ProfileSetup({ userData }) {
     //   console.log('deleteMe user replace properties');
     //   document.querySelector(`#${buttonId}`).click();
     // }
-    if (!replaceLoading && name === '' && pageReady) {
+    if (name === '' && pageReady) {
+      console.log('deleteMe calling save');
       saveProfile();
     } else {
       console.log('deleteMe things were not ready yet');
