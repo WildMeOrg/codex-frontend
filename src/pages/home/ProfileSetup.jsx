@@ -20,9 +20,9 @@ const buttonId = 'saveProfile';
 export default function ProfileSetup({ userData }) {
   const [noNameError, setNoNameError] = useState(false);
   const [name, setName] = useState('');
-  const [mounted, setMounted] = useState(false);
+  const [pageReady, setPageReady] = useState(false);
   const onPageLoad = () => {
-    setMounted(true);
+    setPageReady(true);
   };
 
   useEffect(() => {
@@ -78,8 +78,11 @@ export default function ProfileSetup({ userData }) {
     //   console.log('deleteMe user replace properties');
     //   document.querySelector(`#${buttonId}`).click();
     // }
-
-    saveProfile();
+    if (!replaceLoading && name === '' && pageReady) {
+      saveProfile();
+    } else {
+      console.log('deleteMe things were not ready yet');
+    }
   });
 
   return (
@@ -137,7 +140,7 @@ export default function ProfileSetup({ userData }) {
               onClick={saveProfile}
               display="primary"
               id="SAVE_PROFILE"
-              disabled={replaceLoading || name === '' || !mounted}
+              disabled={replaceLoading || name === '' || !pageReady}
             />
           </Grid>
         </Grid>
