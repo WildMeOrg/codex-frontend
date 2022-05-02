@@ -30,6 +30,10 @@ export default function ProfileSetup({ userData }) {
   useDocumentTitle('SET_UP_PROFILE');
 
   async function saveProfile() {
+    console.log('deleteMe name is: ');
+    console.log(name);
+    console.log('deleteMe user guid is: ');
+    console.log(get(userData, 'guid'));
     if (name) {
       const properties = [
         {
@@ -49,8 +53,12 @@ export default function ProfileSetup({ userData }) {
   // useOnEnter(saveProfile);
 
   useOnEnter(() => {
-    if (!replaceLoading && name !== '')
+    console.log('deleteMe useOnEnter entered');
+    if (!replaceLoading && name !== '') {
+      console.log('deleteMe user replace properties');
       document.querySelector(`#${buttonId}`).click();
+    }
+
     // saveProfile();
   });
 
