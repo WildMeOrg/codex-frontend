@@ -90,6 +90,9 @@ export default function CollaborationsCard({
     };
   });
 
+  console.log('deleteMe collaboraitons are: ');
+  console.log(tableData);
+
   const columns = [
     {
       name: 'otherUserName',
