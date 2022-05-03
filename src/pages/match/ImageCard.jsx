@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import { get } from 'lodash-es';
 
+import { formatSpecifiedTime } from '../../utils/formatters';
 import useSiteSettings from '../../models/site/useSiteSettings';
 import AnnotatedPhotograph from '../../components/AnnotatedPhotograph';
 import Text from '../../components/Text';
@@ -29,10 +30,15 @@ export default function ImageCard({ titleId, annotation }) {
 
   const lineItemsBlank = !annotation;
   const individualName =
-    annotation?.individual_name || 'Unnamed Individual';
+    annotation?.individual_first_name || 'Unnamed Individual';
   const individualGuid = annotation?.individual_guid;
   const assignedToIndividual =
     individualGuid && individualGuid !== 'None';
+
+  const sightingDisplayTime = formatSpecifiedTime(
+    annotation?.sighting_time,
+    annotation?.sighting_time_specificity,
+  );
 
   return (
     <Card titleId={titleId} maxHeight="unset">
@@ -78,7 +84,7 @@ export default function ImageCard({ titleId, annotation }) {
           loading={loading}
           blank={lineItemsBlank}
         >
-          <Text component="span">November 5, 2010</Text>
+          <Text component="span">{sightingDisplayTime}</Text>
         </DataLineItem>
       </div>
     </Card>

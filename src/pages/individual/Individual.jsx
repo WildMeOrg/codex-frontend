@@ -48,9 +48,12 @@ export default function Individual() {
   const intl = useIntl();
   const { id } = useParams();
   const queryClient = useQueryClient();
-  const { data: individualData, statusCode, loading } = useIndividual(
-    id,
-  );
+  const {
+    data: individualData,
+    statusCode: individualDataStatusCode,
+    loading,
+    error: individualDataError,
+  } = useIndividual(id);
   const history = useHistory();
   const fieldSchemas = useIndividualFieldSchemas();
 
@@ -188,10 +191,10 @@ export default function Individual() {
   const [deletingIndividual, setDeletingIndividual] = useState(false);
   const [deleteEncounterId, setDeleteEncounterId] = useState(null);
 
-  if (error)
+  if (individualDataError)
     return (
       <SadScreen
-        statusCode={statusCode}
+        statusCode={individualDataStatusCode}
         variantOverrides={{
           [errorTypes.notFound]: {
             subtitleId: 'INDIVIDUAL_NOT_FOUND',

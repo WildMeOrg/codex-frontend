@@ -10,22 +10,19 @@ import useSiteSettings from '../../models/site/useSiteSettings';
 import LocationIdViewer from '../../components/fields/view/LocationIdViewer';
 import Text from '../../components/Text';
 import Link from '../../components/Link';
-import
-{
+import {
   formatDate,
   formatSpecifiedTime,
 } from '../../utils/formatters';
 
-export default function EncounterCard({ encounterGuid })
-{
+export default function EncounterCard({ encounterGuid }) {
   const {
     data: siteSettings,
     siteSettingsVersion,
   } = useSiteSettings();
 
   const regionChoices = useMemo(
-    () =>
-    {
+    () => {
       return get(
         siteSettings,
         ['site.custom.regions', 'value', 'locationID'],
@@ -42,7 +39,7 @@ export default function EncounterCard({ encounterGuid })
     ['owner', 'full_name'],
     'Unknown User',
   );
-  const ownerGuid = get(data, ['owner', 'guid'])
+  const ownerGuid = get(data, ['owner', 'guid']);
   const sightingTime = formatSpecifiedTime(
     data?.time,
     data?.timeSpecificity,
@@ -97,16 +94,22 @@ export default function EncounterCard({ encounterGuid })
               <Text
                 variant="body2"
                 id="REPORTER_COLON"
-                values={{ name: <Link href={`/users/${ownerGuid}`}>{sightingOwner}</Link> }}
+                values={{
+                  name: (
+                    <Link href={`/users/${ownerGuid}`}>
+                      {sightingOwner}
+                    </Link>
+                  ),
+                }}
               />
             </>
           ) : (
-              <>
-                <Skeleton variant="text" height={30} width={140} />
-                <Skeleton variant="text" height={20} width={80} />
-                <Skeleton variant="text" height={20} width={80} />
-                <Skeleton variant="text" height={20} width={80} />
-              </>
+            <>
+              <Skeleton variant="text" height={30} width={140} />
+              <Skeleton variant="text" height={20} width={80} />
+              <Skeleton variant="text" height={20} width={80} />
+              <Skeleton variant="text" height={20} width={80} />
+            </>
           )}
         </div>
       </div>
