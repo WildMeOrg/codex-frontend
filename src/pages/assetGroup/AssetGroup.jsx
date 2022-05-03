@@ -4,6 +4,7 @@ import { useIntl } from 'react-intl';
 import { get } from 'lodash-es';
 import { useQueryClient } from 'react-query';
 
+import errorTypes from '../../constants/errorTypes';
 import useDeleteAssetGroup from '../../models/assetGroup/useDeleteAssetGroup';
 import useAssetGroup from '../../models/assetGroup/useAssetGroup';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
@@ -38,23 +39,19 @@ export default function AssetGroup() {
   useDocumentTitle(`Asset group ${id}`, { translateMessage: false });
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
+  if (error)
+    return (
+      <SadScreen
+        statusCode={statusCode}
+        variantOverrides={{
+          [errorTypes.notFound]: {
+            subtitleId: 'BULK_IMPORT_NOT_FOUND',
+            descriptionId: 'BULK_IMPORT_NOT_FOUND_DESCRIPTION',
+          },
+        }}
+      />
+    );
   if (loading) return <LoadingScreen />;
-  if (statusCode === 404)
-    return (
-      <SadScreen
-        subtitleId="BULK_IMPORT_NOT_FOUND"
-        descriptionId="BULK_IMPORT_NOT_FOUND_DESCRIPTION"
-        variant="genericError"
-      />
-    );
-  if (error) return <SadScreen variant="genericError" />;
-  if (!data)
-    return (
-      <SadScreen
-        variant="notFoundOcean"
-        subtitleId="BULK_IMPORT_NOT_FOUND"
-      />
-    );
 
   const dateCreated = get(data, 'created');
 

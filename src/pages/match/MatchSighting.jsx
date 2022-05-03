@@ -7,6 +7,7 @@ import Chip from '@material-ui/core/Chip';
 import Fab from '@material-ui/core/Fab';
 import DoneIcon from '@material-ui/icons/Done';
 
+import errorTypes from '../../constants/errorTypes';
 import useSighting from '../../models/sighting/useSighting';
 import useMatchResults from '../../models/matching/useMatchResults';
 import { formatDate } from '../../utils/formatters';
@@ -115,8 +116,8 @@ export default function MatchSighting() {
   const loading = sightingDataLoading || matchResultsLoading;
   const error = sightingDataError || matchResultsError;
 
+  if (error) return <SadScreen variant={errorTypes.genericError} />;
   if (loading) return <LoadingScreen />;
-  if (error) return <SadScreen variant="genericError" />;
 
   const buttonActions = [
     {
