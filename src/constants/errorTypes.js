@@ -22,10 +22,10 @@ export const errorSchemas = {
     photo: nature,
     photoUrl: 'https://unsplash.com/photos/-f0YLss50Bs',
     artistName: 'Kunal Shinde',
-    artistUrl: 'https://unsplash.com/@editholic7',
-    /* This error is intentionally not translated. It can occur outside of the react-intl context. */
+    artistUrl:
+      'https://unsplash.com/@editholic7' /* This error is intentionally not translated. It can occur outside of the react-intl context. */,
     subtitle: 'Server unavailable',
-    descriptionId:
+    description:
       'The server could not be reached. Unfortunately, normal site functionality is currently unavailable. Check back at a later date or try refreshing the page.',
   },
   [errorTypes.notFound]: {

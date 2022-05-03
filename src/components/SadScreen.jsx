@@ -18,11 +18,13 @@ export default function SadScreen({
   const errorSchema = useMemo(
     () => {
       let displayVariant = variant || errorTypes.genericError;
-      if (statusCode === 404) displayVariant = errorTypes.notFound;
-      if (statusCode === 403)
+      if (statusCode === 404) {
+        displayVariant = errorTypes.notFound;
+      } else if (statusCode === 403) {
         displayVariant = errorTypes.noPermissions;
-      if (statusCode === 401)
+      } else if (statusCode === 401) {
         displayVariant = errorTypes.notAuthenticated;
+      }
       const propOverrides = pickBy(rest, prop => prop !== undefined);
       const variantSpecificOverrides = get(
         variantOverrides,

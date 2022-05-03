@@ -30,7 +30,7 @@ export default function useFetch({
 }) {
   const [displayedError, setDisplayedError] = useState(null);
   const [displayedLoading, setDisplayedLoading] = useState(
-    queryOptions.disabled ? false : true,
+    !queryOptions.disabled,
   );
   const [statusCode, setStatusCode] = useState(null);
 
@@ -72,7 +72,13 @@ export default function useFetch({
         setDisplayedLoading(false);
       }
     },
-    [error, result?.status, statusCodeFromError],
+    [
+      error,
+      result?.status,
+      statusCodeFromError,
+      statusCode,
+      displayedError,
+    ],
   );
 
   return {

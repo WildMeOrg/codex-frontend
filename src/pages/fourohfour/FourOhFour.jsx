@@ -6,10 +6,5 @@ import useDocumentTitle from '../../hooks/useDocumentTitle';
 
 export default function() {
   useDocumentTitle('Page not found', { translateMessage: false });
-  return (
-    <SadScreen
-      variant={errorTypes.notFound}
-      subtitleId="PAGE_NOT_FOUND"
-    />
-  );
+  return <SadScreen variant={errorTypes.notFound} />;
 }

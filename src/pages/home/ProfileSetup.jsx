@@ -54,55 +54,60 @@ export default function ProfileSetup({ userData }) {
       instructionsId="SET_UP_PROFILE_INSTRUCTIONS"
       BaoComponent={BaoWaving}
     >
-      <Grid
-        container
-        spacing={2}
-        direction="column"
-        style={{ padding: '16px 0', width: 280 }}
-      >
-        <Grid item>
-          <FormControl
-            required
-            style={{ width: '100%', marginBottom: 4 }}
-          >
-            <TextField
-              variant="outlined"
-              id="name"
-              error={noNameError}
-              onChange={e => {
-                setName(e.target.value);
-                if (noNameError) setNoNameError(false);
-              }}
-              label={<FormattedMessage id="FULL_NAME_REQUIRED" />}
-              helperText={
-                noNameError ? (
-                  <FormattedMessage id="FULL_NAME_IS_REQUIRED" />
-                ) : (
-                  undefined
-                )
-              }
+      <form>
+        <Grid
+          container
+          spacing={2}
+          direction="column"
+          style={{ padding: '16px 0', width: 280 }}
+        >
+          <Grid item>
+            <FormControl
+              required
+              style={{ width: '100%', marginBottom: 4 }}
+            >
+              <TextField
+                variant="outlined"
+                id="name"
+                error={noNameError}
+                onChange={e => {
+                  setName(e.target.value);
+                  if (noNameError) setNoNameError(false);
+                }}
+                label={<FormattedMessage id="FULL_NAME_REQUIRED" />}
+                helperText={
+                  noNameError ? (
+                    <FormattedMessage id="FULL_NAME_IS_REQUIRED" />
+                  ) : (
+                    undefined
+                  )
+                }
+              />
+              <Text
+                style={{ margin: '8px 4px 0 4px' }}
+                variant="caption"
+                id="FULL_NAME_DESCRIPTION"
+              />
+            </FormControl>
+          </Grid>
+          {replaceError && (
+            <CustomAlert
+              severity="error"
+              description={replaceError}
             />
-            <Text
-              style={{ margin: '8px 4px 0 4px' }}
-              variant="caption"
-              id="FULL_NAME_DESCRIPTION"
+          )}
+          <Grid item style={{ position: 'relative' }}>
+            <Button
+              domId={buttonId}
+              loading={replaceLoading}
+              onClick={saveProfile}
+              display="primary"
+              id="SAVE_PROFILE"
+              disabled={replaceLoading || name === ''}
             />
-          </FormControl>
+          </Grid>
         </Grid>
-        {replaceError && (
-          <CustomAlert severity="error" description={replaceError} />
-        )}
-        <Grid item style={{ position: 'relative' }}>
-          <Button
-            domId={buttonId}
-            loading={replaceLoading}
-            onClick={saveProfile}
-            display="primary"
-            id="SAVE_PROFILE"
-            disabled={replaceLoading || name === ''}
-          />
-        </Grid>
-      </Grid>
+      </form>
     </SimpleFormPage>
   );
 }
