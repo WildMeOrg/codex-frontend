@@ -14,7 +14,7 @@ export default function AssetGroupSighting() {
     loading: assetGroupLoading,
     error: assetGroupError,
     statusCode: assetGroupStatusCode,
-  } = useGetAGS(id);
+  } = useGetAGS(id, { refetch: true });
 
   const sightingId = assetGroupSightingData?.sightingGuid;
 

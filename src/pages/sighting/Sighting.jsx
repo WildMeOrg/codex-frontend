@@ -7,19 +7,16 @@ import useSighting from '../../models/sighting/useSighting';
 export default function Sighting() {
   const { id } = useParams();
 
-  const {
-    data: sightingData,
-    loading: sightingLoading,
-    error: sightingError,
-    statusCode: sightingStatusCode,
-  } = useSighting(id);
+  const { data, loading, error, statusCode } = useSighting(id, {
+    refetch: true,
+  });
 
   return (
     <SightingCore
-      data={sightingData}
-      loading={sightingLoading}
-      error={sightingError}
-      statusCode={sightingStatusCode}
+      data={data}
+      loading={loading}
+      error={error}
+      statusCode={statusCode}
       pending={false}
       id={id}
     />

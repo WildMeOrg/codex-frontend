@@ -583,6 +583,7 @@
   "WILDLIFE_TOUR": "Wildlife tour",
   "CUSTOM_FIELD_NOT_FOUND_ERROR": "Custom field lookup failed. There may be a problem with the URL or the custom field may no longer exist.",
   "SIGHTING_NOT_FOUND_DESCRIPTION": "Sighting lookup failed. There may be a problem with the URL or the sighting may no longer exist.",
+  "INDIVIDUAL_NOT_FOUND_DESCRIPTION": "Individual lookup failed. There may be a problem with the URL or the individual may no longer exist.",
   "BULK_IMPORT_NOT_FOUND": "Bulk import not found",
   "BULK_IMPORT_NOT_FOUND_DESCRIPTION": "Bulk import lookup failed. There may be a problem with the URL or the bulk import may no longer exist.",
   "ADDITIONAL_MEDIA": "Additional Media",
@@ -1041,5 +1042,9 @@
   "SELECT_RELATIONSHIP_TYPE": "Select relationship type",
   "SELECT_RELATIONSHIP_ROLE": "Select role from {ind}'s perspective",
   "NO_RELATIONSHIPS": "This individual currently has no known relationships",
+  "NO_PERMISSIONS_ERROR_SUBTITLE": "Permissions error",
+  "NOT_AUTHENTICATED_ERROR_SUBTITLE": "Authentication error",
+  "NO_PERMISSIONS_ERROR_DETAILS": "You do not have permissions to access the requested resource.",
+  "NOT_AUTHENTICATED_ERROR_DETAILS": "Your request could not be processed due to an authentication error. Log in and try again.",
   "CONFIRM_REMOVE_RELATIONSHIP": "Are you sure you want to delete this relationship?"
 }

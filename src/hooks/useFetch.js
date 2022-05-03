@@ -29,6 +29,9 @@ export default function useFetch({
   queryOptions = {},
 }) {
   const [displayedError, setDisplayedError] = useState(null);
+  const [displayedLoading, setDisplayedLoading] = useState(
+    !queryOptions.disabled,
+  );
   const [statusCode, setStatusCode] = useState(null);
 
   const apiUrl = prependHoustonApiUrl
@@ -44,6 +47,7 @@ export default function useFetch({
         params,
       });
       const status = response?.status;
+
       setStatusCode(status);
       if (status === 200) onSuccess(response);
       return response;
@@ -56,19 +60,33 @@ export default function useFetch({
   );
 
   const error = formatError(result);
+  const statusCodeFromError = result?.error?.response?.status;
   useEffect(
     () => {
-      if (result?.status === 'loading') return;
-      setDisplayedError(error);
+      if (result?.status === 'loading') {
+        setDisplayedLoading(true);
+      } else {
+        if (statusCode !== statusCodeFromError)
+          setStatusCode(statusCodeFromError);
+        if (displayedError !== error) setDisplayedError(error);
+        setDisplayedLoading(false);
+      }
     },
-    [error, result?.status],
+    [
+      error,
+      result?.status,
+      statusCodeFromError,
+      statusCode,
+      displayedError,
+    ],
   );
 
   return {
     ...result,
     statusCode,
     data: dataAccessor(result),
-    loading: result?.isLoading,
+    isLoading: displayedLoading,
+    loading: displayedLoading,
     error: displayedError,
     clearError: () => {
       setDisplayedError(null);
