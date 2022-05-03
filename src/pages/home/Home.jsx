@@ -24,8 +24,6 @@ export default function Home() {
   ]);
 
   const fullName = get(data, ['full_name']);
-  console.log('deleteMe fullName from Home.jsx is: ');
-  console.log(fullName);
   const userId = get(data, 'guid');
 
   useDocumentTitle('HOME', { refreshKey: fullName });

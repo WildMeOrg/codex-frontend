@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { get } from 'lodash-es';
 
@@ -20,22 +20,6 @@ const buttonId = 'saveProfile';
 export default function ProfileSetup({ userData }) {
   const [noNameError, setNoNameError] = useState(false);
   const [name, setName] = useState('');
-  const [pageReady, setPageReady] = useState(false);
-  const onPageLoad = () => {
-    setPageReady(true);
-  };
-
-  useEffect(() => {
-    // Check if the page has already loaded
-    if (document.readyState === 'complete') {
-      console.log('deleteMe document readiness is complete');
-      onPageLoad();
-    } else {
-      window.addEventListener('load', onPageLoad);
-      // Remove the event listener when component unmounts
-      return () => window.removeEventListener('load', onPageLoad);
-    }
-  }, []);
 
   const {
     mutate: replaceUserProperties,
@@ -46,10 +30,6 @@ export default function ProfileSetup({ userData }) {
   useDocumentTitle('SET_UP_PROFILE');
 
   async function saveProfile() {
-    console.log('deleteMe name is: ');
-    console.log(name);
-    console.log('deleteMe user guid is: ');
-    console.log(get(userData, 'guid'));
     if (name) {
       const properties = [
         {
@@ -57,38 +37,16 @@ export default function ProfileSetup({ userData }) {
           value: name,
         },
       ];
-      const response = await replaceUserProperties({
+      await replaceUserProperties({
         userGuid: get(userData, 'guid'),
         properties,
       });
-      console.log(
-        'deleteMe response from replaceUserProperties is: ',
-      );
-      console.log(response);
     } else {
       setNoNameError(true);
     }
   }
 
-  // useOnEnter(saveProfile);
-
-  useOnEnter(() => {
-    console.log('deleteMe useOnEnter entered');
-    console.log('deleteMe name is: ');
-    console.log(name);
-    console.log('deleteMe pageReady is: ');
-    console.log(pageReady);
-    if (!replaceLoading && name !== '' && pageReady) {
-      console.log('deleteMe user replace properties');
-      document.querySelector(`#${buttonId}`).click();
-    }
-    // if (name !== '' && pageReady && !replaceLoading) {
-    //   console.log('deleteMe calling save');
-    //   saveProfile();
-    // } else {
-    //   console.log('deleteMe things were not ready yet');
-    // }
-  });
+  useOnEnter(saveProfile);
 
   return (
     <SimpleFormPage
@@ -96,7 +54,6 @@ export default function ProfileSetup({ userData }) {
       instructionsId="SET_UP_PROFILE_INSTRUCTIONS"
       BaoComponent={BaoWaving}
     >
-      {/* <form> */}
       <Grid
         container
         spacing={2}
@@ -142,11 +99,10 @@ export default function ProfileSetup({ userData }) {
             onClick={saveProfile}
             display="primary"
             id="SAVE_PROFILE"
-            disabled={replaceLoading || name === '' || !pageReady}
+            disabled={replaceLoading || name === ''}
           />
         </Grid>
       </Grid>
-      {/* </form> */}
     </SimpleFormPage>
   );
 }
