@@ -36,13 +36,7 @@ export default function Match({ setMatching }) {
 
   const sighting = sightings.find(e => toLower(e.id) === toLower(id));
 
-  if (!sighting)
-    return (
-      <SadScreen
-        variant="notFoundOcean"
-        subtitleId="PAGE_NOT_FOUND"
-      />
-    );
+  if (!sighting) return <SadScreen variant="notFound" />;
 
   return (
     <Grid container>

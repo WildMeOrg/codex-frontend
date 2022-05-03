@@ -10,7 +10,9 @@ import CustomAlert from '../../components/Alert';
 import Text from '../../components/Text';
 import DataDisplay from '../../components/dataDisplays/DataDisplay';
 import ActionIcon from '../../components/ActionIcon';
-import useRevokeCollaboration from '../../models/collaboration/useRevokeCollaboration';
+import usePatchCollaboration from '../../models/collaboration/usePatchCollaboration';
+import useGetMe from '../../models/users/useGetMe';
+// import useRevokeCollaboration from '../../models/collaboration/useRevokeCollaboration';
 import queryKeys from '../../constants/queryKeys';
 
 const revokedPermission = 'revoked';
@@ -20,26 +22,60 @@ export default function UserManagersCollaborationEditTable({
   collaborationLoading,
   collaborationError,
 }) {
+  const {
+    data: currentUserData,
+    // loading: userDataLoading,
+    // error: userDataError,
+    isFetching: userDataFetching,
+  } = useGetMe();
+  console.log('deleteMe currentUserData is: ');
+  console.log(currentUserData);
+
   const queryClient = useQueryClient();
   const intl = useIntl();
   const [dismissed, setDismissed] = useState(false);
 
+  // const {
+  //   revokeCollaboration,
+  //   error,
+  //   isLoading,
+  //   isError,
+  //   isSuccess,
+  // } = useRevokeCollaboration();
+
   const {
-    revokeCollaboration,
-    error,
-    isLoading,
-    isError,
-    isSuccess,
-  } = useRevokeCollaboration();
+    mutate: patchCollaboration,
+    isLoading: patchLoading,
+    success: patchSuccess,
+    error: patchError,
+  } = usePatchCollaboration();
+
+  const isLoading = userDataFetching || patchLoading;
+  // const isError = userDataError || patchError;
 
   async function processRevoke(collaboration) {
     setDismissed(false);
-    const response = await revokeCollaboration(collaboration);
-    const allOk =
-      get(response, ['0', 'status']) === 200 &&
-      get(response, ['1', 'status']) === 200;
-    if (allOk)
-      queryClient.invalidateQueries(queryKeys.collaborations);
+    const operations = {
+      op: 'replace',
+      path: '/managed_view_permission',
+      value: {
+        user_guid: get(currentUserData, 'guid'),
+        permission: 'revoked',
+      },
+    };
+    const response = await patchCollaboration({
+      collaborationGuid: collaboration?.guid,
+      operations: operations,
+    });
+    console.log('deleteMe patchCollaboration response is: ');
+    console.log(response);
+
+    // const response = await revokeCollaboration(collaboration);
+    // const allOk =
+    //   get(response, ['0', 'status']) === 200 &&
+    //   get(response, ['1', 'status']) === 200;
+    // if (allOk)
+    //   queryClient.invalidateQueries(queryKeys.collaborations);
   }
 
   function tranformDataForCollabTable(originalData) {
@@ -170,7 +206,7 @@ export default function UserManagersCollaborationEditTable({
           style={{ margin: '8px 16px', display: 'block' }}
         />
       ) : null}
-      {isError && !dismissed ? (
+      {patchError && !dismissed ? (
         <CustomAlert
           severity="error"
           titleId="COLLABORATION_REVOKE_ERROR"
@@ -179,8 +215,8 @@ export default function UserManagersCollaborationEditTable({
             setDismissed(true);
           }}
         >
-          {error
-            ? error +
+          {patchError
+            ? patchError +
               '. ' +
               intl.formatMessage({
                 id: 'COLLAB_REVOKE_ERROR_SUPPLEMENTAL',
@@ -188,7 +224,7 @@ export default function UserManagersCollaborationEditTable({
             : intl.formatMessage({ id: 'UNKNOWN_ERROR' })}
         </CustomAlert>
       ) : null}
-      {isSuccess && !dismissed ? (
+      {patchSuccess && !dismissed ? (
         <CustomAlert
           severity="success"
           titleId="COLLABORATION_REVOKE_SUCCESS"

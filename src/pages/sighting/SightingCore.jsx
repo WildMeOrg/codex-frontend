@@ -7,6 +7,7 @@ import {
   getAGSQueryKey,
   getSightingQueryKey,
 } from '../../constants/queryKeys';
+import errorTypes from '../../constants/errorTypes';
 import MainColumn from '../../components/MainColumn';
 import LoadingScreen from '../../components/LoadingScreen';
 import SadScreen from '../../components/SadScreen';
@@ -77,23 +78,20 @@ export default function SightingCore({
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const activeTab = window.location.hash || '#overview';
 
+  if (error) {
+    return (
+      <SadScreen
+        statusCode={statusCode}
+        variantOverrides={{
+          [errorTypes.notFound]: {
+            subtitleId: 'SIGHTING_NOT_FOUND',
+            descriptionId: 'SIGHTING_NOT_FOUND_DESCRIPTION',
+          },
+        }}
+      />
+    );
+  }
   if (loading) return <LoadingScreen />;
-  if (statusCode === 404)
-    return (
-      <SadScreen
-        subtitleId="SIGHTING_NOT_FOUND"
-        descriptionId="SIGHTING_NOT_FOUND_DESCRIPTION"
-        variant="genericError"
-      />
-    );
-  if (!data)
-    return (
-      <SadScreen
-        variant="notFoundOcean"
-        subtitleId="SIGHTING_NOT_FOUND"
-      />
-    );
-  if (error) return <SadScreen variant="genericError" />;
 
   const assets = get(data, 'assets', []);
 
