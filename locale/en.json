@@ -581,6 +581,7 @@
   "WILDLIFE_TOUR": "Wildlife tour",
   "CUSTOM_FIELD_NOT_FOUND_ERROR": "Custom field lookup failed. There may be a problem with the URL or the custom field may no longer exist.",
   "SIGHTING_NOT_FOUND_DESCRIPTION": "Sighting lookup failed. There may be a problem with the URL or the sighting may no longer exist.",
+  "INDIVIDUAL_NOT_FOUND_DESCRIPTION": "Individual lookup failed. There may be a problem with the URL or the individual may no longer exist.",
   "BULK_IMPORT_NOT_FOUND": "Bulk import not found",
   "BULK_IMPORT_NOT_FOUND_DESCRIPTION": "Bulk import lookup failed. There may be a problem with the URL or the bulk import may no longer exist.",
   "ADDITIONAL_MEDIA": "Additional Media",

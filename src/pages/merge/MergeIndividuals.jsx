@@ -4,6 +4,7 @@ import { get } from 'lodash-es';
 
 import Grid from '@material-ui/core/Grid';
 
+import errorTypes from '../../constants/errorTypes';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import MainColumn from '../../components/MainColumn';
 import Text from '../../components/Text';
@@ -69,7 +70,7 @@ export default function MergeIndividuals() {
   if (fetchError)
     return (
       <SadScreen
-        variant="genericError"
+        variant={errorTypes.genericError}
         subtitleId="DATA_UNAVAILABLE"
       />
     );

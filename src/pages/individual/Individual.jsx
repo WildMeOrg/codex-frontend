@@ -11,6 +11,7 @@ import {
 } from 'lodash-es';
 import { useQueryClient } from 'react-query';
 
+import errorTypes from '../../constants/errorTypes';
 import { getIndividualQueryKey } from '../../constants/queryKeys';
 import useIndividual from '../../models/individual/useIndividual';
 import useDeleteIndividual from '../../models/individual/useDeleteIndividual';
@@ -187,15 +188,19 @@ export default function Individual() {
   const [deletingIndividual, setDeletingIndividual] = useState(false);
   const [deleteEncounterId, setDeleteEncounterId] = useState(null);
 
-  if (loading) return <LoadingScreen />;
-
-  if (statusCode === 404 || !individualData)
+  if (error)
     return (
       <SadScreen
-        variant="notFoundOcean"
-        subtitleId="INDIVIDUAL_NOT_FOUND"
+        statusCode={statusCode}
+        variantOverrides={{
+          [errorTypes.notFound]: {
+            subtitleId: 'INDIVIDUAL_NOT_FOUND',
+            descriptionId: 'INDIVIDUAL_NOT_FOUND_DESCRIPTION',
+          },
+        }}
       />
     );
+  if (loading) return <LoadingScreen />;
 
   return (
     <MainColumn fullWidth>
