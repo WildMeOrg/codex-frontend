@@ -55,14 +55,16 @@ export default function UserManagersCollaborationEditTable({
 
   async function processRevoke(collaboration) {
     setDismissed(false);
-    const operations = {
-      op: 'replace',
-      path: '/managed_view_permission',
-      value: {
-        user_guid: get(currentUserData, 'guid'),
-        permission: 'revoked',
+    const operations = [
+      {
+        op: 'replace',
+        path: '/managed_view_permission',
+        value: {
+          user_guid: get(currentUserData, 'guid'),
+          permission: 'revoked',
+        },
       },
-    };
+    ];
     const response = await patchCollaboration({
       collaborationGuid: collaboration?.guid,
       operations: operations,
