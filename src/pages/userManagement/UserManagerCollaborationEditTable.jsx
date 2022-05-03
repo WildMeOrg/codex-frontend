@@ -12,7 +12,6 @@ import DataDisplay from '../../components/dataDisplays/DataDisplay';
 import ActionIcon from '../../components/ActionIcon';
 import usePatchCollaboration from '../../models/collaboration/usePatchCollaboration';
 import useGetMe from '../../models/users/useGetMe';
-// import useRevokeCollaboration from '../../models/collaboration/useRevokeCollaboration';
 import queryKeys from '../../constants/queryKeys';
 
 const revokedPermission = 'revoked';
@@ -24,24 +23,12 @@ export default function UserManagersCollaborationEditTable({
 }) {
   const {
     data: currentUserData,
-    // loading: userDataLoading,
-    // error: userDataError,
     isFetching: userDataFetching,
   } = useGetMe();
-  console.log('deleteMe currentUserData is: ');
-  console.log(currentUserData);
 
   const queryClient = useQueryClient();
   const intl = useIntl();
   const [dismissed, setDismissed] = useState(false);
-
-  // const {
-  //   revokeCollaboration,
-  //   error,
-  //   isLoading,
-  //   isError,
-  //   isSuccess,
-  // } = useRevokeCollaboration();
 
   const {
     mutate: patchCollaboration,
@@ -51,7 +38,6 @@ export default function UserManagersCollaborationEditTable({
   } = usePatchCollaboration();
 
   const isLoading = userDataFetching || patchLoading;
-  // const isError = userDataError || patchError;
 
   async function processRevoke(collaboration) {
     setDismissed(false);
@@ -65,19 +51,10 @@ export default function UserManagersCollaborationEditTable({
         },
       },
     ];
-    const response = await patchCollaboration({
+    await patchCollaboration({
       collaborationGuid: collaboration?.guid,
       operations: operations,
     });
-    console.log('deleteMe patchCollaboration response is: ');
-    console.log(response);
-
-    // const response = await revokeCollaboration(collaboration);
-    // const allOk =
-    //   get(response, ['0', 'status']) === 200 &&
-    //   get(response, ['1', 'status']) === 200;
-    // if (allOk)
-    //   queryClient.invalidateQueries(queryKeys.collaborations);
   }
 
   function tranformDataForCollabTable(originalData) {

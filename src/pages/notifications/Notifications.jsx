@@ -48,8 +48,6 @@ export default function Notifications() {
   const safeNotifications = notifications || [];
 
   if (notificationsLoading) return <LoadingScreen />;
-  console.log('deleteMe notifications are: ');
-  console.log(notifications);
 
   return (
     <MainColumn
