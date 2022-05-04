@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { useIntl, FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import { useParams } from 'react-router-dom';
 import { get, maxBy } from 'lodash-es';
 
@@ -26,7 +26,6 @@ import ImageCard from './ImageCard';
 const spaceBetweenColumns = 16;
 
 export default function MatchSighting() {
-  const intl = useIntl();
   const { sightingGuid } = useParams();
 
   const {
@@ -123,7 +122,7 @@ export default function MatchSighting() {
         const encounterGuid = individualGuid1
           ? encounterGuid2
           : encounterGuid1;
-        return `/assign-annotations?i=${individualGuid}&e${encounterGuid}`;
+        return `/assign-annotations?i=${individualGuid}&e=${encounterGuid}`;
       } else {
         return `/create-individual?e=${encounterGuid1}&e=${encounterGuid2}`;
       }

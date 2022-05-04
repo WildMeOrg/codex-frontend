@@ -22,13 +22,12 @@ export default function EncounterCard({ encounterGuid }) {
   } = useSiteSettings();
 
   const regionChoices = useMemo(
-    () => {
-      return get(
+    () =>
+      get(
         siteSettings,
         ['site.custom.regions', 'value', 'locationID'],
         [],
-      );
-    },
+      ),
     [siteSettingsVersion, siteSettings],
   );
 
@@ -96,7 +95,7 @@ export default function EncounterCard({ encounterGuid }) {
                 id="REPORTER_COLON"
                 values={{
                   name: (
-                    <Link href={`/users/${ownerGuid}`}>
+                    <Link newTab href={`/users/${ownerGuid}`}>
                       {sightingOwner}
                     </Link>
                   ),
