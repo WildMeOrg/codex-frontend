@@ -32,8 +32,6 @@ async function getEncounterGuids(
   sightingData,
   addEncounterToSighting,
 ) {
-  console.log('deleteMe sightingData is: ');
-  console.log(sightingData);
   const copiedProperties = pick(sightingData, [
     'time',
     'timeSpecificity',
@@ -47,7 +45,8 @@ async function getEncounterGuids(
   );
   const encountersWithNoAnnotations = filter(
     get(sightingData, 'encounters'),
-    encounter => get(encounter, 'annotations', [].length === 0),
+    encounter => get(encounter, 'annotations', []).length === 0,
+    [],
   );
   console.log('deleteMe encountersWithNoAnnotations are:');
   console.log(encountersWithNoAnnotations);
@@ -91,8 +90,6 @@ export default function AnnotationCreator({
   sightingData,
   pending,
 }) {
-  console.log('deleteMe sightingData is: ');
-  console.log(sightingData);
   const [viewpoint, setViewpoint] = useState('');
   const [IAClass, setIAClass] = useState('');
   const [rect, setRect] = useState({});
