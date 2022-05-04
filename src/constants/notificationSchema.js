@@ -92,7 +92,8 @@ notificationSchemaPlaceholder[
 ] = {
   titleId: 'INDIVIDUAL_MERGE_REQUEST_TITLE',
   notificationMessage: 'INDIVIDUAL_MERGE_REQUEST_MESSAGE',
-  moreDetailedDescription: 'INDIVIDUAL_MERGE_REQUEST_MESSAGE',
+  moreDetailedDescription:
+    'INDIVIDUAL_MERGE_REQUEST_MESSAGE_DETAILED',
   showNotificationDialog: true,
 };
 notificationSchemaPlaceholder[
@@ -102,6 +103,6 @@ notificationSchemaPlaceholder[
   notificationMessage: 'INDIVIDUALS_MERGE_COMPLETE_MESSAGE',
   moreDetailedDescription: 'INDIVIDUALS_MERGE_COMPLETE_MESSAGE',
   showNotificationDialog: false,
-  buttonPath: '/individuals/', // TODO figure out how to pass individual ID to this
+  deriveButtonPath: individualId => `/individuals/${individualId}`,
 };
 export const notificationSchema = notificationSchemaPlaceholder;
