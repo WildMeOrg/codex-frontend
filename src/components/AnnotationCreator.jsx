@@ -29,6 +29,8 @@ function percentageToPixels(percentValue, scalar) {
 }
 
 async function createEncounter(sightingData, addEncounterToSighting) {
+  console.log('deleteMe sightingData is: ');
+  console.log(sightingData);
   const copiedProperties = pick(sightingData, [
     'time',
     'timeSpecificity',
