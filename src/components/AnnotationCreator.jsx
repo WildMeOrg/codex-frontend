@@ -75,6 +75,8 @@ export default function AnnotationCreator({
   sightingData,
   pending,
 }) {
+  console.log('deleteMe sightingData is: ');
+  console.log(sightingData);
   const [viewpoint, setViewpoint] = useState('');
   const [IAClass, setIAClass] = useState('');
   const [rect, setRect] = useState({});
