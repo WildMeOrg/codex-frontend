@@ -48,13 +48,6 @@ async function getEncounterGuids(
     encounter => get(encounter, 'annotations', []).length === 0,
     [],
   );
-  console.log('deleteMe encountersWithNoAnnotations are:');
-  console.log(encountersWithNoAnnotations);
-  console.log(
-    'deleteMe encountersWithNoAnnotations.length > 0 is: ' +
-      encountersWithNoAnnotations.length >
-      0,
-  );
   if (encountersWithNoAnnotations.length > 0)
     return [get(encountersWithNoAnnotations, [0, 'guid'])];
   const encounterCreationResponse = await addEncounterToSighting({
