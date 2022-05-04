@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router';
-import { get } from 'lodash-es';
+import { set, get } from 'lodash-es';
 
 import Grid from '@material-ui/core/Grid';
 
@@ -8,11 +8,19 @@ import useDocumentTitle from '../../hooks/useDocumentTitle';
 import MainColumn from '../../components/MainColumn';
 import Text from '../../components/Text';
 import Button from '../../components/Button';
-import SadScreen from '../../components/SadScreen';
+import InputRow from '../../components/fields/edit/InputRow';
 import Alert from '../../components/Alert';
-import useIndividual from '../../models/individual/useIndividual';
+import useIndividualFieldSchemas from '../../models/individual/useIndividualFieldSchemas';
 import usePostIndividual from '../../models/individual/usePostIndividual';
 import EncounterCard from './EncounterCard';
+
+function calculateInitialState(schemas) {
+  if (!schemas) return {};
+  return schemas.reduce((memo, field) => {
+    set(memo, field.name, field.defaultValue);
+    return memo;
+  }, {});
+}
 
 export default function CreateIndividual() {
   const { search } = useLocation();
@@ -20,7 +28,6 @@ export default function CreateIndividual() {
 
   const searchParams = new URLSearchParams(search);
   const encounterGuids = searchParams.getAll('e') || [];
-  console.log(encounterGuids);
 
   const {
     mutate: createIndividual,
@@ -28,24 +35,43 @@ export default function CreateIndividual() {
     error: createIndividualError,
   } = usePostIndividual();
 
-  // const [formData, setFormData] = useState({});
+  const fieldSchemas = useIndividualFieldSchemas();
+  const createFieldSchemas = fieldSchemas.filter(
+    f => f.requiredForIndividualCreation,
+  );
 
-  // const showSexInput = Boolean(mergeConflicts?.sex);
-  // const nameContexts = mergeConflicts?.name_contexts || [];
-  // const showFirstNameInput = nameContexts.includes('FirstName');
-  // const showAdoptionNameInput = nameContexts.includes('AdoptionName');
-  // const showResolveFields =
-  //   showSexInput || showFirstNameInput || showAdoptionNameInput;
+  const [formState, setFormState] = useState({});
 
-  // const formComplete = isFormComplete(
-  //   formData,
-  //   showSexInput,
-  //   showFirstNameInput,
-  //   showAdoptionNameInput,
-  // );
+  useEffect(
+    () => {
+      const initialState = calculateInitialState(createFieldSchemas);
+      setFormState(initialState);
+    },
+    [createFieldSchemas?.length],
+  );
 
   async function postIndividual() {
-    console.log('here we gooo!');
+    const firstName = formState?.firstName;
+    const adoptionName = formState?.adoptionName;
+    const names = [
+      {
+        context: 'FirstName',
+        value: firstName,
+      },
+    ];
+    if (adoptionName)
+      names.push({
+        context: 'AdoptionName',
+        value: adoptionName,
+      });
+    const individualData = {
+      names,
+      sex: formState?.sex,
+    };
+    await createIndividual({
+      individualData,
+      encounterGuids,
+    });
   }
 
   return (
@@ -78,7 +104,30 @@ export default function CreateIndividual() {
           style={{ display: 'flex', flexDirection: 'column' }}
         >
           <Text variant="h5" id="METADATA" />
-          Sup
+          <Grid
+            container
+            spacing={2}
+            justifyContent="center"
+            component="form"
+            direction="column"
+          >
+            {createFieldSchemas.map(schema => (
+              <Grid item key={schema.name}>
+                <InputRow schema={schema}>
+                  <schema.editComponent
+                    schema={schema}
+                    value={get(formState, schema.name)}
+                    onChange={newFieldValue => {
+                      const newFormState = {
+                        ...set(formState, schema.name, newFieldValue),
+                      };
+                      setFormState(newFormState);
+                    }}
+                  />
+                </InputRow>
+              </Grid>
+            ))}
+          </Grid>
         </Grid>
         <Grid item style={{ marginTop: 16 }}>
           {createIndividualError && (

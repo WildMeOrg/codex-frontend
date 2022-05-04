@@ -25,6 +25,12 @@ import ImageCard from './ImageCard';
 
 const spaceBetweenColumns = 16;
 
+function deriveIndividualGuid(annotation) {
+  /* Sometimes houston returns non-guid "guids" for this property */
+  const providedGuid = annotation?.individual_guid;
+  return providedGuid === 'None' ? null : providedGuid;
+}
+
 export default function MatchSighting() {
   const { sightingGuid } = useParams();
 
@@ -110,9 +116,12 @@ export default function MatchSighting() {
 
   const confirmMatchHref = useMemo(
     () => {
-      const individualGuid1 =
-        selectedQueryAnnotation?.individual_guid;
-      const individualGuid2 = selectedMatchCandidate?.individual_guid;
+      const individualGuid1 = deriveIndividualGuid(
+        selectedQueryAnnotation,
+      );
+      const individualGuid2 = deriveIndividualGuid(
+        selectedMatchCandidate,
+      );
       const encounterGuid1 = selectedQueryAnnotation?.encounter_guid;
       const encounterGuid2 = selectedMatchCandidate?.encounter_guid;
       if (individualGuid1 && individualGuid2) {

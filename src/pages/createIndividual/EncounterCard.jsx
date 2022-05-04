@@ -45,12 +45,14 @@ export default function EncounterCard({ encounterGuid }) {
   );
   const dataReady = !loading && !error;
 
+  const sampleImageSrc = get(data, ['annotations', 0, 'asset_src']);
+
   return (
     <Paper style={{ margin: '12px 0 20px', maxWidth: 660 }}>
       <div style={{ display: 'flex', padding: 20 }}>
         {data ? (
           <img
-            src={defaultSightingSrc}
+            src={sampleImageSrc || defaultSightingSrc}
             alt="Encounter"
             style={{ width: 200, height: 200, objectFit: 'cover' }}
           />
