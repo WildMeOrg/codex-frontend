@@ -203,7 +203,7 @@ export default function GeneralSettings() {
         {get(
           currentValues,
           'intelligent_agent_twitterbot_enabled',
-        ) && (
+        ) === 'Enabled' && (
           <>
             <SettingsTextInput
               settingKey="intelligent_agent_twitterbot_consumer_key"
