@@ -46,22 +46,17 @@ export default function SettingsTextInput({
       >
         {matchingSetting && valueIsDefined ? (
           <>
-            <Text
-              style={{
-                marginTop: 20,
-              }}
-              variant="subtitle1"
-            >
+            <Text style={{ marginTop: 20 }} variant="subtitle1">
               <FormattedMessage id={matchingSetting.labelId} />
               {matchingSetting.required && ' *'}
             </Text>
-            <Text
-              style={{
-                marginTop: 4,
-              }}
-              variant="body2"
-              id={matchingSetting.descriptionId}
-            />
+            {matchingSetting.descriptionId && (
+              <Text
+                style={{ marginTop: 4 }}
+                variant="body2"
+                id={matchingSetting.descriptionId}
+              />
+            )}
           </>
         ) : (
           <>
