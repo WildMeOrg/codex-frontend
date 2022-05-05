@@ -36,6 +36,12 @@ const generalSettingsFields = [
   'site.links.facebookLink',
   'site.links.instagramLink',
   'site.links.twitterLink',
+  'intelligent_agent_twitterbot_enabled',
+  'intelligent_agent_twitterbot_consumer_key',
+  'intelligent_agent_twitterbot_consumer_secret',
+  'intelligent_agent_twitterbot_access_token',
+  'intelligent_agent_twitterbot_access_token_secret',
+  'intelligent_agent_twitterbot_bearer_token',
   'site.look.logoIncludesSiteName',
 ];
 
@@ -187,6 +193,55 @@ export default function GeneralSettings() {
           setCurrentValues={setCurrentValues}
           siteSettings={siteSettings}
         />
+        <SettingsTextInput
+          settingKey="intelligent_agent_twitterbot_enabled"
+          customFieldCategories={[]}
+          currentValues={currentValues}
+          setCurrentValues={setCurrentValues}
+          siteSettings={siteSettings}
+        />
+        {get(
+          currentValues,
+          'intelligent_agent_twitterbot_enabled',
+        ) && (
+          <>
+            <SettingsTextInput
+              settingKey="intelligent_agent_twitterbot_consumer_key"
+              customFieldCategories={[]}
+              currentValues={currentValues}
+              setCurrentValues={setCurrentValues}
+              siteSettings={siteSettings}
+            />
+            <SettingsTextInput
+              settingKey="intelligent_agent_twitterbot_consumer_secret"
+              customFieldCategories={[]}
+              currentValues={currentValues}
+              setCurrentValues={setCurrentValues}
+              siteSettings={siteSettings}
+            />
+            <SettingsTextInput
+              settingKey="intelligent_agent_twitterbot_access_token"
+              customFieldCategories={[]}
+              currentValues={currentValues}
+              setCurrentValues={setCurrentValues}
+              siteSettings={siteSettings}
+            />
+            <SettingsTextInput
+              settingKey="intelligent_agent_twitterbot_access_token_secret"
+              customFieldCategories={[]}
+              currentValues={currentValues}
+              setCurrentValues={setCurrentValues}
+              siteSettings={siteSettings}
+            />
+            <SettingsTextInput
+              settingKey="intelligent_agent_twitterbot_bearer_token"
+              customFieldCategories={[]}
+              currentValues={currentValues}
+              setCurrentValues={setCurrentValues}
+              siteSettings={siteSettings}
+            />
+          </>
+        )}
         <Grid
           item
           style={{
@@ -218,7 +273,9 @@ export default function GeneralSettings() {
               Object.values(customFields).forEach(customFieldKey => {
                 const fields = currentValues[customFieldKey];
                 if (!fields) {
-                  currentValues[customFieldKey] = { definitions: [] };
+                  currentValues[customFieldKey] = {
+                    definitions: [],
+                  };
                 } else {
                   const newFields = get(
                     fields,
