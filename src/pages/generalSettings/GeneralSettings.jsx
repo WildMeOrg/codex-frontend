@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { get, zipObject } from 'lodash-es';
+import { get, zipObject, reduce } from 'lodash-es';
 
 import Grid from '@material-ui/core/Grid';
 
@@ -16,6 +16,7 @@ import Text from '../../components/Text';
 import DividerTitle from '../../components/DividerTitle';
 import SettingsFileUpload from '../../components/settings/SettingsFileUpload';
 import SettingsTextInput from '../../components/settings/SettingsTextInput';
+import { intelligentAgentSchema } from '../../constants/intelligentAgentSchema';
 
 const customFields = {
   sighting: 'site.custom.customFields.Occurrence',
@@ -36,14 +37,30 @@ const generalSettingsFields = [
   'site.links.facebookLink',
   'site.links.instagramLink',
   'site.links.twitterLink',
-  'intelligent_agent_twitterbot_enabled',
-  'intelligent_agent_twitterbot_consumer_key',
-  'intelligent_agent_twitterbot_consumer_secret',
-  'intelligent_agent_twitterbot_access_token',
-  'intelligent_agent_twitterbot_access_token_secret',
-  'intelligent_agent_twitterbot_bearer_token',
   'site.look.logoIncludesSiteName',
 ];
+
+const intelligentAgentSettingsFields = reduce(
+  intelligentAgentSchema,
+  (memo, intelligentAgentPlatform) => {
+    const platformName = get(Object.keys(intelligentAgentPlatform), [
+      0,
+    ]);
+    console.log('deleteMe platformName is: ');
+    console.log(platformName);
+    const currentPlatformFields = get(
+      intelligentAgentPlatform,
+      [platformName, 'fields'],
+      [],
+    );
+    console.log('deleteMe currentPlatformFields are: ');
+    console.log(currentPlatformFields);
+    return [...memo, ...currentPlatformFields];
+  },
+  [],
+);
+console.log('deleteMe intelligentAgentSettingsFields are: ');
+console.log(intelligentAgentSettingsFields);
 
 export default function GeneralSettings() {
   const siteSettings = useSiteSettings();
