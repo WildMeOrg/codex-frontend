@@ -28,7 +28,10 @@ function percentageToPixels(percentValue, scalar) {
   return Math.round(Math.max(pixelValue, 0));
 }
 
-async function createEncounter(sightingData, addEncounterToSighting) {
+async function getEncounterGuids(
+  sightingData,
+  addEncounterToSighting,
+) {
   const copiedProperties = pick(sightingData, [
     'time',
     'timeSpecificity',
@@ -40,6 +43,13 @@ async function createEncounter(sightingData, addEncounterToSighting) {
     encounter => encounter?.guid,
     [],
   );
+  const encountersWithNoAnnotations = filter(
+    get(sightingData, 'encounters', []),
+    encounter => get(encounter, 'annotations', []).length === 0,
+    [],
+  );
+  if (encountersWithNoAnnotations.length > 0)
+    return [get(encountersWithNoAnnotations, [0, 'guid'])];
   const encounterCreationResponse = await addEncounterToSighting({
     sightingGuid: sightingId,
     operations: [
@@ -309,14 +319,14 @@ export default function AnnotationCreator({
               ),
             ];
             const theta = get(rect, 'theta', 0);
-            const newEncounterGuids = pending
+            const targetEncounterGuids = pending
               ? []
-              : await createEncounter(
+              : await getEncounterGuids(
                   sightingData,
                   addEncounterToSighting,
                 );
 
-            const newEncounterGuid = get(newEncounterGuids, [0]);
+            const focalEncounterGuid = get(targetEncounterGuids, [0]);
 
             const postAnnotationResponse = await postAnnotation({
               viewpoint,
@@ -324,18 +334,18 @@ export default function AnnotationCreator({
               ia_class: IAClass,
               rect: coords,
               theta,
-              encounterGuid: newEncounterGuid,
+              encounterGuid: focalEncounterGuid,
             });
             const newAnnotationId =
               postAnnotationResponse?.data?.guid;
             let addAnnotationsToSightingEncounterResponse;
             if (newAnnotationId) {
-              if (newEncounterGuid) {
-                // this doesn't happen if pending or if encounter creation failed or even if extra encouter Guids were created
+              if (focalEncounterGuid) {
+                // this doesn't happen if pending or if getting/creating an encounter failed or even if extra encouter Guids were created
                 addAnnotationsToSightingEncounterResponse = await addAnnotationsToSightingEncounter(
                   {
                     sightingGuid: sightingId,
-                    encounterGuid: newEncounterGuid,
+                    encounterGuid: focalEncounterGuid,
                     annotationGuids: [newAnnotationId],
                   },
                 );
@@ -343,7 +353,7 @@ export default function AnnotationCreator({
               // hasErrors doesn't get information from inside the onClick call, but that's ok, because all three potential calls have info that we can use to check success
               const allSucceeded = pending
                 ? postAnnotationResponse?.status === 200
-                : newEncounterGuids &&
+                : targetEncounterGuids &&
                   postAnnotationResponse?.status === 200 &&
                   addAnnotationsToSightingEncounterResponse?.status ===
                     200;
