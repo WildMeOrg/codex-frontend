@@ -29,8 +29,12 @@ export default function SettingsTextInput({
     get(currentValues, settingKey, undefined) !== undefined;
   console.log('deleteMe matchingSetting.descriptionId is: ');
   console.log(matchingSetting?.descriptionId);
+  console.log('deleteMe descriptionId is: ');
+  console.log(descriptionId);
   const hasDescription =
     descriptionId || matchingSetting?.descriptionId;
+  console.log('deleteMe hasDescription is: ');
+  console.log(hasDescription);
 
   return (
     <Grid
