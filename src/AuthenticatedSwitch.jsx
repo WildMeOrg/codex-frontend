@@ -32,7 +32,6 @@ import useSiteSettings from './models/site/useSiteSettings';
 import SearchIndividuals from './pages/individual/SearchIndividuals';
 import SearchSightings from './pages/sighting/SearchSightings';
 import SiteSetup from './pages/setup/SiteSetup';
-import MatchReview from './pages/match/MatchReview';
 import MatchSighting from './pages/match/MatchSighting';
 import AuditLog from './pages/devTools/AuditLog';
 import Welcome from './pages/auth/Welcome';
@@ -130,10 +129,7 @@ export default function AuthenticatedSwitch() {
                       </Route>
                       <Route path="/notifications">
                         <Notifications />
-                      </Route>
-                      <Route path="/match/:id">
-                        <MatchReview />
-                      </Route>
+                        </Route>
                       <Route path="/pending-sightings/:id">
                         <AssetGroupSighting />
                       </Route>

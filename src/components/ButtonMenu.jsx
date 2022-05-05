@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
+import { Link as RouterLink } from 'react-router-dom';
 
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -48,9 +49,11 @@ export default function ButtonMenu({
           <MenuItem
             key={action.id}
             onClick={e => {
-              action.onClick(e);
+              if (action.onClick) action.onClick(e);
               handleClose();
             }}
+            component={action.href ? RouterLink : undefined}
+            to={action.href}
           >
             {action?.labelId ? (
               <FormattedMessage id={action.labelId} />
