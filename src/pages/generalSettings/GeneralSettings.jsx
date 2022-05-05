@@ -66,11 +66,15 @@ export default function GeneralSettings() {
 
   const [currentValues, setCurrentValues] = useState(null);
   const [logoPostData, setLogoPostData] = useState(null);
+  console.log('deleteMe currentValues is: ');
+  console.log(currentValues);
 
   const edmValues = generalSettingsFields.map(fieldKey =>
     get(siteSettings, ['data', fieldKey, 'value']),
   );
   useEffect(() => {
+    console.log('deleteMe currentValues in useEffect is: ');
+    console.log(currentValues);
     setCurrentValues(zipObject(generalSettingsFields, edmValues));
   }, edmValues);
 
