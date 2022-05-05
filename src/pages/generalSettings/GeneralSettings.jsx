@@ -299,9 +299,10 @@ export default function GeneralSettings() {
                   };
                 }
               });
-              console.log('deleteMe currentValues are: ');
+              console.log(
+                'deleteMe currentValues before posting are: ',
+              );
               console.log(currentValues);
-              debugger;
               putSiteSettings(currentValues);
               if (logoPostData) postSettingsAsset(logoPostData);
             }}
