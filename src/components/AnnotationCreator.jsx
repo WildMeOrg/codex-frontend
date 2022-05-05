@@ -44,7 +44,7 @@ async function getEncounterGuids(
     [],
   );
   const encountersWithNoAnnotations = filter(
-    get(sightingData, 'encounters'),
+    get(sightingData, 'encounters', []),
     encounter => get(encounter, 'annotations', []).length === 0,
     [],
   );
