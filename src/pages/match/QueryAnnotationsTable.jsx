@@ -11,10 +11,11 @@ const columns = [
       customBodyRender: i => `Q${i + 1}`,
     },
   },
-  // {
-  //   name: 'filename',
-  //   labelId: 'FILENAME',
-  // },
+  {
+    name: 'asset_filename',
+    labelId: 'FILENAME',
+    align: 'left',
+  },
   {
     name: 'viewpoint',
     labelId: 'VIEWPOINT',

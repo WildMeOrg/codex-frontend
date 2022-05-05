@@ -2,6 +2,7 @@ import React from 'react';
 
 import DataDisplay from '../../components/dataDisplays/DataDisplay';
 import { cellRendererTypes } from '../../components/dataDisplays/cellRenderers';
+import ActionIcon from '../../components/ActionIcon';
 
 const columns = [
   {
@@ -11,10 +12,11 @@ const columns = [
       customBodyRender: i => `C${i + 1}`,
     },
   },
-  // {
-  //   name: 'filename',
-  //   labelId: 'FILENAME',
-  // },
+  {
+    name: 'asset_filename',
+    labelId: 'FILENAME',
+    align: 'left',
+  },
   {
     name: 'viewpoint',
     labelId: 'VIEWPOINT',
@@ -26,6 +28,22 @@ const columns = [
     align: 'left',
     options: {
       cellRenderer: cellRendererTypes.float,
+    },
+  },
+  {
+    name: 'sighting_guid',
+    labelId: 'VIEW_SIGHTING',
+    options: {
+      customBodyRender: guid => {
+        return (
+          <ActionIcon
+            labelId="VIEW"
+            variant="view"
+            href={`/sightings/${guid}`}
+            linkProps={{ newTab: true }}
+          />
+        );
+      },
     },
   },
 ];

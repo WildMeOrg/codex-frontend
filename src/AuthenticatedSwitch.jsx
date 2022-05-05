@@ -12,6 +12,7 @@ import FieldManagement from './pages/fieldManagement/FieldManagement';
 import UserManagement from './pages/userManagement/UserManagement';
 import AdminActions from './pages/adminActions/AdminActions';
 import ControlPanel from './pages/controlPanel/ControlPanel';
+import CreateIndividual from './pages/createIndividual/CreateIndividual';
 import Individual from './pages/individual/Individual';
 // import PictureBook from './pages/individual/PictureBook';
 import Sighting from './pages/sighting/Sighting';
@@ -105,6 +106,9 @@ export default function AuthenticatedSwitch() {
                       </Route>
                       <Route path="/admin">
                         <ControlPanel />
+                      </Route>
+                      <Route path="/create-individual">
+                        <CreateIndividual />
                       </Route>
                       {/* <Route path="/individuals/picturebook">
                         <PictureBook />

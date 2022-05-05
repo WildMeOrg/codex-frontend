@@ -1,9 +1,11 @@
 import React, { useMemo } from 'react';
 import { get } from 'lodash-es';
 
+import { formatSpecifiedTime } from '../../utils/formatters';
 import useSiteSettings from '../../models/site/useSiteSettings';
 import AnnotatedPhotograph from '../../components/AnnotatedPhotograph';
 import Text from '../../components/Text';
+import Link from '../../components/Link';
 import Card from '../../components/cards/Card';
 import LocationIdViewer from '../../components/fields/view/LocationIdViewer';
 import DataLineItem from './DataLineItem';
@@ -27,6 +29,16 @@ export default function ImageCard({ titleId, annotation }) {
   );
 
   const lineItemsBlank = !annotation;
+  const individualName =
+    annotation?.individual_first_name || 'Unnamed Individual';
+  const individualGuid = annotation?.individual_guid;
+  const assignedToIndividual =
+    individualGuid && individualGuid !== 'None';
+
+  const sightingDisplayTime = formatSpecifiedTime(
+    annotation?.sighting_time,
+    annotation?.sighting_time_specificity,
+  );
 
   return (
     <Card titleId={titleId} maxHeight="unset">
@@ -46,7 +58,15 @@ export default function ImageCard({ titleId, annotation }) {
           loading={loading}
           blank={lineItemsBlank}
         >
-          <Text component="span">Unassigned</Text>
+          <Text component="span">
+            {assignedToIndividual ? (
+              <Link newTab href={`/individuals/${individualGuid}`}>
+                {individualName}
+              </Link>
+            ) : (
+              'Unassigned'
+            )}
+          </Text>
         </DataLineItem>
         <DataLineItem
           labelId="REGION"
@@ -64,7 +84,7 @@ export default function ImageCard({ titleId, annotation }) {
           loading={loading}
           blank={lineItemsBlank}
         >
-          <Text component="span">November 5, 2010</Text>
+          <Text component="span">{sightingDisplayTime}</Text>
         </DataLineItem>
       </div>
     </Card>
