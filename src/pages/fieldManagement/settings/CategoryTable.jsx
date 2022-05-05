@@ -138,17 +138,16 @@ export default function FieldSettings() {
             values={{ category: get(deleteCategory, 'label') }}
           />
         }
-        onDelete={() => {
+        onDelete={async () => {
           const newCustomCategories = removeItemById(
             deleteCategory,
             customFieldCategories,
           );
-          putSiteSetting(
-            categorySettingName,
-            newCustomCategories,
-          ).then(() => {
-            onCloseConfirmDelete();
+          const response = await putSiteSetting({
+            property: categorySettingName,
+            data: newCustomCategories,
           });
+          if (response?.status === 200) onCloseConfirmDelete();
         }}
       />
       {dialogData && (
@@ -214,7 +213,7 @@ export default function FieldSettings() {
                 </Button>
                 <Button
                   display="primary"
-                  onClick={() => {
+                  onClick={async () => {
                     if (!(dialogData.label && dialogData.type)) {
                       setError(
                         intl.formatMessage({
@@ -226,12 +225,12 @@ export default function FieldSettings() {
                         dialogData,
                         customFieldCategories,
                       );
-                      putSiteSetting(
-                        categorySettingName,
-                        newCustomCategories,
-                      ).then(() => {
-                        onCloseCategoryDialog();
+                      const response = await putSiteSetting({
+                        property: categorySettingName,
+                        data: newCustomCategories,
                       });
+                      if (response?.status === 200)
+                        onCloseCategoryDialog();
                     }
                   }}
                 >

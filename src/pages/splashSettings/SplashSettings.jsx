@@ -256,7 +256,7 @@ export default function SiteSettings() {
                   };
                 }
               });
-              putSiteSettings(currentValues);
+              putSiteSettings({ currentValues });
               if (splashVideoPostData)
                 postSettingsAsset(splashVideoPostData);
               if (splashImagePostData)

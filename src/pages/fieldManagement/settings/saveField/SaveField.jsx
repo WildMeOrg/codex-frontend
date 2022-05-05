@@ -462,11 +462,12 @@ export default function SaveField() {
                     fieldsInType,
                   );
 
-                  const putSuccessful = await putSiteSetting(
-                    backendFieldType,
-                    { definitions: newFields },
-                  );
-                  if (putSuccessful) history.push('/admin/fields');
+                  const response = await putSiteSetting({
+                    property: backendFieldType,
+                    data: { definitions: newFields },
+                  });
+                  if (response?.status === 200)
+                    history.push('/admin/fields');
                 }}
               />
             </Grid>
