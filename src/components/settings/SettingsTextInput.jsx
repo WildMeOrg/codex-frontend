@@ -21,20 +21,12 @@ export default function SettingsTextInput({
   setCurrentValues,
   customFieldCategories,
   settingKey,
-  descriptionId = null,
+  skipDescription = false,
 }) {
   const matchingSetting = get(siteSettings, ['data', settingKey]);
   const matchingSettingSchema = get(matchingSetting, 'schema', {});
   const valueIsDefined =
     get(currentValues, settingKey, undefined) !== undefined;
-  console.log('deleteMe matchingSetting.descriptionId is: ');
-  console.log(matchingSetting?.descriptionId);
-  console.log('deleteMe descriptionId is: ');
-  console.log(descriptionId);
-  const hasDescription =
-    descriptionId || matchingSetting?.descriptionId;
-  console.log('deleteMe hasDescription is: ');
-  console.log(hasDescription);
 
   return (
     <Grid
@@ -59,11 +51,11 @@ export default function SettingsTextInput({
               <FormattedMessage id={matchingSetting.labelId} />
               {matchingSetting.required && ' *'}
             </Text>
-            {hasDescription && (
+            {!skipDescription && (
               <Text
                 style={{ marginTop: 4 }}
                 variant="body2"
-                id={descriptionId || matchingSetting.descriptionId}
+                id={matchingSetting.descriptionId}
               />
             )}
           </>

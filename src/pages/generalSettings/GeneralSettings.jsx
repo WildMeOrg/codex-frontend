@@ -215,7 +215,7 @@ export default function GeneralSettings() {
               currentValues={currentValues}
               setCurrentValues={setCurrentValues}
               siteSettings={siteSettings}
-              // descriptionId="CONFIGURATION_INTELLIGENT_AGENT_TWITTERBOT_CONSUMER_KEY_DESCRIPTION"
+              skipDescription
             />
             <SettingsTextInput
               settingKey="intelligent_agent_twitterbot_consumer_secret"
@@ -223,6 +223,7 @@ export default function GeneralSettings() {
               currentValues={currentValues}
               setCurrentValues={setCurrentValues}
               siteSettings={siteSettings}
+              skipDescription
             />
             <SettingsTextInput
               settingKey="intelligent_agent_twitterbot_access_token"
@@ -230,6 +231,7 @@ export default function GeneralSettings() {
               currentValues={currentValues}
               setCurrentValues={setCurrentValues}
               siteSettings={siteSettings}
+              skipDescription
             />
             <SettingsTextInput
               settingKey="intelligent_agent_twitterbot_access_token_secret"
@@ -237,6 +239,7 @@ export default function GeneralSettings() {
               currentValues={currentValues}
               setCurrentValues={setCurrentValues}
               siteSettings={siteSettings}
+              skipDescription
             />
             <SettingsTextInput
               settingKey="intelligent_agent_twitterbot_bearer_token"
@@ -244,6 +247,7 @@ export default function GeneralSettings() {
               currentValues={currentValues}
               setCurrentValues={setCurrentValues}
               siteSettings={siteSettings}
+              skipDescription
             />
           </>
         )}
