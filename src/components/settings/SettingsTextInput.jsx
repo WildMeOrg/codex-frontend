@@ -26,6 +26,8 @@ export default function SettingsTextInput({
   const matchingSettingSchema = get(matchingSetting, 'schema', {});
   const valueIsDefined =
     get(currentValues, settingKey, undefined) !== undefined;
+  console.log('deleteMe matchingSetting.descriptionId is: ');
+  console.log(matchingSetting?.descriptionId);
 
   return (
     <Grid
