@@ -21,6 +21,7 @@ export default function SettingsTextInput({
   setCurrentValues,
   customFieldCategories,
   settingKey,
+  descriptionId = null,
 }) {
   const matchingSetting = get(siteSettings, ['data', settingKey]);
   const matchingSettingSchema = get(matchingSetting, 'schema', {});
@@ -28,6 +29,8 @@ export default function SettingsTextInput({
     get(currentValues, settingKey, undefined) !== undefined;
   console.log('deleteMe matchingSetting.descriptionId is: ');
   console.log(matchingSetting?.descriptionId);
+  const hasDescription =
+    descriptionId || matchingSetting?.descriptionId;
 
   return (
     <Grid
@@ -52,11 +55,11 @@ export default function SettingsTextInput({
               <FormattedMessage id={matchingSetting.labelId} />
               {matchingSetting.required && ' *'}
             </Text>
-            {matchingSetting.descriptionId && (
+            {hasDescription && (
               <Text
                 style={{ marginTop: 4 }}
                 variant="body2"
-                id={matchingSetting.descriptionId}
+                id={descriptionId || matchingSetting.descriptionId}
               />
             )}
           </>

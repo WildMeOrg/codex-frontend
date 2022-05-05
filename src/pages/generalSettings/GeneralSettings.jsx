@@ -215,6 +215,7 @@ export default function GeneralSettings() {
               currentValues={currentValues}
               setCurrentValues={setCurrentValues}
               siteSettings={siteSettings}
+              descriptionId="CONFIGURATION_INTELLIGENT_AGENT_TWITTERBOT_CONSUMER_KEY_DESCRIPTION"
             />
             <SettingsTextInput
               settingKey="intelligent_agent_twitterbot_consumer_secret"
