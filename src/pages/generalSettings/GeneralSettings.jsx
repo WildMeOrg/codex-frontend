@@ -81,6 +81,34 @@ export default function GeneralSettings() {
   const loading = assetPostLoading || formPostLoading;
   const error = putSiteSettingsError || settingsAssetPostError;
   const success = formPostSuccess && !error && !loading;
+  const twitterBotDisabled =
+    get(currentValues, 'intelligent_agent_twitterbot_enabled') ===
+    'false';
+  const twitterBotEnabledAndNoCredsMissing =
+    get(currentValues, 'intelligent_agent_twitterbot_enabled') ===
+      'true' &&
+    get(
+      currentValues,
+      'intelligent_agent_twitterbot_access_token',
+    ) !== '' &&
+    get(
+      currentValues,
+      'intelligent_agent_twitterbot_access_token_secret',
+    ) !== '' &&
+    get(
+      currentValues,
+      'intelligent_agent_twitterbot_bearer_token',
+    ) !== '' &&
+    get(
+      currentValues,
+      'intelligent_agent_twitterbot_consumer_key',
+    ) !== '' &&
+    get(
+      currentValues,
+      'intelligent_agent_twitterbot_consumer_secret',
+    ) !== '';
+  const allValid =
+    twitterBotDisabled || twitterBotEnabledAndNoCredsMissing;
 
   return (
     <MainColumn>
@@ -314,6 +342,7 @@ export default function GeneralSettings() {
             style={{ marginTop: 12 }}
             display="primary"
             loading={loading}
+            disabled={!allValid}
             id="SAVE_CHANGES"
           />
         </Grid>
