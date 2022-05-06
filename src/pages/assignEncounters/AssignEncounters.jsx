@@ -1,5 +1,6 @@
 import React from 'react';
 import { useLocation } from 'react-router';
+import { useHistory } from 'react-router-dom';
 
 import Grid from '@material-ui/core/Grid';
 
@@ -8,26 +9,35 @@ import MainColumn from '../../components/MainColumn';
 import Text from '../../components/Text';
 import Button from '../../components/Button';
 import Alert from '../../components/Alert';
-import usePatchIndividual from '../../models/individual/usePatchIndividual';
+import useAssignEncountersToIndividual from '../../models/individual/useAssignEncountersToIndividual';
 import EncounterCard from '../../components/cards/EncounterCard';
 import IndividualCard from '../../components/cards/IndividualCard';
 
 export default function AssignEncounters() {
+  const history = useHistory();
   const { search } = useLocation();
   useDocumentTitle('ASSIGN_ANNOTATIONS_TO_INDIVIDUAL');
 
   const searchParams = new URLSearchParams(search);
   const encounterGuids = searchParams.getAll('e') || [];
-  const individualIds = searchParams.getAll('i') || [];
+  const individualGuids = searchParams.getAll('i') || [];
+  const individualGuid = individualGuids?.[0];
 
   const {
-    mutate: patchIndividual,
+    mutate: assignEncountersToIndividual,
     loading,
     error,
-  } = usePatchIndividual();
+  } = useAssignEncountersToIndividual();
 
-  async function assignEncountersToIndividual() {
-    await patchIndividual({});
+  async function handleClick() {
+    const result = await assignEncountersToIndividual({
+      individualGuid,
+      encounterGuids,
+    });
+    const successful = result?.status === 200;
+    if (successful) {
+      history.push(`/individuals/${individualGuid}`);
+    }
   }
 
   return (
@@ -48,7 +58,21 @@ export default function AssignEncounters() {
           <Text variant="h4" id="ASSIGN_ANNOTATIONS_TO_INDIVIDUAL" />
         </Grid>
         <Grid item>
-          <IndividualCard individualGuid={individualIds?.[0]} />
+          <Text>
+            <Text
+              variant="subtitle2"
+              id="ASSIGN_ANNOTATIONS_TO_INDIVIDUAL_INSTRUCTIONS"
+            />
+          </Text>
+        </Grid>
+        <Grid item>
+          <Text variant="h5" id="INDIVIDUAL" />
+        </Grid>
+        <Grid item>
+          <IndividualCard individualGuid={individualGuid} />
+        </Grid>
+        <Grid item>
+          <Text variant="h5" id="ANNOTATIONS" />
         </Grid>
         <Grid item>
           {encounterGuids.map(encounterGuid => (
@@ -72,7 +96,7 @@ export default function AssignEncounters() {
             display="primary"
             id="ASSIGN_ANNOTATIONS"
             loading={loading}
-            onClick={assignEncountersToIndividual}
+            onClick={handleClick}
           />
         </Grid>
       </Grid>

@@ -22,6 +22,7 @@
   "BLANK": " ",
   "ASSIGN_ANNOTATIONS": "Assign annotations",
   "ASSIGN_ANNOTATIONS_TO_INDIVIDUAL": "Assign annotations to individual",
+  "ASSIGN_ANNOTATIONS_TO_INDIVIDUAL_INSTRUCTIONS": "Verify that the annotations below should be assigned to this individual before proceeding.",
   "ADD_ANNOTATIONS_TO_CLUSTER_TITLE": "Add annotations to animal",
   "ADD_ANNOTATIONS_TO_CLUSTER_BUTTON": "Add annotations",
   "SIGHTING_COMMIT_TITLE": "Ready to commit",
