@@ -63,8 +63,6 @@ export default function MergeIndividuals() {
       />
     );
 
-  console.log(individuals);
-
   return (
     <MainColumn
       style={{
