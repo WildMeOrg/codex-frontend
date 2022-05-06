@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
 import { get } from 'lodash-es';
-import { useQueryClient } from 'react-query';
 
 import Skeleton from '@material-ui/lab/Skeleton';
 import Grid from '@material-ui/core/Grid';
@@ -12,7 +11,6 @@ import DataDisplay from '../../components/dataDisplays/DataDisplay';
 import ActionIcon from '../../components/ActionIcon';
 import usePatchCollaboration from '../../models/collaboration/usePatchCollaboration';
 import useGetMe from '../../models/users/useGetMe';
-import queryKeys from '../../constants/queryKeys';
 
 const revokedPermission = 'revoked';
 
@@ -23,24 +21,23 @@ export default function UserManagersCollaborationEditTable({
 }) {
   const {
     data: currentUserData,
-    isFetching: userDataFetching,
+    isLoading: userDataLoading,
   } = useGetMe();
 
-  const queryClient = useQueryClient();
   const intl = useIntl();
-  const [dismissed, setDismissed] = useState(false);
 
   const {
     mutate: patchCollaboration,
     isLoading: patchLoading,
     success: patchSuccess,
     error: patchError,
+    clearError: onClearPatchError,
+    clearSuccess: onClearPatchSuccess,
   } = usePatchCollaboration();
 
-  const isLoading = userDataFetching || patchLoading;
+  const isLoading = userDataLoading || patchLoading;
 
   async function processRevoke(collaboration) {
-    setDismissed(false);
     const operations = [
       {
         op: 'replace',
@@ -185,13 +182,12 @@ export default function UserManagersCollaborationEditTable({
           style={{ margin: '8px 16px', display: 'block' }}
         />
       ) : null}
-      {patchError && !dismissed ? (
+      {patchError && (
         <CustomAlert
           severity="error"
           titleId="COLLABORATION_REVOKE_ERROR"
           onClose={() => {
-            queryClient.invalidateQueries(queryKeys.collaborations);
-            setDismissed(true);
+            onClearPatchError();
           }}
         >
           {patchError
@@ -202,17 +198,16 @@ export default function UserManagersCollaborationEditTable({
               })
             : intl.formatMessage({ id: 'UNKNOWN_ERROR' })}
         </CustomAlert>
-      ) : null}
-      {patchSuccess && !dismissed ? (
+      )}
+      {patchSuccess && (
         <CustomAlert
           severity="success"
           titleId="COLLABORATION_REVOKE_SUCCESS"
           onClose={() => {
-            queryClient.invalidateQueries(queryKeys.collaborations);
-            setDismissed(true);
+            onClearPatchSuccess();
           }}
         />
-      ) : null}
+      )}
     </Grid>,
   ];
 }

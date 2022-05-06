@@ -183,8 +183,6 @@ export default function Individual() {
     setError: setPatchError,
   } = usePatchIndividual();
 
-  const error = deleteError || patchError;
-
   useDocumentTitle(capitalize(firstName), {
     translateMessage: false,
   });
