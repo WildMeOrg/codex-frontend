@@ -191,7 +191,7 @@ export default function MatchSighting() {
             display="back"
             id="BACK_TO_SIGHTING"
           />
-          <Text variant="h4">Review match candidates</Text>
+          <Text variant="h4" id="REVIEW_MATCH_CANDIDATES" />
           <Text
             variant="subtitle2"
             id="IDENTIFICATION_FINISHED_TIME"

@@ -22,7 +22,6 @@ import useAddEncounterToAGS from '../../../models/assetGroupSighting/useAddEncou
 import useDeleteAGSEncounter from '../../../models/assetGroupSighting/useDeleteAGSEncounter';
 import AnnotationsCard from './AnnotationsCard';
 import EditEncounterMetadata from './EditEncounterMetadata';
-import CreateIndividualModal from './CreateIndividualModal';
 import ManuallyAssignModal from './ManuallyAssignModal';
 import AddAnnotationsDialog from './AddAnnotationsDialog';
 import queryKeys, {
@@ -81,11 +80,6 @@ export default function Encounters({
   const deleteEncounterLoading = pending
     ? deleteAGSEncounterLoading
     : deleteSightingEncounterLoading;
-
-  const [
-    createIndividualEncounterId,
-    setCreateIndividualEncounterId,
-  ] = useState(null);
 
   const [encounterToDelete, setEncounterToDelete] = useState(null);
   const [editEncounterInfo, setEditEncounterInfo] = useState(null);
@@ -176,12 +170,6 @@ export default function Encounters({
         messageId={messageForConfirmDelete}
       />
 
-      <CreateIndividualModal
-        encounterId={createIndividualEncounterId}
-        open={Boolean(createIndividualEncounterId)}
-        onClose={() => setCreateIndividualEncounterId(null)}
-      />
-
       <ManuallyAssignModal
         encounterId={encounterToAssign}
         open={Boolean(encounterToAssign)}
@@ -238,8 +226,7 @@ export default function Encounters({
           {
             id: 'create-new-individual',
             labelId: 'CREATE_NEW_INDIVIDUAL',
-            onClick: () =>
-              setCreateIndividualEncounterId(encounterId),
+            href: `/create-individual?e=${encounterId}`,
           },
           {
             id: 'identify-manually',
