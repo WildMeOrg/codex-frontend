@@ -14,25 +14,6 @@ export default function IntelligentAgentSettings({
 }) {
   console.log('deleteMe siteSettings are: ');
   console.log(siteSettings);
-  // const intelligentAgentSettingsFields = reduce(
-  //   intelligentAgentSchema,
-  //   (memo, intelligentAgent) => {
-  //     const platformName = get(Object.keys(intelligentAgent), [0]);
-  //     const currentPlatformFields = get(
-  //       intelligentAgent,
-  //       [platformName, 'fields'],
-  //       [],
-  //     );
-  //     const platformValues = Object.values(currentPlatformFields);
-  //     console.log('deleteMe platformValues are: ');
-  //     console.log(platformValues);
-
-  //     return [...memo, ...Object.keys(platformValues)];
-  //   },
-  //   [],
-  // );
-  // console.log('deleteMe intelligentAgentSettingsFields are: ');
-  // console.log(intelligentAgentSettingsFields);
 
   //TODO deleteMe
   setAllValid(true);
@@ -88,6 +69,61 @@ export default function IntelligentAgentSettings({
       platformName,
       'enablingField',
     ]);
+    const isCurrentPlatformEnabled = get(
+      currentValues,
+      currentPlatformEnablingField,
+    );
+    console.log('deleteMe isCurrentPlatformEnabled is: ');
+    console.log(isCurrentPlatformEnabled);
+    if (isCurrentPlatformEnabled) {
+      return currentPlatformFields.map(currentField => {
+        const settingKey = get(Object.keys(currentField), [0]);
+        const skipDescription = get(
+          currentField,
+          [settingKey, 'skipDescription'],
+          false,
+        );
+        return (
+          <SettingsTextInput
+            key={settingKey}
+            settingKey={settingKey}
+            customFieldCategories={[]}
+            currentValues={currentValues}
+            setCurrentValues={setCurrentValues}
+            siteSettings={siteSettings}
+            skipDescription={skipDescription}
+          />
+        );
+      });
+    } else {
+      const onlyEnabledPlatformField = currentPlatformFields.find(
+        currentField => {
+          const settingKey = get(Object.keys(currentField), [0]);
+          return settingKey === currentPlatformEnablingField;
+        },
+      );
+      console.log('deleteMe onlyEnabledPlatformField is: ');
+      console.log(onlyEnabledPlatformField);
+      const settingKey = get(Object.keys(onlyEnabledPlatformField), [
+        0,
+      ]);
+      const skipDescription = get(
+        onlyEnabledPlatformField,
+        [settingKey, 'skipDescription'],
+        false,
+      );
+      return (
+        <SettingsTextInput
+          key={settingKey}
+          settingKey={settingKey}
+          customFieldCategories={[]}
+          currentValues={currentValues}
+          setCurrentValues={setCurrentValues}
+          siteSettings={siteSettings}
+          skipDescription={skipDescription}
+        />
+      );
+    }
     // console.log('deleteMe currentPlatformEnablingField is: ');
     // console.log(currentPlatformEnablingField);
     // return <Text>Test</Text>;
@@ -111,29 +147,7 @@ export default function IntelligentAgentSettings({
     //       )}
     //     );
     //   } else {
-    return currentPlatformFields.map(currentField => {
-      console.log('deleteMe currentField is: ');
-      console.log(currentField);
-      const settingKey = get(Object.keys(currentField), [0]);
-      const skipDescription = get(
-        currentField,
-        [settingKey, 'skipDescription'],
-        false,
-      );
-      console.log('deleteMe skipDescription is: ');
-      console.log(skipDescription);
-      return (
-        <SettingsTextInput
-          key={settingKey}
-          settingKey={settingKey}
-          customFieldCategories={[]}
-          currentValues={currentValues}
-          setCurrentValues={setCurrentValues}
-          siteSettings={siteSettings}
-          skipDescription={skipDescription}
-        />
-      );
-    });
+
     //   }
   });
 }

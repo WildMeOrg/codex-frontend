@@ -38,7 +38,7 @@ const newSettingFields = [
 export default function SiteSettings() {
   const siteSettings = useSiteSettings();
   const {
-    putSiteSettings,
+    mutate: putSiteSettings,
     loading: formPostLoading,
     error: putSiteSettingsError,
     success: formPostSuccess,

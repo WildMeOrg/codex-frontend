@@ -51,7 +51,11 @@ export default function FieldSettings() {
   const [dialogData, setDialogData] = useState(null);
   const [deleteCategory, setDeleteCategory] = useState(null);
   const { data: siteSettings, loading } = useSiteSettings();
-  const { putSiteSetting, error, setError } = usePutSiteSettings();
+  const {
+    mutate: putSiteSetting,
+    error,
+    setError,
+  } = usePutSiteSettings();
 
   const customFieldCategories = get(
     siteSettings,

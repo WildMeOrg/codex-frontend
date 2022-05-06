@@ -90,7 +90,7 @@ console.log(allSettingsFields);
 export default function GeneralSettings() {
   const siteSettings = useSiteSettings();
   const {
-    putSiteSettings,
+    mutate: putSiteSettings,
     error: putSiteSettingsError,
     loading: formPostLoading,
     success: formPostSuccess,
@@ -265,13 +265,6 @@ export default function GeneralSettings() {
         />
         <SettingsTextInput
           settingKey="site.links.twitterLink"
-          customFieldCategories={[]}
-          currentValues={currentValues}
-          setCurrentValues={setCurrentValues}
-          siteSettings={siteSettings}
-        />
-        <SettingsTextInput
-          settingKey="intelligent_agent_twitterbot_enabled"
           customFieldCategories={[]}
           currentValues={currentValues}
           setCurrentValues={setCurrentValues}

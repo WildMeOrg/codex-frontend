@@ -45,7 +45,7 @@ export default function SaveField() {
   } = useSiteSettings();
 
   const {
-    putSiteSetting,
+    mutate: putSiteSetting,
     error: putSiteSettingError,
     setError: setPutSiteSettingError,
   } = usePutSiteSettings();

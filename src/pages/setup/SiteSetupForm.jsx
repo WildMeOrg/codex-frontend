@@ -30,7 +30,7 @@ const SettingInput = function({
 export default function SiteSettings({ primaryButtonId }) {
   const newSiteSettings = useSiteSettings();
   const {
-    putSiteSettings,
+    mutate: putSiteSettings,
     error,
     setError,
     success,
