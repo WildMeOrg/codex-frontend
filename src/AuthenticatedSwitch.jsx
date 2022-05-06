@@ -110,9 +110,9 @@ export default function AuthenticatedSwitch() {
                       <Route path="/create-individual">
                         <CreateIndividual />
                       </Route>
-                        <Route path="/assign-annotations">
-                          <AssignEncounters />
-                        </Route>
+                      <Route path="/assign-annotations">
+                        <AssignEncounters />
+                      </Route>
                       {/* <Route path="/individuals/picturebook">
                         <PictureBook />
                       </Route> */}
@@ -133,7 +133,7 @@ export default function AuthenticatedSwitch() {
                       </Route>
                       <Route path="/notifications">
                         <Notifications />
-                        </Route>
+                      </Route>
                       <Route path="/pending-sightings/:id">
                         <AssetGroupSighting />
                       </Route>

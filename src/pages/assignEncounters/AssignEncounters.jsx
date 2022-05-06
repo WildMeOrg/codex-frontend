@@ -12,8 +12,7 @@ import usePatchIndividual from '../../models/individual/usePatchIndividual';
 import EncounterCard from '../../components/cards/EncounterCard';
 import IndividualCard from '../../components/cards/IndividualCard';
 
-export default function AssignEncounters()
-{
+export default function AssignEncounters() {
   const { search } = useLocation();
   useDocumentTitle('ASSIGN_ANNOTATIONS_TO_INDIVIDUAL');
 
@@ -27,8 +26,7 @@ export default function AssignEncounters()
     error,
   } = usePatchIndividual();
 
-  async function assignEncountersToIndividual()
-  {
+  async function assignEncountersToIndividual() {
     await patchIndividual({});
   }
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useIntl } from 'react-intl';
 
 import Paper from '@material-ui/core/Paper';
@@ -10,12 +10,22 @@ import useIndividual from '../../models/individual/useIndividual';
 import Text from '../Text';
 import sexOptions from '../../constants/sexOptions';
 
-export default function IndividualCard({ individualGuid, showSex = true, })
-{
+export default function IndividualCard({
+  individualGuid,
+  showSex = true,
+  setIndividualData = Function.prototype,
+}) {
   const intl = useIntl();
 
   const { data, loading, error } = useIndividual(individualGuid);
   const dataReady = !loading && !error;
+
+  useEffect(
+    () => {
+      if (data) setIndividualData(data);
+    },
+    [data],
+  );
 
   const firstName = deriveIndividualName(
     data,

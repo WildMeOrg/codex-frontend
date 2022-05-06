@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import Select from '@material-ui/core/Select';
@@ -47,10 +47,17 @@ export default function ResolutionSelector({
   individualData,
 }) {
   const selectorSchema = propertyMap[fieldType];
-  const individualProperties = individualData.map(individual =>
-    selectorSchema.getProperty(individual),
+  const individualProperties = Object.values(individualData).map(
+    individual => selectorSchema.getProperty(individual),
   );
-  const choices = selectorSchema.deriveChoices(individualProperties);
+
+  const choices = useMemo(
+    () => {
+      if (individualProperties?.length === 0) return [];
+      return selectorSchema.deriveChoices(individualProperties);
+    },
+    [selectorSchema, individualProperties],
+  );
 
   return (
     <FormControl style={{ width: 320, marginTop: 12 }}>

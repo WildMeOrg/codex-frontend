@@ -10,14 +10,12 @@ import useSiteSettings from '../../models/site/useSiteSettings';
 import LocationIdViewer from '../fields/view/LocationIdViewer';
 import Text from '../Text';
 import Link from '../Link';
-import
-{
+import {
   formatDate,
   formatSpecifiedTime,
 } from '../../utils/formatters';
 
-export default function EncounterCard({ encounterGuid })
-{
+export default function EncounterCard({ encounterGuid }) {
   const {
     data: siteSettings,
     siteSettingsVersion,
