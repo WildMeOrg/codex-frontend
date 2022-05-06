@@ -75,10 +75,14 @@ export default function IntelligentAgentSettings({
       [platformName, 'fields'],
       [],
     );
+    console.log('deleteMe currentPlatformFields are: ');
+    console.log(currentPlatformFields);
     const currentPlatformEnablingField = get(intelligentAgent, [
       platformName,
       'enablingField',
     ]);
+    console.log('deleteMe currentPlatformEnablingField is: ');
+    console.log(currentPlatformEnablingField);
     // return <Text>Test</Text>;
     //   if (currentPlatformEnablingField) {
     //     //TODO return a check whether it's true and then stuff
