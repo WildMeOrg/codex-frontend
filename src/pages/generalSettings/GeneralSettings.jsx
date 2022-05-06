@@ -250,6 +250,8 @@ export default function GeneralSettings() {
         />
         <IntelligentAgentSettings
           currentValues={currentValues}
+          setCurrentValues={setCurrentValues}
+          siteSettings={siteSettings}
           setAllValid={setAllValid}
         />
 

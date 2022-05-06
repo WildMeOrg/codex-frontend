@@ -3,10 +3,13 @@ import React from 'react';
 import { get, reduce } from 'lodash-es';
 
 import { intelligentAgentSchema } from '../../constants/intelligentAgentSchema';
-import Text from '../../components/Text';
+// import Text from '../../components/Text'; //TODO deleteMe
+import SettingsTextInput from '../../components/settings/SettingsTextInput';
 
 export default function IntelligentAgentSettings({
   currentValues,
+  setCurrentValues,
+  siteSettings,
   setAllValid,
 }) {
   const intelligentAgentSettingsFields = reduce(
@@ -74,7 +77,7 @@ export default function IntelligentAgentSettings({
       platformName,
       'enablingField',
     ]);
-    return <Text>Test</Text>;
+    // return <Text>Test</Text>;
     //   if (currentPlatformEnablingField) {
     //     //TODO return a check whether it's true and then stuff
     //     return (
@@ -95,21 +98,23 @@ export default function IntelligentAgentSettings({
     //       )}
     //     );
     //   } else {
-    //     return (
-    //       {currentPlatformFields.map(currentField =>{
-    //           return (
-    //             <SettingsTextInput
-    //             key={get(Object.keys(currentField),[0])}
-    //       settingKey={get(Object.keys(currentField),[0])}
-    //       customFieldCategories={[]}
-    //       currentValues={currentValues}
-    //       setCurrentValues={setCurrentValues}
-    //       siteSettings={siteSettings}
-    //       skipDescription={get(Object.values(currentField),'skipDescription', false)}
-    //     />
-    //           );
-    //         })}
-    //     )
+    return currentPlatformFields.map(currentField => {
+      return (
+        <SettingsTextInput
+          key={get(Object.keys(currentField), [0])}
+          settingKey={get(Object.keys(currentField), [0])}
+          customFieldCategories={[]}
+          currentValues={currentValues}
+          setCurrentValues={setCurrentValues}
+          siteSettings={siteSettings}
+          skipDescription={get(
+            Object.values(currentField),
+            'skipDescription',
+            false,
+          )}
+        />
+      );
+    });
     //   }
   });
 }
