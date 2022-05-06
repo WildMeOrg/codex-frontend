@@ -69,7 +69,11 @@ export default function IntelligentAgentSettings({
   //   setAllValid(allValid);
 
   return intelligentAgentSchema.map(intelligentAgent => {
+    console.log('deleteMe intelligentAgent is: ');
+    console.log(intelligentAgent);
     const platformName = get(Object.keys(intelligentAgent), [0]);
+    console.log('deleteMe platformName is: ');
+    console.log(platformName);
     const currentPlatformFields = get(
       intelligentAgent,
       [platformName, 'fields'],
