@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
 import { get } from 'lodash-es';
-import { useQueryClient } from 'react-query';
 
 import Skeleton from '@material-ui/lab/Skeleton';
 import Grid from '@material-ui/core/Grid';
@@ -10,8 +9,8 @@ import CustomAlert from '../../components/Alert';
 import Text from '../../components/Text';
 import DataDisplay from '../../components/dataDisplays/DataDisplay';
 import ActionIcon from '../../components/ActionIcon';
-import useRevokeCollaboration from '../../models/collaboration/useRevokeCollaboration';
-import queryKeys from '../../constants/queryKeys';
+import usePatchCollaboration from '../../models/collaboration/usePatchCollaboration';
+import useGetMe from '../../models/users/useGetMe';
 
 const revokedPermission = 'revoked';
 
@@ -20,26 +19,39 @@ export default function UserManagersCollaborationEditTable({
   collaborationLoading,
   collaborationError,
 }) {
-  const queryClient = useQueryClient();
+  const {
+    data: currentUserData,
+    isLoading: userDataLoading,
+  } = useGetMe();
+
   const intl = useIntl();
-  const [dismissed, setDismissed] = useState(false);
 
   const {
-    revokeCollaboration,
-    error,
-    isLoading,
-    isError,
-    isSuccess,
-  } = useRevokeCollaboration();
+    mutate: patchCollaboration,
+    isLoading: patchLoading,
+    success: patchSuccess,
+    error: patchError,
+    clearError: onClearPatchError,
+    clearSuccess: onClearPatchSuccess,
+  } = usePatchCollaboration();
+
+  const isLoading = userDataLoading || patchLoading;
 
   async function processRevoke(collaboration) {
-    setDismissed(false);
-    const response = await revokeCollaboration(collaboration);
-    const allOk =
-      get(response, ['0', 'status']) === 200 &&
-      get(response, ['1', 'status']) === 200;
-    if (allOk)
-      queryClient.invalidateQueries(queryKeys.collaborations);
+    const operations = [
+      {
+        op: 'replace',
+        path: '/managed_view_permission',
+        value: {
+          user_guid: get(currentUserData, 'guid'),
+          permission: 'revoked',
+        },
+      },
+    ];
+    await patchCollaboration({
+      collaborationGuid: collaboration?.guid,
+      operations: operations,
+    });
   }
 
   function tranformDataForCollabTable(originalData) {
@@ -170,34 +182,32 @@ export default function UserManagersCollaborationEditTable({
           style={{ margin: '8px 16px', display: 'block' }}
         />
       ) : null}
-      {isError && !dismissed ? (
+      {patchError && (
         <CustomAlert
           severity="error"
           titleId="COLLABORATION_REVOKE_ERROR"
           onClose={() => {
-            queryClient.invalidateQueries(queryKeys.collaborations);
-            setDismissed(true);
+            onClearPatchError();
           }}
         >
-          {error
-            ? error +
+          {patchError
+            ? patchError +
               '. ' +
               intl.formatMessage({
                 id: 'COLLAB_REVOKE_ERROR_SUPPLEMENTAL',
               })
             : intl.formatMessage({ id: 'UNKNOWN_ERROR' })}
         </CustomAlert>
-      ) : null}
-      {isSuccess && !dismissed ? (
+      )}
+      {patchSuccess && (
         <CustomAlert
           severity="success"
           titleId="COLLABORATION_REVOKE_SUCCESS"
           onClose={() => {
-            queryClient.invalidateQueries(queryKeys.collaborations);
-            setDismissed(true);
+            onClearPatchSuccess();
           }}
         />
-      ) : null}
+      )}
     </Grid>,
   ];
 }

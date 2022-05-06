@@ -1011,7 +1011,7 @@
   "COLLABORATION_REVOKE_BRIEF": "{userName} revoked your collaboration request",
   "EDIT_COLLABORATION_APPROVED": "{userName} approved your collaboration edit request",
   "EDIT_COLLABORATION_REVOKED": "{userName} revoked edit privileges for your collaboration with them",
-  "COLLABORATION_REVOKED_BY_MANAGER": "A collaboration was revoked by a user manager",
+  "COLLABORATION_REVOKED_BY_MANAGER": "A collaboration was revoked by a user manager.",
   "INDIVIDUAL_MERGE_REQUEST_MESSAGE_DETAILED": "{userName} requested that {yourIndividualName} be merged with {theirIndividualName}. You have until {formattedDeadline} to respond.",
   "INDIVIDUAL_MERGE_REQUEST_MESSAGE": "{userName} wants to merge {yourIndividualName} with {theirIndividualName}",
   "INDIVIDUALS_MERGE_COMPLETE_MESSAGE": "The individual merge between {yourIndividualName} and {theirIndividualName} was completed successfully.",
