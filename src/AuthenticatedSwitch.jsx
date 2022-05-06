@@ -12,6 +12,7 @@ import FieldManagement from './pages/fieldManagement/FieldManagement';
 import UserManagement from './pages/userManagement/UserManagement';
 import AdminActions from './pages/adminActions/AdminActions';
 import ControlPanel from './pages/controlPanel/ControlPanel';
+import AssignEncounters from './pages/assignEncounters/AssignEncounters';
 import CreateIndividual from './pages/createIndividual/CreateIndividual';
 import Individual from './pages/individual/Individual';
 // import PictureBook from './pages/individual/PictureBook';
@@ -110,6 +111,9 @@ export default function AuthenticatedSwitch() {
                       <Route path="/create-individual">
                         <CreateIndividual />
                       </Route>
+                        <Route path="/assign-annotations">
+                          <AssignEncounters />
+                        </Route>
                       {/* <Route path="/individuals/picturebook">
                         <PictureBook />
                       </Route> */}

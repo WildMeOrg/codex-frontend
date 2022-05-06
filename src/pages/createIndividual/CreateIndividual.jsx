@@ -10,9 +10,9 @@ import Text from '../../components/Text';
 import Button from '../../components/Button';
 import InputRow from '../../components/fields/edit/InputRow';
 import Alert from '../../components/Alert';
+import EncounterCard from '../../components/cards/EncounterCard';
 import useIndividualFieldSchemas from '../../models/individual/useIndividualFieldSchemas';
 import usePostIndividual from '../../models/individual/usePostIndividual';
-import EncounterCard from './EncounterCard';
 
 function calculateInitialState(schemas) {
   if (!schemas) return {};
