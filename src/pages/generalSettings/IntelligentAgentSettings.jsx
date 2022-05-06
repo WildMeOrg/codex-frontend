@@ -69,11 +69,11 @@ export default function IntelligentAgentSettings({
   //   setAllValid(allValid);
 
   return intelligentAgentSchema.map(intelligentAgent => {
-    console.log('deleteMe intelligentAgent is: ');
-    console.log(intelligentAgent);
+    // console.log('deleteMe intelligentAgent is: ');
+    // console.log(intelligentAgent);
     const platformName = get(Object.keys(intelligentAgent), [0]);
-    console.log('deleteMe platformName is: ');
-    console.log(platformName);
+    // console.log('deleteMe platformName is: ');
+    // console.log(platformName);
     const currentPlatformFields = get(
       intelligentAgent,
       [platformName, 'fields'],
@@ -85,8 +85,8 @@ export default function IntelligentAgentSettings({
       platformName,
       'enablingField',
     ]);
-    console.log('deleteMe currentPlatformEnablingField is: ');
-    console.log(currentPlatformEnablingField);
+    // console.log('deleteMe currentPlatformEnablingField is: ');
+    // console.log(currentPlatformEnablingField);
     // return <Text>Test</Text>;
     //   if (currentPlatformEnablingField) {
     //     //TODO return a check whether it's true and then stuff
@@ -109,6 +109,8 @@ export default function IntelligentAgentSettings({
     //     );
     //   } else {
     return currentPlatformFields.map(currentField => {
+      console.log('deleteMe currentField is: ');
+      console.log(currentField);
       return (
         <SettingsTextInput
           key={get(Object.keys(currentField), [0])}
