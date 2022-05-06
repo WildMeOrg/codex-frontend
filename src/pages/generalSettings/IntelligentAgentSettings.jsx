@@ -12,6 +12,8 @@ export default function IntelligentAgentSettings({
   siteSettings,
   setAllValid,
 }) {
+  console.log('deleteMe siteSettings are: ');
+  console.log(siteSettings);
   const intelligentAgentSettingsFields = reduce(
     intelligentAgentSchema,
     (memo, intelligentAgent) => {
