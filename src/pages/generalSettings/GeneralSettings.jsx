@@ -90,12 +90,22 @@ console.log(allSettingsFields);
 export default function GeneralSettings() {
   const siteSettings = useSiteSettings();
   const {
-    mutate: putSiteSettings,
+    putSiteSettings,
+    // putSiteSetting,
+    // mutate: putSiteSettings,
+    // error: putSiteSettingsError,
+    // loading: formPostLoading,
+    // success: formPostSuccess,
+    // setSuccess: setFormPostSuccess,
+  } = usePutSiteSettings();
+
+  const {
+    mutate: putSettings,
     error: putSiteSettingsError,
     loading: formPostLoading,
     success: formPostSuccess,
     setSuccess: setFormPostSuccess,
-  } = usePutSiteSettings();
+  } = putSiteSettings;
 
   const {
     postSettingsAsset,
@@ -381,7 +391,7 @@ export default function GeneralSettings() {
                 'deleteMe currentValues before posting are: ',
               );
               console.log(currentValues);
-              putSiteSettings({ currentValues });
+              putSettings({ currentValues });
               if (logoPostData) postSettingsAsset(logoPostData);
             }}
             style={{ marginTop: 12 }}
