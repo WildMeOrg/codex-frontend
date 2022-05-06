@@ -23,16 +23,19 @@ export default function IntelligentAgentSettings({
         [platformName, 'fields'],
         [],
       );
-      return [...memo, ...Object.keys(currentPlatformFields)];
+      const platformValues = Object.values(currentPlatformFields);
+      console.log('deleteMe platformValues are: ');
+      console.log(platformValues);
+
+      return [...memo, ...Object.keys(platformValues)];
     },
     [],
   );
+  console.log('deleteMe intelligentAgentSettingsFields are: ');
+  console.log(intelligentAgentSettingsFields);
 
   //TODO deleteMe
   setAllValid(true);
-
-  console.log('deleteMe intelligentAgentSettingsFields are: ');
-  console.log(intelligentAgentSettingsFields);
 
   // TODO generalize
   const twitterBotDisabled =
@@ -111,19 +114,23 @@ export default function IntelligentAgentSettings({
     return currentPlatformFields.map(currentField => {
       console.log('deleteMe currentField is: ');
       console.log(currentField);
+      const settingKey = get(Object.keys(currentField), [0]);
+      const skipDescription = get(
+        currentField,
+        [settingKey, 'skipDescription'],
+        false,
+      );
+      console.log('deleteMe skipDescription is: ');
+      console.log(skipDescription);
       return (
         <SettingsTextInput
-          key={get(Object.keys(currentField), [0])}
-          settingKey={get(Object.keys(currentField), [0])}
+          key={settingKey}
+          settingKey={settingKey}
           customFieldCategories={[]}
           currentValues={currentValues}
           setCurrentValues={setCurrentValues}
           siteSettings={siteSettings}
-          skipDescription={get(
-            Object.values(currentField),
-            'skipDescription',
-            false,
-          )}
+          skipDescription={skipDescription}
         />
       );
     });

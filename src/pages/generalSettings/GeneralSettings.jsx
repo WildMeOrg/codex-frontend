@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { get, zipObject } from 'lodash-es';
+import { get, reduce, zipObject } from 'lodash-es';
 
 import Grid from '@material-ui/core/Grid';
 
@@ -17,7 +17,7 @@ import DividerTitle from '../../components/DividerTitle';
 import SettingsFileUpload from '../../components/settings/SettingsFileUpload';
 import SettingsTextInput from '../../components/settings/SettingsTextInput';
 import IntelligentAgentSettings from './IntelligentAgentSettings';
-// import { intelligentAgentSchema } from '../../constants/intelligentAgentSchema';
+import { intelligentAgentSchema } from '../../constants/intelligentAgentSchema';
 
 const customFields = {
   sighting: 'site.custom.customFields.Occurrence',
@@ -40,6 +40,33 @@ const generalSettingsFields = [
   'site.links.twitterLink',
   'site.look.logoIncludesSiteName',
 ];
+
+const intelligentAgentSettingsFields = reduce(
+  intelligentAgentSchema,
+  (memo, intelligentAgent) => {
+    const platformName = get(Object.keys(intelligentAgent), [0]);
+    const currentPlatformFields = get(
+      intelligentAgent,
+      [platformName, 'fields'],
+      [],
+    );
+    const platformValues = Object.values(currentPlatformFields);
+    console.log('deleteMe platformValues are: ');
+    console.log(platformValues);
+
+    return [...memo, ...Object.keys(platformValues)];
+  },
+  [],
+);
+console.log('deleteMe intelligentAgentSettingsFields are: ');
+console.log(intelligentAgentSettingsFields);
+
+const allSettingsFields = [
+  ...generalSettingsFields,
+  ...intelligentAgentSettingsFields,
+];
+console.log('deleteMe allSettingsFields are: ');
+console.log(allSettingsFields);
 
 // TODO deleteMe
 // const intelligentAgentSettingsFields = reduce(
@@ -83,13 +110,13 @@ export default function GeneralSettings() {
   console.log('deleteMe currentValues is: ');
   console.log(currentValues);
 
-  const edmValues = generalSettingsFields.map(fieldKey =>
+  const edmValues = allSettingsFields.map(fieldKey =>
     get(siteSettings, ['data', fieldKey, 'value']),
   );
   useEffect(() => {
     console.log('deleteMe currentValues in useEffect is: ');
     console.log(currentValues);
-    setCurrentValues(zipObject(generalSettingsFields, edmValues));
+    setCurrentValues(zipObject(allSettingsFields, edmValues));
   }, edmValues);
 
   const loading = assetPostLoading || formPostLoading;
