@@ -17,7 +17,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
 import CustomAlert from '../../../../components/Alert';
 
-import usePutSiteSettings from '../../../../models/site/usePutSiteSettings';
+import usePutSiteSetting from '../../../../models/site/usePutSiteSettings';
 import { createCustomFieldSchema } from '../../../../utils/fieldUtils';
 import { fieldTypeInfo } from '../../../../constants/fieldTypesNew';
 import useSiteSettings from '../../../../models/site/useSiteSettings';
@@ -48,7 +48,7 @@ export default function SaveField() {
     mutate: putSiteSetting,
     error: putSiteSettingError,
     setError: setPutSiteSettingError,
-  } = usePutSiteSettings();
+  } = usePutSiteSetting();
 
   const newField = !id;
 
