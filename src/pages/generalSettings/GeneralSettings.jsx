@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { get, zipObject, reduce } from 'lodash-es';
+import { get, zipObject } from 'lodash-es';
 
 import Grid from '@material-ui/core/Grid';
 
@@ -16,7 +16,8 @@ import Text from '../../components/Text';
 import DividerTitle from '../../components/DividerTitle';
 import SettingsFileUpload from '../../components/settings/SettingsFileUpload';
 import SettingsTextInput from '../../components/settings/SettingsTextInput';
-import { intelligentAgentSchema } from '../../constants/intelligentAgentSchema';
+import IntelligentAgentSettings from './IntelligentAgentSettings';
+// import { intelligentAgentSchema } from '../../constants/intelligentAgentSchema';
 
 const customFields = {
   sighting: 'site.custom.customFields.Occurrence',
@@ -40,27 +41,22 @@ const generalSettingsFields = [
   'site.look.logoIncludesSiteName',
 ];
 
-const intelligentAgentSettingsFields = reduce(
-  intelligentAgentSchema,
-  (memo, intelligentAgentPlatform) => {
-    const platformName = get(Object.keys(intelligentAgentPlatform), [
-      0,
-    ]);
-    console.log('deleteMe platformName is: ');
-    console.log(platformName);
-    const currentPlatformFields = get(
-      intelligentAgentPlatform,
-      [platformName, 'fields'],
-      [],
-    );
-    console.log('deleteMe currentPlatformFields are: ');
-    console.log(currentPlatformFields);
-    return [...memo, ...currentPlatformFields];
-  },
-  [],
-);
-console.log('deleteMe intelligentAgentSettingsFields are: ');
-console.log(intelligentAgentSettingsFields);
+// TODO deleteMe
+// const intelligentAgentSettingsFields = reduce(
+//   intelligentAgentSchema,
+//   (memo, intelligentAgent) => {
+//     const platformName = get(Object.keys(intelligentAgent), [0]);
+//     const currentPlatformFields = get(
+//       intelligentAgent,
+//       [platformName, 'fields'],
+//       [],
+//     );
+//     return [...memo, ...Oject.keys(currentPlatformFields)];
+//   },
+//   [],
+// );
+// console.log('deleteMe intelligentAgentSettingsFields are: ');
+// console.log(intelligentAgentSettingsFields);
 
 export default function GeneralSettings() {
   const siteSettings = useSiteSettings();
@@ -83,6 +79,7 @@ export default function GeneralSettings() {
 
   const [currentValues, setCurrentValues] = useState(null);
   const [logoPostData, setLogoPostData] = useState(null);
+  const [allValid, setAllValid] = useState(false);
   console.log('deleteMe currentValues is: ');
   console.log(currentValues);
 
@@ -98,34 +95,36 @@ export default function GeneralSettings() {
   const loading = assetPostLoading || formPostLoading;
   const error = putSiteSettingsError || settingsAssetPostError;
   const success = formPostSuccess && !error && !loading;
-  const twitterBotDisabled =
-    get(currentValues, 'intelligent_agent_twitterbot_enabled') ===
-    'false';
-  const twitterBotEnabledAndNoCredsMissing =
-    get(currentValues, 'intelligent_agent_twitterbot_enabled') ===
-      'true' &&
-    get(
-      currentValues,
-      'intelligent_agent_twitterbot_access_token',
-    ) !== '' &&
-    get(
-      currentValues,
-      'intelligent_agent_twitterbot_access_token_secret',
-    ) !== '' &&
-    get(
-      currentValues,
-      'intelligent_agent_twitterbot_bearer_token',
-    ) !== '' &&
-    get(
-      currentValues,
-      'intelligent_agent_twitterbot_consumer_key',
-    ) !== '' &&
-    get(
-      currentValues,
-      'intelligent_agent_twitterbot_consumer_secret',
-    ) !== '';
-  const allValid =
-    twitterBotDisabled || twitterBotEnabledAndNoCredsMissing;
+  // // TODO generalize
+  // const twitterBotDisabled =
+  //   get(currentValues, 'intelligent_agent_twitterbot_enabled') ===
+  //   'false';
+  // // TODO generalize
+  // const twitterBotEnabledAndNoCredsMissing =
+  //   get(currentValues, 'intelligent_agent_twitterbot_enabled') ===
+  //     'true' &&
+  //   get(
+  //     currentValues,
+  //     'intelligent_agent_twitterbot_access_token',
+  //   ) !== '' &&
+  //   get(
+  //     currentValues,
+  //     'intelligent_agent_twitterbot_access_token_secret',
+  //   ) !== '' &&
+  //   get(
+  //     currentValues,
+  //     'intelligent_agent_twitterbot_bearer_token',
+  //   ) !== '' &&
+  //   get(
+  //     currentValues,
+  //     'intelligent_agent_twitterbot_consumer_key',
+  //   ) !== '' &&
+  //   get(
+  //     currentValues,
+  //     'intelligent_agent_twitterbot_consumer_secret',
+  //   ) !== '';
+  // const allValid =
+  //   twitterBotDisabled || twitterBotEnabledAndNoCredsMissing;
 
   return (
     <MainColumn>
@@ -249,7 +248,12 @@ export default function GeneralSettings() {
           setCurrentValues={setCurrentValues}
           siteSettings={siteSettings}
         />
-        {get(
+        <IntelligentAgentSettings
+          currentValues={currentValues}
+          setAllValid={setAllValid}
+        />
+
+        {/* {get(
           currentValues,
           'intelligent_agent_twitterbot_enabled',
         ) === 'true' && (
@@ -295,7 +299,7 @@ export default function GeneralSettings() {
               skipDescription
             />
           </>
-        )}
+        )} */}
         <Grid
           item
           style={{
