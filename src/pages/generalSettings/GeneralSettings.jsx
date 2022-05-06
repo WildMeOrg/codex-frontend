@@ -95,14 +95,14 @@ export default function GeneralSettings() {
     error: putSiteSettingsError,
     loading: formPostLoading,
     success: formPostSuccess,
-    setSuccess: setFormPostSuccess,
+    clearSuccess: setClearPostSuccess,
   } = usePutSiteSettings();
 
   const {
     postSettingsAsset,
     loading: assetPostLoading,
     error: settingsAssetPostError,
-    setSuccess: setAssetPostSuccess,
+    clearSuccess: setClearAssetPostSuccess,
   } = usePostSettingsAsset();
 
   useDocumentTitle('GENERAL_SETTINGS');
@@ -342,8 +342,8 @@ export default function GeneralSettings() {
           {success && (
             <CustomAlert
               onClose={() => {
-                setFormPostSuccess(false);
-                setAssetPostSuccess(false);
+                setClearPostSuccess();
+                setClearAssetPostSuccess();
               }}
               severity="success"
               titleId="SUCCESS"
