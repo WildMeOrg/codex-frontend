@@ -63,8 +63,8 @@ export default function IntelligentAgentSettings({
       [platformName, 'fields'],
       [],
     );
-    console.log('deleteMe currentPlatformFields are: ');
-    console.log(currentPlatformFields);
+    // console.log('deleteMe currentPlatformFields are: ');
+    // console.log(currentPlatformFields);
     const currentPlatformEnablingField = get(intelligentAgent, [
       platformName,
       'enablingField',
@@ -76,6 +76,7 @@ export default function IntelligentAgentSettings({
     console.log('deleteMe isCurrentPlatformEnabled is: ');
     console.log(isCurrentPlatformEnabled);
     if (isCurrentPlatformEnabled) {
+      console.log('deleteMe got here a1');
       return currentPlatformFields.map(currentField => {
         const settingKey = get(Object.keys(currentField), [0]);
         const skipDescription = get(
@@ -96,6 +97,7 @@ export default function IntelligentAgentSettings({
         );
       });
     } else {
+      console.log('deleteMe got here a2');
       const onlyEnabledPlatformField = currentPlatformFields.find(
         currentField => {
           const settingKey = get(Object.keys(currentField), [0]);
