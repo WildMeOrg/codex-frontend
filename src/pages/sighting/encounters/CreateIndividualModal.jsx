@@ -5,7 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 
-import usePostIndividual from '../../../models/individual/usePostIndividual';
+import usePostIndividual from '../../../models/individual/usePostIndividualOld';
 import useIndividualFieldSchemas from '../../../models/individual/useIndividualFieldSchemas';
 import StandardDialog from '../../../components/StandardDialog';
 import InputRow from '../../../components/fields/edit/InputRow';

@@ -16,6 +16,10 @@ export function getAuditLogQueryKey(guid) {
   return ['auditLog', guid];
 }
 
+export function getEncounterQueryKey(guid) {
+  return ['encounter', guid];
+}
+
 export function getSightingQueryKey(guid) {
   return ['sighting', guid];
 }

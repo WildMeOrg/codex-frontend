@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { useIntl, FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import { useParams } from 'react-router-dom';
 import { get, maxBy } from 'lodash-es';
 
@@ -25,8 +25,13 @@ import ImageCard from './ImageCard';
 
 const spaceBetweenColumns = 16;
 
+function deriveIndividualGuid(annotation) {
+  /* Sometimes houston returns non-guid "guids" for this property */
+  const providedGuid = annotation?.individual_guid;
+  return providedGuid === 'None' ? null : providedGuid;
+}
+
 export default function MatchSighting() {
-  const intl = useIntl();
   const { sightingGuid } = useParams();
 
   const {
@@ -109,6 +114,31 @@ export default function MatchSighting() {
     [matchResults, selectedQueryAnnotation],
   );
 
+  const confirmMatchHref = useMemo(
+    () => {
+      const individualGuid1 = deriveIndividualGuid(
+        selectedQueryAnnotation,
+      );
+      const individualGuid2 = deriveIndividualGuid(
+        selectedMatchCandidate,
+      );
+      const encounterGuid1 = selectedQueryAnnotation?.encounter_guid;
+      const encounterGuid2 = selectedMatchCandidate?.encounter_guid;
+      if (individualGuid1 && individualGuid2) {
+        return `/merge?i=${individualGuid1}&i=${individualGuid2}`;
+      } else if (individualGuid1 || individualGuid2) {
+        const individualGuid = individualGuid1 || individualGuid2;
+        const encounterGuid = individualGuid1
+          ? encounterGuid2
+          : encounterGuid1;
+        return `/assign-annotations?i=${individualGuid}&e=${encounterGuid}`;
+      } else {
+        return `/create-individual?e=${encounterGuid1}&e=${encounterGuid2}`;
+      }
+    },
+    [selectedQueryAnnotation, selectedMatchCandidate],
+  );
+
   useDocumentTitle(`Match results for sighting ${sightingGuid}`, {
     translateMessage: false,
   });
@@ -181,9 +211,8 @@ export default function MatchSighting() {
           buttonId="match-actions"
           style={{ marginTop: 44 }}
           actions={buttonActions}
-        >
-          Actions
-        </ButtonMenu>
+          id="ACTIONS"
+        />
       </div>
       <div style={{ display: 'flex' }}>
         <div
@@ -229,6 +258,7 @@ export default function MatchSighting() {
           }}
           color="primary"
           variant="extended"
+          href={confirmMatchHref}
         >
           <DoneIcon style={{ marginRight: 4 }} />
           <FormattedMessage id="CONFIRM_MATCH" />
