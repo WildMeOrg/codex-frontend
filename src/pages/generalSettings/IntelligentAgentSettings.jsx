@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { get, reduce } from 'lodash-es';
+import { get } from 'lodash-es';
 
 import { intelligentAgentSchema } from '../../constants/intelligentAgentSchema';
 // import Text from '../../components/Text'; //TODO deleteMe
@@ -14,25 +14,25 @@ export default function IntelligentAgentSettings({
 }) {
   console.log('deleteMe siteSettings are: ');
   console.log(siteSettings);
-  const intelligentAgentSettingsFields = reduce(
-    intelligentAgentSchema,
-    (memo, intelligentAgent) => {
-      const platformName = get(Object.keys(intelligentAgent), [0]);
-      const currentPlatformFields = get(
-        intelligentAgent,
-        [platformName, 'fields'],
-        [],
-      );
-      const platformValues = Object.values(currentPlatformFields);
-      console.log('deleteMe platformValues are: ');
-      console.log(platformValues);
+  // const intelligentAgentSettingsFields = reduce(
+  //   intelligentAgentSchema,
+  //   (memo, intelligentAgent) => {
+  //     const platformName = get(Object.keys(intelligentAgent), [0]);
+  //     const currentPlatformFields = get(
+  //       intelligentAgent,
+  //       [platformName, 'fields'],
+  //       [],
+  //     );
+  //     const platformValues = Object.values(currentPlatformFields);
+  //     console.log('deleteMe platformValues are: ');
+  //     console.log(platformValues);
 
-      return [...memo, ...Object.keys(platformValues)];
-    },
-    [],
-  );
-  console.log('deleteMe intelligentAgentSettingsFields are: ');
-  console.log(intelligentAgentSettingsFields);
+  //     return [...memo, ...Object.keys(platformValues)];
+  //   },
+  //   [],
+  // );
+  // console.log('deleteMe intelligentAgentSettingsFields are: ');
+  // console.log(intelligentAgentSettingsFields);
 
   //TODO deleteMe
   setAllValid(true);

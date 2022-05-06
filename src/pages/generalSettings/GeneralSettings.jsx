@@ -50,11 +50,13 @@ const intelligentAgentSettingsFields = reduce(
       [platformName, 'fields'],
       [],
     );
-    const platformValues = Object.values(currentPlatformFields);
+    const platformValues = Object.values(currentPlatformFields).map(
+      entry => get(Object.keys(entry), [0]),
+    );
     console.log('deleteMe platformValues are: ');
     console.log(platformValues);
 
-    return [...memo, ...Object.keys(platformValues)];
+    return [...memo, ...platformValues];
   },
   [],
 );
