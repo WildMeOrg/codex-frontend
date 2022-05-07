@@ -76,10 +76,11 @@ export default function IntelligentAgentSettings({
     console.log(get(currentValues, currentPlatformEnablingField));
 
     //TODO maybe change if this becomes boolean from the BE instead of string
-    const isCurrentPlatformEnabled =
-      get(currentValues, currentPlatformEnablingField) === 'true'
-        ? true
-        : false;
+    const isCurrentPlatformEnabled = get(
+      currentValues,
+      currentPlatformEnablingField,
+      false,
+    );
     console.log('deleteMe isCurrentPlatformEnabled is: ');
     console.log(isCurrentPlatformEnabled);
     if (isCurrentPlatformEnabled) {
