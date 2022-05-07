@@ -96,6 +96,18 @@ export default function SettingsTextInput({
             minimalLabels
             value={currentValues[settingKey]}
             onChange={value => {
+              console.log(
+                'deleteMe on change happens and vlaue is: ',
+              );
+              console.log(value);
+              console.log(
+                'deleteMe on change happens and currentValues is: ',
+              );
+              console.log(currentValues);
+              console.log(
+                'deleteMe on change happens and settingKey is: ',
+              );
+              console.log(settingKey);
               setCurrentValues({
                 ...currentValues,
                 [settingKey]: value,
