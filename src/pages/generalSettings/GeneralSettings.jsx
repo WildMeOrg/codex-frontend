@@ -382,7 +382,7 @@ export default function GeneralSettings() {
                 'deleteMe currentValues before posting are: ',
               );
               console.log(currentValues);
-              putSiteSettings({ currentValues });
+              putSiteSettings({ data: currentValues });
               if (logoPostData) postSettingsAsset(logoPostData);
             }}
             style={{ marginTop: 12 }}
