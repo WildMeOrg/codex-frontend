@@ -69,6 +69,12 @@ export default function IntelligentAgentSettings({
       platformName,
       'enablingField',
     ]);
+
+    console.log(
+      'deleteMe get(currentValues, currentPlatformEnablingField) is: ',
+    );
+    console.log(get(currentValues, currentPlatformEnablingField));
+
     //TODO maybe change if this becomes boolean from the BE instead of string
     const isCurrentPlatformEnabled =
       get(currentValues, currentPlatformEnablingField) === 'true'
@@ -127,30 +133,5 @@ export default function IntelligentAgentSettings({
         />
       );
     }
-    // console.log('deleteMe currentPlatformEnablingField is: ');
-    // console.log(currentPlatformEnablingField);
-    // return <Text>Test</Text>;
-    //   if (currentPlatformEnablingField) {
-    //     //TODO return a check whether it's true and then stuff
-    //     return (
-    //       {get(currentValues, currentPlatformEnablingField) === 'true' && (
-    //         {currentPlatformFields.map(currentField =>{
-    //           return (
-    //             <SettingsTextInput
-    //             key={get(Object.keys(currentField),[0])}
-    //       settingKey={get(Object.keys(currentField),[0])}
-    //       customFieldCategories={[]}
-    //       currentValues={currentValues}
-    //       setCurrentValues={setCurrentValues}
-    //       siteSettings={siteSettings}
-    //       skipDescription={get(Object.values(currentField),'skipDescription', false)}
-    //     />
-    //           );
-    //         })}
-    //       )}
-    //     );
-    //   } else {
-
-    //   }
   });
 }
