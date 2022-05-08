@@ -71,27 +71,19 @@ export default function IntelligentAgentSettings({
       currentValues,
       'intelligent_agent_twitterbot_consumer_secret',
     ) !== '';
-  const allValid =
-    twitterBotDisabled || twitterBotEnabledAndNoCredsMissing;
 
   //TODO deleteMe comment me back in
   //   setAllValid(allValid);
 
   return intelligentAgentSchema.map(intelligentAgent => {
-    // console.log('deleteMe intelligentAgent is: ');
-    // console.log(intelligentAgent);
-    const platformName = get(Object.keys(intelligentAgent), [0]);
-    // console.log('deleteMe platformName is: ');
-    // console.log(platformName);
+    // const platformName = get(Object.keys(intelligentAgent), [0]);
     const currentPlatformFields = get(
       intelligentAgent,
-      [platformName, 'fields'],
+      ['data', 'fields'],
       [],
     );
-    // console.log('deleteMe currentPlatformFields are: ');
-    // console.log(currentPlatformFields);
     const currentPlatformEnablingField = get(intelligentAgent, [
-      platformName,
+      'data',
       'enablingField',
     ]);
 
@@ -106,6 +98,21 @@ export default function IntelligentAgentSettings({
       currentPlatformEnablingField,
       false,
     );
+
+    const noCredsMissing =
+      intelligentAgentSettingsFields.filter(currentField => {
+        return get(currentValues, currentField) === '';
+      }).length === 0;
+    console.log('deleteMe noCredsMissing is: ');
+    console.log(noCredsMissing);
+
+    const allValid =
+      !isCurrentPlatformEnabled ||
+      (isCurrentPlatformEnabled && noCredsMissing);
+    console.log('deleteMe allValid is: ');
+    console.log(allValid);
+    setAllValid(allValid);
+
     console.log('deleteMe isCurrentPlatformEnabled is: ');
     console.log(isCurrentPlatformEnabled);
     if (isCurrentPlatformEnabled) {
@@ -132,7 +139,7 @@ export default function IntelligentAgentSettings({
     } else {
       console.log('deleteMe got here a2');
 
-      //TODO set all other platformField values to ""
+      //TODO set all other platformField values to "", but figure out a way to do this without making React mad
       // const emptyFieldValues = reduce(
       //   intelligentAgentSettingsFields,
       //   (memo, field) => {

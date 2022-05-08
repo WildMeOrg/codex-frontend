@@ -1,6 +1,7 @@
 export const intelligentAgentSchema = [
   {
-    twitter: {
+    platformName: 'twitter',
+    data: {
       enablingField: 'intelligent_agent_twitterbot_enabled',
       fields: [
         {
