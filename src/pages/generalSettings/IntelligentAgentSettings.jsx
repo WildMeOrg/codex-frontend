@@ -133,20 +133,20 @@ export default function IntelligentAgentSettings({
       console.log('deleteMe got here a2');
 
       //TODO set all other platformField values to ""
-      const emptyFieldValues = reduce(
-        intelligentAgentSettingsFields,
-        (memo, field) => {
-          let newKeyValPair = {};
-          newKeyValPair[field] = '';
-          return { ...memo, ...newKeyValPair };
-        },
-      );
-      console.log('deleteMe emptyFieldValues are: ');
-      console.log(emptyFieldValues);
-      setCurrentValues({
-        ...currentValues,
-        ...emptyFieldValues,
-      });
+      // const emptyFieldValues = reduce(
+      //   intelligentAgentSettingsFields,
+      //   (memo, field) => {
+      //     let newKeyValPair = {};
+      //     newKeyValPair[field] = '';
+      //     return { ...memo, ...newKeyValPair };
+      //   },
+      // );
+      // console.log('deleteMe emptyFieldValues are: ');
+      // console.log(emptyFieldValues);
+      // setCurrentValues({
+      //   ...currentValues,
+      //   ...emptyFieldValues,
+      // });
 
       const onlyEnabledPlatformField = currentPlatformFields.find(
         currentField => {
