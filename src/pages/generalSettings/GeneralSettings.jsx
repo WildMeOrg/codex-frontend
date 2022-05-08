@@ -247,9 +247,9 @@ export default function GeneralSettings() {
           siteSettings={siteSettings}
         />
         <IntelligentAgentSettings
-          // intelligentAgentSettingsFields={
-          //   intelligentAgentSettingsFields
-          // }
+          intelligentAgentSettingsFields={
+            intelligentAgentSettingsFields
+          }
           currentValues={currentValues}
           setCurrentValues={setCurrentValues}
           siteSettings={siteSettings}
