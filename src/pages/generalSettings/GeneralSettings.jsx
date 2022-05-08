@@ -11,6 +11,7 @@ import CustomAlert from '../../components/Alert';
 import Button from '../../components/Button';
 import SettingsBreadcrumbs from '../../components/SettingsBreadcrumbs';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
+import useGetTwitterbotTestResults from '../../models/site/useGetTwitterbotTestResults';
 import MainColumn from '../../components/MainColumn';
 import Text from '../../components/Text';
 import DividerTitle from '../../components/DividerTitle';
@@ -109,6 +110,11 @@ export default function GeneralSettings() {
     error: settingsAssetPostError,
     clearSuccess: setClearAssetPostSuccess,
   } = usePostSettingsAsset();
+
+  const {
+    data: twitterTestResults,
+    error: twitterTestError,
+  } = useGetTwitterbotTestResults();
 
   useDocumentTitle('GENERAL_SETTINGS');
 
@@ -282,7 +288,7 @@ export default function GeneralSettings() {
             />
           )}
           <Button
-            onClick={() => {
+            onClick={async () => {
               /* Prepare custom fields objects to send to backend */
               Object.values(customFields).forEach(customFieldKey => {
                 const fields = currentValues[customFieldKey];
@@ -313,7 +319,15 @@ export default function GeneralSettings() {
                 'deleteMe currentValues before posting are: ',
               );
               console.log(currentValues);
-              putSiteSettings({ data: currentValues });
+              const response = await putSiteSettings({
+                data: currentValues,
+              });
+              if (response?.status === 200) {
+                console.log('deleteMe twitterTestResults are: ');
+                console.log(twitterTestResults);
+                console.log('deleteMe twitterTestError is: ');
+                console.log(twitterTestError);
+              }
               if (logoPostData)
                 postSettingsAsset({ data: logoPostData });
             }}
