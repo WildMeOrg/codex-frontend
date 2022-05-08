@@ -179,8 +179,10 @@ export default function SiteSettings({ primaryButtonId }) {
               setError('Site name is required.');
             } else {
               putSiteSettings({
-                ...currentValues,
-                'site.needsSetup': false,
+                data: {
+                  ...currentValues,
+                  'site.needsSetup': false,
+                },
               });
             }
           }}

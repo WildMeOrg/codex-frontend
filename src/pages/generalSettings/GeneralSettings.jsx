@@ -104,7 +104,7 @@ export default function GeneralSettings() {
   } = usePutSiteSettings();
 
   const {
-    postSettingsAsset,
+    mutate: postSettingsAsset,
     loading: assetPostLoading,
     error: settingsAssetPostError,
     clearSuccess: setClearAssetPostSuccess,
@@ -314,7 +314,8 @@ export default function GeneralSettings() {
               );
               console.log(currentValues);
               putSiteSettings({ data: currentValues });
-              if (logoPostData) postSettingsAsset(logoPostData);
+              if (logoPostData)
+                postSettingsAsset({ data: logoPostData });
             }}
             style={{ marginTop: 12 }}
             display="primary"
