@@ -40,7 +40,7 @@ export default function IntelligentAgentSettings({
   );
   console.log(intelligentAgentSettingsFields);
 
-  //TODO deleteMe
+  // TODO deleteMe
   // setAllValid(true);
 
   return intelligentAgentSchema.map(intelligentAgent => {
@@ -53,13 +53,15 @@ export default function IntelligentAgentSettings({
       'data',
       'enablingField',
     ]);
+    console.log('deleteMe currentPlatformEnablingField is: ');
+    console.log(currentPlatformEnablingField);
 
     console.log(
       'deleteMe get(currentValues, currentPlatformEnablingField) is: ',
     );
     console.log(get(currentValues, currentPlatformEnablingField));
 
-    //TODO maybe change if this becomes boolean from the BE instead of string
+    // TODO maybe change if this becomes boolean from the BE instead of string
     const isCurrentPlatformEnabled = get(
       currentValues,
       currentPlatformEnablingField,
@@ -67,9 +69,9 @@ export default function IntelligentAgentSettings({
     );
 
     const noCredsMissing =
-      intelligentAgentSettingsFields.filter(currentField => {
-        return get(currentValues, currentField) === '';
-      }).length === 0;
+      intelligentAgentSettingsFields.filter(
+        currentField => get(currentValues, currentField) === '',
+      ).length === 0;
     console.log('deleteMe noCredsMissing is: ');
     console.log(noCredsMissing);
 
@@ -110,7 +112,7 @@ export default function IntelligentAgentSettings({
     } else {
       console.log('deleteMe got here a2');
 
-      //TODO set all other platformField values to "", but figure out a way to do this without making React mad
+      // TODO set all other platformField values to "", but figure out a way to do this without making React mad
       // const emptyFieldValues = reduce(
       //   intelligentAgentSettingsFields,
       //   (memo, field) => {
@@ -128,18 +130,16 @@ export default function IntelligentAgentSettings({
 
       const onlyEnabledPlatformField = currentPlatformFields.find(
         currentField => {
-          const settingKey = get(Object.keys(currentField), [0]);
+          const settingKey = get(currentField, 'label');
           return settingKey === currentPlatformEnablingField;
         },
       );
       console.log('deleteMe onlyEnabledPlatformField is: ');
       console.log(onlyEnabledPlatformField);
-      const settingKey = get(Object.keys(onlyEnabledPlatformField), [
-        0,
-      ]);
+      const settingKey = get(onlyEnabledPlatformField, 'label');
       const skipDescription = get(
         onlyEnabledPlatformField,
-        [settingKey, 'skipDescription'],
+        'skipDescription',
         false,
       );
       return (
