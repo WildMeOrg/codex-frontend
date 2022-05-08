@@ -41,19 +41,38 @@ const generalSettingsFields = [
   'site.look.logoIncludesSiteName',
 ];
 
-//TODO make useMemo
+//TODO make useMemo?
+// const intelligentAgentSettingsFields = reduce(
+//   intelligentAgentSchema,
+//   (memo, intelligentAgent) => {
+//     console.log('deleteMe got here');
+//     const platformName = get(Object.keys(intelligentAgent), [0]);
+//     const currentPlatformFields = get(
+//       intelligentAgent,
+//       [platformName, 'fields'],
+//       [],
+//     );
+//     const platformValues = Object.values(currentPlatformFields).map(
+//       entry => get(Object.keys(entry), [0]),
+//     );
+//     console.log('deleteMe platformValues are: ');
+//     console.log(platformValues);
+
+//     return [...memo, ...platformValues];
+//   },
+//   [],
+// );
 const intelligentAgentSettingsFields = reduce(
   intelligentAgentSchema,
   (memo, intelligentAgent) => {
-    console.log('deleteMe got here');
-    const platformName = get(Object.keys(intelligentAgent), [0]);
+    // const platformName = get(Object.keys(intelligentAgent), [0]);
     const currentPlatformFields = get(
       intelligentAgent,
-      [platformName, 'fields'],
+      ['data', 'fields'],
       [],
     );
     const platformValues = Object.values(currentPlatformFields).map(
-      entry => get(Object.keys(entry), [0]),
+      entry => get(entry, 'label'),
     );
     console.log('deleteMe platformValues are: ');
     console.log(platformValues);
@@ -62,6 +81,7 @@ const intelligentAgentSettingsFields = reduce(
   },
   [],
 );
+
 console.log('deleteMe intelligentAgentSettingsFields are: ');
 console.log(intelligentAgentSettingsFields);
 

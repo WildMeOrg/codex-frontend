@@ -9,14 +9,14 @@ import SettingsTextInput from '../../components/settings/SettingsTextInput';
 const intelligentAgentSettingsFields = reduce(
   intelligentAgentSchema,
   (memo, intelligentAgent) => {
-    const platformName = get(Object.keys(intelligentAgent), [0]);
+    // const platformName = get(Object.keys(intelligentAgent), [0]);
     const currentPlatformFields = get(
       intelligentAgent,
-      [platformName, 'fields'],
+      ['data', 'fields'],
       [],
     );
     const platformValues = Object.values(currentPlatformFields).map(
-      entry => get(Object.keys(entry), [0]),
+      entry => get(entry, 'label'),
     );
     console.log('deleteMe platformValues are: ');
     console.log(platformValues);
@@ -41,42 +41,9 @@ export default function IntelligentAgentSettings({
   console.log(intelligentAgentSettingsFields);
 
   //TODO deleteMe
-  setAllValid(true);
-
-  // TODO generalize
-  const twitterBotDisabled =
-    get(currentValues, 'intelligent_agent_twitterbot_enabled') ===
-    'false';
-  // TODO generalize
-  const twitterBotEnabledAndNoCredsMissing =
-    get(currentValues, 'intelligent_agent_twitterbot_enabled') ===
-      'true' &&
-    get(
-      currentValues,
-      'intelligent_agent_twitterbot_access_token',
-    ) !== '' &&
-    get(
-      currentValues,
-      'intelligent_agent_twitterbot_access_token_secret',
-    ) !== '' &&
-    get(
-      currentValues,
-      'intelligent_agent_twitterbot_bearer_token',
-    ) !== '' &&
-    get(
-      currentValues,
-      'intelligent_agent_twitterbot_consumer_key',
-    ) !== '' &&
-    get(
-      currentValues,
-      'intelligent_agent_twitterbot_consumer_secret',
-    ) !== '';
-
-  //TODO deleteMe comment me back in
-  //   setAllValid(allValid);
+  // setAllValid(true);
 
   return intelligentAgentSchema.map(intelligentAgent => {
-    // const platformName = get(Object.keys(intelligentAgent), [0]);
     const currentPlatformFields = get(
       intelligentAgent,
       ['data', 'fields'],
@@ -118,12 +85,16 @@ export default function IntelligentAgentSettings({
     if (isCurrentPlatformEnabled) {
       console.log('deleteMe got here a1');
       return currentPlatformFields.map(currentField => {
-        const settingKey = get(Object.keys(currentField), [0]);
+        const settingKey = get(currentField, 'label');
+        console.log('deleteMe settingKey is: ');
+        console.log(settingKey);
         const skipDescription = get(
           currentField,
-          [settingKey, 'skipDescription'],
+          'skipDescription',
           false,
         );
+        console.log('deleteMe skipDescription is: ');
+        console.log(skipDescription);
         return (
           <SettingsTextInput
             key={settingKey}
