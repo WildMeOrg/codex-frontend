@@ -111,11 +111,6 @@ export default function GeneralSettings() {
     clearSuccess: setClearAssetPostSuccess,
   } = usePostSettingsAsset();
 
-  const {
-    data: twitterTestResults,
-    error: twitterTestError,
-  } = useGetTwitterbotTestResults();
-
   useDocumentTitle('GENERAL_SETTINGS');
 
   const [currentValues, setCurrentValues] = useState(null);
@@ -323,6 +318,10 @@ export default function GeneralSettings() {
                 data: currentValues,
               });
               if (response?.status === 200) {
+                const {
+                  data: twitterTestResults,
+                  error: twitterTestError,
+                } = await useGetTwitterbotTestResults();
                 console.log('deleteMe twitterTestResults are: ');
                 console.log(twitterTestResults);
                 console.log('deleteMe twitterTestError is: ');
