@@ -1,12 +1,33 @@
 import React from 'react';
 
-import { get } from 'lodash-es';
+import { get, reduce } from 'lodash-es';
 
 import { intelligentAgentSchema } from '../../constants/intelligentAgentSchema';
 // import Text from '../../components/Text'; //TODO deleteMe
 import SettingsTextInput from '../../components/settings/SettingsTextInput';
 
+// export const intelligentAgentSettingsFields = reduce(
+//   intelligentAgentSchema,
+//   (memo, intelligentAgent) => {
+//     const platformName = get(Object.keys(intelligentAgent), [0]);
+//     const currentPlatformFields = get(
+//       intelligentAgent,
+//       [platformName, 'fields'],
+//       [],
+//     );
+//     const platformValues = Object.values(currentPlatformFields).map(
+//       entry => get(Object.keys(entry), [0]),
+//     );
+//     console.log('deleteMe platformValues are: ');
+//     console.log(platformValues);
+
+//     return [...memo, ...platformValues];
+//   },
+//   [],
+// );
+
 export default function IntelligentAgentSettings({
+  intelligentAgentSettingsFields,
   currentValues,
   setCurrentValues,
   siteSettings,
@@ -14,6 +35,10 @@ export default function IntelligentAgentSettings({
 }) {
   console.log('deleteMe siteSettings are: ');
   console.log(siteSettings);
+  console.log(
+    'deleteMe intelligentAgentSettingsFields in IntelligentAgentSettings are: ',
+  );
+  console.log(intelligentAgentSettingsFields);
 
   //TODO deleteMe
   setAllValid(true);
@@ -106,6 +131,23 @@ export default function IntelligentAgentSettings({
       });
     } else {
       console.log('deleteMe got here a2');
+
+      //TODO set all other platformField values to ""
+      const emptyFieldValues = reduce(
+        intelligentAgentSettingsFields,
+        (memo, field) => {
+          let newKeyValPair = {};
+          newKeyValPair[field] = '';
+          return { ...memo, ...newKeyValPair };
+        },
+      );
+      console.log('deleteMe emptyFieldValues are: ');
+      console.log(emptyFieldValues);
+      setCurrentValues({
+        ...currentValues,
+        ...emptyFieldValues,
+      });
+
       const onlyEnabledPlatformField = currentPlatformFields.find(
         currentField => {
           const settingKey = get(Object.keys(currentField), [0]);

@@ -70,23 +70,6 @@ const allSettingsFields = [
 console.log('deleteMe allSettingsFields are: ');
 console.log(allSettingsFields);
 
-// TODO deleteMe
-// const intelligentAgentSettingsFields = reduce(
-//   intelligentAgentSchema,
-//   (memo, intelligentAgent) => {
-//     const platformName = get(Object.keys(intelligentAgent), [0]);
-//     const currentPlatformFields = get(
-//       intelligentAgent,
-//       [platformName, 'fields'],
-//       [],
-//     );
-//     return [...memo, ...Oject.keys(currentPlatformFields)];
-//   },
-//   [],
-// );
-// console.log('deleteMe intelligentAgentSettingsFields are: ');
-// console.log(intelligentAgentSettingsFields);
-
 export default function GeneralSettings() {
   const siteSettings = useSiteSettings();
 
@@ -125,36 +108,6 @@ export default function GeneralSettings() {
   const loading = assetPostLoading || formPostLoading;
   const error = putSiteSettingsError || settingsAssetPostError;
   const success = formPostSuccess && !error && !loading;
-  // // TODO generalize
-  // const twitterBotDisabled =
-  //   get(currentValues, 'intelligent_agent_twitterbot_enabled') ===
-  //   'false';
-  // // TODO generalize
-  // const twitterBotEnabledAndNoCredsMissing =
-  //   get(currentValues, 'intelligent_agent_twitterbot_enabled') ===
-  //     'true' &&
-  //   get(
-  //     currentValues,
-  //     'intelligent_agent_twitterbot_access_token',
-  //   ) !== '' &&
-  //   get(
-  //     currentValues,
-  //     'intelligent_agent_twitterbot_access_token_secret',
-  //   ) !== '' &&
-  //   get(
-  //     currentValues,
-  //     'intelligent_agent_twitterbot_bearer_token',
-  //   ) !== '' &&
-  //   get(
-  //     currentValues,
-  //     'intelligent_agent_twitterbot_consumer_key',
-  //   ) !== '' &&
-  //   get(
-  //     currentValues,
-  //     'intelligent_agent_twitterbot_consumer_secret',
-  //   ) !== '';
-  // const allValid =
-  //   twitterBotDisabled || twitterBotEnabledAndNoCredsMissing;
 
   return (
     <MainColumn>
@@ -272,59 +225,15 @@ export default function GeneralSettings() {
           siteSettings={siteSettings}
         />
         <IntelligentAgentSettings
+          intelligentAgentSettingsFields={
+            intelligentAgentSettingsFields
+          }
           currentValues={currentValues}
           setCurrentValues={setCurrentValues}
           siteSettings={siteSettings}
           setAllValid={setAllValid}
         />
 
-        {/* {get(
-          currentValues,
-          'intelligent_agent_twitterbot_enabled',
-        ) === 'true' && (
-          <>
-            <SettingsTextInput
-              settingKey="intelligent_agent_twitterbot_consumer_key"
-              customFieldCategories={[]}
-              currentValues={currentValues}
-              setCurrentValues={setCurrentValues}
-              siteSettings={siteSettings}
-              skipDescription
-            />
-            <SettingsTextInput
-              settingKey="intelligent_agent_twitterbot_consumer_secret"
-              customFieldCategories={[]}
-              currentValues={currentValues}
-              setCurrentValues={setCurrentValues}
-              siteSettings={siteSettings}
-              skipDescription
-            />
-            <SettingsTextInput
-              settingKey="intelligent_agent_twitterbot_access_token"
-              customFieldCategories={[]}
-              currentValues={currentValues}
-              setCurrentValues={setCurrentValues}
-              siteSettings={siteSettings}
-              skipDescription
-            />
-            <SettingsTextInput
-              settingKey="intelligent_agent_twitterbot_access_token_secret"
-              customFieldCategories={[]}
-              currentValues={currentValues}
-              setCurrentValues={setCurrentValues}
-              siteSettings={siteSettings}
-              skipDescription
-            />
-            <SettingsTextInput
-              settingKey="intelligent_agent_twitterbot_bearer_token"
-              customFieldCategories={[]}
-              currentValues={currentValues}
-              setCurrentValues={setCurrentValues}
-              siteSettings={siteSettings}
-              skipDescription
-            />
-          </>
-        )} */}
         <Grid
           item
           style={{
