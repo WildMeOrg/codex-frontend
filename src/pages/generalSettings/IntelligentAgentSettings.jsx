@@ -6,28 +6,28 @@ import { intelligentAgentSchema } from '../../constants/intelligentAgentSchema';
 // import Text from '../../components/Text'; //TODO deleteMe
 import SettingsTextInput from '../../components/settings/SettingsTextInput';
 
-// export const intelligentAgentSettingsFields = reduce(
-//   intelligentAgentSchema,
-//   (memo, intelligentAgent) => {
-//     const platformName = get(Object.keys(intelligentAgent), [0]);
-//     const currentPlatformFields = get(
-//       intelligentAgent,
-//       [platformName, 'fields'],
-//       [],
-//     );
-//     const platformValues = Object.values(currentPlatformFields).map(
-//       entry => get(Object.keys(entry), [0]),
-//     );
-//     console.log('deleteMe platformValues are: ');
-//     console.log(platformValues);
+const intelligentAgentSettingsFields = reduce(
+  intelligentAgentSchema,
+  (memo, intelligentAgent) => {
+    const platformName = get(Object.keys(intelligentAgent), [0]);
+    const currentPlatformFields = get(
+      intelligentAgent,
+      [platformName, 'fields'],
+      [],
+    );
+    const platformValues = Object.values(currentPlatformFields).map(
+      entry => get(Object.keys(entry), [0]),
+    );
+    console.log('deleteMe platformValues are: ');
+    console.log(platformValues);
 
-//     return [...memo, ...platformValues];
-//   },
-//   [],
-// );
+    return [...memo, ...platformValues];
+  },
+  [],
+);
 
 export default function IntelligentAgentSettings({
-  intelligentAgentSettingsFields,
+  // intelligentAgentSettingsFields,
   currentValues,
   setCurrentValues,
   siteSettings,

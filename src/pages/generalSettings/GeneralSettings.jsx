@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { get, reduce, zipObject } from 'lodash-es';
 
 import Grid from '@material-ui/core/Grid';
@@ -41,9 +41,11 @@ const generalSettingsFields = [
   'site.look.logoIncludesSiteName',
 ];
 
+//TODO make useMemo
 const intelligentAgentSettingsFields = reduce(
   intelligentAgentSchema,
   (memo, intelligentAgent) => {
+    console.log('deleteMe got here');
     const platformName = get(Object.keys(intelligentAgent), [0]);
     const currentPlatformFields = get(
       intelligentAgent,
@@ -225,9 +227,9 @@ export default function GeneralSettings() {
           siteSettings={siteSettings}
         />
         <IntelligentAgentSettings
-          intelligentAgentSettingsFields={
-            intelligentAgentSettingsFields
-          }
+          // intelligentAgentSettingsFields={
+          //   intelligentAgentSettingsFields
+          // }
           currentValues={currentValues}
           setCurrentValues={setCurrentValues}
           siteSettings={siteSettings}
