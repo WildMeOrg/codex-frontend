@@ -110,16 +110,16 @@ export default function IntelligentAgentSettings({
       console.log('deleteMe got here a2');
 
       // TODO set all other platformField values to "", but figure out a way to do this without making React mad
-      // const emptyFieldValues = reduce(
-      //   intelligentAgentSettingsFields,
-      //   (memo, field) => {
-      //     let newKeyValPair = {};
-      //     newKeyValPair[field] = '';
-      //     return { ...memo, ...newKeyValPair };
-      //   },
-      // );
-      // console.log('deleteMe emptyFieldValues are: ');
-      // console.log(emptyFieldValues);
+      const emptyFieldValues = reduce(
+        intelligentAgentSettingsFields,
+        (memo, field) => {
+          const newKeyValPair = {};
+          newKeyValPair[field] = '';
+          return { ...memo, ...newKeyValPair };
+        },
+      );
+      console.log('deleteMe emptyFieldValues are: ');
+      console.log(emptyFieldValues);
       // setCurrentValues({
       //   ...currentValues,
       //   ...emptyFieldValues,
