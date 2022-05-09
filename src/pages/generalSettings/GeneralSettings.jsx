@@ -83,6 +83,7 @@ export default function GeneralSettings() {
 
   const {
     data: twitterTestResults,
+    statusCode: twitterStatusCode,
     error: twitterTestError,
     clearError: clearTwitterTestError,
   } = useGetTwitterbotTestResults();
@@ -97,7 +98,7 @@ export default function GeneralSettings() {
     () => {
       setShowTwitterSuccess(twitterTestResults?.success);
     },
-    [twitterTestResults],
+    [twitterTestResults, twitterStatusCode],
   );
   const [currentValues, setCurrentValues] = useState(null);
   const [logoPostData, setLogoPostData] = useState(null);
