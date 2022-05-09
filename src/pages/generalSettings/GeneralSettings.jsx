@@ -83,7 +83,6 @@ export default function GeneralSettings() {
 
   const {
     data: twitterTestResults,
-    statusCode: twitterStatusCode,
     error: twitterTestError,
     clearError: clearTwitterTestError,
   } = useGetTwitterbotTestResults();
