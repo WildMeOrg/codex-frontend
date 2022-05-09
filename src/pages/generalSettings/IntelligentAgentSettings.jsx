@@ -124,7 +124,7 @@ export default function IntelligentAgentSettings({
             console.log(newKeyValPair);
             return { ...memo, newKeyValPair };
           } else {
-            return { ...memo };
+            return memo;
           }
         },
       );

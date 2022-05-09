@@ -278,12 +278,12 @@ export default function GeneralSettings() {
             marginTop: 28,
           }}
         >
-          {Boolean(error) && (
+          {error && (
             <CustomAlert severity="error" titleId="SUBMISSION_ERROR">
               {error}
             </CustomAlert>
           )}
-          {Boolean(twitterTestError) && (
+          {twitterTestError && (
             <CustomAlert
               severity="warning"
               titleId="TWITTERBOT_NOT_CONFIGURED"
@@ -302,7 +302,7 @@ export default function GeneralSettings() {
               descriptionId="CHANGES_SAVED"
             />
           )}
-          {twitterStatusCode === 200 && (
+          {twitterTestResults?.success && (
             <CustomAlert
               onClose={() => {
                 //TODO dismiss/clear success
