@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useEffect, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useParams } from 'react-router-dom';
 import { get, maxBy } from 'lodash-es';
@@ -137,6 +137,20 @@ export default function MatchSighting() {
       }
     },
     [selectedQueryAnnotation, selectedMatchCandidate],
+  );
+
+  useEffect(
+    () => {
+      if (!selectedQueryAnnotation)
+        setSelectedQueryAnnotation(queryAnnotations?.[0]);
+      if (matchCandidates)
+        setSelectedMatchCandidate(matchCandidates?.[0]);
+    },
+    [
+      queryAnnotations,
+      selectedQueryAnnotation?.guid,
+      matchCandidates,
+    ],
   );
 
   useDocumentTitle(`Match results for sighting ${sightingGuid}`, {

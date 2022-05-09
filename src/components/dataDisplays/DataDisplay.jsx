@@ -46,7 +46,8 @@ export default function DataDisplay({
   title,
   titleId,
   onPrint,
-  initiallySelectedRow = null,
+  selectionControlled = false,
+  selectedRow: selectedRowFromProps,
   onSelectRow = Function.prototype,
   hideFilterSearch = false,
   hideFilterColumns = false,
@@ -79,9 +80,7 @@ export default function DataDisplay({
     .filter(c => get(c, 'options.display', true))
     .map(c => c.name);
 
-  const [selectedRow, setSelectedRow] = useState(
-    initiallySelectedRow,
-  );
+  const [internalSelectedRow, setInternalSelectedRow] = useState();
   const [visibleColumnNames, setVisibleColumnNames] = useState(
     initialColumnNames,
   );
@@ -90,6 +89,10 @@ export default function DataDisplay({
   const [sortDirection, setSortDirection] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
   const filterPopperOpen = Boolean(anchorEl);
+
+  const selectedRow = selectionControlled
+    ? selectedRowFromProps
+    : internalSelectedRow;
 
   const startIndex = paginated ? page * rowsPerPage : 0;
   const endIndex = paginated
@@ -317,10 +320,12 @@ export default function DataDisplay({
                   key={get(datum, idKey)}
                   onClick={() => {
                     if (selectedRow === get(datum, idKey)) {
-                      setSelectedRow(null);
+                      if (!selectionControlled)
+                        setInternalSelectedRow(null);
                       onSelectRow(null);
                     } else {
-                      setSelectedRow(get(datum, idKey));
+                      if (!selectionControlled)
+                        setInternalSelectedRow(get(datum, idKey));
                       onSelectRow(datum);
                     }
                   }}

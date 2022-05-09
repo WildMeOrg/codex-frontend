@@ -37,23 +37,21 @@ const columns = [
     name: 'sighting_guid',
     labelId: 'VIEW_SIGHTING',
     options: {
-      customBodyRender: guid => {
-        return (
-          <ActionIcon
-            labelId="VIEW"
-            variant="view"
-            href={`/sightings/${guid}`}
-            linkProps={{ newTab: true }}
-          />
-        );
-      },
+      customBodyRender: guid => (
+        <ActionIcon
+          labelId="VIEW"
+          variant="view"
+          href={`/sightings/${guid}`}
+          linkProps={{ newTab: true }}
+        />
+      ),
     },
   },
 ];
 
 export default function MatchCandidatesTable({
   matchCandidates,
-  // selectedMatchCandidate,
+  selectedMatchCandidate,
   setSelectedMatchCandidate,
 }) {
   return (
@@ -66,7 +64,8 @@ export default function MatchCandidatesTable({
       noResultsTextId="NO_MATCH_CANDIDATES"
       hideDownloadCsv
       hideFilterColumns
-      // initiallySelectedRow={selectedMatchCandidate?.guid}
+      selectionControlled
+      selectedRow={selectedMatchCandidate?.guid}
       onSelectRow={nextSelection => {
         if (nextSelection) {
           setSelectedMatchCandidate(nextSelection);
