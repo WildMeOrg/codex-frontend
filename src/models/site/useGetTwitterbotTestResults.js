@@ -4,7 +4,7 @@ import useFetch from '../../hooks/useFetch';
 export default function useGetTwitterbotTestResults() {
   console.log('deleteMe useGetTwitterbotTestResults is being called');
   return useFetch({
-    queryKey: queryKeys.settingsConfig,
+    queryKey: queryKeys.twitterBot,
     url: '/site-settings/test/intelligent_agent_twitterbot',
     dataAccessor: result => result,
   });

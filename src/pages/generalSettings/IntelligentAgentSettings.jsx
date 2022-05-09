@@ -115,9 +115,15 @@ export default function IntelligentAgentSettings({
       const emptyFieldValues = reduce(
         intelligentAgentSettingsFields,
         (memo, field) => {
-          const newKeyValPair = {};
-          newKeyValPair[field] = '';
-          return { ...memo, ...newKeyValPair };
+          if (field !== currentPlatformEnablingField) {
+            console.log('deleteMe field is: ');
+            console.log(field);
+            const newKeyValPair = {};
+            newKeyValPair[field] = '';
+            return { ...memo, ...newKeyValPair };
+          } else {
+            return { ...memo };
+          }
         },
       );
       console.log('deleteMe emptyFieldValues are: ');
