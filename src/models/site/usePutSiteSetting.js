@@ -7,6 +7,6 @@ export default function usePutSiteSetting() {
     deriveData: ({ data }) => ({
       _value: data,
     }),
-    fetchKeys: [queryKeys.settingsConfig],
+    fetchKeys: [queryKeys.settingsConfig, queryKeys.twitterBot],
   });
 }

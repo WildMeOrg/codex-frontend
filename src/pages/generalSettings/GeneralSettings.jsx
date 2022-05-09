@@ -113,12 +113,15 @@ export default function GeneralSettings() {
 
   const {
     data: twitterTestResults,
+    statusCode: twitterStatusCode,
     error: twitterTestError,
   } = useGetTwitterbotTestResults();
   console.log('deleteMe twitterTestResults are: ');
   console.log(twitterTestResults);
   console.log('deleteMe twitterTestError is: ');
   console.log(twitterTestError);
+  console.log('deleteMe twitterStatusCode is: ');
+  console.log(twitterStatusCode);
 
   useDocumentTitle('GENERAL_SETTINGS');
 
@@ -280,6 +283,11 @@ export default function GeneralSettings() {
               {error}
             </CustomAlert>
           )}
+          {Boolean(twitterTestError) && (
+            <CustomAlert severity="error" titleId="SUBMISSION_ERROR">
+              {twitterTestError}
+            </CustomAlert>
+          )}
           {success && (
             <CustomAlert
               onClose={() => {
@@ -289,6 +297,17 @@ export default function GeneralSettings() {
               severity="success"
               titleId="SUCCESS"
               descriptionId="CHANGES_SAVED"
+            />
+          )}
+          {twitterStatusCode === 200 && (
+            <CustomAlert
+              onClose={() => {
+                //TODO dismiss/clear success
+              }}
+              severity="success"
+              titleId="SUCCESS"
+              descriptionId="TWITTERBOT_SETUP_CONFIRMATION"
+              descriptionValues={twitterTestResults?.username}
             />
           )}
           <Button
@@ -333,7 +352,9 @@ export default function GeneralSettings() {
                 console.log(twitterTestError);
               }
               if (logoPostData)
-                postSettingsAsset({ data: logoPostData });
+                postSettingsAsset({
+                  data: logoPostData,
+                });
             }}
             style={{ marginTop: 12 }}
             display="primary"

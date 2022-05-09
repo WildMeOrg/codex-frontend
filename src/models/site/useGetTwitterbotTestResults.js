@@ -6,6 +6,9 @@ export default function useGetTwitterbotTestResults() {
   return useFetch({
     queryKey: queryKeys.twitterBot,
     url: '/site-settings/test/intelligent_agent_twitterbot',
-    dataAccessor: result => result,
+    queryOptions: {
+      retry: 1,
+    },
+    // dataAccessor: result => result,
   });
 }

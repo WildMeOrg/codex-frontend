@@ -120,7 +120,7 @@ export default function IntelligentAgentSettings({
             console.log(field);
             const newKeyValPair = {};
             newKeyValPair[field] = '';
-            return { ...memo, ...newKeyValPair };
+            return { ...memo, newKeyValPair };
           } else {
             return { ...memo };
           }
