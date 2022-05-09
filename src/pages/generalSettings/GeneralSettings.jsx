@@ -117,6 +117,8 @@ export default function GeneralSettings() {
   } = useGetTwitterbotTestResults();
   console.log('deleteMe twitterTestResults are: ');
   console.log(twitterTestResults);
+  console.log('deleteMe twitterTestError is: ');
+  console.log(twitterTestError);
 
   useDocumentTitle('GENERAL_SETTINGS');
 
