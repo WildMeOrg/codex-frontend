@@ -1,6 +1,9 @@
 export const intelligentAgentSchema = [
   {
     platformName: 'twitter',
+    dividerLabe: 'TWITTER_SETTINGS',
+    platformInformationLabel: 'TWITTER_API_KEYS_LABEL',
+    platformInformationDescription: 'TWITTER_API_KEY_DESCRIPTION',
     data: {
       enablingField: 'intelligent_agent_twitterbot_enabled',
       fields: [

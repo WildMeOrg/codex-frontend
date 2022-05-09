@@ -5,6 +5,7 @@ import { get, reduce } from 'lodash-es';
 import { intelligentAgentSchema } from '../../constants/intelligentAgentSchema';
 import SettingsTextInput from '../../components/settings/SettingsTextInput';
 import Text from '../../components/Text';
+import DividerTitle from '../../components/DividerTitle';
 
 export default function IntelligentAgentSettings({
   intelligentAgentSettingsFields,
@@ -64,10 +65,23 @@ export default function IntelligentAgentSettings({
             siteSettings={siteSettings}
             skipDescription={enabledSkipDescription}
           />
-          <Text style={{ marginTop: 20 }} variant="subtitle1">
-            Label for stuff
-          </Text>
-          <Text style={{ marginTop: 4 }} variant="body2">
+          <DividerTitle
+            titleId={get(intelligentAgent, 'dividerLabel')}
+            style={{ marginTop: 32 }}
+          />
+          <Text
+            style={{ marginTop: 20 }}
+            variant="subtitle1"
+            id={get(intelligentAgent, 'platformInformationLabel')}
+          />
+          <Text
+            style={{ marginTop: 4 }}
+            variant="body2"
+            id={get(
+              intelligentAgent,
+              'platformInformationDescription',
+            )}
+          >
             Description for stuff
           </Text>
           {currentPlatformFields
@@ -123,18 +137,6 @@ export default function IntelligentAgentSettings({
         });
       }
 
-      // const onlyEnabledPlatformField = currentPlatformFields.find(
-      //   currentField => {
-      //     const settingKey = get(currentField, 'label');
-      //     return settingKey === currentPlatformEnablingField;
-      //   },
-      // );
-      // const settingKey = get(onlyEnabledPlatformField, 'label');
-      // const skipDescription = get(
-      //   onlyEnabledPlatformField,
-      //   'skipDescription',
-      //   false,
-      // );
       return (
         <SettingsTextInput
           key={enabledSettingKey}
