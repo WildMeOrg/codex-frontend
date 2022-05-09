@@ -87,11 +87,16 @@ export default function GeneralSettings() {
     error: twitterTestError,
     clearError: clearTwitterTestError,
   } = useGetTwitterbotTestResults();
+  console.log('deleteMe twitterTestError is: ');
+  console.log(twitterTestError);
   console.log('deleteMe twitterStatusCode is: ');
   console.log(twitterStatusCode);
 
   useDocumentTitle('GENERAL_SETTINGS');
 
+  const [showTwitterSuccess, setShowTwitterSuccess] = useState(
+    twitterTestResults?.statusCode === 200,
+  );
   const [currentValues, setCurrentValues] = useState(null);
   const [logoPostData, setLogoPostData] = useState(null);
   const [allValid, setAllValid] = useState(false);
@@ -257,9 +262,7 @@ export default function GeneralSettings() {
               onClose={() => {
                 clearTwitterTestError();
               }}
-            >
-              {twitterTestResults?.message}
-            </CustomAlert>
+            />
           )}
           {success && (
             <CustomAlert
@@ -272,12 +275,12 @@ export default function GeneralSettings() {
               descriptionId="CHANGES_SAVED"
             />
           )}
-          {twitterTestResults?.success && (
+          {showTwitterSuccess && (
             <CustomAlert
               onClose={() => {
-                //TODO dismiss/clear success
+                setShowTwitterSuccess(false);
               }}
-              severity="success"
+              severity="info"
               titleId="TWITTERBOT_SETUP_CONFIRMATION"
             >
               {twitterTestResults?.message}
