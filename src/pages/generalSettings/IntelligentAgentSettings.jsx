@@ -122,11 +122,12 @@ export default function IntelligentAgentSettings({
             newKeyValPair[field] = '';
             console.log('newKeyValPair is: ');
             console.log(newKeyValPair);
-            return { memo, ...newKeyValPair };
+            return { ...memo, ...newKeyValPair };
           } else {
             return memo;
           }
         },
+        {},
       );
       console.log('deleteMe emptyFieldValues are: ');
       console.log(emptyFieldValues);
