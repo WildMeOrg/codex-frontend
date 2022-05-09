@@ -261,9 +261,7 @@ export default function GeneralSettings() {
             <CustomAlert
               severity="warning"
               titleId="TWITTERBOT_NOT_CONFIGURED"
-              onClose={() => {
-                clearTwitterTestError();
-              }}
+              onClose={clearTwitterTestError}
             />
           )}
           {success && (
@@ -316,19 +314,9 @@ export default function GeneralSettings() {
                   };
                 }
               });
-              console.log(
-                'deleteMe currentValues before posting are: ',
-              );
-              console.log(currentValues);
-              const response = await putSiteSettings({
+              await putSiteSettings({
                 data: currentValues,
               });
-              if (response?.status === 200) {
-                console.log('deleteMe twitterTestResults are: ');
-                console.log(twitterTestResults);
-                console.log('deleteMe twitterTestError is: ');
-                console.log(twitterTestError);
-              }
               if (logoPostData)
                 postSettingsAsset({
                   data: logoPostData,
