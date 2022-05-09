@@ -58,7 +58,11 @@ export default function DefaultFieldTable({
   const intl = useIntl();
   const [formSettings, setFormSettings] = useState(null);
   const [editField, setEditField] = useState(null);
-  const { putSiteSetting, error, setError } = usePutSiteSettings();
+  const {
+    mutate: putSiteSetting,
+    error,
+    setError,
+  } = usePutSiteSettings();
 
   useEffect(
     () => setFormSettings(getInitialFormState(siteSettings)),

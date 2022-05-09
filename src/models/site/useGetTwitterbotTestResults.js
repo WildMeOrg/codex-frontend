@@ -6,7 +6,7 @@ export default function useGetTwitterbotTestResults() {
     queryKey: queryKeys.twitterBot,
     url: '/site-settings/test/intelligent_agent_twitterbot',
     queryOptions: {
-      retry: false,
+      retry: 1,
     },
   });
 }

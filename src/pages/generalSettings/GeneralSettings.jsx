@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState } from 'react';
 import { get, reduce, zipObject } from 'lodash-es';
 
 import Grid from '@material-ui/core/Grid';
@@ -98,7 +98,7 @@ export default function GeneralSettings() {
     () => {
       setShowTwitterSuccess(twitterTestResults?.success);
     },
-    [twitterStatusCode],
+    [twitterTestResults],
   );
   const [currentValues, setCurrentValues] = useState(null);
   const [logoPostData, setLogoPostData] = useState(null);
@@ -284,7 +284,7 @@ export default function GeneralSettings() {
             </CustomAlert>
           )}
           <Button
-            onClick={async () => {
+            onClick={() => {
               /* Prepare custom fields objects to send to backend */
               Object.values(customFields).forEach(customFieldKey => {
                 const fields = currentValues[customFieldKey];
@@ -311,7 +311,7 @@ export default function GeneralSettings() {
                   };
                 }
               });
-              await putSiteSettings({
+              putSiteSettings({
                 data: currentValues,
               });
               if (logoPostData)

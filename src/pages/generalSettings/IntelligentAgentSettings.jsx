@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { FormattedMessage } from 'react-intl';
-import { get, reduce } from 'lodash-es';
+import { get, reduce, filter } from 'lodash-es';
 
 import { intelligentAgentSchema } from '../../constants/intelligentAgentSchema';
 import SettingsTextInput from '../../components/settings/SettingsTextInput';
@@ -42,15 +42,15 @@ export default function IntelligentAgentSettings({
       !isCurrentPlatformEnabled ||
       (isCurrentPlatformEnabled && noCredsMissing);
     setAllValid(allValid);
-    const onlyEnabledPlatformField = currentPlatformFields.find(
+    const enablingPlatformField = currentPlatformFields.find(
       currentField => {
         const settingKey = get(currentField, 'label');
         return settingKey === currentPlatformEnablingField;
       },
     );
-    const enabledSettingKey = get(onlyEnabledPlatformField, 'label');
+    const enabledSettingKey = get(enablingPlatformField, 'label');
     const enabledSkipDescription = get(
-      onlyEnabledPlatformField,
+      enablingPlatformField,
       'skipDescription',
       false,
     );
@@ -99,33 +99,31 @@ export default function IntelligentAgentSettings({
                 </Link>
               ),
             }}
-          >
-            Description for stuff
-          </Text>
-          {currentPlatformFields
-            .filter(
-              field =>
-                get(field, 'label') !== currentPlatformEnablingField,
-            )
-            .map(currentField => {
-              const settingKey = get(currentField, 'label');
-              const skipDescription = get(
-                currentField,
-                'skipDescription',
-                false,
-              );
-              return (
-                <SettingsTextInput
-                  key={settingKey}
-                  settingKey={settingKey}
-                  customFieldCategories={[]}
-                  currentValues={currentValues}
-                  setCurrentValues={setCurrentValues}
-                  siteSettings={siteSettings}
-                  skipDescription={skipDescription}
-                />
-              );
-            })}
+          />
+          {filter(
+            currentPlatformFields,
+            field =>
+              get(field, 'label') !== currentPlatformEnablingField,
+            [],
+          ).map(currentField => {
+            const settingKey = get(currentField, 'label');
+            const skipDescription = get(
+              currentField,
+              'skipDescription',
+              false,
+            );
+            return (
+              <SettingsTextInput
+                key={settingKey}
+                settingKey={settingKey}
+                customFieldCategories={[]}
+                currentValues={currentValues}
+                setCurrentValues={setCurrentValues}
+                siteSettings={siteSettings}
+                skipDescription={skipDescription}
+              />
+            );
+          })}
         </>
       );
     } else {
