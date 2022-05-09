@@ -284,8 +284,11 @@ export default function GeneralSettings() {
             </CustomAlert>
           )}
           {Boolean(twitterTestError) && (
-            <CustomAlert severity="error" titleId="SUBMISSION_ERROR">
-              {twitterTestError}
+            <CustomAlert
+              severity="warning"
+              titleId="TWITTERBOT_NOT_CONFIGURED"
+            >
+              {twitterTestResults?.message}
             </CustomAlert>
           )}
           {success && (
@@ -307,8 +310,9 @@ export default function GeneralSettings() {
               severity="success"
               titleId="SUCCESS"
               descriptionId="TWITTERBOT_SETUP_CONFIRMATION"
-              descriptionValues={twitterTestResults?.username}
-            />
+            >
+              {twitterTestResults?.message}
+            </CustomAlert>
           )}
           <Button
             onClick={async () => {
