@@ -112,27 +112,37 @@ export default function IntelligentAgentSettings({
       console.log(intelligentAgentSettingsFields);
 
       // TODO set all other platformField values to "", but figure out a way to do this without making React mad
-      const emptyFieldValues = reduce(
-        intelligentAgentSettingsFields,
-        (memo, field) => {
-          if (field !== currentPlatformEnablingField) {
-            console.log('deleteMe field is: ');
-            console.log(field);
-            const newKeyValPair = {};
-            newKeyValPair[field] = '';
-            console.log('newKeyValPair is: ');
-            console.log(newKeyValPair);
-            return { ...memo, ...newKeyValPair };
-          } else {
-            return memo;
-          }
-        },
-        {},
-      );
-      setCurrentValues({
-        ...currentValues,
-        ...emptyFieldValues,
-      });
+      const fieldsThatShouldBeEmptyAreNot =
+        intelligentAgentSettingsFields.filter(
+          currentField =>
+            get(currentValues, currentField) !== '' &&
+            currentField !== currentPlatformEnablingField,
+        ).length === 0;
+      console.log('deleteMe fieldsThatShouldBeEmptyAreNot is: ');
+      console.log(fieldsThatShouldBeEmptyAreNot);
+      if (fieldsThatShouldBeEmptyAreNot) {
+        const emptyFieldValues = reduce(
+          intelligentAgentSettingsFields,
+          (memo, field) => {
+            if (field !== currentPlatformEnablingField) {
+              console.log('deleteMe field is: ');
+              console.log(field);
+              const newKeyValPair = {};
+              newKeyValPair[field] = '';
+              console.log('newKeyValPair is: ');
+              console.log(newKeyValPair);
+              return { ...memo, ...newKeyValPair };
+            } else {
+              return memo;
+            }
+          },
+          {},
+        );
+        setCurrentValues({
+          ...currentValues,
+          ...emptyFieldValues,
+        });
+      }
 
       const onlyEnabledPlatformField = currentPlatformFields.find(
         currentField => {
