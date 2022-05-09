@@ -42,31 +42,9 @@ const generalSettingsFields = [
   'site.look.logoIncludesSiteName',
 ];
 
-//TODO make useMemo?
-// const intelligentAgentSettingsFields = reduce(
-//   intelligentAgentSchema,
-//   (memo, intelligentAgent) => {
-//     console.log('deleteMe got here');
-//     const platformName = get(Object.keys(intelligentAgent), [0]);
-//     const currentPlatformFields = get(
-//       intelligentAgent,
-//       [platformName, 'fields'],
-//       [],
-//     );
-//     const platformValues = Object.values(currentPlatformFields).map(
-//       entry => get(Object.keys(entry), [0]),
-//     );
-//     console.log('deleteMe platformValues are: ');
-//     console.log(platformValues);
-
-//     return [...memo, ...platformValues];
-//   },
-//   [],
-// );
 const intelligentAgentSettingsFields = reduce(
   intelligentAgentSchema,
   (memo, intelligentAgent) => {
-    // const platformName = get(Object.keys(intelligentAgent), [0]);
     const currentPlatformFields = get(
       intelligentAgent,
       ['data', 'fields'],
@@ -75,23 +53,15 @@ const intelligentAgentSettingsFields = reduce(
     const platformValues = Object.values(currentPlatformFields).map(
       entry => get(entry, 'label'),
     );
-    console.log('deleteMe platformValues are: ');
-    console.log(platformValues);
-
     return [...memo, ...platformValues];
   },
   [],
 );
 
-console.log('deleteMe intelligentAgentSettingsFields are: ');
-console.log(intelligentAgentSettingsFields);
-
 const allSettingsFields = [
   ...generalSettingsFields,
   ...intelligentAgentSettingsFields,
 ];
-console.log('deleteMe allSettingsFields are: ');
-console.log(allSettingsFields);
 
 export default function GeneralSettings() {
   const siteSettings = useSiteSettings();
@@ -115,11 +85,8 @@ export default function GeneralSettings() {
     data: twitterTestResults,
     statusCode: twitterStatusCode,
     error: twitterTestError,
+    clearError: clearTwitterTestError,
   } = useGetTwitterbotTestResults();
-  console.log('deleteMe twitterTestResults are: ');
-  console.log(twitterTestResults);
-  console.log('deleteMe twitterTestError is: ');
-  console.log(twitterTestError);
   console.log('deleteMe twitterStatusCode is: ');
   console.log(twitterStatusCode);
 
@@ -287,6 +254,9 @@ export default function GeneralSettings() {
             <CustomAlert
               severity="warning"
               titleId="TWITTERBOT_NOT_CONFIGURED"
+              onClose={() => {
+                clearTwitterTestError();
+              }}
             >
               {twitterTestResults?.message}
             </CustomAlert>
@@ -308,8 +278,7 @@ export default function GeneralSettings() {
                 //TODO dismiss/clear success
               }}
               severity="success"
-              titleId="SUCCESS"
-              descriptionId="TWITTERBOT_SETUP_CONFIRMATION"
+              titleId="TWITTERBOT_SETUP_CONFIRMATION"
             >
               {twitterTestResults?.message}
             </CustomAlert>
