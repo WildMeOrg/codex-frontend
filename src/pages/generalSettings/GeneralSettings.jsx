@@ -274,7 +274,7 @@ export default function GeneralSettings() {
             <CustomAlert
               severity="warning"
               titleId="TWITTERBOT_NOT_CONFIGURED"
-              onClose={clearTwitterTestError}
+              // onClose={clearTwitterTestError}
             />
           )}
           {success && (
