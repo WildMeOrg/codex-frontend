@@ -129,12 +129,10 @@ export default function IntelligentAgentSettings({
         },
         {},
       );
-      console.log('deleteMe about to set current values to:');
-      console.log({ ...currentValues, ...emptyFieldValues });
-      // setCurrentValues({
-      //   ...currentValues,
-      //   ...emptyFieldValues,
-      // });
+      setCurrentValues({
+        ...currentValues,
+        ...emptyFieldValues,
+      });
 
       const onlyEnabledPlatformField = currentPlatformFields.find(
         currentField => {
