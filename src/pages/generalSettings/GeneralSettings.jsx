@@ -91,6 +91,8 @@ export default function GeneralSettings() {
   console.log(twitterTestError);
   console.log('deleteMe twitterStatusCode is: ');
   console.log(twitterStatusCode);
+  console.log('deleteMe twitterTestResults are: ');
+  console.log(twitterTestResults);
 
   useDocumentTitle('GENERAL_SETTINGS');
 
