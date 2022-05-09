@@ -39,35 +39,61 @@ export default function IntelligentAgentSettings({
       !isCurrentPlatformEnabled ||
       (isCurrentPlatformEnabled && noCredsMissing);
     setAllValid(allValid);
+    const onlyEnabledPlatformField = currentPlatformFields.find(
+      currentField => {
+        const settingKey = get(currentField, 'label');
+        return settingKey === currentPlatformEnablingField;
+      },
+    );
+    const enabledSettingKey = get(onlyEnabledPlatformField, 'label');
+    const enabledSkipDescription = get(
+      onlyEnabledPlatformField,
+      'skipDescription',
+      false,
+    );
 
     if (isCurrentPlatformEnabled) {
       return (
         <>
+          <SettingsTextInput
+            key={enabledSettingKey}
+            settingKey={enabledSettingKey}
+            customFieldCategories={[]}
+            currentValues={currentValues}
+            setCurrentValues={setCurrentValues}
+            siteSettings={siteSettings}
+            skipDescription={enabledSkipDescription}
+          />
           <Text style={{ marginTop: 20 }} variant="subtitle1">
             Label for stuff
           </Text>
           <Text style={{ marginTop: 4 }} variant="body2">
             Description for stuff
           </Text>
-          {currentPlatformFields.map(currentField => {
-            const settingKey = get(currentField, 'label');
-            const skipDescription = get(
-              currentField,
-              'skipDescription',
-              false,
-            );
-            return (
-              <SettingsTextInput
-                key={settingKey}
-                settingKey={settingKey}
-                customFieldCategories={[]}
-                currentValues={currentValues}
-                setCurrentValues={setCurrentValues}
-                siteSettings={siteSettings}
-                skipDescription={skipDescription}
-              />
-            );
-          })}
+          {currentPlatformFields
+            .filter(
+              field =>
+                get(field, 'label') !== currentPlatformEnablingField,
+            )
+            .map(currentField => {
+              const settingKey = get(currentField, 'label');
+              const skipDescription = get(
+                currentField,
+                'skipDescription',
+                false,
+              );
+              return (
+                <SettingsTextInput
+                  key={settingKey}
+                  settingKey={settingKey}
+                  customFieldCategories={[]}
+                  currentValues={currentValues}
+                  setCurrentValues={setCurrentValues}
+                  siteSettings={siteSettings}
+                  skipDescription={skipDescription}
+                />
+              );
+            })}
         </>
       );
     } else {
@@ -97,27 +123,27 @@ export default function IntelligentAgentSettings({
         });
       }
 
-      const onlyEnabledPlatformField = currentPlatformFields.find(
-        currentField => {
-          const settingKey = get(currentField, 'label');
-          return settingKey === currentPlatformEnablingField;
-        },
-      );
-      const settingKey = get(onlyEnabledPlatformField, 'label');
-      const skipDescription = get(
-        onlyEnabledPlatformField,
-        'skipDescription',
-        false,
-      );
+      // const onlyEnabledPlatformField = currentPlatformFields.find(
+      //   currentField => {
+      //     const settingKey = get(currentField, 'label');
+      //     return settingKey === currentPlatformEnablingField;
+      //   },
+      // );
+      // const settingKey = get(onlyEnabledPlatformField, 'label');
+      // const skipDescription = get(
+      //   onlyEnabledPlatformField,
+      //   'skipDescription',
+      //   false,
+      // );
       return (
         <SettingsTextInput
-          key={settingKey}
-          settingKey={settingKey}
+          key={enabledSettingKey}
+          settingKey={enabledSettingKey}
           customFieldCategories={[]}
           currentValues={currentValues}
           setCurrentValues={setCurrentValues}
           siteSettings={siteSettings}
-          skipDescription={skipDescription}
+          skipDescription={enabledSkipDescription}
         />
       );
     }
