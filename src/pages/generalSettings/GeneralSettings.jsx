@@ -97,7 +97,7 @@ export default function GeneralSettings() {
   useDocumentTitle('GENERAL_SETTINGS');
 
   const [showTwitterSuccess, setShowTwitterSuccess] = useState(
-    twitterTestResults?.statusCode === 200,
+    twitterTestResults?.success,
   );
 
   useEffect(
@@ -112,7 +112,7 @@ export default function GeneralSettings() {
         'deleteMe and the status code taken separately from the useFetch is: ',
       );
       console.log(twitterStatusCode);
-      setShowTwitterSuccess(twitterTestResults?.statusCode === 200);
+      setShowTwitterSuccess(twitterTestResults?.success);
     },
     [twitterStatusCode],
   );
