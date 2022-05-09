@@ -4,6 +4,7 @@ import { get, reduce } from 'lodash-es';
 
 import { intelligentAgentSchema } from '../../constants/intelligentAgentSchema';
 import SettingsTextInput from '../../components/settings/SettingsTextInput';
+import Text from '../../components/Text';
 
 export default function IntelligentAgentSettings({
   intelligentAgentSettingsFields,
@@ -40,25 +41,35 @@ export default function IntelligentAgentSettings({
     setAllValid(allValid);
 
     if (isCurrentPlatformEnabled) {
-      return currentPlatformFields.map(currentField => {
-        const settingKey = get(currentField, 'label');
-        const skipDescription = get(
-          currentField,
-          'skipDescription',
-          false,
-        );
-        return (
-          <SettingsTextInput
-            key={settingKey}
-            settingKey={settingKey}
-            customFieldCategories={[]}
-            currentValues={currentValues}
-            setCurrentValues={setCurrentValues}
-            siteSettings={siteSettings}
-            skipDescription={skipDescription}
-          />
-        );
-      });
+      return (
+        <>
+          <Text style={{ marginTop: 20 }} variant="subtitle1">
+            Label for stuff
+          </Text>
+          <Text style={{ marginTop: 4 }} variant="body2">
+            Description for stuff
+          </Text>
+          {currentPlatformFields.map(currentField => {
+            const settingKey = get(currentField, 'label');
+            const skipDescription = get(
+              currentField,
+              'skipDescription',
+              false,
+            );
+            return (
+              <SettingsTextInput
+                key={settingKey}
+                settingKey={settingKey}
+                customFieldCategories={[]}
+                currentValues={currentValues}
+                setCurrentValues={setCurrentValues}
+                siteSettings={siteSettings}
+                skipDescription={skipDescription}
+              />
+            );
+          })}
+        </>
+      );
     } else {
       const fieldsThatShouldBeEmptyAreNot =
         intelligentAgentSettingsFields.filter(

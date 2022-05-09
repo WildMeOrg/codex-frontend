@@ -87,12 +87,6 @@ export default function GeneralSettings() {
     error: twitterTestError,
     clearError: clearTwitterTestError,
   } = useGetTwitterbotTestResults();
-  // console.log('deleteMe twitterTestError is: ');
-  // console.log(twitterTestError);
-  // console.log('deleteMe twitterStatusCode is: ');
-  // console.log(twitterStatusCode);
-  // console.log('deleteMe twitterTestResults are: ');
-  // console.log(twitterTestResults);
 
   useDocumentTitle('GENERAL_SETTINGS');
 
@@ -102,16 +96,6 @@ export default function GeneralSettings() {
 
   useEffect(
     () => {
-      console.log(
-        'deleteMe twitterTestResults changed. The statusCode is now:',
-      );
-      console.log(twitterTestResults?.statusCode);
-      console.log('deleteMe and in general the results are: ');
-      console.log(twitterTestResults);
-      console.log(
-        'deleteMe and the status code taken separately from the useFetch is: ',
-      );
-      console.log(twitterStatusCode);
       setShowTwitterSuccess(twitterTestResults?.success);
     },
     [twitterStatusCode],
