@@ -61,7 +61,7 @@ export default function DefaultFieldTable({
   const {
     mutate: putSiteSetting,
     error,
-    setError,
+    clearError,
   } = usePutSiteSettings();
 
   useEffect(
@@ -101,7 +101,7 @@ export default function DefaultFieldTable({
   ];
 
   const onCloseEditor = () => {
-    setError(null);
+    clearError();
     setEditField(null);
   };
 
