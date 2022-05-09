@@ -21,6 +21,9 @@ const columns = [
     name: 'viewpoint',
     labelId: 'VIEWPOINT',
     align: 'left',
+    options: {
+      cellRenderer: cellRendererTypes.viewpoint,
+    },
   },
   {
     name: 'score',

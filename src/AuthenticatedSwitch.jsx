@@ -129,7 +129,7 @@ export default function AuthenticatedSwitch() {
                       </Route>
                       <Route path="/notifications">
                         <Notifications />
-                        </Route>
+                      </Route>
                       <Route path="/pending-sightings/:id">
                         <AssetGroupSighting />
                       </Route>

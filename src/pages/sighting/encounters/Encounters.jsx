@@ -221,7 +221,7 @@ export default function Encounters({
           {
             id: 'view-id-results',
             labelId: 'VIEW_IDENTIFICATION_RESULTS',
-            onClick: Function.prototype,
+            href: `/match-results/${sightingId}`,
           },
           {
             id: 'create-new-individual',

@@ -92,7 +92,10 @@ export default function CreateIndividual() {
           <Text variant="h4" id="CREATE_INDIVIDUAL" />
         </Grid>
         <Grid item>
-          <Text><Text variant="subtitle2" id="CREATE_INDIVIDUAL_INSTRUCTIONS" /></Text>
+          <Text
+            variant="subtitle2"
+            id="CREATE_INDIVIDUAL_INSTRUCTIONS"
+          />
         </Grid>
         <Grid item>
           <Text variant="h5" id="ANNOTATIONS" />

@@ -5,6 +5,7 @@ import SpecifiedTimeRenderer from './SpecifiedTimeRenderer';
 import CapitalizedStringRenderer from './CapitalizedStringRenderer';
 import DateRenderer from './DateRenderer';
 import FloatRenderer from './FloatRenderer';
+import ViewpointRenderer from './ViewpointRenderer';
 
 export const cellRendererTypes = {
   default: 'default',
@@ -14,6 +15,7 @@ export const cellRendererTypes = {
   capitalizedString: 'capitalizedString',
   date: 'date',
   float: 'float',
+  viewpoint: 'viewpoint',
 };
 
 export const cellRenderers = {
@@ -24,4 +26,5 @@ export const cellRenderers = {
   [cellRendererTypes.capitalizedString]: CapitalizedStringRenderer,
   [cellRendererTypes.date]: DateRenderer,
   [cellRendererTypes.float]: FloatRenderer,
+  [cellRendererTypes.viewpoint]: ViewpointRenderer,
 };
