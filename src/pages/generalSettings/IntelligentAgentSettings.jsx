@@ -1,11 +1,13 @@
 import React from 'react';
 
+import { FormattedMessage } from 'react-intl';
 import { get, reduce } from 'lodash-es';
 
 import { intelligentAgentSchema } from '../../constants/intelligentAgentSchema';
 import SettingsTextInput from '../../components/settings/SettingsTextInput';
 import Text from '../../components/Text';
 import DividerTitle from '../../components/DividerTitle';
+import Link from '../../components/Link';
 
 export default function IntelligentAgentSettings({
   intelligentAgentSettingsFields,
@@ -81,6 +83,21 @@ export default function IntelligentAgentSettings({
               intelligentAgent,
               'platformInformationDescription',
             )}
+            values={{
+              documentationLink: (
+                <Link
+                  newTab
+                  href={get(
+                    intelligentAgent,
+                    'apiDocumentationUrlLabel',
+                  )}
+                >
+                  <FormattedMessage
+                    id={get(intelligentAgent, 'apiDocumentationUrl')}
+                  />
+                </Link>
+              ),
+            }}
           >
             Description for stuff
           </Text>

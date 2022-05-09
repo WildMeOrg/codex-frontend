@@ -1061,6 +1061,7 @@
   "TWITTERBOT_SETUP_CONFIRMATION": "Twitter configured successfully",
   "TWITTERBOT_NOT_CONFIGURED": "Twitter either disabled or not configured successfully",
   "TWITTER_API_KEYS_LABEL": "Platform Twitter information",
-  "TWITTER_API_KEY_DESCRIPTION": "The information needed from your Twitter account. User the Twitter developer portal and documentation to find these values.",
+  "TWITTER_API_KEY_DESCRIPTION": "The information needed from your Twitter account. Use the {documentationLink} to find these values.",
+  "TWITTER_API_DOCUMENTATION_URL_LABEL": "Twitter developer portal and documentation",
   "TWITTER_SETTINGS": "Twitter configuration settings"
 }
