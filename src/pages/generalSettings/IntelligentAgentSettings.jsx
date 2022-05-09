@@ -117,7 +117,7 @@ export default function IntelligentAgentSettings({
           currentField =>
             get(currentValues, currentField) !== '' &&
             currentField !== currentPlatformEnablingField,
-        ).length === 0;
+        ).length > 0;
       console.log('deleteMe fieldsThatShouldBeEmptyAreNot is: ');
       console.log(fieldsThatShouldBeEmptyAreNot);
       if (fieldsThatShouldBeEmptyAreNot) {
