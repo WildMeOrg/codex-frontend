@@ -99,6 +99,17 @@ export default function GeneralSettings() {
   const [showTwitterSuccess, setShowTwitterSuccess] = useState(
     twitterTestResults?.statusCode === 200,
   );
+
+  useEffect(
+    () => {
+      console.log(
+        'deleteMe twitterTestResults changed. The statusCode is now:',
+      );
+      console.log(twitterTestResults?.statusCode);
+      setShowTwitterSuccess(twitterTestResults?.statusCode === 200);
+    },
+    [twitterTestResults],
+  );
   const [currentValues, setCurrentValues] = useState(null);
   const [logoPostData, setLogoPostData] = useState(null);
   const [allValid, setAllValid] = useState(false);
