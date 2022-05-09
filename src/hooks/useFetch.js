@@ -89,7 +89,6 @@ export default function useFetch({
     loading: displayedLoading,
     error: displayedError,
     clearError: () => {
-      console.log('deleteMe got here in the fetch');
       setDisplayedError(null);
     },
     refresh: refreshNoop,
