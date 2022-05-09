@@ -108,6 +108,8 @@ export default function IntelligentAgentSettings({
       });
     } else {
       console.log('deleteMe got here a2');
+      console.log('deleteMe intelligentAgentSettingsFields are: ');
+      console.log(intelligentAgentSettingsFields);
 
       // TODO set all other platformField values to "", but figure out a way to do this without making React mad
       const emptyFieldValues = reduce(
