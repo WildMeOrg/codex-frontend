@@ -129,8 +129,8 @@ export default function IntelligentAgentSettings({
         },
         {},
       );
-      console.log('deleteMe emptyFieldValues are: ');
-      console.log(emptyFieldValues);
+      console.log('deleteMe about to set current values to:');
+      console.log({ ...currentValues, ...emptyFieldValues });
       // setCurrentValues({
       //   ...currentValues,
       //   ...emptyFieldValues,
