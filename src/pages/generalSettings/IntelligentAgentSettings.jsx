@@ -87,13 +87,13 @@ export default function IntelligentAgentSettings({
               documentationLink: (
                 <Link
                   newTab
-                  href={get(
-                    intelligentAgent,
-                    'apiDocumentationUrlLabel',
-                  )}
+                  href={get(intelligentAgent, 'apiDocumentationUrl')}
                 >
                   <FormattedMessage
-                    id={get(intelligentAgent, 'apiDocumentationUrl')}
+                    id={get(
+                      intelligentAgent,
+                      'apiDocumentationUrlLabel',
+                    )}
                   />
                 </Link>
               ),
