@@ -10,9 +10,9 @@ import Text from '../../components/Text';
 import Button from '../../components/Button';
 import InputRow from '../../components/fields/edit/InputRow';
 import Alert from '../../components/Alert';
+import EncounterCard from '../../components/cards/EncounterCard';
 import useIndividualFieldSchemas from '../../models/individual/useIndividualFieldSchemas';
 import usePostIndividual from '../../models/individual/usePostIndividual';
-import EncounterCard from './EncounterCard';
 
 function calculateInitialState(schemas) {
   if (!schemas) return {};
@@ -92,7 +92,10 @@ export default function CreateIndividual() {
           <Text variant="h4" id="CREATE_INDIVIDUAL" />
         </Grid>
         <Grid item>
-          <Text><Text variant="subtitle2" id="CREATE_INDIVIDUAL_INSTRUCTIONS" /></Text>
+          <Text
+            variant="subtitle2"
+            id="CREATE_INDIVIDUAL_INSTRUCTIONS"
+          />
         </Grid>
         <Grid item>
           <Text variant="h5" id="ANNOTATIONS" />

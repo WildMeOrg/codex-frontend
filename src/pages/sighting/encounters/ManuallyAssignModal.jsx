@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 
-import usePatchIndividual from '../../../models/individual/usePatchIndividual';
+import useAssignEncountersToIndividual from '../../../models/individual/useAssignEncountersToIndividual';
 import StandardDialog from '../../../components/StandardDialog';
 import Button from '../../../components/Button';
 import ButtonLink from '../../../components/ButtonLink';
@@ -14,13 +14,14 @@ export default function ManuallyAssignModal({
   open,
   onClose,
   encounterId,
+  sightingGuid,
 }) {
   const {
-    addEncounterToIndividual,
-    success,
+    mutate: assignEncounters,
+    isSuccess,
     loading,
     error,
-  } = usePatchIndividual();
+  } = useAssignEncountersToIndividual();
 
   const [selectedIndividualId, setSelectedIndividualId] = useState(
     null,
@@ -33,15 +34,17 @@ export default function ManuallyAssignModal({
 
   return (
     <StandardDialog
-      maxWidth={success ? 'sm' : 'xl'}
+      maxWidth={isSuccess ? 'sm' : 'xl'}
       titleId={
-        success ? 'CLUSTER_ASSIGNED' : 'ASSIGN_CLUSTER_TO_INDIVIDUAL'
+        isSuccess
+          ? 'CLUSTER_ASSIGNED'
+          : 'ASSIGN_CLUSTER_TO_INDIVIDUAL'
       }
       open={open}
       onClose={onCloseDialog}
     >
       <DialogContent>
-        {success ? (
+        {isSuccess ? (
           <Text id="ASSIGN_CLUSTER_TO_INDIVIDUAL_DESCRIPTION" />
         ) : (
           <IndividualSelector
@@ -63,9 +66,9 @@ export default function ManuallyAssignModal({
         <Button
           display="basic"
           onClick={onCloseDialog}
-          id={success ? 'CLOSE' : 'CANCEL'}
+          id={isSuccess ? 'CLOSE' : 'CANCEL'}
         />
-        {success ? (
+        {isSuccess ? (
           <ButtonLink
             id="VIEW_INDIVIDUAL"
             display="primary"
@@ -77,12 +80,11 @@ export default function ManuallyAssignModal({
             disabled={!selectedIndividualId}
             loading={loading}
             onClick={async () => {
-              const result = await addEncounterToIndividual(
-                selectedIndividualId,
-                encounterId,
-              );
-              console.log(result);
-              /* pick up here when success happens */
+              await assignEncounters({
+                sightingGuid,
+                individualGuid: selectedIndividualId,
+                encounterGuids: [encounterId],
+              });
             }}
             id="ASSIGN_CLUSTER"
           />

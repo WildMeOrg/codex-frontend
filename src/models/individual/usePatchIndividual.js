@@ -77,36 +77,17 @@ export default function usePatchIndividual() {
     return patchIndividual(individualId, operations);
   };
 
-  const addEncounterToIndividual = async (
-    individualId,
-    encounterId,
-  ) => {
-    const operations = [
-      {
-        op: 'add',
-        path: '/encounters',
-        value: encounterId,
-      },
-    ];
-    return patchIndividual(individualId, operations);
-  };
-
   const removeEncounterFromIndividual = async (
     individualId,
     encounterId,
   ) => {
     const operations = [
-      {
-        op: 'remove',
-        path: '/encounters',
-        value: encounterId,
-      },
+      { op: 'remove', path: '/encounters', value: encounterId },
     ];
     return patchIndividual(individualId, operations);
   };
 
   return {
-    addEncounterToIndividual,
     updateIndividualProperties,
     removeEncounterFromIndividual,
     loading,
