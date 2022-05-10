@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useLocation } from 'react-router';
-import { get } from 'lodash-es';
 
 import Grid from '@material-ui/core/Grid';
 
@@ -11,7 +10,7 @@ import Text from '../../components/Text';
 import Button from '../../components/Button';
 import SadScreen from '../../components/SadScreen';
 import Alert from '../../components/Alert';
-import useIndividual from '../../models/individual/useIndividual';
+import IndividualCard from '../../components/cards/IndividualCard';
 import useMergeIndividuals from '../../models/individual/useMergeIndividuals';
 import useFetchMergeConflicts from '../../models/individual/useFetchMergeConflicts';
 import {
@@ -19,28 +18,18 @@ import {
   isFormComplete,
 } from './utils/formDataUtils';
 import ResolutionSelector from './ResolutionSelector';
-import IndividualCard from './IndividualCard';
 
 export default function MergeIndividuals() {
   const { search } = useLocation();
   useDocumentTitle('MERGE_INDIVIDUALS');
 
   const searchParams = new URLSearchParams(search);
-  const individualIds = searchParams.getAll('i') || [];
+  const individualGuids = searchParams.getAll('i') || [];
 
   const {
     data: mergeConflicts,
     fetchConflictsError,
-  } = useFetchMergeConflicts(individualIds);
-  const {
-    data: targetIndividualData,
-    error: fetchTargetError,
-  } = useIndividual(get(individualIds, '0', null));
-  const {
-    data: fromIndividualData,
-    error: fetchFromError,
-  } = useIndividual(get(individualIds, '1', null));
-  const individualData = [targetIndividualData, fromIndividualData];
+  } = useFetchMergeConflicts(individualGuids);
 
   const {
     mutate: mergeIndividuals,
@@ -48,10 +37,9 @@ export default function MergeIndividuals() {
     error: mergeError,
   } = useMergeIndividuals();
 
-  const [formData, setFormData] = useState({});
+  const [individuals, setIndividuals] = useState({});
 
-  const fetchError =
-    fetchConflictsError || fetchTargetError || fetchFromError;
+  const [formData, setFormData] = useState({});
 
   const showSexInput = Boolean(mergeConflicts?.sex);
   const nameContexts = mergeConflicts?.name_contexts || [];
@@ -67,7 +55,7 @@ export default function MergeIndividuals() {
     showAdoptionNameInput,
   );
 
-  if (fetchError)
+  if (fetchConflictsError)
     return (
       <SadScreen
         variant={errorTypes.genericError}
@@ -93,11 +81,17 @@ export default function MergeIndividuals() {
           <Text variant="h4" id="MERGE_INDIVIDUALS" />
         </Grid>
         <Grid item>
-          {individualData.map((individual, i) => (
+          {individualGuids.map(individualGuid => (
             <IndividualCard
-              key={individual?.guid || i}
-              data={individual}
-              mergeConflicts={mergeConflicts}
+              key={individualGuid}
+              individualGuid={individualGuid}
+              showSex={mergeConflicts?.sex}
+              setIndividualData={individualData =>
+                setIndividuals({
+                  ...individuals,
+                  [individualGuid]: individualData,
+                })
+              }
             />
           ))}
         </Grid>
@@ -117,7 +111,7 @@ export default function MergeIndividuals() {
                   })
                 }
                 fieldType="firstName"
-                individualData={individualData}
+                individualData={individuals}
               />
             )}
             {showAdoptionNameInput && (
@@ -130,7 +124,7 @@ export default function MergeIndividuals() {
                   })
                 }
                 fieldType="adoptionName"
-                individualData={individualData}
+                individualData={individuals}
               />
             )}
             {showSexInput && (
@@ -140,7 +134,7 @@ export default function MergeIndividuals() {
                   setFormData({ ...formData, sex: newSex })
                 }
                 fieldType="sex"
-                individualData={individualData}
+                individualData={individuals}
               />
             )}
           </Grid>
@@ -169,8 +163,8 @@ export default function MergeIndividuals() {
               );
 
               mergeIndividuals({
-                targetIndividualGuid: targetIndividualData?.guid,
-                fromIndividualGuids: [fromIndividualData?.guid],
+                targetIndividualGuid: individualGuids?.[0],
+                fromIndividualGuids: [individualGuids?.[1]],
                 propertyOverrides,
               });
             }}

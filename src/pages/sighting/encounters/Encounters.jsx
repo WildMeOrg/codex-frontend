@@ -171,6 +171,7 @@ export default function Encounters({
       />
 
       <ManuallyAssignModal
+        sightingGuid={sightingId}
         encounterId={encounterToAssign}
         open={Boolean(encounterToAssign)}
         onClose={() => setEncounterToAssign(null)}

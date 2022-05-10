@@ -7,9 +7,9 @@ import Skeleton from '@material-ui/lab/Skeleton';
 import defaultSightingSrc from '../../assets/defaultSighting.png';
 import useEncounter from '../../models/encounter/useEncounter';
 import useSiteSettings from '../../models/site/useSiteSettings';
-import LocationIdViewer from '../../components/fields/view/LocationIdViewer';
-import Text from '../../components/Text';
-import Link from '../../components/Link';
+import LocationIdViewer from '../fields/view/LocationIdViewer';
+import Text from '../Text';
+import Link from '../Link';
 import {
   formatDate,
   formatSpecifiedTime,
@@ -50,7 +50,7 @@ export default function EncounterCard({ encounterGuid }) {
   return (
     <Paper style={{ margin: '12px 0 20px', maxWidth: 660 }}>
       <div style={{ display: 'flex', padding: 20 }}>
-        {data ? (
+        {dataReady ? (
           <img
             src={sampleImageSrc || defaultSightingSrc}
             alt="Encounter"
