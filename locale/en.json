@@ -1054,7 +1054,7 @@
   "CONFIGURATION_INTELLIGENT_AGENT_TWITTERBOT_ACCESS_TOKEN_SECRET_LABEL": "Twitter access token secret",
   "CONFIGURATION_INTELLIGENT_AGENT_TWITTERBOT_BEARER_TOKEN_LABEL": "Twitter bearer token",
   "TWITTERBOT_SETUP_CONFIRMATION": "Twitter configured successfully",
-  "TWITTERBOT_NOT_CONFIGURED": "Twitter either disabled or not configured successfully",
+  "TWITTERBOT_NOT_CONFIGURED": "Twitter was not configured successfully",
   "TWITTER_API_KEYS_LABEL": "Platform Twitter information",
   "TWITTER_API_KEY_DESCRIPTION": "The information needed from your Twitter account. Use the {documentationLink} to find these values.",
   "TWITTER_API_DOCUMENTATION_URL_LABEL": "Twitter developer portal and documentation",

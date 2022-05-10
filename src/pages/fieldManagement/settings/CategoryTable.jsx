@@ -10,7 +10,7 @@ import AddIcon from '@material-ui/icons/Add';
 import CustomAlert from '../../../components/Alert';
 
 import useSiteSettings from '../../../models/site/useSiteSettings';
-import usePutSiteSetting from '../../../models/site/usePutSiteSettings';
+import usePutSiteSetting from '../../../models/site/usePutSiteSetting';
 import Button from '../../../components/Button';
 import ActionIcon from '../../../components/ActionIcon';
 import ConfirmDelete from '../../../components/ConfirmDelete';

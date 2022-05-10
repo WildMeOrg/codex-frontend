@@ -10,7 +10,7 @@ export default {
   assetGroupSightings: 'assetGroupSightings',
   allNotifications: 'allNotifications',
   unreadNotifications: 'unreadNotifications',
-  twitterBot: 'twitterbot',
+  twitterBotTestResults: 'twitterBotTestResults',
 };
 
 export function getAuditLogQueryKey(guid) {

@@ -5,7 +5,7 @@ import { get } from 'lodash-es';
 import Grid from '@material-ui/core/Grid';
 import CustomAlert from '../../../components/Alert';
 
-import usePutSiteSettings from '../../../models/site/usePutSiteSettings';
+import usePutSiteSetting from '../../../models/site/usePutSiteSetting';
 import DataDisplay from '../../../components/dataDisplays/DataDisplay';
 import ActionIcon from '../../../components/ActionIcon';
 import Text from '../../../components/Text';
@@ -62,7 +62,7 @@ export default function DefaultFieldTable({
     mutate: putSiteSetting,
     error,
     clearError,
-  } = usePutSiteSettings();
+  } = usePutSiteSetting();
 
   useEffect(
     () => setFormSettings(getInitialFormState(siteSettings)),

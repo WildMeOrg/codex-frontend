@@ -5,6 +5,9 @@ export default function usePutSiteSettings() {
   return usePost({
     url: '/site-settings/main/',
     deriveData: ({ data }) => data,
-    fetchKeys: [queryKeys.settingsConfig, queryKeys.twitterBot],
+    fetchKeys: [
+      queryKeys.settingsConfig,
+      queryKeys.twitterBotTestResults,
+    ],
   });
 }

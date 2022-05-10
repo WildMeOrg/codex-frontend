@@ -17,7 +17,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
 import CustomAlert from '../../../../components/Alert';
 
-import usePutSiteSetting from '../../../../models/site/usePutSiteSettings';
+import usePutSiteSetting from '../../../../models/site/usePutSiteSetting';
 import { createCustomFieldSchema } from '../../../../utils/fieldUtils';
 import { fieldTypeInfo } from '../../../../constants/fieldTypesNew';
 import useSiteSettings from '../../../../models/site/useSiteSettings';

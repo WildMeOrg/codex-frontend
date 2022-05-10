@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { FormattedMessage } from 'react-intl';
-import { get, reduce, filter } from 'lodash-es';
+import { get, reduce, filter, every } from 'lodash-es';
 
 import { intelligentAgentSchema } from '../../constants/intelligentAgentSchema';
 import SettingsTextInput from '../../components/settings/SettingsTextInput';
@@ -16,6 +16,35 @@ export default function IntelligentAgentSettings({
   siteSettings,
   setAllValid,
 }) {
+  useEffect(
+    () => {
+      const agentSettingsValid = intelligentAgentSchema.map(
+        intelligentAgent => {
+          const currentPlatformEnablingField = get(intelligentAgent, [
+            'data',
+            'enablingField',
+          ]);
+          const isCurrentPlatformEnabled = get(
+            currentValues,
+            currentPlatformEnablingField,
+            false,
+          );
+          const noCredsMissing =
+            intelligentAgentSettingsFields.filter(
+              currentField => get(currentValues, currentField) === '',
+            ).length === 0;
+          return (
+            !isCurrentPlatformEnabled ||
+            (isCurrentPlatformEnabled && noCredsMissing)
+          );
+        },
+      );
+      const allSettingsValide = every(agentSettingsValid, Boolean);
+      setAllValid(allSettingsValide);
+    },
+    [currentValues, intelligentAgentSchema],
+  );
+
   return intelligentAgentSchema.map(intelligentAgent => {
     const currentPlatformFields = get(
       intelligentAgent,
@@ -26,22 +55,11 @@ export default function IntelligentAgentSettings({
       'data',
       'enablingField',
     ]);
-
     const isCurrentPlatformEnabled = get(
       currentValues,
       currentPlatformEnablingField,
       false,
     );
-
-    const noCredsMissing =
-      intelligentAgentSettingsFields.filter(
-        currentField => get(currentValues, currentField) === '',
-      ).length === 0;
-
-    const allValid =
-      !isCurrentPlatformEnabled ||
-      (isCurrentPlatformEnabled && noCredsMissing);
-    setAllValid(allValid);
     const enablingPlatformField = currentPlatformFields.find(
       currentField => {
         const settingKey = get(currentField, 'label');
@@ -56,6 +74,11 @@ export default function IntelligentAgentSettings({
     );
 
     if (isCurrentPlatformEnabled) {
+      const nonEnablingFields = filter(
+        currentPlatformFields,
+        field => get(field, 'label') !== currentPlatformEnablingField,
+        [],
+      );
       return (
         <>
           <SettingsTextInput
@@ -100,12 +123,7 @@ export default function IntelligentAgentSettings({
               ),
             }}
           />
-          {filter(
-            currentPlatformFields,
-            field =>
-              get(field, 'label') !== currentPlatformEnablingField,
-            [],
-          ).map(currentField => {
+          {nonEnablingFields.map(currentField => {
             const settingKey = get(currentField, 'label');
             const skipDescription = get(
               currentField,

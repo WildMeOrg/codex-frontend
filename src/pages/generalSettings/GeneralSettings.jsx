@@ -66,6 +66,14 @@ const allSettingsFields = [
 export default function GeneralSettings() {
   const siteSettings = useSiteSettings();
 
+  const [currentValues, setCurrentValues] = useState(null);
+  const [logoPostData, setLogoPostData] = useState(null);
+  const [allValid, setAllValid] = useState(false);
+  const isTwitterDisabled = !get(
+    currentValues,
+    'intelligent_agent_twitterbot_enabled',
+  );
+
   const {
     mutate: putSiteSettings,
     error: putSiteSettingsError,
@@ -85,8 +93,7 @@ export default function GeneralSettings() {
     data: twitterTestResults,
     statusCode: twitterStatusCode,
     error: twitterTestError,
-    clearError: clearTwitterTestError,
-  } = useGetTwitterbotTestResults();
+  } = useGetTwitterbotTestResults(isTwitterDisabled);
 
   useDocumentTitle('GENERAL_SETTINGS');
 
@@ -100,9 +107,6 @@ export default function GeneralSettings() {
     },
     [twitterTestResults, twitterStatusCode],
   );
-  const [currentValues, setCurrentValues] = useState(null);
-  const [logoPostData, setLogoPostData] = useState(null);
-  const [allValid, setAllValid] = useState(false);
 
   const edmValues = allSettingsFields.map(fieldKey =>
     get(siteSettings, ['data', fieldKey, 'value']),
@@ -250,15 +254,19 @@ export default function GeneralSettings() {
           }}
         >
           {error && (
-            <CustomAlert severity="error" titleId="SUBMISSION_ERROR">
+            <CustomAlert
+              severity="error"
+              titleId="SUBMISSION_ERROR"
+              style={{ marginBottom: 16 }}
+            >
               {error}
             </CustomAlert>
           )}
-          {twitterTestError && (
+          {twitterTestError && !isTwitterDisabled && (
             <CustomAlert
               severity="warning"
               titleId="TWITTERBOT_NOT_CONFIGURED"
-              // onClose={clearTwitterTestError}
+              style={{ marginBottom: 16 }}
             />
           )}
           {success && (
@@ -270,6 +278,7 @@ export default function GeneralSettings() {
               severity="success"
               titleId="SUCCESS"
               descriptionId="CHANGES_SAVED"
+              style={{ marginBottom: 16 }}
             />
           )}
           {showTwitterSuccess && (
@@ -311,9 +320,7 @@ export default function GeneralSettings() {
                   };
                 }
               });
-              putSiteSettings({
-                data: currentValues,
-              });
+              putSiteSettings({ data: currentValues });
               if (logoPostData)
                 postSettingsAsset({
                   data: logoPostData,
