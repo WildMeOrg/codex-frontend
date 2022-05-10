@@ -20,6 +20,9 @@ const columns = [
     name: 'viewpoint',
     labelId: 'VIEWPOINT',
     align: 'left',
+    options: {
+      cellRenderer: cellRendererTypes.viewpoint,
+    },
   },
   {
     name: 'topScore',
@@ -33,7 +36,7 @@ const columns = [
 
 export default function QueryAnnotationsTable({
   queryAnnotations,
-  // selectedQueryAnnotation,
+  selectedQueryAnnotation,
   setSelectedQueryAnnotation,
 }) {
   return (
@@ -45,7 +48,8 @@ export default function QueryAnnotationsTable({
       columns={columns}
       hideDownloadCsv
       hideFilterColumns
-      // initiallySelectedRow={selectedQueryAnnotation?.guid}
+      selectionControlled
+      selectedRow={selectedQueryAnnotation?.guid}
       onSelectRow={nextSelection => {
         if (nextSelection) {
           setSelectedQueryAnnotation(nextSelection);
