@@ -10,7 +10,7 @@ import AddIcon from '@material-ui/icons/Add';
 import CustomAlert from '../../../components/Alert';
 
 import useSiteSettings from '../../../models/site/useSiteSettings';
-import usePutSiteSettings from '../../../models/site/usePutSiteSettings';
+import usePutSiteSetting from '../../../models/site/usePutSiteSetting';
 import Button from '../../../components/Button';
 import ActionIcon from '../../../components/ActionIcon';
 import ConfirmDelete from '../../../components/ConfirmDelete';
@@ -51,7 +51,11 @@ export default function FieldSettings() {
   const [dialogData, setDialogData] = useState(null);
   const [deleteCategory, setDeleteCategory] = useState(null);
   const { data: siteSettings, loading } = useSiteSettings();
-  const { putSiteSetting, error, setError } = usePutSiteSettings();
+  const {
+    mutate: putSiteSetting,
+    error,
+    setError,
+  } = usePutSiteSetting();
 
   const customFieldCategories = get(
     siteSettings,
@@ -138,17 +142,16 @@ export default function FieldSettings() {
             values={{ category: get(deleteCategory, 'label') }}
           />
         }
-        onDelete={() => {
+        onDelete={async () => {
           const newCustomCategories = removeItemById(
             deleteCategory,
             customFieldCategories,
           );
-          putSiteSetting(
-            categorySettingName,
-            newCustomCategories,
-          ).then(() => {
-            onCloseConfirmDelete();
+          const response = await putSiteSetting({
+            property: categorySettingName,
+            data: newCustomCategories,
           });
+          if (response?.status === 200) onCloseConfirmDelete();
         }}
       />
       {dialogData && (
@@ -214,7 +217,7 @@ export default function FieldSettings() {
                 </Button>
                 <Button
                   display="primary"
-                  onClick={() => {
+                  onClick={async () => {
                     if (!(dialogData.label && dialogData.type)) {
                       setError(
                         intl.formatMessage({
@@ -226,12 +229,12 @@ export default function FieldSettings() {
                         dialogData,
                         customFieldCategories,
                       );
-                      putSiteSetting(
-                        categorySettingName,
-                        newCustomCategories,
-                      ).then(() => {
-                        onCloseCategoryDialog();
+                      const response = await putSiteSetting({
+                        property: categorySettingName,
+                        data: newCustomCategories,
                       });
+                      if (response?.status === 200)
+                        onCloseCategoryDialog();
                     }
                   }}
                 >

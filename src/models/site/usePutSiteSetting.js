@@ -1,10 +1,12 @@
 import { usePost } from '../../hooks/useMutate';
 import queryKeys from '../../constants/queryKeys';
 
-export default function usePutSiteSettings() {
+export default function usePutSiteSetting() {
   return usePost({
-    url: '/site-settings/main/',
-    deriveData: ({ data }) => data,
+    deriveUrl: ({ property }) => `/site-settings/main/${property}`,
+    deriveData: ({ data }) => ({
+      _value: data,
+    }),
     fetchKeys: [
       queryKeys.settingsConfig,
       queryKeys.twitterBotTestResults,

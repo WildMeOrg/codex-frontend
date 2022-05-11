@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { get, zipObject } from 'lodash-es';
+import { get, reduce, zipObject } from 'lodash-es';
 
 import Grid from '@material-ui/core/Grid';
 
@@ -11,11 +11,14 @@ import CustomAlert from '../../components/Alert';
 import Button from '../../components/Button';
 import SettingsBreadcrumbs from '../../components/SettingsBreadcrumbs';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
+import useGetTwitterbotTestResults from '../../models/site/useGetTwitterbotTestResults';
 import MainColumn from '../../components/MainColumn';
 import Text from '../../components/Text';
 import DividerTitle from '../../components/DividerTitle';
 import SettingsFileUpload from '../../components/settings/SettingsFileUpload';
 import SettingsTextInput from '../../components/settings/SettingsTextInput';
+import IntelligentAgentSettings from './IntelligentAgentSettings';
+import { intelligentAgentSchema } from '../../constants/intelligentAgentSchema';
 
 const customFields = {
   sighting: 'site.custom.customFields.Occurrence',
@@ -39,33 +42,80 @@ const generalSettingsFields = [
   'site.look.logoIncludesSiteName',
 ];
 
+const intelligentAgentSettingsFields = reduce(
+  intelligentAgentSchema,
+  (memo, intelligentAgent) => {
+    const currentPlatformFields = get(
+      intelligentAgent,
+      ['data', 'fields'],
+      [],
+    );
+    const platformValues = Object.values(currentPlatformFields).map(
+      entry => get(entry, 'label'),
+    );
+    return [...memo, ...platformValues];
+  },
+  [],
+);
+
+const allSettingsFields = [
+  ...generalSettingsFields,
+  ...intelligentAgentSettingsFields,
+];
+
 export default function GeneralSettings() {
   const siteSettings = useSiteSettings();
-  const {
-    putSiteSettings,
-    error: putSiteSettingsError,
-    loading: formPostLoading,
-    success: formPostSuccess,
-    setSuccess: setFormPostSuccess,
-  } = usePutSiteSettings();
-
-  const {
-    postSettingsAsset,
-    loading: assetPostLoading,
-    error: settingsAssetPostError,
-    setSuccess: setAssetPostSuccess,
-  } = usePostSettingsAsset();
-
-  useDocumentTitle('GENERAL_SETTINGS');
 
   const [currentValues, setCurrentValues] = useState(null);
   const [logoPostData, setLogoPostData] = useState(null);
+  const [
+    intelligentAgentFieldsValid,
+    setIntelligentAgentFieldsValid,
+  ] = useState(false);
+  const isTwitterDisabled = !get(
+    currentValues,
+    'intelligent_agent_twitterbot_enabled',
+  );
 
-  const edmValues = generalSettingsFields.map(fieldKey =>
+  const {
+    mutate: putSiteSettings,
+    error: putSiteSettingsError,
+    loading: formPostLoading,
+    success: formPostSuccess,
+    clearSuccess: setClearPostSuccess,
+  } = usePutSiteSettings();
+
+  const {
+    mutate: postSettingsAsset,
+    loading: assetPostLoading,
+    error: settingsAssetPostError,
+    clearSuccess: setClearAssetPostSuccess,
+  } = usePostSettingsAsset();
+
+  const {
+    data: twitterTestResults,
+    statusCode: twitterStatusCode,
+    error: twitterTestError,
+  } = useGetTwitterbotTestResults(isTwitterDisabled);
+
+  useDocumentTitle('GENERAL_SETTINGS');
+
+  const [showTwitterSuccess, setShowTwitterSuccess] = useState(
+    twitterTestResults?.success,
+  );
+
+  useEffect(
+    () => {
+      setShowTwitterSuccess(twitterTestResults?.success);
+    },
+    [twitterTestResults, twitterStatusCode],
+  );
+
+  const edmValues = allSettingsFields.map(fieldKey =>
     get(siteSettings, ['data', fieldKey, 'value']),
   );
   useEffect(() => {
-    setCurrentValues(zipObject(generalSettingsFields, edmValues));
+    setCurrentValues(zipObject(allSettingsFields, edmValues));
   }, edmValues);
 
   const loading = assetPostLoading || formPostLoading;
@@ -187,6 +237,18 @@ export default function GeneralSettings() {
           setCurrentValues={setCurrentValues}
           siteSettings={siteSettings}
         />
+        <IntelligentAgentSettings
+          intelligentAgentSettingsFields={
+            intelligentAgentSettingsFields
+          }
+          currentValues={currentValues}
+          setCurrentValues={setCurrentValues}
+          siteSettings={siteSettings}
+          setIntelligentAgentFieldsValid={
+            setIntelligentAgentFieldsValid
+          }
+        />
+
         <Grid
           item
           style={{
@@ -196,21 +258,44 @@ export default function GeneralSettings() {
             marginTop: 28,
           }}
         >
-          {Boolean(error) && (
-            <CustomAlert severity="error" titleId="SUBMISSION_ERROR">
+          {error && (
+            <CustomAlert
+              severity="error"
+              titleId="SUBMISSION_ERROR"
+              style={{ marginBottom: 16 }}
+            >
               {error}
             </CustomAlert>
+          )}
+          {twitterTestError && !isTwitterDisabled && (
+            <CustomAlert
+              severity="warning"
+              titleId="TWITTERBOT_NOT_CONFIGURED"
+              style={{ marginBottom: 16 }}
+            />
           )}
           {success && (
             <CustomAlert
               onClose={() => {
-                setFormPostSuccess(false);
-                setAssetPostSuccess(false);
+                setClearPostSuccess();
+                setClearAssetPostSuccess();
               }}
               severity="success"
               titleId="SUCCESS"
               descriptionId="CHANGES_SAVED"
+              style={{ marginBottom: 16 }}
             />
+          )}
+          {showTwitterSuccess && (
+            <CustomAlert
+              onClose={() => {
+                setShowTwitterSuccess(false);
+              }}
+              severity="info"
+              titleId="TWITTERBOT_SETUP_CONFIRMATION"
+            >
+              {twitterTestResults?.message}
+            </CustomAlert>
           )}
           <Button
             onClick={() => {
@@ -218,7 +303,9 @@ export default function GeneralSettings() {
               Object.values(customFields).forEach(customFieldKey => {
                 const fields = currentValues[customFieldKey];
                 if (!fields) {
-                  currentValues[customFieldKey] = { definitions: [] };
+                  currentValues[customFieldKey] = {
+                    definitions: [],
+                  };
                 } else {
                   const newFields = get(
                     fields,
@@ -238,12 +325,16 @@ export default function GeneralSettings() {
                   };
                 }
               });
-              putSiteSettings(currentValues);
-              if (logoPostData) postSettingsAsset(logoPostData);
+              putSiteSettings({ data: currentValues });
+              if (logoPostData)
+                postSettingsAsset({
+                  data: logoPostData,
+                });
             }}
             style={{ marginTop: 12 }}
             display="primary"
             loading={loading}
+            disabled={!intelligentAgentFieldsValid}
             id="SAVE_CHANGES"
           />
         </Grid>

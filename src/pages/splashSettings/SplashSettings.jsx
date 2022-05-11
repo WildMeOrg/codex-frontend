@@ -38,7 +38,7 @@ const newSettingFields = [
 export default function SiteSettings() {
   const siteSettings = useSiteSettings();
   const {
-    putSiteSettings,
+    mutate: putSiteSettings,
     loading: formPostLoading,
     error: putSiteSettingsError,
     success: formPostSuccess,
@@ -46,7 +46,7 @@ export default function SiteSettings() {
   } = usePutSiteSettings();
 
   const {
-    postSettingsAsset,
+    mutate: postSettingsAsset,
     error: settingsAssetPostError,
     loading: assetPostLoading,
     setSuccess: setAssetPostSuccess,
@@ -256,13 +256,13 @@ export default function SiteSettings() {
                   };
                 }
               });
-              putSiteSettings(currentValues);
+              putSiteSettings({ data: currentValues });
               if (splashVideoPostData)
-                postSettingsAsset(splashVideoPostData);
+                postSettingsAsset({ data: splashVideoPostData });
               if (splashImagePostData)
-                postSettingsAsset(splashImagePostData);
+                postSettingsAsset({ data: splashImagePostData });
               if (customCardImagePostData)
-                postSettingsAsset(customCardImagePostData);
+                postSettingsAsset({ data: customCardImagePostData });
             }}
             style={{ marginTop: 12 }}
             display="primary"

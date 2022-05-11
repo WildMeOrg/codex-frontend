@@ -1054,5 +1054,18 @@
   "NO_PERMISSIONS_ERROR_DETAILS": "You do not have permissions to access the requested resource.",
   "NOT_AUTHENTICATED_ERROR_DETAILS": "Your request could not be processed due to an authentication error. Log in and try again.",
   "CONFIRM_REMOVE_RELATIONSHIP": "Are you sure you want to delete this relationship?",
-  "TWITTER_HANDLE": "Twitter handle"
+  "TWITTER_HANDLE": "Twitter handle",
+  "CONFIGURATION_INTELLIGENT_AGENT_TWITTERBOT_ENABLED_LABEL": "Allow Twitter submissions?",
+  "CONFIGURATION_INTELLIGENT_AGENT_TWITTERBOT_ENABLED_DESCRIPTION": "Any Twitter user will be able to create submissions to this platform via tweet. Platform users can add their Twitter handle on their user profile to maintain ownership of the sightings. Otherwise, the data will be public.",
+  "CONFIGURATION_INTELLIGENT_AGENT_TWITTERBOT_CONSUMER_KEY_LABEL": "Twitter consumer key",
+  "CONFIGURATION_INTELLIGENT_AGENT_TWITTERBOT_CONSUMER_SECRET_LABEL": "Twitter consumer secret",
+  "CONFIGURATION_INTELLIGENT_AGENT_TWITTERBOT_ACCESS_TOKEN_LABEL": "Twitter access token",
+  "CONFIGURATION_INTELLIGENT_AGENT_TWITTERBOT_ACCESS_TOKEN_SECRET_LABEL": "Twitter access token secret",
+  "CONFIGURATION_INTELLIGENT_AGENT_TWITTERBOT_BEARER_TOKEN_LABEL": "Twitter bearer token",
+  "TWITTERBOT_SETUP_CONFIRMATION": "Twitter configured successfully",
+  "TWITTERBOT_NOT_CONFIGURED": "Twitter was not configured successfully",
+  "TWITTER_API_KEYS_LABEL": "Platform Twitter information",
+  "TWITTER_API_KEY_DESCRIPTION": "The information needed from your Twitter account. Use the {documentationLink} to find these values.",
+  "TWITTER_API_DOCUMENTATION_URL_LABEL": "Twitter developer portal and documentation",
+  "TWITTER_SETTINGS": "Twitter configuration settings"
 }
