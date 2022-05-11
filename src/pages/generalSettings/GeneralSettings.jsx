@@ -106,6 +106,10 @@ export default function GeneralSettings() {
 
   useEffect(
     () => {
+      console.log('deleteMe twitterStatusCode is: ');
+      console.log(twitterStatusCode);
+      console.log('deleteMe twitterTestResults are: ');
+      console.log(twitterTestResults);
       setShowTwitterSuccess(twitterTestResults?.success);
     },
     [twitterTestResults, twitterStatusCode],
@@ -299,7 +303,6 @@ export default function GeneralSettings() {
           )}
           <Button
             onClick={() => {
-              setShowTwitterSuccess(false);
               /* Prepare custom fields objects to send to backend */
               Object.values(customFields).forEach(customFieldKey => {
                 const fields = currentValues[customFieldKey];
