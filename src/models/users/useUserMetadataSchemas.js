@@ -50,6 +50,8 @@ export default function useUserMetadataSchemas(displayedUserId) {
             'data',
             'enablingField',
           ]);
+          console.log('deleteMe currentPlatformEnablingField is: ');
+          console.log(currentPlatformEnablingField);
           const isEnabled = get(siteSettings, [
             'data',
             currentPlatformEnablingField,
@@ -57,10 +59,20 @@ export default function useUserMetadataSchemas(displayedUserId) {
           ]);
           console.log('deleteMe isEnabled is: ');
           console.log(isEnabled);
+          const deleteMeSchema = createFieldSchema(
+            fieldTypes.string,
+            {
+              name: intelligentAgent?.userMetadataKey,
+              labelId: intelligentAgent?.userMetadataLabel,
+              icon: intelligentAgent?.icon,
+            },
+          );
+          console.log('deleteMe deleteMeSchema is: ');
+          console.log(deleteMeSchema);
           return isEnabled
             ? createFieldSchema(fieldTypes.string, {
-                name: intelligentAgent?.useMetadataKey,
-                labelId: intelligentAgent?.useMetadataLabel,
+                name: intelligentAgent?.userMetadataKey,
+                labelId: intelligentAgent?.userMetadataLabel,
                 icon: intelligentAgent?.icon,
               })
             : null;
