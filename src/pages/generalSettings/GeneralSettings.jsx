@@ -110,7 +110,11 @@ export default function GeneralSettings() {
       console.log(twitterStatusCode);
       console.log('deleteMe twitterTestResults are: ');
       console.log(twitterTestResults);
-      setShowTwitterSuccess(twitterTestResults?.success);
+      setShowTwitterSuccess(
+        twitterStatusCode !== 400
+          ? twitterTestResults?.success
+          : false,
+      );
     },
     [twitterTestResults, twitterStatusCode],
   );

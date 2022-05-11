@@ -91,15 +91,21 @@ export default function IntelligentAgentSettings({
             skipDescription={enabledSkipDescription}
           />
           <DividerTitle
+            key={get(intelligentAgent, 'dividerLabel')}
             titleId={get(intelligentAgent, 'dividerLabel')}
             style={{ marginTop: 32 }}
           />
           <Text
+            key={get(intelligentAgent, 'platformInformationLabel')}
             style={{ marginTop: 20 }}
             variant="subtitle1"
             id={get(intelligentAgent, 'platformInformationLabel')}
           />
           <Text
+            key={get(
+              intelligentAgent,
+              'platformInformationDescription',
+            )}
             style={{ marginTop: 4 }}
             variant="body2"
             id={get(
@@ -109,11 +115,16 @@ export default function IntelligentAgentSettings({
             values={{
               documentationLink: (
                 <Link
+                  key={get(intelligentAgent, 'apiDocumentationUrl')}
                   newTab
                   external
                   href={get(intelligentAgent, 'apiDocumentationUrl')}
                 >
                   <FormattedMessage
+                    key={get(
+                      intelligentAgent,
+                      'apiDocumentationUrlLabel',
+                    )}
                     id={get(
                       intelligentAgent,
                       'apiDocumentationUrlLabel',
