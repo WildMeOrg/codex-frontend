@@ -68,7 +68,10 @@ export default function GeneralSettings() {
 
   const [currentValues, setCurrentValues] = useState(null);
   const [logoPostData, setLogoPostData] = useState(null);
-  const [allValid, setAllValid] = useState(false);
+  const [
+    intelligentAgentFieldsValid,
+    setIntelligentAgentFieldsValid,
+  ] = useState(false);
   const isTwitterDisabled = !get(
     currentValues,
     'intelligent_agent_twitterbot_enabled',
@@ -241,7 +244,9 @@ export default function GeneralSettings() {
           currentValues={currentValues}
           setCurrentValues={setCurrentValues}
           siteSettings={siteSettings}
-          setAllValid={setAllValid}
+          setIntelligentAgentFieldsValid={
+            setIntelligentAgentFieldsValid
+          }
         />
 
         <Grid
@@ -329,7 +334,7 @@ export default function GeneralSettings() {
             style={{ marginTop: 12 }}
             display="primary"
             loading={loading}
-            disabled={!allValid}
+            disabled={!intelligentAgentFieldsValid}
             id="SAVE_CHANGES"
           />
         </Grid>

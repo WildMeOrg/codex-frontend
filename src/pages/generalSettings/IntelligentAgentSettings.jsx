@@ -14,7 +14,7 @@ export default function IntelligentAgentSettings({
   currentValues,
   setCurrentValues,
   siteSettings,
-  setAllValid,
+  setIntelligentAgentFieldsValid,
 }) {
   useEffect(
     () => {
@@ -39,8 +39,8 @@ export default function IntelligentAgentSettings({
           );
         },
       );
-      const allSettingsValide = every(agentSettingsValid, Boolean);
-      setAllValid(allSettingsValide);
+      const allSettingsValid = every(agentSettingsValid, Boolean);
+      setIntelligentAgentFieldsValid(allSettingsValid);
     },
     [currentValues, intelligentAgentSchema],
   );
