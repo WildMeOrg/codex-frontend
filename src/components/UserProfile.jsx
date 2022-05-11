@@ -52,7 +52,7 @@ export default function UserProfile({
         )
         .map(schema => ({
           ...schema,
-          value: schema.getValue(schema, userData),
+          value: schema?.getValue(schema, userData),
         }));
     },
     [userData, metadataSchemas],
