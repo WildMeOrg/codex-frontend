@@ -1053,5 +1053,6 @@
   "NOT_AUTHENTICATED_ERROR_SUBTITLE": "Authentication error",
   "NO_PERMISSIONS_ERROR_DETAILS": "You do not have permissions to access the requested resource.",
   "NOT_AUTHENTICATED_ERROR_DETAILS": "Your request could not be processed due to an authentication error. Log in and try again.",
-  "CONFIRM_REMOVE_RELATIONSHIP": "Are you sure you want to delete this relationship?"
+  "CONFIRM_REMOVE_RELATIONSHIP": "Are you sure you want to delete this relationship?",
+  "TWITTER_HANDLE": "Twitter handle"
 }
