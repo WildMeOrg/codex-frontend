@@ -57,18 +57,6 @@ export default function useUserMetadataSchemas(displayedUserId) {
             currentPlatformEnablingField,
             'value',
           ]);
-          console.log('deleteMe isEnabled is: ');
-          console.log(isEnabled);
-          const deleteMeSchema = createFieldSchema(
-            fieldTypes.string,
-            {
-              name: intelligentAgent?.userMetadataKey,
-              labelId: intelligentAgent?.userMetadataLabel,
-              icon: intelligentAgent?.icon,
-            },
-          );
-          console.log('deleteMe deleteMeSchema is: ');
-          console.log(deleteMeSchema);
           return isEnabled
             ? createFieldSchema(fieldTypes.string, {
                 name: intelligentAgent?.userMetadataKey,
@@ -79,17 +67,6 @@ export default function useUserMetadataSchemas(displayedUserId) {
         },
         [],
       );
-      console.log('deleteMe intelligentAgentFields are: ');
-      console.log(intelligentAgentFields);
-      // const twitterFields = isTwitterEnabled
-      //   ? [
-      //       createFieldSchema(fieldTypes.string, {
-      //         name: 'twitter_username',
-      //         labelId: 'TWITTER_HANDLE',
-      //         icon: TwitterIcon,
-      //       }),
-      //     ]
-      //   : [];
 
       return [
         createFieldSchema(fieldTypes.string, {
