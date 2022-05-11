@@ -21,6 +21,7 @@ export default function SettingsTextInput({
   setCurrentValues,
   customFieldCategories,
   settingKey,
+  skipDescription = false,
 }) {
   const matchingSetting = get(siteSettings, ['data', settingKey]);
   const matchingSettingSchema = get(matchingSetting, 'schema', {});
@@ -46,22 +47,17 @@ export default function SettingsTextInput({
       >
         {matchingSetting && valueIsDefined ? (
           <>
-            <Text
-              style={{
-                marginTop: 20,
-              }}
-              variant="subtitle1"
-            >
+            <Text style={{ marginTop: 20 }} variant="subtitle1">
               <FormattedMessage id={matchingSetting.labelId} />
               {matchingSetting.required && ' *'}
             </Text>
-            <Text
-              style={{
-                marginTop: 4,
-              }}
-              variant="body2"
-              id={matchingSetting.descriptionId}
-            />
+            {!skipDescription && (
+              <Text
+                style={{ marginTop: 4 }}
+                variant="body2"
+                id={matchingSetting.descriptionId}
+              />
+            )}
           </>
         ) : (
           <>

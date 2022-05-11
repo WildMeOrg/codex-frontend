@@ -5,7 +5,7 @@ import { get } from 'lodash-es';
 import Grid from '@material-ui/core/Grid';
 import CustomAlert from '../../../components/Alert';
 
-import usePutSiteSettings from '../../../models/site/usePutSiteSettings';
+import usePutSiteSetting from '../../../models/site/usePutSiteSetting';
 import DataDisplay from '../../../components/dataDisplays/DataDisplay';
 import ActionIcon from '../../../components/ActionIcon';
 import Text from '../../../components/Text';
@@ -58,7 +58,11 @@ export default function DefaultFieldTable({
   const intl = useIntl();
   const [formSettings, setFormSettings] = useState(null);
   const [editField, setEditField] = useState(null);
-  const { putSiteSetting, error, setError } = usePutSiteSettings();
+  const {
+    mutate: putSiteSetting,
+    error,
+    clearError,
+  } = usePutSiteSetting();
 
   useEffect(
     () => setFormSettings(getInitialFormState(siteSettings)),
@@ -97,7 +101,7 @@ export default function DefaultFieldTable({
   ];
 
   const onCloseEditor = () => {
-    setError(null);
+    clearError();
     setEditField(null);
   };
 
@@ -114,25 +118,25 @@ export default function DefaultFieldTable({
           }}
           onSubmit={async () => {
             if (editField?.id === 'region') {
-              const success = await putSiteSetting(
-                editField.backendPath,
-                formSettings.regions,
-              );
-              if (success) onCloseEditor();
+              const response = await putSiteSetting({
+                property: editField.backendPath,
+                data: formSettings.regions,
+              });
+              if (response?.status === 200) onCloseEditor();
             }
             if (editField?.id === 'species') {
-              const success = await putSiteSetting(
-                editField.backendPath,
-                formSettings.species,
-              );
-              if (success) onCloseEditor();
+              const response = await putSiteSetting({
+                property: editField.backendPath,
+                data: formSettings.species,
+              });
+              if (response?.status === 200) onCloseEditor();
             }
             if (editField?.id === 'relationship') {
-              const success = await putSiteSetting(
-                editField.backendPath,
-                formSettings.relationships,
-              );
-              if (success) onCloseEditor();
+              const response = await putSiteSetting({
+                property: editField.backendPath,
+                data: formSettings.relationships,
+              });
+              if (response?.status === 200) onCloseEditor();
             }
           }}
         >

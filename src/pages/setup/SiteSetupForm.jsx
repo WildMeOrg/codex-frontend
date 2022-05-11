@@ -30,7 +30,7 @@ const SettingInput = function({
 export default function SiteSettings({ primaryButtonId }) {
   const newSiteSettings = useSiteSettings();
   const {
-    putSiteSettings,
+    mutate: putSiteSettings,
     error,
     setError,
     success,
@@ -179,8 +179,10 @@ export default function SiteSettings({ primaryButtonId }) {
               setError('Site name is required.');
             } else {
               putSiteSettings({
-                ...currentValues,
-                'site.needsSetup': false,
+                data: {
+                  ...currentValues,
+                  'site.needsSetup': false,
+                },
               });
             }
           }}
