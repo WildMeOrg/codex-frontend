@@ -20,6 +20,10 @@ export default function useUserMetadataSchemas(displayedUserId) {
     'deleteMe siteSettings in useUserMetadataSchemas are: ',
   );
   console.log(siteSettings);
+  const isTwitterEnabled =
+    siteSettings?.data?.intelligent_agent_twitterbot_enabled?.value;
+  console.log('deleteMe isTwitterEnabled is: ');
+  console.log(isTwitterEnabled);
 
   const isAdmin = get(currentUserData, 'is_admin', false);
   const isCurrentUser =
@@ -35,6 +39,15 @@ export default function useUserMetadataSchemas(displayedUserId) {
               labelId: 'PROFILE_LABEL_EMAIL',
               icon: EmailIcon,
               viewComponent: EmailViewer,
+            }),
+          ]
+        : [];
+      const twitterFields = isTwitterEnabled
+        ? [
+            createFieldSchema(fieldTypes.string, {
+              name: 'twitter_username',
+              labelId: 'TWITTER_HANDLE',
+              icon: TwitterIcon,
             }),
           ]
         : [];
@@ -62,11 +75,7 @@ export default function useUserMetadataSchemas(displayedUserId) {
           labelId: 'PROFILE_LABEL_LOCATION',
           icon: LocationIcon,
         }),
-        createFieldSchema(fieldTypes.string, {
-          name: 'twitter_username',
-          labelId: 'TWITTER_HANDLE',
-          icon: TwitterIcon,
-        }),
+        ...twitterFields,
       ];
     },
     [isAdmin],
