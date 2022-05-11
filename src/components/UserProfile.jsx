@@ -46,13 +46,10 @@ export default function UserProfile({
     () => {
       if (!userData || !metadataSchemas) return [];
       return metadataSchemas
-        .filter(schema => {
-          console.log('deleteMe schema is: ');
-          console.log(schema);
-          console.log('deleteMe userData is: ');
-          console.log(userData);
-          return schema.getValue(schema, userData) || !someoneElse;
-        })
+        .filter(
+          schema =>
+            schema?.getValue(schema, userData) || !someoneElse,
+        )
         .map(schema => ({
           ...schema,
           value: schema.getValue(schema, userData),
