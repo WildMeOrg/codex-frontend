@@ -299,6 +299,7 @@ export default function GeneralSettings() {
           )}
           <Button
             onClick={() => {
+              setShowTwitterSuccess(false);
               /* Prepare custom fields objects to send to backend */
               Object.values(customFields).forEach(customFieldKey => {
                 const fields = currentValues[customFieldKey];
