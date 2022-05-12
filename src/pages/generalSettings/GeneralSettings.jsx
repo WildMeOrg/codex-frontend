@@ -106,10 +106,6 @@ export default function GeneralSettings() {
 
   useEffect(
     () => {
-      console.log('deleteMe twitterStatusCode is: ');
-      console.log(twitterStatusCode);
-      console.log('deleteMe twitterTestResults are: ');
-      console.log(twitterTestResults);
       setShowTwitterSuccess(
         twitterStatusCode !== 400
           ? twitterTestResults?.success

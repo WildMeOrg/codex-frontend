@@ -35,8 +35,6 @@ export default function UserProfile({
   const intl = useIntl();
   const [editingProfile, setEditingProfile] = useState(false);
   const metadataSchemas = useUserMetadataSchemas(userId);
-  console.log('deleteMe metadataSchemas are: ');
-  console.log(metadataSchemas);
   const {
     data: agsData,
     loading: agsLoading,

@@ -4,7 +4,6 @@ import ForumIcon from '@material-ui/icons/Forum';
 import EmailIcon from '@material-ui/icons/Email';
 import LocationIcon from '@material-ui/icons/PersonPin';
 import AffiliationIcon from '@material-ui/icons/AccountBalance';
-// import TwitterIcon from '@material-ui/icons/Twitter'; //deleteMe
 
 import useGetMe from './useGetMe';
 import useSiteSettings from '../site/useSiteSettings';
@@ -17,14 +16,6 @@ import ForumIdViewer from '../../components/fields/view/ForumIdViewer';
 export default function useUserMetadataSchemas(displayedUserId) {
   const { data: currentUserData, loading, error } = useGetMe();
   const siteSettings = useSiteSettings();
-  console.log(
-    'deleteMe siteSettings in useUserMetadataSchemas are: ',
-  );
-  console.log(siteSettings);
-  const isTwitterEnabled =
-    siteSettings?.data?.intelligent_agent_twitterbot_enabled?.value;
-  console.log('deleteMe isTwitterEnabled is: ');
-  console.log(isTwitterEnabled);
 
   const isAdmin = get(currentUserData, 'is_admin', false);
   const isCurrentUser =
@@ -50,8 +41,6 @@ export default function useUserMetadataSchemas(displayedUserId) {
             'data',
             'enablingField',
           ]);
-          console.log('deleteMe currentPlatformEnablingField is: ');
-          console.log(currentPlatformEnablingField);
           const isEnabled = get(siteSettings, [
             'data',
             currentPlatformEnablingField,
