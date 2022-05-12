@@ -1056,7 +1056,7 @@
   "CONFIRM_REMOVE_RELATIONSHIP": "Are you sure you want to delete this relationship?",
   "TWITTER_HANDLE": "Twitter handle",
   "CONFIGURATION_INTELLIGENT_AGENT_TWITTERBOT_ENABLED_LABEL": "Allow Twitter submissions?",
-  "CONFIGURATION_INTELLIGENT_AGENT_TWITTERBOT_ENABLED_DESCRIPTION": "Any Twitter user will be able to create submissions to this platform via tweet. Platform users can add their Twitter handle on their user profile to maintain ownership of the sightings. Otherwise, the data will be public.",
+  "CONFIGURATION_INTELLIGENT_AGENT_TWITTERBOT_ENABLED_DESCRIPTION": "Any Twitter user will be able to create submissions to this platform via tweet. Platform users can add their Twitter handle on their user profile to maintain ownership of the sightings. Otherwise, the data will be public. Make sure that the bio of the platform twitter account reminds users to include image(s), a hashtag of the species, region/location id, and time/date.",
   "CONFIGURATION_INTELLIGENT_AGENT_TWITTERBOT_CONSUMER_KEY_LABEL": "Twitter consumer key",
   "CONFIGURATION_INTELLIGENT_AGENT_TWITTERBOT_CONSUMER_SECRET_LABEL": "Twitter consumer secret",
   "CONFIGURATION_INTELLIGENT_AGENT_TWITTERBOT_ACCESS_TOKEN_LABEL": "Twitter access token",
