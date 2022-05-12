@@ -106,7 +106,11 @@ export default function GeneralSettings() {
 
   useEffect(
     () => {
-      setShowTwitterSuccess(twitterTestResults?.success);
+      setShowTwitterSuccess(
+        twitterStatusCode !== 400
+          ? twitterTestResults?.success
+          : false,
+      );
     },
     [twitterTestResults, twitterStatusCode],
   );

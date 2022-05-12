@@ -45,11 +45,12 @@ export default function UserProfile({
       if (!userData || !metadataSchemas) return [];
       return metadataSchemas
         .filter(
-          schema => schema.getValue(schema, userData) || !someoneElse,
+          schema =>
+            schema?.getValue(schema, userData) || !someoneElse,
         )
         .map(schema => ({
           ...schema,
-          value: schema.getValue(schema, userData),
+          value: schema?.getValue(schema, userData),
         }));
     },
     [userData, metadataSchemas],

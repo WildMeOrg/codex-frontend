@@ -1054,6 +1054,7 @@
   "NO_PERMISSIONS_ERROR_DETAILS": "You do not have permissions to access the requested resource.",
   "NOT_AUTHENTICATED_ERROR_DETAILS": "Your request could not be processed due to an authentication error. Log in and try again.",
   "CONFIRM_REMOVE_RELATIONSHIP": "Are you sure you want to delete this relationship?",
+  "TWITTER_HANDLE": "Twitter handle",
   "CONFIGURATION_INTELLIGENT_AGENT_TWITTERBOT_ENABLED_LABEL": "Allow Twitter submissions?",
   "CONFIGURATION_INTELLIGENT_AGENT_TWITTERBOT_ENABLED_DESCRIPTION": "Any Twitter user will be able to create submissions to this platform via tweet. Platform users can add their Twitter handle on their user profile to maintain ownership of the sightings. Otherwise, the data will be public.",
   "CONFIGURATION_INTELLIGENT_AGENT_TWITTERBOT_CONSUMER_KEY_LABEL": "Twitter consumer key",

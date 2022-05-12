@@ -1,6 +1,11 @@
+import TwitterIcon from '@material-ui/icons/Twitter';
+
 export const intelligentAgentSchema = [
   {
     platformName: 'twitter',
+    userMetadataKey: 'twitter_username',
+    userMetadataLabel: 'TWITTER_HANDLE',
+    icon: TwitterIcon,
     dividerLabel: 'TWITTER_SETTINGS',
     platformInformationLabel: 'TWITTER_API_KEYS_LABEL',
     platformInformationDescription: 'TWITTER_API_KEY_DESCRIPTION',
