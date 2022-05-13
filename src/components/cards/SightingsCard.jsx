@@ -69,6 +69,11 @@ export default function SightingsCard({
       },
     },
     {
+      reference: 'locationIdValue',
+      name: 'locationId_value',
+      label: 'Location',
+    },
+    {
       reference: 'actions',
       name: 'guid',
       label: 'Actions',
