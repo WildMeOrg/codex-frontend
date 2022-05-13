@@ -137,6 +137,7 @@ export default function SightingsCard({
     >
       {!showMapView && (
         <DataDisplay
+          idKey="guid"
           noTitleBar
           tableSize="medium"
           columns={filteredColumns}
