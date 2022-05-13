@@ -8,13 +8,15 @@ import FilterPanel from '../../components/FilterPanel';
 import IndividualsDisplay from '../../components/dataDisplays/IndividualsDisplay';
 import Paginator from '../../components/dataDisplays/Paginator';
 
-const rowsPerPage = 2;
+const rowsPerPage = 100;
 
 export default function SearchIndividuals() {
   const [formFilters, setFormFilters] = useState([]);
   const [searchParams, setSearchParams] = useState({
     limit: rowsPerPage,
     offset: 0,
+    sort: 'created',
+    reverse: true,
   });
 
   const { data: searchResults, loading } = useFilterIndividuals({
@@ -45,6 +47,9 @@ export default function SearchIndividuals() {
         individuals={searchResults || []}
         hideFilterSearch
         loading={loading}
+        sortExternally
+        searchParams={searchParams}
+        setSearchParams={setSearchParams}
       />
       <Paginator
         searchParams={searchParams}

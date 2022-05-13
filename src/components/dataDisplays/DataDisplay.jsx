@@ -58,6 +58,9 @@ export default function DataDisplay({
   tableSize = 'small',
   noTitleBar,
   loading,
+  sortExternally,
+  searchParams,
+  setSearchParams,
   dataCount, // in a paginated table there will be more data than provided to the data prop
   paperStyles = {},
   tableStyles = {},
@@ -77,8 +80,10 @@ export default function DataDisplay({
     initialColumnNames,
   );
   const [filter, setFilter] = useState('');
-  const [sortColumn, setSortColumn] = useState(null);
-  const [sortDirection, setSortDirection] = useState(null);
+  const [internalSortColumn, setInternalSortColumn] = useState(null);
+  const [internalSortDirection, setInternalSortDirection] = useState(
+    null,
+  );
   const [anchorEl, setAnchorEl] = useState(null);
   const filterPopperOpen = Boolean(anchorEl);
 
@@ -109,10 +114,19 @@ export default function DataDisplay({
   });
 
   let sortedData = visibleData;
-  if (sortColumn) {
-    sortedData = sortBy(data, sortColumn);
-    if (sortDirection === 'asc') sortedData.reverse();
+  if (internalSortColumn) {
+    sortedData = sortBy(data, internalSortColumn);
+    if (internalSortDirection === 'asc') sortedData.reverse();
   }
+  const sortColumn = sortExternally
+    ? searchParams?.sort
+    : internalSortColumn;
+  const externalSortDirection = searchParams?.reverse
+    ? 'desc'
+    : 'asc';
+  const sortDirection = sortExternally
+    ? externalSortDirection
+    : internalSortDirection;
 
   const visibleColumns = columns.filter(column =>
     visibleColumnNames.includes(column.name),
@@ -284,10 +298,21 @@ export default function DataDisplay({
                       active={activeSort}
                       direction={activeSort ? sortDirection : 'asc'}
                       onClick={() => {
-                        setSortDirection(
-                          sortDirection === 'asc' ? 'desc' : 'asc',
-                        );
-                        setSortColumn(c.name);
+                        if (sortExternally) {
+                          const nextReverse = activeSort
+                            ? !searchParams?.reverse
+                            : false;
+                          setSearchParams({
+                            ...searchParams,
+                            sort: c.sortName || c.name,
+                            reverse: nextReverse,
+                          });
+                        } else {
+                          setInternalSortDirection(
+                            sortDirection === 'asc' ? 'desc' : 'asc',
+                          );
+                          setInternalSortColumn(c.name);
+                        }
                       }}
                     >
                       {columnLabel}

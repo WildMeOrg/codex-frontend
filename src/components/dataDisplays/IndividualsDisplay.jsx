@@ -24,6 +24,7 @@ export default function IndividualsDisplay({
   const columns = [
     {
       name: 'name',
+      sortName: 'firstName',
       label: intl.formatMessage({
         id: 'NAME',
       }),

@@ -6,7 +6,11 @@ import Link from '../Link';
 import DataDisplay from './DataDisplay';
 import { cellRendererTypes } from '../dataDisplays/cellRenderers';
 
-export default function SightingsDisplay({ sightings, loading }) {
+export default function SightingsDisplay({
+  sightings,
+  loading,
+  ...rest
+}) {
   const title = `${sightings.length} matching sightings`;
 
   const tableData = sightings.map(sighting => {
@@ -43,6 +47,7 @@ export default function SightingsDisplay({ sightings, loading }) {
     },
     {
       name: 'owners',
+      sortName: 'owners.full_name',
       labelId: 'REPORTER',
       align: 'left',
       options: {
@@ -114,6 +119,7 @@ export default function SightingsDisplay({ sightings, loading }) {
       //     </div>
       //   </div>
       // )}
+      {...rest}
     />
   );
 }

@@ -15,6 +15,8 @@ export default function SearchSightings() {
   const [searchParams, setSearchParams] = useState({
     limit: rowsPerPage,
     offset: 0,
+    sort: 'created',
+    reverse: true,
   });
 
   const { data: searchResults, loading } = useFilterSightings({
@@ -46,6 +48,9 @@ export default function SearchSightings() {
       <SightingsDisplay
         sightings={searchResults || []}
         loading={loading}
+        sortExternally
+        searchParams={searchParams}
+        setSearchParams={setSearchParams}
       />
       <Paginator
         searchParams={searchParams}
