@@ -55,9 +55,17 @@ export default function SightingsCard({
     {
       reference: 'date',
       name: 'time',
-      label: 'Date',
+      label: 'Date reported',
       options: {
         cellRenderer: cellRendererTypes.specifiedTime,
+      },
+    },
+    {
+      reference: 'created',
+      name: 'created',
+      label: 'Date created',
+      options: {
+        cellRenderer: cellRendererTypes.date,
       },
     },
     {
