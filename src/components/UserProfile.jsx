@@ -164,7 +164,12 @@ export default function UserProfile({
                   )
                 : intl.formatMessage({ id: 'SIGHTINGS' })
             }
-            columns={['individual', 'date', 'location', 'actions']}
+            columns={[
+              'individual',
+              'date',
+              'locationIdValue',
+              'actions',
+            ]}
             hideSubmitted
             sightings={sightingsData || []}
             loading={sightingsLoading}

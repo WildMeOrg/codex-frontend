@@ -55,9 +55,17 @@ export default function SightingsCard({
     {
       reference: 'date',
       name: 'time',
-      label: 'Date',
+      label: 'Date reported',
       options: {
         cellRenderer: cellRendererTypes.specifiedTime,
+      },
+    },
+    {
+      reference: 'created',
+      name: 'created',
+      label: 'Date created',
+      options: {
+        cellRenderer: cellRendererTypes.date,
       },
     },
     {
@@ -67,6 +75,11 @@ export default function SightingsCard({
       options: {
         cellRenderer: cellRendererTypes.location,
       },
+    },
+    {
+      reference: 'locationIdValue',
+      name: 'locationId_value',
+      label: 'Location',
     },
     {
       reference: 'actions',
@@ -132,6 +145,7 @@ export default function SightingsCard({
     >
       {!showMapView && (
         <DataDisplay
+          idKey="guid"
           noTitleBar
           tableSize="medium"
           columns={filteredColumns}
