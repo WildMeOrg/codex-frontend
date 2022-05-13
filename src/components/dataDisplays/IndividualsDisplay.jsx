@@ -96,7 +96,6 @@ export default function IndividualsDisplay({
       //   window.open('/individuals/picturebook', '_blank');
       // }}
       dataCount={hitCount}
-      paginatedExternally
       showNoResultsBao
       // renderExpandedRow={expandedIndividual => (
       //   <div style={{ display: 'flex' }}>

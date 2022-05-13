@@ -6,7 +6,7 @@ import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import LastPageIcon from '@material-ui/icons/LastPage';
 
-/* we have a way to know result count so this is placeholder... */
+/* we have no way to know result count so this is placeholder... */
 const count = 1000;
 
 /* Will update the offset property of searchParams only */
