@@ -13,12 +13,12 @@ import Text from '../Text';
 export default function IndividualsDisplay({
   individuals,
   loading,
-  hitCount,
+  dataCount,
   ...rest
 }) {
   const intl = useIntl();
-  const title = hitCount
-    ? `${hitCount} matching individuals`
+  const title = dataCount
+    ? `${dataCount} matching individuals`
     : 'Matching individuals';
 
   const columns = [
@@ -96,7 +96,6 @@ export default function IndividualsDisplay({
       // onPrint={() => {
       //   window.open('/individuals/picturebook', '_blank');
       // }}
-      dataCount={hitCount}
       showNoResultsBao
       // renderExpandedRow={expandedIndividual => (
       //   <div style={{ display: 'flex' }}>

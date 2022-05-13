@@ -19,10 +19,12 @@ export default function SearchIndividuals() {
     reverse: true,
   });
 
-  const { data: searchResults, loading } = useFilterIndividuals({
+  const { data, loading } = useFilterIndividuals({
     queries: formFilters,
     params: searchParams,
   });
+
+  const { results: searchResults, resultCount } = data;
 
   const schemas = useIndividualSearchSchemas();
 
@@ -50,10 +52,12 @@ export default function SearchIndividuals() {
         sortExternally
         searchParams={searchParams}
         setSearchParams={setSearchParams}
+        dataCount={resultCount}
       />
       <Paginator
         searchParams={searchParams}
         setSearchParams={setSearchParams}
+        count={resultCount}
       />
     </SearchPage>
   );

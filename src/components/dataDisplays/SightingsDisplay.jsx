@@ -9,9 +9,10 @@ import { cellRendererTypes } from '../dataDisplays/cellRenderers';
 export default function SightingsDisplay({
   sightings,
   loading,
+  dataCount,
   ...rest
 }) {
-  const title = `${sightings.length} matching sightings`;
+  const title = `${dataCount || sightings.length} matching sightings`;
 
   const tableData = sightings.map(sighting => {
     const encounters = sighting?.encounters || [];

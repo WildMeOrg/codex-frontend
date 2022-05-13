@@ -61,7 +61,6 @@ export default function DataDisplay({
   sortExternally,
   searchParams,
   setSearchParams,
-  dataCount, // in a paginated table there will be more data than provided to the data prop
   paperStyles = {},
   tableStyles = {},
   cellStyles = {},

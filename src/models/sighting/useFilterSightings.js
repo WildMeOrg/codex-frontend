@@ -1,4 +1,4 @@
-import { partition } from 'lodash-es';
+import { get, partition } from 'lodash-es';
 
 import useFetch from '../../hooks/useFetch';
 import { getSightingFilterQueryKey } from '../../constants/queryKeys';
@@ -27,6 +27,17 @@ export default function useFilterSightings({ queries, params = {} }) {
       sort: 'created',
       reverse: false,
       ...params,
+    },
+    dataAccessor: result => {
+      const resultCountString = get(result, [
+        'data',
+        'headers',
+        'x-total-count',
+      ]);
+      return {
+        resultCount: parseInt(resultCountString),
+        results: get(result, ['data', 'data']),
+      };
     },
     queryOptions: {
       retry: 2,

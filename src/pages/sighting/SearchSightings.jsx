@@ -19,10 +19,12 @@ export default function SearchSightings() {
     reverse: true,
   });
 
-  const { data: searchResults, loading } = useFilterSightings({
+  const { data, loading } = useFilterSightings({
     queries: formFilters,
     params: searchParams,
   });
+
+  const { results: searchResults, resultCount } = data;
 
   const schemas = useSightingSearchSchemas();
 
@@ -51,10 +53,12 @@ export default function SearchSightings() {
         sortExternally
         searchParams={searchParams}
         setSearchParams={setSearchParams}
+        dataCount={resultCount}
       />
       <Paginator
         searchParams={searchParams}
         setSearchParams={setSearchParams}
+        count={resultCount}
       />
     </SearchPage>
   );
