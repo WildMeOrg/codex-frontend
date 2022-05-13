@@ -9,8 +9,6 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import TableFooter from '@material-ui/core/TableFooter';
-import TablePagination from '@material-ui/core/TablePagination';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
@@ -28,7 +26,6 @@ import CloudDownload from '@material-ui/icons/CloudDownload';
 import BaoDetective from '../svg/BaoDetective';
 import FilterBar from '../FilterBar';
 import Text from '../Text';
-import TablePaginationActions from './TablePaginationActions';
 import CollapsibleRow from './CollapsibleRow';
 import sendCsv from './sendCsv';
 
@@ -61,11 +58,6 @@ export default function DataDisplay({
   tableSize = 'small',
   noTitleBar,
   loading,
-  paginated = false,
-  paginatedExternally = true, // display all data provided and let parent component(s) paginate
-  page,
-  onChangePage,
-  rowsPerPage,
   dataCount, // in a paginated table there will be more data than provided to the data prop
   paperStyles = {},
   tableStyles = {},
@@ -94,15 +86,7 @@ export default function DataDisplay({
     ? selectedRowFromProps
     : internalSelectedRow;
 
-  const startIndex = paginated ? page * rowsPerPage : 0;
-  const endIndex = paginated
-    ? (page + 1) * rowsPerPage - 1
-    : Infinity;
-
-  const visibleData = data?.filter((datum, index) => {
-    if (index < startIndex && !paginatedExternally) return false;
-    if (index > endIndex && !paginatedExternally) return false;
-
+  const visibleData = data?.filter(datum => {
     let match = false;
     columns.forEach(c => {
       const userSuppliedDataParser = get(c, 'options.getStringValue');
@@ -338,20 +322,6 @@ export default function DataDisplay({
                 />
               ))}
           </TableBody>
-          {paginated && !loading && !noResults && (
-            <TableFooter>
-              <TableRow>
-                <TablePagination
-                  page={page}
-                  count={dataCount || get(data, 'length', 0)}
-                  onChangePage={onChangePage}
-                  rowsPerPage={rowsPerPage}
-                  rowsPerPageOptions={[rowsPerPage]}
-                  ActionsComponent={TablePaginationActions}
-                />
-              </TableRow>
-            </TableFooter>
-          )}
         </Table>
       </TableContainer>
       {noResults && (

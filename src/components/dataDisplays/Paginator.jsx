@@ -6,12 +6,25 @@ import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import LastPageIcon from '@material-ui/icons/LastPage';
 
-export default function TablePaginationActions({
-  count,
-  page,
-  rowsPerPage,
-  onChangePage,
+/* we have a way to know result count so this is placeholder... */
+const count = 1000;
+
+/* Will update the offset property of searchParams only */
+export default function Paginator({
+  searchParams = {},
+  setSearchParams = Function.prototype,
 }) {
+  const page = Math.round(searchParams?.offset / searchParams?.limit);
+
+  const pageCount = Math.ceil(count / searchParams?.limit) - 1;
+
+  const onChangePage = (_, nextPage) => {
+    setSearchParams({
+      ...searchParams,
+      offset: searchParams?.limit * nextPage,
+    });
+  };
+
   const handleFirstPageButtonClick = event => {
     onChangePage(event, 0);
   };
@@ -25,10 +38,7 @@ export default function TablePaginationActions({
   };
 
   const handleLastPageButtonClick = event => {
-    onChangePage(
-      event,
-      Math.max(0, Math.ceil(count / rowsPerPage) - 1),
-    );
+    onChangePage(event, Math.max(0, pageCount));
   };
 
   return (
@@ -49,14 +59,14 @@ export default function TablePaginationActions({
       </IconButton>
       <IconButton
         onClick={handleNextButtonClick}
-        disabled={page >= Math.ceil(count / rowsPerPage) - 1}
+        disabled={page >= pageCount}
         aria-label="next page"
       >
         <KeyboardArrowRight />
       </IconButton>
       <IconButton
         onClick={handleLastPageButtonClick}
-        disabled={page >= Math.ceil(count / rowsPerPage) - 1}
+        disabled={page >= pageCount}
         aria-label="last page"
       >
         <LastPageIcon />
