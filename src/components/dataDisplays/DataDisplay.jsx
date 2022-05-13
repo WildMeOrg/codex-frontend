@@ -283,7 +283,8 @@ export default function DataDisplay({
             <TableRow>
               {renderExpandedRow && <TableCell />}
               {visibleColumns.map((c, i) => {
-                const activeSort = c.name === sortColumn;
+                const activeSort =
+                  c.name === sortColumn || c.sortName === sortColumn;
                 const columnLabel = c?.labelId
                   ? intl.formatMessage({ id: c.labelId })
                   : c?.label;
