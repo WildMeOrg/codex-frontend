@@ -1,6 +1,9 @@
 import React, { memo } from 'react';
+import { useIntl } from 'react-intl';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import TextField from '@material-ui/core/TextField';
+
+import { get } from 'lodash-es';
 
 import fieldTypes from '../../../constants/fieldTypesNew';
 import useLabel from '../../../hooks/useLabel';
@@ -17,7 +20,9 @@ const TextInput = function(props) {
     ...rest
   } = props;
 
+  const intl = useIntl();
   const label = useLabel(schema);
+  const placeholder = get(schema, 'placeholder');
   const description = useDescription(schema);
   const showDescription = !minimalLabels && description;
 
@@ -37,7 +42,11 @@ const TextInput = function(props) {
         id={schema.name}
         multiline={isLongString}
         maxRows={isLongString ? 5 : undefined}
-        label={label}
+        label={
+          placeholder
+            ? intl.formatMessage({ id: placeholder })
+            : label
+        }
         type={type}
         onChange={e => {
           const inputValue = e.target.value;

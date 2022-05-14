@@ -51,6 +51,7 @@ export default function useUserMetadataSchemas(displayedUserId) {
                 name: intelligentAgent?.userMetadataKey,
                 labelId: intelligentAgent?.userMetadataLabel,
                 icon: intelligentAgent?.icon,
+                placeholder: intelligentAgent?.placeholder,
               })
             : null;
         },
