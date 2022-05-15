@@ -22,12 +22,12 @@ import EntityHeader from '../../components/EntityHeader';
 import AGSTable from './AGSTable';
 
 export default function AssetGroup() {
-  const { id } = useParams();
+  const { id: guid } = useParams();
   const history = useHistory();
   const queryClient = useQueryClient();
   const intl = useIntl();
 
-  const { data, loading, error, statusCode } = useAssetGroup(id);
+  const { data, loading, error, statusCode } = useAssetGroup(guid);
 
   const {
     deleteAssetGroup,
@@ -36,7 +36,9 @@ export default function AssetGroup() {
     setError: setDeleteSightingError,
   } = useDeleteAssetGroup();
 
-  useDocumentTitle(`Asset group ${id}`, { translateMessage: false });
+  useDocumentTitle(`Asset group ${guid}`, {
+    translateMessage: false,
+  });
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
   if (error)
@@ -67,7 +69,7 @@ export default function AssetGroup() {
         open={deleteDialogOpen}
         onClose={() => setDeleteDialogOpen(false)}
         onDelete={async () => {
-          const successful = await deleteAssetGroup(id);
+          const successful = await deleteAssetGroup(guid);
           if (successful) {
             setDeleteDialogOpen(false);
             history.push('/');
