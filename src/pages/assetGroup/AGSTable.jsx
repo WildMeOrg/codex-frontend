@@ -11,9 +11,9 @@ export default function AGSTable({ assetGroupSightings }) {
 
   const transformedData = assetGroupSightings.map(ags => ({
     ...ags,
-    time: ags?.config?.time,
-    timeSpecificity: ags?.config?.timeSpecificity,
-    locationId: ags?.config?.locationId,
+    time: ags?.config?.sighting?.time,
+    timeSpecificity: ags?.config?.sighting?.timeSpecificity,
+    locationId: ags?.config?.sighting?.locationId,
     assetCount: get(ags, ['assets', 'length'], 0),
   }));
 
