@@ -1071,5 +1071,14 @@
   "TWITTER_SETTINGS": "Twitter configuration settings",
   "TWITTER_HANDLE_NO_AT": "Twitter handle without the @",
   "FLATFILE_POLICY": "By continuing, you agree to Flatfile's {privacyPolicy}",
-  "FLATFILE_POLICY_LINK": "privacy policy"
+  "FLATFILE_POLICY_LINK": "privacy policy",
+  "PROGRESS_STATUS_QUEUED": "Queued",
+  "PROGRESS_STATUS_PROCESSING": "Processing",
+  "PROGRESS_STATUS_COMPLETE": "Complete",
+  "PROGRESS_STATUS_CANCELLED": "Cancelled",
+  "PROGRESS_STATUS_FAILED": "Failed",
+  "PROGRESS_QUEUED_BEHIND_JOBS": "Queued behind {jobCount, number} {jobCount, plural, =0 {jobs} one {job} other {jobs}}",
+  "PROGRESS_CALCULATING_TIME_REMAINING": "Calculating time remaining...",
+  "PROGRESS_WRAPPING_UP": "Wrapping up...",
+  "PROGRESS_TIME_LEFT": "{timeRemaining} left"
 }
