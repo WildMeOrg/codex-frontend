@@ -16,7 +16,10 @@ export default function UnprocessedBulkImportAlert({
 
   if (!assetGroupData) return null;
 
-  const sightingCount = get(assetGroupData, ['sightings', 'length']);
+  const sightingCount = get(assetGroupData, [
+    'asset_group_sightings',
+    'length',
+  ]);
   const date = get(assetGroupData, 'created');
   const id = get(assetGroupData, 'guid');
   const formattedDate = formatDate(date, true);
