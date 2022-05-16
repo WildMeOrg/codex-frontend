@@ -10,7 +10,6 @@ import CustomAlert from '../Alert';
 import Text from '../Text';
 import LinearProgressWithLabel from '../LinearProgressWithLabel';
 import useProgressQuery from '../../models/progress/useProgressQuery';
-import { stage as agsStage } from '../../constants/assetGroupSighting';
 import {
   progressStatus,
   progressProperties,
@@ -61,7 +60,7 @@ export function deriveMetrics(
   isLoading,
   data,
   error,
-  sightingStage,
+  isAssetGroupPreparing,
 ) {
   if (isLoading) {
     return {
@@ -74,7 +73,7 @@ export function deriveMetrics(
   const isResolved = isProgressResolved(data, error);
 
   // The sighting needs time to re-fetch after processing is complete
-  if (isResolved && sightingStage === agsStage.preparation) {
+  if (isResolved && isAssetGroupPreparing) {
     const { percentage, ...rest } = metricsShim;
     return {
       percentage,
@@ -118,7 +117,8 @@ export function deriveMetrics(
 
 export default function AssetsProcessingAlert({
   progressGuid,
-  sightingStage,
+  isAssetGroupPreparing,
+  ...rest
 }) {
   const intl = useIntl();
   const theme = useTheme();
@@ -127,12 +127,14 @@ export default function AssetsProcessingAlert({
     notifyOnChangeProps: ['isLoading', 'data', 'error'],
   });
 
+  if (!progressGuid) return <div {...rest} />;
+
   const { percentage, formattedMetrics } = deriveMetrics(
     intl,
     isLoading,
     data,
     error,
-    sightingStage,
+    isAssetGroupPreparing,
   );
 
   return (
@@ -140,6 +142,7 @@ export default function AssetsProcessingAlert({
       titleId="PENDING_IMAGE_PROCESSING"
       descriptionId="PENDING_IMAGE_PROCESSING_MESSAGE"
       severity="info"
+      {...rest}
     >
       <Box mt={2} minHeight="2em" display="flex" alignItems="center">
         {isNil(percentage) ? (

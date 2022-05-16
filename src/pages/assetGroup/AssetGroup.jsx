@@ -4,12 +4,14 @@ import { useIntl } from 'react-intl';
 import { get } from 'lodash-es';
 import { useQueryClient } from 'react-query';
 
+import { Fade } from '@material-ui/core';
+
 import errorTypes from '../../constants/errorTypes';
 import useDeleteAssetGroup from '../../models/assetGroup/useDeleteAssetGroup';
 import useAssetGroup from '../../models/assetGroup/useAssetGroup';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import { formatDate } from '../../utils/formatters';
-
+import { stage as agsStage } from '../../constants/assetGroupSighting';
 import queryKeys from '../../constants/queryKeys';
 import MainColumn from '../../components/MainColumn';
 import LoadingScreen from '../../components/LoadingScreen';
@@ -20,6 +22,8 @@ import MoreMenu from '../../components/MoreMenu';
 import ConfirmDelete from '../../components/ConfirmDelete';
 import EntityHeader from '../../components/EntityHeader';
 import AGSTable from './AGSTable';
+import AssetsProcessingAlert from '../../components/assets/AssetsProcessingAlert';
+import { defaultCrossfadeDuration } from '../../constants/defaults';
 
 export default function AssetGroup() {
   const { id: guid } = useParams();
@@ -28,6 +32,10 @@ export default function AssetGroup() {
   const intl = useIntl();
 
   const { data, loading, error, statusCode } = useAssetGroup(guid);
+  const preparationProgressGuid = get(
+    data,
+    'progress_preparation.guid',
+  );
 
   const {
     deleteAssetGroup,
@@ -62,6 +70,10 @@ export default function AssetGroup() {
     sightingCreator?.full_name ||
     intl.formatMessage({ id: 'UNNAMED_USER' });
   const creatorUrl = `/users/${sightingCreator?.guid}`;
+
+  const assetGroupSightings = get(data, 'asset_group_sightings', []);
+  const isAssetGroupPreparing =
+    assetGroupSightings[0]?.stage === agsStage.preparation;
 
   return (
     <MainColumn fullWidth>
@@ -113,9 +125,17 @@ export default function AssetGroup() {
           </Text>
         )}
       </EntityHeader>
-      <AGSTable
-        assetGroupSightings={get(data, 'asset_group_sightings', [])}
-      />
+      <Fade
+        in={isAssetGroupPreparing}
+        timeout={{ exit: defaultCrossfadeDuration }}
+        unmountOnExit
+      >
+        <AssetsProcessingAlert
+          progressGuid={preparationProgressGuid}
+          isAssetGroupPreparing={isAssetGroupPreparing}
+        />
+      </Fade>
+      <AGSTable assetGroupSightings={assetGroupSightings} />
     </MainColumn>
   );
 }
