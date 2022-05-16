@@ -1,8 +1,10 @@
+import useOptions from '../../hooks/useOptions';
 import OptionTermFilter from '../../components/filterFields/OptionTermFilter';
 import SubstringFilter from '../../components/filterFields/SubstringFilter';
 import DateRangeFilter from '../../components/filterFields/DateRangeFilter';
 
 export default function useSightingSearchSchemas() {
+  const { regionOptions } = useOptions();
   return [
     {
       id: 'owner',
@@ -20,12 +22,12 @@ export default function useSightingSearchSchemas() {
       filterComponentProps: {
         queryTerm: 'locationId_id',
         filterId: 'locationId_id',
-        choices: [],
+        choices: regionOptions,
       },
     },
     {
       id: 'verbatimLocality',
-      labelId: 'LOCATION',
+      labelId: 'FREEFORM_LOCATION',
       FilterComponent: SubstringFilter,
       filterComponentProps: {
         filterId: 'verbatimLocality',

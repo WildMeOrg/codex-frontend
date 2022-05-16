@@ -1,3 +1,4 @@
+import useOptions from '../../hooks/useOptions';
 import OptionTermFilter from '../../components/filterFields/OptionTermFilter';
 import SubstringFilter from '../../components/filterFields/SubstringFilter';
 import DateRangeFilter from '../../components/filterFields/DateRangeFilter';
@@ -27,6 +28,7 @@ const hasAnnotationOptions = [
 ];
 
 export default function useIndividualSearchSchemas() {
+  const { speciesOptions } = useOptions();
   return [
     {
       id: 'firstName',
@@ -66,17 +68,18 @@ export default function useIndividualSearchSchemas() {
         filterId: 'annotation',
         choices: hasAnnotationOptions,
       },
-    }, //   labelId: 'SPECIES', //   id: 'taxonomy', // {
-    //   FilterComponent: OptionTermFilter,
-    //   filterComponentProps: {
-    //     queryType: 'term',
-    //     queryTerm: 'taxonomy_guid',
-    //     filterId: 'taxonomy_guid',
-    //     choices: taxonomyOptions,
-    //   },
-    // },
-    // {
-    //   id: 'gps',
+    },
+    {
+      id: 'taxonomy',
+      labelId: 'SPECIES',
+      FilterComponent: OptionTermFilter,
+      filterComponentProps: {
+        queryType: 'term',
+        queryTerm: 'taxonomy_guid',
+        filterId: 'taxonomy_guid',
+        choices: speciesOptions,
+      },
+    }, //   id: 'gps', // {
     //   labelId: 'DISTANCE_FROM_POINT',
     //   FilterComponent: PointDistanceFilter,
     //   filterComponentProps: {
