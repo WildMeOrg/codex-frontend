@@ -28,6 +28,7 @@
   "SIGHTING_COMMIT_TITLE": "Ready to commit",
   "REMOVE_FROM_CLUSTER": "Remove from animal",
   "MOVE_ANNOTATION": "Move annotation",
+  "SIGHTING_COUNT": "Sighting count",
   "NO_UNASSIGNED_ANNOTATIONS": "There are no unassigned annotations available.",
   "NO_DESTINATION_CLUSTERS": "This annotation cannot be moved because there are no other animals in this sighting.",
   "NO_ANNOTATIONS_IN_CLUSTER": "This animal has no annotations.",
