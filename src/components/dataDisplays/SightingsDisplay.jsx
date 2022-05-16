@@ -96,6 +96,7 @@ export default function SightingsDisplay({
       data={tableData}
       title={title}
       loading={loading}
+      showNoResultsBao
       // renderExpandedRow={expandedSighting => (
       //   <div style={{ display: 'flex' }}>
       //     <img
