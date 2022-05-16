@@ -10,6 +10,7 @@ import CustomAlert from '../Alert';
 import Text from '../Text';
 import LinearProgressWithLabel from '../LinearProgressWithLabel';
 import useProgressQuery from '../../models/progress/useProgressQuery';
+import { stage as agsStage } from '../../constants/assetGroupSighting';
 import {
   progressStatus,
   progressProperties,
@@ -73,7 +74,7 @@ export function deriveMetrics(
   const isResolved = isProgressResolved(data, error);
 
   // The sighting needs time to re-fetch after processing is complete
-  if (isResolved && sightingStage === 'preparation') {
+  if (isResolved && sightingStage === agsStage.preparation) {
     const { percentage, ...rest } = metricsShim;
     return {
       percentage,

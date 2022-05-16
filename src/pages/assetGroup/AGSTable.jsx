@@ -5,16 +5,21 @@ import { get } from 'lodash-es';
 import ActionIcon from '../../components/ActionIcon';
 import DataDisplay from '../../components/dataDisplays/DataDisplay';
 import { cellRendererTypes } from '../../components/dataDisplays/cellRenderers';
+import { stage as agsStage } from '../../constants/assetGroupSighting';
 
 export default function AGSTable({ assetGroupSightings }) {
   const intl = useIntl();
+  const pendingMessage = intl.formatMessage({ id: 'PENDING' });
 
   const transformedData = assetGroupSightings.map(ags => ({
     ...ags,
     time: ags?.config?.sighting?.time,
     timeSpecificity: ags?.config?.sighting?.timeSpecificity,
     locationId: ags?.config?.sighting?.locationId,
-    assetCount: get(ags, ['assets', 'length'], 0),
+    assetCount:
+      ags?.stage === agsStage.preparation
+        ? pendingMessage
+        : get(ags, ['assets', 'length'], 0),
   }));
 
   const columns = [

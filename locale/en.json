@@ -1085,5 +1085,6 @@
   "PROGRESS_QUEUED_BEHIND_JOBS": "Queued behind {jobCount, number} {jobCount, plural, =0 {jobs} one {job} other {jobs}}",
   "PROGRESS_CALCULATING_TIME_REMAINING": "Calculating time remaining...",
   "PROGRESS_WRAPPING_UP": "Wrapping up...",
-  "PROGRESS_TIME_LEFT": "{timeRemaining} left"
+  "PROGRESS_TIME_LEFT": "{timeRemaining} left",
+  "PENDING": "pending"
 }
