@@ -114,7 +114,7 @@ export default function BulkImport() {
               href="https://flatfile.com/privacy/"
               >
                 <FormattedMessage
-                    id="PRIVACY_POLICY"
+                    id="FLATFILE_POLICY_LINK"
                   />
               </Link>
             )}} />

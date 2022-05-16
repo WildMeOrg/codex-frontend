@@ -1069,5 +1069,5 @@
   "TWITTER_API_DOCUMENTATION_URL_LABEL": "Twitter developer portal and documentation",
   "TWITTER_SETTINGS": "Twitter configuration settings",
   "FLATFILE_POLICY": "By continuing, you agree to Flatfile's {privacyPolicy}",
-  "PRIVACY_POLICY": "privacy policy"
+  "FLATFILE_POLICY_LINK": "privacy policy"
 }
