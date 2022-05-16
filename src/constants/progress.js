@@ -5,3 +5,12 @@ export const progressStatus = {
   cancelled: 'cancelled',
   failed: 'failed',
 };
+
+export const progressProperties = {
+  complete: 'complete',
+  percentage: 'percentage',
+  eta: 'eta',
+  guid: 'guid',
+  status: 'status',
+  ahead: 'ahead',
+};

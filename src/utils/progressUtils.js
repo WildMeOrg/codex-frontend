@@ -30,23 +30,23 @@ function formatAhead(intl, ahead) {
   );
 }
 
-// timeRemaining is in fractional seconds.
-function formatTimeRemaining(intl, timeRemaining) {
-  if (timeRemaining === null) {
+// eta is in fractional seconds.
+function formatEta(intl, eta) {
+  if (eta === null) {
     return intl.formatMessage({
       id: 'PROGRESS_CALCULATING_TIME_REMAINING',
     });
   }
 
-  if (!isFinite(timeRemaining)) return '';
+  if (!isFinite(eta)) return '';
 
-  if (timeRemaining < 1) {
+  if (eta < 1) {
     return intl.formatMessage({ id: 'PROGRESS_WRAPPING_UP' });
   }
 
   const interval = {
     start: 0,
-    end: secondsToMilliseconds(timeRemaining),
+    end: secondsToMilliseconds(eta),
   };
 
   const duration = intervalToDuration(interval);
@@ -59,7 +59,7 @@ function formatTimeRemaining(intl, timeRemaining) {
 }
 
 export function formatProgressMetrics(intl, metrics = {}) {
-  const { ahead, status, timeRemaining } = metrics;
+  const { ahead, status, eta } = metrics;
   const aheadMessage = formatAhead(intl, ahead);
 
   const statusMessage =
@@ -67,15 +67,12 @@ export function formatProgressMetrics(intl, metrics = {}) {
       ? ''
       : formatStatus(intl, status);
 
-  const timeRemainingMessage = formatTimeRemaining(
-    intl,
-    timeRemaining,
-  );
+  const etaMessage = formatEta(intl, eta);
 
   const formattedMetrics = [
     statusMessage,
     aheadMessage,
-    timeRemainingMessage,
+    etaMessage,
   ].filter(message => message);
 
   return formattedMetrics.join(' · ');
