@@ -80,3 +80,25 @@ export function formatProgressMetrics(intl, metrics = {}) {
 
   return formattedMetrics.join(' · ');
 }
+
+export function isProgressResolved(queryData, error) {
+  return queryData?.complete || error?.statusCode === 404;
+}
+
+export function isProgressRejected(queryData, error) {
+  const isError = error && error.statusCode !== 404;
+  const { status } = queryData || {};
+
+  return (
+    isError ||
+    status === progressStatus.failed ||
+    status === progressStatus.cancelled
+  );
+}
+
+export function isProgressSettled(queryData, error) {
+  return (
+    isProgressResolved(queryData, error) ||
+    isProgressRejected(queryData, error)
+  );
+}

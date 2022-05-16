@@ -65,6 +65,10 @@ export function getNotificationQueryKey(guid) {
   return ['notification', guid];
 }
 
+export function getProgressQueryKey(guid) {
+  return ['progress', guid];
+}
+
 export function getIndividualTermQueryKey(searchTerm) {
   return ['individualQuickSearch', searchTerm];
 }
