@@ -36,6 +36,7 @@ export default function SightingsDisplay({
   const columns = [
     {
       name: 'time',
+      sortName: 'time.datetime',
       labelId: 'SIGHTING_TIME',
       options: {
         cellRenderer: cellRendererTypes.specifiedTime,
