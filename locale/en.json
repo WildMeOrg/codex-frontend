@@ -1068,5 +1068,5 @@
   "TWITTER_API_KEY_DESCRIPTION": "The information needed from your Twitter account. Use the {documentationLink} to find these values.",
   "TWITTER_API_DOCUMENTATION_URL_LABEL": "Twitter developer portal and documentation",
   "TWITTER_SETTINGS": "Twitter configuration settings",
-  "TWITTER_HANDLE_NO_AT": "deleteMe Twitter handle without the @"
+  "TWITTER_HANDLE_NO_AT": "Twitter handle without the @"
 }

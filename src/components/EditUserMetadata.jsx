@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { get, map, omit } from 'lodash-es';
+import { get, map, omit, find } from 'lodash-es';
 
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 
 import CustomAlert from './Alert';
 import { useReplaceUserProperties } from '../models/users/usePatchUser';
+import { sanitizeTwitterHandle } from '../utils/formatters';
+import { intelligentAgentSchema } from '../constants/intelligentAgentSchema';
 import InputRow from './fields/edit/InputRow';
 import Button from './Button';
 import PasswordVerificationAlert from './PasswordVerificationAlert';
@@ -19,6 +21,11 @@ function getInitialFormValues(schema) {
     return memo;
   }, {});
 }
+
+const twitterSchema = find(intelligentAgentSchema, schema => {
+  return schema?.platformName === 'twitter'
+},{});
+const twitterMetadataKey = twitterSchema?.userMetadataKey;
 
 export default function EditUserMetadata({
   open,
@@ -123,12 +130,19 @@ export default function EditUserMetadata({
                 : omit(fieldValues, ['email']);
               const patchValues = map(
                 patchFieldValues,
-                (value, key) => ({
+                (value, key) => {
+                  if(key === twitterMetadataKey){
+                    const sanitizedVal = sanitizeTwitterHandle(value);
+                    return {
+                    path: `/${key}`,
+                    value: sanitizedVal,
+                  }
+                  }
+                  return {
                   path: `/${key}`,
                   value,
-                }),
+                }},
               );
-
               const response = await replaceUserProperties({
                 userGuid: userId,
                 properties: patchValues,

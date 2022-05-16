@@ -4,8 +4,8 @@ export const intelligentAgentSchema = [
   {
     platformName: 'twitter',
     userMetadataKey: 'twitter_username',
-    userMetadataLabel: 'TWITTER_HANDLE',
-    placeholder: 'TWITTER_HANDLE_NO_AT',
+    viewLabelId: 'TWITTER_HANDLE',
+    editLabelId: 'TWITTER_HANDLE_NO_AT',
     icon: TwitterIcon,
     dividerLabel: 'TWITTER_SETTINGS',
     platformInformationLabel: 'TWITTER_API_KEYS_LABEL',
