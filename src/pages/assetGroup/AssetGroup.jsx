@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { useIntl } from 'react-intl';
 import { get } from 'lodash-es';
@@ -31,7 +31,10 @@ import AssetsProcessingAlert from '../../components/assets/AssetsProcessingAlert
 import { defaultCrossfadeDuration } from '../../constants/defaults';
 import { progressState } from '../../constants/progress';
 
+const MAX_BUFFER_TIME = 8000; // milliseconds
+
 export default function AssetGroup() {
+  const mountTime = useMemo(() => Date.now(), []);
   const { id: guid } = useParams();
   const history = useHistory();
   const queryClient = useQueryClient();
@@ -75,7 +78,7 @@ export default function AssetGroup() {
         );
       }
     },
-    [queryClient, isPreparationProgressResolved],
+    [queryClient, isPreparationProgressResolved, guid],
   );
 
   const {
@@ -89,6 +92,51 @@ export default function AssetGroup() {
     translateMessage: false,
   });
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+
+  const [
+    isBufferingPreparationProgress,
+    setIsBufferingPreparationProgress,
+  ] = useState(() => {
+    if (isLoading) return true;
+    if (!isAssetGroupPreparing) return false;
+    if (Date.now() - mountTime < MAX_BUFFER_TIME) return true;
+    return false;
+  });
+
+  /* eslint-disable consistent-return */
+  useEffect(
+    () => {
+      if (isBufferingPreparationProgress !== false) {
+        if (!isLoading && !isAssetGroupPreparing) {
+          setIsBufferingPreparationProgress(false);
+          return;
+        }
+
+        const timeEllapsed = Date.now() - mountTime;
+        if (timeEllapsed >= MAX_BUFFER_TIME) {
+          setIsBufferingPreparationProgress(false);
+          return;
+        }
+
+        const cancellationToken = setTimeout(
+          () => {
+            setIsBufferingPreparationProgress(false);
+          },
+          [Math.max(0, MAX_BUFFER_TIME - timeEllapsed)],
+        );
+
+        return function cleanup() {
+          clearInterval(cancellationToken);
+        };
+      }
+    },
+    [
+      isBufferingPreparationProgress,
+      isLoading,
+      isAssetGroupPreparing,
+      mountTime,
+    ],
+  );
 
   if (error)
     return (
@@ -116,7 +164,8 @@ export default function AssetGroup() {
     );
   }
 
-  if (isLoading) return <LoadingScreen />;
+  if (isLoading || isBufferingPreparationProgress)
+    return <LoadingScreen />;
 
   const dateCreated = get(data, 'created');
 
