@@ -23,6 +23,7 @@ export default function useAssetGroupQuery(assetGroupGuid) {
     {
       staleTime: Infinity,
       cacheTime: Infinity,
+      enabled: Boolean(assetGroupGuid),
     },
   );
 }
