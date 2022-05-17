@@ -24,6 +24,7 @@ export default function useProgressStateQuery(progressGuid, enabled) {
         ...defaultQueryOptions,
         queryKey: getProgressQueryKey(progressGuid),
         queryFn: getProgress,
+        notifyOnPropsChange: ['data', 'error', 'isFetched'],
       };
 
       if (enabled !== undefined) observerOptions.enabled = enabled;
