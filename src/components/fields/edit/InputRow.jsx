@@ -2,6 +2,7 @@ import React from 'react';
 import Skeleton from '@material-ui/lab/Skeleton';
 
 import { useIntl } from 'react-intl';
+import { get } from 'lodash-es';
 
 import useDescription from '../../../hooks/useDescription';
 import Text from '../../Text';
