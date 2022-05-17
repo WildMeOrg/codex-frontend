@@ -5,7 +5,7 @@ import { TextField } from '@material-ui/core';
 import { get } from 'lodash-es';
 import Text from '../../Text';
 import useDescription from '../../../hooks/useDescription';
-import useLabel from '../../../hooks/useLabel';
+import useEditLabel from '../../../hooks/useEditLabel';
 import FormCore from './FormCore';
 import { collapseChoices } from '../../../utils/formatters';
 
@@ -21,7 +21,7 @@ export default function LocationIdEditor(props) {
     ...rest
   } = props;
 
-  const label = useLabel(schema);
+  const editLabel = useEditLabel(schema);
   const description = useDescription(schema);
   const showDescription = !minimalLabels && description;
 
@@ -66,7 +66,7 @@ export default function LocationIdEditor(props) {
             {...params}
             style={{ width: 280 }}
             variant="standard"
-            label={label}
+            label={editLabel}
           />
         )}
         multiple={multiple}

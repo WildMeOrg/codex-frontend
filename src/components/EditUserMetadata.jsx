@@ -22,9 +22,13 @@ function getInitialFormValues(schema) {
   }, {});
 }
 
-const twitterSchema = find(intelligentAgentSchema, schema => {
-  return schema?.platformName === 'twitter'
-},{});
+const twitterSchema = find(
+  intelligentAgentSchema,
+  schema => {
+    return schema?.platformName === 'twitter';
+  },
+  {},
+);
 const twitterMetadataKey = twitterSchema?.userMetadataKey;
 
 export default function EditUserMetadata({
@@ -131,17 +135,18 @@ export default function EditUserMetadata({
               const patchValues = map(
                 patchFieldValues,
                 (value, key) => {
-                  if(key === twitterMetadataKey){
+                  if (key === twitterMetadataKey) {
                     const sanitizedVal = sanitizeTwitterHandle(value);
                     return {
-                    path: `/${key}`,
-                    value: sanitizedVal,
-                  }
+                      path: `/${key}`,
+                      value: sanitizedVal,
+                    };
                   }
                   return {
-                  path: `/${key}`,
-                  value,
-                }},
+                    path: `/${key}`,
+                    value,
+                  };
+                },
               );
               const response = await replaceUserProperties({
                 userGuid: userId,

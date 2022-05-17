@@ -8,7 +8,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
 
 import fieldTypes from '../../../constants/fieldTypesNew';
-import useLabel from '../../../hooks/useLabel';
+import useEditLabel from '../../../hooks/useEditLabel';
 import useDescription from '../../../hooks/useDescription';
 import FormCore from './FormCore';
 import Text from '../../Text';
@@ -30,7 +30,7 @@ const SelectionEditor = function(props) {
     return get(object, 'label', 'Missing label');
   }
 
-  const label = useLabel(schema, true);
+  const editLabel = useEditLabel(schema);
   const description = useDescription(schema);
   const showDescription = !minimalLabels && description;
   const multiselect = schema.fieldType === fieldTypes.multiselect;
@@ -40,7 +40,7 @@ const SelectionEditor = function(props) {
 
   return (
     <FormCore schema={schema} width={width}>
-      <InputLabel>{label}</InputLabel>
+      <InputLabel>{editLabel}</InputLabel>
       <Select
         labelId={`${identifier}-selector-label`}
         id={`${identifier}-selector`}

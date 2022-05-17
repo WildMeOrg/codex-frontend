@@ -17,7 +17,7 @@ const TextInput = function(props) {
     ...rest
   } = props;
 
-  const editLabelId = useEditLabel(schema);
+  const editLabel = useEditLabel(schema);
   const description = useDescription(schema);
   const showDescription = !minimalLabels && description;
 
@@ -37,7 +37,7 @@ const TextInput = function(props) {
         id={schema.name}
         multiline={isLongString}
         maxRows={isLongString ? 5 : undefined}
-        label={editLabelId}
+        label={editLabel}
         type={type}
         onChange={e => {
           const inputValue = e.target.value;

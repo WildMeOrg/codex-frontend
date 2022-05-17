@@ -5,7 +5,7 @@ import TextField from '@material-ui/core/TextField';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 
-import useLabel from '../../../hooks/useLabel';
+import useEditLabel from '../../../hooks/useEditLabel';
 import FormCore from './FormCore';
 
 export default function FeetMetersEditor({
@@ -15,7 +15,7 @@ export default function FeetMetersEditor({
   width,
   ...rest
 }) {
-  const label = useLabel(schema);
+  const editLabel = useEditLabel(schema);
   const intl = useIntl();
   const choices = [
     intl.formatMessage({ id: 'FEET' }),
@@ -34,7 +34,7 @@ export default function FeetMetersEditor({
       >
         <TextField
           id={schema.name}
-          label={label}
+          label={editLabel}
           type="number"
           onChange={e => {
             onChange(e.target.value);
