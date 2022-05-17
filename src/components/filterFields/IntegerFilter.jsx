@@ -59,7 +59,6 @@ export default function IntegerFilter({
   const inputId = `${fieldLabel}-number-input`;
 
   function updateFilter() {
-    // onChange({ [comparator]: parseInt(integerInput, 10) });
     const integerValue = parseInt(integerInput, 10);
     const comparatorObject = comparators.find(
       c => c.value === comparator,
@@ -68,6 +67,7 @@ export default function IntegerFilter({
     onChange({
       filterId,
       descriptor,
+      clause: 'filter',
       query: {
         range: {
           [queryTerm]: {

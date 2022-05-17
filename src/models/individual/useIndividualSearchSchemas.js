@@ -75,16 +75,11 @@ export default function useIndividualSearchSchemas() {
       labelId: 'SPECIES',
       FilterComponent: OptionTermFilter,
       filterComponentProps: {
-        queryType: 'term',
         queryTerm: 'taxonomy_guid',
         filterId: 'taxonomy_guid',
         choices: speciesOptions,
       },
-    }, //   labelId: 'DISTANCE_FROM_POINT', //   id: 'gps', // {
-    //   FilterComponent: PointDistanceFilter,
-    //   filterComponentProps: {
-    //     nested: true,
-    //     queryTerm: 'encounters.point',
+    }, //     queryTerm: 'encounters.point', //     nested: true, //   filterComponentProps: { //   FilterComponent: PointDistanceFilter, //   labelId: 'DISTANCE_FROM_POINT', //   id: 'gps', // {
     //     filterId: 'geodistance',
     //     style: {{ marginTop: 16 }},
     //   },
