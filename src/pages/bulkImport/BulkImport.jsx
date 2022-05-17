@@ -106,6 +106,19 @@ export default function BulkImport() {
               </Text>
             </div>
           </Grid>
+          <Grid item style={{ marginTop: 20 }}>
+            <Text variant="caption" id="FLATFILE_POLICY" values={{privacyPolicy: (
+              <Link
+              newTab
+              external
+              href="https://flatfile.com/privacy/"
+              >
+                <FormattedMessage
+                    id="FLATFILE_POLICY_LINK"
+                  />
+              </Link>
+            )}} />
+          </Grid>
           <Grid item>
             <Button
               display="primary"

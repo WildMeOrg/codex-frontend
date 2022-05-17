@@ -19,8 +19,9 @@ export default function DateRenderer({
   datum,
   accessor = 'created',
   noWrap = false,
+  fancy = false,
 }) {
-  const formattedValue = formatDate(get(datum, accessor, ''));
+  const formattedValue = formatDate(get(datum, accessor, ''), fancy);
 
   const CoreComponent = <CoreForwardRef value={formattedValue} />;
 

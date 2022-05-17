@@ -6,8 +6,13 @@ import Link from '../Link';
 import DataDisplay from './DataDisplay';
 import { cellRendererTypes } from '../dataDisplays/cellRenderers';
 
-export default function SightingsDisplay({ sightings, loading }) {
-  const title = `${sightings.length} matching sightings`;
+export default function SightingsDisplay({
+  sightings,
+  loading,
+  dataCount,
+  ...rest
+}) {
+  const title = `${dataCount || sightings.length} matching sightings`;
 
   const tableData = sightings.map(sighting => {
     const encounters = sighting?.encounters || [];
@@ -31,6 +36,7 @@ export default function SightingsDisplay({ sightings, loading }) {
   const columns = [
     {
       name: 'time',
+      sortName: 'time.datetime',
       labelId: 'SIGHTING_TIME',
       options: {
         cellRenderer: cellRendererTypes.specifiedTime,
@@ -39,11 +45,14 @@ export default function SightingsDisplay({ sightings, loading }) {
     {
       name: 'locationId_value',
       labelId: 'REGION',
+      sortable: false,
       align: 'left',
     },
     {
       name: 'owners',
+      sortName: 'owners.full_name',
       labelId: 'REPORTER',
+      sortable: false,
       align: 'left',
       options: {
         customBodyRender: owners => {
@@ -68,6 +77,7 @@ export default function SightingsDisplay({ sightings, loading }) {
     {
       name: 'guid',
       labelId: 'ACTIONS',
+      sortable: false,
       options: {
         customBodyRender: guid => {
           return (
@@ -85,10 +95,12 @@ export default function SightingsDisplay({ sightings, loading }) {
 
   return (
     <DataDisplay
+      idKey="guid"
       columns={columns}
       data={tableData}
       title={title}
       loading={loading}
+      showNoResultsBao
       // renderExpandedRow={expandedSighting => (
       //   <div style={{ display: 'flex' }}>
       //     <img
@@ -114,6 +126,7 @@ export default function SightingsDisplay({ sightings, loading }) {
       //     </div>
       //   </div>
       // )}
+      {...rest}
     />
   );
 }

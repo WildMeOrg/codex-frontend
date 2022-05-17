@@ -1,93 +1,76 @@
 import React from 'react';
-import { useIntl } from 'react-intl';
 // import { get } from 'lodash-es';
 
 // import { formatDate } from '../../utils/formatters';
-import { deriveIndividualName } from '../../utils/nameUtils';
 import DataDisplay from './DataDisplay';
 import Link from '../Link';
 // import ButtonLink from '../ButtonLink';
-import Text from '../Text';
-// import { cellRendererTypes } from './cellRenderers';
+import { cellRendererTypes } from './cellRenderers';
 
 export default function IndividualsDisplay({
   individuals,
   loading,
-  hitCount,
+  dataCount,
   ...rest
 }) {
-  const intl = useIntl();
-  const title = hitCount
-    ? `${hitCount} matching individuals`
+  const title = dataCount
+    ? `${dataCount} matching individuals`
     : 'Matching individuals';
 
   const columns = [
     {
-      name: 'name',
-      label: intl.formatMessage({
-        id: 'NAME',
-      }),
+      name: 'firstName',
+      sortName: 'firstName',
+      labelId: 'NAME',
+      sortable: false,
       options: {
-        customBodyRender: (_, individual) => {
-          const name = deriveIndividualName(
-            individual,
-            'FirstName',
-            'Unnamed Individual',
-          );
-          return (
-            <Link href={`/individuals/${individual?.guid}`}>
-              <Text variant="body2">{name}</Text>
-            </Link>
-          );
-        },
+        customBodyRender: (firstName, individual) => (
+          <Link to={`/individuals/${individual?.guid}`}>
+            {firstName || 'Unnamed individual'}
+          </Link>
+        ),
       },
+    },
+    {
+      name: 'last_seen',
+      labelId: 'LAST_SEEN',
+      sortable: false,
+      align: 'left',
+      options: {
+        cellRenderer: cellRendererTypes.date,
+        cellRendererProps: { accessor: 'last_seen', fancy: true },
+      },
+    },
+    {
+      name: 'taxonomy_guid',
+      labelId: 'SPECIES',
+      align: 'left',
+      sortable: false,
+      options: { cellRenderer: cellRendererTypes.species },
+    },
+    {
+      name: 'num_encounters',
+      labelId: 'SIGHTING_COUNT',
+      sortable: false,
+      align: 'left',
+    },
+    {
+      name: 'created',
+      labelId: 'CREATION_DATE_RANGE',
+      align: 'left',
+      options: { cellRenderer: cellRendererTypes.date },
     },
     {
       name: 'adoptionName',
       labelId: 'ADOPTION_NAME',
+      sortable: false,
       align: 'left',
-      options: {
-        customBodyRender: (_, individual) => {
-          const adoptionName = deriveIndividualName(
-            individual,
-            'AdoptionName',
-            '-',
-          );
-          return <Text variant="body2">{adoptionName}</Text>;
-        },
-      },
     },
-    // {
-    //   name: 'last_sighting',
-    //   label: intl.formatMessage({ id: 'LAST_SEEN' }),
-    //   align: 'left',
-    //   options: {
-    //     cellRenderer: cellRendererTypes.date,
-    //     cellRendererProps: { accessor: 'lastSeen' },
-    //   },
-    // },
-    // {
-    //   name: 'taxonomy',
-    //   label: intl.formatMessage({ id: 'SPECIES' }),
-    //   align: 'left',
-    //   options: { cellRenderer: cellRendererTypes.capitalizedString },
-    // },
-    // {
-    //   name: 'encounters',
-    //   label: intl.formatMessage({ id: 'SIGHTINGS' }),
-    //   align: 'left',
-    //   options: {
-    //     customBodyRender: encounters => (
-    //       <Text variant="body2">
-    //         {get(encounters, 'length', '-')}
-    //       </Text>
-    //     ),
-    //   },
-    // },
   ];
 
   return (
     <DataDisplay
+      idKey="guid"
       columns={columns}
       data={individuals}
       title={title}
@@ -95,8 +78,6 @@ export default function IndividualsDisplay({
       // onPrint={() => {
       //   window.open('/individuals/picturebook', '_blank');
       // }}
-      dataCount={hitCount}
-      paginatedExternally
       showNoResultsBao
       // renderExpandedRow={expandedIndividual => (
       //   <div style={{ display: 'flex' }}>

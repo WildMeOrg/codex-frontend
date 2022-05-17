@@ -28,6 +28,7 @@
   "SIGHTING_COMMIT_TITLE": "Ready to commit",
   "REMOVE_FROM_CLUSTER": "Remove from animal",
   "MOVE_ANNOTATION": "Move annotation",
+  "SIGHTING_COUNT": "Sighting count",
   "NO_UNASSIGNED_ANNOTATIONS": "There are no unassigned annotations available.",
   "NO_DESTINATION_CLUSTERS": "This annotation cannot be moved because there are no other animals in this sighting.",
   "NO_ANNOTATIONS_IN_CLUSTER": "This animal has no annotations.",
@@ -1068,5 +1069,7 @@
   "TWITTER_API_KEY_DESCRIPTION": "The information needed from your Twitter account. Use the {documentationLink} to find these values.",
   "TWITTER_API_DOCUMENTATION_URL_LABEL": "Twitter developer portal and documentation",
   "TWITTER_SETTINGS": "Twitter configuration settings",
-  "TWITTER_HANDLE_NO_AT": "Twitter handle without the @"
+  "TWITTER_HANDLE_NO_AT": "Twitter handle without the @",
+  "FLATFILE_POLICY": "By continuing, you agree to Flatfile's {privacyPolicy}",
+  "FLATFILE_POLICY_LINK": "privacy policy"
 }

@@ -6,18 +6,25 @@ import SearchPage from '../../components/SearchPage';
 import FilterPanel from '../../components/FilterPanel';
 import SearchFilterList from '../../components/SearchFilterList';
 import SightingsDisplay from '../../components/dataDisplays/SightingsDisplay';
+import Paginator from '../../components/dataDisplays/Paginator';
 
-const rowsPerPage = 10;
+const rowsPerPage = 100;
 
 export default function SearchSightings() {
-  const [page, setPage] = useState(0);
   const [formFilters, setFormFilters] = useState([]);
-
-  const { data: searchResults, loading } = useFilterSightings({
-    queries: formFilters,
-    page,
-    rowsPerPage,
+  const [searchParams, setSearchParams] = useState({
+    limit: rowsPerPage,
+    offset: 0,
+    sort: 'created',
+    reverse: true,
   });
+
+  const { data, loading } = useFilterSightings({
+    queries: formFilters,
+    params: searchParams,
+  });
+
+  const { results: searchResults, resultCount } = data;
 
   const schemas = useSightingSearchSchemas();
 
@@ -43,6 +50,15 @@ export default function SearchSightings() {
       <SightingsDisplay
         sightings={searchResults || []}
         loading={loading}
+        sortExternally
+        searchParams={searchParams}
+        setSearchParams={setSearchParams}
+        dataCount={resultCount}
+      />
+      <Paginator
+        searchParams={searchParams}
+        setSearchParams={setSearchParams}
+        count={resultCount}
       />
     </SearchPage>
   );

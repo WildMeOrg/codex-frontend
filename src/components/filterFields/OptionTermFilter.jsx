@@ -45,6 +45,8 @@ const OptionTermFilter = function(props) {
     ? intl.formatMessage({ id: labelId })
     : label;
 
+  const safeChoices = choices || [];
+
   return (
     <FormControl style={style}>
       <InputLabel>{translatedLabel}</InputLabel>
@@ -53,7 +55,7 @@ const OptionTermFilter = function(props) {
         id={`${queryTerm}-selector`}
         onChange={e => {
           const selectedValue = e.target.value;
-          const selectedChoice = choices.find(
+          const selectedChoice = safeChoices.find(
             c => c.value === selectedValue,
           );
           const choiceLabel = getLabel(selectedChoice);
@@ -79,14 +81,14 @@ const OptionTermFilter = function(props) {
         }}
         value={value}
         renderValue={currentValue => {
-          const selectedChoice = choices.find(
+          const selectedChoice = safeChoices.find(
             c => c.value === currentValue,
           );
           return getLabel(selectedChoice);
         }}
         {...rest}
       >
-        {choices.map(option => (
+        {safeChoices.map(option => (
           <MenuItem
             value={option.value}
             key={option.value}

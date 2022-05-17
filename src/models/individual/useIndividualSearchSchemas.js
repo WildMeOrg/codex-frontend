@@ -1,6 +1,8 @@
+import useOptions from '../../hooks/useOptions';
 import OptionTermFilter from '../../components/filterFields/OptionTermFilter';
 import SubstringFilter from '../../components/filterFields/SubstringFilter';
 import DateRangeFilter from '../../components/filterFields/DateRangeFilter';
+import IntegerFilter from '../../components/filterFields/IntegerFilter';
 import sexOptions from '../../constants/sexOptions';
 
 const labeledSexOptions = sexOptions.map(o => ({
@@ -27,6 +29,7 @@ const hasAnnotationOptions = [
 ];
 
 export default function useIndividualSearchSchemas() {
+  const { speciesOptions } = useOptions();
   return [
     {
       id: 'firstName',
@@ -66,22 +69,17 @@ export default function useIndividualSearchSchemas() {
         filterId: 'annotation',
         choices: hasAnnotationOptions,
       },
-    }, //   labelId: 'SPECIES', //   id: 'taxonomy', // {
-    //   FilterComponent: OptionTermFilter,
-    //   filterComponentProps: {
-    //     queryType: 'term',
-    //     queryTerm: 'taxonomy_guid',
-    //     filterId: 'taxonomy_guid',
-    //     choices: taxonomyOptions,
-    //   },
-    // },
-    // {
-    //   id: 'gps',
-    //   labelId: 'DISTANCE_FROM_POINT',
-    //   FilterComponent: PointDistanceFilter,
-    //   filterComponentProps: {
-    //     nested: true,
-    //     queryTerm: 'encounters.point',
+    },
+    {
+      id: 'taxonomy',
+      labelId: 'SPECIES',
+      FilterComponent: OptionTermFilter,
+      filterComponentProps: {
+        queryTerm: 'taxonomy_guid',
+        filterId: 'taxonomy_guid',
+        choices: speciesOptions,
+      },
+    }, //     queryTerm: 'encounters.point', //     nested: true, //   filterComponentProps: { //   FilterComponent: PointDistanceFilter, //   labelId: 'DISTANCE_FROM_POINT', //   id: 'gps', // {
     //     filterId: 'geodistance',
     //     style: {{ marginTop: 16 }},
     //   },
@@ -102,6 +100,15 @@ export default function useIndividualSearchSchemas() {
       filterComponentProps: {
         queryTerm: 'created',
         filterId: 'created',
+      },
+    },
+    {
+      id: 'num_encounters',
+      labelId: 'SIGHTING_COUNT',
+      FilterComponent: IntegerFilter,
+      filterComponentProps: {
+        queryTerm: 'num_encounters',
+        filterId: 'num_encounters',
       },
     },
   ];

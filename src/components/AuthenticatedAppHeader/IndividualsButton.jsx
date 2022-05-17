@@ -4,7 +4,6 @@ import { useIntl, FormattedMessage } from 'react-intl';
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
 
-import { deriveIndividualName } from '../../utils/nameUtils';
 import { formatDate } from '../../utils/formatters';
 import useIndividualTermQuery from '../../models/individual/useIndividualTermQuery';
 import Text from '../Text';
@@ -62,15 +61,9 @@ export default function IndividualsButton() {
           <List dense style={{ maxHeight: 400, overflow: 'auto' }}>
             {mappableSearchResults.map(individual => {
               const individualGuid = individual?.guid;
-              const adoptionName = deriveIndividualName(
-                individual,
-                'AdoptionName',
-              );
-              const defaultName = deriveIndividualName(
-                individual,
-                'FirstName',
-                intl.formatMessage({ id: 'UNNAMED_INDIVIDUAL' }),
-              );
+              const adoptionName = individual?.adoptionName;
+              const defaultName =
+                individual?.firstName || 'Unnamed individual';
               const displayString = adoptionName
                 ? `${defaultName} (${adoptionName})`
                 : defaultName;
