@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { useIntl } from 'react-intl';
 import { get } from 'lodash-es';
@@ -8,11 +8,16 @@ import { Fade } from '@material-ui/core';
 
 import errorTypes from '../../constants/errorTypes';
 import useDeleteAssetGroup from '../../models/assetGroup/useDeleteAssetGroup';
-import useAssetGroupQuery from '../../models/assetGroup/useAssetGroupQuery';
+import useAssetGroupQuery, {
+  getAssetGroup,
+} from '../../models/assetGroup/useAssetGroupQuery';
+import useProgressStateQuery from '../../models/progress/useProgressStateQuery';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import { formatDate } from '../../utils/formatters';
 import { stage as agsStage } from '../../constants/assetGroupSighting';
-import queryKeys from '../../constants/queryKeys';
+import queryKeys, {
+  getAssetGroupQueryKey,
+} from '../../constants/queryKeys';
 import MainColumn from '../../components/MainColumn';
 import LoadingScreen from '../../components/LoadingScreen';
 import SadScreen from '../../components/SadScreen';
@@ -24,6 +29,7 @@ import EntityHeader from '../../components/EntityHeader';
 import AGSTable from './AGSTable';
 import AssetsProcessingAlert from '../../components/assets/AssetsProcessingAlert';
 import { defaultCrossfadeDuration } from '../../constants/defaults';
+import { progressState } from '../../constants/progress';
 
 export default function AssetGroup() {
   const { id: guid } = useParams();
@@ -31,10 +37,45 @@ export default function AssetGroup() {
   const queryClient = useQueryClient();
   const intl = useIntl();
 
-  const { data, isLoading, error } = useAssetGroupQuery(guid);
+  const { data, isLoading, error } = useAssetGroupQuery(guid, {
+    notifyOnPropsChange: ['data', 'isLoading', 'error'],
+  });
+
+  const assetGroupSightings = get(data, 'asset_group_sightings', []);
+
+  const isAssetGroupPreparing =
+    assetGroupSightings[0]?.stage === agsStage.preparation;
+
   const preparationProgressGuid = get(
     data,
     'progress_preparation.guid',
+  );
+
+  const isProgressQueryEnabled = Boolean(
+    preparationProgressGuid && isAssetGroupPreparing,
+  );
+
+  const {
+    state: preparationProgressState,
+    error: preparationProgressError,
+  } = useProgressStateQuery(
+    preparationProgressGuid,
+    isProgressQueryEnabled,
+  );
+
+  const isPreparationProgressResolved =
+    preparationProgressState === progressState.resolved;
+
+  useEffect(
+    () => {
+      if (isPreparationProgressResolved) {
+        queryClient.prefetchQuery(
+          getAssetGroupQueryKey(guid),
+          getAssetGroup,
+        );
+      }
+    },
+    [queryClient, isPreparationProgressResolved],
   );
 
   const {
@@ -61,6 +102,20 @@ export default function AssetGroup() {
         }}
       />
     );
+
+  if (preparationProgressState === progressState.rejected) {
+    return (
+      <SadScreen
+        statusCode={preparationProgressError?.statusCode}
+        variantOverrides={{
+          [errorTypes.genericError]: {
+            descriptionId: 'BULK_IMPORT_PROGRESS_ERROR_DESCRIPTION',
+          },
+        }}
+      />
+    );
+  }
+
   if (isLoading) return <LoadingScreen />;
 
   const dateCreated = get(data, 'created');
@@ -70,10 +125,6 @@ export default function AssetGroup() {
     sightingCreator?.full_name ||
     intl.formatMessage({ id: 'UNNAMED_USER' });
   const creatorUrl = `/users/${sightingCreator?.guid}`;
-
-  const assetGroupSightings = get(data, 'asset_group_sightings', []);
-  const isAssetGroupPreparing =
-    assetGroupSightings[0]?.stage === agsStage.preparation;
 
   return (
     <MainColumn fullWidth>

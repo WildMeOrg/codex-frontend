@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { QueryObserver, useQueryClient } from 'react-query';
 import { getProgressQueryKey } from '../../constants/queryKeys';
+import { progressState } from '../../constants/progress';
 import {
   isProgressRejected,
   isProgressResolved,
@@ -10,15 +11,12 @@ import {
   queryOptions as defaultQueryOptions,
 } from './progressQueryDefaults';
 
-export const progressState = {
-  pending: 'pending',
-  resolved: 'resolved',
-  rejected: 'rejected',
-};
-
 const defaultState = {};
 
-export default function useProgressStateQuery(progressGuid) {
+export default function useProgressStateQuery(
+  progressGuid,
+  queryOptions,
+) {
   const [state, setState] = useState(defaultState);
   const queryClient = useQueryClient();
   const queryObserver = useMemo(
@@ -30,12 +28,14 @@ export default function useProgressStateQuery(progressGuid) {
         queryFn: getProgress,
         ...defaultQueryOptions,
         notifyOnChangeProps: ['isFetched', 'data', 'error'],
+        ...queryOptions,
       });
     },
-    [progressGuid, queryClient],
+    [progressGuid, queryClient, queryOptions],
   );
 
   useEffect(
+    /* eslint-disable consistent-return */
     () => {
       if (queryObserver) {
         const unsubscribe = queryObserver.subscribe(

@@ -14,3 +14,9 @@ export const progressProperties = {
   status: 'status',
   ahead: 'ahead',
 };
+
+export const progressState = {
+  pending: 'pending',
+  resolved: 'resolved',
+  rejected: 'rejected',
+};

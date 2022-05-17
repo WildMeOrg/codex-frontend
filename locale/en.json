@@ -1086,5 +1086,6 @@
   "PROGRESS_CALCULATING_TIME_REMAINING": "Calculating time remaining...",
   "PROGRESS_WRAPPING_UP": "Wrapping up...",
   "PROGRESS_TIME_LEFT": "{timeRemaining} left",
+  "BULK_IMPORT_PROGRESS_ERROR_DESCRIPTION": "An unknown error occurred while calculating the progress of the bulk import. If the problem persists, you can report this error on the Community Forums.",
   "PENDING": "pending"
 }
