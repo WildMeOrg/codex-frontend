@@ -42,7 +42,7 @@ export default function Home() {
     >
       {unprocessedAssetGroupId && (
         <UnprocessedBulkImportAlert
-          unprocessedAssetGroupId={unprocessedAssetGroupId}
+          unprocessedAssetGroupGuid={unprocessedAssetGroupId}
         />
       )}
     </UserProfile>

@@ -3,15 +3,15 @@ import { get } from 'lodash-es';
 
 import CustomAlert from '../Alert';
 
-import useAssetGroup from '../../models/assetGroup/useAssetGroup';
+import useAssetGroupQuery from '../../models/assetGroup/useAssetGroupQuery';
 import ButtonLink from '../ButtonLink';
 import { formatDate } from '../../utils/formatters';
 
 export default function UnprocessedBulkImportAlert({
-  unprocessedAssetGroupId,
+  unprocessedAssetGroupGuid,
 }) {
-  const { data: assetGroupData } = useAssetGroup(
-    unprocessedAssetGroupId,
+  const { data: assetGroupData } = useAssetGroupQuery(
+    unprocessedAssetGroupGuid,
   );
 
   if (!assetGroupData) return null;

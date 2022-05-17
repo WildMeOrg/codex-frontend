@@ -66,7 +66,7 @@ export default function BulkImport() {
       />
       {unprocessedAssetGroupId && (
         <UnprocessedBulkImportAlert
-          unprocessedAssetGroupId={unprocessedAssetGroupId}
+          unprocessedAssetGroupGuid={unprocessedAssetGroupId}
         />
       )}
       {reporting ? (

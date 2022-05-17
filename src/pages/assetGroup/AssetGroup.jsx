@@ -8,7 +8,7 @@ import { Fade } from '@material-ui/core';
 
 import errorTypes from '../../constants/errorTypes';
 import useDeleteAssetGroup from '../../models/assetGroup/useDeleteAssetGroup';
-import useAssetGroup from '../../models/assetGroup/useAssetGroup';
+import useAssetGroupQuery from '../../models/assetGroup/useAssetGroupQuery';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import { formatDate } from '../../utils/formatters';
 import { stage as agsStage } from '../../constants/assetGroupSighting';
@@ -31,7 +31,7 @@ export default function AssetGroup() {
   const queryClient = useQueryClient();
   const intl = useIntl();
 
-  const { data, loading, error, statusCode } = useAssetGroup(guid);
+  const { data, isLoading, error } = useAssetGroupQuery(guid);
   const preparationProgressGuid = get(
     data,
     'progress_preparation.guid',
@@ -52,7 +52,7 @@ export default function AssetGroup() {
   if (error)
     return (
       <SadScreen
-        statusCode={statusCode}
+        statusCode={error.statusCode}
         variantOverrides={{
           [errorTypes.notFound]: {
             subtitleId: 'BULK_IMPORT_NOT_FOUND',
@@ -61,7 +61,7 @@ export default function AssetGroup() {
         }}
       />
     );
-  if (loading) return <LoadingScreen />;
+  if (isLoading) return <LoadingScreen />;
 
   const dateCreated = get(data, 'created');
 
