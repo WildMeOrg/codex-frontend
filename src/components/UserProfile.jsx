@@ -144,7 +144,7 @@ export default function UserProfile({
                   )
                 : intl.formatMessage({ id: 'PENDING_SIGHTINGS' })
             }
-            columns={['individual', 'date', 'location', 'actions']}
+            columns={['date', 'location', 'actions']}
             sightings={agsData || []}
             linkPath="pending-sightings"
             noSightingsMsg={

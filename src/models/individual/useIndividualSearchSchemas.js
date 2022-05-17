@@ -2,6 +2,7 @@ import useOptions from '../../hooks/useOptions';
 import OptionTermFilter from '../../components/filterFields/OptionTermFilter';
 import SubstringFilter from '../../components/filterFields/SubstringFilter';
 import DateRangeFilter from '../../components/filterFields/DateRangeFilter';
+import IntegerFilter from '../../components/filterFields/IntegerFilter';
 import sexOptions from '../../constants/sexOptions';
 
 const labeledSexOptions = sexOptions.map(o => ({
@@ -79,8 +80,7 @@ export default function useIndividualSearchSchemas() {
         filterId: 'taxonomy_guid',
         choices: speciesOptions,
       },
-    }, //   id: 'gps', // {
-    //   labelId: 'DISTANCE_FROM_POINT',
+    }, //   labelId: 'DISTANCE_FROM_POINT', //   id: 'gps', // {
     //   FilterComponent: PointDistanceFilter,
     //   filterComponentProps: {
     //     nested: true,
@@ -105,6 +105,15 @@ export default function useIndividualSearchSchemas() {
       filterComponentProps: {
         queryTerm: 'created',
         filterId: 'created',
+      },
+    },
+    {
+      id: 'num_encounters',
+      labelId: 'SIGHTING_COUNT',
+      FilterComponent: IntegerFilter,
+      filterComponentProps: {
+        queryTerm: 'num_encounters',
+        filterId: 'num_encounters',
       },
     },
   ];

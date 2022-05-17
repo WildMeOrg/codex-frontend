@@ -45,12 +45,14 @@ export default function SightingsDisplay({
     {
       name: 'locationId_value',
       labelId: 'REGION',
+      sortable: false,
       align: 'left',
     },
     {
       name: 'owners',
       sortName: 'owners.full_name',
       labelId: 'REPORTER',
+      sortable: false,
       align: 'left',
       options: {
         customBodyRender: owners => {
@@ -75,6 +77,7 @@ export default function SightingsDisplay({
     {
       name: 'guid',
       labelId: 'ACTIONS',
+      sortable: false,
       options: {
         customBodyRender: guid => {
           return (
@@ -92,6 +95,7 @@ export default function SightingsDisplay({
 
   return (
     <DataDisplay
+      idKey="guid"
       columns={columns}
       data={tableData}
       title={title}

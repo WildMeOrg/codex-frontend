@@ -282,6 +282,7 @@ export default function DataDisplay({
             <TableRow>
               {renderExpandedRow && <TableCell />}
               {visibleColumns.map((c, i) => {
+                const sortable = get(c, 'sortable', true);
                 const activeSort =
                   c.name === sortColumn || c.sortName === sortColumn;
                 const columnLabel = c?.labelId
@@ -294,29 +295,35 @@ export default function DataDisplay({
                     sortDirection={activeSort ? sortDirection : false}
                     style={{ whiteSpace: 'nowrap' }}
                   >
-                    <TableSortLabel
-                      active={activeSort}
-                      direction={activeSort ? sortDirection : 'asc'}
-                      onClick={() => {
-                        if (sortExternally) {
-                          const nextReverse = activeSort
-                            ? !searchParams?.reverse
-                            : false;
-                          setSearchParams({
-                            ...searchParams,
-                            sort: c.sortName || c.name,
-                            reverse: nextReverse,
-                          });
-                        } else {
-                          setInternalSortDirection(
-                            sortDirection === 'asc' ? 'desc' : 'asc',
-                          );
-                          setInternalSortColumn(c.name);
-                        }
-                      }}
-                    >
-                      {columnLabel}
-                    </TableSortLabel>
+                    {sortable ? (
+                      <TableSortLabel
+                        active={activeSort}
+                        direction={activeSort ? sortDirection : 'asc'}
+                        onClick={() => {
+                          if (sortExternally) {
+                            const nextReverse = activeSort
+                              ? !searchParams?.reverse
+                              : false;
+                            setSearchParams({
+                              ...searchParams,
+                              sort: c.sortName || c.name,
+                              reverse: nextReverse,
+                            });
+                          } else {
+                            setInternalSortDirection(
+                              sortDirection === 'asc'
+                                ? 'desc'
+                                : 'asc',
+                            );
+                            setInternalSortColumn(c.name);
+                          }
+                        }}
+                      >
+                        {columnLabel}
+                      </TableSortLabel>
+                    ) : (
+                      columnLabel
+                    )}
                   </TableCell>
                 );
               })}

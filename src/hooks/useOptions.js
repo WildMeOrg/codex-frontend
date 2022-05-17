@@ -11,7 +11,7 @@ export default function useOptions() {
     error,
     siteSettingsVersion,
   } = useSiteSettings();
-  if (loading || error) return null;
+  if (loading || error) return {};
 
   const options = useMemo(
     () => {

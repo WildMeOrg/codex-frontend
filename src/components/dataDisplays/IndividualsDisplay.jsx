@@ -22,6 +22,7 @@ export default function IndividualsDisplay({
       name: 'firstName',
       sortName: 'firstName',
       labelId: 'NAME',
+      sortable: false,
       options: {
         customBodyRender: (firstName, individual) => (
           <Link to={`/individuals/${individual?.guid}`}>
@@ -31,13 +32,9 @@ export default function IndividualsDisplay({
       },
     },
     {
-      name: 'adoptionName',
-      labelId: 'ADOPTION_NAME',
-      align: 'left',
-    },
-    {
       name: 'last_seen',
       labelId: 'LAST_SEEN',
+      sortable: false,
       align: 'left',
       options: {
         cellRenderer: cellRendererTypes.date,
@@ -48,11 +45,25 @@ export default function IndividualsDisplay({
       name: 'taxonomy_guid',
       labelId: 'SPECIES',
       align: 'left',
+      sortable: false,
       options: { cellRenderer: cellRendererTypes.species },
     },
     {
       name: 'num_encounters',
       labelId: 'SIGHTING_COUNT',
+      sortable: false,
+      align: 'left',
+    },
+    {
+      name: 'created',
+      labelId: 'CREATION_DATE_RANGE',
+      align: 'left',
+      options: { cellRenderer: cellRendererTypes.date },
+    },
+    {
+      name: 'adoptionName',
+      labelId: 'ADOPTION_NAME',
+      sortable: false,
       align: 'left',
     },
   ];
