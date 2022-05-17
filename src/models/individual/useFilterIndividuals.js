@@ -1,4 +1,4 @@
-import { partition } from 'lodash-es';
+import { get, partition } from 'lodash-es';
 
 import useFetch from '../../hooks/useFetch';
 import { nestQueries } from '../../utils/elasticSearchUtils';
@@ -6,8 +6,7 @@ import { getIndividualFilterQueryKey } from '../../constants/queryKeys';
 
 export default function useFilterIndividuals({
   queries,
-  page,
-  rowsPerPage,
+  params = {},
 }) {
   const [filters, mustNots] = partition(
     queries,
@@ -45,9 +44,27 @@ export default function useFilterIndividuals({
 
   return useFetch({
     method: 'post',
-    queryKey: getIndividualFilterQueryKey(queries, page, rowsPerPage),
+    queryKey: getIndividualFilterQueryKey(queries, params),
     url: '/individuals/search',
     data: compositeQuery,
+    params: {
+      limit: 20,
+      offset: 0,
+      sort: 'created',
+      reverse: false,
+      ...params,
+    },
+    dataAccessor: result => {
+      const resultCountString = get(result, [
+        'data',
+        'headers',
+        'x-total-count',
+      ]);
+      return {
+        resultCount: parseInt(resultCountString),
+        results: get(result, ['data', 'data']),
+      };
+    },
     queryOptions: {
       retry: 2,
     },

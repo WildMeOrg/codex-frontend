@@ -6,6 +6,7 @@ import CapitalizedStringRenderer from './CapitalizedStringRenderer';
 import DateRenderer from './DateRenderer';
 import FloatRenderer from './FloatRenderer';
 import ViewpointRenderer from './ViewpointRenderer';
+import SpeciesRenderer from './SpeciesRenderer';
 
 export const cellRendererTypes = {
   default: 'default',
@@ -16,6 +17,7 @@ export const cellRendererTypes = {
   date: 'date',
   float: 'float',
   viewpoint: 'viewpoint',
+  species: 'species',
 };
 
 export const cellRenderers = {
@@ -27,4 +29,5 @@ export const cellRenderers = {
   [cellRendererTypes.date]: DateRenderer,
   [cellRendererTypes.float]: FloatRenderer,
   [cellRendererTypes.viewpoint]: ViewpointRenderer,
+  [cellRendererTypes.species]: SpeciesRenderer,
 };

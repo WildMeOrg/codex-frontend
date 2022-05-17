@@ -11,7 +11,6 @@ import Button from './Button';
 import Text from './Text';
 import CustomAlert from './Alert';
 import { cellRendererTypes } from '../components/dataDisplays/cellRenderers';
-import { deriveIndividualName } from '../utils/nameUtils';
 
 export default function IndividualSelector({
   setSelectedIndividualId,
@@ -39,11 +38,7 @@ export default function IndividualSelector({
       labelId: 'NAME',
       options: {
         customBodyRender: (_, individual) => {
-          const name = deriveIndividualName(
-            individual,
-            'FirstName',
-            'Unnamed Individual',
-          );
+          const name = individual?.firstName || 'Unnamed individual';
           return <Text variant="body2">{name}</Text>;
         },
       },
@@ -54,11 +49,7 @@ export default function IndividualSelector({
       align: 'left',
       options: {
         customBodyRender: (_, individual) => {
-          const adoptionName = deriveIndividualName(
-            individual,
-            'AdoptionName',
-            '-',
-          );
+          const adoptionName = individual?.adoptionName || '-';
           return <Text variant="body2">{adoptionName}</Text>;
         },
       },
