@@ -13,25 +13,24 @@ import {
 
 const defaultState = {};
 
-export default function useProgressStateQuery(
-  progressGuid,
-  queryOptions,
-) {
+export default function useProgressStateQuery(progressGuid, enabled) {
   const [state, setState] = useState(defaultState);
   const queryClient = useQueryClient();
   const queryObserver = useMemo(
     () => {
       if (!progressGuid) return null;
 
-      return new QueryObserver(queryClient, {
+      const observerOptions = {
+        ...defaultQueryOptions,
         queryKey: getProgressQueryKey(progressGuid),
         queryFn: getProgress,
-        ...defaultQueryOptions,
-        notifyOnChangeProps: ['isFetched', 'data', 'error'],
-        ...queryOptions,
-      });
+      };
+
+      if (enabled !== undefined) observerOptions.enabled = enabled;
+
+      return new QueryObserver(queryClient, observerOptions);
     },
-    [progressGuid, queryClient, queryOptions],
+    [progressGuid, queryClient, enabled],
   );
 
   useEffect(

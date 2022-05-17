@@ -6,10 +6,14 @@ import { isProgressSettled } from '../../utils/progressUtils';
 const POLLING_INTERVAL = 2000; // milliseconds
 
 function deriveRefetchInterval(queryData, query) {
-  const data = queryData || {};
-  const { error } = query.state;
+  const data = queryData && { ...queryData };
+  const error = query.state?.error && { ...query.state?.error };
 
-  return isProgressSettled(data, error) ? false : POLLING_INTERVAL;
+  const refetchInterval = isProgressSettled(data, error)
+    ? false
+    : POLLING_INTERVAL;
+
+  return refetchInterval;
 }
 
 export const queryOptions = {
