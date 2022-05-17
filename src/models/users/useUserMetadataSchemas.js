@@ -49,7 +49,7 @@ export default function useUserMetadataSchemas(displayedUserId) {
           return isEnabled
             ? createFieldSchema(fieldTypes.string, {
                 name: intelligentAgent?.userMetadataKey,
-                viewLabelId: intelligentAgent?.viewLabelId,
+                labelId: intelligentAgent?.viewLabelId,
                 editLabelId: intelligentAgent?.editLabelId,
                 icon: intelligentAgent?.icon,
               })

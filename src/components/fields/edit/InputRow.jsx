@@ -1,7 +1,6 @@
 import React from 'react';
 import Skeleton from '@material-ui/lab/Skeleton';
 
-import useViewLabel from '../../../hooks/useViewLabel';
 import useDescription from '../../../hooks/useDescription';
 import Text from '../../Text';
 
@@ -12,7 +11,11 @@ export default function InputRow({
   children,
   loading = false,
 }) {
-  const viewLabel = useViewLabel(schema);
+  const label = schema?.labelId
+    ? intl.formatMessage({
+        id: schema.labelId,
+      })
+    : get(schema, 'label', undefined);
   const description = useDescription(schema);
 
   return (
@@ -37,7 +40,7 @@ export default function InputRow({
           marginBottom: 12,
         }}
       >
-        <Text>{viewLabel}</Text>
+        <Text>{label}</Text>
         {description ? (
           <Text variant="caption" style={{ maxWidth: '80%' }}>
             {description}
