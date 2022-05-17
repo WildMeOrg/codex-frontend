@@ -1,6 +1,8 @@
 import React from 'react';
 import Skeleton from '@material-ui/lab/Skeleton';
 
+import { useIntl } from 'react-intl';
+
 import useDescription from '../../../hooks/useDescription';
 import Text from '../../Text';
 
@@ -11,6 +13,7 @@ export default function InputRow({
   children,
   loading = false,
 }) {
+  const intl = useIntl();
   const label = schema?.labelId
     ? intl.formatMessage({
         id: schema.labelId,
