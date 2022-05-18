@@ -22,6 +22,8 @@ const SelectionEditor = function(props) {
     minimalLabels = false,
     ...rest
   } = props;
+  console.log('deleteMe value entering the SelectionEditor is: ');
+  console.log(value);
   const intl = useIntl();
 
   function getLabel(object) {
@@ -47,6 +49,7 @@ const SelectionEditor = function(props) {
         onChange={e => {
           console.log('deleteMe got here and e is: ');
           console.log(e);
+          debugger;
           onChange(e.target.value);
         }}
         value={value || ''}
