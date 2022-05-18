@@ -14,8 +14,6 @@ export default function UnprocessedBulkImportAlert({
     unprocessedAssetGroupGuid,
   );
 
-  if (!assetGroupData) return null;
-
   const sightingCount = get(assetGroupData, [
     'asset_group_sightings',
     'length',
