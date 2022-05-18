@@ -20,7 +20,7 @@ const requiredValidator = {
 };
 
 const floatValidator = {
-  validate: 'regex_matchess',
+  validate: 'regex_matches',
   regex: '^[+-]?((\\d+(\\.\\d*)?)|(\\.\\d+))$',
   error: 'You must enter a number',
 };
