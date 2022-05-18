@@ -11,7 +11,7 @@ import {
 import categoryTypes from '../../../constants/categoryTypes';
 import timePrecisionMap from '../../../constants/timePrecisionMap';
 import useOptions from '../../../hooks/useOptions';
-import sexOptions from '../../constants/sexOptions';
+import sexOptions from '../../../constants/sexOptions';
 
 const requiredValidator = {
   validate: 'required',
