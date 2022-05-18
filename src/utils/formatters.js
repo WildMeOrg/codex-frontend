@@ -283,3 +283,7 @@ export const formatLocationFromSighting = (
   }
   return '';
 };
+
+export const sanitizeTwitterHandle = value => {
+  return value.replace(/^@/, '');
+};

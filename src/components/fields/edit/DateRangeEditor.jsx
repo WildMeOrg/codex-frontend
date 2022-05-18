@@ -9,7 +9,7 @@ import {
   KeyboardDatePicker,
 } from '@material-ui/pickers';
 
-import useLabel from '../../../hooks/useLabel';
+import useEditLabel from '../../../hooks/useEditLabel';
 import useDescription from '../../../hooks/useDescription';
 import Text from '../../Text';
 
@@ -19,7 +19,7 @@ export default function DateRangeEditor({
   onChange,
   minimalLabels = false,
 }) {
-  const label = useLabel(schema);
+  const editLabel = useEditLabel(schema);
   const description = useDescription(schema);
 
   const startDate = get(value, 0, null);
@@ -38,7 +38,7 @@ export default function DateRangeEditor({
         {!minimalLabels && (
           <>
             <Text variant="subtitle2" style={{ marginTop: 16 }}>
-              {label}
+              {editLabel}
             </Text>
             <Text
               variant="caption"
@@ -52,9 +52,11 @@ export default function DateRangeEditor({
         <KeyboardDatePicker
           disableToolbar
           variant="inline"
-          format="yyyy-MM-dd" // US: MM/dd/yyyy
+          format="yyyy-MM-dd"
           margin="normal"
-          id={`${label}-start-date`}
+          id={`${
+            editLabel // US: MM/dd/yyyy
+          }-start-date`}
           label={<FormattedMessage id="START_DATE" />}
           value={startDateValue}
           onChange={nextStartDate => {
@@ -62,22 +64,24 @@ export default function DateRangeEditor({
           }}
           style={{ margin: 0 }}
           KeyboardButtonProps={{
-            'aria-label': `Change ${label} start date`,
+            'aria-label': `Change ${editLabel} start date`,
           }}
         />
         <KeyboardDatePicker
           disableToolbar
           variant="inline"
-          format="yyyy-MM-dd" // US: MM/dd/yyyy
+          format="yyyy-MM-dd"
           margin="normal"
-          id={`${label}-end-date`}
+          id={`${
+            editLabel // US: MM/dd/yyyy
+          }-end-date`}
           label={<FormattedMessage id="END_DATE" />}
           value={endDateValue}
           onChange={nextEndDate => {
             onChange([get(value, 0), nextEndDate]);
           }}
           KeyboardButtonProps={{
-            'aria-label': `Change ${label} end date`,
+            'aria-label': `Change ${editLabel} end date`,
           }}
         />
       </MuiPickersUtilsProvider>
