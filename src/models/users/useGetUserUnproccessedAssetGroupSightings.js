@@ -1,18 +1,17 @@
 import { getUserAgsQueryKey } from '../../constants/queryKeys';
 import useFetch from '../../hooks/useFetch';
 
-const limit = 20;
-const offset = 0;
-
 export default function useGetUserUnprocessedAssetGroupSightings(
   userId,
+  params = {},
 ) {
   return useFetch({
     queryKey: getUserAgsQueryKey(userId),
     url: `/users/${userId}/asset_group_sightings`,
     params: {
-      limit,
-      offset,
+      limit: 20,
+      offset: 0,
+      ...params,
     },
     queryOptions: {
       refetchOnMount: 'always',
