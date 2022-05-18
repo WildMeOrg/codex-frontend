@@ -10,7 +10,7 @@ export default function useGetUserUnprocessedAssetGroupSightings(
   return useFetch({
     queryKey: getUserAgsQueryKey(userId),
     url: `/users/${userId}/asset_group_sightings`,
-    data: {
+    params: {
       limit,
       offset,
     },
