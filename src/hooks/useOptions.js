@@ -11,10 +11,11 @@ export default function useOptions() {
     error,
     siteSettingsVersion,
   } = useSiteSettings();
-  if (loading || error) return {};
 
   const options = useMemo(
     () => {
+      if (loading || error) return {};
+
       const backendRegionOptions = get(
         data,
         ['site.custom.regions', 'value', 'locationID'],
@@ -47,7 +48,7 @@ export default function useOptions() {
 
       return { regionOptions, speciesOptions };
     },
-    [siteSettingsVersion],
+    [siteSettingsVersion, loading, error, data],
   );
 
   return options;

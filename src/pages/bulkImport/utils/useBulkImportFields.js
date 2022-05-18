@@ -53,10 +53,11 @@ function deriveKey(field, categoryType) {
 export default function useBulkImportFields() {
   const intl = useIntl();
   const { regionOptions, speciesOptions } = useOptions();
+
   const sightingFieldSchemas = useSightingFieldSchemas();
   const flatfileSightingFields = useMemo(
     () => {
-      if (!sightingFieldSchemas) return {};
+      if (!sightingFieldSchemas) return [];
       const bulkSightingFields = sightingFieldSchemas.filter(
         f => !sightingOmitList.includes(f.name),
       );
@@ -64,7 +65,7 @@ export default function useBulkImportFields() {
         const additionalProperties = {};
         if (f.name === 'locationId') {
           additionalProperties.type = 'select';
-          additionalProperties.options = regionOptions;
+          additionalProperties.options = regionOptions || [];
           additionalProperties.validators = [requiredValidator];
         }
         return {
@@ -81,7 +82,7 @@ export default function useBulkImportFields() {
   const flatfileEncounterFields = useMemo(
     () => {
       if (!encounterFieldSchemas || !regionOptions || !speciesOptions)
-        return {};
+        return [];
       const bulkEncounterFields = encounterFieldSchemas.filter(
         f => !encounterOmitList.includes(f.name),
       );
@@ -98,7 +99,7 @@ export default function useBulkImportFields() {
         };
       });
     },
-    [encounterFieldSchemas, speciesOptions],
+    [encounterFieldSchemas, regionOptions, speciesOptions],
   );
   const additionalFlatfileFields = [
     {
