@@ -11,6 +11,11 @@ export default function useOptions() {
     error,
     siteSettingsVersion,
   } = useSiteSettings();
+
+  console.log(
+    'deleteMe data coming into useOptions is (look for something like sex):',
+  );
+  console.log(data);
   if (loading || error) return {};
 
   const options = useMemo(

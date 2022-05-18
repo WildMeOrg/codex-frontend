@@ -1,6 +1,8 @@
 import { useMemo } from 'react';
 import { useIntl } from 'react-intl';
 
+import { omitBy } from 'lodash-es';
+
 import useEncounterFieldSchemas from '../../../models/encounter/useEncounterFieldSchemas';
 import useSightingFieldSchemas from '../../../models/sighting/useSightingFieldSchemas';
 import {
@@ -18,7 +20,7 @@ const requiredValidator = {
 };
 
 const floatValidator = {
-  validate: 'regex_matches',
+  validate: 'regex_matchess',
   regex: '^[+-]?((\\d+(\\.\\d*)?)|(\\.\\d+))$',
   error: 'You must enter a number',
 };
@@ -94,7 +96,10 @@ export default function useBulkImportFields() {
         }
         if (f.name === 'sex') {
           additionalProperties.type = 'select';
-          additionalProperties.options = sexOptions;
+          additionalProperties.options = omitBy(
+            sexOptions,
+            sex => sex?.labelId === 'BLANK',
+          );
         }
         return {
           label: deriveLabel(f, intl),
