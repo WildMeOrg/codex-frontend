@@ -89,6 +89,8 @@ export default function BulkReportForm({ assetReferences }) {
     numSightingFieldsForFlatFile,
     availableFields,
   } = useBulkImportFields();
+  console.log('deleteMe availableFields are: ');
+  console.log(availableFields);
   const sightingFieldSchemas = useSightingFieldSchemas();
   const encounterFieldSchemas = useEncounterFieldSchemas();
   const detectionModelField = sightingFieldSchemas.find(
