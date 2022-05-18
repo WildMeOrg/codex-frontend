@@ -11,6 +11,7 @@ import {
 import categoryTypes from '../../../constants/categoryTypes';
 import timePrecisionMap from '../../../constants/timePrecisionMap';
 import useOptions from '../../../hooks/useOptions';
+import sexOptions from '../../constants/sexOptions';
 
 const requiredValidator = {
   validate: 'required',
@@ -90,6 +91,10 @@ export default function useBulkImportFields() {
         if (f.name === 'taxonomy') {
           additionalProperties.type = 'select';
           additionalProperties.options = speciesOptions;
+        }
+        if (f.name === 'sex') {
+          additionalProperties.type = 'select';
+          additionalProperties.options = sexOptions;
         }
         return {
           label: deriveLabel(f, intl),
