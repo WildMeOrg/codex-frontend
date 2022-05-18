@@ -95,6 +95,12 @@ export default function useBulkImportFields() {
           additionalProperties.options = speciesOptions;
         }
         if (f.name === 'sex') {
+          const deleteMe = omitBy(
+            sexOptions,
+            sex => sex?.labelId === 'BLANK',
+          );
+          console.log('deleteMe deleteMe is: ');
+          console.log(deleteMe);
           additionalProperties.type = 'select';
           additionalProperties.options = omitBy(
             sexOptions,
