@@ -49,8 +49,6 @@ const categorySettingName = 'site.custom.customFieldCategories';
 export default function FieldSettings() {
   const intl = useIntl();
   const [dialogData, setDialogData] = useState(null);
-  console.log('deleteMe dialogData is: ');
-  console.log(dialogData);
   const [deleteCategory, setDeleteCategory] = useState(null);
   const { data: siteSettings, loading } = useSiteSettings();
   const {
@@ -107,7 +105,11 @@ export default function FieldSettings() {
             <div>
               <ActionIcon
                 variant="edit"
-                onClick={() => setDialogData(category)}
+                onClick={() => {
+                  console.log('deleteMe current category a1 is: ');
+                  console.log(category);
+                  return setDialogData(category);
+                }}
               />
               <ActionIcon
                 labelId="REMOVE"
