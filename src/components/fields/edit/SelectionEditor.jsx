@@ -45,6 +45,8 @@ const SelectionEditor = function(props) {
         labelId={`${identifier}-selector-label`}
         id={`${identifier}-selector`}
         onChange={e => {
+          console.log('deleteMe got here and e is: ');
+          console.log(e);
           onChange(e.target.value);
         }}
         value={value || ''}
