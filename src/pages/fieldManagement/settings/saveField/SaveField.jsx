@@ -213,7 +213,7 @@ export default function SaveField() {
 
                   setFormData(nextFormData);
                 }}
-                value={[get(formData, ['schema', 'displayType'], '')]}
+                value={get(formData, ['schema', 'displayType'], '')}
               >
                 {Object.values(fieldTypeInfo).map(typeInfo => (
                   <MenuItem
@@ -401,7 +401,7 @@ export default function SaveField() {
                     <fieldSchema.editComponent
                       {...get(fieldSchema, 'editComponentProps', {})}
                       schema={fieldSchema}
-                      value={get(formData, 'default')}
+                      value={[get(formData, 'default')]}
                       onChange={Function.prototype}
                       minimalLabels
                     />
