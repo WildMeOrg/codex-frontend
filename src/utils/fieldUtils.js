@@ -164,6 +164,10 @@ const componentMap = {
 };
 
 export function createCustomFieldSchema(houstonSchema) {
+  console.log(
+    'deleteMe houstonSchema for createCustomFieldSchema are: ',
+  );
+  console.log(houstonSchema);
   const copiedFields = pick(houstonSchema, [
     'id',
     'required',
