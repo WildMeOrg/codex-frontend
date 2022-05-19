@@ -29,6 +29,8 @@ const SelectionEditor = function(props) {
     typeof value === 'string' ? value.split(',') : value;
 
   function getLabel(object) {
+    console.log('deleteMe object in getLabel is: ');
+    console.log(object);
     if (object?.labelId)
       return intl.formatMessage({ id: object.labelId });
     return get(object, 'label', 'Missing label');
