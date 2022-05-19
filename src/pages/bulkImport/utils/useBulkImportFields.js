@@ -219,6 +219,19 @@ export default function useBulkImportFields() {
   // );
   console.log('deleteMe duplicates are: ');
   console.log(duplicates);
+  let disambiguatedAvailableFields = allAvailableFields;
+  duplicates.forEach(duplicate => {
+    disambiguatedAvailableFields = map(
+      disambiguatedAvailableFields,
+      field =>
+        field?.key === duplicate?.key
+          ? { ...field, label: 'temp' + field?.label }
+          : field,
+      [],
+    );
+  });
+  console.log('deleteMe disambiguatedAvailableFields are: ');
+  console.log(disambiguatedAvailableFields);
 
   return {
     numEncounterFieldsForFlatFile: flatfileEncounterFields.length,
