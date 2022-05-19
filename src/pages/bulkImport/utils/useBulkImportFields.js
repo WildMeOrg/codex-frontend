@@ -99,8 +99,6 @@ export default function useBulkImportFields() {
           const sanitizedSexOptions = Object.values(
             omitBy(sexOptions, sex => sex?.labelId === 'BLANK'),
           );
-          console.log('deleteMe sanitizedSexOptions is: ');
-          console.log(sanitizedSexOptions);
           additionalProperties.type = 'select';
           additionalProperties.options = sanitizedSexOptions;
         }
@@ -214,12 +212,8 @@ export default function useBulkImportFields() {
     allAvailableFields,
     (field, idx) => allLabels.indexOf(field?.label) !== idx,
   );
-  // const duplicates = some(
-  //   allLabels,
-  //   (label, idx) => allLabels.indexOf(label) !== idx,
-  // );
-  console.log('deleteMe duplicates are: ');
-  console.log(duplicates);
+  // console.log('deleteMe duplicates are: ');
+  // console.log(duplicates); // TODO improve the duplicates to find both
   let disambiguatedAvailableFields = allAvailableFields;
   duplicates.forEach(duplicate => {
     disambiguatedAvailableFields = map(
@@ -238,8 +232,6 @@ export default function useBulkImportFields() {
       [],
     );
   });
-  console.log('deleteMe disambiguatedAvailableFields are: ');
-  console.log(disambiguatedAvailableFields);
 
   return {
     numEncounterFieldsForFlatFile: flatfileEncounterFields.length,

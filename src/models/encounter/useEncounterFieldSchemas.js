@@ -49,6 +49,8 @@ export default function useSightingFieldSchemas() {
         ],
         [],
       );
+      console.log('deleteMe customFields are: ');
+      console.log(customFields);
       const customFieldSchemas = customFields.map(
         createCustomFieldSchema,
       );

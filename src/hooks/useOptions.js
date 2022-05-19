@@ -12,10 +12,6 @@ export default function useOptions() {
     siteSettingsVersion,
   } = useSiteSettings();
 
-  console.log(
-    'deleteMe data coming into useOptions is (look for something like sex):',
-  );
-  console.log(data);
   if (loading || error) return {};
 
   const options = useMemo(
@@ -49,11 +45,6 @@ export default function useOptions() {
           ],
         }))
         .filter(o => o);
-
-      console.log('deleteMe regionOptions are: ');
-      console.log(regionOptions);
-      console.log('deleteMe speciesOptions are: ');
-      console.log(speciesOptions);
 
       return { regionOptions, speciesOptions };
     },
