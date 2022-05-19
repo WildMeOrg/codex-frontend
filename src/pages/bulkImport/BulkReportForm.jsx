@@ -96,6 +96,8 @@ export default function BulkReportForm({ assetReferences }) {
   const detectionModelField = sightingFieldSchemas.find(
     schema => schema.name === 'speciesDetectionModel',
   );
+  console.log('deleteMe detectionModelField is: ');
+  console.log(detectionModelField);
 
   useEffect(
     () => {
