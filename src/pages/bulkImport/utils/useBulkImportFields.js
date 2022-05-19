@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { useIntl } from 'react-intl';
 
-import { omitBy } from 'lodash-es';
+import { omitBy, map, some } from 'lodash-es';
 
 import useEncounterFieldSchemas from '../../../models/encounter/useEncounterFieldSchemas';
 import useSightingFieldSchemas from '../../../models/sighting/useSightingFieldSchemas';
@@ -196,6 +196,25 @@ export default function useBulkImportFields() {
       validators: [utcOffsetValidator],
     },
   ];
+
+  const allAvailableFields = [
+    ...additionalFlatfileFields,
+    ...flatfileEncounterFields,
+    ...flatfileSightingFields,
+  ];
+  console.log('deleteMe allAvailableFields are: ');
+  console.log(allAvailableFields);
+  const allLabels = map(
+    allAvailableFields,
+    field => field?.label,
+    [],
+  );
+  const duplicates = some(
+    allLabels,
+    (label, idx) => allLabels.indexOf(label) !== idx,
+  );
+  console.log('deleteMe duplicates are: ');
+  console.log(duplicates);
 
   return {
     numEncounterFieldsForFlatFile: flatfileEncounterFields.length,
