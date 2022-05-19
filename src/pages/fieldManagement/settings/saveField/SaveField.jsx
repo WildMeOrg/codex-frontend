@@ -107,6 +107,8 @@ export default function SaveField() {
     : null;
   console.log('deleteMe fieldSchema is: ');
   console.log(fieldSchema);
+  console.log('deleteMe formData is: ');
+  console.log(formData);
   const deleteMeEditCompProps = get(
     fieldSchema,
     'editComponentProps',
