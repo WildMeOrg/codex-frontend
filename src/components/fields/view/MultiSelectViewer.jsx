@@ -16,7 +16,9 @@ export default function MultiSelectViewer({
   console.log(value);
 
   const selectedOptions = choices?.filter(choice =>
-    value?.find(v => choice[lookupKey] === v),
+    typeof value === 'string'
+      ? choice[lookupKey] === value
+      : value?.find(v => choice[lookupKey] === v),
   );
 
   const selectedOptionLabels = selectedOptions.map(o =>
