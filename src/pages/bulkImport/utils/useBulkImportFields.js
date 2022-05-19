@@ -14,6 +14,7 @@ import categoryTypes from '../../../constants/categoryTypes';
 import timePrecisionMap from '../../../constants/timePrecisionMap';
 import useOptions from '../../../hooks/useOptions';
 import sexOptions from '../../../constants/sexOptions';
+import { formatDuplicateLabel } from '../../../utils/formatters';
 
 const requiredValidator = {
   validate: 'required',
@@ -225,7 +226,14 @@ export default function useBulkImportFields() {
       disambiguatedAvailableFields,
       field =>
         field?.key === duplicate?.key
-          ? { ...field, label: 'temp' + field?.label }
+          ? {
+              ...field,
+              label: formatDuplicateLabel(
+                field?.label,
+                field?.key,
+                intl,
+              ),
+            }
           : field,
       [],
     );
