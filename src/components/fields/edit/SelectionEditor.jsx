@@ -53,7 +53,7 @@ const SelectionEditor = function(props) {
         onChange={e => {
           onChange(e.target.value);
         }}
-        value={splitValues || []}
+        value={multiselect ? splitValues : value || ''}
         multiple={multiselect}
         renderValue={currentValue => {
           if (multiselect) {

@@ -205,7 +205,7 @@ export default function BulkReportForm({ assetReferences }) {
             <InputRow schema={detectionModelField}>
               <detectionModelField.editComponent
                 schema={detectionModelField}
-                value={detectionModel}
+                value={[detectionModel]}
                 onChange={value => {
                   setDetectionModel(value);
                 }}
