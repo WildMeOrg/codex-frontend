@@ -49,9 +49,6 @@ const SelectionEditor = function(props) {
         labelId={`${identifier}-selector-label`}
         id={`${identifier}-selector`}
         onChange={e => {
-          console.log('deleteMe got here and e is: ');
-          console.log(e);
-          debugger;
           onChange(e.target.value);
         }}
         value={splitValues || []}

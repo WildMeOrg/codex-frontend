@@ -159,6 +159,11 @@ export default function BulkReportForm({ assetReferences }) {
               onRecordChange(record, recordIndex, filenames)
             }
             onData={async results => {
+              console.log(
+                'deleteMe results in bulk report form are: ',
+              );
+              console.log(results);
+              debugger;
               setSightingData(results.data);
             }}
             fieldHooks={{
