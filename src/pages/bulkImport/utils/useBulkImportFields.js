@@ -244,10 +244,6 @@ export default function useBulkImportFields() {
   return {
     numEncounterFieldsForFlatFile: flatfileEncounterFields.length,
     numSightingFieldsForFlatFile: flatfileSightingFields.length,
-    availableFields: [
-      ...additionalFlatfileFields,
-      ...flatfileEncounterFields,
-      ...flatfileSightingFields,
-    ],
+    availableFields: disambiguatedAvailableFields,
   };
 }
