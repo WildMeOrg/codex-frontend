@@ -105,6 +105,13 @@ export default function SaveField() {
   const fieldSchema = formData
     ? createCustomFieldSchema(formData)
     : null;
+  const deleteMeEditCompProps = get(
+    fieldSchema,
+    'editComponentProps',
+    {},
+  );
+  console.log('deleteMe deleteMeEditCompProps are: ');
+  console.log(deleteMeEditCompProps);
   const fieldType = get(formData, ['schema', 'displayType']);
   const defaultEditable = get(
     fieldTypeInfo,
