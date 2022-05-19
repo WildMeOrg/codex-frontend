@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { useIntl } from 'react-intl';
 
-import { omitBy, map, some } from 'lodash-es';
+import { omitBy, map, filter } from 'lodash-es';
 
 import useEncounterFieldSchemas from '../../../models/encounter/useEncounterFieldSchemas';
 import useSightingFieldSchemas from '../../../models/sighting/useSightingFieldSchemas';
@@ -209,10 +209,14 @@ export default function useBulkImportFields() {
     field => field?.label,
     [],
   );
-  const duplicates = some(
-    allLabels,
-    (label, idx) => allLabels.indexOf(label) !== idx,
+  const duplicates = filter(
+    allAvailableFields,
+    (field, idx) => allLabels.indexOf(field?.label) !== idx,
   );
+  // const duplicates = some(
+  //   allLabels,
+  //   (label, idx) => allLabels.indexOf(label) !== idx,
+  // );
   console.log('deleteMe duplicates are: ');
   console.log(duplicates);
 
