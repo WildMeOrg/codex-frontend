@@ -90,6 +90,8 @@ export default function SaveField() {
         );
 
         if (matchingField) {
+          console.log('deleteMe matchingField in SaveField is: ');
+          console.log(matchingField);
           setFormData(matchingField);
         } else {
           setLookupFieldError(true);
