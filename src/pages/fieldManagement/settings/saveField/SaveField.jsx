@@ -213,7 +213,7 @@ export default function SaveField() {
 
                   setFormData(nextFormData);
                 }}
-                value={get(formData, ['schema', 'displayType'], '')}
+                value={[get(formData, ['schema', 'displayType'], '')]}
               >
                 {Object.values(fieldTypeInfo).map(typeInfo => (
                   <MenuItem
