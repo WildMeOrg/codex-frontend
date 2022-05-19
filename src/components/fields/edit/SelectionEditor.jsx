@@ -25,6 +25,8 @@ const SelectionEditor = function(props) {
   console.log('deleteMe value entering the SelectionEditor is: ');
   console.log(value);
   const intl = useIntl();
+  const splitValues =
+    typeof value === 'string' ? value.split(',') : value;
 
   function getLabel(object) {
     if (object.labelId)
@@ -52,7 +54,7 @@ const SelectionEditor = function(props) {
           debugger;
           onChange(e.target.value);
         }}
-        value={value || ''}
+        value={splitValues || []}
         multiple={multiselect}
         renderValue={currentValue => {
           if (multiselect) {
