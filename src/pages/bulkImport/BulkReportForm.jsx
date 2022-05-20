@@ -237,6 +237,8 @@ export default function BulkReportForm({ assetReferences }) {
               sightingData,
               assetReferences,
             );
+            console.log('deleteMe sightings are: ');
+            console.log(sightings);
             const assetGroupData = await postAssetGroup({
               description: 'Bulk import from user',
               uploadType: 'bulk',
