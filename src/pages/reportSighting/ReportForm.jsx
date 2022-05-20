@@ -60,8 +60,6 @@ export default function ReportForm({
     data: siteSettingsData,
     siteSettingsVersion,
   } = useSiteSettings();
-  console.log('deleteMe siteSettingsData is: ');
-  console.log(siteSettingsData);
   const recaptchaPublicKey = get(siteSettingsData, [
     'recaptchaPublicKey',
     'value',

@@ -29,10 +29,12 @@ export default function NotificationDetailsDialog({
   };
 
   const {
-    userName,
+    usrName,
+    userNameGuid,
     user1Name,
     user2Name,
-    yourIndividualName,
+    yourIndName,
+    yourIndividualGuid,
     theirIndName,
     theirIndividualGuid,
     formattedDeadline,
@@ -49,10 +51,25 @@ export default function NotificationDetailsDialog({
           style={{ marginBottom: 20 }}
           id={moreDetailedDescription}
           values={{
-            userName,
+            userName: (
+              <span>
+                <Link newTab href={`/users/${userNameGuid}`}>
+                  {usrName}
+                </Link>
+              </span>
+            ),
             user1Name,
             user2Name,
-            yourIndividualName,
+            yourIndividualName: (
+              <span>
+                <Link
+                  newTab
+                  href={`/individuals/${yourIndividualGuid}`}
+                >
+                  {yourIndName}
+                </Link>
+              </span>
+            ),
             theirIndividualName: (
               <span>
                 <Link

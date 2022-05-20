@@ -31,9 +31,6 @@ export default function NotificationsPane({
   shouldOpen,
   setShouldOpen,
 }) {
-  console.log('deleteMe notifications are: ');
-  console.log(notifications);
-
   const intl = useIntl();
   const queryClient = useQueryClient();
   const theme = useTheme();
@@ -82,10 +79,12 @@ export default function NotificationsPane({
                 currentNotificationSchema?.showNotificationDialog &&
                 refreshNotifications !== undefined;
               const {
-                userName,
+                usrName,
+                userNameGuid,
                 user1Name,
                 user2Name,
-                yourIndividualName,
+                yourIndName,
+                yourIndividualGuid,
                 theirIndName,
                 theirIndividualGuid,
                 formattedDeadline,
@@ -123,10 +122,12 @@ export default function NotificationsPane({
                         currentNotificationSchema={
                           currentNotificationSchema
                         }
-                        userName={userName}
+                        usrName={usrName}
+                        userNameGuid={userNameGuid}
                         user1Name={user1Name}
                         user2Name={user2Name}
-                        yourIndividualName={yourIndividualName}
+                        yourIndName={yourIndName}
+                        yourIndividualGuid={yourIndividualGuid}
                         theirIndName={theirIndName}
                         theirIndividualGuid={theirIndividualGuid}
                         formattedDeadline={formattedDeadline}
