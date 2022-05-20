@@ -60,6 +60,8 @@ export default function ReportForm({
     data: siteSettingsData,
     siteSettingsVersion,
   } = useSiteSettings();
+  console.log('deleteMe siteSettingsData is: ');
+  console.log(siteSettingsData);
   const [sightingType, setSightingType] = useState(null);
 
   const {
