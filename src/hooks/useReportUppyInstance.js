@@ -29,6 +29,7 @@ export default function useReportUppyInstance(reportType) {
       headers: {
         'x-tus-transaction-id': assetSubmissionId,
       },
+      removeFingerprintOnSuccess: true,
     });
 
     uppyInstance.on('upload', () => setUploadInProgress(true));
