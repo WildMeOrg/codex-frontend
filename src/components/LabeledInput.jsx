@@ -4,8 +4,6 @@ import inputMap from './inputs/inputMap';
 
 export default function LabeledInput(props) {
   const { schema } = props;
-  console.log('deleteMe props in LabeledInput are: ');
-  console.log(props);
 
   const InputComponent =
     get(inputMap, schema.fieldType) ||

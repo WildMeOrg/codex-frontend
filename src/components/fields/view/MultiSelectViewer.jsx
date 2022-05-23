@@ -12,10 +12,6 @@ export default function MultiSelectViewer({
   const { choices } = schema;
   const splitValues =
     typeof value === 'string' ? value.split(',') : value;
-  console.log('deleteMe choices in MultiSelectViewer are:');
-  console.log(choices);
-  // console.log('deleteMe value in MultiSelectViewer is: ');
-  // console.log(value);
 
   const selectedOptions = choices?.filter(choice =>
     splitValues?.find(v => choice[lookupKey] === v),

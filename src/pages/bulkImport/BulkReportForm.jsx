@@ -94,8 +94,6 @@ export default function BulkReportForm({ assetReferences }) {
     numSightingFieldsForFlatFile,
     availableFields,
   } = useBulkImportFields();
-  console.log('deleteMe availableFields in BulkReportForm are: ');
-  console.log(availableFields);
   const sightingFieldSchemas = useSightingFieldSchemas();
   const encounterFieldSchemas = useEncounterFieldSchemas();
 
@@ -123,8 +121,6 @@ export default function BulkReportForm({ assetReferences }) {
   const detectionModelField = sightingFieldSchemas.find(
     schema => schema.name === 'speciesDetectionModel',
   );
-  // console.log('deleteMe detectionModelField is: ');
-  // console.log(detectionModelField);
 
   useEffect(
     () => {
@@ -188,11 +184,6 @@ export default function BulkReportForm({ assetReferences }) {
               onRecordChange(record, recordIndex, filenames)
             }
             onData={async results => {
-              console.log(
-                'deleteMe results in bulk report form are: ',
-              );
-              console.log(results);
-              debugger;
               setSightingData(results.data);
             }}
             fieldHooks={{
@@ -264,8 +255,6 @@ export default function BulkReportForm({ assetReferences }) {
               sightingData,
               assetReferences,
             );
-            console.log('deleteMe sightings are: ');
-            console.log(sightings);
 
             const grecaptchaReady = new Promise(resolve => {
               window.grecaptcha.ready(() => {

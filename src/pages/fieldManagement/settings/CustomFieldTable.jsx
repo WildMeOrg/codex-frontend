@@ -26,8 +26,6 @@ export default function CustomFieldTable({
   settingName,
   noFieldsTextId,
 }) {
-  console.log('deleteMe field in CustomFieldTable are: ');
-  console.log(fields);
   const fieldSchemas = fields.map(houstonSchema => {
     const frontendSchema = createCustomFieldSchema(houstonSchema);
 

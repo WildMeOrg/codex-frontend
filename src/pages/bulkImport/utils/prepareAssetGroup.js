@@ -31,24 +31,16 @@ function updateTimes(encounter) {
 
 function deriveCustomFields(encounter, categoryType) {
   const prefix = deriveCustomFieldPrefix(categoryType);
-  console.log('deleteMe prefix in deriveCustomFields is: ');
-  console.log(prefix);
 
   const customSightingFields = pickBy(
     encounter,
     (value, key) => value && startsWith(key, prefix),
   );
-  console.log(
-    'deleteMe customSightingFields in deriveCustomFields is: ',
-  );
-  console.log(customSightingFields);
 
   const returnObj = mapKeys(
     customSightingFields,
     (_, key) => key.split(prefix)[1],
   );
-  console.log('deleteMe returnObj in deriveCustomFields is: ');
-  console.log(returnObj);
 
   return mapKeys(
     customSightingFields,
@@ -86,8 +78,6 @@ export default function prepareAssetGroup(
   encounters,
   assetReferences,
 ) {
-  console.log('deleteMe encounters in prepareAssetGroup are: ');
-  console.log(encounters);
   const sightings = {};
   const simpleAssetReferences = assetReferences.map(a => a.path);
   encounters.forEach(encounter => {
@@ -167,8 +157,6 @@ export default function prepareAssetGroup(
       newEncounter,
       categoryTypes.encounter,
     );
-    console.log('deleteMe customEncounterFields are: ');
-    console.log(customEncounterFields);
     if (!isEmpty(customEncounterFields)) {
       newEncounter.customFields = customEncounterFields;
     }

@@ -90,8 +90,6 @@ export default function SaveField() {
         );
 
         if (matchingField) {
-          console.log('deleteMe matchingField in SaveField is: ');
-          console.log(matchingField);
           setFormData(matchingField);
         } else {
           setLookupFieldError(true);
@@ -105,17 +103,6 @@ export default function SaveField() {
   const fieldSchema = formData
     ? createCustomFieldSchema(formData)
     : null;
-  console.log('deleteMe fieldSchema is: ');
-  console.log(fieldSchema);
-  console.log('deleteMe formData is: ');
-  console.log(formData);
-  const deleteMeEditCompProps = get(
-    fieldSchema,
-    'editComponentProps',
-    {},
-  );
-  console.log('deleteMe deleteMeEditCompProps are: ');
-  console.log(deleteMeEditCompProps);
   const fieldType = get(formData, ['schema', 'displayType']);
   const defaultEditable = get(
     fieldTypeInfo,

@@ -22,8 +22,6 @@ const SelectionEditor = function(props) {
     minimalLabels = false,
     ...rest
   } = props;
-  console.log('deleteMe value entering the SelectionEditor is: ');
-  console.log(value);
   const intl = useIntl();
   const splitValues =
     typeof value === 'string' ? value?.split(',') : value;

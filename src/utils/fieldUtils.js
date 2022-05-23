@@ -164,10 +164,6 @@ const componentMap = {
 };
 
 export function createCustomFieldSchema(houstonSchema) {
-  // console.log(
-  //   'deleteMe houstonSchema for createCustomFieldSchema are: ',
-  // );
-  // console.log(houstonSchema);
   const copiedFields = pick(houstonSchema, [
     'id',
     'required',
@@ -180,13 +176,7 @@ export function createCustomFieldSchema(houstonSchema) {
   ]);
 
   const fieldType = get(houstonSchema, ['schema', 'displayType']);
-  console.log('deleteMe fieldType in createCustomFieldSchema is: ');
-  console.log(fieldType);
   const fieldTypeProperties = get(componentMap, fieldType, {});
-  console.log(
-    'deleteMe fieldTypeProperties in createCustomFieldSchema are: ',
-  );
-  console.log(fieldTypeProperties);
   const properSchema = {
     ...prototypeFieldSchema,
     ...fieldTypeProperties,
@@ -194,30 +184,20 @@ export function createCustomFieldSchema(houstonSchema) {
     ...copiedSchemaFields,
     categoryId: get(houstonSchema, ['schema', 'category']),
     customField: true,
-    getValue: (schema, backendObject) => {
-      console.log('deleteMe the get value is: ');
-      const deleteMeReturnObj = get(
+    getValue: (schema, backendObject) => (
+      get(
         backendObject,
         ['customFields', schema.id],
         get(schema, 'defaultValue', null),
-      );
-      console.log(deleteMeReturnObj);
-      return get(
-        backendObject,
-        ['customFields', schema.id],
-        get(schema, 'defaultValue', null),
-      );
+      )
+    )
     },
   };
 
   const defaultValue = get(houstonSchema, 'default');
-  console.log('deleteMe defaultValue in createCustomFieldSchema is:');
-  console.log(defaultValue);
   if (defaultValue) {
     properSchema.defaultValue = defaultValue;
   }
-  console.log('deleteMe properSchema are: ');
-  console.log(properSchema);
 
   return properSchema;
 }

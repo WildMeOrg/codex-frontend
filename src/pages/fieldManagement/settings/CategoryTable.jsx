@@ -106,8 +106,6 @@ export default function FieldSettings() {
               <ActionIcon
                 variant="edit"
                 onClick={() => {
-                  console.log('deleteMe current category a1 is: ');
-                  console.log(category);
                   return setDialogData(category);
                 }}
               />
