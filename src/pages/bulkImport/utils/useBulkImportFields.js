@@ -58,6 +58,10 @@ export default function useBulkImportFields() {
   const intl = useIntl();
   const { regionOptions, speciesOptions } = useOptions();
   const sightingFieldSchemas = useSightingFieldSchemas();
+  console.log(
+    'deleteMe sightingFieldSchemas in useBulkImportFields are: ',
+  );
+  console.log(sightingFieldSchemas);
   const flatfileSightingFields = useMemo(
     () => {
       if (!sightingFieldSchemas) return {};
@@ -82,6 +86,10 @@ export default function useBulkImportFields() {
   );
 
   const encounterFieldSchemas = useEncounterFieldSchemas();
+  console.log(
+    'deleteMe encounterFieldSchemas in useBulkImportFields are: ',
+  );
+  console.log(encounterFieldSchemas);
   const flatfileEncounterFields = useMemo(
     () => {
       if (!encounterFieldSchemas || !regionOptions || !speciesOptions)
@@ -214,8 +222,6 @@ export default function useBulkImportFields() {
     allAvailableFields,
     (field, idx) => allLabels.indexOf(field?.label) !== idx,
   );
-  console.log('deleteMe duplicates are: ');
-  console.log(duplicates); // TODO improve the duplicates to find both
   let disambiguatedAvailableFields = allAvailableFields;
   duplicates.forEach(duplicate => {
     disambiguatedAvailableFields = map(
