@@ -201,7 +201,9 @@ export default function useBulkImportFields() {
     ...flatfileEncounterFields,
     ...flatfileSightingFields,
   ];
-  console.log('deleteMe allAvailableFields are: ');
+  console.log(
+    'deleteMe allAvailableFields in useBulkImportFields are: ',
+  );
   console.log(allAvailableFields);
   const allLabels = map(
     allAvailableFields,
@@ -212,8 +214,8 @@ export default function useBulkImportFields() {
     allAvailableFields,
     (field, idx) => allLabels.indexOf(field?.label) !== idx,
   );
-  // console.log('deleteMe duplicates are: ');
-  // console.log(duplicates); // TODO improve the duplicates to find both
+  console.log('deleteMe duplicates are: ');
+  console.log(duplicates); // TODO improve the duplicates to find both
   let disambiguatedAvailableFields = allAvailableFields;
   duplicates.forEach(duplicate => {
     disambiguatedAvailableFields = map(
