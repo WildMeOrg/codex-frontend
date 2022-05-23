@@ -105,9 +105,7 @@ export default function FieldSettings() {
             <div>
               <ActionIcon
                 variant="edit"
-                onClick={() => {
-                  return setDialogData(category);
-                }}
+                onClick={() => setDialogData(category)}
               />
               <ActionIcon
                 labelId="REMOVE"

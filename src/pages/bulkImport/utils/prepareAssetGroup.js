@@ -37,11 +37,6 @@ function deriveCustomFields(encounter, categoryType) {
     (value, key) => value && startsWith(key, prefix),
   );
 
-  const returnObj = mapKeys(
-    customSightingFields,
-    (_, key) => key.split(prefix)[1],
-  );
-
   return mapKeys(
     customSightingFields,
     (_, key) => key.split(prefix)[1],
@@ -144,8 +139,6 @@ export default function prepareAssetGroup(
       newEncounter,
       categoryTypes.sighting,
     );
-    console.log('deletMe customSightingFields are: ');
-    console.log(customSightingFields);
     if (!isEmpty(customSightingFields)) {
       sightings[sightingId].customFields = customSightingFields;
     }

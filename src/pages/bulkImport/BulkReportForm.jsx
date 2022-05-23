@@ -11,7 +11,6 @@ import CustomAlert from '../../components/Alert';
 
 import queryKeys from '../../constants/queryKeys';
 import usePostAssetGroup from '../../models/assetGroup/usePostAssetGroup';
-import useSiteSettings from '../../models/site/useSiteSettings';
 import useSightingFieldSchemas from '../../models/sighting/useSightingFieldSchemas';
 import useEncounterFieldSchemas from '../../models/encounter/useEncounterFieldSchemas';
 import { flatfileKey } from '../../constants/apiKeys';
@@ -75,10 +74,6 @@ function onRecordInit(record) {
 export default function BulkReportForm({ assetReferences }) {
   const theme = useTheme();
   const history = useHistory();
-  const {
-    data: siteSettingsData,
-    siteSettingsVersion,
-  } = useSiteSettings();
   const [sightingData, setSightingData] = useState(null);
   const [detectionModel, setDetectionModel] = useState('');
   const queryClient = useQueryClient();
@@ -96,27 +91,6 @@ export default function BulkReportForm({ assetReferences }) {
   } = useBulkImportFields();
   const sightingFieldSchemas = useSightingFieldSchemas();
   const encounterFieldSchemas = useEncounterFieldSchemas();
-
-  const recaptchaPublicKey = get(siteSettingsData, [
-    'recaptchaPublicKey',
-    'value',
-  ]);
-
-  useEffect(
-    () => {
-      if (
-        recaptchaPublicKey &&
-        !document.getElementById('recaptcha-script')
-      ) {
-        const recaptchaApiUrl = `https://www.google.com/recaptcha/api.js?render=${recaptchaPublicKey}`;
-        const recaptchaScript = document.createElement('script');
-        recaptchaScript.src = recaptchaApiUrl;
-        recaptchaScript.id = 'recaptcha-script';
-        document.head.appendChild(recaptchaScript);
-      }
-    },
-    [recaptchaPublicKey],
-  );
 
   const detectionModelField = sightingFieldSchemas.find(
     schema => schema.name === 'speciesDetectionModel',
@@ -255,37 +229,20 @@ export default function BulkReportForm({ assetReferences }) {
               sightingData,
               assetReferences,
             );
-
-            const grecaptchaReady = new Promise(resolve => {
-              window.grecaptcha.ready(() => {
-                resolve();
-              });
+            const assetGroupData = await postAssetGroup({
+              description: 'Bulk import from user',
+              uploadType: 'bulk',
+              speciesDetectionModel: [detectionModel || null],
+              transactionId: get(assetReferences, [
+                0,
+                'transactionId',
+              ]),
+              sightings,
             });
-
-            await grecaptchaReady;
-
-            if (window.grecaptcha) {
-              const token = await window.grecaptcha.execute(
-                recaptchaPublicKey,
-                { action: 'submit' },
-              );
-
-              const assetGroupData = await postAssetGroup({
-                description: 'Bulk import from user',
-                uploadType: 'bulk',
-                token: token,
-                speciesDetectionModel: [detectionModel || null],
-                transactionId: get(assetReferences, [
-                  0,
-                  'transactionId',
-                ]),
-                sightings,
-              });
-              const assetGroupId = get(assetGroupData, 'guid');
-              if (assetGroupId) {
-                history.push(`/bulk-import/success/${assetGroupId}`);
-                queryClient.invalidateQueries(queryKeys.me);
-              }
+            const assetGroupId = get(assetGroupData, 'guid');
+            if (assetGroupId) {
+              history.push(`/bulk-import/success/${assetGroupId}`);
+              queryClient.invalidateQueries(queryKeys.me);
             }
           }}
           style={{ width: 200 }}

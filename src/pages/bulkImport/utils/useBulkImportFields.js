@@ -224,10 +224,10 @@ export default function useBulkImportFields() {
     allAvailableFields,
     (field, idx) => allLabels.indexOf(field?.label) !== idx,
   );
-  let disambiguatedAvailableFields = allAvailableFields;
+  let disambiguatedAvailableFields;
   duplicates.forEach(duplicate => {
     disambiguatedAvailableFields = map(
-      disambiguatedAvailableFields,
+      allAvailableFields,
       field =>
         field?.label === duplicate?.label
           ? {
