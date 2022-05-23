@@ -221,7 +221,7 @@ export default function useBulkImportFields() {
     disambiguatedAvailableFields = map(
       disambiguatedAvailableFields,
       field =>
-        field?.key === duplicate?.key
+        field?.label === duplicate?.label
           ? {
               ...field,
               label: formatDuplicateLabel(
