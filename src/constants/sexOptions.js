@@ -1,23 +1,23 @@
-import { useIntl } from 'react-intl';
-
-const intl = useIntl();
-
 export default [
   {
     value: 'male',
-    label: intl.formatMessage({ id: 'MALE' }),
+    labelId: 'MALE',
+    label: 'Male',
   },
   {
     value: 'female',
-    label: intl.formatMessage({ id: 'FEMALE' }),
+    labelId: 'FEMALE',
+    label: 'Female',
   },
   {
     value: 'unknown',
-    label: intl.formatMessage({ id: 'UNKNOWN' }),
+    labelId: 'UNKNOWN',
+    label: 'Unknown',
   },
   {
     value: null,
-    label: intl.formatMessage({ id: 'VALUE_NOT_SET' }),
+    labelId: 'BLANK',
+    label: 'Value not set',
     mergeLabelId: 'VALUE_NOT_SET',
     filterLabelId: 'VALUE_NOT_SET',
   },
