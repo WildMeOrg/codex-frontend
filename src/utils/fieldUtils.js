@@ -184,14 +184,12 @@ export function createCustomFieldSchema(houstonSchema) {
     ...copiedSchemaFields,
     categoryId: get(houstonSchema, ['schema', 'category']),
     customField: true,
-    getValue: (schema, backendObject) => (
+    getValue: (schema, backendObject) =>
       get(
         backendObject,
         ['customFields', schema.id],
         get(schema, 'defaultValue', null),
-      )
-    )
-    },
+      ),
   };
 
   const defaultValue = get(houstonSchema, 'default');
