@@ -343,7 +343,7 @@ export default function ReportForm({
 
                 await grecaptchaReady;
 
-                if (recaptchaPublicKey) {
+                if (window.grecaptcha) {
                   const token = await window.grecaptcha.execute(
                     recaptchaPublicKey,
                     { action: 'submit' },
