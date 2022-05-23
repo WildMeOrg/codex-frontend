@@ -70,10 +70,9 @@ export default function useBulkImportFields() {
       );
       return bulkSightingFields.map(f => {
         const additionalProperties = {};
-        if (
-          f?.fieldType === 'select' ||
-          f?.fieldType === 'multiselect'
-        ) {
+        if (f?.fieldType === 'multiselect')
+          additionalProperties.type = 'multiselect';
+        if (f?.fieldType === 'select') {
           additionalProperties.type = 'select';
         }
         if (f?.choices) additionalProperties.options = f.choices;
@@ -106,10 +105,9 @@ export default function useBulkImportFields() {
       );
       return bulkEncounterFields.map(f => {
         const additionalProperties = {};
-        if (
-          f?.fieldType === 'select' ||
-          f?.fieldType === 'multiselect'
-        ) {
+        if (f?.fieldType === 'multiselect')
+          additionalProperties.type = 'multiselect';
+        if (f?.fieldType === 'select') {
           additionalProperties.type = 'select';
         }
         if (f?.choices) additionalProperties.options = f.choices;
