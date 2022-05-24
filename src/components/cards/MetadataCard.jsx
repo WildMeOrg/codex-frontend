@@ -17,6 +17,7 @@ const badValues = [null, undefined, ''];
 function fieldValueGood(field) {
   const value = field?.value;
   if (badValues.includes(value)) return false;
+  if (value.isArray && value?.length < 1) return false;
   if (value?.time === null && value?.timeSpecificity === null)
     return false;
   return true;
