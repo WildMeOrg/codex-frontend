@@ -15,7 +15,7 @@ import Link from '../Link';
 import Text from '../Text';
 import Button from '../Button';
 import ButtonLink from '../ButtonLink';
-import NotificationPaneDisplayText from './NoticiationPaneDisplayText';
+import NotificationPaneDisplayText from './NotificationPaneDisplayText';
 import shane from '../../assets/shane.jpg';
 import { notificationSchema } from '../../constants/notificationSchema';
 import { getNotificationProps } from '../../utils/notificationUtils';
