@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactPlayer from 'react-player';
-import { v4 as uuid } from 'uuid';
 import Paper from '@material-ui/core/Paper';
 import VideoIcon from '@material-ui/icons/Movie';
 
