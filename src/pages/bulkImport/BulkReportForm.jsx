@@ -75,10 +75,7 @@ function onRecordInit(record) {
 export default function BulkReportForm({ assetReferences }) {
   const theme = useTheme();
   const history = useHistory();
-  const {
-    data: siteSettingsData,
-    siteSettingsVersion,
-  } = useSiteSettings();
+  const { data: siteSettingsData } = useSiteSettings();
   const [sightingData, setSightingData] = useState(null);
   const [detectionModel, setDetectionModel] = useState('');
   const queryClient = useQueryClient();
