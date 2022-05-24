@@ -65,22 +65,6 @@ export default function ReportForm({
     'value',
   ]);
 
-  useEffect(
-    () => {
-      if (
-        recaptchaPublicKey &&
-        !document.getElementById('recaptcha-script')
-      ) {
-        const recaptchaApiUrl = `https://www.google.com/recaptcha/api.js?render=${recaptchaPublicKey}`;
-        const recaptchaScript = document.createElement('script');
-        recaptchaScript.src = recaptchaApiUrl;
-        recaptchaScript.id = 'recaptcha-script';
-        document.head.appendChild(recaptchaScript);
-      }
-    },
-    [recaptchaPublicKey],
-  );
-
   const [sightingType, setSightingType] = useState(null);
 
   const {
@@ -335,15 +319,15 @@ export default function ReportForm({
                   sightings: [report],
                 };
 
-                const grecaptchaReady = new Promise(resolve => {
-                  window.grecaptcha.ready(() => {
-                    resolve();
+                if (window.grecaptcha) {
+                  const grecaptchaReady = new Promise(resolve => {
+                    window.grecaptcha.ready(() => {
+                      resolve();
+                    });
                   });
-                });
 
-                await grecaptchaReady;
+                  await grecaptchaReady;
 
-                if (recaptchaPublicKey) {
                   const token = await window.grecaptcha.execute(
                     recaptchaPublicKey,
                     { action: 'submit' },
