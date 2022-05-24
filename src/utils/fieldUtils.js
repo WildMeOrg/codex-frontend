@@ -190,7 +190,7 @@ export function createCustomFieldSchema(houstonSchema) {
         ['customFields', schema.id],
         get(schema, 'defaultValue', null),
       ),
-    hideInMetadataCard: false,
+    // hideInMetadataCard: false,
   };
 
   const defaultValue = get(houstonSchema, 'default');

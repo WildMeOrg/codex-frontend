@@ -23,7 +23,7 @@ function fieldValueGood(field) {
   if (badValues.includes(value)) return false;
   if (Array.isArray(value)) {
     if (value?.length < 1) return false;
-    const removeNulls = value.filter(entry => entry !== null); //for lat/long
+    const removeNulls = value.filter(entry => entry !== null); //for lat/long, although a legit 0,0 lat/long comes back as [null, null] currently, so it'll be a blindspot for us.
     if (removeNulls?.length < 1) return false;
   }
 
