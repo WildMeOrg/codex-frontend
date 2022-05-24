@@ -25,7 +25,7 @@ export default function useSiteSettings() {
       const response = await axios(
         `${__houston_url__}/api/v1/site-settings/main/block`,
       );
-      return get(response, 'data.response.configuration');
+      return get(response, 'data.response');
     },
     {
       staleTime: Infinity,
@@ -46,18 +46,16 @@ export default function useSiteSettings() {
 
   const loading = schemaLoading || configLoading;
   const error = schemaError || configError;
-  const siteSettingsVersion = get(
-    configData,
-    'data.response.version',
-  );
+  const { version: siteSettingsVersion, configuration } =
+    configData || {};
 
   let data = null;
-  if (schemaData && configData) {
+  if (schemaData && configuration) {
     /* Order of this merge is crucial. Values from the settings object must
      * override values from the schema object. If the order ever needs to be
      * changed for some reason, extensive QA of the RegionEditor component
      * will be necesssary. */
-    data = merge(configData, schemaData);
+    data = merge(configuration, schemaData);
   }
 
   return { data, loading, error, siteSettingsVersion };
