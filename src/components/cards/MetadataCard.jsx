@@ -21,7 +21,12 @@ function fieldValueGood(field) {
   console.log('deleteMe and its value is: ');
   console.log(value);
   if (badValues.includes(value)) return false;
-  if (Array.isArray(value) && value?.length < 1) return false;
+  if (Array.isArray(value)) {
+    if (value?.length < 1) return false;
+    const removeNulls = value.filter(entry => entry !== null); //for lat/long
+    if (removeNulls?.length < 1) return false;
+  }
+
   if (value?.time === null && value?.timeSpecificity === null)
     return false;
   return true;
