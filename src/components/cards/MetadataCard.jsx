@@ -15,15 +15,11 @@ import Card from './Card';
 
 const badValues = [null, undefined, ''];
 function fieldValueGood(field) {
-  console.log('deleteMe field in fieldValueGood is: ');
-  console.log(field);
   const value = field?.value;
-  console.log('deleteMe and its value is: ');
-  console.log(value);
   if (badValues.includes(value)) return false;
   if (Array.isArray(value)) {
     if (value?.length < 1) return false;
-    const removeNulls = value.filter(entry => entry !== null); //for lat/long, although a legit 0,0 lat/long comes back as [null, null] currently, so it'll be a blindspot for us.
+    const removeNulls = value.filter(entry => entry !== null);
     if (removeNulls?.length < 1) return false;
   }
 
@@ -42,17 +38,11 @@ export default function MetadataCard({
   onEdit,
 }) {
   const metadataToDisplay = metadata.filter(field => {
-    console.log('deleteMe current field is: ');
-    console.log(field);
     const valid = !field?.hideInMetadataCard && fieldValueGood(field);
-    console.log('deleteMe valid is: ');
-    console.log(valid);
     const passedDefaultValueCheck = showDefaultValues
       ? true
       : JSON.stringify(field?.value) !==
         JSON.stringify(field?.defaultValue);
-    console.log('deleteMe passedDefaultValueCheck is: ');
-    console.log(passedDefaultValueCheck);
     return valid && passedDefaultValueCheck;
   });
 
