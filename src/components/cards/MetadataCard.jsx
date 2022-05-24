@@ -32,11 +32,17 @@ export default function MetadataCard({
   onEdit,
 }) {
   const metadataToDisplay = metadata.filter(field => {
+    console.log('deleteMe current field is: ');
+    console.log(field);
     const valid = !field?.hideInMetadataCard && fieldValueGood(field);
+    console.log('deleteMe valid is: ');
+    console.log(valid);
     const passedDefaultValueCheck = showDefaultValues
       ? true
       : JSON.stringify(field?.value) !==
         JSON.stringify(field?.defaultValue);
+    console.log('deleteMe passedDefaultValueCheck is: ');
+    console.log(passedDefaultValueCheck);
     return valid && passedDefaultValueCheck;
   });
 
@@ -64,8 +70,6 @@ export default function MetadataCard({
       <List dense>
         {metadata
           ? metadataToDisplay.map(field => {
-              console.log('deleteMe current field is: ');
-              console.log(field);
               const viewComponentProps =
                 field?.viewComponentProps || {};
 
