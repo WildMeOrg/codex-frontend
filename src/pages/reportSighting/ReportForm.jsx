@@ -60,6 +60,11 @@ export default function ReportForm({
     data: siteSettingsData,
     siteSettingsVersion,
   } = useSiteSettings();
+  const recaptchaPublicKey = get(siteSettingsData, [
+    'recaptchaPublicKey',
+    'value',
+  ]);
+
   const [sightingType, setSightingType] = useState(null);
 
   const {
@@ -313,6 +318,22 @@ export default function ReportForm({
                   ]),
                   sightings: [report],
                 };
+
+                if (window.grecaptcha) {
+                  const grecaptchaReady = new Promise(resolve => {
+                    window.grecaptcha.ready(() => {
+                      resolve();
+                    });
+                  });
+
+                  await grecaptchaReady;
+
+                  const token = await window.grecaptcha.execute(
+                    recaptchaPublicKey,
+                    { action: 'submit' },
+                  );
+                  assetGroup.token = token;
+                }
 
                 const assetGroupData = await postAssetGroup(
                   assetGroup,
