@@ -102,22 +102,6 @@ export default function BulkReportForm({ assetReferences }) {
     'value',
   ]);
 
-  useEffect(
-    () => {
-      if (
-        recaptchaPublicKey &&
-        !document.getElementById('recaptcha-script')
-      ) {
-        const recaptchaApiUrl = `https://www.google.com/recaptcha/api.js?render=${recaptchaPublicKey}`;
-        const recaptchaScript = document.createElement('script');
-        recaptchaScript.src = recaptchaApiUrl;
-        recaptchaScript.id = 'recaptcha-script';
-        document.head.appendChild(recaptchaScript);
-      }
-    },
-    [recaptchaPublicKey],
-  );
-
   const detectionModelField = sightingFieldSchemas.find(
     schema => schema.name === 'speciesDetectionModel',
   );
@@ -255,37 +239,36 @@ export default function BulkReportForm({ assetReferences }) {
               sightingData,
               assetReferences,
             );
-
-            const grecaptchaReady = new Promise(resolve => {
-              window.grecaptcha.ready(() => {
-                resolve();
-              });
-            });
-
-            await grecaptchaReady;
+            const assetGroup = {
+              description: 'Bulk import from user',
+              uploadType: 'bulk',
+              speciesDetectionModel: [detectionModel || null],
+              transactionId: get(assetReferences, [
+                0,
+                'transactionId',
+              ]),
+              sightings,
+            };
 
             if (window.grecaptcha) {
+              const grecaptchaReady = new Promise(resolve => {
+                window.grecaptcha.ready(() => {
+                  resolve();
+                });
+              });
+
+              await grecaptchaReady;
               const token = await window.grecaptcha.execute(
                 recaptchaPublicKey,
                 { action: 'submit' },
               );
-
-              const assetGroupData = await postAssetGroup({
-                description: 'Bulk import from user',
-                uploadType: 'bulk',
-                token: token,
-                speciesDetectionModel: [detectionModel || null],
-                transactionId: get(assetReferences, [
-                  0,
-                  'transactionId',
-                ]),
-                sightings,
-              });
-              const assetGroupId = get(assetGroupData, 'guid');
-              if (assetGroupId) {
-                history.push(`/bulk-import/success/${assetGroupId}`);
-                queryClient.invalidateQueries(queryKeys.me);
-              }
+              assetGroup.token = token;
+            }
+            const assetGroupData = await postAssetGroup(assetGroup);
+            const assetGroupId = get(assetGroupData, 'guid');
+            if (assetGroupId) {
+              history.push(`/bulk-import/success/${assetGroupId}`);
+              queryClient.invalidateQueries(queryKeys.me);
             }
           }}
           style={{ width: 200 }}
