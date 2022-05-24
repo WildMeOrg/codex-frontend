@@ -15,9 +15,13 @@ import Card from './Card';
 
 const badValues = [null, undefined, ''];
 function fieldValueGood(field) {
+  console.log('deleteMe field in fieldValueGood is: ');
+  console.log(field);
   const value = field?.value;
+  console.log('deleteMe and its value is: ');
+  console.log(value);
   if (badValues.includes(value)) return false;
-  if (value.isArray && value?.length < 1) return false;
+  if (Array.isArray(value) && value?.length < 1) return false;
   if (value?.time === null && value?.timeSpecificity === null)
     return false;
   return true;
