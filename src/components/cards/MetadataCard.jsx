@@ -27,7 +27,7 @@ export default function MetadataCard({
   titleId = 'METADATA',
   metadata,
   editable = false,
-  showDefaultValues = false,
+  showDefaultValues = true,
   editButtonId = 'REPORT_METADATA',
   onEdit,
 }) {
