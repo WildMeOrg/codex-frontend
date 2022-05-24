@@ -89,10 +89,12 @@ export default function Notifications() {
                 );
                 const read = get(notification, 'is_read', false);
                 const {
-                  userName,
+                  usrName,
+                  userNameGuid,
                   user1Name,
                   user2Name,
-                  yourIndividualName,
+                  yourIndName,
+                  yourIndividualGuid,
                   theirIndName,
                   theirIndividualGuid,
                   formattedDeadline,
@@ -117,10 +119,28 @@ export default function Notifications() {
                           currentNotificationSchema?.notificationMessage,
                       },
                       {
-                        userName,
+                        userName: (
+                          <span>
+                            <Link
+                              newTab
+                              href={`/users/${userNameGuid}`}
+                            >
+                              {usrName}
+                            </Link>
+                          </span>
+                        ),
                         user1Name,
                         user2Name,
-                        yourIndividualName,
+                        yourIndividualName: (
+                          <span>
+                            <Link
+                              newTab
+                              href={`/individuals/${yourIndividualGuid}`}
+                            >
+                              {yourIndName}
+                            </Link>
+                          </span>
+                        ),
                         theirIndividualName: (
                           <span>
                             <Link

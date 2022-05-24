@@ -11,6 +11,7 @@ import CustomAlert from '../../components/Alert';
 
 import queryKeys from '../../constants/queryKeys';
 import usePostAssetGroup from '../../models/assetGroup/usePostAssetGroup';
+import useSiteSettings from '../../models/site/useSiteSettings';
 import useSightingFieldSchemas from '../../models/sighting/useSightingFieldSchemas';
 import useEncounterFieldSchemas from '../../models/encounter/useEncounterFieldSchemas';
 import { flatfileKey } from '../../constants/apiKeys';
@@ -74,6 +75,7 @@ function onRecordInit(record) {
 export default function BulkReportForm({ assetReferences }) {
   const theme = useTheme();
   const history = useHistory();
+  const { data: siteSettingsData } = useSiteSettings();
   const [sightingData, setSightingData] = useState(null);
   const [detectionModel, setDetectionModel] = useState('');
   const queryClient = useQueryClient();
@@ -91,6 +93,11 @@ export default function BulkReportForm({ assetReferences }) {
   } = useBulkImportFields();
   const sightingFieldSchemas = useSightingFieldSchemas();
   const encounterFieldSchemas = useEncounterFieldSchemas();
+
+  const recaptchaPublicKey = get(siteSettingsData, [
+    'recaptchaPublicKey',
+    'value',
+  ]);
 
   const detectionModelField = sightingFieldSchemas.find(
     schema => schema.name === 'speciesDetectionModel',
@@ -229,7 +236,7 @@ export default function BulkReportForm({ assetReferences }) {
               sightingData,
               assetReferences,
             );
-            const assetGroupData = await postAssetGroup({
+            const assetGroup = {
               description: 'Bulk import from user',
               uploadType: 'bulk',
               speciesDetectionModel: [detectionModel || null],
@@ -238,7 +245,23 @@ export default function BulkReportForm({ assetReferences }) {
                 'transactionId',
               ]),
               sightings,
-            });
+            };
+
+            if (window.grecaptcha) {
+              const grecaptchaReady = new Promise(resolve => {
+                window.grecaptcha.ready(() => {
+                  resolve();
+                });
+              });
+
+              await grecaptchaReady;
+              const token = await window.grecaptcha.execute(
+                recaptchaPublicKey,
+                { action: 'submit' },
+              );
+              assetGroup.token = token;
+            }
+            const assetGroupData = await postAssetGroup(assetGroup);
             const assetGroupId = get(assetGroupData, 'guid');
             if (assetGroupId) {
               history.push(`/bulk-import/success/${assetGroupId}`);

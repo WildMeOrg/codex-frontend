@@ -8,6 +8,7 @@ import NotificationCollaborationEditRevokeDialog from './NotificationCollaborati
 import NotificationCollaborationManagerRevokeDialog from './NotificationCollaborationManagerRevokeDialog';
 import NotificationIndividualMergeRequestDialog from './NotificationIndividualMergeRequestDialog';
 import NotificationIndividualMergeCompleteDialog from './NotificationIndividualMergeCompleteDialog';
+import NotificationIndividualMergeBlockDialog from './NotificationIndividualMergeBlockDialog';
 import { notificationTypeNames } from '../../../constants/notificationSchema';
 
 export const notificationTypes = {
@@ -21,4 +22,5 @@ export const notificationTypes = {
   [notificationTypeNames.collaboration_manager_revoke]: NotificationCollaborationManagerRevokeDialog,
   [notificationTypeNames.individual_merge_request]: NotificationIndividualMergeRequestDialog,
   [notificationTypeNames.individual_merge_complete]: NotificationIndividualMergeCompleteDialog,
+  [notificationTypeNames.individual_merge_blocked]: NotificationIndividualMergeBlockDialog,
 };

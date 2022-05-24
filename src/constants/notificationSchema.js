@@ -9,6 +9,7 @@ export const notificationTypeNames = {
   collaboration_manager_revoke: 'collaboration_manager_revoke',
   individual_merge_request: 'individual_merge_request',
   individual_merge_complete: 'individual_merge_complete',
+  individual_merge_blocked: 'individual_merge_blocked',
 };
 
 const notificationSchemaPlaceholder = {};
@@ -102,6 +103,16 @@ notificationSchemaPlaceholder[
   titleId: 'INDIVIDUAL_MERGE_COMPLETE_TITLE',
   notificationMessage: 'INDIVIDUALS_MERGE_COMPLETE_MESSAGE',
   moreDetailedDescription: 'INDIVIDUALS_MERGE_COMPLETE_MESSAGE',
+  showNotificationDialog: false,
+  deriveButtonPath: individualId => `/individuals/${individualId}`,
+};
+notificationSchemaPlaceholder[
+  notificationTypeNames.individual_merge_blocked
+] = {
+  titleId: 'INDIVIDUAL_MERGE_BLOCKED_TITLE',
+  notificationMessage: 'INDIVIDUAL_MERGE_BLOCKED_MESSAGE',
+  moreDetailedDescription:
+    'INDIVIDUAL_MERGE_BLOCKED_DETAILED_MESSAGE',
   showNotificationDialog: false,
   deriveButtonPath: individualId => `/individuals/${individualId}`,
 };
