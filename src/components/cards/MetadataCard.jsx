@@ -64,6 +64,8 @@ export default function MetadataCard({
       <List dense>
         {metadata
           ? metadataToDisplay.map(field => {
+              console.log('deleteMe current field is: ');
+              console.log(field);
               const viewComponentProps =
                 field?.viewComponentProps || {};
 
