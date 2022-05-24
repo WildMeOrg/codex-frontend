@@ -15,7 +15,7 @@ import Link from '../Link';
 import Text from '../Text';
 import Button from '../Button';
 import ButtonLink from '../ButtonLink';
-import NotificationPaneDisplayText from './NoticiationPaneDisplayText';
+import NotificationPaneDisplayText from './NotificationPaneDisplayText';
 import shane from '../../assets/shane.jpg';
 import { notificationSchema } from '../../constants/notificationSchema';
 import { getNotificationProps } from '../../utils/notificationUtils';
@@ -79,10 +79,12 @@ export default function NotificationsPane({
                 currentNotificationSchema?.showNotificationDialog &&
                 refreshNotifications !== undefined;
               const {
-                userName,
+                usrName,
+                userNameGuid,
                 user1Name,
                 user2Name,
-                yourIndividualName,
+                yourIndName,
+                yourIndividualGuid,
                 theirIndName,
                 theirIndividualGuid,
                 formattedDeadline,
@@ -120,10 +122,12 @@ export default function NotificationsPane({
                         currentNotificationSchema={
                           currentNotificationSchema
                         }
-                        userName={userName}
+                        usrName={usrName}
+                        userNameGuid={userNameGuid}
                         user1Name={user1Name}
                         user2Name={user2Name}
-                        yourIndividualName={yourIndividualName}
+                        yourIndName={yourIndName}
+                        yourIndividualGuid={yourIndividualGuid}
                         theirIndName={theirIndName}
                         theirIndividualGuid={theirIndividualGuid}
                         formattedDeadline={formattedDeadline}

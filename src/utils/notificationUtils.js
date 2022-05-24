@@ -1,35 +1,46 @@
-// import React from 'react';
-// import Link from '../components/Link';
-// import { formatDateCustom } from '../../utils/formatters'; // TODO comment back in after DEX-927 is resolved
+import { get } from 'lodash-es';
+import { useIntl } from 'react-intl';
+
+import { formatDateCustom } from './formatters';
 
 export const getNotificationProps = notification => {
-  const userName = notification?.sender_name || 'Unnamed User';
+  const intl = useIntl();
+  const usrName = notification?.sender_name || 'Unnamed User';
+  const userNameGuid = notification?.sender_guid;
   const user1Name =
     notification?.message_values?.user1_name || 'Unnamed User';
   const user2Name =
     notification?.message_values?.user2_name || 'Unnamed User';
 
-  const yourIndividualName =
-    'one of the individuals in your data set';
-  // notification?.message_values?.user2_name || 'Unnamed Individual'; //TODO update after DEX-927 is resolved
-  // TODO send off this individual's guid as well and then combine then in a Link in a formatMessage after DEX-927 is resolved
-  const theirIndName =
+  const theirIndName = get(notification, [
+    'message_values',
+    'other_individuals',
+    '0',
+    'primaryName',
+  ]);
+  const theirIndividualGuid = get(notification, [
+    'message_values',
+    'other_individuals',
+    '0',
+    'guid',
+  ]);
+  const yourIndName =
     notification?.message_values?.target_individual_name ||
     'Unnamed Individual';
-  const theirIndividualGuid =
+  const yourIndividualGuid =
     notification?.message_values?.target_individual_guid;
 
-  // TODO implement deadline after DEX-927 is resolved
-  // const deadline = notification?.message_values?.eta;
-  // const formattedDeadline = deadline ? formatDateCustom(deadline, 'LLLL do') : intl.formatMessage(
-  //       { id: 'DATE_MISSING' },
-  //     );
-  const formattedDeadline = 'two weeks after the merge was requested'; // TODO remove after DEX-927 is resolved
+  const deadline = notification?.message_values?.deadline;
+  const formattedDeadline = deadline
+    ? formatDateCustom(deadline, 'LLLL do')
+    : intl.formatMessage({ id: 'DATE_MISSING' });
   return {
-    userName,
+    usrName,
+    userNameGuid,
     user1Name,
     user2Name,
-    yourIndividualName,
+    yourIndName,
+    yourIndividualGuid,
     theirIndName,
     theirIndividualGuid,
     formattedDeadline,
