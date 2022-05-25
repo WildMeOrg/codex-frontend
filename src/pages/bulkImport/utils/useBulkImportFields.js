@@ -14,7 +14,7 @@ import categoryTypes from '../../../constants/categoryTypes';
 import timePrecisionMap from '../../../constants/timePrecisionMap';
 import useOptions from '../../../hooks/useOptions';
 import sexOptions from '../../../constants/sexOptions';
-import { formatDuplicateLabel } from '../../../utils/formatters';
+import { formatDuplicateLabel } from './bulkImportFormatters';
 
 const requiredValidator = {
   validate: 'required',
