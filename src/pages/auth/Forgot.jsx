@@ -9,12 +9,21 @@ import Button from '../../components/Button';
 import Text from '../../components/Text';
 import SimpleFormPage from '../../components/SimpleFormPage';
 import BaoConfused from '../../components/svg/BaoConfused';
+import usePostPasswordResetEmail from '../../models/users/usePostPasswordResetEmail';
 
 export default function Forgot() {
   const [email, setEmail] = useState('');
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   const [requestSent, setRequestSent] = useState(false);
-  const [error, setError] = useState('');
+  // const [error, setError] = useState('');
+  const {
+    mutate: postPasswordResetEmail,
+    error,
+    loading,
+    clearError,
+    success,
+    clearSuccess,
+  } = usePostPasswordResetEmail();
 
   useDocumentTitle('PASSWORD_RESET');
 
@@ -66,12 +75,11 @@ export default function Forgot() {
         </Grid>
         <Grid item style={{ position: 'relative' }}>
           <Button
-            onClick={() => {
-              setLoading(true);
-              setTimeout(() => {
-                setLoading(false);
-                setRequestSent(true);
-              }, 1000);
+            onClick={async () => {
+              const response = await postPasswordResetEmail({
+                email,
+              });
+              if (response?.status === 200) setRequestSent(true);
             }}
             style={{ width: '100%' }}
             display="primary"
