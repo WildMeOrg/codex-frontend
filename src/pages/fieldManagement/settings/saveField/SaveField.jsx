@@ -342,7 +342,7 @@ export default function SaveField() {
                   name: 'custom-field-default-value',
                   descriptionId: 'FIELD_DEFAULT_VALUE_DESCRIPTION',
                 }}
-                value={get(formData, 'default')}
+                value={get(formData, ['schema', 'defaultValue'])}
                 onChange={nextDefaultValue => {
                   setFormData({
                     ...formData,
@@ -399,7 +399,10 @@ export default function SaveField() {
                     <fieldSchema.editComponent
                       {...get(fieldSchema, 'editComponentProps', {})}
                       schema={fieldSchema}
-                      value={get(formData, 'default')}
+                      value={get(formData, [
+                        'schema',
+                        'defaultValue',
+                      ])}
                       onChange={Function.prototype}
                       minimalLabels
                     />

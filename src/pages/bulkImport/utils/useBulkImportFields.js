@@ -1,6 +1,8 @@
 import { useMemo } from 'react';
 import { useIntl } from 'react-intl';
 
+import { omitBy, map, filter } from 'lodash-es';
+
 import useEncounterFieldSchemas from '../../../models/encounter/useEncounterFieldSchemas';
 import useSightingFieldSchemas from '../../../models/sighting/useSightingFieldSchemas';
 import {
@@ -11,6 +13,8 @@ import {
 import categoryTypes from '../../../constants/categoryTypes';
 import timePrecisionMap from '../../../constants/timePrecisionMap';
 import useOptions from '../../../hooks/useOptions';
+import sexOptions from '../../../constants/sexOptions';
+import { formatDuplicateLabel } from './bulkImportFormatters';
 
 const requiredValidator = {
   validate: 'required',
@@ -62,6 +66,13 @@ export default function useBulkImportFields() {
       );
       return bulkSightingFields.map(f => {
         const additionalProperties = {};
+        if (
+          f?.fieldType === 'select' ||
+          f?.fieldType === 'multiselect'
+        ) {
+          additionalProperties.type = 'select';
+        }
+        if (f?.choices) additionalProperties.options = f.choices;
         if (f.name === 'locationId') {
           additionalProperties.type = 'select';
           additionalProperties.options = regionOptions;
@@ -87,9 +98,23 @@ export default function useBulkImportFields() {
       );
       return bulkEncounterFields.map(f => {
         const additionalProperties = {};
+        if (
+          f?.fieldType === 'select' ||
+          f?.fieldType === 'multiselect'
+        ) {
+          additionalProperties.type = 'select';
+        }
+        if (f?.choices) additionalProperties.options = f.choices;
         if (f.name === 'taxonomy') {
           additionalProperties.type = 'select';
           additionalProperties.options = speciesOptions;
+        }
+        if (f.name === 'sex') {
+          const sanitizedSexOptions = Object.values(
+            omitBy(sexOptions, sex => sex?.labelId === 'BLANK'),
+          );
+          additionalProperties.type = 'select';
+          additionalProperties.options = sanitizedSexOptions;
         }
         return {
           label: deriveLabel(f, intl),
@@ -185,13 +210,42 @@ export default function useBulkImportFields() {
     },
   ];
 
+  const allAvailableFields = [
+    ...additionalFlatfileFields,
+    ...flatfileEncounterFields,
+    ...flatfileSightingFields,
+  ];
+  const allLabels = map(
+    allAvailableFields,
+    field => field?.label,
+    [],
+  );
+  const duplicates = filter(
+    allAvailableFields,
+    (field, idx) => allLabels.indexOf(field?.label) !== idx,
+  );
+  let disambiguatedAvailableFields;
+  duplicates.forEach(duplicate => {
+    disambiguatedAvailableFields = map(
+      allAvailableFields,
+      field =>
+        field?.label === duplicate?.label
+          ? {
+              ...field,
+              label: formatDuplicateLabel(
+                field?.label,
+                field?.key,
+                intl,
+              ),
+            }
+          : field,
+      [],
+    );
+  });
+
   return {
     numEncounterFieldsForFlatFile: flatfileEncounterFields.length,
     numSightingFieldsForFlatFile: flatfileSightingFields.length,
-    availableFields: [
-      ...additionalFlatfileFields,
-      ...flatfileEncounterFields,
-      ...flatfileSightingFields,
-    ],
+    availableFields: disambiguatedAvailableFields,
   };
 }

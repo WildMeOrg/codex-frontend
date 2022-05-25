@@ -23,9 +23,11 @@ const SelectionEditor = function(props) {
     ...rest
   } = props;
   const intl = useIntl();
+  const splitValues =
+    typeof value === 'string' ? value?.split(',') : value;
 
   function getLabel(object) {
-    if (object.labelId)
+    if (object?.labelId)
       return intl.formatMessage({ id: object.labelId });
     return get(object, 'label', 'Missing label');
   }
@@ -47,7 +49,7 @@ const SelectionEditor = function(props) {
         onChange={e => {
           onChange(e.target.value);
         }}
-        value={value || ''}
+        value={multiselect ? splitValues : value || ''}
         multiple={multiselect}
         renderValue={currentValue => {
           if (multiselect) {
