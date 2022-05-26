@@ -15,6 +15,7 @@ import FeaturedPhoto from '../../components/FeaturedPhoto';
 import { formatDateCustom } from '../../utils/formatters';
 import timePrecisionMap from '../../constants/timePrecisionMap';
 import defaultSightingSrc from '../../assets/defaultSighting.png';
+import RerunIdentificationDialog from './identification/RerunIdentificationDialog';
 
 const tabItems = [
   {
@@ -47,6 +48,7 @@ export default function SightingEntityHeader({
   const intl = useIntl();
 
   const [reviewDialogOpen, setReviewDialogOpen] = useState(false);
+  const [rerunDialogOpen, setRerunDialogOpen] = useState(false);
 
   const sightingIsReviewed = Boolean(data?.review_time);
 
@@ -91,6 +93,11 @@ export default function SightingEntityHeader({
         open={reviewDialogOpen}
         onClose={() => setReviewDialogOpen(false)}
       />
+      <RerunIdentificationDialog
+        sightingGuid={guid}
+        open={rerunDialogOpen}
+        onClose={() => setRerunDialogOpen(false)}
+      />
       <EntityHeader
         renderAvatar={
           <FeaturedPhoto
@@ -129,6 +136,12 @@ export default function SightingEntityHeader({
                   onClick: () => setReviewDialogOpen(true),
                   disabled: pending || sightingIsReviewed,
                   label: 'Mark sighting reviewed',
+                },
+                {
+                  id: 'rerun-identification',
+                  onClick: () => setRerunDialogOpen(true),
+                  disabled: pending,
+                  label: 'Re-run identification',
                 },
                 {
                   id: 'delete-sighting',
