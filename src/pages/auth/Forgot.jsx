@@ -13,16 +13,11 @@ import usePostPasswordResetEmail from '../../models/users/usePostPasswordResetEm
 
 export default function Forgot() {
   const [email, setEmail] = useState('');
-  // const [loading, setLoading] = useState(false);
   const [requestSent, setRequestSent] = useState(false);
-  // const [error, setError] = useState('');
   const {
     mutate: postPasswordResetEmail,
     error,
     loading,
-    clearError,
-    success,
-    clearSuccess,
   } = usePostPasswordResetEmail();
 
   useDocumentTitle('PASSWORD_RESET');

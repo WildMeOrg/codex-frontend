@@ -6,6 +6,7 @@ import Grid from '@material-ui/core/Grid';
 
 import TextInput from '../../components/inputs/TextInput';
 import Button from '../../components/Button';
+import Alert from '../../components/Alert';
 import SimpleFormPage from '../../components/SimpleFormPage';
 import BaoWaving from '../../components/svg/BaoWaving';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
@@ -81,10 +82,27 @@ export default function PasswordReset() {
             console.log('deleteMe response from password reset is: ');
             console.log(response);
           }}
-        >
-          <FormattedMessage id="RESET_PASSWORD" />
-        </Button>
+          id="RESET_PASSWORD"
+        />
       </Grid>
+      {error && (
+        <Alert
+          titleId="PASSWORD_RESET_ERROR"
+          severity="error"
+          onClose={clearError}
+        >
+          {error}
+        </Alert>
+      )}
+      {success && (
+        <Alert
+          titleId="PASSWORD_RESET_SUCCESS"
+          severity="error"
+          onClose={clearSuccess}
+        >
+          <FormattedMessage id="PASSWORD_RESET_SUCCESSFUL" />
+        </Alert>
+      )}
     </SimpleFormPage>
   );
 }
