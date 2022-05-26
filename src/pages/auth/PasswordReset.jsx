@@ -18,6 +18,7 @@ export default function PasswordReset() {
   const { code } = useParams();
   const [passwordInfo, setPasswordInfo] = useState();
   const passwordsMatch =
+    passwordInfo?.password &&
     passwordInfo?.password === passwordInfo?.confirmPassword;
   const instructionsId = 'CONFIRM_PASSWORD_INSTRUCTIONS';
   const titleId = 'PASSWORD_RESET';
