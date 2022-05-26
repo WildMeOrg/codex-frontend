@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
+
 import { FormattedMessage } from 'react-intl';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
+
+import useOnEnter from '../../hooks/useOnEnter';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import TextInput from '../../components/inputs/TextInput';
 import Link from '../../components/Link';
@@ -19,6 +22,11 @@ export default function Forgot() {
     error,
     loading,
   } = usePostPasswordResetEmail();
+  const buttonId = 'submitPasswordReset';
+
+  useOnEnter(() => {
+    document.querySelector(`#${buttonId}`).click();
+  });
 
   useDocumentTitle('PASSWORD_RESET');
 
@@ -70,6 +78,7 @@ export default function Forgot() {
         </Grid>
         <Grid item style={{ position: 'relative' }}>
           <Button
+            domId={buttonId}
             onClick={async () => {
               const response = await postPasswordResetEmail({
                 email,
@@ -78,6 +87,7 @@ export default function Forgot() {
             }}
             style={{ width: '100%' }}
             display="primary"
+            disabled={Boolean(email)}
             loading={loading}
           >
             <FormattedMessage id="RESET_PASSWORD" />

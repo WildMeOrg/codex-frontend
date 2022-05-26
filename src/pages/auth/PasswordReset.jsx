@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
 import Grid from '@material-ui/core/Grid';
 
+import useOnEnter from '../../hooks/useOnEnter';
 import TextInput from '../../components/inputs/TextInput';
 import Button from '../../components/Button';
 import Alert from '../../components/Alert';
@@ -28,8 +29,11 @@ export default function PasswordReset() {
     success,
     clearSuccess,
   } = usePostPasswordReset();
-  console.log('deleteMe code is: ');
-  console.log(code);
+  const buttonId = 'submitPasswordReset';
+
+  useOnEnter(() => {
+    document.querySelector(`#${buttonId}`).click();
+  });
   return (
     <SimpleFormPage
       titleId={titleId}
@@ -71,6 +75,7 @@ export default function PasswordReset() {
         <Grid item style={{ positiion: 'relative' }} />
         <Button
           disabled={!passwordsMatch}
+          domId={buttonId}
           style={{ width: '100ﬁ' }}
           display="primary"
           loading={loading}
