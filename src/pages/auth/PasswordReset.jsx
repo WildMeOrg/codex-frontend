@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 
-import { FormattedMessage } from 'react-intl';
 import Grid from '@material-ui/core/Grid';
 
 import useOnEnter from '../../hooks/useOnEnter';
@@ -15,6 +14,7 @@ import usePostPasswordReset from '../../models/users/usePostPasswordReset';
 
 export default function PasswordReset() {
   useDocumentTitle('PASSWORD_RESET');
+  const history = useHistory();
   const { code } = useParams();
   const [passwordInfo, setPasswordInfo] = useState();
   const passwordsMatch =
@@ -27,8 +27,6 @@ export default function PasswordReset() {
     error,
     loading,
     clearError,
-    success,
-    clearSuccess,
   } = usePostPasswordReset();
   const buttonId = 'submitPasswordReset';
 
@@ -85,8 +83,7 @@ export default function PasswordReset() {
               code,
               password: passwordInfo?.password,
             });
-            console.log('deleteMe response from password reset is: ');
-            console.log(response);
+            if (response?.status === 200) history.push(`/login`);
           }}
           id="RESET_PASSWORD"
         />
@@ -98,15 +95,6 @@ export default function PasswordReset() {
           onClose={clearError}
         >
           {error}
-        </Alert>
-      )}
-      {success && (
-        <Alert
-          titleId="PASSWORD_RESET_SUCCESS"
-          severity="error"
-          onClose={clearSuccess}
-        >
-          <FormattedMessage id="PASSWORD_RESET_SUCCESSFUL" />
         </Alert>
       )}
     </SimpleFormPage>
