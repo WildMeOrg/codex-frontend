@@ -87,7 +87,7 @@ export default function Forgot() {
             }}
             style={{ width: '100%' }}
             display="primary"
-            disabled={Boolean(email)}
+            disabled={!email}
             loading={loading}
           >
             <FormattedMessage id="RESET_PASSWORD" />
