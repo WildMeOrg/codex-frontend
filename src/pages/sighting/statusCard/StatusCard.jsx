@@ -8,6 +8,7 @@ import ReportIcon from '@material-ui/icons/ArtTrack';
 import DetectionIcon from '@material-ui/icons/Search';
 import CurationIcon from '@material-ui/icons/LowPriority';
 import MatchingIcon from '@material-ui/icons/Visibility';
+import ImageProcessingIcon from '@material-ui/icons/Image';
 
 import { formatDate } from '../../../utils/formatters';
 import Card from '../../../components/cards/Card';
@@ -85,7 +86,7 @@ export default function StatusCard({ sightingData }) {
   }
 
   return (
-    <Card titleId="IDENTIFICATION_PIPELINE_STATUS" maxHeight={500}>
+    <Card titleId="IDENTIFICATION_PIPELINE_STATUS" maxHeight={900}>
       <Timeline>
         <TimelineStep
           Icon={ReportIcon}
@@ -103,6 +104,21 @@ export default function StatusCard({ sightingData }) {
               date: getDateString(dateCreated),
             },
           )}
+        />
+        <TimelineStep
+          Icon={ImageProcessingIcon}
+          titleId="IMAGE_PROCESSING"
+          stage={stages.finished}
+          inProgressText={getProgressText(intl, detectionStartTime)}
+          finishedText={`Image processing finished on ${getDateString(
+            curationStartTime,
+          )}.`}
+          skippedText={intl.formatMessage({
+            id: 'IMAGE_PROCESSING_SKIPPED',
+          })}
+          failedText={intl.formatMessage({
+            id: 'IMAGE_PROCESSING_FAILED',
+          })}
         />
         <TimelineStep
           Icon={DetectionIcon}
@@ -125,27 +141,38 @@ export default function StatusCard({ sightingData }) {
             id: 'WAITING_ELLIPSES',
           })}
           inProgressText={getProgressText(intl, curationStartTime)}
-          finishedText={`Curation finished on ${getDateString(
-            matchingStartTime,
-          )}.`}
+          // finishedText={`Curation finished on ${getDateString(
+          //   matchingStartTime,
+          // )}.`}
+          finishedText="All annotations must be assigned to animals before identification can begin."
           skippedText={intl.formatMessage({
             id: 'CURATION_SKIPPED_MESSAGE',
           })}
           failedText={intl.formatMessage({ id: 'CURATION_FAILED' })}
-        />
+        >
+          <div style={{ marginTop: 4, marginBottom: 20 }}>
+            <ButtonLink
+              href="#individuals"
+              display="panel"
+              size="small"
+            >
+              Assign annotations
+            </ButtonLink>
+          </div>
+        </TimelineStep>
         <TimelineStep
           Icon={MatchingIcon}
-          titleId="MATCHING"
+          titleId="IDENTIFICATION"
           stage={matchingStage}
           notStartedText={intl.formatMessage({
             id: 'WAITING_ELLIPSES',
           })}
           inProgressText={getProgressText(intl, matchingStartTime)}
-          finishedText={`Matching finished on ${getDateString(
+          finishedText={`Identification finished on ${getDateString(
             unreviewedStartTime,
           )}.`}
           skippedText={intl.formatMessage({
-            id: 'MATCHING_SKIPPED_MESSAGE',
+            id: 'IDENTIFICATION_SKIPPED_MESSAGE',
           })}
           failedText={intl.formatMessage({
             id: 'IDENTIFICATION_FAILED',
