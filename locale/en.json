@@ -1077,8 +1077,9 @@
   "INDIVIDUAL_MERGE_BLOCKED_TITLE": "Merge request blocked",
   "INDIVIDUAL_MERGE_BLOCKED_MESSAGE": "{userName} blocked a merge between {yourIndividualName} and {theirIndividualName}.",
   "INDIVIDUAL_MERGE_BLOCKED_DETAILED_MESSAGE": "{userName} blocked a merge between {yourIndividualName} and {theirIndividualName}. You are being notified because you reported a sighting of at least one of these individuals.",
-  "CONFIRM_PASSWORD_INSTRUCTIONS": "To reset the password for your account, enter a new password below.",
+  "CONFIRM_PASSWORD_INSTRUCTIONS": "To reset the password for your account, enter a new password below. Choose a secure and memorable password.",
   "PASSWORD_RESET_SUCCESSFUL": "Password was successfully reset!",
   "PASSWORD_RESET_ERROR": "Password reset error",
-  "PASSWORD_RESET_SUCCESS": "Password reset success"
+  "PASSWORD_RESET_SUCCESS": "Password reset success",
+  "RETURN_TO_LOGIN_PAGE": "Return to login page"
 }
