@@ -23,12 +23,13 @@ export default function ManuallyAssignModal({
     error,
   } = useAssignEncountersToIndividual();
 
-  const [selectedIndividualId, setSelectedIndividualId] = useState(
-    null,
-  );
+  const [
+    selectedIndividualGuid,
+    setSelectedIndividualGuid,
+  ] = useState(null);
 
   const onCloseDialog = () => {
-    setSelectedIndividualId(null);
+    setSelectedIndividualGuid(null);
     onClose();
   };
 
@@ -48,8 +49,7 @@ export default function ManuallyAssignModal({
           <Text id="ASSIGN_CLUSTER_TO_INDIVIDUAL_DESCRIPTION" />
         ) : (
           <IndividualSelector
-            selectedIndividualId={selectedIndividualId}
-            setSelectedIndividualId={setSelectedIndividualId}
+            setSelectedIndividualGuid={setSelectedIndividualGuid}
           />
         )}
         {error && (
@@ -72,17 +72,17 @@ export default function ManuallyAssignModal({
           <ButtonLink
             id="VIEW_INDIVIDUAL"
             display="primary"
-            href={`/individuals/${selectedIndividualId}`}
+            href={`/individuals/${selectedIndividualGuid}`}
           />
         ) : (
           <Button
             display="primary"
-            disabled={!selectedIndividualId}
+            disabled={!selectedIndividualGuid}
             loading={loading}
             onClick={async () => {
               await assignEncounters({
                 sightingGuid,
-                individualGuid: selectedIndividualId,
+                individualGuid: selectedIndividualGuid,
                 encounterGuids: [encounterId],
               });
             }}

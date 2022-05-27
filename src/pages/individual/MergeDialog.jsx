@@ -12,12 +12,13 @@ export default function MergeDialog({
   onClose,
   individualGuid,
 }) {
-  const [selectedIndividualId, setSelectedIndividualId] = useState(
-    null,
-  );
+  const [
+    selectedIndividualGuid,
+    setSelectedIndividualGuid,
+  ] = useState(null);
 
   const onCloseDialog = () => {
-    setSelectedIndividualId(null);
+    setSelectedIndividualGuid(null);
     onClose();
   };
 
@@ -30,16 +31,16 @@ export default function MergeDialog({
     >
       <DialogContent>
         <IndividualSelector
-          selectedIndividualId={selectedIndividualId}
-          setSelectedIndividualId={setSelectedIndividualId}
+          excludedIndividuals={[individualGuid]}
+          setSelectedIndividualGuid={setSelectedIndividualGuid}
         />
       </DialogContent>
       <DialogActions>
         <Button display="basic" onClick={onCloseDialog} id="CLOSE" />
         <ButtonLink
           display="primary"
-          disabled={!selectedIndividualId}
-          href={`/merge?i=${individualGuid}&i=${selectedIndividualId}`}
+          disabled={!selectedIndividualGuid}
+          href={`/merge?i=${individualGuid}&i=${selectedIndividualGuid}`}
           id="CONTINUE"
         />
       </DialogActions>

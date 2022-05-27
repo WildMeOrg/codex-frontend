@@ -13,7 +13,8 @@ import CustomAlert from './Alert';
 import { cellRendererTypes } from '../components/dataDisplays/cellRenderers';
 
 export default function IndividualSelector({
-  setSelectedIndividualId,
+  setSelectedIndividualGuid,
+  excludedIndividuals = [],
   width = 520,
 }) {
   const intl = useIntl();
@@ -28,7 +29,14 @@ export default function IndividualSelector({
   } = useIndividualTermQuery(searchTerm);
 
   const resultsCurrent = inputContent === searchTerm;
-  const noResults = searchResults && searchResults.length === 0;
+
+  const safeSearchResults = searchResults || [];
+  const filteredSearchResults = safeSearchResults.filter(
+    result => !excludedIndividuals.includes(result?.guid),
+  );
+
+  const noResults =
+    searchResults && filteredSearchResults.length === 0;
   const canShowTable =
     searchTerm && !searchResultsError && !noResults;
 
@@ -120,9 +128,11 @@ export default function IndividualSelector({
           noTitleBar
           variant="secondary"
           columns={tableColumns}
-          data={searchResults || []}
+          data={filteredSearchResults}
           onSelectRow={selectedIndividual => {
-            setSelectedIndividualId(get(selectedIndividual, 'guid'));
+            setSelectedIndividualGuid(
+              get(selectedIndividual, 'guid'),
+            );
           }}
         />
       )}
