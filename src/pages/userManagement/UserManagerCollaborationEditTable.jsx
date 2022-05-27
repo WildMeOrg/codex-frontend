@@ -11,6 +11,7 @@ import DataDisplay from '../../components/dataDisplays/DataDisplay';
 import ActionIcon from '../../components/ActionIcon';
 import usePatchCollaboration from '../../models/collaboration/usePatchCollaboration';
 import useGetMe from '../../models/users/useGetMe';
+import useEstablishCollaborationAsUserManager from '../../models/collaboration/useEstablishCollaborationAsUserManager';
 
 const revokedPermission = 'revoked';
 
@@ -35,6 +36,13 @@ export default function UserManagersCollaborationEditTable({
     clearSuccess: onClearPatchSuccess,
   } = usePatchCollaboration();
 
+  const {
+    mutate: establishCollaboration,
+    loading,
+    error: establishCollaborationError,
+    success,
+  } = useEstablishCollaborationAsUserManager();
+
   const isLoading = userDataLoading || patchLoading;
 
   async function processRevoke(collaboration) {
@@ -51,6 +59,18 @@ export default function UserManagersCollaborationEditTable({
     await patchCollaboration({
       collaborationGuid: collaboration?.guid,
       operations: operations,
+    });
+  }
+
+  async function processRestore(collaboration) {
+    console.log('deleteMe collaboration is: ');
+    console.log(collaboration);
+    const user1 = null; //TODO deleteMe
+    const user2 = null; //TODO deleteMe
+    debugger;
+    await establishCollaboration({
+      user1Guid: user1,
+      user2Guid: user2,
     });
   }
 
@@ -147,15 +167,29 @@ export default function UserManagersCollaborationEditTable({
       }),
       options: {
         displayInFilter: false,
-        customBodyRender: (_, collaboration) => (
-          <div style={{ display: 'flex' }}>
-            <ActionIcon
-              variant="revoke"
-              onClick={() => processRevoke(collaboration)}
-              loading={isLoading}
-            />
-          </div>
-        ),
+        customBodyRender: (_, collaboration) => {
+          const isRevoked =
+            get(collaboration, 'viewStatusOne') !==
+              revokedPermission ||
+            get(collaboration, 'viewStatusTwo') !== revokedPermission;
+          return isRevoked ? (
+            <div style={{ display: 'flex' }}>
+              <ActionIcon
+                variant="restore"
+                onClick={() => processRestore(collaboration)}
+                loading={isLoading}
+              />
+            </div>
+          ) : (
+            <div style={{ display: 'flex' }}>
+              <ActionIcon
+                variant="revoke"
+                onClick={() => processRevoke(collaboration)}
+                loading={isLoading}
+              />
+            </div>
+          );
+        },
       },
     },
   ];
