@@ -212,9 +212,9 @@ export default function Encounters({
 
         const actionButtonActions = [
           {
-            id: 'rerun-id',
-            labelId: 'RERUN_IDENTIFICATION',
-            onClick: Function.prototype,
+            id: 'view-individual',
+            labelId: 'VIEW_INDIVIDUAL',
+            href: `/individuals/${individualGuid}`,
           },
         ];
 
