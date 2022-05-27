@@ -1083,5 +1083,6 @@
   "PASSWORD_RESET_SUCCESSFUL": "Password was successfully reset!",
   "PASSWORD_RESET_ERROR": "Password reset error",
   "PASSWORD_RESET_SUCCESS": "Password reset success",
-  "RETURN_TO_LOGIN_PAGE": "Return to login page"
+  "RETURN_TO_LOGIN_PAGE": "Return to login page",
+  "PENDING": "pending"
 }

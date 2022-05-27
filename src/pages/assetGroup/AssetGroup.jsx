@@ -19,15 +19,37 @@ import Link from '../../components/Link';
 import MoreMenu from '../../components/MoreMenu';
 import ConfirmDelete from '../../components/ConfirmDelete';
 import EntityHeader from '../../components/EntityHeader';
+import CustomAlert from '../../components/Alert';
 import AGSTable from './AGSTable';
 
+const POLLING_INTERVAL = 5000; // 5 seconds
+
+function deriveRefetchInterval(resultData, query) {
+  const { complete, status } = {
+    ...resultData?.data?.progress_preparation,
+  };
+
+  const error = query.state?.error && { ...query.state.error };
+
+  const isProgressSettled =
+    complete || ['failed', 'cancelled'].includes(status) || error;
+
+  const refetchInterval = isProgressSettled
+    ? false
+    : POLLING_INTERVAL;
+
+  return refetchInterval;
+}
+
 export default function AssetGroup() {
-  const { id } = useParams();
+  const { id: guid } = useParams();
   const history = useHistory();
   const queryClient = useQueryClient();
   const intl = useIntl();
 
-  const { data, loading, error, statusCode } = useAssetGroup(id);
+  const { data, loading, error, statusCode } = useAssetGroup(guid, {
+    queryOptions: { refetchInterval: deriveRefetchInterval },
+  });
 
   const {
     deleteAssetGroup,
@@ -36,7 +58,9 @@ export default function AssetGroup() {
     setError: setDeleteSightingError,
   } = useDeleteAssetGroup();
 
-  useDocumentTitle(`Asset group ${id}`, { translateMessage: false });
+  useDocumentTitle(`Asset group ${guid}`, {
+    translateMessage: false,
+  });
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
   if (error)
@@ -61,13 +85,19 @@ export default function AssetGroup() {
     intl.formatMessage({ id: 'UNNAMED_USER' });
   const creatorUrl = `/users/${sightingCreator?.guid}`;
 
+  const { complete: isPreparationProgressComplete } = get(
+    data,
+    'progress_preparation',
+    {},
+  );
+
   return (
     <MainColumn fullWidth>
       <ConfirmDelete
         open={deleteDialogOpen}
         onClose={() => setDeleteDialogOpen(false)}
         onDelete={async () => {
-          const successful = await deleteAssetGroup(id);
+          const successful = await deleteAssetGroup(guid);
           if (successful) {
             setDeleteDialogOpen(false);
             history.push('/');
@@ -111,6 +141,13 @@ export default function AssetGroup() {
           </Text>
         )}
       </EntityHeader>
+      {!isPreparationProgressComplete && (
+        <CustomAlert
+          titleId="PENDING_IMAGE_PROCESSING"
+          descriptionId="PENDING_IMAGE_PROCESSING_MESSAGE"
+          severity="info"
+        />
+      )}
       <AGSTable
         assetGroupSightings={get(data, 'asset_group_sightings', [])}
       />
