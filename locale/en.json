@@ -130,6 +130,8 @@
   "IN_PROGRESS": "In progress.",
   "NEW_INDIVIDUAL_CREATED_DESCRIPTION": "New individual created.",
   "PENDING_BULK_IMPORT_MESSAGE": "You reported {sightingCount} sightings on {date}. You must finish processing this bulk import before starting another.",
+  "PENDING_IMAGE_PROCESSING": "Image processing in progress",
+  "PENDING_IMAGE_PROCESSING_MESSAGE": "Until this step is complete, images cannot be viewed and some functionality is unavailable.",
   "HISTORY": "History",
   "DETECTION_SKIPPED_MESSAGE": "Detection skipped, either there are no images or no detection model was specified.",
   "CURATION_SKIPPED_MESSAGE": "Curation skipped - no images to curate.",

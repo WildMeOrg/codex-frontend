@@ -12,6 +12,7 @@ import MainColumn from '../../components/MainColumn';
 import LoadingScreen from '../../components/LoadingScreen';
 import SadScreen from '../../components/SadScreen';
 import ConfirmDelete from '../../components/ConfirmDelete';
+import CustomAlert from '../../components/Alert';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import useDeleteSighting from '../../models/sighting/useDeleteSighting';
 import useDeleteAssetGroupSighting from '../../models/assetGroupSighting/useDeleteAssetGroupSighting';
@@ -95,6 +96,11 @@ export default function SightingCore({
 
   const assets = get(data, 'assets', []);
 
+  const isPreparationInProgress = get(
+    data,
+    'pipeline_status.preparation.inProgress',
+  );
+
   return (
     <MainColumn fullWidth>
       {/* <SightingHistoryDialog
@@ -141,11 +147,20 @@ export default function SightingCore({
         // setHistoryOpen={setHistoryOpen}
         setDeleteDialogOpen={setDeleteDialogOpen}
       />
-      <CommitBanner
-        sightingId={id}
-        pending={pending}
-        sightingData={data}
-      />
+      {isPreparationInProgress ? (
+        <CustomAlert
+          titleId="PENDING_IMAGE_PROCESSING"
+          descriptionId="PENDING_IMAGE_PROCESSING_MESSAGE"
+          severity="info"
+          style={{ marginBottom: 24 }}
+        />
+      ) : (
+        <CommitBanner
+          sightingId={id}
+          pending={pending}
+          sightingData={data}
+        />
+      )}
       {activeTab === '#overview' && (
         <OverviewContent
           metadata={metadata}
