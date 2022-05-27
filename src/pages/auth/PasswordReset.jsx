@@ -50,7 +50,7 @@ export default function PasswordReset() {
       >
         <Grid item>
           <TextInput
-            secureTextEntry
+            type="password"
             schema={{ labelId: 'PASSWORD' }}
             value={passwordInfo?.password}
             onChange={newPassword =>
@@ -64,7 +64,7 @@ export default function PasswordReset() {
         </Grid>
         <Grid item style={{ position: 'relative' }}>
           <TextInput
-            secureTextEntry
+            type="password"
             schema={{ labelId: 'CONFIRM_PASSWORD' }}
             value={passwordInfo?.confirmPassword}
             onChange={newConfirmPassword =>
