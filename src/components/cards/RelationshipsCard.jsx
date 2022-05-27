@@ -132,15 +132,16 @@ export default function RelationshipsCard({
     openRelationshipDialog,
     setOpenRelationshipDialog,
   ] = useState(false);
-  const [selectedIndividualId, setSelectedIndividualId] = useState(
-    null,
-  );
+  const [
+    selectedIndividualGuid,
+    setSelectedIndividualGuid,
+  ] = useState(null);
   const [currentRoles, setCurrentRoles] = useState(null);
   const [currentType, setCurrentType] = useState(null);
   const [currentRole1, setCurrentRole1] = useState(null);
   const [currentRole2, setCurrentRole2] = useState(null);
   const allValid =
-    selectedIndividualId &&
+    selectedIndividualGuid &&
     currentType &&
     currentRole1 &&
     currentRole2;
@@ -214,7 +215,7 @@ export default function RelationshipsCard({
   };
 
   const onCloseDialog = () => {
-    setSelectedIndividualId(null);
+    setSelectedIndividualGuid(null);
     setOpenRelationshipDialog(false);
     setCurrentType(null);
     setCurrentRole1(null);
@@ -226,7 +227,7 @@ export default function RelationshipsCard({
   const onSubmit = async () => {
     const response = await postRelationship({
       individual_1_guid: individualGuid,
-      individual_2_guid: selectedIndividualId,
+      individual_2_guid: selectedIndividualGuid,
       individual_1_role_guid: currentRole1?.guid,
       individual_2_role_guid: currentRole2?.guid,
       type_guid: currentType?.guid,
@@ -237,7 +238,7 @@ export default function RelationshipsCard({
   };
 
   const showRoleSelectors =
-    selectedIndividualId && currentRoles?.length > 0;
+    selectedIndividualGuid && currentRoles?.length > 0;
 
   return [
     <ConfirmDelete
@@ -263,9 +264,9 @@ export default function RelationshipsCard({
     >
       <DialogContent>
         <IndividualSelector
-          setSelectedIndividualId={setSelectedIndividualId}
+          setSelectedIndividualGuid={setSelectedIndividualGuid}
         />
-        {selectedIndividualId && (
+        {selectedIndividualGuid && (
           <div
             id="relationship-type"
             style={{ width: 'fit-content', minWidth: 470 }}
@@ -307,7 +308,7 @@ export default function RelationshipsCard({
             value={currentRole2}
             options={currentRoles}
             onChangeRole={onChangeRole2}
-            individualId={selectedIndividualId}
+            individualId={selectedIndividualGuid}
           />,
         ]}
       </DialogContent>
