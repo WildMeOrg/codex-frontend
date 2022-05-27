@@ -13,8 +13,5 @@ export default function useGetUserUnprocessedAssetGroupSightings(
       offset: 0,
       ...params,
     },
-    queryOptions: {
-      refetchOnMount: 'always',
-    },
   });
 }
