@@ -5,9 +5,10 @@ import { formatDistance } from 'date-fns';
 
 import Timeline from '@material-ui/lab/Timeline';
 import ReportIcon from '@material-ui/icons/ArtTrack';
+import ImageProcessingIcon from '@material-ui/icons/Image';
 import DetectionIcon from '@material-ui/icons/Search';
 import CurationIcon from '@material-ui/icons/LowPriority';
-import MatchingIcon from '@material-ui/icons/Visibility';
+import IdentificationIcon from '@material-ui/icons/Visibility';
 
 import { formatDate } from '../../../utils/formatters';
 import Card from '../../../components/cards/Card';
@@ -63,10 +64,18 @@ export default function StatusCard({ sightingData }) {
 
   const {
     now,
+    preparation: imageProcessingStep,
     detection: detectionStep,
     curation: curationStep,
     identification: identificationStep,
   } = sightingData?.pipeline_status || {};
+
+  const {
+    start: imageProcessingStartTime,
+    end: imageProcessingEndTime,
+  } = imageProcessingStep || {};
+
+  const imageProcessingStage = getStage(imageProcessingStep);
 
   const { start: detectionStartTime, end: detectionEndTime } =
     detectionStep || {};
@@ -88,7 +97,7 @@ export default function StatusCard({ sightingData }) {
   const identificationStage = getStage(identificationStep);
 
   return (
-    <Card titleId="IDENTIFICATION_PIPELINE_STATUS" maxHeight={500}>
+    <Card titleId="IDENTIFICATION_PIPELINE_STATUS" maxHeight={900}>
       <Timeline>
         <TimelineStep
           Icon={ReportIcon}
@@ -106,6 +115,28 @@ export default function StatusCard({ sightingData }) {
               date: getDateString(dateCreated),
             },
           )}
+        />
+        <TimelineStep
+          Icon={ImageProcessingIcon}
+          titleId="IMAGE_PROCESSING"
+          stage={imageProcessingStage}
+          notStartedText={intl.formatMessage({
+            id: 'WAITING_ELLIPSES',
+          })}
+          inProgressText={getProgressText(
+            intl,
+            imageProcessingStartTime,
+            now,
+          )}
+          finishedText={`Image processing finished on ${getDateString(
+            imageProcessingEndTime,
+          )}.`}
+          skippedText={intl.formatMessage({
+            id: 'IMAGE_PROCESSING_SKIPPED_MESSAGE',
+          })}
+          failedText={intl.formatMessage({
+            id: 'IMAGE_PROCESSING_FAILED',
+          })}
         />
         <TimelineStep
           Icon={DetectionIcon}
@@ -148,7 +179,7 @@ export default function StatusCard({ sightingData }) {
           failedText={intl.formatMessage({ id: 'CURATION_FAILED' })}
         />
         <TimelineStep
-          Icon={MatchingIcon}
+          Icon={IdentificationIcon}
           titleId="IDENTIFICATION"
           stage={identificationStage}
           notStartedText={intl.formatMessage({
