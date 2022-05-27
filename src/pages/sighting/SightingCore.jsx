@@ -25,6 +25,13 @@ import OverviewContent from './OverviewContent';
 import CommitBanner from './CommitBanner';
 import Encounters from './encounters/Encounters';
 
+const sightingTabs = {
+  '#overview': '#overview',
+  '#annotations': '#annotations',
+  '#photographs': '#photographs',
+  '#individuals': '#individuals',
+};
+
 export default function SightingCore({
   data,
   loading,
@@ -77,7 +84,15 @@ export default function SightingCore({
 
   // const [historyOpen, setHistoryOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-  const activeTab = window.location.hash || '#overview';
+
+  const isPreparationInProgress = get(
+    data,
+    'pipeline_status.preparation.inProgress',
+  );
+
+  const activeTab = isPreparationInProgress
+    ? sightingTabs['#overview']
+    : sightingTabs[window.location.hash] || sightingTabs['#overview'];
 
   if (error) {
     return (
@@ -95,11 +110,6 @@ export default function SightingCore({
   if (loading) return <LoadingScreen />;
 
   const assets = get(data, 'assets', []);
-
-  const isPreparationInProgress = get(
-    data,
-    'pipeline_status.preparation.inProgress',
-  );
 
   return (
     <MainColumn fullWidth>
@@ -143,6 +153,7 @@ export default function SightingCore({
         data={data}
         loading={loading}
         pending={pending}
+        preparing={isPreparationInProgress}
         guid={id}
         // setHistoryOpen={setHistoryOpen}
         setDeleteDialogOpen={setDeleteDialogOpen}
