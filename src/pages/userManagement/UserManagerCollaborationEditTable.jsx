@@ -63,14 +63,9 @@ export default function UserManagersCollaborationEditTable({
   }
 
   async function processRestore(collaboration) {
-    console.log('deleteMe collaboration is: ');
-    console.log(collaboration);
-    const user1 = null; //TODO deleteMe
-    const user2 = null; //TODO deleteMe
-    debugger;
     await establishCollaboration({
-      user1Guid: user1,
-      user2Guid: user2,
+      user1Guid: collaboration?.userOneGuid,
+      user2Guid: collaboration?.userTwoGuid,
     });
   }
 
