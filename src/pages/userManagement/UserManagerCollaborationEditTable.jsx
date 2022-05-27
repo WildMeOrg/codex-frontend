@@ -169,9 +169,15 @@ export default function UserManagersCollaborationEditTable({
         displayInFilter: false,
         customBodyRender: (_, collaboration) => {
           const isRevoked =
-            get(collaboration, 'viewStatusOne') !==
+            get(collaboration, 'viewStatusOne') ===
               revokedPermission ||
-            get(collaboration, 'viewStatusTwo') !== revokedPermission;
+            get(collaboration, 'viewStatusTwo') === revokedPermission;
+          console.log(
+            'deleteMe isRevoked for the collaboration is: ' +
+              isRevoked,
+          );
+          console.log('deleteMe the actual collaboration is: ');
+          console.log(collaboration);
           return isRevoked ? (
             <div style={{ display: 'flex' }}>
               <ActionIcon
