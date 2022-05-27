@@ -1,8 +1,11 @@
 import React from 'react';
+
+import { useTheme } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
+
 import MainColumn from '../../components/MainColumn';
 import Text from '../../components/Text';
-import newSiteImage from '../../assets/newsite.png';
+import BaoWaving from '../../components/svg/BaoWaving';
 import SiteSetupForm from './SiteSetupForm';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 
@@ -11,14 +14,16 @@ export default function SiteSetup() {
     appendSiteName: false,
     translateMessage: false,
   });
+  const theme = useTheme();
+  const themeColor = theme.palette.primary.main;
+
   return (
     <MainColumn>
       <Grid container direction="column" alignItems="center">
         <Grid item>
-          <img
-            style={{ margin: 50 }}
-            alt="new site graphic"
-            src={newSiteImage}
+          <BaoWaving
+            style={{ width: 280, margin: '32px 24px 24px' }}
+            themeColor={themeColor}
           />
         </Grid>
         <Grid item>
