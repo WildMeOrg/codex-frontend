@@ -17,6 +17,12 @@ const badValues = [null, undefined, ''];
 function fieldValueGood(field) {
   const value = field?.value;
   if (badValues.includes(value)) return false;
+  if (Array.isArray(value)) {
+    if (value?.length < 1) return false;
+    const removeNulls = value.filter(entry => entry !== null);
+    if (removeNulls?.length < 1) return false;
+  }
+
   if (value?.time === null && value?.timeSpecificity === null)
     return false;
   return true;
@@ -27,7 +33,7 @@ export default function MetadataCard({
   titleId = 'METADATA',
   metadata,
   editable = false,
-  showDefaultValues = false,
+  showDefaultValues = true,
   editButtonId = 'REPORT_METADATA',
   onEdit,
 }) {
