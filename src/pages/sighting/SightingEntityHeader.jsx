@@ -41,7 +41,7 @@ export default function SightingEntityHeader({
   loading,
   pending,
   guid,
-  setHistoryOpen,
+  // setHistoryOpen,
   setDeleteDialogOpen,
 }) {
   const intl = useIntl();
@@ -119,11 +119,11 @@ export default function SightingEntityHeader({
             <MoreMenu
               menuId="sighting-actions"
               items={[
-                {
-                  id: 'view-history',
-                  onClick: () => setHistoryOpen(true),
-                  label: 'View history',
-                },
+                // {
+                //   id: 'view-history',
+                //   onClick: () => setHistoryOpen(true),
+                //   label: 'View history',
+                // },
                 {
                   id: 'mark-reviewed',
                   onClick: () => setReviewDialogOpen(true),

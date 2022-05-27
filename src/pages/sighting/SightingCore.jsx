@@ -20,7 +20,7 @@ import SightingEntityHeader from './SightingEntityHeader';
 import Annotations from './Annotations';
 import Photographs from './Photographs';
 import OverviewContent from './OverviewContent';
-import SightingHistoryDialog from './SightingHistoryDialog';
+// import SightingHistoryDialog from './SightingHistoryDialog';
 import CommitBanner from './CommitBanner';
 import Encounters from './encounters/Encounters';
 
@@ -74,7 +74,7 @@ export default function SightingCore({
 
   useDocumentTitle(`Sighting ${id}`, { translateMessage: false });
 
-  const [historyOpen, setHistoryOpen] = useState(false);
+  // const [historyOpen, setHistoryOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const activeTab = window.location.hash || '#overview';
 
@@ -97,10 +97,10 @@ export default function SightingCore({
 
   return (
     <MainColumn fullWidth>
-      <SightingHistoryDialog
+      {/* <SightingHistoryDialog
         open={historyOpen}
         onClose={() => setHistoryOpen(false)}
-      />
+      /> */}
       <ConfirmDelete
         open={deleteDialogOpen}
         onClose={() => setDeleteDialogOpen(false)}
@@ -138,7 +138,7 @@ export default function SightingCore({
         loading={loading}
         pending={pending}
         guid={id}
-        setHistoryOpen={setHistoryOpen}
+        // setHistoryOpen={setHistoryOpen}
         setDeleteDialogOpen={setDeleteDialogOpen}
       />
       <CommitBanner
