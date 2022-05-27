@@ -6,13 +6,13 @@ import Link from '../Link';
 
 export default function NotificationPaneDisplayText({
   currentNotificationSchema,
-  usrName,
+  userName,
   userNameGuid,
   user1Name,
   user2Name,
   yourIndName,
   yourIndividualGuid,
-  theirIndName,
+  theirIndividualName,
   theirIndividualGuid,
   formattedDeadline,
 }) {
@@ -24,7 +24,7 @@ export default function NotificationPaneDisplayText({
         userName: (
           <span>
             <Link newTab href={`/users/${userNameGuid}`}>
-              {usrName}
+              {userName}
             </Link>
           </span>
         ),
@@ -40,7 +40,7 @@ export default function NotificationPaneDisplayText({
         theirIndividualName: (
           <span>
             <Link newTab href={`/individuals/${theirIndividualGuid}`}>
-              {theirIndName}
+              {theirIndividualName}
             </Link>
           </span>
         ),

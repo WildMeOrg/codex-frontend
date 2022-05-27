@@ -49,7 +49,7 @@ export default function Forgot() {
             setRequestSent(false);
           }}
           style={{ width: 280, margin: '24px 16px 16px 16px' }}
-          display="primary"
+          display="secondary"
           id="TRY_AGAIN"
         />
       </SimpleFormPage>

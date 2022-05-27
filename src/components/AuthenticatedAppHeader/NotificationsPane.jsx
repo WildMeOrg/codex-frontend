@@ -79,13 +79,13 @@ export default function NotificationsPane({
                 currentNotificationSchema?.showNotificationDialog &&
                 refreshNotifications !== undefined;
               const {
-                usrName,
+                userName,
                 userNameGuid,
                 user1Name,
                 user2Name,
                 yourIndName,
                 yourIndividualGuid,
-                theirIndName,
+                theirIndividualName,
                 theirIndividualGuid,
                 formattedDeadline,
               } = getNotificationProps(notification);
@@ -122,13 +122,13 @@ export default function NotificationsPane({
                         currentNotificationSchema={
                           currentNotificationSchema
                         }
-                        usrName={usrName}
+                        userName={userName}
                         userNameGuid={userNameGuid}
                         user1Name={user1Name}
                         user2Name={user2Name}
                         yourIndName={yourIndName}
                         yourIndividualGuid={yourIndividualGuid}
-                        theirIndName={theirIndName}
+                        theirIndividualName={theirIndividualName}
                         theirIndividualGuid={theirIndividualGuid}
                         formattedDeadline={formattedDeadline}
                       />

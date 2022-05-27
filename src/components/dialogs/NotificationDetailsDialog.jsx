@@ -29,13 +29,13 @@ export default function NotificationDetailsDialog({
   };
 
   const {
-    usrName,
+    userName,
     userNameGuid,
     user1Name,
     user2Name,
     yourIndName,
     yourIndividualGuid,
-    theirIndName,
+    theirIndividualName,
     theirIndividualGuid,
     formattedDeadline,
   } = getNotificationProps(notification);
@@ -54,7 +54,7 @@ export default function NotificationDetailsDialog({
             userName: (
               <span>
                 <Link newTab href={`/users/${userNameGuid}`}>
-                  {usrName}
+                  {userName}
                 </Link>
               </span>
             ),
@@ -76,7 +76,7 @@ export default function NotificationDetailsDialog({
                   newTab
                   href={`/individuals/${theirIndividualGuid}`}
                 >
-                  {theirIndName}
+                  {theirIndividualName}
                 </Link>
               </span>
             ),
