@@ -56,38 +56,37 @@ export default function UserManagersCollaborationEditTable({
 
   function tranformDataForCollabTable(originalData) {
     if (!originalData || originalData.length === 0) return null;
-    return originalData
-      .map(collaboration => {
-        const collaborators = Object.values(
-          get(collaboration, 'members', {}),
-        );
-        const member1 = get(collaborators, 0, {});
-        const member2 = get(collaborators, 1, {});
-
-        // Note: the collaboration API call returned a members OBJECT instead of array of objects, which made some tranformation gymnastics here necessary
-        return {
-          guid: get(collaboration, 'guid'),
-          userOne: get(member1, 'full_name', get(member1, 'email')),
-          userOneGuid: get(member1, 'guid'),
-          userTwo: get(member2, 'full_name', get(member2, 'email')),
-          userTwoGuid: get(member2, 'guid'),
-          viewStatusOne: get(member1, 'viewState'),
-          viewStatusTwo: get(member2, 'viewState'),
-        };
-        // editStatusOne: get(
-        //   member1,
-        //   'editState',
-        // ),
-        // editStatusTwo: get(
-        //   member2,
-        //   'editState',
-        // ),
-      })
-      ?.filter(
-        collab =>
-          get(collab, 'viewStatusOne') !== revokedPermission ||
-          get(collab, 'viewStatusTwo') !== revokedPermission,
+    return originalData.map(collaboration => {
+      const collaborators = Object.values(
+        get(collaboration, 'members', {}),
       );
+      const member1 = get(collaborators, 0, {});
+      const member2 = get(collaborators, 1, {});
+
+      // Note: the collaboration API call returned a members OBJECT instead of array of objects, which made some tranformation gymnastics here necessary
+      return {
+        guid: get(collaboration, 'guid'),
+        userOne: get(member1, 'full_name', get(member1, 'email')),
+        userOneGuid: get(member1, 'guid'),
+        userTwo: get(member2, 'full_name', get(member2, 'email')),
+        userTwoGuid: get(member2, 'guid'),
+        viewStatusOne: get(member1, 'viewState'),
+        viewStatusTwo: get(member2, 'viewState'),
+      };
+      // editStatusOne: get(
+      //   member1,
+      //   'editState',
+      // ),
+      // editStatusTwo: get(
+      //   member2,
+      //   'editState',
+      // ),
+    });
+    // ?.filter(
+    //   collab =>
+    //     get(collab, 'viewStatusOne') !== revokedPermission ||
+    //     get(collab, 'viewStatusTwo') !== revokedPermission,
+    // );
   }
   const tableFriendlyData = tranformDataForCollabTable(inputData);
   const tableColumns = [
