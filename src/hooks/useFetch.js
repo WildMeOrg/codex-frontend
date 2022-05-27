@@ -55,6 +55,7 @@ export default function useFetch({
     {
       staleTime: Infinity,
       cacheTime: Infinity,
+      refetchOnMount: 'always',
       ...queryOptions,
     },
   );
