@@ -149,7 +149,7 @@ export default function StatusCard({ sightingData }) {
         />
         <TimelineStep
           Icon={MatchingIcon}
-          titleId="MATCHING"
+          titleId="IDENTIFICATION"
           stage={identificationStage}
           notStartedText={intl.formatMessage({
             id: 'WAITING_ELLIPSES',
@@ -159,11 +159,11 @@ export default function StatusCard({ sightingData }) {
             identificationStartTime,
             now,
           )}
-          finishedText={`Matching finished on ${getDateString(
+          finishedText={`Identification finished on ${getDateString(
             identificationEndTime,
           )}.`}
           skippedText={intl.formatMessage({
-            id: 'MATCHING_SKIPPED_MESSAGE',
+            id: 'IDENTIFICATION_SKIPPED_MESSAGE',
           })}
           failedText={intl.formatMessage({
             id: 'IDENTIFICATION_FAILED',
