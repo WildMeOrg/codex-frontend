@@ -89,13 +89,13 @@ export default function Notifications() {
                 );
                 const read = get(notification, 'is_read', false);
                 const {
-                  usrName,
+                  userName,
                   userNameGuid,
                   user1Name,
                   user2Name,
                   yourIndName,
                   yourIndividualGuid,
-                  theirIndName,
+                  theirIndividualName,
                   theirIndividualGuid,
                   formattedDeadline,
                 } = getNotificationProps(notification);
@@ -125,7 +125,7 @@ export default function Notifications() {
                               newTab
                               href={`/users/${userNameGuid}`}
                             >
-                              {usrName}
+                              {userName}
                             </Link>
                           </span>
                         ),
@@ -147,7 +147,7 @@ export default function Notifications() {
                               newTab
                               href={`/individuals/${theirIndividualGuid}`}
                             >
-                              {theirIndName}
+                              {theirIndividualName}
                             </Link>
                           </span>
                         ),

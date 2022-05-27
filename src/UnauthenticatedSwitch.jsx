@@ -8,6 +8,7 @@ import ReportSuccess from './pages/reportSighting/Success';
 import Login from './pages/auth/Login';
 import RequestInvitation from './pages/auth/RequestInvitation';
 import Forgot from './pages/auth/Forgot';
+import PasswordReset from './pages/auth/PasswordReset';
 import Create from './pages/auth/Create';
 import Splash from './pages/splash/Splash';
 import Footer from './components/Footer';
@@ -57,6 +58,9 @@ export default function UnauthenticatedSwitch() {
                     </Route>
                     <Route path="/forgot">
                       <Forgot />
+                    </Route>
+                    <Route path="/auth/code/:code">
+                      <PasswordReset />
                     </Route>
                     <Route path="/request">
                       <RequestInvitation />

@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
+
 import { FormattedMessage } from 'react-intl';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
+
+import useOnEnter from '../../hooks/useOnEnter';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import TextInput from '../../components/inputs/TextInput';
 import Link from '../../components/Link';
@@ -9,12 +12,21 @@ import Button from '../../components/Button';
 import Text from '../../components/Text';
 import SimpleFormPage from '../../components/SimpleFormPage';
 import BaoConfused from '../../components/svg/BaoConfused';
+import usePostPasswordResetEmail from '../../models/users/usePostPasswordResetEmail';
 
 export default function Forgot() {
   const [email, setEmail] = useState('');
-  const [loading, setLoading] = useState(false);
   const [requestSent, setRequestSent] = useState(false);
-  const [error, setError] = useState('');
+  const {
+    mutate: postPasswordResetEmail,
+    error,
+    loading,
+  } = usePostPasswordResetEmail();
+  const buttonId = 'submitPasswordReset';
+
+  useOnEnter(() => {
+    document.querySelector(`#${buttonId}`).click();
+  });
 
   useDocumentTitle('PASSWORD_RESET');
 
@@ -37,7 +49,7 @@ export default function Forgot() {
             setRequestSent(false);
           }}
           style={{ width: 280, margin: '24px 16px 16px 16px' }}
-          display="primary"
+          display="secondary"
           id="TRY_AGAIN"
         />
       </SimpleFormPage>
@@ -66,15 +78,16 @@ export default function Forgot() {
         </Grid>
         <Grid item style={{ position: 'relative' }}>
           <Button
-            onClick={() => {
-              setLoading(true);
-              setTimeout(() => {
-                setLoading(false);
-                setRequestSent(true);
-              }, 1000);
+            domId={buttonId}
+            onClick={async () => {
+              const response = await postPasswordResetEmail({
+                email,
+              });
+              if (response?.status === 200) setRequestSent(true);
             }}
             style={{ width: '100%' }}
             display="primary"
+            disabled={!email}
             loading={loading}
           >
             <FormattedMessage id="RESET_PASSWORD" />
