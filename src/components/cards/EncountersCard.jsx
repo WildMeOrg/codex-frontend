@@ -159,6 +159,7 @@ export default function EncountersCard({
       )}
       {!noEncounters && !showMapView && (
         <DataDisplay
+          idKey="guid"
           noTitleBar
           tableSize="medium"
           columns={filteredColumns}
