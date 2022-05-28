@@ -63,10 +63,38 @@ export default function UserManagersCollaborationEditTable({
   }
 
   async function processRestore(collaboration) {
-    await establishCollaboration({
-      user1Guid: collaboration?.userOneGuid,
-      user2Guid: collaboration?.userTwoGuid,
+    let operations = [
+      {
+        op: 'replace',
+        path: '/managed_view_permission',
+        value: {
+          user_guid: collaboration?.userOneGuid,
+          permission: 'approved',
+        },
+      },
+    ];
+    await patchCollaboration({
+      collaborationGuid: collaboration?.guid,
+      operations: operations,
     });
+    operations = [
+      {
+        op: 'replace',
+        path: '/managed_view_permission',
+        value: {
+          user_guid: collaboration?.userTwoGuid,
+          permission: 'approved',
+        },
+      },
+    ];
+    await patchCollaboration({
+      collaborationGuid: collaboration?.guid,
+      operations: operations,
+    });
+    // await establishCollaboration({
+    //   user1Guid: collaboration?.userOneGuid,
+    //   user2Guid: collaboration?.userTwoGuid,
+    // });
   }
 
   function tranformDataForCollabTable(originalData) {
