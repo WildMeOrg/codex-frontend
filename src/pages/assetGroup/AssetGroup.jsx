@@ -25,9 +25,8 @@ import AGSTable from './AGSTable';
 const POLLING_INTERVAL = 5000; // 5 seconds
 
 function deriveRefetchInterval(resultData, query) {
-  const { complete, status } = {
-    ...resultData?.data?.progress_preparation,
-  };
+  const { complete, status } =
+    resultData?.data?.progress_preparation || {};
 
   const error = query.state?.error && { ...query.state.error };
 
