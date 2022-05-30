@@ -73,10 +73,10 @@ export default function UserManagersCollaborationEditTable({
         },
       },
     ];
-    await patchCollaboration({
-      collaborationGuid: collaboration?.guid,
-      operations: userOneOperations,
-    });
+    // await patchCollaboration({
+    //   collaborationGuid: collaboration?.guid,
+    //   operations: userOneOperations,
+    // });
     const userTwoOperations = [
       {
         op: 'replace',
@@ -87,33 +87,23 @@ export default function UserManagersCollaborationEditTable({
         },
       },
     ];
-    await patchCollaboration({
-      collaborationGuid: collaboration?.guid,
-      operations: userTwoOperations,
-    });
-
-    let patchBothUsers = async () => {
-      const results = await Promise.all([
-        patchCollaboration({
-          collaborationGuid: collaboration?.guid,
-          operations: userOneOperations,
-        }),
-        patchCollaboration({
-          collaborationGuid: collaboration?.guid,
-          operations: userTwoOperations,
-        }),
-      ]);
-      console.log('deleteMe results in patchBothUsers are: ');
-      console.log(results);
-    };
-
-    let r2 = await patchBothUsers();
-    console.log('deleteMe r2 is: ');
-    console.log(r2);
-    // await establishCollaboration({
-    //   user1Guid: collaboration?.userOneGuid,
-    //   user2Guid: collaboration?.userTwoGuid,
+    // await patchCollaboration({
+    //   collaborationGuid: collaboration?.guid,
+    //   operations: userTwoOperations,
     // });
+
+    const results = await Promise.all([
+      patchCollaboration({
+        collaborationGuid: collaboration?.guid,
+        operations: userOneOperations,
+      }),
+      patchCollaboration({
+        collaborationGuid: collaboration?.guid,
+        operations: userTwoOperations,
+      }),
+    ]);
+    console.log('deleteMe results in patchBothUsers are: ');
+    console.log(results);
   }
 
   function tranformDataForCollabTable(originalData) {
