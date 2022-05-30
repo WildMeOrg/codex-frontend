@@ -63,7 +63,7 @@ export default function UserManagersCollaborationEditTable({
   }
 
   async function processRestore(collaboration) {
-    let operations = [
+    const userOneOperations = [
       {
         op: 'replace',
         path: '/managed_view_permission',
@@ -75,9 +75,9 @@ export default function UserManagersCollaborationEditTable({
     ];
     await patchCollaboration({
       collaborationGuid: collaboration?.guid,
-      operations: operations,
+      operations: userOneOperations,
     });
-    operations = [
+    const userTwoOperations = [
       {
         op: 'replace',
         path: '/managed_view_permission',
@@ -89,8 +89,27 @@ export default function UserManagersCollaborationEditTable({
     ];
     await patchCollaboration({
       collaborationGuid: collaboration?.guid,
-      operations: operations,
+      operations: userTwoOperations,
     });
+
+    let patchBothUsers = async () => {
+      const results = await Promise.all([
+        patchCollaboration({
+          collaborationGuid: collaboration?.guid,
+          operations: userOneOperations,
+        }),
+        patchCollaboration({
+          collaborationGuid: collaboration?.guid,
+          operations: userTwoOperations,
+        }),
+      ]);
+      console.log('deleteMe results in patchBothUsers are: ');
+      console.log(results);
+    };
+
+    let r2 = await patchBothUsers();
+    console.log('deleteMe r2 is: ');
+    console.log(r2);
     // await establishCollaboration({
     //   user1Guid: collaboration?.userOneGuid,
     //   user2Guid: collaboration?.userTwoGuid,
