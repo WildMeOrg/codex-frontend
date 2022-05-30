@@ -121,11 +121,6 @@ export default function UserManagersCollaborationEditTable({
       //   'editState',
       // ),
     });
-    // ?.filter(
-    //   collab =>
-    //     get(collab, 'viewStatusOne') !== revokedPermission ||
-    //     get(collab, 'viewStatusTwo') !== revokedPermission,
-    // );
   }
   const tableFriendlyData = tranformDataForCollabTable(inputData);
   const tableColumns = [
