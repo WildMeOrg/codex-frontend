@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
-import { get } from 'lodash-es';
+import { filter, get } from 'lodash-es';
 
 import Skeleton from '@material-ui/lab/Skeleton';
 import Grid from '@material-ui/core/Grid';
@@ -90,6 +90,11 @@ export default function UserManagersCollaborationEditTable({
     ]);
     console.log('deleteMe results in patchBothUsers are: ');
     console.log(results);
+    if (
+      filter(results, result => result?.status === 200, []).length ===
+      2
+    )
+      setRestoreSuccess(true);
   }
 
   function tranformDataForCollabTable(originalData) {
