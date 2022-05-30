@@ -66,7 +66,9 @@ export default function UserEditTable() {
       options: {
         displayInFilter: false,
         customBodyRender: (_, user) => (
-          <div style={{ display: 'flex' }}>
+          <div
+            style={{ display: 'flex', justifyContent: 'flex-end' }}
+          >
             <ActionIcon
               variant="view"
               href={`/users/${get(user, 'guid')}`}
