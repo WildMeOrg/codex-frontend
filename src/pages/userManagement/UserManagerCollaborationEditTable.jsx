@@ -29,10 +29,8 @@ export default function UserManagersCollaborationEditTable({
   const {
     mutate: patchCollaboration,
     isLoading: patchLoading,
-    success: patchSuccess,
     error: patchError,
     clearError: onClearPatchError,
-    clearSuccess: onClearPatchSuccess,
   } = usePatchCollaboration();
 
   const isLoading = userDataLoading || patchLoading;
@@ -88,8 +86,6 @@ export default function UserManagersCollaborationEditTable({
         operations: userTwoOperations,
       }),
     ]);
-    console.log('deleteMe results in patchBothUsers are: ');
-    console.log(results);
     if (
       filter(results, result => result?.status === 200, []).length ===
       2
@@ -267,7 +263,6 @@ export default function UserManagersCollaborationEditTable({
           titleId="COLLABORATION_REVOKE_SUCCESS"
           onClose={() => {
             setRevokeSuccess(false);
-            // onClearPatchSuccess();
           }}
         />
       )}
@@ -277,7 +272,6 @@ export default function UserManagersCollaborationEditTable({
           titleId="COLLABORATION_RESTORE_SUCCESS"
           onClose={() => {
             setRestoreSuccess(false);
-            // onClearPatchSuccess();
           }}
         />
       )}
