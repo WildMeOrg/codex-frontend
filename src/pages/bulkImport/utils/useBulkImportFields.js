@@ -224,24 +224,34 @@ export default function useBulkImportFields() {
     allAvailableFields,
     (field, idx) => allLabels.indexOf(field?.label) !== idx,
   );
-  let disambiguatedAvailableFields;
-  duplicates.forEach(duplicate => {
-    disambiguatedAvailableFields = map(
-      allAvailableFields,
-      field =>
-        field?.label === duplicate?.label
-          ? {
-              ...field,
-              label: formatDuplicateLabel(
-                field?.label,
-                field?.key,
-                intl,
-              ),
-            }
-          : field,
-      [],
-    );
-  });
+  console.log('deleteMe duplicates are: ');
+  console.log(duplicates);
+  const disambiguatedAvailableFields = map(
+    allAvailableFields,
+    availableField => {
+      // if() //TODO look for whether the label is included in duplicates
+      console.log('deleteMe hi');
+      return availableField; // TODO deleteMe change this
+    },
+    [],
+  );
+  // duplicates.forEach(duplicate => {
+  //   disambiguatedAvailableFields = map(
+  //     allAvailableFields,
+  //     field =>
+  //       field?.label === duplicate?.label
+  //         ? {
+  //             ...field,
+  //             label: formatDuplicateLabel(
+  //               field?.label,
+  //               field?.key,
+  //               intl,
+  //             ),
+  //           }
+  //         : field,
+  //     [],
+  //   );
+  // });
 
   return {
     numEncounterFieldsForFlatFile: flatfileEncounterFields.length,
