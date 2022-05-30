@@ -46,6 +46,8 @@ export default function CollapsibleRow({
             'options.cellRenderer',
             'default',
           );
+          console.log('deleteMe requestedCellRenderer is: ');
+          console.log(requestedCellRenderer);
           const cellRendererProps = get(
             c,
             'options.cellRendererProps',
@@ -57,6 +59,9 @@ export default function CollapsibleRow({
           );
           const RequestedCellRenderer =
             cellRenderers[requestedCellRenderer];
+          const deleteMeAlignment = getCellAlignment(i, c);
+          console.log('deleteMeAlignment is: ');
+          console.log(deleteMeAlignment);
 
           return (
             <TableCell
