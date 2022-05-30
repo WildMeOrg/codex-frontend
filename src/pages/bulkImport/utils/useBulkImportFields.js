@@ -244,23 +244,6 @@ export default function useBulkImportFields() {
         : availableField,
     [],
   );
-  // duplicates.forEach(duplicate => {
-  //   disambiguatedAvailableFields = map(
-  //     allAvailableFields,
-  //     field =>
-  //       field?.label === duplicate?.label
-  //         ? {
-  //             ...field,
-  //             label: formatDuplicateLabel(
-  //               field?.label,
-  //               field?.key,
-  //               intl,
-  //             ),
-  //           }
-  //         : field,
-  //     [],
-  //   );
-  // });
 
   return {
     numEncounterFieldsForFlatFile: flatfileEncounterFields.length,
