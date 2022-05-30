@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
 import { get } from 'lodash-es';
 
@@ -11,7 +11,6 @@ import DataDisplay from '../../components/dataDisplays/DataDisplay';
 import ActionIcon from '../../components/ActionIcon';
 import usePatchCollaboration from '../../models/collaboration/usePatchCollaboration';
 import useGetMe from '../../models/users/useGetMe';
-import useEstablishCollaborationAsUserManager from '../../models/collaboration/useEstablishCollaborationAsUserManager';
 
 const revokedPermission = 'revoked';
 
@@ -36,14 +35,9 @@ export default function UserManagersCollaborationEditTable({
     clearSuccess: onClearPatchSuccess,
   } = usePatchCollaboration();
 
-  const {
-    mutate: establishCollaboration,
-    loading,
-    error: establishCollaborationError,
-    success,
-  } = useEstablishCollaborationAsUserManager();
-
   const isLoading = userDataLoading || patchLoading;
+  const [revokeSuccess, setRevokeSuccess] = useState(false);
+  const [restoreSuccess, setRestoreSuccess] = useState(false);
 
   async function processRevoke(collaboration) {
     const operations = [
@@ -56,10 +50,11 @@ export default function UserManagersCollaborationEditTable({
         },
       },
     ];
-    await patchCollaboration({
+    let revokeResults = await patchCollaboration({
       collaborationGuid: collaboration?.guid,
       operations: operations,
     });
+    if (revokeResults?.status === 200) setRevokeSuccess(true);
   }
 
   async function processRestore(collaboration) {
@@ -73,10 +68,6 @@ export default function UserManagersCollaborationEditTable({
         },
       },
     ];
-    // await patchCollaboration({
-    //   collaborationGuid: collaboration?.guid,
-    //   operations: userOneOperations,
-    // });
     const userTwoOperations = [
       {
         op: 'replace',
@@ -87,11 +78,6 @@ export default function UserManagersCollaborationEditTable({
         },
       },
     ];
-    // await patchCollaboration({
-    //   collaborationGuid: collaboration?.guid,
-    //   operations: userTwoOperations,
-    // });
-
     const results = await Promise.all([
       patchCollaboration({
         collaborationGuid: collaboration?.guid,
@@ -270,12 +256,23 @@ export default function UserManagersCollaborationEditTable({
             : intl.formatMessage({ id: 'UNKNOWN_ERROR' })}
         </CustomAlert>
       )}
-      {patchSuccess && (
+      {revokeSuccess && (
         <CustomAlert
           severity="success"
           titleId="COLLABORATION_REVOKE_SUCCESS"
           onClose={() => {
-            onClearPatchSuccess();
+            setRevokeSuccess(false);
+            // onClearPatchSuccess();
+          }}
+        />
+      )}
+      {restoreSuccess && (
+        <CustomAlert
+          severity="success"
+          titleId="COLLABORATION_RESTORE_SUCCESS"
+          onClose={() => {
+            setRestoreSuccess(false);
+            // onClearPatchSuccess();
           }}
         />
       )}
