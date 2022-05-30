@@ -224,15 +224,24 @@ export default function useBulkImportFields() {
     allAvailableFields,
     (field, idx) => allLabels.indexOf(field?.label) !== idx,
   );
-  console.log('deleteMe duplicates are: ');
-  console.log(duplicates);
+  const duplicateLabels = map(
+    duplicates,
+    duplicate => duplicate?.label,
+    [],
+  );
   const disambiguatedAvailableFields = map(
     allAvailableFields,
-    availableField => {
-      // if() //TODO look for whether the label is included in duplicates
-      console.log('deleteMe hi');
-      return availableField; // TODO deleteMe change this
-    },
+    availableField =>
+      duplicateLabels.includes(availableField?.label)
+        ? {
+            ...availableField,
+            label: formatDuplicateLabel(
+              availableField?.label,
+              availableField?.key,
+              intl,
+            ),
+          }
+        : availableField,
     [],
   );
   // duplicates.forEach(duplicate => {
