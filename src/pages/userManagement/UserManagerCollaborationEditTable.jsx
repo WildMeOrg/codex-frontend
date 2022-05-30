@@ -48,7 +48,7 @@ export default function UserManagersCollaborationEditTable({
         },
       },
     ];
-    let revokeResults = await patchCollaboration({
+    const revokeResults = await patchCollaboration({
       collaborationGuid: collaboration?.guid,
       operations: operations,
     });
@@ -191,12 +191,6 @@ export default function UserManagersCollaborationEditTable({
             get(collaboration, 'viewStatusOne') ===
               revokedPermission ||
             get(collaboration, 'viewStatusTwo') === revokedPermission;
-          console.log(
-            'deleteMe isRevoked for the collaboration is: ' +
-              isRevoked,
-          );
-          console.log('deleteMe the actual collaboration is: ');
-          console.log(collaboration);
           return isRevoked ? (
             <div style={{ display: 'flex' }}>
               <ActionIcon
