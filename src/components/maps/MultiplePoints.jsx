@@ -3,7 +3,7 @@ import GoogleMapReact from 'google-map-react';
 import { get } from 'lodash-es';
 import RoomIcon from '@material-ui/icons/Room';
 
-import { googleMapsApiKey } from '../../constants/apiKeys';
+import useSiteSettings from '../../models/site/useSiteSettings';
 import Marker from './Marker';
 
 function createMapOptions() {
@@ -16,6 +16,11 @@ export default function MultiplePoints({ latLongLabelArr }) {
   const [currentMarkerToShow, setCurrentMarkerToShow] = useState(
     null,
   );
+  const googleMapsApiKey = get(useSiteSettings(), [
+    'data',
+    'googleMapsApiKey',
+    'value',
+  ]);
   return (
     <GoogleMapReact
       options={createMapOptions}
@@ -53,30 +58,28 @@ export default function MultiplePoints({ latLongLabelArr }) {
         const bounds = new maps.LatLngBounds(sw, ne);
         map.setCenter(bounds.getCenter());
         map.fitBounds(bounds, 10);
-        var opt = { minZoom: 0, maxZoom: 5 };
+        const opt = { minZoom: 0, maxZoom: 5 };
         map.setOptions(opt);
         map.setZoom(Math.max(map.getZoom() - 1, 0)); // add some buffer space to it
       }}
     >
-      {latLongLabelArr.map(entry => {
-        return (
-          <Marker
-            entry={entry}
-            currentMarkerToShow={currentMarkerToShow}
-            setCurrentMarkerToShow={setCurrentMarkerToShow}
-            key={get(entry, 'text', '')}
-            lat={get(entry, 'lat')}
-            lng={get(entry, 'long')}
-          >
-            <RoomIcon
-              style={{
-                position: 'absolute',
-                transform: 'translate(-50%,-50%)',
-              }}
-            />
-          </Marker>
-        );
-      })}
+      {latLongLabelArr.map(entry => (
+        <Marker
+          entry={entry}
+          currentMarkerToShow={currentMarkerToShow}
+          setCurrentMarkerToShow={setCurrentMarkerToShow}
+          key={get(entry, 'text', '')}
+          lat={get(entry, 'lat')}
+          lng={get(entry, 'long')}
+        >
+          <RoomIcon
+            style={{
+              position: 'absolute',
+              transform: 'translate(-50%,-50%)',
+            }}
+          />
+        </Marker>
+      ))}
     </GoogleMapReact>
   );
 }

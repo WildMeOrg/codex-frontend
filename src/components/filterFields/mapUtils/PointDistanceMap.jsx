@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { get } from 'lodash-es';
 import GoogleMapReact from 'google-map-react';
-import { googleMapsApiKey } from '../../../constants/apiKeys';
+import useSiteSettings from '../../../models/site/useSiteSettings';
 
 let lastMarker = null;
 let lastCircle = null;
@@ -85,6 +85,12 @@ export default function PointDistanceMap({
     },
     [mapReadyToRender],
   );
+
+  const googleMapsApiKey = get(useSiteSettings(), [
+    'data',
+    'googleMapsApiKey',
+    'value',
+  ]);
 
   return (
     <div

@@ -1,12 +1,18 @@
 import React, { useState } from 'react';
+import { get } from 'lodash-es';
 import GoogleMapReact from 'google-map-react';
-import { googleMapsApiKey } from '../../../../constants/apiKeys';
+import useSiteSettings from '../../../../models/site/useSiteSettings';
 
 let lastMarker = null;
 
 export default function LatLngMap({ onChange, rest }) {
   const [mapObject, setMapObject] = useState(null);
   const [mapsApi, setMapsApi] = useState(null);
+  const googleMapsApiKey = get(useSiteSettings(), [
+    'data',
+    'googleMapsApiKey',
+    'value',
+  ]);
 
   return (
     <div
