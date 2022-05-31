@@ -4,6 +4,7 @@ import { get, map } from 'lodash-es';
 
 import Chip from '@material-ui/core/Chip';
 import DoneIcon from '@material-ui/icons/Done';
+import Skeleton from '@material-ui/lab/Skeleton';
 
 import ReviewSightingDialog from '../../components/dialogs/ReviewSightingDialog';
 import Link from '../../components/Link';
@@ -41,6 +42,7 @@ export default function SightingEntityHeader({
   data,
   loading,
   pending,
+  preparing,
   guid,
   // setHistoryOpen,
   setDeleteDialogOpen,
@@ -100,25 +102,33 @@ export default function SightingEntityHeader({
       />
       <EntityHeader
         renderAvatar={
-          <FeaturedPhoto
-            data={pending ? null : dataForFeaturedPhoto}
-            loading={loading}
-            defaultPhotoSrc={defaultSightingSrc}
-            sightingId={data?.guid}
-          />
+          preparing ? (
+            <Skeleton height={150} width={150} variant="rect" />
+          ) : (
+            <FeaturedPhoto
+              data={pending ? null : dataForFeaturedPhoto}
+              loading={loading}
+              defaultPhotoSrc={defaultSightingSrc}
+              sightingId={data?.guid}
+            />
+          )
         }
         name={intl.formatMessage(
           { id: 'ENTITY_HEADER_SIGHTING_DATE' },
           { date: sightingDisplayDate },
         )}
         renderTabs={
-          <Tabs
-            value={activeTab.replace('#', '')}
-            onChange={(_, newValue) => {
-              window.location.hash = newValue;
-            }}
-            items={tabItems}
-          />
+          preparing ? (
+            <div />
+          ) : (
+            <Tabs
+              value={activeTab.replace('#', '')}
+              onChange={(_, newValue) => {
+                window.location.hash = newValue;
+              }}
+              items={tabItems}
+            />
+          )
         }
         renderOptions={
           <div style={{ display: 'flex' }}>

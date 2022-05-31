@@ -12,6 +12,7 @@ import MainColumn from '../../components/MainColumn';
 import LoadingScreen from '../../components/LoadingScreen';
 import SadScreen from '../../components/SadScreen';
 import ConfirmDelete from '../../components/ConfirmDelete';
+import CustomAlert from '../../components/Alert';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import useDeleteSighting from '../../models/sighting/useDeleteSighting';
 import useDeleteAssetGroupSighting from '../../models/assetGroupSighting/useDeleteAssetGroupSighting';
@@ -23,6 +24,13 @@ import OverviewContent from './OverviewContent';
 // import SightingHistoryDialog from './SightingHistoryDialog';
 import CommitBanner from './CommitBanner';
 import Encounters from './encounters/Encounters';
+
+const sightingTabs = {
+  '#overview': '#overview',
+  '#annotations': '#annotations',
+  '#photographs': '#photographs',
+  '#individuals': '#individuals',
+};
 
 export default function SightingCore({
   data,
@@ -76,7 +84,15 @@ export default function SightingCore({
 
   // const [historyOpen, setHistoryOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-  const activeTab = window.location.hash || '#overview';
+
+  const isPreparationInProgress = get(
+    data,
+    'pipeline_status.preparation.inProgress',
+  );
+
+  const activeTab = isPreparationInProgress
+    ? sightingTabs['#overview']
+    : sightingTabs[window.location.hash] || sightingTabs['#overview'];
 
   if (error) {
     return (
@@ -137,15 +153,25 @@ export default function SightingCore({
         data={data}
         loading={loading}
         pending={pending}
+        preparing={isPreparationInProgress}
         guid={id}
         // setHistoryOpen={setHistoryOpen}
         setDeleteDialogOpen={setDeleteDialogOpen}
       />
-      <CommitBanner
-        sightingId={id}
-        pending={pending}
-        sightingData={data}
-      />
+      {isPreparationInProgress ? (
+        <CustomAlert
+          titleId="PENDING_IMAGE_PROCESSING"
+          descriptionId="PENDING_IMAGE_PROCESSING_MESSAGE"
+          severity="info"
+          style={{ marginBottom: 24 }}
+        />
+      ) : (
+        <CommitBanner
+          sightingId={id}
+          pending={pending}
+          sightingData={data}
+        />
+      )}
       {activeTab === '#overview' && (
         <OverviewContent
           metadata={metadata}
