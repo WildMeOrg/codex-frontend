@@ -22,20 +22,30 @@ const SelectionEditor = function(props) {
     minimalLabels = false,
     ...rest
   } = props;
+  console.log('deleteMe value is: ');
+  console.log(value);
   const intl = useIntl();
+  const multiselect = schema.fieldType === fieldTypes.multiselect;
+  // if its multiselect, splitValues should be an array
+  // if value is a string, splitValues should be a split of the string
   const splitValues =
-    typeof value === 'string' ? value?.split(',') : value;
+    multiselect || typeof value === 'string'
+      ? value?.split(',') || []
+      : value;
+  // splitValues =
+  //   typeof value === 'string' ? value?.split(',') : splitValues;
 
   function getLabel(object) {
     if (object?.labelId)
-      return intl.formatMessage({ id: object.labelId });
+      return intl.formatMessage({
+        id: object.labelId,
+      });
     return get(object, 'label', 'Missing label');
   }
 
   const editLabel = useEditLabel(schema);
   const description = useDescription(schema);
   const showDescription = !minimalLabels && description;
-  const multiselect = schema.fieldType === fieldTypes.multiselect;
 
   const choices = get(schema, 'choices', []);
   const identifier = schema.id || schema.name;
