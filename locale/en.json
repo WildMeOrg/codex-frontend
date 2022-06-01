@@ -1075,7 +1075,7 @@
   "FLATFILE_POLICY": "By continuing, you agree to Flatfile's {privacyPolicy}",
   "FLATFILE_POLICY_LINK": "privacy policy",
   "SIGHTINGS_LABEL": "Sighting-{label}",
-  "ENCOUTNER_LABEL": "Encounter-{label}",
+  "ENCOUTNER_LABEL": "Animal-{label}",
   "INDIVIDUAL_MERGE_BLOCKED_TITLE": "Merge request blocked",
   "INDIVIDUAL_MERGE_BLOCKED_MESSAGE": "{userName} blocked a merge between {yourIndividualName} and {theirIndividualName}.",
   "INDIVIDUAL_MERGE_BLOCKED_DETAILED_MESSAGE": "{userName} blocked a merge between {yourIndividualName} and {theirIndividualName}. You are being notified because you reported a sighting of at least one of these individuals.",

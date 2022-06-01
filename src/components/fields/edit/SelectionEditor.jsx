@@ -23,10 +23,6 @@ const SelectionEditor = function(props) {
     ...rest
   } = props;
   const intl = useIntl();
-  console.log('deleteMe value is: ');
-  console.log(value);
-  console.log('deleteMe typeof value is: ');
-  console.log(typeof value);
   const isMultiselect = schema.fieldType === fieldTypes.multiselect;
   const isAlreadyArray = Array.isArray(value);
   const makeSafeArray = val => {
