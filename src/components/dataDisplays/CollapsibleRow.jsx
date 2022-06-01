@@ -57,7 +57,6 @@ export default function CollapsibleRow({
           );
           const RequestedCellRenderer =
             cellRenderers[requestedCellRenderer];
-
           return (
             <TableCell
               key={c.name}
