@@ -20,9 +20,9 @@ function getDateString(date) {
   return date ? formatDate(date, true) : 'unknown date';
 }
 
-function getProgressText(intl, startDate, currentDate) {
+function getProgressText(intl, startDate) {
   let timeDelta = '';
-  const currentTime = new Date(currentDate);
+  const currentTime = new Date();
   const startTime = new Date(startDate);
   try {
     timeDelta = formatDistance(currentTime, startTime);
@@ -30,7 +30,7 @@ function getProgressText(intl, startDate, currentDate) {
     console.error(error);
   }
 
-  if (!startDate || !currentDate || !timeDelta)
+  if (!startDate || !timeDelta)
     return intl.formatMessage({ id: 'IN_PROGRESS' });
   return intl.formatMessage(
     {
@@ -63,7 +63,6 @@ export default function StatusCard({ sightingData }) {
   const dateCreated = get(sightingData, 'createdHouston');
 
   const {
-    now,
     preparation: imageProcessingStep,
     detection: detectionStep,
     curation: curationStep,
@@ -126,7 +125,6 @@ export default function StatusCard({ sightingData }) {
           inProgressText={getProgressText(
             intl,
             imageProcessingStartTime,
-            now,
           )}
           finishedText={`Image processing finished on ${getDateString(
             imageProcessingEndTime,
@@ -145,11 +143,7 @@ export default function StatusCard({ sightingData }) {
           notStartedText={intl.formatMessage({
             id: 'WAITING_ELLIPSES',
           })}
-          inProgressText={getProgressText(
-            intl,
-            detectionStartTime,
-            now,
-          )}
+          inProgressText={getProgressText(intl, detectionStartTime)}
           finishedText={`Detection finished on ${getDateString(
             detectionEndTime,
           )}.`}
@@ -165,11 +159,7 @@ export default function StatusCard({ sightingData }) {
           notStartedText={intl.formatMessage({
             id: 'WAITING_ELLIPSES',
           })}
-          inProgressText={getProgressText(
-            intl,
-            curationStartTime,
-            now,
-          )}
+          inProgressText={getProgressText(intl, curationStartTime)}
           finishedText={`Curation finished on ${getDateString(
             curationEndTime,
           )}.`}
@@ -188,7 +178,6 @@ export default function StatusCard({ sightingData }) {
           inProgressText={getProgressText(
             intl,
             identificationStartTime,
-            now,
           )}
           finishedText={`Identification finished on ${getDateString(
             identificationEndTime,
