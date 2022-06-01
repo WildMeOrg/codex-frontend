@@ -227,7 +227,6 @@ export default function useBulkImportFields() {
   const duplicateLabels = map(
     duplicates,
     duplicate => duplicate?.label,
-    [],
   );
   const disambiguatedAvailableFields = map(
     allAvailableFields,
@@ -242,7 +241,6 @@ export default function useBulkImportFields() {
             ),
           }
         : availableField,
-    [],
   );
 
   return {
