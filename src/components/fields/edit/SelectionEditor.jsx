@@ -30,7 +30,7 @@ const SelectionEditor = function(props) {
   const isMultiselect = schema.fieldType === fieldTypes.multiselect;
   const isAlreadyArray = Array.isArray(value);
   const makeSafeArray = val => {
-    if (val === 'undefined' || val === 'null') return [];
+    if (!val) return [];
     if (typeof val === 'string') return val?.split(',');
     return [];
   };
