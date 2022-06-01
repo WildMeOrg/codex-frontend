@@ -31,7 +31,7 @@ const SelectionEditor = function(props) {
   const isAlreadyArray = Array.isArray(value);
   const makeSafeArray = val => {
     if (val === 'undefined' || val === 'null') return [];
-    if (typeof val === 'string') return val?.split(',') || [];
+    if (typeof val === 'string') return val?.split(',');
     return [];
   };
   const splitValues = isAlreadyArray ? value : makeSafeArray(value);
