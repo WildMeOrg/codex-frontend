@@ -28,10 +28,13 @@ const SelectionEditor = function(props) {
   console.log('deleteMe typeof value is: ');
   console.log(typeof value);
   const isMultiselect = schema.fieldType === fieldTypes.multiselect;
-  const splitValues =
-    isMultiselect || typeof value === 'string'
-      ? value?.split(',') || []
-      : value;
+  const isAlreadyArray = Array.isArray(value);
+  const makeSafeArray = val => {
+    if (val === 'undefined' || val === 'null') return [];
+    if (typeof val === 'string') return val?.split(',') || [];
+    return [];
+  };
+  const splitValues = isAlreadyArray ? value : makeSafeArray(value);
 
   function getLabel(object) {
     if (object?.labelId)
