@@ -23,9 +23,13 @@ const SelectionEditor = function(props) {
     ...rest
   } = props;
   const intl = useIntl();
-  const multiselect = schema.fieldType === fieldTypes.multiselect;
+  console.log('deleteMe value is: ');
+  console.log(value);
+  console.log('deleteMe typeof value is: ');
+  console.log(typeof value);
+  const isMultiselect = schema.fieldType === fieldTypes.multiselect;
   const splitValues =
-    multiselect || typeof value === 'string'
+    isMultiselect || typeof value === 'string'
       ? value?.split(',') || []
       : value;
 
@@ -53,10 +57,10 @@ const SelectionEditor = function(props) {
         onChange={e => {
           onChange(e.target.value);
         }}
-        value={multiselect ? splitValues : value || ''}
-        multiple={multiselect}
+        value={isMultiselect ? splitValues : value || ''}
+        multiple={isMultiselect}
         renderValue={currentValue => {
-          if (multiselect) {
+          if (isMultiselect) {
             const selectedChoices = choices.filter(c =>
               currentValue.includes(c.value),
             );
