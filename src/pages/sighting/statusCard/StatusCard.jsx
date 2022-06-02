@@ -56,11 +56,16 @@ function getStage(pipelineStep) {
   return stages.waiting;
 }
 
+function scrollToTop() {
+  window.scrollTo(0, 0);
+}
+
 export default function StatusCard({ sightingData }) {
   const intl = useIntl();
 
   const photoCount = get(sightingData, ['assets', 'length'], 0);
   const dateCreated = get(sightingData, 'createdHouston');
+  const hasEditPermission = get(sightingData, 'hasEdit', false);
 
   const {
     preparation: imageProcessingStep,
@@ -81,8 +86,11 @@ export default function StatusCard({ sightingData }) {
 
   const detectionStage = getStage(detectionStep);
 
-  const { start: curationStartTime, end: curationEndTime } =
-    curationStep || {};
+  const {
+    start: curationStartTime,
+    end: curationEndTime,
+    inProgress: isCurationInProgress,
+  } = curationStep || {};
 
   const curationStage = getStage(curationStep);
 
@@ -159,7 +167,11 @@ export default function StatusCard({ sightingData }) {
           notStartedText={intl.formatMessage({
             id: 'WAITING_ELLIPSES',
           })}
-          inProgressText={getProgressText(intl, curationStartTime)}
+          inProgressText={
+            hasEditPermission
+              ? intl.formatMessage({ id: 'CURATION_INSTRUCTIONS' })
+              : getProgressText(intl, curationStartTime)
+          }
           finishedText={`Curation finished on ${getDateString(
             curationEndTime,
           )}.`}
@@ -167,7 +179,19 @@ export default function StatusCard({ sightingData }) {
             id: 'CURATION_SKIPPED_MESSAGE',
           })}
           failedText={intl.formatMessage({ id: 'CURATION_FAILED' })}
-        />
+        >
+          {isCurationInProgress && hasEditPermission && (
+            <div style={{ marginTop: 4, marginBottom: 20 }}>
+              <ButtonLink
+                id="CURATION_ASSIGN_ANNOTATIONS"
+                href="#individuals"
+                display="panel"
+                size="small"
+                onClick={scrollToTop}
+              />
+            </div>
+          )}
+        </TimelineStep>
         <TimelineStep
           Icon={IdentificationIcon}
           titleId="IDENTIFICATION"
