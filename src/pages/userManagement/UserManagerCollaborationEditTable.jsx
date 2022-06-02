@@ -21,23 +21,33 @@ export default function UserManagersCollaborationEditTable({
 }) {
   const {
     data: currentUserData,
-    isLoading: userDataLoading,
+    loading: userDataLoading,
   } = useGetMe();
 
   const intl = useIntl();
 
   const {
-    mutate: patchCollaboration,
-    isLoading: patchLoading,
-    success: patchSuccess,
-    error: patchError,
-    clearError: onClearPatchError,
-    clearSuccess: onClearPatchSuccess,
+    mutate: revokeCollab,
+    success: revokeSuccess,
+    loading: revokeLoading,
+    clearSuccess: clearRevokeSuccess,
+    error: revokeError,
+    clearError: onClearRevokeError,
   } = usePatchCollaboration();
 
-  const isLoading = userDataLoading || patchLoading;
+  const {
+    mutate: restoreCollab,
+    success: restoreSuccess,
+    clearSuccess: clearRestoreSuccess,
+    loading: restoreLoading,
+    error: restoreError,
+    clearError: onClearRestoreError,
+  } = usePatchCollaboration();
 
-  async function processRevoke(collaboration) {
+  const isLoading =
+    userDataLoading || revokeLoading || restoreLoading;
+
+  function processRevoke(collaboration) {
     const operations = [
       {
         op: 'replace',
@@ -48,7 +58,24 @@ export default function UserManagersCollaborationEditTable({
         },
       },
     ];
-    await patchCollaboration({
+    revokeCollab({
+      collaborationGuid: collaboration?.guid,
+      operations: operations,
+    });
+  }
+
+  function processRestore(collaboration) {
+    const operations = [
+      {
+        op: 'replace',
+        path: '/managed_view_permission',
+        value: {
+          user_guid: get(currentUserData, 'guid'),
+          permission: 'approved',
+        },
+      },
+    ];
+    restoreCollab({
       collaborationGuid: collaboration?.guid,
       operations: operations,
     });
@@ -56,38 +83,32 @@ export default function UserManagersCollaborationEditTable({
 
   function tranformDataForCollabTable(originalData) {
     if (!originalData || originalData.length === 0) return null;
-    return originalData
-      .map(collaboration => {
-        const collaborators = Object.values(
-          get(collaboration, 'members', {}),
-        );
-        const member1 = get(collaborators, 0, {});
-        const member2 = get(collaborators, 1, {});
-
-        // Note: the collaboration API call returned a members OBJECT instead of array of objects, which made some tranformation gymnastics here necessary
-        return {
-          guid: get(collaboration, 'guid'),
-          userOne: get(member1, 'full_name', get(member1, 'email')),
-          userOneGuid: get(member1, 'guid'),
-          userTwo: get(member2, 'full_name', get(member2, 'email')),
-          userTwoGuid: get(member2, 'guid'),
-          viewStatusOne: get(member1, 'viewState'),
-          viewStatusTwo: get(member2, 'viewState'),
-        };
-        // editStatusOne: get(
-        //   member1,
-        //   'editState',
-        // ),
-        // editStatusTwo: get(
-        //   member2,
-        //   'editState',
-        // ),
-      })
-      ?.filter(
-        collab =>
-          get(collab, 'viewStatusOne') !== revokedPermission ||
-          get(collab, 'viewStatusTwo') !== revokedPermission,
+    return originalData.map(collaboration => {
+      const collaborators = Object.values(
+        get(collaboration, 'members', {}),
       );
+      const member1 = get(collaborators, 0, {});
+      const member2 = get(collaborators, 1, {});
+
+      // Note: the collaboration API call returned a members OBJECT instead of array of objects, which made some tranformation gymnastics here necessary
+      return {
+        guid: get(collaboration, 'guid'),
+        userOne: get(member1, 'full_name', get(member1, 'email')),
+        userOneGuid: get(member1, 'guid'),
+        userTwo: get(member2, 'full_name', get(member2, 'email')),
+        userTwoGuid: get(member2, 'guid'),
+        viewStatusOne: get(member1, 'viewState'),
+        viewStatusTwo: get(member2, 'viewState'),
+      };
+      // editStatusOne: get(
+      //   member1,
+      //   'editState',
+      // ),
+      // editStatusTwo: get(
+      //   member2,
+      //   'editState',
+      // ),
+    });
   }
   const tableFriendlyData = tranformDataForCollabTable(inputData);
   const tableColumns = [
@@ -148,15 +169,27 @@ export default function UserManagersCollaborationEditTable({
       }),
       options: {
         displayInFilter: false,
-        customBodyRender: (_, collaboration) => (
-          <div style={{ display: 'flex' }}>
-            <ActionIcon
-              variant="revoke"
-              onClick={() => processRevoke(collaboration)}
-              loading={isLoading}
-            />
-          </div>
-        ),
+        customBodyRender: (_, collaboration) => {
+          const isRevoked =
+            get(collaboration, 'viewStatusOne') ===
+              revokedPermission ||
+            get(collaboration, 'viewStatusTwo') === revokedPermission;
+          return (
+            <div style={{ display: 'flex' }}>
+              {isRevoked ? (
+                <ActionIcon
+                  variant="restore"
+                  onClick={() => processRestore(collaboration)}
+                />
+              ) : (
+                <ActionIcon
+                  variant="revoke"
+                  onClick={() => processRevoke(collaboration)}
+                />
+              )}
+            </div>
+          );
+        },
       },
     },
   ];
@@ -182,30 +215,44 @@ export default function UserManagersCollaborationEditTable({
           style={{ margin: '8px 16px', display: 'block' }}
         />
       ) : null}
-      {patchError && (
+      {revokeError && (
         <CustomAlert
           severity="error"
           titleId="COLLABORATION_REVOKE_ERROR"
-          onClose={() => {
-            onClearPatchError();
-          }}
+          onClose={onClearRevokeError}
         >
-          {patchError
-            ? patchError +
-              '. ' +
-              intl.formatMessage({
-                id: 'COLLAB_REVOKE_ERROR_SUPPLEMENTAL',
-              })
-            : intl.formatMessage({ id: 'UNKNOWN_ERROR' })}
+          {revokeError +
+            '. ' +
+            intl.formatMessage({
+              id: 'COLLAB_REVOKE_ERROR_SUPPLEMENTAL',
+            })}
         </CustomAlert>
       )}
-      {patchSuccess && (
+      {restoreError && (
+        <CustomAlert
+          severity="error"
+          titleId="COLLABORATION_RESTORE_ERROR"
+          onClose={onClearRestoreError}
+        >
+          {restoreError +
+            '. ' +
+            intl.formatMessage({
+              id: 'COLLAB_RESTORE_ERROR_SUPPLEMENTAL',
+            })}
+        </CustomAlert>
+      )}
+      {revokeSuccess && (
         <CustomAlert
           severity="success"
           titleId="COLLABORATION_REVOKE_SUCCESS"
-          onClose={() => {
-            onClearPatchSuccess();
-          }}
+          onClose={clearRevokeSuccess}
+        />
+      )}
+      {restoreSuccess && (
+        <CustomAlert
+          severity="success"
+          titleId="COLLABORATION_RESTORE_SUCCESS"
+          onClose={clearRestoreSuccess}
         />
       )}
     </Grid>,
