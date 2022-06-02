@@ -6,9 +6,9 @@ import { cellRendererTypes } from '../../components/dataDisplays/cellRenderers';
 const columns = [
   {
     name: 'index',
-    labelId: 'ANNOTATION',
+    labelId: 'CANDIDATE_RANK',
     options: {
-      customBodyRender: i => `Q${i + 1}`,
+      customBodyRender: i => `${i + 1}`,
     },
   },
   {
