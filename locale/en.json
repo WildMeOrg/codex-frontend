@@ -1084,5 +1084,6 @@
   "RETURN_TO_LOGIN_PAGE": "Return to login page",
   "RESTORE": "Restore",
   "COLLABORATION_RESTORE_SUCCESS": "Successfully restored the collaboration",
+  "COLLABORATION_RESTORE_ERROR": "Error restoring the collaboration",
   "COLLAB_RESTORE_ERROR_SUPPLEMENTAL": "Collaboration was not successfully restored."
 }

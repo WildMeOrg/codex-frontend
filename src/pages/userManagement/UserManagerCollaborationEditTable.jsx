@@ -221,13 +221,11 @@ export default function UserManagersCollaborationEditTable({
           titleId="COLLABORATION_REVOKE_ERROR"
           onClose={onClearRevokeError}
         >
-          {revokeError
-            ? revokeError +
-              '. ' +
-              intl.formatMessage({
-                id: 'COLLAB_REVOKE_ERROR_SUPPLEMENTAL',
-              })
-            : intl.formatMessage({ id: 'UNKNOWN_ERROR' })}
+          {revokeError +
+            '. ' +
+            intl.formatMessage({
+              id: 'COLLAB_REVOKE_ERROR_SUPPLEMENTAL',
+            })}
         </CustomAlert>
       )}
       {restoreError && (
@@ -236,13 +234,11 @@ export default function UserManagersCollaborationEditTable({
           titleId="COLLABORATION_REVOKE_ERROR"
           onClose={onClearRestoreError}
         >
-          {restoreError
-            ? restoreError +
-              '. ' +
-              intl.formatMessage({
-                id: 'COLLAB_RESTORE_ERROR_SUPPLEMENTAL',
-              })
-            : intl.formatMessage({ id: 'UNKNOWN_ERROR' })}
+          {restoreError +
+            '. ' +
+            intl.formatMessage({
+              id: 'COLLAB_RESTORE_ERROR_SUPPLEMENTAL',
+            })}
         </CustomAlert>
       )}
       {revokeSuccess && (
