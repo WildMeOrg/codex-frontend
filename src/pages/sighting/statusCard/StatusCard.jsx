@@ -5,9 +5,10 @@ import { formatDistance } from 'date-fns';
 
 import Timeline from '@material-ui/lab/Timeline';
 import ReportIcon from '@material-ui/icons/ArtTrack';
+import ImageProcessingIcon from '@material-ui/icons/Image';
 import DetectionIcon from '@material-ui/icons/Search';
 import CurationIcon from '@material-ui/icons/LowPriority';
-import MatchingIcon from '@material-ui/icons/Visibility';
+import IdentificationIcon from '@material-ui/icons/Visibility';
 
 import { formatDate } from '../../../utils/formatters';
 import Card from '../../../components/cards/Card';
@@ -39,58 +40,68 @@ function getProgressText(intl, startDate) {
   );
 }
 
+function getStage(pipelineStep) {
+  const { skipped, inProgress, complete, failed } =
+    pipelineStep || {};
+
+  if (skipped) return stages.skipped;
+
+  if (inProgress) return stages.current;
+
+  if (complete) {
+    if (failed) return stages.failed;
+    return stages.finished;
+  }
+
+  return stages.waiting;
+}
+
 export default function StatusCard({ sightingData }) {
   const intl = useIntl();
 
   const photoCount = get(sightingData, ['assets', 'length'], 0);
   const dateCreated = get(sightingData, 'createdHouston');
 
-  const detectionStartTime = sightingData?.detection_start_time;
-  const curationStartTime = sightingData?.curation_start_time;
-  const matchingStartTime = sightingData?.identification_start_time;
-  const unreviewedStartTime = sightingData?.unreviewed_start_time;
-  const sightingStatus = sightingData?.stage;
+  const {
+    preparation: imageProcessingStep,
+    detection: detectionStep,
+    curation: curationStep,
+    identification: identificationStep,
+  } = sightingData?.pipeline_status || {};
 
-  const detectionComplete = detectionStartTime && curationStartTime;
-  const curationComplete = detectionComplete && matchingStartTime;
-  const matchingComplete =
-    curationComplete && sightingStatus !== 'reviewed';
+  const {
+    start: imageProcessingStartTime,
+    end: imageProcessingEndTime,
+  } = imageProcessingStep || {};
 
-  let detectionStage = stages.waiting;
-  let curationStage = stages.waiting;
-  let matchingStage = stages.waiting;
+  const imageProcessingStage = getStage(imageProcessingStep);
 
-  if (detectionStartTime) {
-    detectionStage =
-      sightingStatus === 'failed' ? stages.failed : stages.current;
-  }
-  if (curationStartTime) {
-    detectionStage = detectionStartTime
-      ? stages.finished
-      : stages.skipped;
-    curationStage =
-      sightingStatus === 'failed' ? stages.failed : stages.current;
-  }
-  if (matchingStartTime) {
-    curationStage = stages.finished;
-    matchingStage =
-      sightingStatus === 'failed' ? stages.failed : stages.current;
-  }
-  if (matchingComplete) matchingStage = stages.finished;
+  const { start: detectionStartTime, end: detectionEndTime } =
+    detectionStep || {};
 
-  if (photoCount === 0) {
-    detectionStage = stages.skipped;
-    curationStage = stages.skipped;
-    matchingStage = stages.skipped;
-  }
+  const detectionStage = getStage(detectionStep);
+
+  const { start: curationStartTime, end: curationEndTime } =
+    curationStep || {};
+
+  const curationStage = getStage(curationStep);
+
+  const {
+    start: identificationStartTime,
+    end: identificationEndTime,
+    complete: isIdentificationComplete,
+    failed: isIdentificationFailed,
+  } = identificationStep || {};
+
+  const identificationStage = getStage(identificationStep);
 
   return (
-    <Card titleId="IDENTIFICATION_PIPELINE_STATUS" maxHeight={500}>
+    <Card titleId="IDENTIFICATION_PIPELINE_STATUS" maxHeight={900}>
       <Timeline>
         <TimelineStep
           Icon={ReportIcon}
           titleId="SIGHTING_SUBMISSION"
-          stage="finished"
+          stage={stages.finished}
           finishedText={intl.formatMessage(
             {
               id:
@@ -105,12 +116,36 @@ export default function StatusCard({ sightingData }) {
           )}
         />
         <TimelineStep
+          Icon={ImageProcessingIcon}
+          titleId="IMAGE_PROCESSING"
+          stage={imageProcessingStage}
+          notStartedText={intl.formatMessage({
+            id: 'WAITING_ELLIPSES',
+          })}
+          inProgressText={getProgressText(
+            intl,
+            imageProcessingStartTime,
+          )}
+          finishedText={`Image processing finished on ${getDateString(
+            imageProcessingEndTime,
+          )}.`}
+          skippedText={intl.formatMessage({
+            id: 'IMAGE_PROCESSING_SKIPPED_MESSAGE',
+          })}
+          failedText={intl.formatMessage({
+            id: 'IMAGE_PROCESSING_FAILED',
+          })}
+        />
+        <TimelineStep
           Icon={DetectionIcon}
           titleId="ANIMAL_DETECTION"
           stage={detectionStage}
+          notStartedText={intl.formatMessage({
+            id: 'WAITING_ELLIPSES',
+          })}
           inProgressText={getProgressText(intl, detectionStartTime)}
           finishedText={`Detection finished on ${getDateString(
-            curationStartTime,
+            detectionEndTime,
           )}.`}
           skippedText={intl.formatMessage({
             id: 'DETECTION_SKIPPED_MESSAGE',
@@ -126,7 +161,7 @@ export default function StatusCard({ sightingData }) {
           })}
           inProgressText={getProgressText(intl, curationStartTime)}
           finishedText={`Curation finished on ${getDateString(
-            matchingStartTime,
+            curationEndTime,
           )}.`}
           skippedText={intl.formatMessage({
             id: 'CURATION_SKIPPED_MESSAGE',
@@ -134,24 +169,27 @@ export default function StatusCard({ sightingData }) {
           failedText={intl.formatMessage({ id: 'CURATION_FAILED' })}
         />
         <TimelineStep
-          Icon={MatchingIcon}
-          titleId="MATCHING"
-          stage={matchingStage}
+          Icon={IdentificationIcon}
+          titleId="IDENTIFICATION"
+          stage={identificationStage}
           notStartedText={intl.formatMessage({
             id: 'WAITING_ELLIPSES',
           })}
-          inProgressText={getProgressText(intl, matchingStartTime)}
-          finishedText={`Matching finished on ${getDateString(
-            unreviewedStartTime,
+          inProgressText={getProgressText(
+            intl,
+            identificationStartTime,
+          )}
+          finishedText={`Identification finished on ${getDateString(
+            identificationEndTime,
           )}.`}
           skippedText={intl.formatMessage({
-            id: 'MATCHING_SKIPPED_MESSAGE',
+            id: 'IDENTIFICATION_SKIPPED_MESSAGE',
           })}
           failedText={intl.formatMessage({
             id: 'IDENTIFICATION_FAILED',
           })}
         >
-          {matchingComplete && (
+          {isIdentificationComplete && !isIdentificationFailed && (
             <div style={{ marginTop: 4 }}>
               <ButtonLink
                 href={`/match-results/${sightingData?.guid}`}
