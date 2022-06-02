@@ -25,7 +25,7 @@ const variantMap = {
     component: DeleteIcon,
   },
   restore: {
-    labelId: 'RESTORE_COLLABORATION',
+    labelId: 'RESTORE',
     component: RestoreIcon,
   },
   delete: {

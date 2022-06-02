@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
-import { filter, get } from 'lodash-es';
+import { get } from 'lodash-es';
 
 import Skeleton from '@material-ui/lab/Skeleton';
 import Grid from '@material-ui/core/Grid';
@@ -21,21 +21,31 @@ export default function UserManagersCollaborationEditTable({
 }) {
   const {
     data: currentUserData,
-    isLoading: userDataLoading,
+    loading: userDataLoading,
   } = useGetMe();
 
   const intl = useIntl();
 
   const {
-    mutate: patchCollaboration,
-    isLoading: patchLoading,
-    error: patchError,
-    clearError: onClearPatchError,
+    mutate: revokeCollab,
+    success: revokeSuccess,
+    loading: revokeLoading,
+    clearSuccess: clearRevokeSuccess,
+    error: revokeError,
+    clearError: onClearRevokeError,
   } = usePatchCollaboration();
 
-  const isLoading = userDataLoading || patchLoading;
-  const [revokeSuccess, setRevokeSuccess] = useState(false);
-  const [restoreSuccess, setRestoreSuccess] = useState(false);
+  const {
+    mutate: restoreCollab,
+    success: restoreSuccess,
+    clearSuccess: clearRestoreSuccess,
+    loading: restoreLoading,
+    error: restoreError,
+    clearError: onClearRestoreError,
+  } = usePatchCollaboration();
+
+  const isLoading =
+    userDataLoading || revokeLoading || restoreLoading;
 
   async function processRevoke(collaboration) {
     const operations = [
@@ -48,49 +58,27 @@ export default function UserManagersCollaborationEditTable({
         },
       },
     ];
-    const revokeResults = await patchCollaboration({
+    await revokeCollab({
       collaborationGuid: collaboration?.guid,
       operations: operations,
     });
-    if (revokeResults?.status === 200) setRevokeSuccess(true);
   }
 
   async function processRestore(collaboration) {
-    const userOneOperations = [
+    const operations = [
       {
         op: 'replace',
         path: '/managed_view_permission',
         value: {
-          user_guid: collaboration?.userOneGuid,
+          user_guid: get(currentUserData, 'guid'),
           permission: 'approved',
         },
       },
     ];
-    const userTwoOperations = [
-      {
-        op: 'replace',
-        path: '/managed_view_permission',
-        value: {
-          user_guid: collaboration?.userTwoGuid,
-          permission: 'approved',
-        },
-      },
-    ];
-    const results = await Promise.all([
-      patchCollaboration({
-        collaborationGuid: collaboration?.guid,
-        operations: userOneOperations,
-      }),
-      patchCollaboration({
-        collaborationGuid: collaboration?.guid,
-        operations: userTwoOperations,
-      }),
-    ]);
-    if (
-      filter(results, result => result?.status === 200, []).length ===
-      2
-    )
-      setRestoreSuccess(true);
+    await restoreCollab({
+      collaborationGuid: collaboration?.guid,
+      operations: operations,
+    });
   }
 
   function tranformDataForCollabTable(originalData) {
@@ -186,21 +174,19 @@ export default function UserManagersCollaborationEditTable({
             get(collaboration, 'viewStatusOne') ===
               revokedPermission ||
             get(collaboration, 'viewStatusTwo') === revokedPermission;
-          return isRevoked ? (
+          return (
             <div style={{ display: 'flex' }}>
-              <ActionIcon
-                variant="restore"
-                onClick={() => processRestore(collaboration)}
-                loading={isLoading}
-              />
-            </div>
-          ) : (
-            <div style={{ display: 'flex' }}>
-              <ActionIcon
-                variant="revoke"
-                onClick={() => processRevoke(collaboration)}
-                loading={isLoading}
-              />
+              {isRevoked ? (
+                <ActionIcon
+                  variant="restore"
+                  onClick={() => processRestore(collaboration)}
+                />
+              ) : (
+                <ActionIcon
+                  variant="revoke"
+                  onClick={() => processRevoke(collaboration)}
+                />
+              )}
             </div>
           );
         },
@@ -229,19 +215,32 @@ export default function UserManagersCollaborationEditTable({
           style={{ margin: '8px 16px', display: 'block' }}
         />
       ) : null}
-      {patchError && (
+      {revokeError && (
         <CustomAlert
           severity="error"
           titleId="COLLABORATION_REVOKE_ERROR"
-          onClose={() => {
-            onClearPatchError();
-          }}
+          onClose={onClearRevokeError}
         >
-          {patchError
-            ? patchError +
+          {revokeError
+            ? revokeError +
               '. ' +
               intl.formatMessage({
                 id: 'COLLAB_REVOKE_ERROR_SUPPLEMENTAL',
+              })
+            : intl.formatMessage({ id: 'UNKNOWN_ERROR' })}
+        </CustomAlert>
+      )}
+      {restoreError && (
+        <CustomAlert
+          severity="error"
+          titleId="COLLABORATION_REVOKE_ERROR"
+          onClose={onClearRestoreError}
+        >
+          {restoreError
+            ? restoreError +
+              '. ' +
+              intl.formatMessage({
+                id: 'COLLAB_RESTORE_ERROR_SUPPLEMENTAL',
               })
             : intl.formatMessage({ id: 'UNKNOWN_ERROR' })}
         </CustomAlert>
@@ -250,18 +249,14 @@ export default function UserManagersCollaborationEditTable({
         <CustomAlert
           severity="success"
           titleId="COLLABORATION_REVOKE_SUCCESS"
-          onClose={() => {
-            setRevokeSuccess(false);
-          }}
+          onClose={clearRevokeSuccess}
         />
       )}
       {restoreSuccess && (
         <CustomAlert
           severity="success"
           titleId="COLLABORATION_RESTORE_SUCCESS"
-          onClose={() => {
-            setRestoreSuccess(false);
-          }}
+          onClose={clearRestoreSuccess}
         />
       )}
     </Grid>,

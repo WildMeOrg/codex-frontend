@@ -1082,6 +1082,7 @@
   "PASSWORD_RESET_ERROR": "Password reset error",
   "PASSWORD_RESET_SUCCESS": "Password reset success",
   "RETURN_TO_LOGIN_PAGE": "Return to login page",
-  "RESTORE_COLLABORATION": "Restore collaboration",
-  "COLLABORATION_RESTORE_SUCCESS": "Successfully restored the collaboration"
+  "RESTORE": "Restore",
+  "COLLABORATION_RESTORE_SUCCESS": "Successfully restored the collaboration",
+  "COLLAB_RESTORE_ERROR_SUPPLEMENTAL": "Collaboration was not successfully restored."
 }
