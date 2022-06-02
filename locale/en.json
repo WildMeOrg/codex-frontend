@@ -640,6 +640,7 @@
   "SUCCESSFULLY_LOGGED_OUT": "You have successfully logged out.",
   "LOGGED_OUT": "Logged out",
   "CANDIDATE_RANK": "Candidate Rank",
+  "ANNOTATION": "Annotation",
   "FILENAME": "Filename",
   "MATCH": "Match",
   "CHANGE": "Change",
