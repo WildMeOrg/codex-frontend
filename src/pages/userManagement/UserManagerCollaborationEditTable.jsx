@@ -47,7 +47,7 @@ export default function UserManagersCollaborationEditTable({
   const isLoading =
     userDataLoading || revokeLoading || restoreLoading;
 
-  async function processRevoke(collaboration) {
+  function processRevoke(collaboration) {
     const operations = [
       {
         op: 'replace',
@@ -58,13 +58,13 @@ export default function UserManagersCollaborationEditTable({
         },
       },
     ];
-    await revokeCollab({
+    revokeCollab({
       collaborationGuid: collaboration?.guid,
       operations: operations,
     });
   }
 
-  async function processRestore(collaboration) {
+  function processRestore(collaboration) {
     const operations = [
       {
         op: 'replace',
@@ -75,7 +75,7 @@ export default function UserManagersCollaborationEditTable({
         },
       },
     ];
-    await restoreCollab({
+    restoreCollab({
       collaborationGuid: collaboration?.guid,
       operations: operations,
     });
@@ -231,7 +231,7 @@ export default function UserManagersCollaborationEditTable({
       {restoreError && (
         <CustomAlert
           severity="error"
-          titleId="COLLABORATION_REVOKE_ERROR"
+          titleId="COLLABORATION_RESTORE_ERROR"
           onClose={onClearRestoreError}
         >
           {restoreError +
