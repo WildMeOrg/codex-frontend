@@ -13,6 +13,13 @@ import useDescription from '../../../hooks/useDescription';
 import FormCore from './FormCore';
 import Text from '../../Text';
 
+const getSelectValue = val => val || '';
+const getMultiselectValue = val => {
+  if (Array.isArray(val)) return val;
+  if (val && typeof val === 'string') return val.split(',');
+  return [];
+};
+
 const SelectionEditor = function(props) {
   const {
     schema,
@@ -24,13 +31,9 @@ const SelectionEditor = function(props) {
   } = props;
   const intl = useIntl();
   const isMultiselect = schema.fieldType === fieldTypes.multiselect;
-  const isAlreadyArray = Array.isArray(value);
-  const makeSafeArray = val => {
-    if (!val) return [];
-    if (typeof val === 'string') return val?.split(',');
-    return [];
-  };
-  const splitValues = isAlreadyArray ? value : makeSafeArray(value);
+  const safeValue = isMultiselect
+    ? getMultiselectValue(value)
+    : getSelectValue(value);
 
   function getLabel(object) {
     if (object?.labelId)
@@ -56,7 +59,7 @@ const SelectionEditor = function(props) {
         onChange={e => {
           onChange(e.target.value);
         }}
-        value={isMultiselect ? splitValues : value || ''}
+        value={safeValue}
         multiple={isMultiselect}
         renderValue={currentValue => {
           if (isMultiselect) {
