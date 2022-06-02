@@ -13,6 +13,13 @@ import useDescription from '../../../hooks/useDescription';
 import FormCore from './FormCore';
 import Text from '../../Text';
 
+const getSelectValue = val => val || '';
+const getMultiselectValue = val => {
+  if (Array.isArray(val)) return val;
+  if (val && typeof val === 'string') return val.split(',');
+  return [];
+};
+
 const SelectionEditor = function(props) {
   const {
     schema,
@@ -23,19 +30,22 @@ const SelectionEditor = function(props) {
     ...rest
   } = props;
   const intl = useIntl();
-  const splitValues =
-    typeof value === 'string' ? value?.split(',') : value;
+  const isMultiselect = schema.fieldType === fieldTypes.multiselect;
+  const safeValue = isMultiselect
+    ? getMultiselectValue(value)
+    : getSelectValue(value);
 
   function getLabel(object) {
     if (object?.labelId)
-      return intl.formatMessage({ id: object.labelId });
+      return intl.formatMessage({
+        id: object.labelId,
+      });
     return get(object, 'label', 'Missing label');
   }
 
   const editLabel = useEditLabel(schema);
   const description = useDescription(schema);
   const showDescription = !minimalLabels && description;
-  const multiselect = schema.fieldType === fieldTypes.multiselect;
 
   const choices = get(schema, 'choices', []);
   const identifier = schema.id || schema.name;
@@ -49,10 +59,10 @@ const SelectionEditor = function(props) {
         onChange={e => {
           onChange(e.target.value);
         }}
-        value={multiselect ? splitValues : value || ''}
-        multiple={multiselect}
+        value={safeValue}
+        multiple={isMultiselect}
         renderValue={currentValue => {
-          if (multiselect) {
+          if (isMultiselect) {
             const selectedChoices = choices.filter(c =>
               currentValue.includes(c.value),
             );
