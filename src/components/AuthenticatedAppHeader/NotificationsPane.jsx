@@ -16,7 +16,6 @@ import Text from '../Text';
 import Button from '../Button';
 import ButtonLink from '../ButtonLink';
 import NotificationPaneDisplayText from './NotificationPaneDisplayText';
-import shane from '../../assets/shane.jpg';
 import { notificationSchema } from '../../constants/notificationSchema';
 import { getNotificationProps } from '../../utils/notificationUtils';
 import { notificationTypes } from '../dialogs/notificationDialogUtils';
@@ -117,7 +116,7 @@ export default function NotificationsPane({
                     }}
                   >
                     <div style={{ display: 'flex' }}>
-                      <Avatar src={shane} variant="circular" />
+                      <Avatar>{user1Name[0].toUpperCase()}</Avatar>
                       <NotificationPaneDisplayText
                         currentNotificationSchema={
                           currentNotificationSchema
