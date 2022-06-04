@@ -8,7 +8,7 @@ const columns = [
     name: 'index',
     labelId: 'ANNOTATION',
     options: {
-      customBodyRender: i => `Q${i + 1}`,
+      customBodyRender: i => `${i + 1}`,
     },
   },
   {

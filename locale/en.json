@@ -639,6 +639,7 @@
   "TRY_AGAIN": "Resend email",
   "SUCCESSFULLY_LOGGED_OUT": "You have successfully logged out.",
   "LOGGED_OUT": "Logged out",
+  "CANDIDATE_RANK": "Candidate Rank",
   "ANNOTATION": "Annotation",
   "FILENAME": "Filename",
   "MATCH": "Match",
@@ -1091,5 +1092,6 @@
   "COLLABORATION_RESTORE_SUCCESS": "Successfully restored the collaboration",
   "COLLABORATION_RESTORE_ERROR": "Error restoring the collaboration",
   "COLLAB_RESTORE_ERROR_SUPPLEMENTAL": "Collaboration was not successfully restored.",
-  "PENDING": "pending"
+  "PENDING": "pending",
+  "CANDIDATE_ANNOTATIONS": "Candidate annotations"
 }

@@ -7,9 +7,9 @@ import ActionIcon from '../../components/ActionIcon';
 const columns = [
   {
     name: 'index',
-    labelId: 'ANNOTATION',
+    labelId: 'CANDIDATE_RANK',
     options: {
-      customBodyRender: i => `C${i + 1}`,
+      customBodyRender: i => `${i + 1}`,
     },
   },
   {
@@ -36,6 +36,7 @@ const columns = [
   {
     name: 'sighting_guid',
     labelId: 'VIEW_SIGHTING',
+    sortable: false,
     options: {
       customBodyRender: guid => (
         <ActionIcon
@@ -57,9 +58,8 @@ export default function MatchCandidatesTable({
   return (
     <DataDisplay
       idKey="guid"
-      title="Match candidates"
-      data={matchCandidates}
-      // variant="secondary"
+      titleId="CANDIDATE_ANNOTATIONS"
+      data={matchCandidates} // variant="secondary"
       columns={columns}
       noResultsTextId="NO_MATCH_CANDIDATES"
       hideDownloadCsv
