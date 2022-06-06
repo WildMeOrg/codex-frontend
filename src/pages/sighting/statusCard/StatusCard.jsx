@@ -185,7 +185,7 @@ export default function StatusCard({ sightingData }) {
               <ButtonLink
                 id="CURATION_ASSIGN_ANNOTATIONS"
                 href="#individuals"
-                display="panel"
+                display="primary"
                 size="small"
                 onClick={scrollToTop}
               />
