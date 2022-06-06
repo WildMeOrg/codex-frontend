@@ -5,7 +5,7 @@ import { formatDistance } from 'date-fns';
 
 import Timeline from '@material-ui/lab/Timeline';
 import ReportIcon from '@material-ui/icons/ArtTrack';
-import ImageProcessingIcon from '@material-ui/icons/Image';
+import PreparationIcon from '@material-ui/icons/FileCopy';
 import DetectionIcon from '@material-ui/icons/Search';
 import CurationIcon from '@material-ui/icons/LowPriority';
 import IdentificationIcon from '@material-ui/icons/Visibility';
@@ -64,6 +64,7 @@ export default function StatusCard({ sightingData }) {
   const intl = useIntl();
 
   const assets = get(sightingData, 'assets', []);
+  const assetCount = assets.length;
   const dateCreated = get(sightingData, 'submissionTime');
   const currentUserHasEditPermission = get(
     sightingData,
@@ -72,18 +73,16 @@ export default function StatusCard({ sightingData }) {
   );
 
   const {
-    preparation: imageProcessingStep,
+    preparation: preparationStep,
     detection: detectionStep,
     curation: curationStep,
     identification: identificationStep,
   } = sightingData?.pipeline_status || {};
 
-  const {
-    start: imageProcessingStartTime,
-    end: imageProcessingEndTime,
-  } = imageProcessingStep || {};
+  const { start: preparationStartTime, end: preparationEndTime } =
+    preparationStep || {};
 
-  const imageProcessingStage = getStage(imageProcessingStep);
+  const preparationStage = getStage(preparationStep);
 
   const { start: detectionStartTime, end: detectionEndTime } =
     detectionStep || {};
@@ -123,24 +122,25 @@ export default function StatusCard({ sightingData }) {
           )}
         />
         <TimelineStep
-          Icon={ImageProcessingIcon}
-          titleId="IMAGE_PROCESSING"
-          stage={imageProcessingStage}
+          Icon={PreparationIcon}
+          titleId="SIGHTING_PREPARATION"
+          stage={preparationStage}
           notStartedText={intl.formatMessage({
             id: 'WAITING_ELLIPSES',
           })}
-          inProgressText={getProgressText(
-            intl,
-            imageProcessingStartTime,
+          inProgressText={getProgressText(intl, preparationStartTime)}
+          finishedText={intl.formatMessage(
+            { id: 'SIGHTING_PREPARATION_FINISHED_MESSAGE' },
+            {
+              photoCount: assetCount,
+              date: getDateString(preparationEndTime),
+            },
           )}
-          finishedText={`Image processing finished on ${getDateString(
-            imageProcessingEndTime,
-          )}.`}
           skippedText={intl.formatMessage({
-            id: 'IMAGE_PROCESSING_SKIPPED_MESSAGE',
+            id: 'SIGHTING_PREPARATION_SKIPPED_MESSAGE',
           })}
           failedText={intl.formatMessage({
-            id: 'IMAGE_PROCESSING_FAILED',
+            id: 'SIGHTING_PREPARATION_FAILED',
           })}
         />
         <TimelineStep
