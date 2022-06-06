@@ -64,8 +64,7 @@ export default function StatusCard({ sightingData }) {
   const intl = useIntl();
 
   const assets = get(sightingData, 'assets', []);
-  const assetCount = assets.length;
-  const dateCreated = get(sightingData, 'createdHouston');
+  const dateCreated = get(sightingData, 'submissionTime');
   const currentUserHasEditPermission = get(
     sightingData,
     'hasEdit',
@@ -119,16 +118,8 @@ export default function StatusCard({ sightingData }) {
           titleId="SIGHTING_SUBMISSION"
           stage={stages.finished}
           finishedText={intl.formatMessage(
-            {
-              id:
-                assetCount > 0
-                  ? 'SIGHTING_CREATED_WITH_ASSETS_DESCRIPTION'
-                  : 'SIGHTING_CREATED_NO_ASSETS_DESCRIPTION',
-            },
-            {
-              photoCount: assetCount,
-              date: getDateString(dateCreated),
-            },
+            { id: 'SIGHTING_SUBMISSION_REPORT_DATE' },
+            { date: getDateString(dateCreated) },
           )}
         />
         <TimelineStep
