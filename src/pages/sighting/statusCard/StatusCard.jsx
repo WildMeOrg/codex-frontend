@@ -88,6 +88,14 @@ export default function StatusCard({ sightingData }) {
     detectionStep || {};
 
   const detectionStage = getStage(detectionStep);
+  let detectionSkippedLabelId = 'DETECTION_SKIPPED_MESSAGE';
+  if (assetCount === 0) {
+    detectionSkippedLabelId = 'DETECTION_SKIPPED_NO_IMAGES_MESSAGE';
+  } else if (
+    get(sightingData, 'speciesDetectionModel[0]', 'None') === 'None'
+  ) {
+    detectionSkippedLabelId = 'DETECTION_SKIPPED_NO_MODEL_MESSAGE';
+  }
 
   const {
     start: curationStartTime,
@@ -151,11 +159,12 @@ export default function StatusCard({ sightingData }) {
             id: 'WAITING_ELLIPSES',
           })}
           inProgressText={getProgressText(intl, detectionStartTime)}
-          finishedText={`Detection finished on ${getDateString(
-            detectionEndTime,
-          )}.`}
+          finishedText={intl.formatMessage(
+            { id: 'DETECTION_FINISHED_MESSAGE' },
+            { date: getDateString(detectionEndTime) },
+          )}
           skippedText={intl.formatMessage({
-            id: 'DETECTION_SKIPPED_MESSAGE',
+            id: detectionSkippedLabelId,
           })}
           failedText={intl.formatMessage({ id: 'DETECTION_FAILED' })}
         />
