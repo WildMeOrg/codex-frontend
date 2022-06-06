@@ -65,7 +65,11 @@ export default function StatusCard({ sightingData }) {
 
   const photoCount = get(sightingData, ['assets', 'length'], 0);
   const dateCreated = get(sightingData, 'createdHouston');
-  const hasEditPermission = get(sightingData, 'hasEdit', false);
+  const currentUserHasEditPermission = get(
+    sightingData,
+    'hasEdit',
+    false,
+  );
 
   const {
     preparation: imageProcessingStep,
@@ -168,7 +172,7 @@ export default function StatusCard({ sightingData }) {
             id: 'WAITING_ELLIPSES',
           })}
           inProgressText={
-            hasEditPermission
+            currentUserHasEditPermission
               ? intl.formatMessage({ id: 'CURATION_INSTRUCTIONS' })
               : getProgressText(intl, curationStartTime)
           }
@@ -180,7 +184,7 @@ export default function StatusCard({ sightingData }) {
           })}
           failedText={intl.formatMessage({ id: 'CURATION_FAILED' })}
         >
-          {isCurationInProgress && hasEditPermission && (
+          {isCurationInProgress && currentUserHasEditPermission && (
             <div style={{ marginTop: 4, marginBottom: 20 }}>
               <ButtonLink
                 id="CURATION_ASSIGN_ANNOTATIONS"
