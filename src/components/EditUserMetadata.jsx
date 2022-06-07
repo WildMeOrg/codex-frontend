@@ -14,6 +14,8 @@ import PasswordVerificationAlert from './PasswordVerificationAlert';
 import StandardDialog from './StandardDialog';
 
 function getInitialFormValues(schema) {
+  console.log('deleteMe schema in getInitialFormValues are: ');
+  console.log(schema);
   return schema.reduce((memo, field) => {
     const valueKey = get(field, 'name');
     memo[valueKey] =
@@ -50,6 +52,7 @@ export default function EditUserMetadata({
       console.log(
         'deleteMe metadata changed. Setting fieldValues to: ',
       );
+      console.log(metadata);
       console.log(getInitialFormValues(metadata));
       setFieldValues(getInitialFormValues(metadata));
     },
