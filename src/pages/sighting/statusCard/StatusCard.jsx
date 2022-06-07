@@ -63,7 +63,8 @@ function scrollToTop() {
 export default function StatusCard({ sightingData }) {
   const intl = useIntl();
 
-  const photoCount = get(sightingData, ['assets', 'length'], 0);
+  const assets = get(sightingData, 'assets', []);
+  const assetCount = assets.length;
   const dateCreated = get(sightingData, 'createdHouston');
   const currentUserHasEditPermission = get(
     sightingData,
@@ -97,6 +98,9 @@ export default function StatusCard({ sightingData }) {
   } = curationStep || {};
 
   const curationStage = getStage(curationStep);
+  const someAssetsHaveAnnotations = assets.some(
+    asset => get(asset, 'annotations.length', 0) > 0,
+  );
 
   const {
     start: identificationStartTime,
@@ -117,12 +121,12 @@ export default function StatusCard({ sightingData }) {
           finishedText={intl.formatMessage(
             {
               id:
-                photoCount > 0
+                assetCount > 0
                   ? 'SIGHTING_CREATED_WITH_ASSETS_DESCRIPTION'
                   : 'SIGHTING_CREATED_NO_ASSETS_DESCRIPTION',
             },
             {
-              photoCount,
+              photoCount: assetCount,
               date: getDateString(dateCreated),
             },
           )}
@@ -187,8 +191,16 @@ export default function StatusCard({ sightingData }) {
           {isCurationInProgress && currentUserHasEditPermission && (
             <div style={{ marginTop: 4, marginBottom: 20 }}>
               <ButtonLink
-                id="CURATION_ASSIGN_ANNOTATIONS"
-                href="#individuals"
+                id={
+                  someAssetsHaveAnnotations
+                    ? 'CURATION_ASSIGN_ANNOTATIONS'
+                    : 'CURATION_ANNOTATE_PHOTOS'
+                }
+                href={
+                  someAssetsHaveAnnotations
+                    ? '#individuals'
+                    : '#photographs'
+                }
                 display="primary"
                 size="small"
                 onClick={scrollToTop}

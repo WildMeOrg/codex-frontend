@@ -141,6 +141,7 @@
   "IDENTIFICATION": "Identification",
   "WAITING_ELLIPSES": "Waiting...",
   "CURATION_ASSIGN_ANNOTATIONS": "Assign annotations",
+  "CURATION_ANNOTATE_PHOTOS": "Annotate photographs",
   "REPORTED_BY": "Reported by ",
   "GENERAL_SETTINGS": "General settings",
   "ONE_SIGHTING_TOGGLE_DESCRIPTION": "This sighting has only one individual and I would like to report metadata about it now.",
