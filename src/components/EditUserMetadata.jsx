@@ -14,8 +14,6 @@ import PasswordVerificationAlert from './PasswordVerificationAlert';
 import StandardDialog from './StandardDialog';
 
 function getInitialFormValues(schema) {
-  console.log('deleteMe schema in getInitialFormValues are: ');
-  console.log(schema);
   return schema.reduce((memo, field) => {
     const valueKey = get(field, 'name');
     memo[valueKey] =
@@ -49,16 +47,11 @@ export default function EditUserMetadata({
 
   useEffect(
     () => {
-      console.log('deleteMe metadata is: ');
-      console.log(metadata);
       const safeMetadata = filter(
         metadata,
         datum => Object.keys(datum).length > 1,
       );
-      console.log('deleteMe safeMetadata is: ');
-      console.log(safeMetadata);
       setFieldValues(getInitialFormValues(safeMetadata));
-      // setFieldValues(getInitialFormValues(metadata));
     },
     [metadata],
   );
@@ -87,16 +80,10 @@ export default function EditUserMetadata({
                 value={value}
                 minimalLabels
                 onChange={newValue => {
-                  console.log('deleteMe field is: ');
-                  console.log(field);
-                  console.log('deleteMe newValue is: ');
-                  console.log(newValue);
                   const newFormValues = {
                     ...fieldValues,
                     [field.name]: newValue,
                   };
-                  console.log('deleteMe newFormValues is: ');
-                  console.log(newFormValues);
                   setFieldValues(newFormValues);
                 }}
               />
@@ -146,23 +133,11 @@ export default function EditUserMetadata({
               const patchFieldValues = emailChanged
                 ? fieldValues
                 : omit(fieldValues, ['email']);
-              console.log('deleteMe patchFieldValues are: ');
-              console.log(patchFieldValues);
               const patchValues = map(
                 patchFieldValues,
                 (value, key) => {
-                  console.log('deleteMe got here and value is: ');
-                  console.log(value);
-                  console.log('deleteMe got here and key is: ');
-                  console.log(key);
                   if (key === twitterMetadataKey) {
-                    console.log(
-                      'deleteMe got here with key matching twitterMetadataKey, which is: ',
-                    );
-                    console.log(twitterMetadataKey);
                     const sanitizedVal = sanitizeTwitterHandle(value);
-                    console.log('deleteMe sanitizedVal is: ');
-                    console.log(sanitizedVal);
                     return {
                       path: `/${key}`,
                       value: sanitizedVal,
