@@ -49,13 +49,16 @@ export default function EditUserMetadata({
 
   useEffect(
     () => {
-      const safeMetadata = filter(
-        metadata,
-        datum => Object.keys(datum) > 1,
-      );
-      console.log('deleteMe safeMetadata is: ');
-      console.log(safeMetadata);
-      setFieldValues(getInitialFormValues(safeMetadata));
+      console.log('deleteMe metadata is: ');
+      console.log(metadata);
+      // const safeMetadata = filter(
+      //   metadata,
+      //   datum => Object.keys(datum) > 1,
+      // );
+      // console.log('deleteMe safeMetadata is: ');
+      // console.log(safeMetadata);
+      // setFieldValues(getInitialFormValues(safeMetadata));
+      setFieldValues(getInitialFormValues(metadata));
     },
     [metadata],
   );
