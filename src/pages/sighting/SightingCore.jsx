@@ -145,7 +145,7 @@ export default function SightingCore({
             deleteResults = await deleteAssetGroupSighting(id);
           }
           if (!pending && vulnerableIndividual) {
-            deleteResults = await deleteSighting(id); //TODO deleteMe add more arguments
+            deleteResults = await deleteSighting(id, true);
           }
           if (!pending && !vulnerableIndividual) {
             deleteResults = await deleteSighting(id);
