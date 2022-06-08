@@ -43,17 +43,6 @@ export default function UserProfile({
   const metadata = useMemo(
     () => {
       if (!userData || !metadataSchemas) return [];
-      const deteleMeMetadata = metadataSchemas
-        .filter(
-          schema =>
-            schema?.getValue(schema, userData) || !someoneElse,
-        )
-        .map(schema => ({
-          ...schema,
-          value: schema?.getValue(schema, userData),
-        }));
-      console.log('deleteMe deteleMeMetadata in UserProfile is: ');
-      console.log(deteleMeMetadata);
       return metadataSchemas
         .filter(
           schema =>

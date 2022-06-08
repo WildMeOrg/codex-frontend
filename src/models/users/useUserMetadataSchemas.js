@@ -41,46 +41,14 @@ export default function useUserMetadataSchemas(displayedUserId) {
             'data',
             'enablingField',
           ]);
-          console.log('deleteMe currentPlatformEnablingField is: ');
-          console.log(currentPlatformEnablingField);
-          console.log('deleteMe siteSettings are: ');
-          console.log(siteSettings);
           const isEnabled = get(siteSettings, [
             'data',
             currentPlatformEnablingField,
             'value',
           ]);
-          console.log('deleteMe isEnabled is: ');
-          console.log(isEnabled);
           return isEnabled;
         },
       );
-      console.log('deleteMe enabledIntelligentAgentFields are: ');
-      console.log(enabledIntelligentAgentFields);
-      // const intelligentAgentFields = map(
-      //   intelligentAgentSchema,
-      //   intelligentAgent => {
-      //     const currentPlatformEnablingField = get(intelligentAgent, [
-      //       'data',
-      //       'enablingField',
-      //     ]);
-      //     const isEnabled = get(siteSettings, [
-      //       'data',
-      //       currentPlatformEnablingField,
-      //       'value',
-      //     ]);
-      //     return isEnabled
-      //       ? createFieldSchema(fieldTypes.string, {
-      //           name: intelligentAgent?.userMetadataKey,
-      //           labelId: intelligentAgent?.viewLabelId,
-      //           editLabelId: intelligentAgent?.editLabelId,
-      //           icon: intelligentAgent?.icon,
-      //         })
-      //       : null;
-      //   },
-      //   [],
-      // );
-
       const intelligentAgentFields = map(
         enabledIntelligentAgentFields,
         intelligentAgent =>
@@ -91,10 +59,6 @@ export default function useUserMetadataSchemas(displayedUserId) {
             icon: intelligentAgent?.icon,
           }),
       );
-      console.log(
-        'deleteMe intelligentAgentFields after creating field schemas are: ',
-      );
-      console.log(intelligentAgentFields);
 
       return [
         createFieldSchema(fieldTypes.string, {

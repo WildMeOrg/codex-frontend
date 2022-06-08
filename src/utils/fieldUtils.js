@@ -201,13 +201,7 @@ export function createCustomFieldSchema(houstonSchema) {
 }
 
 export function createFieldSchema(fieldType, properties) {
-  console.log('deleteMe properties in createFieldSchema are: ');
-  console.log(properties);
   const fieldTypeProperties = get(componentMap, fieldType, {});
-  console.log('deleteMe fieldTypeProperties are: ');
-  console.log(fieldTypeProperties);
-  console.log('deleteMe prototypeFieldSchema are: ');
-  console.log(prototypeFieldSchema);
 
   return {
     ...prototypeFieldSchema,

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { get, map, omit, find, filter } from 'lodash-es';
+import { get, map, omit, find } from 'lodash-es';
 
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -47,13 +47,6 @@ export default function EditUserMetadata({
 
   useEffect(
     () => {
-      // const safeMetadata = filter(
-      //   metadata,
-      //   datum => Object.keys(datum).length > 1,
-      // );
-      // setFieldValues(getInitialFormValues(safeMetadata));
-      console.log('deleteMe metadata being set is: ');
-      console.log(metadata);
       setFieldValues(getInitialFormValues(metadata));
     },
     [metadata],
