@@ -47,11 +47,12 @@ export default function EditUserMetadata({
 
   useEffect(
     () => {
-      const safeMetadata = filter(
-        metadata,
-        datum => Object.keys(datum).length > 1,
-      );
-      setFieldValues(getInitialFormValues(safeMetadata));
+      // const safeMetadata = filter(
+      //   metadata,
+      //   datum => Object.keys(datum).length > 1,
+      // );
+      // setFieldValues(getInitialFormValues(safeMetadata));
+      setFieldValues(getInitialFormValues(metadata));
     },
     [metadata],
   );

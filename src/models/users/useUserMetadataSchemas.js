@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { get, map } from 'lodash-es';
+import { get, map, filter } from 'lodash-es';
 import ForumIcon from '@material-ui/icons/Forum';
 import EmailIcon from '@material-ui/icons/Email';
 import LocationIcon from '@material-ui/icons/PersonPin';
@@ -34,7 +34,7 @@ export default function useUserMetadataSchemas(displayedUserId) {
             }),
           ]
         : [];
-      const intelligentAgentFields = map(
+      const enabledIntelligentAgentFields = filter(
         intelligentAgentSchema,
         intelligentAgent => {
           const currentPlatformEnablingField = get(intelligentAgent, [
@@ -46,14 +46,44 @@ export default function useUserMetadataSchemas(displayedUserId) {
             currentPlatformEnablingField,
             'value',
           ]);
-          return isEnabled
-            ? createFieldSchema(fieldTypes.string, {
-                name: intelligentAgent?.userMetadataKey,
-                labelId: intelligentAgent?.viewLabelId,
-                editLabelId: intelligentAgent?.editLabelId,
-                icon: intelligentAgent?.icon,
-              })
-            : null;
+          return isEnabled;
+        },
+      );
+      console.log('deleteMe enabledIntelligentAgentFields are: ');
+      console.log(enabledIntelligentAgentFields);
+      // const intelligentAgentFields = map(
+      //   intelligentAgentSchema,
+      //   intelligentAgent => {
+      //     const currentPlatformEnablingField = get(intelligentAgent, [
+      //       'data',
+      //       'enablingField',
+      //     ]);
+      //     const isEnabled = get(siteSettings, [
+      //       'data',
+      //       currentPlatformEnablingField,
+      //       'value',
+      //     ]);
+      //     return isEnabled
+      //       ? createFieldSchema(fieldTypes.string, {
+      //           name: intelligentAgent?.userMetadataKey,
+      //           labelId: intelligentAgent?.viewLabelId,
+      //           editLabelId: intelligentAgent?.editLabelId,
+      //           icon: intelligentAgent?.icon,
+      //         })
+      //       : null;
+      //   },
+      //   [],
+      // );
+
+      const intelligentAgentFields = map(
+        enabledIntelligentAgentFields,
+        intelligentAgent => {
+          createFieldSchema(fieldTypes.string, {
+            name: intelligentAgent?.userMetadataKey,
+            labelId: intelligentAgent?.viewLabelId,
+            editLabelId: intelligentAgent?.editLabelId,
+            icon: intelligentAgent?.icon,
+          });
         },
         [],
       );
