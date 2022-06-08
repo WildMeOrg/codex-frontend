@@ -83,15 +83,13 @@ export default function useUserMetadataSchemas(displayedUserId) {
 
       const intelligentAgentFields = map(
         enabledIntelligentAgentFields,
-        intelligentAgent => {
+        intelligentAgent =>
           createFieldSchema(fieldTypes.string, {
             name: intelligentAgent?.userMetadataKey,
             labelId: intelligentAgent?.viewLabelId,
             editLabelId: intelligentAgent?.editLabelId,
             icon: intelligentAgent?.icon,
-          });
-        },
-        [],
+          }),
       );
       console.log(
         'deleteMe intelligentAgentFields after creating field schemas are: ',
