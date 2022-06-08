@@ -52,6 +52,8 @@ export default function EditUserMetadata({
       //   datum => Object.keys(datum).length > 1,
       // );
       // setFieldValues(getInitialFormValues(safeMetadata));
+      console.log('deleteMe metadata being set is: ');
+      console.log(metadata);
       setFieldValues(getInitialFormValues(metadata));
     },
     [metadata],
