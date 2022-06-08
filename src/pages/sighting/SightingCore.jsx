@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { get } from 'lodash-es';
 import { useQueryClient } from 'react-query';
@@ -56,6 +56,8 @@ export default function SightingCore({
     loading: deleteInProgress,
     error: deleteSightingError,
     onClearError: deleteSightingOnClearError,
+    vulnerableIndividual,
+    setVulnerableIndividual,
   } = useDeleteSighting();
   const {
     deleteAssetGroupSighting,
@@ -79,6 +81,17 @@ export default function SightingCore({
     },
     [data, fieldSchemas],
   );
+  const [
+    messageForConfirmDelete,
+    setMessageForConfirmDelete,
+  ] = useState(null);
+
+  useEffect(() => {
+    const message = vulnerableIndividual
+      ? 'SIGHTING_DELETE_VULNERABLE_INDIVIDUAL_MESSAGE'
+      : 'CONFIRM_DELETE_SIGHTING_DESCRIPTION';
+    setMessageForConfirmDelete(message);
+  }, vulnerableIndividual);
 
   useDocumentTitle(`Sighting ${id}`, { translateMessage: false });
 
@@ -119,18 +132,29 @@ export default function SightingCore({
       /> */}
       <ConfirmDelete
         open={deleteDialogOpen}
-        onClose={() => setDeleteDialogOpen(false)}
+        onClose={() => {
+          setMessageForConfirmDelete(
+            'CONFIRM_DELETE_SIGHTING_DESCRIPTION',
+          );
+          setVulnerableIndividual(null);
+          setDeleteDialogOpen(false);
+        }}
         onDelete={async () => {
           let deleteResults;
           if (pending) {
             deleteResults = await deleteAssetGroupSighting(id);
-          } else {
+          }
+          if (!pending && vulnerableIndividual) {
+            deleteResults = await deleteSighting(id); //TODO deleteMe add more arguments
+          }
+          if (!pending && !vulnerableIndividual) {
             deleteResults = await deleteSighting(id);
           }
           const successful = pending
             ? deleteResults?.status === 204
             : deleteResults;
           if (successful) {
+            setVulnerableIndividual(null);
             setDeleteDialogOpen(false);
             history.push('/');
           }
@@ -146,7 +170,7 @@ export default function SightingCore({
         onClearError={
           pending ? deleteAsgOnClearError : deleteSightingOnClearError
         }
-        messageId="CONFIRM_DELETE_SIGHTING_DESCRIPTION"
+        messageId={messageForConfirmDelete}
       />
       <SightingEntityHeader
         activeTab={activeTab}
@@ -154,8 +178,7 @@ export default function SightingCore({
         loading={loading}
         pending={pending}
         preparing={isPreparationInProgress}
-        guid={id}
-        // setHistoryOpen={setHistoryOpen}
+        guid={id} // setHistoryOpen={setHistoryOpen}
         setDeleteDialogOpen={setDeleteDialogOpen}
       />
       {isPreparationInProgress ? (

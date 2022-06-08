@@ -1093,5 +1093,6 @@
   "COLLABORATION_RESTORE_ERROR": "Error restoring the collaboration",
   "COLLAB_RESTORE_ERROR_SUPPLEMENTAL": "Collaboration was not successfully restored.",
   "PENDING": "pending",
-  "CANDIDATE_ANNOTATIONS": "Candidate annotations"
+  "CANDIDATE_ANNOTATIONS": "Candidate annotations",
+  "SIGHTING_DELETE_VULNERABLE_INDIVIDUAL_MESSAGE": "Deleting this sighting would result in assigned individuals being deleted. Are you sure you want to continue?"
 }
