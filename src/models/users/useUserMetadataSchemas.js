@@ -53,10 +53,10 @@ export default function useUserMetadataSchemas(displayedUserId) {
         enabledIntelligentAgentFields,
         intelligentAgent =>
           createFieldSchema(fieldTypes.string, {
-            name: intelligentAgent?.userMetadataKey,
-            labelId: intelligentAgent?.viewLabelId,
-            editLabelId: intelligentAgent?.editLabelId,
-            icon: intelligentAgent?.icon,
+            name: intelligentAgent.userMetadataKey,
+            labelId: intelligentAgent.viewLabelId,
+            editLabelId: intelligentAgent.editLabelId,
+            icon: intelligentAgent.icon,
           }),
       );
 
