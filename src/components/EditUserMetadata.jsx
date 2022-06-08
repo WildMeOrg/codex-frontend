@@ -22,9 +22,10 @@ function getInitialFormValues(schema) {
   }, {});
 }
 
-const twitterSchema = find(intelligentAgentSchema, schema => {
-  return schema?.platformName === 'twitter';
-});
+const twitterSchema = find(
+  intelligentAgentSchema,
+  schema => schema?.platformName === 'twitter',
+);
 const twitterMetadataKey = twitterSchema?.userMetadataKey;
 
 export default function EditUserMetadata({
