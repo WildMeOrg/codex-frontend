@@ -41,11 +41,17 @@ export default function useUserMetadataSchemas(displayedUserId) {
             'data',
             'enablingField',
           ]);
+          console.log('deleteMe currentPlatformEnablingField is: ');
+          console.log(currentPlatformEnablingField);
+          console.log('deleteMe siteSettings are: ');
+          console.log(siteSettings);
           const isEnabled = get(siteSettings, [
             'data',
             currentPlatformEnablingField,
             'value',
           ]);
+          console.log('deleteMe isEnabled is: ');
+          console.log(isEnabled);
           return isEnabled;
         },
       );
