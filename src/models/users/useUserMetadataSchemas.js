@@ -93,6 +93,10 @@ export default function useUserMetadataSchemas(displayedUserId) {
         },
         [],
       );
+      console.log(
+        'deleteMe intelligentAgentFields after creating field schemas are: ',
+      );
+      console.log(intelligentAgentFields);
 
       return [
         createFieldSchema(fieldTypes.string, {
