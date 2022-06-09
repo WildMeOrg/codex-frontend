@@ -1,8 +1,7 @@
 import React from 'react';
 import GoogleMapReact from 'google-map-react';
-import { get } from 'lodash-es';
 
-import useSiteSettings from '../../models/site/useSiteSettings';
+import useGoogleMapsApiKey from '../../hooks/useGoogleMapsApiKey';
 
 function createMapOptions() {
   return {
@@ -11,11 +10,7 @@ function createMapOptions() {
 }
 
 export default function SinglePoint({ lat, lng }) {
-  const googleMapsApiKey = get(useSiteSettings(), [
-    'data',
-    'googleMapsApiKey',
-    'value',
-  ]);
+  const googleMapsApiKey = useGoogleMapsApiKey();
   return (
     <GoogleMapReact
       options={createMapOptions}

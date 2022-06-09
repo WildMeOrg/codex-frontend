@@ -3,8 +3,8 @@ import GoogleMapReact from 'google-map-react';
 import { get } from 'lodash-es';
 import RoomIcon from '@material-ui/icons/Room';
 
-import useSiteSettings from '../../models/site/useSiteSettings';
 import Marker from './Marker';
+import useGoogleMapsApiKey from '../../hooks/useGoogleMapsApiKey';
 
 function createMapOptions() {
   return {
@@ -16,11 +16,7 @@ export default function MultiplePoints({ latLongLabelArr }) {
   const [currentMarkerToShow, setCurrentMarkerToShow] = useState(
     null,
   );
-  const googleMapsApiKey = get(useSiteSettings(), [
-    'data',
-    'googleMapsApiKey',
-    'value',
-  ]);
+  const googleMapsApiKey = useGoogleMapsApiKey();
   return (
     <GoogleMapReact
       options={createMapOptions}

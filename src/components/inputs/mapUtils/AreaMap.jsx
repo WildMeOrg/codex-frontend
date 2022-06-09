@@ -2,14 +2,10 @@ import React from 'react';
 import { get } from 'lodash-es';
 import GoogleMapReact from 'google-map-react';
 import { defaultAreaBounds } from '../../../constants/defaults';
-import useSiteSettings from '../../../models/site/useSiteSettings';
+import useGoogleMapsApiKey from '../../../hooks/useGoogleMapsApiKey';
 
 export default function Map({ startBounds, onChange, rest }) {
-  const googleMapsApiKey = get(useSiteSettings(), [
-    'data',
-    'googleMapsApiKey',
-    'value',
-  ]);
+  const googleMapsApiKey = useGoogleMapsApiKey();
   return (
     <div
       style={{
