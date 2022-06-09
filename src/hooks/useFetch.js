@@ -30,7 +30,7 @@ export default function useFetch({
 }) {
   const [displayedError, setDisplayedError] = useState(null);
   const [displayedLoading, setDisplayedLoading] = useState(
-    !queryOptions.disabled,
+    !queryOptions.disabled, // should this use enabled instead of disabled? I couldn't find anything in the react-query documentation about disabled.
   );
   const [statusCode, setStatusCode] = useState(null);
 

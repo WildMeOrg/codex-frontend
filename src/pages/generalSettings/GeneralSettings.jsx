@@ -72,10 +72,11 @@ export default function GeneralSettings() {
     intelligentAgentFieldsValid,
     setIntelligentAgentFieldsValid,
   ] = useState(false);
-  const isTwitterDisabled = !get(
+  const isTwitterEnabled = get(
     currentValues,
     'intelligent_agent_twitterbot_enabled',
   );
+  console.log('deleteMe isTwitterEnabled is: ' + isTwitterEnabled);
 
   const {
     mutate: putSiteSettings,
@@ -96,7 +97,7 @@ export default function GeneralSettings() {
     data: twitterTestResults,
     statusCode: twitterStatusCode,
     error: twitterTestError,
-  } = useGetTwitterbotTestResults(isTwitterDisabled);
+  } = useGetTwitterbotTestResults(isTwitterEnabled);
 
   useDocumentTitle('GENERAL_SETTINGS');
 
@@ -271,7 +272,7 @@ export default function GeneralSettings() {
               {error}
             </CustomAlert>
           )}
-          {twitterTestError && !isTwitterDisabled && (
+          {twitterTestError && isTwitterEnabled && (
             <CustomAlert
               severity="warning"
               titleId="TWITTERBOT_NOT_CONFIGURED"
