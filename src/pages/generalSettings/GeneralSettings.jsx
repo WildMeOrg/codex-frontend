@@ -74,13 +74,13 @@ export default function GeneralSettings() {
   ] = useState(false);
   console.log('deleteMe currentValues are: ');
   console.log(currentValues);
-  const isTwitterEnabled = get(
-    currentValues,
-    'intelligent_agent_twitterbot_enabled',
-  );
-  // const isTwitterEnabled = Boolean(
-  //   get(currentValues, 'intelligent_agent_twitterbot_enabled'),
+  // const isTwitterEnabled = get(
+  //   currentValues,
+  //   'intelligent_agent_twitterbot_enabled',
   // );
+  const isTwitterEnabled = Boolean(
+    get(currentValues, 'intelligent_agent_twitterbot_enabled'),
+  );
   console.log('deleteMe isTwitterEnabled is: ' + isTwitterEnabled);
 
   const {
