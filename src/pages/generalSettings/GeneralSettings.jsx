@@ -72,9 +72,8 @@ export default function GeneralSettings() {
     intelligentAgentFieldsValid,
     setIntelligentAgentFieldsValid,
   ] = useState(false);
-  const isTwitterEnabled = get(
-    currentValues,
-    'intelligent_agent_twitterbot_enabled',
+  const isTwitterEnabled = Boolean(
+    get(currentValues, 'intelligent_agent_twitterbot_enabled'),
   );
   console.log('deleteMe isTwitterEnabled is: ' + isTwitterEnabled);
 
