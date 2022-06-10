@@ -4,6 +4,8 @@ import { useIntl } from 'react-intl';
 import { get } from 'lodash-es';
 import { useQueryClient } from 'react-query';
 
+import LinearProgress from '@material-ui/core/LinearProgress';
+
 import errorTypes from '../../constants/errorTypes';
 import useDeleteAssetGroup from '../../models/assetGroup/useDeleteAssetGroup';
 import useAssetGroup from '../../models/assetGroup/useAssetGroup';
@@ -152,11 +154,23 @@ export default function AssetGroup() {
         />
       )}
       {showPreparationInProgressAlert && (
-        <CustomAlert
-          titleId="PENDING_IMAGE_PROCESSING"
-          descriptionId="PENDING_IMAGE_PROCESSING_MESSAGE"
-          severity="info"
-        />
+        <>
+          <LinearProgress
+            style={{
+              borderTopLeftRadius: '4px',
+              borderTopRightRadius: '4px',
+            }}
+          />
+          <CustomAlert
+            titleId="PENDING_IMAGE_PROCESSING"
+            descriptionId="PENDING_IMAGE_PROCESSING_MESSAGE"
+            severity="info"
+            style={{
+              borderTopLeftRadius: '0px',
+              borderTopRightRadius: '0px',
+            }}
+          />
+        </>
       )}
       <AGSTable
         assetGroupSightings={get(data, 'asset_group_sightings', [])}
