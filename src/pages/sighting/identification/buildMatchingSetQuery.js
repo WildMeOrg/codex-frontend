@@ -52,7 +52,15 @@ export default function buildMatchingSetQuery(regionSchema, region) {
             })),
           },
         },
+        {
+          exists: { field: 'encounter_guid' },
+        },
       ],
+      must_not: {
+        match: {
+          encounter_guid: '_MACRO_annotation_encounter_guid',
+        },
+      },
     },
   };
 }
