@@ -84,11 +84,15 @@ export default function AssetGroup() {
     intl.formatMessage({ id: 'UNNAMED_USER' });
   const creatorUrl = `/users/${sightingCreator?.guid}`;
 
-  const { complete: isPreparationProgressComplete } = get(
-    data,
-    'progress_preparation',
-    {},
-  );
+  const {
+    complete: isPreparationProgressComplete,
+    failed: isPreparationProgressFailed,
+    cancelled: isPreparationProgressCancelled,
+  } = get(data, 'progress_preparation', {});
+  const showPreparationErrorAlert =
+    isPreparationProgressFailed || isPreparationProgressCancelled;
+  const showPreparationInProgressAlert =
+    !showPreparationErrorAlert && !isPreparationProgressComplete;
 
   return (
     <MainColumn fullWidth>
@@ -140,7 +144,14 @@ export default function AssetGroup() {
           </Text>
         )}
       </EntityHeader>
-      {!isPreparationProgressComplete && (
+      {showPreparationErrorAlert && (
+        <CustomAlert
+          titleId="IMAGE_PROCESSING_ERROR"
+          descriptionId="IMAGE_PROCESSING_ERROR_MESSAGE"
+          severity="error"
+        />
+      )}
+      {showPreparationInProgressAlert && (
         <CustomAlert
           titleId="PENDING_IMAGE_PROCESSING"
           descriptionId="PENDING_IMAGE_PROCESSING_MESSAGE"
