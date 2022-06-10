@@ -33,6 +33,7 @@ export default function useDeleteSighting() {
         setLoading(false);
         setSuccess(true);
         setError(null);
+        setVulnerableIndividual(null);
         return true;
       }
 
@@ -43,8 +44,7 @@ export default function useDeleteSighting() {
       setLoading(false);
       const vulnerableIndividualGuid =
         postError?.response?.data?.vulnerableIndividualGuid;
-      if (vulnerableIndividualGuid)
-        setVulnerableIndividual(vulnerableIndividualGuid);
+      setVulnerableIndividual(vulnerableIndividualGuid);
       setError(formatError(postError));
       setSuccess(false);
       return false;
@@ -60,6 +60,6 @@ export default function useDeleteSighting() {
     success,
     setSuccess,
     vulnerableIndividual,
-    setVulnerableIndividual,
+    onClearVulnerableIndividual: () => setVulnerableIndividual(null),
   };
 }

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { get } from 'lodash-es';
 import { useQueryClient } from 'react-query';
@@ -57,7 +57,7 @@ export default function SightingCore({
     error: deleteSightingError,
     onClearError: deleteSightingOnClearError,
     vulnerableIndividual,
-    setVulnerableIndividual,
+    onClearVulnerableIndividual,
   } = useDeleteSighting();
   const {
     deleteAssetGroupSighting,
@@ -65,6 +65,10 @@ export default function SightingCore({
     error: deleteAssetGroupSightingError,
     onClearError: deleteAsgOnClearError,
   } = useDeleteAssetGroupSighting();
+
+  const onClearError = pending
+    ? deleteAsgOnClearError
+    : deleteSightingOnClearError;
 
   /*
   known issue: if data or fieldschemas change values
@@ -81,17 +85,6 @@ export default function SightingCore({
     },
     [data, fieldSchemas],
   );
-  const [
-    messageForConfirmDelete,
-    setMessageForConfirmDelete,
-  ] = useState(null);
-
-  useEffect(() => {
-    const message = vulnerableIndividual
-      ? 'SIGHTING_DELETE_VULNERABLE_INDIVIDUAL_MESSAGE'
-      : 'CONFIRM_DELETE_SIGHTING_DESCRIPTION';
-    setMessageForConfirmDelete(message);
-  }, vulnerableIndividual);
 
   useDocumentTitle(`Sighting ${id}`, { translateMessage: false });
 
@@ -133,10 +126,8 @@ export default function SightingCore({
       <ConfirmDelete
         open={deleteDialogOpen}
         onClose={() => {
-          setMessageForConfirmDelete(
-            'CONFIRM_DELETE_SIGHTING_DESCRIPTION',
-          );
-          setVulnerableIndividual(null);
+          onClearVulnerableIndividual();
+          onClearError();
           setDeleteDialogOpen(false);
         }}
         onDelete={async () => {
@@ -154,7 +145,6 @@ export default function SightingCore({
             ? deleteResults?.status === 204
             : deleteResults;
           if (successful) {
-            setVulnerableIndividual(null);
             setDeleteDialogOpen(false);
             history.push('/');
           }
@@ -167,10 +157,20 @@ export default function SightingCore({
             ? deleteAssetGroupSightingError
             : deleteSightingError
         }
+        errorTitleId={
+          vulnerableIndividual
+            ? 'REQUEST_REQUIRES_ADDITIONAL_CONFIRMATION'
+            : 'SERVER_ERROR'
+        }
+        severity={vulnerableIndividual ? 'warning' : 'error'}
         onClearError={
           pending ? deleteAsgOnClearError : deleteSightingOnClearError
         }
-        messageId={messageForConfirmDelete}
+        messageId={
+          vulnerableIndividual
+            ? 'SIGHTING_DELETE_VULNERABLE_INDIVIDUAL_MESSAGE'
+            : 'CONFIRM_DELETE_SIGHTING_DESCRIPTION'
+        }
       />
       <SightingEntityHeader
         activeTab={activeTab}
@@ -178,7 +178,8 @@ export default function SightingCore({
         loading={loading}
         pending={pending}
         preparing={isPreparationInProgress}
-        guid={id} // setHistoryOpen={setHistoryOpen}
+        guid={id}
+        // setHistoryOpen={setHistoryOpen}
         setDeleteDialogOpen={setDeleteDialogOpen}
       />
       {isPreparationInProgress ? (
