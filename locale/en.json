@@ -132,6 +132,8 @@
   "PENDING_BULK_IMPORT_MESSAGE": "You reported {sightingCount} sightings on {date}. You must finish processing this bulk import before starting another.",
   "PENDING_IMAGE_PROCESSING": "Image processing in progress",
   "PENDING_IMAGE_PROCESSING_MESSAGE": "Until this step is complete, images cannot be viewed and some functionality is unavailable.",
+  "IMAGE_PROCESSING_ERROR": "Image processing error",
+  "IMAGE_PROCESSING_ERROR_MESSAGE": "An unknown error has occurred; delete and rerun this import. If this problem occurs again, report this error on the Community Forums.",
   "HISTORY": "History",
   "IMAGE_PROCESSING_SKIPPED_MESSAGE": "Image processing skipped because no images were submitted.",
   "DETECTION_SKIPPED_MESSAGE": "Detection skipped, either there are no images or no detection model was specified.",
