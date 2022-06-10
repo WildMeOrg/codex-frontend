@@ -25,9 +25,6 @@ jobs:
       - name: Install dependencies
         run: npm install --legacy-peer-deps
 
-      - name: Copy template api keys file
-        run: cp src/constants/apiKeysTemplate.js src/constants/apiKeys.js
-
       - name: Compile build
         run: npm run build -- --env=houston=relative
 

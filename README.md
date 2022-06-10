@@ -12,7 +12,7 @@ We are also looking for help from designers and 3D modelers! Please send an emai
 
 ## Development 
 
-To successfully run the project, you will need to recreate one file that is gitignored for security reasons, `/src/constants/apiKeys.js`. Follow the instructions in the template located at `/src/constants/apiKeysTemplate.js`. After that, just run
+Just run
 
 ```js
 npm install 

@@ -1,7 +1,7 @@
 import React from 'react';
 import GoogleMapReact from 'google-map-react';
 
-import { googleMapsApiKey } from '../../constants/apiKeys';
+import useGoogleMapsApiKey from '../../hooks/useGoogleMapsApiKey';
 
 function createMapOptions() {
   return {
@@ -10,6 +10,7 @@ function createMapOptions() {
 }
 
 export default function SinglePoint({ lat, lng }) {
+  const googleMapsApiKey = useGoogleMapsApiKey();
   return (
     <GoogleMapReact
       options={createMapOptions}

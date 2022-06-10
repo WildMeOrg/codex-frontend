@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import GoogleMapReact from 'google-map-react';
-import { googleMapsApiKey } from '../../../constants/apiKeys';
+
+import useGoogleMapsApiKey from '../../../hooks/useGoogleMapsApiKey';
 
 let lastMarker = null;
 
 export default function LatLngMap({ onChange, rest }) {
   const [mapObject, setMapObject] = useState(null);
   const [mapsApi, setMapsApi] = useState(null);
+  const googleMapsApiKey = useGoogleMapsApiKey();
 
   return (
     <div
