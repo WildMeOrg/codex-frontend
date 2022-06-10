@@ -2,21 +2,21 @@
 
 The frontend for Codex, written in React with Material UI components. This project is not in production yet, but it is under active development.
 
-## Contributions 
+## Contributions
 
 Found a bug? Submit a report [here](https://github.com/WildMeOrg/codex-frontend/issues/new).
 
-Developer contributions are very much appreciated =). Take a gander at the [contribution guide](https://github.com/WildMeOrg/codex-frontend/blob/master/CONTRIBUTION_GUIDE.md). If you a Java dev looking to help with our project, take a look at the [backend](https://github.com/WildMeOrg/Wildbook). And if you are a Python dev or data scientist take a look at [IBEIS](https://github.com/WildMeOrg/ibeis). 
+Developer contributions are very much appreciated. Refer to the [contribution guide](https://github.com/WildMeOrg/codex-frontend/blob/master/CONTRIBUTION_GUIDE.md). If you are a Python dev looking to help with our project, take a look at the [backend](https://github.com/WildMeOrg/houston). If you are a data scientist looking to help, take a look at [WB-IA](https://github.com/WildMeOrg/wildbook-ia).
 
 We are also looking for help from designers and 3D modelers! Please send an email to ben@wildme.org if you are interested.
 
-## Development 
+## Development
 
 To successfully run the project, you will need to recreate one file that is gitignored for security reasons, `/src/constants/apiKeys.js`. Follow the instructions in the template located at `/src/constants/apiKeysTemplate.js`. After that, just run
 
 ```js
-npm install 
-npm start 
+npm install
+npm start
 ```
 
 The development environment is mostly used on OSX but should work on Windows as well. Use Powershell or edit the `npm start:win32` command to set `NODE_ENV` using the appropriate syntax for your preferred shell.
@@ -35,11 +35,12 @@ dev-frontend:
 ```
 
 After that you should be able to run the following commands:
+
 ```
 ./scripts/codex/activate.sh
 ./scripts/codex/build.frontend.sh
 docker-compose pull
-docker-compose build 
+docker-compose build
 docker-compose up -d
 ```
 
@@ -47,10 +48,10 @@ Note: `docker-compose pull` takes a very long time to finish the first time arou
 
 The following commands are helpful when developing in this manner:
 
- - `docker-compose up -d`: Run all containers in daemon mode, so you don't see all the logs running together.
- - `docker-compose restart <image>`: Restart a particular docker image (remember these are listed in `docker-compose.yml`).
- - `docker-compose logs -f <image>`: Show logs for a particular image.
- - `docker-compose down`: Stop all images.
+- `docker-compose up -d`: Run all containers in daemon mode, so you don't see all the logs running together.
+- `docker-compose restart <image>`: Restart a particular docker image (remember these are listed in `docker-compose.yml`).
+- `docker-compose logs -f <image>`: Show logs for a particular image.
+- `docker-compose down`: Stop all images.
 
 ## Configuration and build
 
