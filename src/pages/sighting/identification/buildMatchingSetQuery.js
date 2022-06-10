@@ -53,6 +53,9 @@ export default function buildMatchingSetQuery(regionSchema, region) {
           },
         },
         {
+          bool: '_MACRO_annotation_neighboring_viewpoints_clause',
+        },
+        {
           exists: { field: 'encounter_guid' },
         },
       ],
