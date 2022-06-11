@@ -4,6 +4,8 @@ import { useIntl } from 'react-intl';
 import { get } from 'lodash-es';
 import { useQueryClient } from 'react-query';
 
+import LinearProgress from '@material-ui/core/LinearProgress';
+
 import errorTypes from '../../constants/errorTypes';
 import useDeleteAssetGroup from '../../models/assetGroup/useDeleteAssetGroup';
 import useAssetGroup from '../../models/assetGroup/useAssetGroup';
@@ -84,11 +86,15 @@ export default function AssetGroup() {
     intl.formatMessage({ id: 'UNNAMED_USER' });
   const creatorUrl = `/users/${sightingCreator?.guid}`;
 
-  const { complete: isPreparationProgressComplete } = get(
-    data,
-    'progress_preparation',
-    {},
-  );
+  const {
+    complete: isPreparationProgressComplete,
+    failed: isPreparationProgressFailed,
+    cancelled: isPreparationProgressCancelled,
+  } = get(data, 'progress_preparation', {});
+  const showPreparationErrorAlert =
+    isPreparationProgressFailed || isPreparationProgressCancelled;
+  const showPreparationInProgressAlert =
+    !showPreparationErrorAlert && !isPreparationProgressComplete;
 
   return (
     <MainColumn fullWidth>
@@ -140,12 +146,31 @@ export default function AssetGroup() {
           </Text>
         )}
       </EntityHeader>
-      {!isPreparationProgressComplete && (
+      {showPreparationErrorAlert && (
         <CustomAlert
-          titleId="PENDING_IMAGE_PROCESSING"
-          descriptionId="PENDING_IMAGE_PROCESSING_MESSAGE"
-          severity="info"
+          titleId="IMAGE_PROCESSING_ERROR"
+          descriptionId="IMAGE_PROCESSING_ERROR_MESSAGE"
+          severity="error"
         />
+      )}
+      {showPreparationInProgressAlert && (
+        <>
+          <LinearProgress
+            style={{
+              borderTopLeftRadius: '4px',
+              borderTopRightRadius: '4px',
+            }}
+          />
+          <CustomAlert
+            titleId="PENDING_IMAGE_PROCESSING"
+            descriptionId="PENDING_IMAGE_PROCESSING_MESSAGE"
+            severity="info"
+            style={{
+              borderTopLeftRadius: '0px',
+              borderTopRightRadius: '0px',
+            }}
+          />
+        </>
       )}
       <AGSTable
         assetGroupSightings={get(data, 'asset_group_sightings', [])}

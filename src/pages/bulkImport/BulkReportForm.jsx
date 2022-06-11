@@ -14,7 +14,6 @@ import usePostAssetGroup from '../../models/assetGroup/usePostAssetGroup';
 import useSiteSettings from '../../models/site/useSiteSettings';
 import useSightingFieldSchemas from '../../models/sighting/useSightingFieldSchemas';
 import useEncounterFieldSchemas from '../../models/encounter/useEncounterFieldSchemas';
-import { flatfileKey } from '../../constants/apiKeys';
 import LoadingScreen from '../../components/LoadingScreen';
 import InputRow from '../../components/fields/edit/InputRow';
 import Button from '../../components/Button';
@@ -120,6 +119,7 @@ export default function BulkReportForm({ assetReferences }) {
 
   const safeAssetReferences = assetReferences || [];
   const filenames = safeAssetReferences.map(a => a?.path);
+  const flatfileKey = get(siteSettingsData, ['flatfileKey', 'value']);
 
   return (
     <>
