@@ -338,7 +338,7 @@
   "ANIMALS": "Animals",
   "TRIFOLD_DESCRIPTION": "Wild Me for Whale Sharks photo-identification library is a global collaborative database of whale shark (Rhincondon typus) sightings. We use automated machine learning algorithms to identify and match individual sharks, enabling machine biologists to understand and protect these endangered giants.",
   "INVALID_EMAIL_OR_PASSWORD": "Invalid email address or password.",
-  "SERVER_ERROR": "Something when wrong with your request.",
+  "SERVER_ERROR": "Something went wrong with your request.",
   "LARGE_SCREEN_REQUIRED": "Large screen required",
   "LARGE_SCREEN_MESSAGE": "Due to the complexity of the match identification process, this page must be viewed in a large window (greater than 1000 pixels wide). We take these measures to ensure our matches are as accurate as possible. Thanks for understanding.",
   "REPORT_A_SIGHTING": "Report a Sighting",
@@ -1098,5 +1098,7 @@
   "COLLABORATION_RESTORE_ERROR": "Error restoring the collaboration",
   "COLLAB_RESTORE_ERROR_SUPPLEMENTAL": "Collaboration was not successfully restored.",
   "PENDING": "pending",
-  "CANDIDATE_ANNOTATIONS": "Candidate annotations"
+  "CANDIDATE_ANNOTATIONS": "Candidate annotations",
+  "SIGHTING_DELETE_VULNERABLE_INDIVIDUAL_MESSAGE": "Deleting this sighting would result in assigned individuals being deleted. Are you sure you want to continue?",
+  "REQUEST_REQUIRES_ADDITIONAL_CONFIRMATION": "Request requires additional confirmation"
 }
