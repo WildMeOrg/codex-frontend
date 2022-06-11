@@ -134,11 +134,9 @@ export default function SightingCore({
           let deleteResults;
           if (pending) {
             deleteResults = await deleteAssetGroupSighting(id);
-          }
-          if (!pending && vulnerableIndividual) {
+          } else if (vulnerableIndividual) {
             deleteResults = await deleteSighting(id, true);
-          }
-          if (!pending && !vulnerableIndividual) {
+          } else {
             deleteResults = await deleteSighting(id);
           }
           const successful = pending
@@ -160,12 +158,10 @@ export default function SightingCore({
         errorTitleId={
           vulnerableIndividual
             ? 'REQUEST_REQUIRES_ADDITIONAL_CONFIRMATION'
-            : 'SERVER_ERROR'
+            : undefined
         }
-        severity={vulnerableIndividual ? 'warning' : 'error'}
-        onClearError={
-          pending ? deleteAsgOnClearError : deleteSightingOnClearError
-        }
+        alertSeverity={vulnerableIndividual ? 'warning' : 'error'}
+        onClearError={onClearError}
         messageId={
           vulnerableIndividual
             ? 'SIGHTING_DELETE_VULNERABLE_INDIVIDUAL_MESSAGE'
