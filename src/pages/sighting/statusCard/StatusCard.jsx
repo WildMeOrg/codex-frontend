@@ -180,9 +180,10 @@ export default function StatusCard({ sightingData }) {
               ? intl.formatMessage({ id: 'CURATION_INSTRUCTIONS' })
               : getProgressText(intl, curationStartTime)
           }
-          finishedText={`Curation finished on ${getDateString(
-            curationEndTime,
-          )}.`}
+          finishedText={intl.formatMessage(
+            { id: 'CURATION_FINISHED_MESSAGE' },
+            { date: getDateString(curationEndTime) },
+          )}
           skippedText={intl.formatMessage({
             id: 'CURATION_SKIPPED_MESSAGE',
           })}
