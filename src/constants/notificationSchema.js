@@ -94,6 +94,7 @@ notificationSchemaPlaceholder[
   moreDetailedDescription: 'COLLABORATION_REVOKED_BY_MANAGER',
   showNotificationDialog: false,
   buttonPath: '/#collab-card',
+  notificationAvatar: 'userName',
 };
 notificationSchemaPlaceholder[
   notificationTypeNames.individual_merge_request
