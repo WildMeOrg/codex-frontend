@@ -107,7 +107,9 @@ export default function NotificationsPane({
                 createdDate,
               );
               const avatarName =
-                `${notification?.notificationAvatar}` || user1Name;
+                getNotificationProps[
+                  (notification?.notificationAvatar)
+                ] || user1Name;
               console.log('deleteMe avatarName is: ');
               console.log(avatarName);
               return (
