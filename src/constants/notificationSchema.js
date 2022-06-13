@@ -22,6 +22,7 @@ notificationSchemaPlaceholder[
     'A_COLLABORATION_WAS_CREATED_ON_YOUR_BEHALF_MORE_DETAILED',
   showNotificationDialog: false,
   buttonPath: '/#collab-card',
+  notificationAvatar: '',
 };
 notificationSchemaPlaceholder[
   notificationTypeNames.collaboration_request

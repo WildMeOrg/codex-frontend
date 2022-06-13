@@ -30,6 +30,8 @@ export default function NotificationsPane({
   shouldOpen,
   setShouldOpen,
 }) {
+  console.log('deleteMe notifications in notification pane are:');
+  console.log(notifications);
   const intl = useIntl();
   const queryClient = useQueryClient();
   const theme = useTheme();
