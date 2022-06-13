@@ -92,7 +92,7 @@ export default function StatusCard({ sightingData }) {
   if (assetCount === 0) {
     detectionSkippedLabelId = 'DETECTION_SKIPPED_NO_IMAGES_MESSAGE';
   } else if (
-    get(sightingData, 'speciesDetectionModel[0]', 'None') === 'None'
+    get(sightingData, 'speciesDetectionModel[0]') === 'None'
   ) {
     detectionSkippedLabelId = 'DETECTION_SKIPPED_NO_MODEL_MESSAGE';
   }
