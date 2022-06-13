@@ -106,23 +106,11 @@ export default function NotificationsPane({
               const timeSince = calculatePrettyTimeElapsedSince(
                 createdDate,
               );
-              const deleteMeA = getNotificationProps(notification);
-              console.log('deleteMe deleteMeA is: ');
-              console.log(deleteMeA);
-              const deleteMeB =
-                currentNotificationSchema?.notificationAvatar;
-              console.log('deleteMe deleteMeB is: ');
-              console.log(deleteMeB);
-              const deleteMeC = deleteMeA[deleteMeB];
-              console.log('deleteMe deleteMeC is: ');
-              console.log(deleteMeC);
 
-              const avatarName = getNotificationProps(notification)[
-                (notification?.notificationAvatar)
-              ]; // || user1Name;
-              // const avatarName = eval(notification?.notificationAvatar) || user1Name;
-              console.log('deleteMe avatarName is: ');
-              console.log(avatarName);
+              const avatarName =
+                getNotificationProps(notification)[
+                  (currentNotificationSchema?.notificationAvatar)
+                ] || user1Name;
               return (
                 <React.Fragment key={notification.guid}>
                   <Grid
