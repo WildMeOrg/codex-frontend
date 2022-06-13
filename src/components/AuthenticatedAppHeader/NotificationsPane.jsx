@@ -106,6 +106,16 @@ export default function NotificationsPane({
               const timeSince = calculatePrettyTimeElapsedSince(
                 createdDate,
               );
+              const deleteMeA = getNotificationProps(notification);
+              console.log('deleteMe deleteMeA is: ');
+              console.log(deleteMeA);
+              const deleteMeB = notification?.notificationAvatar;
+              console.log('deleteMe deleteMeB is: ');
+              console.log(deleteMeB);
+              const deleteMeC = deleteMeA[deleteMeB];
+              console.log('deleteMe deleteMeC is: ');
+              console.log(deleteMeC);
+
               const avatarName = getNotificationProps(notification)[
                 (notification?.notificationAvatar)
               ]; // || user1Name;
