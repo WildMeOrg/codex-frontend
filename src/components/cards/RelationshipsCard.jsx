@@ -264,6 +264,7 @@ export default function RelationshipsCard({
     >
       <DialogContent>
         <IndividualSelector
+          excludedIndividuals={[individualGuid]}
           setSelectedIndividualGuid={setSelectedIndividualGuid}
         />
         {selectedIndividualGuid && (
