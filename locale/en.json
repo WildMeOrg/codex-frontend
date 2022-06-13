@@ -216,7 +216,7 @@
   "TIME_SECONDS": "Time (seconds)",
   "TIMEZONE": "Timezone",
   "ADD_TAG": "Add tag",
-  "SIGHTING_PREPARATION_FINISHED_MESSAGE": "Sighting preparation finished on {date}. ({photoCount}\u00A0{photoCount, plural, =0 {photographs} one {photograph} other {photographs}})",
+  "SIGHTING_PREPARATION_FINISHED_MESSAGE": "Sighting preparation finished on {date}. <nonWrapping>({photoCount} {photoCount, plural, =0 {photographs} one {photograph} other {photographs}})</nonWrapping>",
   "DETECTION_FINISHED_MESSAGE": "Image detection finished on {date}.",
   "CURATION_FINISHED_MESSAGE": "Image curation finished on {date}.",
   "IDENTIFICATION_FINISHED_MESSAGE": "Identification finished on {date}.",

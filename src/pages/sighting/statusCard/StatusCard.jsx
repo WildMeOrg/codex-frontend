@@ -60,6 +60,10 @@ function scrollToTop() {
   window.scrollTo(0, 0);
 }
 
+function withNonWrappingSpan(chunk) {
+  return <span style={{ whiteSpace: 'nowrap' }}>{chunk}</span>;
+}
+
 export default function StatusCard({ sightingData }) {
   const intl = useIntl();
 
@@ -142,6 +146,7 @@ export default function StatusCard({ sightingData }) {
             {
               photoCount: assetCount,
               date: getDateString(preparationEndTime),
+              nonWrapping: withNonWrappingSpan,
             },
           )}
           skippedText={intl.formatMessage({
