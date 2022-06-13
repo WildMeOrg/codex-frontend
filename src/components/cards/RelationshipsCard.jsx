@@ -264,6 +264,7 @@ export default function RelationshipsCard({
     >
       <DialogContent>
         <IndividualSelector
+          excludedIndividuals={[individualGuid]}
           setSelectedIndividualGuid={setSelectedIndividualGuid}
         />
         {selectedIndividualGuid && (
@@ -278,7 +279,7 @@ export default function RelationshipsCard({
               value={currentType}
               options={types}
               renderOption={option => (
-                <Text value={option.guid}>{option.label}</Text>
+                <Text value={option?.guid}>{option?.label}</Text>
               )}
               onChange={(_, newValue) => onChangeType(newValue)}
               getOptionLabel={option => get(option, 'label', '')}
