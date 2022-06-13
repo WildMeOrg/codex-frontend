@@ -220,11 +220,15 @@ export default function StatusCard({ sightingData }) {
             intl,
             identificationStartTime,
           )}
-          finishedText={`Identification finished on ${getDateString(
-            identificationEndTime,
-          )}.`}
+          finishedText={intl.formatMessage(
+            { id: 'IDENTIFICATION_FINISHED_MESSAGE' },
+            { date: getDateString(identificationEndTime) },
+          )}
           skippedText={intl.formatMessage({
-            id: 'IDENTIFICATION_SKIPPED_MESSAGE',
+            id:
+              assetCount === 0
+                ? 'IDENTIFICATION_SKIPPED_NO_IMAGES_MESSAGE'
+                : 'IDENTIFICATION_SKIPPED_MESSAGE',
           })}
           failedText={intl.formatMessage({
             id: 'IDENTIFICATION_FAILED',
