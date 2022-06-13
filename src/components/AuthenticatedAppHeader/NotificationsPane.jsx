@@ -110,7 +110,7 @@ export default function NotificationsPane({
               const avatarName =
                 getNotificationProps(notification)[
                   (currentNotificationSchema?.notificationAvatar)
-                ] || user1Name;
+                ] || 'Unnamed User';
               return (
                 <React.Fragment key={notification.guid}>
                   <Grid
