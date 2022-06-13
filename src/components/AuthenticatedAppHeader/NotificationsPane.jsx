@@ -109,7 +109,8 @@ export default function NotificationsPane({
               const deleteMeA = getNotificationProps(notification);
               console.log('deleteMe deleteMeA is: ');
               console.log(deleteMeA);
-              const deleteMeB = notification?.notificationAvatar;
+              const deleteMeB =
+                currentNotificationSchema?.notificationAvatar;
               console.log('deleteMe deleteMeB is: ');
               console.log(deleteMeB);
               const deleteMeC = deleteMeA[deleteMeB];
