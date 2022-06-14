@@ -81,6 +81,7 @@ export default function StatusCard({ sightingData }) {
     detection: detectionStep,
     curation: curationStep,
     identification: identificationStep,
+    migrated,
   } = sightingData?.pipeline_status || {};
 
   const { start: preparationStartTime, end: preparationEndTime } =
@@ -120,6 +121,14 @@ export default function StatusCard({ sightingData }) {
   } = identificationStep || {};
 
   const identificationStage = getStage(identificationStep);
+  let identificationSkippedLabelId = 'IDENTIFICATION_SKIPPED_MESSAGE';
+  if (migrated) {
+    identificationSkippedLabelId =
+      'IDENTIFICATION_SKIPPED_MIGRATED_MESSAGE';
+  } else if (assetCount === 0) {
+    identificationSkippedLabelId =
+      'IDENTIFICATION_SKIPPED_NO_IMAGES_MESSAGE';
+  }
 
   return (
     <Card titleId="IDENTIFICATION_PIPELINE_STATUS" maxHeight={900}>
@@ -186,7 +195,11 @@ export default function StatusCard({ sightingData }) {
               : getProgressText(intl, curationStartTime)
           }
           finishedText={intl.formatMessage(
-            { id: 'CURATION_FINISHED_MESSAGE' },
+            {
+              id: migrated
+                ? 'MIGRATION_FINISHED_MESSAGE'
+                : 'CURATION_FINISHED_MESSAGE',
+            },
             { date: getDateString(curationEndTime) },
           )}
           skippedText={intl.formatMessage({
@@ -230,10 +243,7 @@ export default function StatusCard({ sightingData }) {
             { date: getDateString(identificationEndTime) },
           )}
           skippedText={intl.formatMessage({
-            id:
-              assetCount === 0
-                ? 'IDENTIFICATION_SKIPPED_NO_IMAGES_MESSAGE'
-                : 'IDENTIFICATION_SKIPPED_MESSAGE',
+            id: identificationSkippedLabelId,
           })}
           failedText={intl.formatMessage({
             id: 'IDENTIFICATION_FAILED',
