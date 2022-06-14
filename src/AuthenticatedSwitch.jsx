@@ -80,10 +80,10 @@ export default function AuthenticatedSwitch() {
                     <SiteSetup />
                   ) : (
                     <Switch location={location}>
-                      <Route path="/admin/splash" exact>
+                      <Route path="/admin/front-page" exact>
                         <SplashSettings />
                       </Route>
-                      <Route path="/admin/splash/preview">
+                      <Route path="/admin/front-page/preview">
                         <Splash />
                       </Route>
                       <Route path="/admin/status">
