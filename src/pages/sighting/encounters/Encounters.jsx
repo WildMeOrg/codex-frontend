@@ -98,15 +98,11 @@ export default function Encounters({
   const encounterFieldSchemas = useEncounterFieldSchemas();
   const encounters = get(sightingData, 'encounters', []);
 
-  const { identification: identificationStep } =
-    sightingData?.pipeline_status || {};
-
-  const {
-    complete: isIdentificationComplete,
-    failed: isIdentificationFailed,
-  } = identificationStep || {};
-  const isIdReady =
-    isIdentificationComplete && !isIdentificationFailed;
+  const isIdentificationComplete = get(
+    sightingData,
+    'pipeline_status.identification.complete',
+    false,
+  );
 
   useEffect(
     () => {
@@ -229,7 +225,7 @@ export default function Encounters({
         ];
 
         const identifyButtonActions = [
-          ...(isIdReady
+          ...(isIdentificationComplete
             ? [
                 {
                   id: 'view-id-results',

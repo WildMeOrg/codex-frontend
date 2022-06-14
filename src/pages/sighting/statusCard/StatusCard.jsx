@@ -50,10 +50,9 @@ function getStage(pipelineStep) {
 
   if (inProgress) return stages.current;
 
-  if (complete) {
-    if (failed) return stages.failed;
-    return stages.finished;
-  }
+  if (failed) return stages.failed;
+
+  if (complete) return stages.finished;
 
   return stages.waiting;
 }
@@ -139,7 +138,6 @@ export default function StatusCard({ sightingData }) {
     start: identificationStartTime,
     end: identificationEndTime,
     complete: isIdentificationComplete,
-    failed: isIdentificationFailed,
   } = identificationStep || {};
 
   const identificationStage = getStage(identificationStep);
@@ -277,7 +275,7 @@ export default function StatusCard({ sightingData }) {
             id: 'IDENTIFICATION_FAILED',
           })}
         >
-          {isIdentificationComplete && !isIdentificationFailed && (
+          {isIdentificationComplete && (
             <div style={{ marginTop: 4 }}>
               <ButtonLink
                 href={`/match-results/${sightingData?.guid}`}
