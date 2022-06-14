@@ -33,7 +33,7 @@ const userSchema = [
   },
   {
     name: 'forum_id',
-    labelId: 'FORUM_USERNAME',
+    labelId: 'COMMUNITY_USERNAME',
     defaultValue: '',
     fieldType: 'string',
     category: userSchemaCategories.profile.name,
