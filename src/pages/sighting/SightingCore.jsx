@@ -40,6 +40,8 @@ export default function SightingCore({
   pending,
   id,
 }) {
+  console.log('deleteMe sighting data is: ');
+  console.log(data);
   const history = useHistory();
   const queryClient = useQueryClient();
 
