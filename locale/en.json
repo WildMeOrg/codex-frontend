@@ -1100,5 +1100,7 @@
   "PENDING": "pending",
   "CANDIDATE_ANNOTATIONS": "Candidate annotations",
   "SIGHTING_DELETE_VULNERABLE_INDIVIDUAL_MESSAGE": "Deleting this sighting would result in assigned individuals being deleted. Are you sure you want to continue?",
-  "REQUEST_REQUIRES_ADDITIONAL_CONFIRMATION": "Request requires additional confirmation"
+  "REQUEST_REQUIRES_ADDITIONAL_CONFIRMATION": "Request requires additional confirmation",
+  "COLLABORATION_DENIED_TITLE": "Collaboration denied",
+  "COLLABORATION_DENIED_BRIEF": "{userName} denied your collaboration request"
 }

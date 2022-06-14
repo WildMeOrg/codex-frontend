@@ -2,7 +2,8 @@ export const notificationTypeNames = {
   collaboration_manager_create: 'collaboration_manager_create',
   collaboration_request: 'collaboration_request',
   collaboration_approved: 'collaboration_approved',
-  collaboration_revoke: 'collaboration_denied',
+  collaboration_revoke: 'collaboration_revoke',
+  collaboration_denied: 'collaboration_denied',
   collaboration_edit_request: 'collaboration_edit_request',
   collaboration_edit_approved: 'collaboration_edit_approved',
   collaboration_edit_revoke: 'collaboration_edit_revoke',
@@ -22,7 +23,6 @@ notificationSchemaPlaceholder[
     'A_COLLABORATION_WAS_CREATED_ON_YOUR_BEHALF_MORE_DETAILED',
   showNotificationDialog: false,
   buttonPath: '/#collab-card',
-  notificationAvatar: 'userName',
 };
 notificationSchemaPlaceholder[
   notificationTypeNames.collaboration_request
@@ -32,7 +32,6 @@ notificationSchemaPlaceholder[
   moreDetailedDescription: 'COLLABORATION_VIEW_REQUEST_DESCRIPTION',
   showNotificationDialog: true,
   path: '/view_permission',
-  notificationAvatar: 'userName',
 };
 notificationSchemaPlaceholder[
   notificationTypeNames.collaboration_approved
@@ -43,7 +42,6 @@ notificationSchemaPlaceholder[
   showNotificationDialog: false,
   path: '/view_permission',
   buttonPath: '/#collab-card',
-  notificationAvatar: 'userName',
 };
 notificationSchemaPlaceholder[
   notificationTypeNames.collaboration_revoke
@@ -53,7 +51,15 @@ notificationSchemaPlaceholder[
   moreDetailedDescription: 'COLLABORATION_REVOKE_BRIEF',
   showNotificationDialog: false,
   buttonPath: '/#collab-card',
-  notificationAvatar: 'userName',
+};
+notificationSchemaPlaceholder[
+  notificationTypeNames.collaboration_denied
+] = {
+  titleId: 'COLLABORATION_DENIED_TITLE',
+  notificationMessage: 'COLLABORATION_DENIED_BRIEF',
+  moreDetailedDescription: 'COLLABORATION_DENIED_BRIEF',
+  showNotificationDialog: false,
+  buttonPath: '/#collab-card',
 };
 notificationSchemaPlaceholder[
   notificationTypeNames.collaboration_edit_request
@@ -63,7 +69,6 @@ notificationSchemaPlaceholder[
   moreDetailedDescription: 'COLLABORATION_EDIT_REQUEST_DESCRIPTION',
   showNotificationDialog: true,
   path: '/edit_permission',
-  notificationAvatar: 'userName',
 };
 notificationSchemaPlaceholder[
   notificationTypeNames.collaboration_edit_approved
@@ -74,7 +79,6 @@ notificationSchemaPlaceholder[
   showNotificationDialog: false,
   path: '/edit_permission',
   buttonPath: '/#collab-card',
-  notificationAvatar: 'userName',
 };
 notificationSchemaPlaceholder[
   notificationTypeNames.collaboration_edit_revoke
@@ -84,7 +88,6 @@ notificationSchemaPlaceholder[
   moreDetailedDescription: 'EDIT_COLLABORATION_REVOKED',
   showNotificationDialog: false,
   buttonPath: '/#collab-card',
-  notificationAvatar: 'userName',
 };
 notificationSchemaPlaceholder[
   notificationTypeNames.collaboration_manager_revoke
@@ -94,7 +97,6 @@ notificationSchemaPlaceholder[
   moreDetailedDescription: 'COLLABORATION_REVOKED_BY_MANAGER',
   showNotificationDialog: false,
   buttonPath: '/#collab-card',
-  notificationAvatar: 'userName',
 };
 notificationSchemaPlaceholder[
   notificationTypeNames.individual_merge_request
@@ -104,7 +106,6 @@ notificationSchemaPlaceholder[
   moreDetailedDescription:
     'INDIVIDUAL_MERGE_REQUEST_MESSAGE_DETAILED',
   showNotificationDialog: true,
-  notificationAvatar: 'userName',
 };
 notificationSchemaPlaceholder[
   notificationTypeNames.individual_merge_complete
@@ -114,7 +115,6 @@ notificationSchemaPlaceholder[
   moreDetailedDescription: 'INDIVIDUALS_MERGE_COMPLETE_MESSAGE',
   showNotificationDialog: false,
   deriveButtonPath: individualId => `/individuals/${individualId}`,
-  notificationAvatar: 'userName',
 };
 notificationSchemaPlaceholder[
   notificationTypeNames.individual_merge_blocked
@@ -125,6 +125,5 @@ notificationSchemaPlaceholder[
     'INDIVIDUAL_MERGE_BLOCKED_DETAILED_MESSAGE',
   showNotificationDialog: false,
   deriveButtonPath: individualId => `/individuals/${individualId}`,
-  notificationAvatar: 'userName',
 };
 export const notificationSchema = notificationSchemaPlaceholder;

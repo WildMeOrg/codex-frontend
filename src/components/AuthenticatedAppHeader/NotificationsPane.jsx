@@ -105,10 +105,6 @@ export default function NotificationsPane({
                 createdDate,
               );
 
-              const avatarName =
-                getNotificationProps(notification)[
-                  (currentNotificationSchema?.notificationAvatar)
-                ] || 'Unnamed User';
               return (
                 <React.Fragment key={notification.guid}>
                   <Grid
@@ -121,7 +117,7 @@ export default function NotificationsPane({
                     }}
                   >
                     <div style={{ display: 'flex' }}>
-                      <Avatar>{avatarName[0].toUpperCase()}</Avatar>
+                      <Avatar>{userName[0].toUpperCase()}</Avatar>
                       <NotificationPaneDisplayText
                         currentNotificationSchema={
                           currentNotificationSchema
