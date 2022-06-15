@@ -36,6 +36,7 @@ import SiteSetup from './pages/setup/SiteSetup';
 import MatchSighting from './pages/match/MatchSighting';
 import AuditLog from './pages/devTools/AuditLog';
 import Welcome from './pages/auth/Welcome';
+import EmailVerified from './pages/auth/EmailVerified';
 import Home from './pages/home/Home';
 import Settings from './pages/settings/Settings';
 import Footer from './components/Footer';
@@ -103,6 +104,9 @@ export default function AuthenticatedSwitch() {
                       </Route>
                       <Route path="/admin/settings">
                         <GeneralSettings />
+                      </Route>
+                      <Route path="/email_verified">
+                        <EmailVerified />
                       </Route>
                       <Route path="/admin">
                         <ControlPanel />

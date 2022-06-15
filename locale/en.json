@@ -94,6 +94,8 @@
   "LAST_SEEN": "Last seen",
   "CUSTOM_CARD_AREA": "Custom card area",
   "ASSIGN_CLUSTER": "Assign animal",
+  "EMAIL_VERIFIED": "Email verified",
+  "EMAIL_VERIFIED_DESCRIPTION": "You have successfully verified your account. Time to get started.",
   "ASSIGN_CLUSTER_TO_INDIVIDUAL": "Assign animal to individual",
   "ASSIGN_CLUSTER_TO_INDIVIDUAL_DESCRIPTION": "This animal was successfully assigned.",
   "CLUSTER_ASSIGNED": "Animal assigned",

@@ -5,6 +5,7 @@ import Text from './Text';
 
 export default function SimpleFormPage({
   titleId,
+  titleIntlValues,
   instructionsId,
   BaoComponent,
   baoStyles = {},
@@ -29,6 +30,7 @@ export default function SimpleFormPage({
           variant="h2"
           style={{ paddingBottom: 32 }}
           id={titleId}
+          values={titleIntlValues}
         />
         {BaoComponent && (
           <BaoComponent
