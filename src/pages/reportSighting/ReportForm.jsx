@@ -317,6 +317,7 @@ export default function ReportForm({
                     'transactionId',
                   ]),
                   sightings: [report],
+                  sightingType,
                 };
 
                 if (window.grecaptcha) {
