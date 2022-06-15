@@ -1,17 +1,23 @@
 import React from 'react';
 import { get } from 'lodash-es';
 import Grid from '@material-ui/core/Grid';
+import { useTheme } from '@material-ui/core/styles';
 
 import useSiteSettings from '../../models/site/useSiteSettings';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import MainColumn from '../../components/MainColumn';
 import ButtonLink from '../../components/ButtonLink';
+import BaoParty from '../../components/svg/BaoParty';
 import Text from '../../components/Text';
 
-export default function Welcome() {
+export default function EmailVerified() {
+  const theme = useTheme();
+  const themeColor = theme.palette.primary.main;
   const { data: siteSettings } = useSiteSettings();
   const siteName = get(siteSettings, ['site.name', 'value'], '');
-  useDocumentTitle('WELCOME');
+  useDocumentTitle('EMAIL_VERIFIED');
+
+  console.log(siteSettings);
 
   return (
     <MainColumn
@@ -28,10 +34,11 @@ export default function Welcome() {
         id="WELCOME_TO_SITENAME"
         values={{ siteName }}
       />
+      <BaoParty style={{ width: 280 }} themeColor={themeColor} />
       <Text
         variant="subtitle2"
-        style={{ padding: '0 16px 8px 16px', maxWidth: 400 }}
-        id="ACCOUNT_CREATION_SUCCESS"
+        style={{ padding: '20px 8px 16px 8px', maxWidth: 400 }}
+        id="EMAIL_VERIFIED_DESCRIPTION"
       />
       <Grid
         container
@@ -43,30 +50,8 @@ export default function Welcome() {
           <ButtonLink
             style={{ width: '100%' }}
             display="primary"
+            id="RETURN_HOME"
             href="/"
-            id="VIEW_HOMEPAGE"
-          />
-        </Grid>
-        <Grid item style={{ position: 'relative' }}>
-          <ButtonLink
-            style={{
-              width: '100%',
-            }}
-            display="secondary"
-            variant="contained"
-            href="/report"
-            id="REPORT_A_SIGHTING"
-          />
-        </Grid>
-        <Grid item style={{ position: 'relative' }}>
-          <ButtonLink
-            style={{
-              width: '100%',
-            }}
-            display="tertiary"
-            variant="contained"
-            href="/individuals"
-            id="EXPLORE_INDIVIDUALS"
           />
         </Grid>
       </Grid>
