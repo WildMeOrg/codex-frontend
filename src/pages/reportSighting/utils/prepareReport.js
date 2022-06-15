@@ -7,6 +7,7 @@ function transformCustomFields(formData, schemas) {
 }
 
 export function prepareBasicReport(
+  sightingType,
   sightingData,
   customSightingData,
   customSightingSchemas,
@@ -30,6 +31,7 @@ export function prepareBasicReport(
 
   const report = {
     ...sightingData,
+    sightingType,
     speciesDetectionModel: [
       get(sightingData, 'speciesDetectionModel', 'None'),
     ],
@@ -59,6 +61,7 @@ export function prepareBasicReport(
 }
 
 export function prepareReportWithEncounter(
+  sightingType,
   sightingData,
   customSightingData,
   customSightingSchemas,
@@ -96,6 +99,7 @@ export function prepareReportWithEncounter(
   }
 
   const report = prepareBasicReport(
+    sightingType,
     sightingData,
     customSightingData,
     customSightingSchemas,
