@@ -87,13 +87,19 @@ export default function StatusCard({ sightingData }) {
     migrated,
   } = sightingData?.pipeline_status || {};
 
-  const { start: preparationStartTime, end: preparationEndTime } =
-    preparationStep || {};
+  const {
+    start: preparationStartTime,
+    end: preparationEndTime,
+    message: preparationMessage,
+  } = preparationStep || {};
 
   const preparationStage = getStage(preparationStep);
 
-  const { start: detectionStartTime, end: detectionEndTime } =
-    detectionStep || {};
+  const {
+    start: detectionStartTime,
+    end: detectionEndTime,
+    message: detectionMessage,
+  } = detectionStep || {};
 
   const detectionStage = getStage(detectionStep);
   let detectionSkippedLabelId = 'DETECTION_SKIPPED_MESSAGE';
@@ -109,6 +115,7 @@ export default function StatusCard({ sightingData }) {
     start: curationStartTime,
     end: curationEndTime,
     inProgress: isCurationInProgress,
+    message: curationMessage,
   } = curationStep || {};
 
   const curationStage = getStage(curationStep);
@@ -138,6 +145,7 @@ export default function StatusCard({ sightingData }) {
     start: identificationStartTime,
     end: identificationEndTime,
     complete: isIdentificationComplete,
+    message: identificationMessage,
   } = identificationStep || {};
 
   const identificationStage = getStage(identificationStep);
@@ -195,6 +203,7 @@ export default function StatusCard({ sightingData }) {
           failedText={intl.formatMessage({
             id: 'SIGHTING_PREPARATION_FAILED',
           })}
+          failedAlertDescription={preparationMessage}
         />
         <TimelineStep
           Icon={DetectionIcon}
@@ -211,9 +220,8 @@ export default function StatusCard({ sightingData }) {
           skippedText={intl.formatMessage({
             id: detectionSkippedLabelId,
           })}
-          failedText={intl.formatMessage({
-            id: 'DETECTION_FAILED',
-          })}
+          failedText={intl.formatMessage({ id: 'DETECTION_FAILED' })}
+          failedAlertDescription={detectionMessage}
         />
         <TimelineStep
           Icon={CurationIcon}
@@ -231,9 +239,8 @@ export default function StatusCard({ sightingData }) {
           skippedText={intl.formatMessage({
             id: 'CURATION_SKIPPED_MESSAGE',
           })}
-          failedText={intl.formatMessage({
-            id: 'CURATION_FAILED',
-          })}
+          failedText={intl.formatMessage({ id: 'CURATION_FAILED' })}
+          failedAlertDescription={curationMessage}
         >
           {isCurationInProgress && currentUserHasEditPermission && (
             <div style={{ marginTop: 4, marginBottom: 20 }}>
@@ -274,6 +281,7 @@ export default function StatusCard({ sightingData }) {
           failedText={intl.formatMessage({
             id: 'IDENTIFICATION_FAILED',
           })}
+          failedAlertDescription={identificationMessage}
         >
           {isIdentificationComplete && (
             <div style={{ marginTop: 4 }}>
