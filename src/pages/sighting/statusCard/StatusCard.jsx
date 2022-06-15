@@ -286,12 +286,11 @@ export default function StatusCard({ sightingData }) {
           {isIdentificationComplete && (
             <div style={{ marginTop: 4 }}>
               <ButtonLink
+                id="IDENTIFICATION_VIEW_RESULTS"
                 href={`/match-results/${sightingData?.guid}`}
                 display="panel"
                 size="small"
-              >
-                View match results
-              </ButtonLink>
+              />
             </div>
           )}
         </TimelineStep>
