@@ -17,8 +17,6 @@ export default function EmailVerified() {
   const siteName = get(siteSettings, ['site.name', 'value'], '');
   useDocumentTitle('EMAIL_VERIFIED');
 
-  console.log(siteSettings);
-
   return (
     <MainColumn
       style={{
