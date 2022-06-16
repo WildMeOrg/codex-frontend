@@ -21,7 +21,7 @@ const metrics = [
   },
   {
     labelId: 'USERS',
-    count: 49,
+    count: 37,
     icon: UsersIcon,
   },
 ];
