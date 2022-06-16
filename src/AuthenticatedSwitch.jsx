@@ -43,22 +43,22 @@ import ResendVerificationEmail from './pages/auth/ResendVerificationEmail';
 import Footer from './components/Footer';
 import { defaultCrossfadeDuration } from './constants/defaults';
 
-export default function AuthenticatedSwitch({ emailNeedsVerification })
-{
+export default function AuthenticatedSwitch({
+  emailNeedsVerification,
+}) {
   const { data: siteSettings } = useSiteSettings();
   const siteNeedsSetup = get(siteSettings, [
     'site.needsSetup',
     'value',
   ]);
 
-  if (emailNeedsVerification)
-  {
+  if (emailNeedsVerification) {
     return (
       <main>
         <AuthenticatedAppHeader />
         <ResendVerificationEmail />
       </main>
-    )
+    );
   }
 
   return (
