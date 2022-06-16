@@ -39,15 +39,27 @@ import Welcome from './pages/auth/Welcome';
 import EmailVerified from './pages/auth/EmailVerified';
 import Home from './pages/home/Home';
 import Settings from './pages/settings/Settings';
+import ResendVerificationEmail from './pages/auth/ResendVerificationEmail';
 import Footer from './components/Footer';
 import { defaultCrossfadeDuration } from './constants/defaults';
 
-export default function AuthenticatedSwitch() {
+export default function AuthenticatedSwitch({ emailNeedsVerification })
+{
   const { data: siteSettings } = useSiteSettings();
   const siteNeedsSetup = get(siteSettings, [
     'site.needsSetup',
     'value',
   ]);
+
+  if (emailNeedsVerification)
+  {
+    return (
+      <main>
+        <AuthenticatedAppHeader />
+        <ResendVerificationEmail />
+      </main>
+    )
+  }
 
   return (
     <main>
