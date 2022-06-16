@@ -104,6 +104,7 @@ export default function NotificationsPane({
               const timeSince = calculatePrettyTimeElapsedSince(
                 createdDate,
               );
+
               return (
                 <React.Fragment key={notification.guid}>
                   <Grid
@@ -116,7 +117,7 @@ export default function NotificationsPane({
                     }}
                   >
                     <div style={{ display: 'flex' }}>
-                      <Avatar>{user1Name[0].toUpperCase()}</Avatar>
+                      <Avatar>{userName[0].toUpperCase()}</Avatar>
                       <NotificationPaneDisplayText
                         currentNotificationSchema={
                           currentNotificationSchema
@@ -188,7 +189,9 @@ export default function NotificationsPane({
                     }}
                   >
                     <Text
-                      style={{ color: theme.palette.text.secondary }}
+                      style={{
+                        color: theme.palette.text.secondary,
+                      }}
                     >
                       {intl.formatMessage(
                         { id: 'TIME_SINCE' },

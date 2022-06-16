@@ -22,6 +22,7 @@ export default function ConfirmDelete({
   errorTitleId = 'SERVER_ERROR',
   error,
   titleId,
+  alertSeverity = 'error',
 }) {
   return (
     <StandardDialog
@@ -39,7 +40,7 @@ export default function ConfirmDelete({
         {error && (
           <CustomAlert
             style={{ marginTop: 16, marginBottom: 8 }}
-            severity="error"
+            severity={alertSeverity}
             onClose={onClearError}
             titleId={errorTitleId}
           >

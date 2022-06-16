@@ -56,6 +56,8 @@ export default function SightingCore({
     loading: deleteInProgress,
     error: deleteSightingError,
     onClearError: deleteSightingOnClearError,
+    vulnerableIndividual,
+    onClearVulnerableIndividual,
   } = useDeleteSighting();
   const {
     deleteAssetGroupSighting,
@@ -63,6 +65,10 @@ export default function SightingCore({
     error: deleteAssetGroupSightingError,
     onClearError: deleteAsgOnClearError,
   } = useDeleteAssetGroupSighting();
+
+  const onClearError = pending
+    ? deleteAsgOnClearError
+    : deleteSightingOnClearError;
 
   /*
   known issue: if data or fieldschemas change values
@@ -119,11 +125,17 @@ export default function SightingCore({
       /> */}
       <ConfirmDelete
         open={deleteDialogOpen}
-        onClose={() => setDeleteDialogOpen(false)}
+        onClose={() => {
+          onClearVulnerableIndividual();
+          onClearError();
+          setDeleteDialogOpen(false);
+        }}
         onDelete={async () => {
           let deleteResults;
           if (pending) {
             deleteResults = await deleteAssetGroupSighting(id);
+          } else if (vulnerableIndividual) {
+            deleteResults = await deleteSighting(id, true);
           } else {
             deleteResults = await deleteSighting(id);
           }
@@ -143,10 +155,18 @@ export default function SightingCore({
             ? deleteAssetGroupSightingError
             : deleteSightingError
         }
-        onClearError={
-          pending ? deleteAsgOnClearError : deleteSightingOnClearError
+        errorTitleId={
+          vulnerableIndividual
+            ? 'REQUEST_REQUIRES_ADDITIONAL_CONFIRMATION'
+            : undefined
         }
-        messageId="CONFIRM_DELETE_SIGHTING_DESCRIPTION"
+        alertSeverity={vulnerableIndividual ? 'warning' : 'error'}
+        onClearError={onClearError}
+        messageId={
+          vulnerableIndividual
+            ? 'SIGHTING_DELETE_VULNERABLE_INDIVIDUAL_MESSAGE'
+            : 'CONFIRM_DELETE_SIGHTING_DESCRIPTION'
+        }
       />
       <SightingEntityHeader
         activeTab={activeTab}

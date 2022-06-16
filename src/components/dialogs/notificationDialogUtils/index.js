@@ -2,6 +2,7 @@ import NotificationCollaborationManagerCreateDialog from './NotificationCollabor
 import NotificationCollaborationRequestDialog from './NotificationCollaborationRequestDialog';
 import NotificationCollaborationApprovedDialog from './NotificationCollaborationApprovedDialog';
 import NotificationCollaborationRevokedDialog from './NotificationCollaborationRevokedDialog';
+import NotificationCollaborationDeniedDialog from './NotificationCollaborationDeniedDialog';
 import NotificationCollaborationEditRequestDialog from './NotificationCollaborationEditRequestDialog';
 import NotificationCollaborationEditApprovedDialog from './NotificationCollaborationEditApprovedDialog';
 import NotificationCollaborationEditRevokeDialog from './NotificationCollaborationEditRevokeDialog';
@@ -16,6 +17,7 @@ export const notificationTypes = {
   [notificationTypeNames.collaboration_request]: NotificationCollaborationRequestDialog,
   [notificationTypeNames.collaboration_approved]: NotificationCollaborationApprovedDialog,
   [notificationTypeNames.collaboration_revoke]: NotificationCollaborationRevokedDialog,
+  [notificationTypeNames.collaboration_denied]: NotificationCollaborationDeniedDialog,
   [notificationTypeNames.collaboration_edit_request]: NotificationCollaborationEditRequestDialog,
   [notificationTypeNames.collaboration_edit_approved]: NotificationCollaborationEditApprovedDialog,
   [notificationTypeNames.collaboration_edit_revoke]: NotificationCollaborationEditRevokeDialog,
