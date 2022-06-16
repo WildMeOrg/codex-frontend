@@ -1,4 +1,5 @@
 import React from 'react';
+import { FormattedNumber } from 'react-intl';
 import { useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Grid from '@material-ui/core/Grid';
@@ -10,17 +11,17 @@ import Text from '../../components/Text';
 const metrics = [
   {
     labelId: 'IDENTIFIED_INDIVIDUALS',
-    count: 257,
+    count: 14090,
     icon: IndividualsIcon,
   },
   {
     labelId: 'REPORTED_SIGHTINGS',
-    count: 810,
+    count: 29500,
     icon: SightingsIcon,
   },
   {
     labelId: 'USERS',
-    count: 951,
+    count: 37,
     icon: UsersIcon,
   },
 ];
@@ -70,7 +71,7 @@ export default function Testimonial() {
                   fontSize: isSm ? '1.8rem' : '1.2rem',
                 }}
               >
-                {metric.count}
+                <FormattedNumber value={metric.count} />
               </Text>
               <Text
                 style={{
