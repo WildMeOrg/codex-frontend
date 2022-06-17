@@ -3,7 +3,6 @@ import { useIntl, FormattedMessage } from 'react-intl';
 import { get } from 'lodash-es';
 
 import Grid from '@material-ui/core/Grid';
-import Skeleton from '@material-ui/lab/Skeleton';
 
 import DataDisplay from '../../components/dataDisplays/DataDisplay';
 import ActionIcon from '../../components/ActionIcon';
@@ -116,10 +115,8 @@ export default function UserEditTable() {
         variant="secondary"
         columns={tableColumns}
         data={activeUsers}
+        loading={loading}
       />
-      {loading ? (
-        <Skeleton style={{ transform: 'unset' }} height={44} />
-      ) : null}
       {usersError ? (
         <Text
           id="USER_DATA_ERROR"

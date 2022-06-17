@@ -1,8 +1,7 @@
 import React from 'react';
-import { useIntl, FormattedMessage } from 'react-intl';
+import { useIntl } from 'react-intl';
 import { get } from 'lodash-es';
 
-import Skeleton from '@material-ui/lab/Skeleton';
 import Grid from '@material-ui/core/Grid';
 
 import CustomAlert from '../../components/Alert';
@@ -19,17 +18,13 @@ export default function UserManagersCollaborationEditTable({
   collaborationLoading,
   collaborationError,
 }) {
-  const {
-    data: currentUserData,
-    loading: userDataLoading,
-  } = useGetMe();
+  const { data: currentUserData } = useGetMe();
 
   const intl = useIntl();
 
   const {
     mutate: revokeCollab,
     success: revokeSuccess,
-    loading: revokeLoading,
     clearSuccess: clearRevokeSuccess,
     error: revokeError,
     clearError: onClearRevokeError,
@@ -39,13 +34,9 @@ export default function UserManagersCollaborationEditTable({
     mutate: restoreCollab,
     success: restoreSuccess,
     clearSuccess: clearRestoreSuccess,
-    loading: restoreLoading,
     error: restoreError,
     clearError: onClearRestoreError,
   } = usePatchCollaboration();
-
-  const isLoading =
-    userDataLoading || revokeLoading || restoreLoading;
 
   function processRevoke(collaboration) {
     const operations = [
@@ -114,11 +105,8 @@ export default function UserManagersCollaborationEditTable({
   const tableColumns = [
     {
       name: 'userOne',
-      align: 'right',
-      label: intl.formatMessage(
-        // Alignments in this table don't look great, but they are grouped into visually meaningful chunks. I'm open to more aesthetically pleasing ideas
-        { id: 'USER_ONE' },
-      ),
+      align: 'left',
+      labelId: 'USER_ONE',
       options: {
         customBodyRender: userOne => (
           <Text variant="body2">{userOne}</Text>
@@ -128,7 +116,7 @@ export default function UserManagersCollaborationEditTable({
     {
       name: 'viewStatusOne',
       align: 'left',
-      label: intl.formatMessage({ id: 'USER_ONE_VIEW_STATUS' }),
+      labelId: 'USER_ONE_VIEW_STATUS',
       options: {
         customBodyRender: viewStatusOne => (
           <Text variant="body2">{viewStatusOne}</Text>
@@ -139,10 +127,8 @@ export default function UserManagersCollaborationEditTable({
     // },
     {
       name: 'userTwo',
-      align: 'right',
-      label: intl.formatMessage({
-        id: 'USER_TWO',
-      }),
+      align: 'left',
+      labelId: 'USER_TWO',
       options: {
         customBodyRender: userTwo => (
           <Text variant="body2">{userTwo}</Text>
@@ -152,7 +138,7 @@ export default function UserManagersCollaborationEditTable({
     {
       name: 'viewStatusTwo',
       align: 'left',
-      label: intl.formatMessage({ id: 'USER_TWO_VIEW_STATUS' }),
+      labelId: 'USER_TWO_VIEW_STATUS',
       options: {
         customBodyRender: viewStatusTwo => (
           <Text variant="body2">{viewStatusTwo}</Text>
@@ -164,9 +150,7 @@ export default function UserManagersCollaborationEditTable({
     {
       name: 'actions',
       align: 'left',
-      label: intl.formatMessage({
-        id: 'ACTIONS',
-      }),
+      labelId: 'ACTIONS',
       options: {
         displayInFilter: false,
         customBodyRender: (_, collaboration) => {
@@ -197,17 +181,14 @@ export default function UserManagersCollaborationEditTable({
     <Grid item>
       <DataDisplay
         idKey="guid"
-        loading={isLoading}
-        title={<FormattedMessage id="EDIT_COLLABORATIONS" />}
+        loading={collaborationLoading}
+        titleId="EDIT_COLLABORATIONS"
         style={{ marginTop: 8 }}
         variant="secondary"
         columns={tableColumns}
         data={tableFriendlyData || []}
         noResultsTextId="NO_COLLABORATIONS_MESSAGE"
       />
-      {collaborationLoading ? (
-        <Skeleton style={{ transform: 'unset' }} height={44} />
-      ) : null}
       {collaborationError ? (
         <Text
           id="COLLABORATION_DATA_ERROR"

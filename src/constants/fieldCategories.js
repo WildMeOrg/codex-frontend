@@ -1,6 +1,6 @@
 export const defaultIndividualCategories = {
   general: {
-    name: 'general',
+    name: 'individualMetadata',
     labelId: 'INDIVIDUAL_METADATA',
   },
 };
@@ -26,7 +26,7 @@ export const defaultSightingCategories = {
 
 export const defaultEncounterCategories = {
   animal: {
-    name: 'individual',
+    name: 'individualInformation',
     labelId: 'INDIVIDUAL_INFORMATION',
     individualFields: true,
   },
