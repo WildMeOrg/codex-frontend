@@ -229,13 +229,13 @@ export default function Encounters({
         ];
 
         const identifyButtonActions = [
-          {
-            id: 'view-id-results',
-            labelId: 'VIEW_IDENTIFICATION_RESULTS',
-            href: isIdReady
-              ? `/match-results/${sightingId}`
-              : '#overview',
-          },
+          isIdReady
+            ? {
+                id: 'view-id-results',
+                labelId: 'VIEW_IDENTIFICATION_RESULTS',
+                href: `/match-results/${sightingId}`,
+              }
+            : {},
           {
             id: 'create-new-individual',
             labelId: 'CREATE_NEW_INDIVIDUAL',
