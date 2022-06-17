@@ -218,7 +218,7 @@ export default function StatusCard({ sightingData }) {
             </div>
           )}
         </TimelineStep>
-        <a name="identification-step">
+        <section id="identification-step">
           <TimelineStep
             Icon={IdentificationIcon}
             titleId="IDENTIFICATION"
@@ -256,7 +256,7 @@ export default function StatusCard({ sightingData }) {
               </div>
             )}
           </TimelineStep>
-        </a>
+        </section>
       </Timeline>
     </Card>
   );
