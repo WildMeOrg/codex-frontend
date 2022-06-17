@@ -218,45 +218,43 @@ export default function StatusCard({ sightingData }) {
             </div>
           )}
         </TimelineStep>
-        <section id="identification-step">
-          <TimelineStep
-            Icon={IdentificationIcon}
-            titleId="IDENTIFICATION"
-            stage={identificationStage}
-            notStartedText={intl.formatMessage({
-              id: 'WAITING_ELLIPSES',
-            })}
-            inProgressText={getProgressText(
-              intl,
-              identificationStartTime,
-            )}
-            finishedText={intl.formatMessage(
-              { id: 'IDENTIFICATION_FINISHED_MESSAGE' },
-              { date: getDateString(identificationEndTime) },
-            )}
-            skippedText={intl.formatMessage({
-              id:
-                assetCount === 0
-                  ? 'IDENTIFICATION_SKIPPED_NO_IMAGES_MESSAGE'
-                  : 'IDENTIFICATION_SKIPPED_MESSAGE',
-            })}
-            failedText={intl.formatMessage({
-              id: 'IDENTIFICATION_FAILED',
-            })}
-          >
-            {isIdentificationComplete && !isIdentificationFailed && (
-              <div style={{ marginTop: 4 }}>
-                <ButtonLink
-                  href={`/match-results/${sightingData?.guid}`}
-                  display="panel"
-                  size="small"
-                >
-                  View match results
-                </ButtonLink>
-              </div>
-            )}
-          </TimelineStep>
-        </section>
+        <TimelineStep
+          Icon={IdentificationIcon}
+          titleId="IDENTIFICATION"
+          stage={identificationStage}
+          notStartedText={intl.formatMessage({
+            id: 'WAITING_ELLIPSES',
+          })}
+          inProgressText={getProgressText(
+            intl,
+            identificationStartTime,
+          )}
+          finishedText={intl.formatMessage(
+            { id: 'IDENTIFICATION_FINISHED_MESSAGE' },
+            { date: getDateString(identificationEndTime) },
+          )}
+          skippedText={intl.formatMessage({
+            id:
+              assetCount === 0
+                ? 'IDENTIFICATION_SKIPPED_NO_IMAGES_MESSAGE'
+                : 'IDENTIFICATION_SKIPPED_MESSAGE',
+          })}
+          failedText={intl.formatMessage({
+            id: 'IDENTIFICATION_FAILED',
+          })}
+        >
+          {isIdentificationComplete && !isIdentificationFailed && (
+            <div style={{ marginTop: 4 }}>
+              <ButtonLink
+                href={`/match-results/${sightingData?.guid}`}
+                display="panel"
+                size="small"
+              >
+                View match results
+              </ButtonLink>
+            </div>
+          )}
+        </TimelineStep>
       </Timeline>
     </Card>
   );
