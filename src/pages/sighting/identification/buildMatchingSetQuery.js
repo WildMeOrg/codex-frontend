@@ -46,13 +46,24 @@ export default function buildMatchingSetQuery(regionSchema, region) {
           bool: {
             minimum_should_match: 1,
             should: matchWithChildren.map(r => ({
-              term: {
+              match_phrase: {
                 locationId: r?.id,
               },
             })),
           },
         },
+        {
+          bool: '_MACRO_annotation_neighboring_viewpoints_clause',
+        },
+        {
+          exists: { field: 'encounter_guid' },
+        },
       ],
+      must_not: {
+        match: {
+          encounter_guid: '_MACRO_annotation_encounter_guid',
+        },
+      },
     },
   };
 }
