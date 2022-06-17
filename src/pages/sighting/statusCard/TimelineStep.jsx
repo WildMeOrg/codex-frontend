@@ -13,6 +13,7 @@ import stages from './stages';
 
 export default function TimelineStep({
   titleId,
+  domId,
   Icon,
   stage,
   notStartedText,
@@ -42,7 +43,7 @@ export default function TimelineStep({
   if (stage === stages.failed) iconColor = theme.palette.error.main;
 
   return (
-    <TimelineItem style={{ minHeight: 100 }}>
+    <TimelineItem style={{ minHeight: 100 }} id={domId}>
       <TimelineSeparator>
         <TimelineDot style={{ backgroundColor: iconColor }}>
           <IconToRender />

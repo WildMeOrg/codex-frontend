@@ -105,8 +105,9 @@ export default function Encounters({
     complete: isIdentificationComplete,
     failed: isIdentificationFailed,
   } = identificationStep || {};
-  const isIdReady =
-    isIdentificationComplete && !isIdentificationFailed;
+  // const isIdReady =
+  //   isIdentificationComplete && !isIdentificationFailed; // TODO deleteMe comment back in
+  const isIdReady = false;
 
   useEffect(
     () => {
@@ -234,7 +235,7 @@ export default function Encounters({
             labelId: 'VIEW_IDENTIFICATION_RESULTS',
             href: isIdReady
               ? `/match-results/${sightingId}`
-              : '#overview',
+              : '#identification-step',
           },
           {
             id: 'create-new-individual',
