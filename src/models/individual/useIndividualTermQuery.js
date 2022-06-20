@@ -6,7 +6,7 @@ export default function useIndividualTermQuery(searchTerm) {
     bool: {
       minimum_should_match: 1,
       should: [
-        { match_phrase_prefix: { guid: { query: searchTerm } } },
+        { term: { guid: searchTerm } },
         {
           query_string: {
             query: `*${searchTerm}*`,
