@@ -52,7 +52,18 @@ export default function buildMatchingSetQuery(regionSchema, region) {
             })),
           },
         },
+        {
+          bool: '_MACRO_annotation_neighboring_viewpoints_clause',
+        },
+        {
+          exists: { field: 'encounter_guid' },
+        },
       ],
+      must_not: {
+        match: {
+          encounter_guid: '_MACRO_annotation_encounter_guid',
+        },
+      },
     },
   };
 }

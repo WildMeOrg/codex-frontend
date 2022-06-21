@@ -14,7 +14,19 @@ export default function FrontDesk({ adminUserInitialized }) {
   const theme = useTheme();
 
   if (isFetched && !adminUserInitialized) return <CreateAdminUser />;
-  if (data) return <AuthenticatedSwitch />;
+  if (data) {
+    /* Disable email verification site in development mode.
+    Also explicitly checking is_email_confirmed for "false"
+    to be safer about locking users out of their accounts
+    in case the property isn't present for some reason. */
+    const emailNeedsVerification =
+      !__DEV__ && data?.is_email_confirmed === false;
+    return (
+      <AuthenticatedSwitch
+        emailNeedsVerification={emailNeedsVerification}
+      />
+    );
+  }
   if (error) return <UnauthenticatedSwitch />;
 
   return (
