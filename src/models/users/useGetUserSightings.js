@@ -2,13 +2,7 @@ import useFetch from '../../hooks/useFetch';
 import { getUserSightingsQueryKey } from '../../constants/queryKeys';
 
 export default function useGetUserSightings(userGuid) {
-  const query = {
-    match_phrase_prefix: {
-      'owners.guid': {
-        query: userGuid,
-      },
-    },
-  };
+  const query = { term: { 'owners.guid': userGuid } };
 
   return useFetch({
     method: 'post',
