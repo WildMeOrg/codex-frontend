@@ -25,14 +25,14 @@ export default function AddAnnotationsDialog({
     mutate: addAnnotationsToSightingEncounter,
     error: addToSightingEncounterError,
     loading: addToSightingEncounterLoading,
-    onClearError: onClearAddToSightingEncounterError,
+    clearError: onClearAddToSightingEncounterError,
   } = useAddAnnotationsToSightingEncounter();
 
   const {
     mutate: addAnnotationsToAGSEncounter,
     error: addToAGSEncounterError,
     loading: addToAGSEncounterLoading,
-    onClearError: onClearAddToAGSEncounterError,
+    clearError: onClearAddToAGSEncounterError,
   } = useAddAnnotationsToAGSEncounter();
 
   const error = pending
