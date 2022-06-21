@@ -15,6 +15,8 @@ import Card from '../../../components/cards/Card';
 import ButtonLink from '../../../components/ButtonLink';
 import TimelineStep from './TimelineStep';
 import stages from './stages';
+import useSiteSettings from '../../../models/site/useSiteSettings';
+import wildbookSystemGuids from '../../../constants/wildbookSystemGuids';
 
 function getDateString(date) {
   return date ? formatDate(date, true) : 'unknown date';
@@ -66,6 +68,8 @@ function withNonWrappingSpan(chunk) {
 
 export default function StatusCard({ sightingData }) {
   const intl = useIntl();
+  const systemGuid = get(useSiteSettings(), 'data.system_guid.value');
+  const migratedSiteName = get(wildbookSystemGuids, systemGuid);
 
   const assets = get(sightingData, 'assets', []);
   const assetCount = assets.length;
@@ -113,6 +117,24 @@ export default function StatusCard({ sightingData }) {
     asset => get(asset, 'annotations.length', 0) > 0,
   );
 
+  let curationFinishedLabel;
+  if (migrated) {
+    curationFinishedLabel = migratedSiteName
+      ? intl.formatMessage(
+          { id: 'MIGRATION_FINISHED_MESSAGE_SITE' },
+          { date: getDateString(curationEndTime), migratedSiteName },
+        )
+      : intl.formatMessage(
+          { id: 'MIGRATION_FINISHED_MESSAGE_DEFAULT' },
+          { date: getDateString(curationEndTime) },
+        );
+  } else {
+    curationFinishedLabel = intl.formatMessage(
+      { id: 'CURATION_FINISHED_MESSAGE' },
+      { date: getDateString(curationEndTime) },
+    );
+  }
+
   const {
     start: identificationStartTime,
     end: identificationEndTime,
@@ -121,13 +143,24 @@ export default function StatusCard({ sightingData }) {
   } = identificationStep || {};
 
   const identificationStage = getStage(identificationStep);
-  let identificationSkippedLabelId = 'IDENTIFICATION_SKIPPED_MESSAGE';
+  let identificationSkippedLabel;
   if (migrated) {
-    identificationSkippedLabelId =
-      'IDENTIFICATION_SKIPPED_MIGRATED_MESSAGE';
+    identificationSkippedLabel = migratedSiteName
+      ? intl.formatMessage(
+          { id: 'IDENTIFICATION_SKIPPED_MIGRATED_MESSAGE_SITE' },
+          { migratedSiteName },
+        )
+      : intl.formatMessage({
+          id: 'IDENTIFICATION_SKIPPED_MIGRATED_MESSAGE_DEFAULT',
+        });
   } else if (assetCount === 0) {
-    identificationSkippedLabelId =
-      'IDENTIFICATION_SKIPPED_NO_IMAGES_MESSAGE';
+    identificationSkippedLabel = intl.formatMessage({
+      id: 'IDENTIFICATION_SKIPPED_NO_IMAGES_MESSAGE',
+    });
+  } else {
+    identificationSkippedLabel = intl.formatMessage({
+      id: 'IDENTIFICATION_SKIPPED_MESSAGE',
+    });
   }
 
   return (
@@ -194,14 +227,7 @@ export default function StatusCard({ sightingData }) {
               ? intl.formatMessage({ id: 'CURATION_INSTRUCTIONS' })
               : getProgressText(intl, curationStartTime)
           }
-          finishedText={intl.formatMessage(
-            {
-              id: migrated
-                ? 'MIGRATION_FINISHED_MESSAGE'
-                : 'CURATION_FINISHED_MESSAGE',
-            },
-            { date: getDateString(curationEndTime) },
-          )}
+          finishedText={curationFinishedLabel}
           skippedText={intl.formatMessage({
             id: 'CURATION_SKIPPED_MESSAGE',
           })}
@@ -242,9 +268,7 @@ export default function StatusCard({ sightingData }) {
             { id: 'IDENTIFICATION_FINISHED_MESSAGE' },
             { date: getDateString(identificationEndTime) },
           )}
-          skippedText={intl.formatMessage({
-            id: identificationSkippedLabelId,
-          })}
+          skippedText={identificationSkippedLabel}
           failedText={intl.formatMessage({
             id: 'IDENTIFICATION_FAILED',
           })}
