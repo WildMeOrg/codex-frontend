@@ -98,6 +98,16 @@ export default function Encounters({
   const encounterFieldSchemas = useEncounterFieldSchemas();
   const encounters = get(sightingData, 'encounters', []);
 
+  const { identification: identificationStep } =
+    sightingData?.pipeline_status || {};
+
+  const {
+    complete: isIdentificationComplete,
+    failed: isIdentificationFailed,
+  } = identificationStep || {};
+  const isIdReady =
+    isIdentificationComplete && !isIdentificationFailed;
+
   useEffect(
     () => {
       const message = vulnerableObject
@@ -219,11 +229,15 @@ export default function Encounters({
         ];
 
         const identifyButtonActions = [
-          {
-            id: 'view-id-results',
-            labelId: 'VIEW_IDENTIFICATION_RESULTS',
-            href: `/match-results/${sightingId}`,
-          },
+          ...(isIdReady
+            ? [
+                {
+                  id: 'view-id-results',
+                  labelId: 'VIEW_IDENTIFICATION_RESULTS',
+                  href: `/match-results/${sightingId}`,
+                },
+              ]
+            : []),
           {
             id: 'create-new-individual',
             labelId: 'CREATE_NEW_INDIVIDUAL',

@@ -171,7 +171,9 @@ export default function StatusCard({ sightingData }) {
           skippedText={intl.formatMessage({
             id: detectionSkippedLabelId,
           })}
-          failedText={intl.formatMessage({ id: 'DETECTION_FAILED' })}
+          failedText={intl.formatMessage({
+            id: 'DETECTION_FAILED',
+          })}
         />
         <TimelineStep
           Icon={CurationIcon}
@@ -192,7 +194,9 @@ export default function StatusCard({ sightingData }) {
           skippedText={intl.formatMessage({
             id: 'CURATION_SKIPPED_MESSAGE',
           })}
-          failedText={intl.formatMessage({ id: 'CURATION_FAILED' })}
+          failedText={intl.formatMessage({
+            id: 'CURATION_FAILED',
+          })}
         >
           {isCurationInProgress && currentUserHasEditPermission && (
             <div style={{ marginTop: 4, marginBottom: 20 }}>
