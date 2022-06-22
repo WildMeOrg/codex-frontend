@@ -11,6 +11,7 @@ export default {
   allNotifications: 'allNotifications',
   unreadNotifications: 'unreadNotifications',
   twitterBotTestResults: 'twitterBotTestResults',
+  publicData: 'publicData',
 };
 
 export function getAuditLogQueryKey(guid) {
