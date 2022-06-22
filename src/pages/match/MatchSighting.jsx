@@ -99,17 +99,26 @@ export default function MatchSighting() {
         ['algorithms', 'hotspotter_nosv', 'scores_by_annotation'],
         [],
       );
-      return hotspotterAnnotationScores.map((scoreObject, index) => {
-        const matchingAnnotation = get(matchResults, [
+
+      function findMatchingAnnotation(scoreObject) {
+        return get(matchResults, [
           'annotation_data',
           scoreObject?.guid,
         ]);
-        return {
-          ...matchingAnnotation,
-          ...scoreObject,
-          index,
-        };
-      });
+      }
+
+      return hotspotterAnnotationScores
+        .filter(findMatchingAnnotation)
+        .map((scoreObject, index) => {
+          const matchingAnnotation = findMatchingAnnotation(
+            scoreObject,
+          );
+          return {
+            ...matchingAnnotation,
+            ...scoreObject,
+            index,
+          };
+        });
     },
     [matchResults, selectedQueryAnnotation],
   );
