@@ -68,7 +68,7 @@ export default function FieldSettings() {
   const customFieldCategoriesWithKey = customFieldCategories.map(
     c => ({
       ...c,
-      key: c.id,
+      key: c?.id,
     }),
   );
 

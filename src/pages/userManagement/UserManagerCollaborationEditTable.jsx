@@ -18,13 +18,17 @@ export default function UserManagersCollaborationEditTable({
   collaborationLoading,
   collaborationError,
 }) {
-  const { data: currentUserData } = useGetMe();
-
   const intl = useIntl();
+
+  const {
+    data: currentUserData,
+    loading: userDataLoading,
+  } = useGetMe();
 
   const {
     mutate: revokeCollab,
     success: revokeSuccess,
+    loading: revokeLoading,
     clearSuccess: clearRevokeSuccess,
     error: revokeError,
     clearError: onClearRevokeError,
@@ -33,10 +37,17 @@ export default function UserManagersCollaborationEditTable({
   const {
     mutate: restoreCollab,
     success: restoreSuccess,
+    loading: restoreLoading,
     clearSuccess: clearRestoreSuccess,
     error: restoreError,
     clearError: onClearRestoreError,
   } = usePatchCollaboration();
+
+  const isLoading =
+    userDataLoading ||
+    revokeLoading ||
+    restoreLoading ||
+    collaborationLoading;
 
   function processRevoke(collaboration) {
     const operations = [
@@ -149,7 +160,7 @@ export default function UserManagersCollaborationEditTable({
     // },
     {
       name: 'actions',
-      align: 'left',
+      align: 'right',
       labelId: 'ACTIONS',
       options: {
         displayInFilter: false,
@@ -159,7 +170,9 @@ export default function UserManagersCollaborationEditTable({
               revokedPermission ||
             get(collaboration, 'viewStatusTwo') === revokedPermission;
           return (
-            <div style={{ display: 'flex' }}>
+            <div
+              style={{ display: 'flex', justifyContent: 'flex-end' }}
+            >
               {isRevoked ? (
                 <ActionIcon
                   variant="restore"
@@ -181,7 +194,7 @@ export default function UserManagersCollaborationEditTable({
     <Grid item>
       <DataDisplay
         idKey="guid"
-        loading={collaborationLoading}
+        loading={isLoading}
         titleId="EDIT_COLLABORATIONS"
         style={{ marginTop: 8 }}
         variant="secondary"
@@ -198,6 +211,7 @@ export default function UserManagersCollaborationEditTable({
       ) : null}
       {revokeError && (
         <CustomAlert
+          style={{ marginTop: 16 }}
           severity="error"
           titleId="COLLABORATION_REVOKE_ERROR"
           onClose={onClearRevokeError}
@@ -211,6 +225,7 @@ export default function UserManagersCollaborationEditTable({
       )}
       {restoreError && (
         <CustomAlert
+          style={{ marginTop: 16 }}
           severity="error"
           titleId="COLLABORATION_RESTORE_ERROR"
           onClose={onClearRestoreError}
@@ -224,6 +239,7 @@ export default function UserManagersCollaborationEditTable({
       )}
       {revokeSuccess && (
         <CustomAlert
+          style={{ marginTop: 16 }}
           severity="success"
           titleId="COLLABORATION_REVOKE_SUCCESS"
           onClose={clearRevokeSuccess}
@@ -231,6 +247,7 @@ export default function UserManagersCollaborationEditTable({
       )}
       {restoreSuccess && (
         <CustomAlert
+          style={{ marginTop: 16 }}
           severity="success"
           titleId="COLLABORATION_RESTORE_SUCCESS"
           onClose={clearRestoreSuccess}
