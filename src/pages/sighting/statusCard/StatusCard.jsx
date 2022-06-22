@@ -16,7 +16,7 @@ import ButtonLink from '../../../components/ButtonLink';
 import TimelineStep from './TimelineStep';
 import stages from './stages';
 import useSiteSettings from '../../../models/site/useSiteSettings';
-import wildbookSystemGuids from '../../../constants/wildbookSystemGuids';
+import wildbookBySystemGuid from '../../../constants/wildbookBySystemGuid';
 
 function getDateString(date) {
   return date ? formatDate(date, true) : 'unknown date';
@@ -69,7 +69,7 @@ function withNonWrappingSpan(chunk) {
 export default function StatusCard({ sightingData }) {
   const intl = useIntl();
   const systemGuid = get(useSiteSettings(), 'data.system_guid.value');
-  const migratedSiteName = get(wildbookSystemGuids, systemGuid);
+  const migratedSiteName = get(wildbookBySystemGuid, systemGuid);
 
   const assets = get(sightingData, 'assets', []);
   const assetCount = assets.length;
