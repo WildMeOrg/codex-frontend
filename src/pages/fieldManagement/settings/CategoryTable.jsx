@@ -34,11 +34,13 @@ import { cellRendererTypes } from '../../../components/dataDisplays/cellRenderer
 const defaultCategories = [
   ...Object.values(defaultSightingCategories).map(c => ({
     ...c,
+    key: c.name,
     type: categoryTypes.sighting,
     isDefault: true,
   })),
   ...Object.values(defaultIndividualCategories).map(c => ({
     ...c,
+    key: c.name,
     type: categoryTypes.individual,
     isDefault: true,
   })),
@@ -63,7 +65,17 @@ export default function FieldSettings() {
     [],
   );
 
-  const categories = [...defaultCategories, ...customFieldCategories];
+  const customFieldCategoriesWithKey = customFieldCategories.map(
+    c => ({
+      ...c,
+      key: c.id,
+    }),
+  );
+
+  const categories = [
+    ...defaultCategories,
+    ...customFieldCategoriesWithKey,
+  ];
 
   const categoryColumns = [
     {
@@ -202,9 +214,11 @@ export default function FieldSettings() {
           </DialogContent>
           <DialogActions style={{ padding: '0px 24px 24px 24px' }}>
             {dialogData.isDefault ? (
-              <Button display="basic" onClick={onCloseCategoryDialog}>
-                <FormattedMessage id="CLOSE" />
-              </Button>
+              <Button
+                display="basic"
+                onClick={onCloseCategoryDialog}
+                id="CLOSE"
+              />
             ) : (
               <>
                 <Button
@@ -273,7 +287,7 @@ export default function FieldSettings() {
       />
       <DataDisplay
         noTitleBar
-        idKey="name"
+        idKey="key"
         variant="secondary"
         columns={categoryColumns}
         data={categories}

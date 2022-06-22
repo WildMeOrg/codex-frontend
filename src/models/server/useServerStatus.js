@@ -105,7 +105,7 @@ export default function useServerStatus() {
     const fetchData = async () => {
       try {
         const result = await axios(
-          'https://kaiju.dyn.wildme.io:5005/api/engine/job/status/',
+          'https://kaiju.dyn.wildme.io:5010/api/engine/job/status/',
         );
 
         const data = get(result, 'data.response.json_result');
