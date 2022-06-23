@@ -145,6 +145,7 @@ export default function StatusCard({ sightingData }) {
     start: identificationStartTime,
     end: identificationEndTime,
     complete: isIdentificationComplete,
+    failed: isIdentificationFailed,
     message: identificationMessage,
   } = identificationStep || {};
 
@@ -283,7 +284,7 @@ export default function StatusCard({ sightingData }) {
           })}
           failedAlertDescription={identificationMessage}
         >
-          {isIdentificationComplete && (
+          {isIdentificationComplete && !isIdentificationFailed && (
             <div style={{ marginTop: 4 }}>
               <ButtonLink
                 id="IDENTIFICATION_VIEW_RESULTS"
