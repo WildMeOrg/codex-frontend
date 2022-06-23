@@ -44,8 +44,9 @@ export default function SightingsDisplay({
     },
     {
       name: 'locationId_value',
+      sortName: 'elasticsearch.locationId_keyword',
       labelId: 'REGION',
-      sortable: false,
+      sortable: true,
       align: 'left',
     },
     {
