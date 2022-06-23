@@ -18,9 +18,10 @@ export default function ManuallyAssignModal({
 }) {
   const {
     mutate: assignEncounters,
-    isSuccess,
+    success,
     loading,
     error,
+    clearSuccess,
   } = useAssignEncountersToIndividual();
 
   const [
@@ -31,21 +32,20 @@ export default function ManuallyAssignModal({
   const onCloseDialog = () => {
     setSelectedIndividualGuid(null);
     onClose();
+    clearSuccess();
   };
 
   return (
     <StandardDialog
-      maxWidth={isSuccess ? 'sm' : 'xl'}
+      maxWidth={success ? 'sm' : 'xl'}
       titleId={
-        isSuccess
-          ? 'CLUSTER_ASSIGNED'
-          : 'ASSIGN_CLUSTER_TO_INDIVIDUAL'
+        success ? 'CLUSTER_ASSIGNED' : 'ASSIGN_CLUSTER_TO_INDIVIDUAL'
       }
       open={open}
       onClose={onCloseDialog}
     >
       <DialogContent>
-        {isSuccess ? (
+        {success ? (
           <Text id="ASSIGN_CLUSTER_TO_INDIVIDUAL_DESCRIPTION" />
         ) : (
           <IndividualSelector
@@ -66,9 +66,9 @@ export default function ManuallyAssignModal({
         <Button
           display="basic"
           onClick={onCloseDialog}
-          id={isSuccess ? 'CLOSE' : 'CANCEL'}
+          id={success ? 'CLOSE' : 'CANCEL'}
         />
-        {isSuccess ? (
+        {success ? (
           <ButtonLink
             id="VIEW_INDIVIDUAL"
             display="primary"
