@@ -1,8 +1,8 @@
 import { getAuditLogQueryKey } from '../../constants/queryKeys';
-import useGet from '../../hooks/useGet';
+import useFetch from '../../hooks/useFetch';
 
 export default function useGetAuditLogs(entity_guid) {
-  return useGet({
+  return useFetch({
     queryKey: getAuditLogQueryKey(entity_guid),
     url: `/audit_logs/${entity_guid}`,
     queryOptions: {

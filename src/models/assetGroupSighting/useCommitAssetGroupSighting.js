@@ -5,6 +5,6 @@ export default function useCommitAssetGroupSighting() {
   return usePost({
     deriveUrl: ({ agsGuid }) =>
       `/asset_groups/sighting/${agsGuid}/commit`,
-    deriveQueryKeys: ({ agsGuid }) => [getAGSQueryKey(agsGuid)],
+    deriveFetchKeys: ({ agsGuid }) => [getAGSQueryKey(agsGuid)],
   });
 }

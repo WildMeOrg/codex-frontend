@@ -26,9 +26,9 @@ const adminPages = [
   },
   {
     icon: SplashSettingsIcon,
-    name: 'splash-config',
-    labelId: 'SPLASH_PAGE',
-    href: '/admin/splash',
+    name: 'front-page-config',
+    labelId: 'FRONT_PAGE',
+    href: '/admin/front-page',
     roles: ['is_admin'],
   },
   {

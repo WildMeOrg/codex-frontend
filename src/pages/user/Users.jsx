@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useIntl } from 'react-intl';
 import { get } from 'lodash-es';
 
+import errorTypes from '../../constants/errorTypes';
 import LoadingScreen from '../../components/LoadingScreen';
 import SadScreen from '../../components/SadScreen';
 import AvatarGallery from '../../components/AvatarGallery';
@@ -22,7 +23,7 @@ export default function Users() {
   const { data, loading, error } = useGetUsers();
   const { data: currentUserData } = useGetMe();
   if (loading) return <LoadingScreen />;
-  if (error) return <SadScreen variant="genericError" />;
+  if (error) return <SadScreen variant={errorTypes.genericError} />;
 
   const safeUsers = data || [];
   const filteredUsers = safeUsers.filter(

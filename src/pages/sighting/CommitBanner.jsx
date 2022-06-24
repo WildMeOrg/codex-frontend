@@ -1,10 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { get, flatten } from 'lodash-es';
 
-import useGetAGS from '../../models/assetGroupSighting/useGetAGS';
-import useCommitAssetGroupSighting from '../../models/assetGroupSighting/useCommitAssetGroupSighting';
 import Button from '../../components/Button';
 import Alert from '../../components/Alert';
+import CommitDialog from './identification/CommitDialog';
 
 const alertProps = {
   severity: 'info',
@@ -16,12 +15,7 @@ export default function CommitBanner({
   sightingData,
   pending,
 }) {
-  const { isFetching: fetchingAGS } = useGetAGS(sightingId);
-
-  const {
-    mutate: commitAgs,
-    isLoading: commitAgsLoading,
-  } = useCommitAssetGroupSighting();
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   if (!pending) return null;
 
@@ -41,24 +35,29 @@ export default function CommitBanner({
     sightingData?.curation_start_time,
   );
   const showCommitAlert = detectionComplete && allAnnotationsAssigned;
-  const commitInProgress = commitAgsLoading || fetchingAGS;
 
   if (showCommitAlert) {
     return (
-      <Alert
-        titleId="SIGHTING_COMMIT_TITLE"
-        descriptionId="SIGHTING_COMMIT_DESCRIPTION"
-        action={
-          <Button
-            id="COMMIT"
-            size="small"
-            loading={commitInProgress}
-            onClick={() => commitAgs({ agsGuid: sightingId })}
-            style={{ marginTop: 8, marginRight: 4 }}
-          />
-        }
-        {...alertProps}
-      />
+      <>
+        <CommitDialog
+          agsGuid={sightingId}
+          open={dialogOpen}
+          onClose={() => setDialogOpen(false)}
+        />
+        <Alert
+          titleId="SIGHTING_COMMIT_TITLE"
+          descriptionId="SIGHTING_COMMIT_DESCRIPTION"
+          action={
+            <Button
+              id="COMMIT"
+              size="small"
+              onClick={() => setDialogOpen(true)}
+              style={{ marginTop: 8, marginRight: 4 }}
+            />
+          }
+          {...alertProps}
+        />
+      </>
     );
   }
 

@@ -8,7 +8,7 @@ import TextField from '@material-ui/core/TextField';
 
 import useOnEnter from '../../hooks/useOnEnter';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
-import usePatchUser from '../../models/users/usePatchUser';
+import { useReplaceUserProperties } from '../../models/users/usePatchUser';
 import CustomAlert from '../../components/Alert';
 import Text from '../../components/Text';
 import Button from '../../components/Button';
@@ -22,10 +22,10 @@ export default function ProfileSetup({ userData }) {
   const [name, setName] = useState('');
 
   const {
-    replaceUserProperties,
+    mutate: replaceUserProperties,
     loading: replaceLoading,
     error: replaceError,
-  } = usePatchUser(get(userData, 'guid'));
+  } = useReplaceUserProperties();
 
   useDocumentTitle('SET_UP_PROFILE');
 
@@ -37,7 +37,10 @@ export default function ProfileSetup({ userData }) {
           value: name,
         },
       ];
-      await replaceUserProperties(properties);
+      await replaceUserProperties({
+        userGuid: get(userData, 'guid'),
+        properties,
+      });
     } else {
       setNoNameError(true);
     }
@@ -51,60 +54,55 @@ export default function ProfileSetup({ userData }) {
       instructionsId="SET_UP_PROFILE_INSTRUCTIONS"
       BaoComponent={BaoWaving}
     >
-      <form>
-        <Grid
-          container
-          spacing={2}
-          direction="column"
-          style={{ padding: '16px 0', width: 280 }}
-        >
-          <Grid item>
-            <FormControl
-              required
-              style={{ width: '100%', marginBottom: 4 }}
-            >
-              <TextField
-                variant="outlined"
-                id="name"
-                error={noNameError}
-                onChange={e => {
-                  setName(e.target.value);
-                  if (noNameError) setNoNameError(false);
-                }}
-                label={<FormattedMessage id="FULL_NAME_REQUIRED" />}
-                helperText={
-                  noNameError ? (
-                    <FormattedMessage id="FULL_NAME_IS_REQUIRED" />
-                  ) : (
-                    undefined
-                  )
-                }
-              />
-              <Text
-                style={{ margin: '8px 4px 0 4px' }}
-                variant="caption"
-                id="FULL_NAME_DESCRIPTION"
-              />
-            </FormControl>
-          </Grid>
-          {replaceError && (
-            <CustomAlert
-              severity="error"
-              description={replaceError}
+      <Grid
+        container
+        spacing={2}
+        direction="column"
+        style={{ padding: '16px 0', width: 280 }}
+      >
+        <Grid item>
+          <FormControl
+            required
+            style={{ width: '100%', marginBottom: 4 }}
+          >
+            <TextField
+              variant="outlined"
+              id="name"
+              error={noNameError}
+              onChange={e => {
+                setName(e.target.value);
+                if (noNameError) setNoNameError(false);
+              }}
+              label={<FormattedMessage id="FULL_NAME_REQUIRED" />}
+              helperText={
+                noNameError ? (
+                  <FormattedMessage id="FULL_NAME_IS_REQUIRED" />
+                ) : (
+                  undefined
+                )
+              }
             />
-          )}
-          <Grid item style={{ position: 'relative' }}>
-            <Button
-              domId={buttonId}
-              loading={replaceLoading}
-              onClick={saveProfile}
-              display="primary"
-              id="SAVE_PROFILE"
-              disabled={replaceLoading || name === ''}
+            <Text
+              style={{ margin: '8px 4px 0 4px' }}
+              variant="caption"
+              id="FULL_NAME_DESCRIPTION"
             />
-          </Grid>
+          </FormControl>
         </Grid>
-      </form>
+        {replaceError && (
+          <CustomAlert severity="error" description={replaceError} />
+        )}
+        <Grid item style={{ position: 'relative' }}>
+          <Button
+            domId={buttonId}
+            loading={replaceLoading}
+            onClick={saveProfile}
+            display="primary"
+            id="SAVE_PROFILE"
+            disabled={replaceLoading || name === ''}
+          />
+        </Grid>
+      </Grid>
     </SimpleFormPage>
   );
 }

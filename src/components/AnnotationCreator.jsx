@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { get } from 'lodash-es';
+import { get, pick, map, filter } from 'lodash-es';
 import { FormattedMessage } from 'react-intl';
 import BboxAnnotator from 'bboxjs';
 
@@ -19,11 +19,61 @@ import usePostAnnotation from '../models/annotation/usePostAnnotation';
 import Button from './Button';
 import Text from './Text';
 import StandardDialog from './StandardDialog';
-import CustomAlert from './Alert';
+import Alert from './Alert';
+import useAddEncounter from '../models/encounter/useAddEncounter';
+import useAddAnnotationsToSightingEncounter from '../models/encounter/useAddAnnotationsToSightingEncounter';
 
 function percentageToPixels(percentValue, scalar) {
   const pixelValue = 0.01 * scalar * percentValue;
   return Math.round(Math.max(pixelValue, 0));
+}
+
+async function getEncounterGuids(
+  sightingData,
+  addEncounterToSighting,
+) {
+  const copiedProperties = pick(sightingData, [
+    'time',
+    'timeSpecificity',
+    'locationId',
+  ]);
+  const sightingId = get(sightingData, 'guid');
+  const encounterGuidsBeforeCreation = map(
+    get(sightingData, 'encounters'),
+    encounter => encounter?.guid,
+    [],
+  );
+  const encountersWithNoAnnotations = filter(
+    get(sightingData, 'encounters', []),
+    encounter => get(encounter, 'annotations', []).length === 0,
+    [],
+  );
+  if (encountersWithNoAnnotations.length > 0)
+    return [get(encountersWithNoAnnotations, [0, 'guid'])];
+  const encounterCreationResponse = await addEncounterToSighting({
+    sightingGuid: sightingId,
+    operations: [
+      {
+        op: 'add',
+        path: '/encounters',
+        value: copiedProperties,
+      },
+    ],
+  });
+  const encounterGuidsAfterCreation = map(
+    get(encounterCreationResponse, ['data', 'encounters'], []),
+    encounter => encounter?.guid,
+    [],
+  );
+  const newEncounterGuids = filter(
+    encounterGuidsAfterCreation,
+    enc => encounterGuidsBeforeCreation.indexOf(enc) === -1,
+    [],
+  );
+  return encounterCreationResponse?.status === 200 &&
+    newEncounterGuids?.length === 1
+    ? newEncounterGuids
+    : [];
 }
 
 export default function AnnotationCreator({
@@ -31,15 +81,46 @@ export default function AnnotationCreator({
   asset,
   onClose,
   sightingData,
-  refreshSightingData,
+  pending,
 }) {
   const [viewpoint, setViewpoint] = useState('');
   const [IAClass, setIAClass] = useState('');
   const [rect, setRect] = useState({});
   const [anchorEl, setAnchorEl] = useState(null);
   const theme = useTheme();
-
-  const { postAnnotation, loading, error } = usePostAnnotation();
+  const {
+    mutate: addEncounterToSighting,
+    isLoading: addEncounterToSightingLoading,
+    error: addEncounterToSightingError,
+    clearError: clearAddEncounterToSightingError,
+  } = useAddEncounter();
+  const {
+    mutate: addAnnotationsToSightingEncounter,
+    error: addAnnotationsToSightingEncounterError,
+    isLoading: addAnnotationToSightingEncounterLoading,
+    clearError: clearAddAnnotationToSightingEncounterError,
+  } = useAddAnnotationsToSightingEncounter();
+  const {
+    mutate: postAnnotation,
+    isLoading: postAnnotationLoading,
+    error: postAnnotationError,
+    clearError: clearPostAnnotationError,
+  } = usePostAnnotation();
+  const loading =
+    addEncounterToSightingLoading ||
+    addAnnotationToSightingEncounterLoading ||
+    postAnnotationLoading;
+  const hasErrors =
+    addEncounterToSightingError ||
+    addAnnotationsToSightingEncounterError ||
+    postAnnotationError;
+  const onCancel = () => {
+    clearAddEncounterToSightingError();
+    clearAddAnnotationToSightingEncounterError();
+    clearPostAnnotationError();
+    onClose();
+  };
+  const sightingId = get(sightingData, 'guid');
   const IAClassOptions = useIAClassOptions(sightingData);
 
   const handleViewpointInfoClick = event => {
@@ -108,7 +189,7 @@ export default function AnnotationCreator({
     <StandardDialog
       fullScreen
       open
-      onClose={onClose}
+      onClose={onCancel}
       titleId={titleId}
     >
       <DialogContent>
@@ -125,15 +206,6 @@ export default function AnnotationCreator({
             ref={divRef}
           />
         </div>
-        {error && (
-          <CustomAlert
-            titleId="SERVER_ERROR"
-            style={{ marginTop: 16, marginBottom: 8 }}
-            severity="error"
-          >
-            {error}
-          </CustomAlert>
-        )}
       </DialogContent>
       <div
         style={{
@@ -153,7 +225,7 @@ export default function AnnotationCreator({
             value={viewpoint}
             onChange={e => setViewpoint(e.target.value)}
           >
-            {viewpointChoices.map(viewpointChoice => (
+            {viewpointChoices?.map(viewpointChoice => (
               <MenuItem value={viewpointChoice.value}>
                 <FormattedMessage id={viewpointChoice.labelId} />
               </MenuItem>
@@ -167,15 +239,9 @@ export default function AnnotationCreator({
         />
         <Popover
           open={Boolean(anchorEl)}
-          anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'right',
-          }}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
           PaperProps={{ style: { marginTop: 4 } }}
-          transformOrigin={{
-            vertical: 'top',
-            horizontal: 'right',
-          }}
+          transformOrigin={{ vertical: 'top', horizontal: 'right' }}
           anchorEl={anchorEl}
           id="viewpoint-help-tooltip"
           onClose={handleViewpointInfoClose}
@@ -183,12 +249,7 @@ export default function AnnotationCreator({
           <Text style={{ padding: 12 }} id="VIEWPOINT_INFO" />
         </Popover>
       </div>
-
-      <div
-        style={{
-          margin: '4px auto 8px auto',
-        }}
-      >
+      <div style={{ margin: '4px auto 8px auto' }}>
         <FormControl required style={{ width: 240 }}>
           <InputLabel>
             <FormattedMessage id="ANNOTATION_CLASS" />
@@ -199,7 +260,7 @@ export default function AnnotationCreator({
             value={IAClass}
             onChange={e => setIAClass(e.target.value)}
           >
-            {IAClassOptions.map(IAClassChoice => (
+            {IAClassOptions?.map(IAClassChoice => (
               <MenuItem value={IAClassChoice.value}>
                 {IAClassChoice.label}
               </MenuItem>
@@ -207,12 +268,36 @@ export default function AnnotationCreator({
           </Select>
         </FormControl>
       </div>
+      {hasErrors && (
+        <Alert
+          severity="error"
+          titleId="AN_ERROR_OCCURRED"
+          style={{
+            margin: '16px auto 8px auto',
+            maxHeight: '80vh',
+            width: 600,
+            padding: '0 40px',
+          }}
+        >
+          {addEncounterToSightingError && (
+            <Text variant="body2">{addEncounterToSightingError}</Text>
+          )}
+          {addAnnotationsToSightingEncounterError && (
+            <Text variant="body2">
+              {addAnnotationsToSightingEncounterError}
+            </Text>
+          )}
+          {postAnnotationError && (
+            <Text variant="body2">{postAnnotationError}</Text>
+          )}
+        </Alert>
+      )}
       <DialogActions style={{ padding: '0px 24px 24px 24px' }}>
-        <Button display="basic" onClick={onClose} id="CANCEL" />
+        <Button display="basic" onClick={onCancel} id="CANCEL" />
         <Button
           display="primary"
           loading={loading}
-          disabled={!viewpoint || !IAClass}
+          disabled={loading || !viewpoint || !IAClass}
           onClick={async () => {
             const assetId = get(asset, 'guid');
             const coords = [
@@ -234,16 +319,45 @@ export default function AnnotationCreator({
               ),
             ];
             const theta = get(rect, 'theta', 0);
-            const newAnnotationId = await postAnnotation(
-              assetId,
-              IAClass,
-              coords,
+            const targetEncounterGuids = pending
+              ? []
+              : await getEncounterGuids(
+                  sightingData,
+                  addEncounterToSighting,
+                );
+
+            const focalEncounterGuid = get(targetEncounterGuids, [0]);
+
+            const postAnnotationResponse = await postAnnotation({
               viewpoint,
+              asset_guid: assetId,
+              ia_class: IAClass,
+              rect: coords,
               theta,
-            );
+              encounterGuid: focalEncounterGuid,
+            });
+            const newAnnotationId =
+              postAnnotationResponse?.data?.guid;
+            let addAnnotationsToSightingEncounterResponse;
             if (newAnnotationId) {
-              refreshSightingData();
-              onClose();
+              if (focalEncounterGuid) {
+                // this doesn't happen if pending or if getting/creating an encounter failed or even if extra encouter Guids were created
+                addAnnotationsToSightingEncounterResponse = await addAnnotationsToSightingEncounter(
+                  {
+                    sightingGuid: sightingId,
+                    encounterGuid: focalEncounterGuid,
+                    annotationGuids: [newAnnotationId],
+                  },
+                );
+              }
+              // hasErrors doesn't get information from inside the onClick call, but that's ok, because all three potential calls have info that we can use to check success
+              const allSucceeded = pending
+                ? postAnnotationResponse?.status === 200
+                : targetEncounterGuids &&
+                  postAnnotationResponse?.status === 200 &&
+                  addAnnotationsToSightingEncounterResponse?.status ===
+                    200;
+              if (allSucceeded) onClose();
             }
           }}
           id="SAVE"

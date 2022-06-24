@@ -1,41 +1,52 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { get, pick } from 'lodash-es';
+import { useHistory } from 'react-router-dom';
+import { useQueryClient } from 'react-query';
 
 import AddIcon from '@material-ui/icons/Add';
 
 import CustomAlert from '../../../components/Alert';
 import CardContainer from '../../../components/cards/CardContainer';
 import MetadataCard from '../../../components/cards/MetadataCard';
+import Link from '../../../components/Link';
 import Text from '../../../components/Text';
 import Button from '../../../components/Button';
 import ButtonMenu from '../../../components/ButtonMenu';
 import MoreMenu from '../../../components/MoreMenu';
 import ConfirmDelete from '../../../components/ConfirmDelete';
 import useEncounterFieldSchemas from '../../../models/encounter/useEncounterFieldSchemas';
+import useGetMe from '../../../models/users/useGetMe';
 import useAddEncounter from '../../../models/encounter/useAddEncounter';
 import useDeleteEncounter from '../../../models/encounter/useDeleteEncounter';
 import useAddEncounterToAGS from '../../../models/assetGroupSighting/useAddEncounterToAGS';
 import useDeleteAGSEncounter from '../../../models/assetGroupSighting/useDeleteAGSEncounter';
 import AnnotationsCard from './AnnotationsCard';
 import EditEncounterMetadata from './EditEncounterMetadata';
-import CreateIndividualModal from './CreateIndividualModal';
 import ManuallyAssignModal from './ManuallyAssignModal';
 import AddAnnotationsDialog from './AddAnnotationsDialog';
+import queryKeys, {
+  getUserSightingsQueryKey,
+} from '../../../constants/queryKeys';
+import { deriveIndividualName } from '../../../utils/nameUtils';
 
 export default function Encounters({
   sightingData,
   refreshSightingData,
   pending,
 }) {
+  const { data, loading: userDataLoading } = useGetMe();
+  const userId = get(data, 'guid');
+  const history = useHistory();
+  const queryClient = useQueryClient();
   const {
-    addEncounter: addEncounterToSighting,
-    loading: addEncounterToSightingLoading,
+    mutate: addEncounterToSighting,
+    isLoading: addEncounterToSightingLoading,
     error: addEncounterToSightingError,
     setError: setAddEncounterError,
   } = useAddEncounter();
 
   const {
-    addEncounterToAGS,
+    mutate: addEncounterToAGS,
     isLoading: addEncounterToAGSLoading,
     error: addEncounterToAGSError,
   } = useAddEncounterToAGS();
@@ -55,6 +66,8 @@ export default function Encounters({
     loading: deleteSightingEncounterLoading,
     error: deleteSightingEncounterError,
     onClearError: deleteEncounterOnClearError,
+    vulnerableObject,
+    setVulnerableObject,
   } = useDeleteEncounter();
 
   const {
@@ -68,13 +81,13 @@ export default function Encounters({
     ? deleteAGSEncounterLoading
     : deleteSightingEncounterLoading;
 
-  const [
-    createIndividualEncounterId,
-    setCreateIndividualEncounterId,
-  ] = useState(null);
   const [encounterToDelete, setEncounterToDelete] = useState(null);
   const [editEncounterInfo, setEditEncounterInfo] = useState(null);
   const [encounterToAssign, setEncounterToAssign] = useState(null);
+  const [
+    messageForConfirmDelete,
+    setMessageForConfirmDelete,
+  ] = useState(null);
   const [
     encounterToAddAnnotations,
     setEncounterToAddAnnotations,
@@ -85,11 +98,37 @@ export default function Encounters({
   const encounterFieldSchemas = useEncounterFieldSchemas();
   const encounters = get(sightingData, 'encounters', []);
 
+  const { identification: identificationStep } =
+    sightingData?.pipeline_status || {};
+
+  const {
+    complete: isIdentificationComplete,
+    failed: isIdentificationFailed,
+  } = identificationStep || {};
+  const isIdReady =
+    isIdentificationComplete && !isIdentificationFailed;
+
+  useEffect(
+    () => {
+      const message = vulnerableObject
+        ? 'BOTH_VULNERABLE_MESSAGE'
+        : 'CONFIRM_DELETE_ENCOUNTER_DESCRIPTION';
+      setMessageForConfirmDelete(message);
+    },
+    [vulnerableObject],
+  );
+
   return (
     <div>
       <ConfirmDelete
-        open={Boolean(encounterToDelete)}
-        onClose={() => setEncounterToDelete(null)}
+        open={Boolean(encounterToDelete && !userDataLoading)}
+        onClose={() => {
+          setMessageForConfirmDelete(
+            'CONFIRM_DELETE_ENCOUNTER_DESCRIPTION',
+          );
+          setVulnerableObject(null);
+          setEncounterToDelete(null);
+        }}
         onDelete={async () => {
           let successful;
           if (pending) {
@@ -97,14 +136,34 @@ export default function Encounters({
               sightingId,
               encounterToDelete,
             );
-          } else {
+          }
+          if (!pending && vulnerableObject) {
+            successful = await deleteSightingEncounter(
+              encounterToDelete,
+              true,
+              true,
+            );
+          }
+          if (!pending && !vulnerableObject) {
             successful = await deleteSightingEncounter(
               encounterToDelete,
             );
           }
           if (successful) {
             setEncounterToDelete(null);
-            refreshSightingData();
+            const navigateAway =
+              vulnerableObject && encounters.length <= 1;
+            setVulnerableObject(null);
+            if (navigateAway) {
+              history.push('/');
+              refreshSightingData();
+              queryClient.invalidateQueries(queryKeys.me);
+              queryClient.invalidateQueries(
+                getUserSightingsQueryKey(userId),
+              );
+            } else {
+              refreshSightingData();
+            }
           }
         }}
         deleteInProgress={deleteEncounterLoading}
@@ -118,21 +177,11 @@ export default function Encounters({
             ? deleteAgsEncounterOnClearError
             : deleteEncounterOnClearError
         }
-        messageId={
-          encounters.length <= 1
-            ? 'CANNOT_DELETE_FINAL_ENCOUNTER_DESCRIPTION'
-            : 'CONFIRM_DELETE_ENCOUNTER_DESCRIPTION'
-        }
-        deleteDisabled={encounters.length <= 1}
-      />
-
-      <CreateIndividualModal
-        encounterId={createIndividualEncounterId}
-        open={Boolean(createIndividualEncounterId)}
-        onClose={() => setCreateIndividualEncounterId(null)}
+        messageId={messageForConfirmDelete}
       />
 
       <ManuallyAssignModal
+        sightingGuid={sightingId}
         encounterId={encounterToAssign}
         open={Boolean(encounterToAssign)}
         onClose={() => setEncounterToAssign(null)}
@@ -163,6 +212,44 @@ export default function Encounters({
             value: schema.getValue(schema, encounter),
           }),
         );
+
+        const individualGuid = encounter?.individual?.guid;
+        const individualName = deriveIndividualName(
+          encounter?.individual,
+          'FirstName',
+          'Unnamed Individual',
+        );
+
+        const actionButtonActions = [
+          {
+            id: 'view-individual',
+            labelId: 'VIEW_INDIVIDUAL',
+            href: `/individuals/${individualGuid}`,
+          },
+        ];
+
+        const identifyButtonActions = [
+          ...(isIdReady
+            ? [
+                {
+                  id: 'view-id-results',
+                  labelId: 'VIEW_IDENTIFICATION_RESULTS',
+                  href: `/match-results/${sightingId}`,
+                },
+              ]
+            : []),
+          {
+            id: 'create-new-individual',
+            labelId: 'CREATE_NEW_INDIVIDUAL',
+            href: `/create-individual?e=${encounterId}`,
+          },
+          {
+            id: 'identify-manually',
+            labelId: 'MANUALLY_ASSIGN',
+            onClick: () => setEncounterToAssign(encounterId),
+          },
+        ];
+
         return (
           <div
             style={{ marginTop: i > 0 ? 20 : 0 }}
@@ -175,52 +262,43 @@ export default function Encounters({
                 alignItems: 'center',
               }}
             >
-              <Text
-                id="ANIMAL_CLUSTER_LABEL"
-                variant="h5"
-                values={{ i: i + 1 }}
-                style={{ marginRight: 20 }}
-              />
+              {individualGuid ? (
+                <Link
+                  newTab
+                  href={`/individuals/${individualGuid}`}
+                  style={{ marginRight: 20 }}
+                >
+                  <Text variant="h5">{individualName}</Text>
+                </Link>
+              ) : (
+                <Text
+                  id="ANIMAL_CLUSTER_LABEL"
+                  variant="h5"
+                  values={{ i: i + 1 }}
+                  style={{ marginRight: 20 }}
+                />
+              )}
               <div style={{ display: 'flex', alignItems: 'center' }}>
                 <ButtonMenu
                   display="primary"
                   size="small"
                   buttonId="identify-animal-cluster"
-                  id="IDENTIFY"
+                  id={individualGuid ? 'ACTIONS' : 'IDENTIFY'}
                   disabled={pending}
-                  actions={[
-                    {
-                      id: 'start-id',
-                      label: 'Kickoff identification',
-                      onClick: Function.prototype,
-                    },
-                    {
-                      id: 'create-new-individual',
-                      label: 'Create new individual',
-                      onClick: () =>
-                        setCreateIndividualEncounterId(encounterId),
-                    },
-                    {
-                      id: 'identify-manually',
-                      label: 'Manually assign',
-                      onClick: () =>
-                        setEncounterToAssign(encounterId),
-                    },
-                  ]}
+                  actions={
+                    individualGuid
+                      ? actionButtonActions
+                      : identifyButtonActions
+                  }
                 />
                 <MoreMenu
                   menuId="cluster-actions"
                   items={[
                     {
-                      id: 'view-history',
-                      onClick: () => {},
-                      label: 'View history',
-                    },
-                    {
                       id: 'delete-cluster',
                       onClick: () =>
                         setEncounterToDelete(encounterId),
-                      label: 'Delete animal',
+                      labelId: 'DELETE_ANIMAL',
                     },
                   ]}
                 />
@@ -276,8 +354,16 @@ export default function Encounters({
             'timeSpecificity',
             'locationId',
           ]);
-          await addEncounter(sightingId, copiedProperties);
-          refreshSightingData();
+          await addEncounter({
+            sightingGuid: sightingId,
+            operations: [
+              {
+                op: 'add',
+                path: '/encounters',
+                value: copiedProperties,
+              },
+            ],
+          });
         }}
         startIcon={<AddIcon />}
         style={{ margin: '12px 0px 20px 20px' }}

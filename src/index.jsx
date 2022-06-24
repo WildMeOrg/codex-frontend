@@ -1,28 +1,38 @@
+import 'react-hot-loader/root'; // This needs to be imported before React.
 import React from 'react';
 import { render } from 'react-dom';
-import { hot } from 'react-hot-loader/root';
 import * as Sentry from '@sentry/react';
+import axios from 'axios';
 import { get } from 'lodash-es';
 
 import 'normalize.css';
 import '../fonts/fonts.css';
 import './styles/globalStyles.css';
 
-import { sentryDsn } from './constants/apiKeys';
 import pjson from '../package.json';
 import App from './App';
 
-if (!__DEV__) {
-  Sentry.init({
-    dsn: sentryDsn,
-    release: `frontend@${get(pjson, 'release')}`,
+axios
+  .get(`${__houston_url__}/api/v1/site-settings/main/sentryDsn`)
+  .then(response => {
+    const sentryDsn = get(response, [
+      'data',
+      'response',
+      'configuration',
+      'sentryDsn',
+      'value',
+    ]);
+    if (sentryDsn) {
+      Sentry.init({
+        dsn: sentryDsn,
+        release: `frontend@${get(pjson, 'release')}`,
+      });
+    }
+  })
+  .finally(() => {
+    const root = document.getElementById('root');
+
+    const load = () => render(<App />, root);
+
+    load();
   });
-}
-
-const root = document.getElementById('root');
-
-const Main = hot(() => <App />);
-
-const load = () => render(<Main />, root);
-
-load();

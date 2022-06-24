@@ -3,12 +3,12 @@ import { useIntl, FormattedMessage } from 'react-intl';
 import { get } from 'lodash-es';
 
 import Grid from '@material-ui/core/Grid';
-import Skeleton from '@material-ui/lab/Skeleton';
 
 import DataDisplay from '../../components/dataDisplays/DataDisplay';
 import ActionIcon from '../../components/ActionIcon';
 import UserDeleteDialog from '../../components/dialogs/UserDeleteDialog';
 import Text from '../../components/Text';
+import useGetUsers from '../../models/users/useGetUsers';
 import UserEditDialog from './UserEditDialog';
 import roleSchema from './constants/roleSchema';
 
@@ -21,10 +21,12 @@ function getRoleLabels(user, intl) {
   );
   return translatedRoles.join(', ');
 }
-export default function UserEditTable({ data, loading, usersError }) {
+export default function UserEditTable() {
   const intl = useIntl();
   const [editUser, setEditUser] = useState(null);
   const [deleteUser, setDeleteUser] = useState(null);
+
+  const { data, loading, error: usersError } = useGetUsers();
 
   const tableColumns = [
     {
@@ -63,7 +65,9 @@ export default function UserEditTable({ data, loading, usersError }) {
       options: {
         displayInFilter: false,
         customBodyRender: (_, user) => (
-          <div style={{ display: 'flex' }}>
+          <div
+            style={{ display: 'flex', justifyContent: 'flex-end' }}
+          >
             <ActionIcon
               variant="view"
               href={`/users/${get(user, 'guid')}`}
@@ -111,10 +115,8 @@ export default function UserEditTable({ data, loading, usersError }) {
         variant="secondary"
         columns={tableColumns}
         data={activeUsers}
+        loading={loading}
       />
-      {loading ? (
-        <Skeleton style={{ transform: 'unset' }} height={44} />
-      ) : null}
       {usersError ? (
         <Text
           id="USER_DATA_ERROR"

@@ -8,6 +8,7 @@ import ViewList from '@material-ui/icons/ViewList';
 import ViewMap from '@material-ui/icons/Language';
 
 import { formatLocationFromSighting } from '../../utils/formatters';
+import useActionsColumnWidth from '../../hooks/useActionsColumnWidth';
 import useOptions from '../../hooks/useOptions';
 import { cellRendererTypes } from '../dataDisplays/cellRenderers';
 import Text from '../Text';
@@ -23,6 +24,7 @@ export default function EncountersCard({
   encounters,
   columns = ['date', 'location', 'owner', 'actions'],
   noDataMessage = 'NO_SIGHTINGS',
+  onDelete,
 }) {
   const [showMapView, setShowMapView] = useState(false);
   const theme = useTheme();
@@ -50,6 +52,8 @@ export default function EncountersCard({
     [get(encounters, 'length')],
   );
 
+  const tooFewEncounters = encounters.length <= 1;
+
   const allColumns = [
     {
       reference: 'date',
@@ -57,6 +61,8 @@ export default function EncountersCard({
       label: 'Date',
       options: {
         cellRenderer: cellRendererTypes.specifiedTime,
+        cellRendererProps: { noWrap: true },
+        width: '20%',
       },
     },
     {
@@ -65,6 +71,7 @@ export default function EncountersCard({
       label: 'Location',
       options: {
         cellRenderer: cellRendererTypes.location,
+        cellRendererProps: { noWrap: true },
       },
     },
     {
@@ -73,6 +80,7 @@ export default function EncountersCard({
       label: 'Owner',
       options: {
         cellRenderer: cellRendererTypes.user,
+        cellRendererProps: { noWrap: true },
       },
     },
     {
@@ -80,12 +88,26 @@ export default function EncountersCard({
       name: 'guid',
       label: 'Actions',
       options: {
-        customBodyRender: (_, encounter) => (
+        width: useActionsColumnWidth(2),
+        customBodyRender: (_, encounter) => [
           <ActionIcon
+            key="view"
             variant="view"
             href={`/sightings/${encounter?.sighting}`}
-          />
-        ),
+          />,
+          <ActionIcon
+            key="remove"
+            variant={
+              tooFewEncounters
+                ? 'removeEncFromIndividualDisabled'
+                : 'removeEncFromIndividual'
+            }
+            disabled={tooFewEncounters}
+            onClick={() => {
+              onDelete(encounter?.guid);
+            }}
+          />,
+        ],
       },
     },
   ];
@@ -137,10 +159,12 @@ export default function EncountersCard({
       )}
       {!noEncounters && !showMapView && (
         <DataDisplay
+          idKey="guid"
           noTitleBar
           tableSize="medium"
           columns={filteredColumns}
           data={encountersWithLocationData}
+          tableStyles={{ tableLayout: 'fixed' }}
         />
       )}
       {!noEncounters && showMapView && <div>Map goes here</div>}

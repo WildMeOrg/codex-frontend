@@ -10,7 +10,7 @@ import AddIcon from '@material-ui/icons/Add';
 import CustomAlert from '../../../components/Alert';
 
 import useSiteSettings from '../../../models/site/useSiteSettings';
-import usePutSiteSettings from '../../../models/site/usePutSiteSettings';
+import usePutSiteSetting from '../../../models/site/usePutSiteSetting';
 import Button from '../../../components/Button';
 import ActionIcon from '../../../components/ActionIcon';
 import ConfirmDelete from '../../../components/ConfirmDelete';
@@ -34,11 +34,13 @@ import { cellRendererTypes } from '../../../components/dataDisplays/cellRenderer
 const defaultCategories = [
   ...Object.values(defaultSightingCategories).map(c => ({
     ...c,
+    key: c.name,
     type: categoryTypes.sighting,
     isDefault: true,
   })),
   ...Object.values(defaultIndividualCategories).map(c => ({
     ...c,
+    key: c.name,
     type: categoryTypes.individual,
     isDefault: true,
   })),
@@ -51,7 +53,11 @@ export default function FieldSettings() {
   const [dialogData, setDialogData] = useState(null);
   const [deleteCategory, setDeleteCategory] = useState(null);
   const { data: siteSettings, loading } = useSiteSettings();
-  const { putSiteSetting, error, setError } = usePutSiteSettings();
+  const {
+    mutate: putSiteSetting,
+    error,
+    setError,
+  } = usePutSiteSetting();
 
   const customFieldCategories = get(
     siteSettings,
@@ -59,12 +65,22 @@ export default function FieldSettings() {
     [],
   );
 
-  const categories = [...defaultCategories, ...customFieldCategories];
+  const customFieldCategoriesWithKey = customFieldCategories.map(
+    c => ({
+      ...c,
+      key: c?.id,
+    }),
+  );
+
+  const categories = [
+    ...defaultCategories,
+    ...customFieldCategoriesWithKey,
+  ];
 
   const categoryColumns = [
     {
       name: 'labelId',
-      label: intl.formatMessage({ id: 'LABEL' }),
+      labelId: 'LABEL',
       options: {
         customBodyRender: (labelId, category) => {
           if (labelId) return <Text variant="body2" id={labelId} />;
@@ -78,14 +94,12 @@ export default function FieldSettings() {
     },
     {
       name: 'type',
-      label: intl.formatMessage({
-        id: 'TYPE',
-      }),
+      labelId: 'TYPE',
       options: { cellRenderer: cellRendererTypes.capitalizedString },
     },
     {
       name: 'actions',
-      label: intl.formatMessage({ id: 'ACTIONS' }),
+      labelId: 'ACTIONS',
       options: {
         customBodyRender: (_, category) => {
           const { isDefault } = category;
@@ -138,17 +152,16 @@ export default function FieldSettings() {
             values={{ category: get(deleteCategory, 'label') }}
           />
         }
-        onDelete={() => {
+        onDelete={async () => {
           const newCustomCategories = removeItemById(
             deleteCategory,
             customFieldCategories,
           );
-          putSiteSetting(
-            categorySettingName,
-            newCustomCategories,
-          ).then(() => {
-            onCloseConfirmDelete();
+          const response = await putSiteSetting({
+            property: categorySettingName,
+            data: newCustomCategories,
           });
+          if (response?.status === 200) onCloseConfirmDelete();
         }}
       />
       {dialogData && (
@@ -201,20 +214,22 @@ export default function FieldSettings() {
           </DialogContent>
           <DialogActions style={{ padding: '0px 24px 24px 24px' }}>
             {dialogData.isDefault ? (
-              <Button display="basic" onClick={onCloseCategoryDialog}>
-                <FormattedMessage id="CLOSE" />
-              </Button>
+              <Button
+                display="basic"
+                onClick={onCloseCategoryDialog}
+                id="CLOSE"
+              />
             ) : (
               <>
                 <Button
                   display="basic"
                   onClick={onCloseCategoryDialog}
-                >
-                  <FormattedMessage id="CANCEL" />
-                </Button>
+                  id="CANCEL"
+                />
                 <Button
                   display="primary"
-                  onClick={() => {
+                  id="SAVE"
+                  onClick={async () => {
                     if (!(dialogData.label && dialogData.type)) {
                       setError(
                         intl.formatMessage({
@@ -226,17 +241,15 @@ export default function FieldSettings() {
                         dialogData,
                         customFieldCategories,
                       );
-                      putSiteSetting(
-                        categorySettingName,
-                        newCustomCategories,
-                      ).then(() => {
-                        onCloseCategoryDialog();
+                      const response = await putSiteSetting({
+                        property: categorySettingName,
+                        data: newCustomCategories,
                       });
+                      if (response?.status === 200)
+                        onCloseCategoryDialog();
                     }
                   }}
-                >
-                  <FormattedMessage id="SAVE" />
-                </Button>
+                />
               </>
             )}
           </DialogActions>
@@ -263,9 +276,8 @@ export default function FieldSettings() {
               timeCreated: Date.now(),
             })
           }
-        >
-          <FormattedMessage id="ADD_NEW" />
-        </Button>
+          id="ADD_NEW"
+        />
       </div>
       <Text
         component="p"
@@ -275,6 +287,7 @@ export default function FieldSettings() {
       />
       <DataDisplay
         noTitleBar
+        idKey="key"
         variant="secondary"
         columns={categoryColumns}
         data={categories}

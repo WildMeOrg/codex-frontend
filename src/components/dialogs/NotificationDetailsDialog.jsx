@@ -7,8 +7,11 @@ import DialogActions from '@material-ui/core/DialogActions';
 
 import StandardDialog from '../StandardDialog';
 import Text from '../Text';
+import Link from '../Link';
+import ButtonLink from '../ButtonLink';
 import Button from '../Button';
 import CustomAlert from '../Alert';
+import { getNotificationProps } from '../../utils/notificationUtils';
 
 export default function NotificationDetailsDialog({
   open,
@@ -25,27 +28,17 @@ export default function NotificationDetailsDialog({
     onClose();
   };
 
-  const senderName = get(notification, 'sender_name', 'Unnamed User');
-  const user1Name = get(notification, [
-    'message_values',
-    'user1_name',
-  ]);
-  const user2Name = get(notification, [
-    'message_values',
-    'user2_name',
-  ]);
-  const individual1Names = notification?.names || []; // TODO flesh out more once this is included in notifications DEX-739
-  const individual1NicknameObject = individual1Names.find(
-    n => n.context === 'nickname',
-  );
-  const individual1Nickname =
-    individual1NicknameObject?.value || 'Unnamed individual';
-  const individual2Names = notification?.names || []; // TODO flesh out more once this is included in notifications DEX-739
-  const individual2NicknameObject = individual2Names.find(
-    n => n.context === 'nickname',
-  );
-  const individual2Nickname =
-    individual2NicknameObject?.value || 'Unnamed individual';
+  const {
+    userName,
+    userNameGuid,
+    user1Name,
+    user2Name,
+    yourIndName,
+    yourIndividualGuid,
+    theirIndividualName,
+    theirIndividualGuid,
+    formattedDeadline,
+  } = getNotificationProps(notification);
 
   return (
     <StandardDialog
@@ -58,23 +51,58 @@ export default function NotificationDetailsDialog({
           style={{ marginBottom: 20 }}
           id={moreDetailedDescription}
           values={{
-            userName: senderName,
+            userName: (
+              <span>
+                <Link newTab href={`/users/${userNameGuid}`}>
+                  {userName}
+                </Link>
+              </span>
+            ),
             user1Name,
             user2Name,
-            individual1Nickname,
-            individual2Nickname,
+            yourIndividualName: (
+              <span>
+                <Link
+                  newTab
+                  href={`/individuals/${yourIndividualGuid}`}
+                >
+                  {yourIndName}
+                </Link>
+              </span>
+            ),
+            theirIndividualName: (
+              <span>
+                <Link
+                  newTab
+                  href={`/individuals/${theirIndividualGuid}`}
+                >
+                  {theirIndividualName}
+                </Link>
+              </span>
+            ),
+            formattedDeadline,
           }}
         />
       </DialogContent>
       <DialogActions style={{ padding: '0px 24px 24px 24px' }}>
         {buttons.map(currentButton => (
           <div>
-            <Button
-              display="primary"
-              id={get(currentButton, 'buttonId')}
-              loading={get(currentButton, 'loading')}
-              onClick={get(currentButton, 'onClick')}
-            />
+            {get(currentButton, 'onClick') && (
+              <Button
+                display="primary"
+                id={get(currentButton, 'buttonId')}
+                loading={get(currentButton, 'loading')}
+                onClick={get(currentButton, 'onClick')}
+              />
+            )}
+            {get(currentButton, 'href') && (
+              <ButtonLink
+                display="primary"
+                id={get(currentButton, 'buttonId')}
+                loading={get(currentButton, 'loading')}
+                href={get(currentButton, 'href')}
+              />
+            )}
           </div>
         ))}
       </DialogActions>

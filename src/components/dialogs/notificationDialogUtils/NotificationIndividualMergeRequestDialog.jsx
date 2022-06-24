@@ -1,9 +1,8 @@
 import React from 'react';
-import { useQueryClient } from 'react-query';
 import { get } from 'lodash-es';
 
-import usePatchCollaboration from '../../../models/collaboration/usePatchCollaboration';
-import queryKeys from '../../../constants/queryKeys';
+import useBlockMerge from '../../../models/individual/useBlockMerge';
+import useAllowMerge from '../../../models/individual/useAllowMerge';
 import { notificationSchema } from '../../../constants/notificationSchema';
 import NotificationDetailsDialog from '../NotificationDetailsDialog';
 
@@ -12,59 +11,52 @@ export default function NotificationIndividualMergeDialog({
   onClose,
   notification,
 }) {
-  const queryClient = useQueryClient();
   const notificationType = notification?.message_type;
+  const mergeRequestId = notification?.message_values?.request_id;
   const currentNotificationSchema = get(
     notificationSchema,
     notificationType,
   );
-  const path = get(currentNotificationSchema, 'path');
   const {
-    patchCollaborationsAsync,
-    error,
-    isError,
-  } = usePatchCollaboration(); // TODO once individual merge is fleshed out, change this
-  // TODO will likely need individual IDs
-  const grantOnClickFn = async () => {
-    const temp = 'changeMe';
-    const response = await patchCollaborationsAsync(temp, [
-      // TODO this will change
-      {
-        op: 'replace',
-        path,
-        value: 'approved',
-      },
-    ]);
-    if (response?.status === 200) {
-      onClose();
-      queryClient.invalidateQueries(queryKeys.me);
-    }
+    mutate: blockMerge,
+    error: blockError,
+    loading: blockLoading,
+  } = useBlockMerge();
+
+  const {
+    mutate: allowMerge,
+    error: allowError,
+    loading: allowLoading,
+  } = useAllowMerge();
+
+  const isError = blockError || allowError;
+
+  const error = blockError ? blockError : allowError; // eslint-disable-line
+
+  const onClickAllow = async requestId => {
+    const response = await allowMerge({
+      mergeRequestId: requestId,
+    });
+    if (response?.status === 200) onClose();
   };
-  const temp = 'changeMe';
-  const declineOnClickFn = async () => {
-    const response = await patchCollaborationsAsync(temp, [
-      // TODO this will change
-      {
-        op: 'replace',
-        path,
-        value: 'declined',
-      },
-    ]);
-    if (response?.status === 200) {
-      onClose();
-      queryClient.invalidateQueries(queryKeys.me); // TODO this might change
-    }
+  const onClickBlock = async requestId => {
+    const response = await blockMerge({
+      mergeRequestId: requestId,
+    });
+    if (response?.status === 200) onClose();
   };
   const availableButtons = [
     {
-      name: 'grant', // TODO allow instead of grant?
-      buttonId: 'GRANT_ACCESS',
-      onClick: grantOnClickFn,
+      name: 'allow',
+      buttonId: 'ALLOW_MERGE',
+      onClick: () => onClickAllow(mergeRequestId),
+      loading: allowLoading,
     },
     {
-      name: 'decline',
-      buttonId: 'DECLINE_REQUEST',
-      onClick: declineOnClickFn,
+      name: 'block',
+      buttonId: 'BLOCK_MERGE',
+      onClick: () => onClickBlock(mergeRequestId),
+      loading: blockLoading,
     },
   ];
   return (

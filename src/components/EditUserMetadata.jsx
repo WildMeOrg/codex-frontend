@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { get, map, omit } from 'lodash-es';
+import { get, map, omit, find } from 'lodash-es';
 
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 
 import CustomAlert from './Alert';
-import usePatchUser from '../models/users/usePatchUser';
+import { useReplaceUserProperties } from '../models/users/usePatchUser';
+import { sanitizeTwitterHandle } from '../utils/formatters';
+import { intelligentAgentSchema } from '../constants/intelligentAgentSchema';
 import InputRow from './fields/edit/InputRow';
 import Button from './Button';
 import PasswordVerificationAlert from './PasswordVerificationAlert';
@@ -20,6 +22,12 @@ function getInitialFormValues(schema) {
   }, {});
 }
 
+const twitterSchema = find(
+  intelligentAgentSchema,
+  schema => schema?.platformName === 'twitter',
+);
+const twitterMetadataKey = twitterSchema?.userMetadataKey;
+
 export default function EditUserMetadata({
   open,
   userId,
@@ -27,11 +35,11 @@ export default function EditUserMetadata({
   onClose,
 }) {
   const {
-    replaceUserProperties,
+    mutate: replaceUserProperties,
     loading,
     error,
-    setError,
-  } = usePatchUser(userId);
+    clearError,
+  } = useReplaceUserProperties();
 
   const [fieldValues, setFieldValues] = useState({});
   const [passwordRequired, setPasswordRequired] = useState(false);
@@ -95,7 +103,7 @@ export default function EditUserMetadata({
         <Button
           display="basic"
           onClick={() => {
-            setError(null);
+            clearError();
             setPasswordRequired(false);
             setPassword('');
             setFieldValues(getInitialFormValues(metadata));
@@ -123,18 +131,27 @@ export default function EditUserMetadata({
                 : omit(fieldValues, ['email']);
               const patchValues = map(
                 patchFieldValues,
-                (value, key) => ({
-                  path: `/${key}`,
-                  value,
-                }),
+                (value, key) => {
+                  if (key === twitterMetadataKey) {
+                    const sanitizedVal = sanitizeTwitterHandle(value);
+                    return {
+                      path: `/${key}`,
+                      value: sanitizedVal,
+                    };
+                  }
+                  return {
+                    path: `/${key}`,
+                    value,
+                  };
+                },
               );
-
-              const successfulUpdate = await replaceUserProperties(
-                patchValues,
+              const response = await replaceUserProperties({
+                userGuid: userId,
+                properties: patchValues,
                 password,
-              );
-              if (successfulUpdate) {
-                setError(null);
+              });
+              if (response?.status === 200) {
+                clearError();
                 setPasswordRequired(false);
                 setPassword('');
                 onClose();

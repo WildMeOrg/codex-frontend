@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { get, isEmpty } from 'lodash-es';
-import { useQueryClient } from 'react-query';
 
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 
-import queryKeys from '../../constants/queryKeys';
 import CustomAlert from '../../components/Alert';
 import usePatchSighting from '../../models/sighting/usePatchSighting';
-import usePatchAssetGroupSighting from '../../models/assetGroupSighting/usePatchAssetGroupSighting';
+import usePatchAGS from '../../models/assetGroupSighting/usePatchAGS';
 import InputRow from '../../components/fields/edit/InputRow';
 import Button from '../../components/Button';
 import StandardDialog from '../../components/StandardDialog';
@@ -30,26 +28,24 @@ export default function EditSightingMetadata({
   sightingId,
   metadata,
   onClose,
-  refreshSightingData,
   pending,
 }) {
-  const queryClient = useQueryClient();
   const {
-    updateProperties: updateSightingProperties,
+    mutate: updateSightingProperties,
     loading: sightingLoading,
     error: sightingError,
-    setError: setSightingError,
+    clearError: clearSightingError,
   } = usePatchSighting();
 
   const {
-    updateProperties: updateAgsProperties,
+    mutate: updateAgsProperties,
     loading: agsLoading,
     error: agsError,
-    setError: setAgsError,
-  } = usePatchAssetGroupSighting();
+    clearError: clearAgsError,
+  } = usePatchAGS();
 
   const error = pending ? agsError : sightingError;
-  const setError = pending ? setAgsError : setSightingError;
+  const clearError = pending ? clearAgsError : clearSightingError;
   const loading = pending ? agsLoading : sightingLoading;
   const updateProperties = pending
     ? updateAgsProperties
@@ -77,12 +73,17 @@ export default function EditSightingMetadata({
     [get(metadata, 'length')],
   );
 
+  function handleClose() {
+    clearError();
+    onClose();
+  }
+
   return (
     <StandardDialog
       PaperProps={{ style: { width: 800 } }}
       maxWidth="lg"
       open={open}
-      onClose={onClose}
+      onClose={handleClose}
       titleId="EDIT_SIGHTING_METADATA"
     >
       <DialogContent style={{ minWidth: 200 }}>
@@ -129,14 +130,7 @@ export default function EditSightingMetadata({
         )}
       </DialogContent>
       <DialogActions style={{ padding: '0px 24px 24px 24px' }}>
-        <Button
-          display="basic"
-          onClick={() => {
-            setError(null);
-            onClose();
-          }}
-          id="CANCEL"
-        />
+        <Button display="basic" onClick={handleClose} id="CANCEL" />
         <Button
           loading={loading}
           display="primary"
@@ -144,17 +138,12 @@ export default function EditSightingMetadata({
             const properties = { ...defaultFieldValues };
             if (!isEmpty(customFieldValues))
               properties.customFields = customFieldValues;
-            const successfulUpdate = await updateProperties(
-              sightingId,
+            const response = await updateProperties({
+              agsGuid: pending ? sightingId : undefined,
+              sightingGuid: pending ? undefined : sightingId,
               properties,
-            );
-            if (successfulUpdate) {
-              refreshSightingData();
-              queryClient.invalidateQueries(
-                queryKeys.assetGroupSightings,
-              );
-              onClose();
-            }
+            });
+            if (response.status === 200) onClose();
           }}
           id="SAVE"
         />

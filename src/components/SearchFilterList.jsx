@@ -6,7 +6,6 @@ import Text from './Text';
 export default function SearchFilterList({
   formFilters,
   setFormFilters,
-  updateFilters,
 }) {
   return (
     <div style={{ margin: '16px 0 0 16px' }}>
@@ -24,7 +23,6 @@ export default function SearchFilterList({
                   f => f.filterId !== filter.filterId,
                 );
                 setFormFilters(newFormFilters);
-                updateFilters();
               }}
             />
           </Grid>

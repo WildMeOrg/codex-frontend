@@ -3,7 +3,7 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import TextField from '@material-ui/core/TextField';
 
 import fieldTypes from '../../../constants/fieldTypesNew';
-import useLabel from '../../../hooks/useLabel';
+import useEditLabel from '../../../hooks/useEditLabel';
 import useDescription from '../../../hooks/useDescription';
 import FormCore from './FormCore';
 
@@ -17,7 +17,7 @@ const TextInput = function(props) {
     ...rest
   } = props;
 
-  const label = useLabel(schema);
+  const editLabel = useEditLabel(schema);
   const description = useDescription(schema);
   const showDescription = !minimalLabels && description;
 
@@ -37,7 +37,7 @@ const TextInput = function(props) {
         id={schema.name}
         multiline={isLongString}
         maxRows={isLongString ? 5 : undefined}
-        label={label}
+        label={editLabel}
         type={type}
         onChange={e => {
           const inputValue = e.target.value;

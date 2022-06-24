@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { hot } from 'react-hot-loader/root';
 import { BrowserRouter, useLocation } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
 // import { ReactQueryDevtools } from 'react-query/devtools';
@@ -11,6 +12,7 @@ import esPolyfill from '@formatjs/intl-numberformat/dist/locale-data/es';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { createTheme, ThemeProvider } from '@material-ui/core/styles';
 
+import errorTypes from './constants/errorTypes';
 import useSiteSettings from './models/site/useSiteSettings';
 import materialTheme from './styles/materialTheme';
 import messagesEn from '../locale/en.json';
@@ -49,7 +51,7 @@ function AppWithQueryClient() {
 
   if (error) {
     document.title = 'Server Unavailable';
-    return <SadScreen variant="serverError" />;
+    return <SadScreen variant={errorTypes.serverError} />;
   }
   if (!primaryColor) return null;
   const theme = createTheme(materialTheme(primaryColor));
@@ -73,7 +75,7 @@ function AppWithQueryClient() {
   );
 }
 
-export default function App() {
+function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <AppWithQueryClient />
@@ -81,3 +83,7 @@ export default function App() {
     </QueryClientProvider>
   );
 }
+
+// react-hot-loader automatically ensures that it is not executed in production
+// and has a minimal footprint.
+export default hot(() => <App />);

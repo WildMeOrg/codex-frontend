@@ -10,9 +10,11 @@ export default function MultiSelectViewer({
   defaultLabel = 'Option label not found',
 }) {
   const { choices } = schema;
+  const splitValues =
+    typeof value === 'string' ? value.split(',') : value;
 
-  const selectedOptions = choices.filter(choice =>
-    value.find(v => choice[lookupKey] === v),
+  const selectedOptions = choices?.filter(choice =>
+    splitValues?.find(v => choice[lookupKey] === v),
   );
 
   const selectedOptionLabels = selectedOptions.map(o =>

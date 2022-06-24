@@ -1,5 +1,7 @@
 import React from 'react';
+
 import { get } from 'lodash-es';
+
 import { notificationSchema } from '../../../constants/notificationSchema';
 import NotificationDetailsDialog from '../NotificationDetailsDialog';
 
@@ -13,7 +15,15 @@ export default function NotificationIndividualMergeCompleteDialog({
     notificationSchema,
     notificationType,
   );
-  const availableButtons = [];
+  const mergedIndividualGuid =
+    notification?.message_values?.target_individual_guid;
+  const availableButtons = [
+    {
+      name: 'view',
+      buttonId: 'VIEW_INDIVIDUAL',
+      href: `/individuals/${mergedIndividualGuid}`,
+    },
+  ];
   return (
     <NotificationDetailsDialog
       open={open}

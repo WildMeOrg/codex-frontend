@@ -46,6 +46,7 @@ export default function MoreMenu({ menuId, items = [], ...rest }) {
         {items.map(item => (
           <MenuItem
             key={item.id}
+            disabled={item.disabled}
             onClick={e => {
               item.onClick(e);
               handleClose();

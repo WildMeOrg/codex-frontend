@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useIntl } from 'react-intl';
 import { get } from 'lodash-es';
+import { useQueryClient } from 'react-query';
 
 import { useTheme } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
@@ -17,22 +18,25 @@ import useDocumentTitle from '../../hooks/useDocumentTitle';
 import MainColumn from '../../components/MainColumn';
 import LoadingScreen from '../../components/LoadingScreen';
 import Text from '../../components/Text';
+import Link from '../../components/Link';
 import useNotifications from '../../models/notification/useNotifications';
 import usePatchNotification from '../../models/notification/usePatchNotification';
 import { calculatePrettyTimeElapsedSince } from '../../utils/formatters';
 import { notificationSchema } from '../../constants/notificationSchema';
 import { notificationTypes } from '../../components/dialogs/notificationDialogUtils';
+import queryKeys from '../../constants/queryKeys';
+import { getNotificationProps } from '../../utils/notificationUtils';
 
 export default function Notifications() {
   const intl = useIntl();
   const theme = useTheme();
+  const queryClient = useQueryClient();
 
   useDocumentTitle('NOTIFICATIONS');
 
   const {
     data: notifications,
     loading: notificationsLoading,
-    refresh: refreshNotifications,
   } = useNotifications(true);
 
   const { markRead } = usePatchNotification();
@@ -84,33 +88,17 @@ export default function Notifications() {
                   notificationType,
                 );
                 const read = get(notification, 'is_read', false);
-                const senderName = get(
-                  notification,
-                  'sender_name',
-                  'Unnamed User',
-                );
-                const user1Name = get(notification, [
-                  'message_values',
-                  'user1_name',
-                ]);
-                const user2Name = get(notification, [
-                  'message_values',
-                  'user2_name',
-                ]);
-                const individual1Names = notification?.names || []; // TODO flesh out more once this is included in notifications DEX-739
-                const individual1NicknameObject = individual1Names.find(
-                  n => n.context === 'nickname',
-                );
-                const individual1Nickname =
-                  individual1NicknameObject?.value ||
-                  'Unnamed individual';
-                const individual2Names = notification?.names || []; // TODO flesh out more once this is included in notifications DEX-739
-                const individual2NicknameObject = individual2Names.find(
-                  n => n.context === 'nickname',
-                );
-                const individual2Nickname =
-                  individual2NicknameObject?.value ||
-                  'Unnamed individual';
+                const {
+                  userName,
+                  userNameGuid,
+                  user1Name,
+                  user2Name,
+                  yourIndName,
+                  yourIndividualGuid,
+                  theirIndividualName,
+                  theirIndividualGuid,
+                  formattedDeadline,
+                } = getNotificationProps(notification);
                 const createdDate = notification?.created;
                 const timeSince = calculatePrettyTimeElapsedSince(
                   createdDate,
@@ -131,11 +119,39 @@ export default function Notifications() {
                           currentNotificationSchema?.notificationMessage,
                       },
                       {
-                        userName: senderName,
+                        userName: (
+                          <span>
+                            <Link
+                              newTab
+                              href={`/users/${userNameGuid}`}
+                            >
+                              {userName}
+                            </Link>
+                          </span>
+                        ),
                         user1Name,
                         user2Name,
-                        individual1Nickname,
-                        individual2Nickname,
+                        yourIndividualName: (
+                          <span>
+                            <Link
+                              newTab
+                              href={`/individuals/${yourIndividualGuid}`}
+                            >
+                              {yourIndName}
+                            </Link>
+                          </span>
+                        ),
+                        theirIndividualName: (
+                          <span>
+                            <Link
+                              newTab
+                              href={`/individuals/${theirIndividualGuid}`}
+                            >
+                              {theirIndividualName}
+                            </Link>
+                          </span>
+                        ),
+                        formattedDeadline,
                       },
                     )}
                   </Text>
@@ -169,7 +185,12 @@ export default function Notifications() {
                         dialog: notificationDialog,
                       });
                       await markRead(get(notification, 'guid'));
-                      refreshNotifications();
+                      queryClient.invalidateQueries(
+                        queryKeys.allNotifications,
+                      );
+                      queryClient.invalidateQueries(
+                        queryKeys.unreadNotifications,
+                      );
                     }}
                     style={{ cursor: 'pointer' }}
                   >

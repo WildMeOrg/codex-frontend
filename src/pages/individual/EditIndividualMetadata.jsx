@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { get, set, pick } from 'lodash-es';
+import React, { useCallback, useState } from 'react';
+import { useIntl } from 'react-intl';
+import { get, isEmpty, set } from 'lodash-es';
 
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -9,6 +10,22 @@ import CustomAlert from '../../components/Alert';
 import InputRow from '../../components/fields/edit/InputRow';
 import Button from '../../components/Button';
 import StandardDialog from '../../components/StandardDialog';
+import Text from '../../components/Text';
+
+function deriveNameGuid(metadata, schemaName) {
+  const foundSchema = metadata.find(
+    schema => schema.name === schemaName,
+  );
+  return foundSchema?.nameGuid;
+}
+
+function getDefaultFieldMetadata(metadata = []) {
+  return metadata.filter(field => !field.customField);
+}
+
+function getCustomFieldMetadata(metadata = []) {
+  return metadata.filter(field => field.customField);
+}
 
 function getInitialFormValues(schema, fieldKey) {
   return schema.reduce((memo, field) => {
@@ -30,30 +47,48 @@ export default function EditIndividualMetadata({
   onClose,
   refreshIndividualData,
 }) {
+  const intl = useIntl();
+
   const {
     updateIndividualProperties,
     loading,
-    error,
-    setError,
+    error: patchIndividualError,
+    setError: setPatchIndividualError,
   } = usePatchIndividual();
 
   // hotfix //
   metadata = metadata || [];
   // hotfix //
 
-  const defaultFieldMetadata = metadata.filter(
-    field => !field.customField,
-  );
-  const customFieldMetadata = metadata.filter(
-    field => field.customField,
-  );
-
   const [defaultFieldValues, setDefaultFieldValues] = useState(
-    getInitialFormValues(defaultFieldMetadata, 'name'),
+    getInitialFormValues(getDefaultFieldMetadata(metadata), 'name'),
   );
 
   const [customFieldValues, setCustomFieldValues] = useState(
-    getInitialFormValues(customFieldMetadata, 'id'),
+    getInitialFormValues(getCustomFieldMetadata(metadata), 'id'),
+  );
+
+  const [formErrors, setFormErrors] = useState([]);
+
+  const showErrorAlert =
+    patchIndividualError || formErrors.length > 0;
+
+  const handleClose = useCallback(
+    () => {
+      setDefaultFieldValues(
+        getInitialFormValues(
+          getDefaultFieldMetadata(metadata),
+          'name',
+        ),
+      );
+      setCustomFieldValues(
+        getInitialFormValues(getCustomFieldMetadata(metadata), 'id'),
+      );
+      setPatchIndividualError(null);
+      setFormErrors([]);
+      onClose();
+    },
+    [metadata, setPatchIndividualError, onClose],
   );
 
   return (
@@ -61,7 +96,7 @@ export default function EditIndividualMetadata({
       PaperProps={{ style: { width: 800 } }}
       maxWidth="lg"
       open={open}
-      onClose={onClose}
+      onClose={handleClose}
       titleId="EDIT_INDIVIDUAL_METADATA"
     >
       <DialogContent style={{ minWidth: 200 }}>
@@ -104,31 +139,108 @@ export default function EditIndividualMetadata({
           );
         })}
 
-        {error && (
+        {showErrorAlert && (
           <CustomAlert severity="error" titleId="SUBMISSION_ERROR">
-            {error}
+            {formErrors.length > 0 &&
+              formErrors.map(formError => (
+                <Text key={formError} variant="body2">
+                  {formError}
+                </Text>
+              ))}
+            {patchIndividualError && (
+              <Text variant="body2">{patchIndividualError}</Text>
+            )}
           </CustomAlert>
         )}
       </DialogContent>
       <DialogActions style={{ padding: '0px 24px 24px 24px' }}>
-        <Button
-          display="basic"
-          onClick={() => {
-            setError(null);
-            onClose();
-          }}
-          id="CANCEL"
-        />
+        <Button display="basic" onClick={handleClose} id="CANCEL" />
         <Button
           loading={loading}
           display="primary"
           onClick={async () => {
-            const currentPatchableValues = pick(defaultFieldValues, [
-              'names',
-            ]);
+            // validation
+            const requiredFieldErrors = metadata.reduce(
+              (memo, schema) => {
+                if (!schema?.required) return memo;
+
+                const isFieldEmpty = schema.customField
+                  ? !customFieldValues[schema.id]
+                  : !defaultFieldValues[schema.name];
+
+                if (isFieldEmpty) {
+                  const fieldName = schema.labelId
+                    ? intl.formatMessage({ id: schema.labelId })
+                    : schema.label;
+
+                  memo.push(
+                    intl.formatMessage(
+                      { id: 'INCOMPLETE_FIELD' },
+                      { fieldName },
+                    ),
+                  );
+                }
+
+                return memo;
+              },
+              [],
+            );
+
+            setFormErrors(requiredFieldErrors);
+            if (requiredFieldErrors.length > 0) return;
+
+            // Always include the firstName. If it does not already exist, add it.
+            // Otherwise, replace it.
+            const firstNameGuid = deriveNameGuid(
+              metadata,
+              'firstName',
+            );
+            const firstNameProperty = firstNameGuid
+              ? {
+                  op: 'replace',
+                  value: defaultFieldValues.firstName,
+                  guid: firstNameGuid,
+                }
+              : {
+                  op: 'add',
+                  value: defaultFieldValues.firstName,
+                  context: 'FirstName',
+                };
+
+            const names = [firstNameProperty];
+
+            // If there was an adoptionName, update it with whatever the value is now.
+            // If there was not an adoptionName, but there is a value now, add it.
+            // If an adoptionName did not already exist, don't add it.
+            const adoptionNameGuid = deriveNameGuid(
+              metadata,
+              'adoptionName',
+            );
+            const adoptionNameFieldValue =
+              defaultFieldValues.adoptionName;
+            if (adoptionNameGuid) {
+              names.push({
+                op: 'replace',
+                value: adoptionNameFieldValue,
+                guid: adoptionNameGuid,
+              });
+            } else if (adoptionNameFieldValue) {
+              names.push({
+                op: 'add',
+                value: adoptionNameFieldValue,
+                context: 'AdoptionName',
+              });
+            }
+
+            const properties = { sex: defaultFieldValues.sex, names };
+
+            if (!isEmpty(customFieldValues)) {
+              properties.customFields = customFieldValues;
+            }
+
             const successfulUpdate = await updateIndividualProperties(
               individualId,
-              currentPatchableValues,
+              properties,
             );
             if (successfulUpdate) {
               refreshIndividualData();

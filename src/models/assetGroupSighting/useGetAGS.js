@@ -1,13 +1,14 @@
 import { getAGSQueryKey } from '../../constants/queryKeys';
-import useGet from '../../hooks/useGet';
+import useFetch from '../../hooks/useFetch';
 
-export default function useGetAGS(assetGroupSightingId) {
-  return useGet({
+export default function useGetAGS(assetGroupSightingId, config = {}) {
+  return useFetch({
     queryKey: getAGSQueryKey(assetGroupSightingId),
     url: `/asset_groups/sighting/as_sighting/${assetGroupSightingId}`,
     queryOptions: {
-      refetchInterval: 5000,
-      enabled: Boolean(assetGroupSightingId),
+      retry: 1,
+      refetchInterval: config.refetch ? 5000 : false,
+      enabled: Boolean(assetGroupSightingId) && !config.disabled,
     },
   });
 }

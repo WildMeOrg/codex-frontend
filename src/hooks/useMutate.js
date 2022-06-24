@@ -9,9 +9,15 @@ const methods = {
   delete: 'delete',
 };
 
-function formatError(response) {
+function formatError(failureObject) {
   try {
-    return response?.error ? response.error.toJSON().message : null;
+    const jsError = failureObject?.error;
+    if (jsError) return jsError.toJSON().message;
+    const houstonErrorMessage =
+      failureObject?.response?.data?.message;
+    if (houstonErrorMessage) return houstonErrorMessage;
+    const browserErrorMessage = failureObject?.message;
+    return browserErrorMessage || null;
   } catch (e) {
     return 'Error could not be formatted as JSON';
   }
@@ -25,14 +31,17 @@ export default function useMutate({
   deriveData = Function.prototype,
   params,
   deriveParams = Function.prototype,
-  queryKeys = [],
-  deriveQueryKeys = () => [],
+  fetchKeys = [],
+  deriveFetchKeys = () => [],
+  invalidateKeys = [],
+  deriveInvalidateKeys = () => [],
   dataAccessor = result => result?.data?.data,
   onSuccess = Function.prototype,
   prependHoustonApiUrl = true,
 }) {
   const queryClient = useQueryClient();
   const [displayedError, setDisplayedError] = useState(null);
+  const [success, setSuccess] = useState(null);
   const [statusCode, setStatusCode] = useState(null);
 
   const mutation = useMutation(async mutationArgs => {
@@ -41,24 +50,46 @@ export default function useMutate({
       ? `${__houston_url__}/api/v1${urlSuffix}`
       : urlSuffix;
 
-    const response = await axios.request({
-      url: completeUrl,
-      // withCredentials: true,
-      method,
-      data: data || deriveData(mutationArgs),
-      params: params || deriveParams(mutationArgs),
-    });
-    const status = response?.status;
-    setStatusCode(status);
-    if (status === 200 || status === 204) {
-      const queryKeysFromArgs = deriveQueryKeys(mutationArgs);
-      const invalidationKeys = [...queryKeys, ...queryKeysFromArgs];
-      invalidationKeys.forEach(queryKey => {
-        queryClient.invalidateQueries(queryKey);
+    try {
+      const response = await axios.request({
+        url: completeUrl,
+        // withCredentials: true,
+        method,
+        data: data || deriveData(mutationArgs),
+        params: params || deriveParams(mutationArgs),
       });
-      onSuccess(response);
+
+      const status = response?.status;
+      setStatusCode(status);
+      if (status === 200 || status === 204) {
+        const invalidations = [
+          ...invalidateKeys,
+          ...deriveInvalidateKeys(mutationArgs),
+        ];
+        invalidations.forEach(queryKey => {
+          queryClient.invalidateQueries(queryKey);
+        });
+
+        const fetches = [
+          ...fetchKeys,
+          ...deriveFetchKeys(mutationArgs),
+        ];
+
+        for (const queryKey of fetches) {
+          await queryClient.refetchQueries(queryKey);
+        }
+
+        if (displayedError) setDisplayedError(null);
+        setSuccess(true);
+        onSuccess(response);
+      }
+
+      return response;
+    } catch (error) {
+      setStatusCode(error?.response?.status);
+      setDisplayedError(formatError(error));
+      return error?.response;
     }
-    return response;
   });
 
   const error = formatError(mutation);
@@ -67,6 +98,7 @@ export default function useMutate({
     () => {
       if (error) {
         setDisplayedError(error);
+        if (success) setSuccess(null);
       }
     },
     [error],
@@ -81,9 +113,9 @@ export default function useMutate({
     data: dataAccessor(mutation),
     loading: mutation?.isLoading,
     error: displayedError,
-    clearError: () => {
-      setDisplayedError(null);
-    },
+    clearError: () => setDisplayedError(null),
+    success,
+    clearSuccess: () => setSuccess(null),
   };
 }
 

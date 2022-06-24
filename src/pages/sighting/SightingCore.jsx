@@ -1,38 +1,36 @@
 import React, { useMemo, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useIntl, FormattedMessage } from 'react-intl';
 import { get } from 'lodash-es';
 import { useQueryClient } from 'react-query';
-
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
 
 import {
   getAGSQueryKey,
   getSightingQueryKey,
 } from '../../constants/queryKeys';
-import timePrecisionMap from '../../constants/timePrecisionMap';
-import defaultSightingSrc from '../../assets/defaultSighting.png';
+import errorTypes from '../../constants/errorTypes';
 import MainColumn from '../../components/MainColumn';
-import Link from '../../components/Link';
-import Text from '../../components/Text';
 import LoadingScreen from '../../components/LoadingScreen';
 import SadScreen from '../../components/SadScreen';
-import MoreMenu from '../../components/MoreMenu';
 import ConfirmDelete from '../../components/ConfirmDelete';
-import EntityHeader from '../../components/EntityHeader';
+import CustomAlert from '../../components/Alert';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import useDeleteSighting from '../../models/sighting/useDeleteSighting';
 import useDeleteAssetGroupSighting from '../../models/assetGroupSighting/useDeleteAssetGroupSighting';
 import useSightingFieldSchemas from '../../models/sighting/useSightingFieldSchemas';
-import { formatDateCustom } from '../../utils/formatters';
+import SightingEntityHeader from './SightingEntityHeader';
 import Annotations from './Annotations';
 import Photographs from './Photographs';
 import OverviewContent from './OverviewContent';
-import SightingHistoryDialog from './SightingHistoryDialog';
+// import SightingHistoryDialog from './SightingHistoryDialog';
 import CommitBanner from './CommitBanner';
-import FeaturedPhoto from './featuredPhoto/FeaturedPhoto';
 import Encounters from './encounters/Encounters';
+
+const sightingTabs = {
+  '#overview': '#overview',
+  '#annotations': '#annotations',
+  '#photographs': '#photographs',
+  '#individuals': '#individuals',
+};
 
 export default function SightingCore({
   data,
@@ -43,7 +41,6 @@ export default function SightingCore({
   id,
 }) {
   const history = useHistory();
-  const intl = useIntl();
   const queryClient = useQueryClient();
 
   const fieldSchemas = useSightingFieldSchemas();
@@ -59,6 +56,8 @@ export default function SightingCore({
     loading: deleteInProgress,
     error: deleteSightingError,
     onClearError: deleteSightingOnClearError,
+    vulnerableIndividual,
+    onClearVulnerableIndividual,
   } = useDeleteSighting();
   const {
     deleteAssetGroupSighting,
@@ -66,6 +65,10 @@ export default function SightingCore({
     error: deleteAssetGroupSightingError,
     onClearError: deleteAsgOnClearError,
   } = useDeleteAssetGroupSighting();
+
+  const onClearError = pending
+    ? deleteAsgOnClearError
+    : deleteSightingOnClearError;
 
   /*
   known issue: if data or fieldschemas change values
@@ -85,61 +88,54 @@ export default function SightingCore({
 
   useDocumentTitle(`Sighting ${id}`, { translateMessage: false });
 
-  const [historyOpen, setHistoryOpen] = useState(false);
+  // const [historyOpen, setHistoryOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-  const activeTab = window.location.hash || '#overview';
 
+  const isPreparationInProgress = get(
+    data,
+    'pipeline_status.preparation.inProgress',
+  );
+
+  const activeTab = isPreparationInProgress
+    ? sightingTabs['#overview']
+    : sightingTabs[window.location.hash] || sightingTabs['#overview'];
+
+  if (error) {
+    return (
+      <SadScreen
+        statusCode={statusCode}
+        variantOverrides={{
+          [errorTypes.notFound]: {
+            subtitleId: 'SIGHTING_NOT_FOUND',
+            descriptionId: 'SIGHTING_NOT_FOUND_DESCRIPTION',
+          },
+        }}
+      />
+    );
+  }
   if (loading) return <LoadingScreen />;
-  if (statusCode === 404)
-    return (
-      <SadScreen
-        subtitleId="SIGHTING_NOT_FOUND"
-        descriptionId="SIGHTING_NOT_FOUND_DESCRIPTION"
-        variant="genericError"
-      />
-    );
-  if (!data)
-    return (
-      <SadScreen
-        variant="notFoundOcean"
-        subtitleId="SIGHTING_NOT_FOUND"
-      />
-    );
-  if (error) return <SadScreen variant="genericError" />;
 
   const assets = get(data, 'assets', []);
 
-  const sightingTime = data?.time;
-  const sightingTimeSpecificity = data?.timeSpecificity;
-  const formatSpecification = get(
-    timePrecisionMap,
-    [sightingTimeSpecificity, 'prettyFormat'],
-    'yyyy-MM-dd',
-  );
-  const sightingDisplayDate = formatDateCustom(
-    sightingTime,
-    formatSpecification,
-  );
-
-  const sightingCreator = data?.creator;
-  const creatorName =
-    sightingCreator?.full_name ||
-    intl.formatMessage({ id: 'UNNAMED_USER' });
-  const creatorUrl = `/users/${sightingCreator?.guid}`;
-
   return (
     <MainColumn fullWidth>
-      <SightingHistoryDialog
+      {/* <SightingHistoryDialog
         open={historyOpen}
         onClose={() => setHistoryOpen(false)}
-      />
+      /> */}
       <ConfirmDelete
         open={deleteDialogOpen}
-        onClose={() => setDeleteDialogOpen(false)}
+        onClose={() => {
+          onClearVulnerableIndividual();
+          onClearError();
+          setDeleteDialogOpen(false);
+        }}
         onDelete={async () => {
           let deleteResults;
           if (pending) {
             deleteResults = await deleteAssetGroupSighting(id);
+          } else if (vulnerableIndividual) {
+            deleteResults = await deleteSighting(id, true);
           } else {
             deleteResults = await deleteSighting(id);
           }
@@ -159,83 +155,43 @@ export default function SightingCore({
             ? deleteAssetGroupSightingError
             : deleteSightingError
         }
-        onClearError={
-          pending ? deleteAsgOnClearError : deleteSightingOnClearError
+        errorTitleId={
+          vulnerableIndividual
+            ? 'REQUEST_REQUIRES_ADDITIONAL_CONFIRMATION'
+            : undefined
         }
-        messageId="CONFIRM_DELETE_SIGHTING_DESCRIPTION"
+        alertSeverity={vulnerableIndividual ? 'warning' : 'error'}
+        onClearError={onClearError}
+        messageId={
+          vulnerableIndividual
+            ? 'SIGHTING_DELETE_VULNERABLE_INDIVIDUAL_MESSAGE'
+            : 'CONFIRM_DELETE_SIGHTING_DESCRIPTION'
+        }
       />
-      <EntityHeader
-        renderAvatar={
-          <FeaturedPhoto
-            data={pending ? null : data}
-            loading={loading}
-            refreshSightingData={refreshData}
-            defaultPhotoSrc={defaultSightingSrc}
-          />
-        }
-        name={intl.formatMessage(
-          { id: 'ENTITY_HEADER_SIGHTING_DATE' },
-          { date: sightingDisplayDate },
-        )}
-        renderTabs={
-          <Tabs
-            value={activeTab.replace('#', '')}
-            onChange={(_, newValue) => {
-              window.location.hash = newValue;
-            }}
-            variant="scrollable"
-          >
-            <Tab
-              label={<FormattedMessage id="OVERVIEW" />}
-              value="overview"
-            />
-            <Tab
-              label={<FormattedMessage id="PHOTOGRAPHS" />}
-              value="photographs"
-            />
-            <Tab
-              label={<FormattedMessage id="ANNOTATIONS" />}
-              value="annotations"
-            />
-            <Tab
-              label={<FormattedMessage id="ANIMALS" />}
-              value="individuals"
-            />
-          </Tabs>
-        }
-        renderOptions={
-          <div style={{ display: 'flex' }}>
-            {/* <Button id="SUBSCRIBE" display="primary" /> */}
-            <MoreMenu
-              menuId="sighting-actions"
-              items={[
-                {
-                  id: 'view-history',
-                  onClick: () => setHistoryOpen(true),
-                  label: 'View history',
-                },
-                {
-                  id: 'delete-sighting',
-                  onClick: () => setDeleteDialogOpen(true),
-                  label: 'Delete sighting',
-                },
-              ]}
-            />
-          </div>
-        }
-      >
-        {sightingCreator && (
-          <Text variant="body2">
-            {intl.formatMessage({ id: 'REPORTED_BY' })}
-            <Link to={creatorUrl}>{creatorName}</Link>
-          </Text>
-        )}
-      </EntityHeader>
-      <CommitBanner
-        sightingId={id}
+      <SightingEntityHeader
+        activeTab={activeTab}
+        data={data}
+        loading={loading}
         pending={pending}
-        sightingData={data}
+        preparing={isPreparationInProgress}
+        guid={id}
+        // setHistoryOpen={setHistoryOpen}
+        setDeleteDialogOpen={setDeleteDialogOpen}
       />
+      {isPreparationInProgress ? (
+        <CustomAlert
+          titleId="PENDING_IMAGE_PROCESSING"
+          descriptionId="PENDING_IMAGE_PROCESSING_MESSAGE"
+          severity="info"
+          style={{ marginBottom: 24 }}
+        />
+      ) : (
+        <CommitBanner
+          sightingId={id}
+          pending={pending}
+          sightingData={data}
+        />
+      )}
       {activeTab === '#overview' && (
         <OverviewContent
           metadata={metadata}
@@ -249,13 +205,14 @@ export default function SightingCore({
         <Photographs
           assets={assets}
           sightingData={data}
-          refreshSightingData={refreshData}
+          pending={pending}
         />
       )}
       {activeTab === '#annotations' && (
         <Annotations
           assets={assets}
           refreshSightingData={refreshData}
+          pending={pending}
         />
       )}
       {activeTab === '#individuals' && (

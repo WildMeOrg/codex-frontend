@@ -10,7 +10,10 @@ import Link from '../Link';
 import DataDisplay from '../dataDisplays/DataDisplay';
 import CollaborationsDialog from './collaborations/CollaborationsDialog';
 
-export default function CollaborationsCard({ userId }) {
+export default function CollaborationsCard({
+  userId,
+  htmlId = null,
+}) {
   const intl = useIntl();
   const [activeCollaboration, setActiveCollaboration] = useState(
     null,
@@ -123,7 +126,7 @@ export default function CollaborationsCard({ userId }) {
   ];
 
   return (
-    <Card title="Collaborations">
+    <Card title="Collaborations" htmlId={htmlId}>
       <CollaborationsDialog
         open={Boolean(activeCollaboration)}
         onClose={() => setActiveCollaboration(null)}

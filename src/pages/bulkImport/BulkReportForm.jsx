@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { FormattedMessage } from 'react-intl';
 import { FlatfileButton } from '@flatfile/react';
 import { get } from 'lodash-es';
 import { useHistory } from 'react-router-dom';
@@ -8,67 +7,74 @@ import { useQueryClient } from 'react-query';
 import { useTheme } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import CustomAlert from '../../components/Alert';
 
 import queryKeys from '../../constants/queryKeys';
 import usePostAssetGroup from '../../models/assetGroup/usePostAssetGroup';
+import useSiteSettings from '../../models/site/useSiteSettings';
 import useSightingFieldSchemas from '../../models/sighting/useSightingFieldSchemas';
 import useEncounterFieldSchemas from '../../models/encounter/useEncounterFieldSchemas';
-import prepareAssetGroup from './utils/prepareAssetGroup';
-import useBulkImportFields from './utils/useBulkImportFields';
-import { flatfileKey } from '../../constants/apiKeys';
-
 import LoadingScreen from '../../components/LoadingScreen';
 import InputRow from '../../components/fields/edit/InputRow';
-import TermsAndConditionsDialog from '../../components/report/TermsAndConditionsDialog';
 import Button from '../../components/Button';
 import Text from '../../components/Text';
-import InlineButton from '../../components/InlineButton';
+
 import BulkFieldBreakdown from './BulkFieldBreakdown';
+import prepareAssetGroup from './utils/prepareAssetGroup';
+import useBulkImportFields from './utils/useBulkImportFields';
+import {
+  validateMinMax,
+  validateIndividualNames,
+  validateAssetStrings,
+} from './utils/flatfileValidators';
 
-const minmax = {
-  decimalLatitude: [-180, 180],
-  decimalLongitude: [-180, 180],
-  timeYear: [1900, 2021],
-  timeMonth: [1, 12],
-  timeDay: [1, 31],
-  timeHour: [0, 24],
-  timeMinutes: [0, 60],
-  timeSeconds: [0, 60],
-};
-const minmaxKeys = Object.keys(minmax);
+async function onRecordChange(record, recordIndex, filenames) {
+  let messages = validateMinMax(record);
 
-function recordHook(record) {
-  const recordHookResponse = {};
-  minmaxKeys.forEach(key => {
-    if (record[key]) {
-      const value = parseFloat(record[key]);
-      const min = minmax[key][0];
-      const max = minmax[key][1];
-      if (value < min || value > max) {
-        recordHookResponse[key] = {
-          info: [
-            {
-              message: `Value must be between ${min} and ${max}`,
-              level: 'error',
-            },
-          ],
+  const firstName = record?.firstName;
+  if (firstName) {
+    try {
+      const nameValidationResponse = await validateIndividualNames([
+        [firstName, recordIndex],
+      ]);
+      const nameMessage = get(nameValidationResponse, [0, 0]);
+
+      if (nameMessage) {
+        messages = {
+          ...messages,
+          firstName: nameMessage,
         };
       }
+    } catch (e) {
+      console.error(
+        `Error validating individual name "${firstName}" at ${recordIndex}`,
+        e,
+      );
     }
-  });
+  }
 
-  return recordHookResponse;
+  const assetString = record?.assetReferences;
+  if (assetString) {
+    const assetValidationResponse = validateAssetStrings(filenames, [
+      [assetString, recordIndex],
+    ]);
+    const assetMessage = get(assetValidationResponse, [0, 0]);
+    if (assetMessage) {
+      messages = { ...messages, assetReferences: assetMessage };
+    }
+  }
+
+  return messages;
+}
+
+function onRecordInit(record) {
+  return validateMinMax(record);
 }
 
 export default function BulkReportForm({ assetReferences }) {
   const theme = useTheme();
   const history = useHistory();
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const [termsError, setTermsError] = useState(false);
-  const [acceptedTerms, setAcceptedTerms] = useState(false);
+  const { data: siteSettingsData } = useSiteSettings();
   const [sightingData, setSightingData] = useState(null);
   const [detectionModel, setDetectionModel] = useState('');
   const queryClient = useQueryClient();
@@ -77,12 +83,7 @@ export default function BulkReportForm({ assetReferences }) {
     setEverythingReadyForFlatfile,
   ] = useState(false);
 
-  const {
-    postAssetGroup,
-    loading,
-    error: postError,
-  } = usePostAssetGroup();
-  const error = termsError || postError;
+  const { postAssetGroup, loading, error } = usePostAssetGroup();
 
   const {
     numEncounterFieldsForFlatFile,
@@ -91,6 +92,12 @@ export default function BulkReportForm({ assetReferences }) {
   } = useBulkImportFields();
   const sightingFieldSchemas = useSightingFieldSchemas();
   const encounterFieldSchemas = useEncounterFieldSchemas();
+
+  const recaptchaPublicKey = get(siteSettingsData, [
+    'recaptchaPublicKey',
+    'value',
+  ]);
+
   const detectionModelField = sightingFieldSchemas.find(
     schema => schema.name === 'speciesDetectionModel',
   );
@@ -110,12 +117,12 @@ export default function BulkReportForm({ assetReferences }) {
 
   if (!everythingReadyForFlatfile) return <LoadingScreen />;
 
+  const safeAssetReferences = assetReferences || [];
+  const filenames = safeAssetReferences.map(a => a?.path);
+  const flatfileKey = get(siteSettingsData, ['flatfileKey', 'value']);
+
   return (
     <>
-      <TermsAndConditionsDialog
-        visible={dialogOpen}
-        onClose={() => setDialogOpen(false)}
-      />
       <div style={{ marginLeft: 12 }}>
         <Text variant="h6" style={{ marginTop: 20 }}>
           Review available fields
@@ -140,12 +147,11 @@ export default function BulkReportForm({ assetReferences }) {
           }}
         >
           <FlatfileButton
-            devMode
-            managed
-            maxRecords={1000}
             licenseKey={flatfileKey}
             customer={{ userId: 'dev' }}
             settings={{
+              devMode: __DEV__,
+              managed: true,
               disableManualInput: true,
               title: 'Import sightings data',
               type: 'bulk_import',
@@ -154,10 +160,27 @@ export default function BulkReportForm({ assetReferences }) {
                 primaryButtonColor: theme.palette.primary.main,
               },
             }}
-            onRecordInit={recordHook}
-            onRecordChange={recordHook}
+            onRecordInit={onRecordInit}
+            onRecordChange={(record, recordIndex) =>
+              onRecordChange(record, recordIndex, filenames)
+            }
             onData={async results => {
               setSightingData(results.data);
+            }}
+            fieldHooks={{
+              firstName: async values => {
+                try {
+                  return await validateIndividualNames(values);
+                } catch (e) {
+                  console.error(
+                    'Error validating individual names: ',
+                    e,
+                  );
+                  return [];
+                }
+              },
+              assetReferences: assetStringInputs =>
+                validateAssetStrings(filenames, assetStringInputs),
             }}
             render={(importer, launch) => (
               <Button
@@ -169,9 +192,12 @@ export default function BulkReportForm({ assetReferences }) {
             )}
           />
           {sightingData ? (
-            <Text variant="body2" style={{ margin: '8px 0 8px 4px' }}>
-              {`${sightingData.length} sightings imported.`}
-            </Text>
+            <Text
+              id="ENCOUNTERS_IMPORTED_COUNT"
+              values={{ encounterCount: sightingData.length }}
+              variant="body2"
+              style={{ margin: '8px 0 8px 4px' }}
+            />
           ) : null}
 
           {detectionModelField && (
@@ -188,38 +214,11 @@ export default function BulkReportForm({ assetReferences }) {
           )}
         </Paper>
       </Grid>
-      <Grid item>
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={acceptedTerms}
-              onChange={() => {
-                setAcceptedTerms(!acceptedTerms);
-                if (!acceptedTerms && termsError)
-                  setTermsError(false);
-              }}
-            />
-          }
-          label={
-            <span>
-              <FormattedMessage id="TERMS_CHECKBOX_1" />
-              <InlineButton onClick={() => setDialogOpen(true)}>
-                <FormattedMessage id="TERMS_CHECKBOX_2" />
-              </InlineButton>
-              <FormattedMessage id="END_OF_SENTENCE" />
-            </span>
-          }
-        />
-      </Grid>
 
       {error && (
         <Grid style={{ marginTop: 12 }} item>
           <CustomAlert severity="error" titleId="SUBMISSION_ERROR">
-            {termsError ? (
-              <Text variant="body2" id="TERMS_ERROR" />
-            ) : (
-              postError
-            )}
+            {error}
           </CustomAlert>
         </Grid>
       )}
@@ -233,29 +232,40 @@ export default function BulkReportForm({ assetReferences }) {
       >
         <Button
           onClick={async () => {
-            // check that terms and conditions were accepted
-            if (acceptedTerms) {
-              const sightings = prepareAssetGroup(
-                sightingData,
-                assetReferences,
-              );
-              const assetGroupData = await postAssetGroup({
-                description: 'Bulk import from user',
-                uploadType: 'bulk',
-                speciesDetectionModel: [detectionModel || null],
-                transactionId: get(assetReferences, [
-                  0,
-                  'transactionId',
-                ]),
-                sightings,
+            const sightings = prepareAssetGroup(
+              sightingData,
+              assetReferences,
+            );
+            const assetGroup = {
+              description: 'Bulk import from user',
+              uploadType: 'bulk',
+              speciesDetectionModel: [detectionModel || null],
+              transactionId: get(assetReferences, [
+                0,
+                'transactionId',
+              ]),
+              sightings,
+            };
+
+            if (window.grecaptcha) {
+              const grecaptchaReady = new Promise(resolve => {
+                window.grecaptcha.ready(() => {
+                  resolve();
+                });
               });
-              const assetGroupId = get(assetGroupData, 'guid');
-              if (assetGroupId) {
-                history.push(`/bulk-import/success/${assetGroupId}`);
-                queryClient.invalidateQueries(queryKeys.me);
-              }
-            } else {
-              setTermsError(true);
+
+              await grecaptchaReady;
+              const token = await window.grecaptcha.execute(
+                recaptchaPublicKey,
+                { action: 'submit' },
+              );
+              assetGroup.token = token;
+            }
+            const assetGroupData = await postAssetGroup(assetGroup);
+            const assetGroupId = get(assetGroupData, 'guid');
+            if (assetGroupId) {
+              history.push(`/bulk-import/success/${assetGroupId}`);
+              queryClient.invalidateQueries(queryKeys.me);
             }
           }}
           style={{ width: 200 }}

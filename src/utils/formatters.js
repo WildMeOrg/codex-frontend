@@ -1,5 +1,6 @@
 import { get, round, find, some, map } from 'lodash-es';
 import { format, formatDistance } from 'date-fns';
+import timePrecisionMap from '../constants/timePrecisionMap';
 
 export const isMutuallyRevoked = members => {
   const memberViewStates = map(members, member =>
@@ -59,7 +60,7 @@ export const formatFilename = (input, characterLimit = 40) => {
   return `${head}...${tail}`;
 };
 
-export const formatDate = (input, fancy) => {
+export const formatDate = (input, fancy = false, fallback = '') => {
   const formatter = fancy ? 'PP' : 'yyyy-MM-dd HH:mm';
   try {
     const jsDate =
@@ -68,7 +69,7 @@ export const formatDate = (input, fancy) => {
     return formattedDate;
   } catch (error) {
     console.error(error);
-    return '';
+    return fallback;
   }
 };
 
@@ -83,6 +84,15 @@ export const formatDateCustom = (input, formatSpecification) => {
     return '';
   }
 };
+
+export function formatSpecifiedTime(time, timeSpecificity) {
+  const formatSpecification = get(
+    timePrecisionMap,
+    [timeSpecificity, 'intlFormat'],
+    'yyyy-MM-dd',
+  );
+  return formatDateCustom(time, formatSpecification);
+}
 
 const elapsedTimeCache = {};
 export const getElapsedTimeInWords = (
@@ -272,4 +282,8 @@ export const formatLocationFromSighting = (
       : intl.formatMessage({ id: 'REGION_NAME_REMOVED' });
   }
   return '';
+};
+
+export const sanitizeTwitterHandle = value => {
+  return value.replace(/^@/, '');
 };

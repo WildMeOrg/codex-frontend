@@ -1,5 +1,4 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
 import { useTheme } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 
@@ -9,10 +8,9 @@ import ButtonLink from '../../components/ButtonLink';
 import Text from '../../components/Text';
 import BaoHappy from '../../components/svg/BaoHappy';
 
-export default function ReportSuccess({ authenticated }) {
+export default function ReportSuccess() {
   const theme = useTheme();
   const themeColor = theme.palette.primary.main;
-  const { id } = useParams();
   useDocumentTitle('REPORT_SUCCESS_TITLE');
 
   return (
@@ -44,24 +42,12 @@ export default function ReportSuccess({ authenticated }) {
         direction="column"
         style={{ padding: 16, maxWidth: 340 }}
       >
-        {authenticated && (
-          <Grid item style={{ position: 'relative' }}>
-            <ButtonLink
-              style={{
-                width: '100%',
-              }}
-              display="primary"
-              href={`/sightings/${id}`}
-              id="VIEW_SIGHTING"
-            />
-          </Grid>
-        )}
         <Grid item style={{ position: 'relative' }}>
           <ButtonLink
             style={{
               width: '100%',
             }}
-            display={authenticated ? 'secondary' : 'primary'}
+            display="primary"
             href="/report"
             id="REPORT_ANOTHER_SIGHTING"
           />
@@ -69,7 +55,7 @@ export default function ReportSuccess({ authenticated }) {
         <Grid item style={{ position: 'relative' }}>
           <ButtonLink
             style={{ width: '100%' }}
-            display={authenticated ? 'tertiary' : 'secondary'}
+            display="secondary"
             href="/"
             id="RETURN_HOME"
           />

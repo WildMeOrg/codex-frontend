@@ -1,5 +1,6 @@
 import React from 'react';
 import { range } from 'lodash-es';
+
 import Skeleton from '@material-ui/lab/Skeleton';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -7,6 +8,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import IconButton from '@material-ui/core/IconButton';
 import EditIcon from '@material-ui/icons/Edit';
+
 import Button from '../Button';
 import Text from '../Text';
 import Card from './Card';
@@ -15,6 +17,12 @@ const badValues = [null, undefined, ''];
 function fieldValueGood(field) {
   const value = field?.value;
   if (badValues.includes(value)) return false;
+  if (Array.isArray(value)) {
+    if (value?.length < 1) return false;
+    const removeNulls = value.filter(entry => entry !== null);
+    if (removeNulls?.length < 1) return false;
+  }
+
   if (value?.time === null && value?.timeSpecificity === null)
     return false;
   return true;
@@ -25,7 +33,7 @@ export default function MetadataCard({
   titleId = 'METADATA',
   metadata,
   editable = false,
-  showDefaultValues = false,
+  showDefaultValues = true,
   editButtonId = 'REPORT_METADATA',
   onEdit,
 }) {

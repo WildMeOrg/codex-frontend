@@ -1,9 +1,17 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { get, capitalize } from 'lodash-es';
+import {
+  get,
+  capitalize,
+  map,
+  reduce,
+  uniqBy,
+  slice,
+} from 'lodash-es';
 import { useQueryClient } from 'react-query';
 
+import errorTypes from '../../constants/errorTypes';
 import { getIndividualQueryKey } from '../../constants/queryKeys';
 import useIndividual from '../../models/individual/useIndividual';
 import useDeleteIndividual from '../../models/individual/useDeleteIndividual';
@@ -11,7 +19,7 @@ import usePatchIndividual from '../../models/individual/usePatchIndividual';
 
 // VERILY BAD HOTFIX //
 import defaultIndividualSrc from '../../assets/defaultIndividual.png';
-import FeaturedPhoto from '../sighting/featuredPhoto/FeaturedPhoto';
+import FeaturedPhoto from '../../components/FeaturedPhoto';
 // VERILY BAD HOTFIX //
 
 import useIndividualFieldSchemas from '../../models/individual/useIndividualFieldSchemas';
@@ -20,7 +28,6 @@ import MoreMenu from '../../components/MoreMenu';
 import EntityHeader from '../../components/EntityHeader';
 import MainColumn from '../../components/MainColumn';
 import SadScreen from '../../components/SadScreen';
-import Button from '../../components/Button';
 import Text from '../../components/Text';
 import CardContainer from '../../components/cards/CardContainer';
 import EncountersCard from '../../components/cards/EncountersCard';
@@ -28,47 +35,139 @@ import MetadataCard from '../../components/cards/MetadataCard';
 import GalleryCard from '../../components/cards/GalleryCard';
 import ConfirmDelete from '../../components/ConfirmDelete';
 import RelationshipsCard from '../../components/cards/RelationshipsCard';
-import CooccurrenceCard from '../../components/cards/CooccurrenceCard';
+// import CooccurrenceCard from '../../components/cards/CooccurrenceCard';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import EditIndividualMetadata from './EditIndividualMetadata';
-import fakeAssets from './fakeAssets';
-import fakeCoocs from './fakeCoocs';
-import fakeRelationships from './fakeRelationships';
+import MergeDialog from './MergeDialog';
+import {
+  deriveIndividualName,
+  deriveIndividualNameGuid,
+} from '../../utils/nameUtils';
 
 export default function Individual() {
   const intl = useIntl();
   const { id } = useParams();
   const queryClient = useQueryClient();
-  const { data: individualData, statusCode, loading } = useIndividual(
-    id,
-  );
+  const {
+    data: individualData,
+    statusCode: individualDataStatusCode,
+    loading,
+    error: individualDataError,
+  } = useIndividual(id);
   const history = useHistory();
   const fieldSchemas = useIndividualFieldSchemas();
 
-  function refreshIndividualData() {
-    const queryKey = getIndividualQueryKey(id);
-    queryClient.invalidateQueries(queryKey);
-  }
+  const refreshIndividualData = useCallback(
+    () => {
+      const queryKey = getIndividualQueryKey(id);
+      queryClient.invalidateQueries(queryKey);
+    },
+    [queryClient, id],
+  );
+
+  const individualDataForFeaturedPhoto = useMemo(
+    () => {
+      const allAssets = reduce(
+        individualData?.encounters,
+        (memo, encounter) => {
+          const newAssets = map(
+            get(encounter, 'annotations', []),
+            annotation => ({
+              src: annotation?.asset_src,
+              guid: annotation?.asset_guid,
+              altText: annotation?.created
+                ? intl.formatMessage({
+                    id: 'ANNOTATION_CREATED',
+                  }) + annotation?.created
+                : intl.formatMessage({
+                    id: 'ANNOTATION_WITH_CREATION_DATE_UNKNOWN',
+                  }),
+            }),
+          );
+          return [...memo, ...newAssets];
+        },
+        [],
+      );
+      const assets = uniqBy(allAssets, asset => asset.src);
+      return {
+        assets,
+        featuredAssetGuid: individualData?.featuredAssetGuid,
+        guid: individualData?.guid,
+      };
+    },
+    [individualData],
+  );
 
   const metadata = useMemo(
     () => {
       if (!individualData || !fieldSchemas) return null;
-      return fieldSchemas.map(schema => ({
-        ...schema,
-        value: schema.getValue(schema, individualData),
-      }));
+      return fieldSchemas.map(schema => {
+        const augmentedSchema = {
+          ...schema,
+          value: schema.getValue(schema, individualData),
+        };
+
+        if (schema.name === 'firstName') {
+          augmentedSchema.nameGuid = deriveIndividualNameGuid(
+            individualData,
+            'FirstName',
+          );
+        } else if (schema.name === 'adoptionName') {
+          augmentedSchema.nameGuid = deriveIndividualNameGuid(
+            individualData,
+            'AdoptionName',
+          );
+        }
+
+        return augmentedSchema;
+      });
     },
     [individualData, fieldSchemas],
   );
+  const encounters = get(individualData, 'encounters', []);
 
-  const names = individualData?.names || [];
-  const defaultNameObject = names.find(
-    n => n.context === 'defaultName',
+  const assetSources = useMemo(
+    () => {
+      const combinedAssets = reduce(
+        encounters,
+        (memo, encounter) => {
+          const annotations = get(encounter, 'annotations', []);
+          const modifiedAssets = map(
+            annotations,
+            (annotation, index) => ({
+              number: index,
+              guid: annotation?.asset_guid,
+              src: annotation?.asset_src,
+              alt: annotation?.created
+                ? 'Annotation created: ' + annotation?.created
+                : 'Annotation image with no creation date',
+            }),
+          );
+          return [...memo, ...modifiedAssets];
+        },
+        [],
+      );
+      const uniqueModifiedAssets = uniqBy(
+        combinedAssets,
+        asset => asset.src,
+      );
+      const firstNineAssets = slice(uniqueModifiedAssets, 0, 9);
+      return firstNineAssets;
+    },
+    [individualData],
   );
-  const defaultName =
-    defaultNameObject?.value || 'Unnamed individual';
-  const nicknameObject = names.find(n => n.context === 'nickname');
-  const nickname = nicknameObject?.value || 'Unnamed individual';
+
+  const [firstName, adoptionName] = useMemo(
+    () => [
+      deriveIndividualName(
+        individualData,
+        'FirstName',
+        intl.formatMessage({ id: 'UNNAMED_INDIVIDUAL' }),
+      ),
+      deriveIndividualName(individualData, 'AdoptionName'),
+    ],
+    [individualData],
+  );
 
   const {
     deleteIndividual,
@@ -84,25 +183,35 @@ export default function Individual() {
     setError: setPatchError,
   } = usePatchIndividual();
 
-  useDocumentTitle(capitalize(defaultName), {
+  useDocumentTitle(capitalize(firstName), {
     translateMessage: false,
   });
   const [editingProfile, setEditingProfile] = useState(false);
+  const [merging, setMerging] = useState(false);
   const [deletingIndividual, setDeletingIndividual] = useState(false);
   const [deleteEncounterId, setDeleteEncounterId] = useState(null);
 
-  if (loading) return <LoadingScreen />;
-
-  if (statusCode === 404)
+  if (individualDataError)
     return (
       <SadScreen
-        variant="notFoundOcean"
-        subtitleId="INDIVIDUAL_NOT_FOUND"
+        statusCode={individualDataStatusCode}
+        variantOverrides={{
+          [errorTypes.notFound]: {
+            subtitleId: 'INDIVIDUAL_NOT_FOUND',
+            descriptionId: 'INDIVIDUAL_NOT_FOUND_DESCRIPTION',
+          },
+        }}
       />
     );
+  if (loading) return <LoadingScreen />;
 
   return (
     <MainColumn fullWidth>
+      <MergeDialog
+        open={merging}
+        onClose={() => setMerging(false)}
+        individualGuid={id}
+      />
       <EditIndividualMetadata
         open={editingProfile}
         onClose={() => setEditingProfile(false)}
@@ -118,7 +227,6 @@ export default function Individual() {
             id,
             deleteEncounterId,
           );
-
           if (deleteSuccessful) {
             setDeleteEncounterId(null);
             refreshIndividualData();
@@ -145,75 +253,77 @@ export default function Individual() {
         messageId="CONFIRM_DELETE_INDIVIDUAL"
       />
       <EntityHeader
-        name={defaultName}
+        name={firstName}
         renderAvatar={
           <FeaturedPhoto
-            data={null}
-            loading={false}
-            refreshSightingData={Function.prototype}
+            data={individualDataForFeaturedPhoto}
+            loading={loading}
             defaultPhotoSrc={defaultIndividualSrc}
+            refreshData={refreshIndividualData}
+            individualId={individualData?.guid}
           />
         }
         renderOptions={
           <div style={{ display: 'flex' }}>
-            <Button display="primary">SUBSCRIBE</Button>
+            {/* <Button display="primary">SUBSCRIBE</Button> */}
             <MoreMenu
               menuId="individual-actions"
               items={[
                 {
-                  id: 'edit-profile',
-                  onClick: () => setEditingProfile(true),
-                  label: 'Edit profile',
-                },
-                {
-                  id: 'view-history',
-                  onClick: Function.prototype,
-                  label: 'View history',
+                  id: 'merge',
+                  onClick: () => setMerging(true),
+                  labelId: 'MERGE_WITH_ANOTHER_INDIVIDUAL',
                 },
                 {
                   id: 'delete-individual',
                   onClick: () => setDeletingIndividual(true),
-                  label: 'Delete individual',
+                  labelId: 'DELETE_INDIVIDUAL',
                 },
               ]}
             />
           </div>
         }
       >
-        {nickname && <Text>{`Also known as ${nickname}.`}</Text>}
+        {adoptionName && (
+          <Text>{`Also known as ${adoptionName}.`}</Text>
+        )}
       </EntityHeader>
       <div style={{ display: 'flex', flexWrap: 'wrap' }}>
         <CardContainer size="small">
           <GalleryCard
             title={intl.formatMessage(
-              {
-                id: 'PHOTOS_OF',
-              },
-              { name: defaultName },
+              { id: 'PHOTOS_OF' },
+              { name: firstName },
             )}
-            assets={fakeAssets}
+            assets={assetSources}
           />
-          <MetadataCard editable metadata={metadata} />
+          <MetadataCard
+            editable
+            metadata={metadata}
+            onEdit={() => setEditingProfile(true)}
+          />
         </CardContainer>
         <CardContainer>
           <EncountersCard
             title={
               <FormattedMessage
                 id="SIGHTINGS_OF"
-                values={{ name: defaultName }}
+                values={{ name: firstName }}
               />
             }
             columns={['date', 'owner', 'location', 'actions']}
             onDelete={encounterId =>
               setDeleteEncounterId(encounterId)
             }
-            encounters={get(individualData, 'encounters', [])}
+            encounters={encounters}
           />
           <RelationshipsCard
-            title="Relationships"
-            relationships={fakeRelationships}
-          />
-          <CooccurrenceCard data={fakeCoocs} />
+            relationships={individualData?.relationships}
+            individualGuid={id}
+            loading={loading}
+            titleId="RELATIONSHIPS"
+          />{' '}
+          {/* <CooccurrenceCard data={fakeCoocs} /> */}
         </CardContainer>
       </div>
     </MainColumn>

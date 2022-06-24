@@ -45,11 +45,12 @@ export default function UserProfile({
       if (!userData || !metadataSchemas) return [];
       return metadataSchemas
         .filter(
-          schema => schema.getValue(schema, userData) || !someoneElse,
+          schema =>
+            schema?.getValue(schema, userData) || !someoneElse,
         )
         .map(schema => ({
           ...schema,
-          value: schema.getValue(schema, userData),
+          value: schema?.getValue(schema, userData),
         }));
     },
     [userData, metadataSchemas],
@@ -69,10 +70,7 @@ export default function UserProfile({
 
   if (!userData)
     return (
-      <SadScreen
-        variant="notFoundOcean"
-        subtitleId="USER_NOT_FOUND"
-      />
+      <SadScreen variant="notFound" subtitleId="USER_NOT_FOUND" />
     );
 
   return (
@@ -146,7 +144,7 @@ export default function UserProfile({
                   )
                 : intl.formatMessage({ id: 'PENDING_SIGHTINGS' })
             }
-            columns={['individual', 'date', 'location', 'actions']}
+            columns={['date', 'location', 'actions']}
             sightings={agsData || []}
             linkPath="pending-sightings"
             noSightingsMsg={
@@ -166,7 +164,12 @@ export default function UserProfile({
                   )
                 : intl.formatMessage({ id: 'SIGHTINGS' })
             }
-            columns={['individual', 'date', 'location', 'actions']}
+            columns={[
+              'individual',
+              'date',
+              'locationIdValue',
+              'actions',
+            ]}
             hideSubmitted
             sightings={sightingsData || []}
             loading={sightingsLoading}
@@ -174,7 +177,12 @@ export default function UserProfile({
               someoneElse ? 'NO_SIGHTINGS_NON_SELF' : 'NO_SIGHTINGS'
             }
           />
-          {!someoneElse && <CollaborationsCard userId={userId} />}
+          {!someoneElse && (
+            <CollaborationsCard
+              htmlId="collab-card"
+              userId={userId}
+            />
+          )}
         </CardContainer>
       </div>
     </MainColumn>

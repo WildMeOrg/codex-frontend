@@ -6,9 +6,6 @@ import { useHistory } from 'react-router-dom';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Grid from '@material-ui/core/Grid';
-import FormGroup from '@material-ui/core/FormGroup';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import Radio from '@material-ui/core/Radio';
 import CustomAlert from '../../components/Alert';
 // import ExifIcon from '@material-ui/icons/FlashOn';
 
@@ -23,6 +20,7 @@ import useEncounterFieldSchemas from '../../models/encounter/useEncounterFieldSc
 // import { getLocationSuggestion } from '../../utils/exif';
 import Button from '../../components/Button';
 import Text from '../../components/Text';
+import RadioChoice from '../../components/RadioChoice';
 import InlineButton from '../../components/InlineButton';
 import TermsAndConditionsDialog from '../../components/report/TermsAndConditionsDialog';
 import {
@@ -40,7 +38,19 @@ function getInitialFormValues(schema) {
   }, {});
 }
 
+const radioChoices = [
+  {
+    labelId: 'ONE_ANIMAL',
+    value: 'one',
+  },
+  {
+    labelId: 'MULTIPLE_ANIMALS',
+    value: 'multiple',
+  },
+];
+
 export default function ReportForm({
+  authenticated,
   assetReferences,
   // exifData,
 }) {
@@ -50,6 +60,11 @@ export default function ReportForm({
     data: siteSettingsData,
     siteSettingsVersion,
   } = useSiteSettings();
+  const recaptchaPublicKey = get(siteSettingsData, [
+    'recaptchaPublicKey',
+    'value',
+  ]);
+
   const [sightingType, setSightingType] = useState(null);
 
   const {
@@ -95,7 +110,7 @@ export default function ReportForm({
     schema => schema.customField,
   );
 
-  const [acceptedTerms, setAcceptedTerms] = useState(false);
+  const [acceptedTerms, setAcceptedTerms] = useState(authenticated);
   // const [exifButtonClicked, setExifButtonClicked] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [incompleteFields, setIncompleteFields] = useState([]);
@@ -148,40 +163,21 @@ export default function ReportForm({
   const showErrorAlertBox =
     incompleteFields.length > 0 || termsError || postAssetGroupError;
 
+  const hasSightingTypeAndNotAuthenticated =
+    sightingType && !authenticated;
+
   return (
     <>
       <TermsAndConditionsDialog
         visible={dialogOpen}
         onClose={() => setDialogOpen(false)}
       />
-      <FormGroup style={{ margin: '12px 0 24px 12px' }}>
-        <Text
-          style={{ margin: '24px 0 8px 0', fontWeight: 'bold' }}
-          component="legend"
-          id="SIGHTING_RADIO_QUESTION"
-        />
-        <RadioGroup
-          aria-label="sighting-type"
-          name="sightingType"
-          value={sightingType}
-          onChange={e => setSightingType(e.target.value)}
-        >
-          <FormControlLabel
-            value="one"
-            control={<Radio />}
-            label={intl.formatMessage({
-              id: 'ONE_ANIMAL',
-            })}
-          />
-          <FormControlLabel
-            value="multiple"
-            control={<Radio />}
-            label={intl.formatMessage({
-              id: 'MULTIPLE_ANIMALS',
-            })}
-          />
-        </RadioGroup>
-      </FormGroup>
+      <RadioChoice
+        titleId="SIGHTING_RADIO_QUESTION"
+        value={sightingType}
+        onChange={setSightingType}
+        choices={radioChoices}
+      />
       {sightingType && (
         <>
           <FieldCollections
@@ -214,7 +210,7 @@ export default function ReportForm({
           />
         </>
       )}
-      {sightingType && (
+      {hasSightingTypeAndNotAuthenticated && (
         <Grid item style={{ marginBottom: 12 }}>
           <FormControlLabel
             control={
@@ -323,6 +319,22 @@ export default function ReportForm({
                   sightings: [report],
                 };
 
+                if (window.grecaptcha) {
+                  const grecaptchaReady = new Promise(resolve => {
+                    window.grecaptcha.ready(() => {
+                      resolve();
+                    });
+                  });
+
+                  await grecaptchaReady;
+
+                  const token = await window.grecaptcha.execute(
+                    recaptchaPublicKey,
+                    { action: 'submit' },
+                  );
+                  assetGroup.token = token;
+                }
+
                 const assetGroupData = await postAssetGroup(
                   assetGroup,
                 );
@@ -333,9 +345,10 @@ export default function ReportForm({
                   'guid',
                 ]);
                 if (assetGroupSightingId) {
-                  history.push(
-                    `/pending-sightings/${assetGroupSightingId}`,
-                  );
+                  const relativeUrl = authenticated
+                    ? `/pending-sightings/${assetGroupSightingId}`
+                    : '/report/success/';
+                  history.push(relativeUrl);
                 }
               }
             }}

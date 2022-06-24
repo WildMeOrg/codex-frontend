@@ -1,11 +1,16 @@
 export const bulkImportCategories = {
   encounter: {
     name: 'animal',
-    fields: ['individualName', 'taxonomy', 'sex'],
+    fields: ['firstName', 'taxonomy', 'sex'],
   },
   sighting: {
     name: 'sighting',
-    fields: ['sightingId', 'assets', 'locationId'],
+    fields: [
+      'sightingId',
+      'assetReferences',
+      'locationId',
+      'comments',
+    ],
   },
   shared: {
     name: 'shared',
@@ -36,19 +41,6 @@ export const sightingOmitList = [
 /* Lat and lng are treated as two separate columns here */
 export const encounterOmitList = ['gps', 'specifiedTime'];
 
-export const bulkFieldSchemas = [
-  { name: 'decimalLatitude', labelId: 'DECIMAL_LATITUDE' },
-  { name: 'decimalLongitude', labelId: 'DECIMAL_LONGITUDE' },
-  { name: 'individualName', labelId: 'INDIVIDUAL_NAME' },
-  { name: 'locationId', labelId: 'REGION' },
-  { name: 'timeSpecificity', labelId: 'SIGHTING_TIME_SPECIFICITY' },
-  { name: 'sightingId', labelId: 'SIGHTING_ID' },
-  { name: 'timeYear', labelId: 'TIME_YEAR' },
-  { name: 'timeMonth', labelId: 'TIME_MONTH' },
-  { name: 'timeDay', labelId: 'TIME_DAY' },
-  { name: 'timeHour', labelId: 'TIME_HOUR' },
-  { name: 'timeMinutes', labelId: 'TIME_MINUTES' },
-  { name: 'timeSeconds', labelId: 'TIME_SECONDS' },
-  { name: 'utcOffset', labelId: 'TIMEZONE' },
-  { name: 'assets', labelId: 'ASSETS' },
-];
+export function deriveCustomFieldPrefix(categoryType) {
+  return `custom-${categoryType}-`;
+}

@@ -10,36 +10,82 @@ export default {
   assetGroupSightings: 'assetGroupSightings',
   allNotifications: 'allNotifications',
   unreadNotifications: 'unreadNotifications',
+  twitterBotTestResults: 'twitterBotTestResults',
+  publicData: 'publicData',
 };
 
-export function getAuditLogQueryKey(id) {
-  return ['auditLog', id];
+export function getAuditLogQueryKey(guid) {
+  return ['auditLog', guid];
 }
 
-export function getSightingQueryKey(id) {
-  return ['sighting', id];
+export function getEncounterQueryKey(guid) {
+  return ['encounter', guid];
 }
 
-export function getAGSQueryKey(id) {
-  return ['assetGroupSighting', id];
+export function getSightingQueryKey(guid) {
+  return ['sighting', guid];
 }
 
-export function getIndividualQueryKey(id) {
-  return ['individual', id];
+export function getSightingMatchResultsQueryKey(guid) {
+  return ['sightingMatchResults', guid];
 }
 
-export function getUserQueryKey(id) {
-  return ['user', id];
+export function getAGSQueryKey(guid) {
+  return ['assetGroupSighting', guid];
 }
 
-export function getUserSightingsQueryKey(id) {
-  return ['userSightings', id];
+export function getIndividualQueryKey(guid) {
+  return ['individual', guid];
 }
 
-export function getUserAgsQueryKey(id) {
-  return ['userAgs', id];
+export function getIndividualMergeRequestQueryKey(guid) {
+  return ['individualMergeRequest', guid];
 }
 
-export function getAssetGroupQueryKey(id) {
-  return ['assetGroup', id];
+export function getMergeConflictsQueryKey(guids) {
+  return ['individualMergeConflicts', guids];
+}
+
+export function getUserQueryKey(guid) {
+  return ['user', guid];
+}
+
+export function getUserSightingsQueryKey(guid) {
+  return ['userSightings', guid];
+}
+
+export function getUserAgsQueryKey(guid) {
+  return ['userAgs', guid];
+}
+
+export function getAssetGroupQueryKey(guid) {
+  return ['assetGroup', guid];
+}
+
+export function getNotificationQueryKey(guid) {
+  return ['notification', guid];
+}
+
+export function getIndividualTermQueryKey(searchTerm) {
+  return ['individualQuickSearch', searchTerm];
+}
+
+export function getSightingTermQueryKey(searchTerm) {
+  return ['sightingQuickSearch', searchTerm];
+}
+
+export function getIndividualFilterQueryKey(
+  filters,
+  page,
+  rowsPerPage,
+) {
+  return ['individualFilterSearch', filters, page, rowsPerPage];
+}
+
+export function getSightingFilterQueryKey(
+  filters,
+  page,
+  rowsPerPage,
+) {
+  return ['sightingFilterSearch', filters, page, rowsPerPage];
 }

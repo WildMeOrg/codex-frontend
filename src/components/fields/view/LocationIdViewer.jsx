@@ -18,7 +18,11 @@ function findLocationObject(searchId, locationList) {
   return findLocationObject(searchId, flatNextLevelLocations);
 }
 
-export default function LocationIdViewer({ value, choices }) {
+export default function LocationIdViewer({
+  value,
+  choices,
+  variant = 'body2',
+}) {
   const intl = useIntl();
   let locationIdLabel = useMemo(
     () => {
@@ -37,7 +41,7 @@ export default function LocationIdViewer({ value, choices }) {
   }
 
   return (
-    <Text component="span" variant="body2">
+    <Text component="span" variant={variant}>
       {locationIdLabel}
     </Text>
   );

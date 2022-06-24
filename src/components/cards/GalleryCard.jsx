@@ -1,8 +1,8 @@
 import React from 'react';
 import { useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import GridList from '@material-ui/core/GridList';
-import GridListTile from '@material-ui/core/GridListTile';
+import ImageList from '@material-ui/core/ImageList';
+import ImageListItem from '@material-ui/core/ImageListItem';
 import Link from '../Link';
 import Card from './Card';
 
@@ -21,18 +21,20 @@ export default function GalleryCard({
       title={title}
       titleId={titleId}
       renderActions={<Link>See all</Link>}
+      overflow={'hidden'}
+      overflowX={'hidden'}
     >
-      <GridList
+      <ImageList
         cols={3}
-        cellHeight={imageHeight}
+        rowHeight={imageHeight}
         style={{ marginTop: 8 }}
       >
         {assets.map(asset => (
-          <GridListTile key={asset.id} cols={1}>
-            <img src={asset.src} alt={asset.filename} />
-          </GridListTile>
+          <ImageListItem key={asset.guid} cols={1}>
+            <img src={asset.src} alt={asset.alt} />
+          </ImageListItem>
         ))}
-      </GridList>
+      </ImageList>
     </Card>
   );
 }

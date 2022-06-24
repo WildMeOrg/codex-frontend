@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import { FormattedMessage } from 'react-intl';
+import { Link as RouterLink } from 'react-router-dom';
+
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import DownIcon from '@material-ui/icons/ArrowDropDown';
@@ -32,16 +35,31 @@ export default function ButtonMenu({
         open={Boolean(anchorEl)}
         onClose={handleClose}
         id={buttonId}
+        getContentAnchorEl={null}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'right',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
       >
         {actions.map(action => (
           <MenuItem
             key={action.id}
             onClick={e => {
-              action.onClick(e);
+              if (action.onClick) action.onClick(e);
               handleClose();
             }}
+            component={action.href ? RouterLink : undefined}
+            to={action.href}
           >
-            {action.label}
+            {action?.labelId ? (
+              <FormattedMessage id={action.labelId} />
+            ) : (
+              action.label
+            )}
           </MenuItem>
         ))}
       </Menu>

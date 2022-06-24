@@ -103,14 +103,16 @@ export default function DateRangeFilter({
             <Text variant="subtitle2" style={{ marginTop: 16 }}>
               {translatedLabel}
             </Text>
-            <Text
-              variant="caption"
-              color="textSecondary"
-              id={descriptionId}
-              style={{ marginTop: 4 }}
-            >
-              {description}
-            </Text>
+            {description && (
+              <Text
+                variant="caption"
+                color="textSecondary"
+                id={descriptionId}
+                style={{ marginTop: 4 }}
+              >
+                {description}
+              </Text>
+            )}
           </>
         )}
         <KeyboardDatePicker

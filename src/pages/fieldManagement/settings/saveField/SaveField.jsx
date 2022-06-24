@@ -17,7 +17,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
 import CustomAlert from '../../../../components/Alert';
 
-import usePutSiteSettings from '../../../../models/site/usePutSiteSettings';
+import usePutSiteSetting from '../../../../models/site/usePutSiteSetting';
 import { createCustomFieldSchema } from '../../../../utils/fieldUtils';
 import { fieldTypeInfo } from '../../../../constants/fieldTypesNew';
 import useSiteSettings from '../../../../models/site/useSiteSettings';
@@ -45,10 +45,10 @@ export default function SaveField() {
   } = useSiteSettings();
 
   const {
-    putSiteSetting,
+    mutate: putSiteSetting,
     error: putSiteSettingError,
     setError: setPutSiteSettingError,
-  } = usePutSiteSettings();
+  } = usePutSiteSetting();
 
   const newField = !id;
 
@@ -342,7 +342,7 @@ export default function SaveField() {
                   name: 'custom-field-default-value',
                   descriptionId: 'FIELD_DEFAULT_VALUE_DESCRIPTION',
                 }}
-                value={get(formData, 'default')}
+                value={get(formData, ['schema', 'defaultValue'])}
                 onChange={nextDefaultValue => {
                   setFormData({
                     ...formData,
@@ -399,7 +399,10 @@ export default function SaveField() {
                     <fieldSchema.editComponent
                       {...get(fieldSchema, 'editComponentProps', {})}
                       schema={fieldSchema}
-                      value={get(formData, 'default')}
+                      value={get(formData, [
+                        'schema',
+                        'defaultValue',
+                      ])}
                       onChange={Function.prototype}
                       minimalLabels
                     />
@@ -462,11 +465,12 @@ export default function SaveField() {
                     fieldsInType,
                   );
 
-                  const putSuccessful = await putSiteSetting(
-                    backendFieldType,
-                    { definitions: newFields },
-                  );
-                  if (putSuccessful) history.push('/admin/fields');
+                  const response = await putSiteSetting({
+                    property: backendFieldType,
+                    data: { definitions: newFields },
+                  });
+                  if (response?.status === 200)
+                    history.push('/admin/fields');
                 }}
               />
             </Grid>

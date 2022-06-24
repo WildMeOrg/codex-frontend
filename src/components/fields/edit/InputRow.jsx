@@ -1,7 +1,9 @@
 import React from 'react';
 import Skeleton from '@material-ui/lab/Skeleton';
 
-import useLabel from '../../../hooks/useLabel';
+import { useIntl } from 'react-intl';
+import { get } from 'lodash-es';
+
 import useDescription from '../../../hooks/useDescription';
 import Text from '../../Text';
 
@@ -12,7 +14,12 @@ export default function InputRow({
   children,
   loading = false,
 }) {
-  const label = useLabel(schema);
+  const intl = useIntl();
+  const label = schema?.labelId
+    ? intl.formatMessage({
+        id: schema.labelId,
+      })
+    : get(schema, 'label', undefined);
   const description = useDescription(schema);
 
   return (

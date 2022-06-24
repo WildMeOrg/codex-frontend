@@ -1,5 +1,4 @@
 import React from 'react';
-import { FormattedMessage } from 'react-intl';
 import { get } from 'lodash-es';
 import Grid from '@material-ui/core/Grid';
 
@@ -45,9 +44,8 @@ export default function Welcome() {
             style={{ width: '100%' }}
             display="primary"
             href="/"
-          >
-            <FormattedMessage id="VIEW_HOMEPAGE" />
-          </ButtonLink>
+            id="VIEW_HOMEPAGE"
+          />
         </Grid>
         <Grid item style={{ position: 'relative' }}>
           <ButtonLink
@@ -57,9 +55,8 @@ export default function Welcome() {
             display="secondary"
             variant="contained"
             href="/report"
-          >
-            <FormattedMessage id="REPORT_A_SIGHTING" />
-          </ButtonLink>
+            id="REPORT_A_SIGHTING"
+          />
         </Grid>
         <Grid item style={{ position: 'relative' }}>
           <ButtonLink
@@ -69,9 +66,8 @@ export default function Welcome() {
             display="tertiary"
             variant="contained"
             href="/individuals"
-          >
-            <FormattedMessage id="EXPLORE_INDIVIDUALS" />
-          </ButtonLink>
+            id="EXPLORE_INDIVIDUALS"
+          />
         </Grid>
       </Grid>
     </MainColumn>
