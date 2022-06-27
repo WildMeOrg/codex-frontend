@@ -1,16 +1,14 @@
 import React, { useState } from 'react';
 import { get, sortBy } from 'lodash-es';
+import { useIntl } from 'react-intl';
 
 import { useTheme } from '@material-ui/core/styles';
-import { lighten } from '@material-ui/core/styles/colorManipulator';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import TableFooter from '@material-ui/core/TableFooter';
-import TablePagination from '@material-ui/core/TablePagination';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
@@ -28,8 +26,7 @@ import CloudDownload from '@material-ui/icons/CloudDownload';
 import BaoDetective from '../svg/BaoDetective';
 import FilterBar from '../FilterBar';
 import Text from '../Text';
-import TablePaginationActions from './TablePaginationActions';
-import CollabsibleRow from './CollapsibleRow';
+import CollapsibleRow from './CollapsibleRow';
 import sendCsv from './sendCsv';
 
 function getCellAlignment(cellIndex, columnDefinition) {
@@ -44,56 +41,56 @@ export default function DataDisplay({
   columns,
   data,
   title,
+  titleId,
   onPrint,
-  initiallySelectedRow = null,
+  selectionControlled = false,
+  selectedRow: selectedRowFromProps,
   onSelectRow = Function.prototype,
   hideFilterSearch = false,
+  hideFilterColumns = false,
+  hideDownloadCsv = false,
   showNoResultsBao = false,
+  noResultsTextId,
+  noResultsText,
   renderExpandedRow,
   variant = 'primary',
   idKey = 'id',
   tableSize = 'small',
   noTitleBar,
   loading,
-  paginated = false,
-  paginatedExternally = true, // display all data provided and let parent component(s) paginate
-  page,
-  onChangePage,
-  rowsPerPage,
-  dataCount, // in a paginated table there will be more data than provided to the data prop
+  sortExternally,
+  searchParams,
+  setSearchParams,
   paperStyles = {},
+  tableStyles = {},
   cellStyles = {},
   ...rest
 }) {
+  const intl = useIntl();
   const theme = useTheme();
   const themeColor = theme.palette.primary.main;
-  const themeColorLight = lighten(themeColor, 0.35);
 
   const initialColumnNames = columns
     .filter(c => get(c, 'options.display', true))
     .map(c => c.name);
 
-  const [selectedRow, setSelectedRow] = useState(
-    initiallySelectedRow,
-  );
+  const [internalSelectedRow, setInternalSelectedRow] = useState();
   const [visibleColumnNames, setVisibleColumnNames] = useState(
     initialColumnNames,
   );
   const [filter, setFilter] = useState('');
-  const [sortColumn, setSortColumn] = useState(null);
-  const [sortDirection, setSortDirection] = useState(null);
+  const [internalSortColumn, setInternalSortColumn] = useState(null);
+  const [internalSortDirection, setInternalSortDirection] = useState(
+    null,
+  );
   const [anchorEl, setAnchorEl] = useState(null);
   const filterPopperOpen = Boolean(anchorEl);
 
-  const startIndex = paginated ? page * rowsPerPage : 0;
-  const endIndex = paginated
-    ? (page + 1) * rowsPerPage - 1
-    : Infinity;
+  const selectedRow = selectionControlled
+    ? selectedRowFromProps
+    : internalSelectedRow;
 
-  const visibleData = data.filter((datum, index) => {
-    if (index < startIndex && !paginatedExternally) return false;
-    if (index > endIndex && !paginatedExternally) return false;
-
+  const visibleData = data?.filter(datum => {
     let match = false;
     columns.forEach(c => {
       const userSuppliedDataParser = get(c, 'options.getStringValue');
@@ -116,16 +113,28 @@ export default function DataDisplay({
   });
 
   let sortedData = visibleData;
-  if (sortColumn) {
-    sortedData = sortBy(data, sortColumn);
-    if (sortDirection === 'asc') sortedData.reverse();
+  if (internalSortColumn) {
+    sortedData = sortBy(data, internalSortColumn);
+    if (internalSortDirection === 'asc') sortedData.reverse();
   }
+  const sortColumn = sortExternally
+    ? searchParams?.sort
+    : internalSortColumn;
+  const externalSortDirection = searchParams?.reverse
+    ? 'desc'
+    : 'asc';
+  const sortDirection = sortExternally
+    ? externalSortDirection
+    : internalSortDirection;
 
   const visibleColumns = columns.filter(column =>
     visibleColumnNames.includes(column.name),
   );
 
-  const noResults = showNoResultsBao && data && data.length === 0;
+  const noData = !loading && data && data?.length === 0;
+  const useNoResultsUI =
+    noResultsText || noResultsTextId || showNoResultsBao;
+  const noResults = useNoResultsUI && noData;
 
   return (
     <div {...rest}>
@@ -155,36 +164,45 @@ export default function DataDisplay({
                   .filter(c =>
                     get(c, 'options.displayInFilter', true),
                   )
-                  .map(c => (
-                    <FormControlLabel
-                      key={c.name}
-                      control={
-                        <Checkbox
-                          size="small"
-                          checked={visibleColumnNames.includes(
-                            c.name,
-                          )}
-                          onClick={() => {
-                            if (visibleColumnNames.includes(c.name)) {
-                              if (visibleColumnNames.length === 1)
-                                return;
-                              setVisibleColumnNames(
-                                visibleColumnNames.filter(
-                                  vc => vc !== c.name,
-                                ),
-                              );
-                            } else {
-                              setVisibleColumnNames([
-                                ...visibleColumnNames,
-                                c.name,
-                              ]);
-                            }
-                          }}
-                        />
-                      }
-                      label={<Text variant="body2">{c.label}</Text>}
-                    />
-                  ))}
+                  .map(c => {
+                    const columnLabel = c?.labelId
+                      ? intl.formatMessage({ id: c.labelId })
+                      : c?.label;
+                    return (
+                      <FormControlLabel
+                        key={c.name}
+                        control={
+                          <Checkbox
+                            size="small"
+                            checked={visibleColumnNames.includes(
+                              c.name,
+                            )}
+                            onClick={() => {
+                              if (
+                                visibleColumnNames.includes(c.name)
+                              ) {
+                                if (visibleColumnNames.length === 1)
+                                  return;
+                                setVisibleColumnNames(
+                                  visibleColumnNames.filter(
+                                    vc => vc !== c.name,
+                                  ),
+                                );
+                              } else {
+                                setVisibleColumnNames([
+                                  ...visibleColumnNames,
+                                  c.name,
+                                ]);
+                              }
+                            }}
+                          />
+                        }
+                        label={
+                          <Text variant="body2">{columnLabel}</Text>
+                        }
+                      />
+                    );
+                  })}
               </Grid>
             </Paper>
           </Fade>
@@ -206,12 +224,13 @@ export default function DataDisplay({
                 margin:
                   variant === 'secondary' ? '12px 0 0 12px' : 'unset',
               }}
+              id={titleId}
             >
               {title}
             </Text>
           </Grid>
           <Grid item>
-            {variant === 'primary' && (
+            {variant === 'primary' && !hideDownloadCsv && (
               <IconButton
                 onClick={() => sendCsv(visibleColumns, visibleData)}
                 size="small"
@@ -224,14 +243,16 @@ export default function DataDisplay({
                 <Print style={{ marginRight: 4 }} />
               </IconButton>
             )}
-            <IconButton
-              onClick={event => {
-                setAnchorEl(anchorEl ? null : event.currentTarget);
-              }}
-              size="small"
-            >
-              <FilterList />
-            </IconButton>
+            {!hideFilterColumns && (
+              <IconButton
+                onClick={event => {
+                  setAnchorEl(anchorEl ? null : event.currentTarget);
+                }}
+                size="small"
+              >
+                <FilterList />
+              </IconButton>
+            )}
           </Grid>
         </Grid>
       )}
@@ -241,15 +262,32 @@ export default function DataDisplay({
         style={paperStyles}
       >
         <Table
-          style={{ minWidth: 10 }}
+          style={{ minWidth: 10, ...tableStyles }}
           size={tableSize}
           aria-label={title}
         >
+          <colgroup>
+            {columns.map(c => (
+              <col
+                key={c.name}
+                style={
+                  get(c, 'options.width')
+                    ? { width: c.options.width }
+                    : {}
+                }
+              />
+            ))}
+          </colgroup>
           <TableHead>
             <TableRow>
               {renderExpandedRow && <TableCell />}
               {visibleColumns.map((c, i) => {
-                const activeSort = c.name === sortColumn;
+                const sortable = get(c, 'sortable', true);
+                const activeSort =
+                  c.name === sortColumn || c.sortName === sortColumn;
+                const columnLabel = c?.labelId
+                  ? intl.formatMessage({ id: c.labelId })
+                  : c?.label;
                 return (
                   <TableCell
                     key={c.name}
@@ -257,18 +295,35 @@ export default function DataDisplay({
                     sortDirection={activeSort ? sortDirection : false}
                     style={{ whiteSpace: 'nowrap' }}
                   >
-                    <TableSortLabel
-                      active={activeSort}
-                      direction={activeSort ? sortDirection : 'asc'}
-                      onClick={() => {
-                        setSortDirection(
-                          sortDirection === 'asc' ? 'desc' : 'asc',
-                        );
-                        setSortColumn(c.name);
-                      }}
-                    >
-                      {c.label}
-                    </TableSortLabel>
+                    {sortable ? (
+                      <TableSortLabel
+                        active={activeSort}
+                        direction={activeSort ? sortDirection : 'asc'}
+                        onClick={() => {
+                          if (sortExternally) {
+                            const nextReverse = activeSort
+                              ? !searchParams?.reverse
+                              : false;
+                            setSearchParams({
+                              ...searchParams,
+                              sort: c.sortName || c.name,
+                              reverse: nextReverse,
+                            });
+                          } else {
+                            setInternalSortDirection(
+                              sortDirection === 'asc'
+                                ? 'desc'
+                                : 'asc',
+                            );
+                            setInternalSortColumn(c.name);
+                          }
+                        }}
+                      >
+                        {columnLabel}
+                      </TableSortLabel>
+                    ) : (
+                      columnLabel
+                    )}
                   </TableCell>
                 );
               })}
@@ -276,15 +331,17 @@ export default function DataDisplay({
           </TableHead>
           <TableBody>
             {!loading &&
-              sortedData.map(datum => (
-                <CollabsibleRow
+              sortedData?.map((datum, rowIndex) => (
+                <CollapsibleRow
                   key={get(datum, idKey)}
                   onClick={() => {
                     if (selectedRow === get(datum, idKey)) {
-                      setSelectedRow(null);
+                      if (!selectionControlled)
+                        setInternalSelectedRow(null);
                       onSelectRow(null);
                     } else {
-                      setSelectedRow(get(datum, idKey));
+                      if (!selectionControlled)
+                        setInternalSelectedRow(get(datum, idKey));
                       onSelectRow(datum);
                     }
                   }}
@@ -293,23 +350,10 @@ export default function DataDisplay({
                   cellStyles={cellStyles}
                   columns={visibleColumns}
                   renderExpandedRow={renderExpandedRow}
+                  rowIndex={rowIndex}
                 />
               ))}
           </TableBody>
-          {paginated && !loading && !noResults && (
-            <TableFooter>
-              <TableRow>
-                <TablePagination
-                  page={page}
-                  count={dataCount || get(data, 'length', 0)}
-                  onChangePage={onChangePage}
-                  rowsPerPage={rowsPerPage}
-                  rowsPerPageOptions={[rowsPerPage]}
-                  ActionsComponent={TablePaginationActions}
-                />
-              </TableRow>
-            </TableFooter>
-          )}
         </Table>
       </TableContainer>
       {noResults && (
@@ -318,16 +362,21 @@ export default function DataDisplay({
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            marginTop: 40,
           }}
         >
-          <BaoDetective
-            style={{ width: 240 }}
-            themeColor={themeColor}
-            themeColorLight={themeColorLight}
-          />
-          <Text style={{ marginTop: 12 }}>
-            Your search did not match any records.
+          {showNoResultsBao && (
+            <BaoDetective
+              style={{ width: 240, marginTop: 40 }}
+              themeColor={themeColor}
+            />
+          )}
+          <Text
+            id={noResultsTextId}
+            variant="body2"
+            style={{ marginTop: 12 }}
+          >
+            {noResultsText ||
+              'Your search did not match any records.'}
           </Text>
         </div>
       )}

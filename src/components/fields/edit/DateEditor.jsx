@@ -7,7 +7,7 @@ import {
   KeyboardDateTimePicker,
 } from '@material-ui/pickers';
 import Text from '../../Text';
-import useLabel from '../../../hooks/useLabel';
+import useEditLabel from '../../../hooks/useEditLabel';
 import useDescription from '../../../hooks/useDescription';
 
 export default function DateEditor(props) {
@@ -19,7 +19,7 @@ export default function DateEditor(props) {
     minimalLabels = false,
     ...rest
   } = props;
-  const label = useLabel(schema);
+  const editLabel = useEditLabel(schema);
   const description = useDescription(schema);
   const showDescription = !minimalLabels && description;
 
@@ -38,11 +38,15 @@ export default function DateEditor(props) {
             disableFuture
             variant="inline"
             autoOk
-            ampm={false} // US: true
-            format="yyyy-MM-dd HH:mm" // US: MM/dd/yyyy hh:mm
+            ampm={false}
+            format="yyyy-MM-dd HH:mm"
             margin="normal"
-            id={`${label}-date-input`}
-            label={intl.formatMessage({ id: 'SELECT_DATE' })}
+            id={`${
+              editLabel // US: true // US: MM/dd/yyyy hh:mm
+            }-date-input`}
+            label={intl.formatMessage({
+              id: 'SELECT_DATE',
+            })}
             value={dateValue}
             onChange={onChange}
             style={{ margin: 0, width }}

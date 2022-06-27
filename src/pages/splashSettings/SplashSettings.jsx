@@ -12,6 +12,7 @@ import MainColumn from '../../components/MainColumn';
 import Button from '../../components/Button';
 import ButtonLink from '../../components/ButtonLink';
 import DividerTitle from '../../components/DividerTitle';
+import SettingsBreadcrumbs from '../../components/SettingsBreadcrumbs';
 import Text from '../../components/Text';
 import SettingsFileUpload from '../../components/settings/SettingsFileUpload';
 import SettingsTextInput from '../../components/settings/SettingsTextInput';
@@ -37,21 +38,21 @@ const newSettingFields = [
 export default function SiteSettings() {
   const siteSettings = useSiteSettings();
   const {
-    putSiteSettings,
+    mutate: putSiteSettings,
     loading: formPostLoading,
     error: putSiteSettingsError,
     success: formPostSuccess,
-    setSuccess: setFormPostSuccess,
+    clearSuccess: clearFormPostSuccess,
   } = usePutSiteSettings();
 
   const {
-    postSettingsAsset,
+    mutate: postSettingsAsset,
     error: settingsAssetPostError,
     loading: assetPostLoading,
-    setSuccess: setAssetPostSuccess,
+    clearSuccess: clearAssetPostSuccess,
   } = usePostSettingsAsset();
 
-  useDocumentTitle('SPLASH_PAGE');
+  useDocumentTitle('FRONT_PAGE');
 
   const [currentValues, setCurrentValues] = useState(null);
   const [splashVideoPostData, setSplashVideoPostData] = useState(
@@ -87,14 +88,9 @@ export default function SiteSettings() {
       <Text
         variant="h3"
         style={{ padding: '16px 0 16px 16px' }}
-        id="SPLASH_PAGE"
+        id="FRONT_PAGE"
       />
-      <ButtonLink
-        href="/admin"
-        style={{ marginTop: 8, width: 'fit-content' }}
-        display="back"
-        id="BACK"
-      />
+      <SettingsBreadcrumbs currentPageTextId="FRONT_PAGE" />
       <Grid
         container
         direction="column"
@@ -213,8 +209,8 @@ export default function SiteSettings() {
           {success && (
             <CustomAlert
               onClose={() => {
-                setFormPostSuccess(false);
-                setAssetPostSuccess(false);
+                clearFormPostSuccess();
+                clearAssetPostSuccess();
               }}
               severity="success"
               titleId="SUCCESS"
@@ -227,7 +223,7 @@ export default function SiteSettings() {
                 id="PREVIEW_CHANGES"
                 newTab
                 external
-                href="/admin/splash/preview"
+                href="/admin/front-page/preview"
               />
             </CustomAlert>
           )}
@@ -260,13 +256,13 @@ export default function SiteSettings() {
                   };
                 }
               });
-              putSiteSettings(currentValues);
+              putSiteSettings({ data: currentValues });
               if (splashVideoPostData)
-                postSettingsAsset(splashVideoPostData);
+                postSettingsAsset({ data: splashVideoPostData });
               if (splashImagePostData)
-                postSettingsAsset(splashImagePostData);
+                postSettingsAsset({ data: splashImagePostData });
               if (customCardImagePostData)
-                postSettingsAsset(customCardImagePostData);
+                postSettingsAsset({ data: customCardImagePostData });
             }}
             style={{ marginTop: 12 }}
             display="primary"

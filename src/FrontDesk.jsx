@@ -10,11 +10,23 @@ import CreateAdminUser from './pages/setup/CreateAdminUser';
 
 export default function FrontDesk({ adminUserInitialized }) {
   // Display a loading spinner while waiting for authentication status from the server.
-  const { loading, data, error } = useGetMe();
+  const { isFetched, data, error } = useGetMe();
   const theme = useTheme();
 
-  if (!loading && !adminUserInitialized) return <CreateAdminUser />;
-  if (data) return <AuthenticatedSwitch />;
+  if (isFetched && !adminUserInitialized) return <CreateAdminUser />;
+  if (data) {
+    /* Disable email verification site in development mode.
+    Also explicitly checking is_email_confirmed for "false"
+    to be safer about locking users out of their accounts
+    in case the property isn't present for some reason. */
+    const emailNeedsVerification =
+      !__DEV__ && data?.is_email_confirmed === false;
+    return (
+      <AuthenticatedSwitch
+        emailNeedsVerification={emailNeedsVerification}
+      />
+    );
+  }
   if (error) return <UnauthenticatedSwitch />;
 
   return (

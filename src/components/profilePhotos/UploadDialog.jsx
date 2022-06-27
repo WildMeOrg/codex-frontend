@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
-import { FormattedMessage } from 'react-intl';
 
 import 'react-image-crop/dist/ReactCrop.css';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import CustomAlert from '../Alert';
 
-import usePatchUser from '../../models/users/usePatchUser';
+import { useReplaceUserProperty } from '../../models/users/usePatchUser';
 import Button from '../Button';
 import StandardDialog from '../StandardDialog';
 import ProfileUploader from '../ProfileUploader';
@@ -15,25 +14,26 @@ export default function UploadDialog({ open, onClose, userId }) {
   const [profileAsset, setProfileAsset] = useState(null);
 
   const {
-    replaceUserProperty,
+    mutate: replaceUserProperty,
     loading: replaceLoading,
     error: replaceError,
-    setError: setReplaceError,
-  } = usePatchUser(userId);
+    clearError: clearReplaceError,
+  } = useReplaceUserProperty();
 
   async function submitProfilePhoto() {
-    const successful = await replaceUserProperty(
-      '/profile_fileupload_guid',
-      profileAsset,
-    );
-    if (successful) onClose(true);
+    const result = await replaceUserProperty({
+      userGuid: userId,
+      path: '/profile_fileupload_guid',
+      value: profileAsset,
+    });
+    if (result?.status === 200) onClose(true);
   }
 
   return (
     <StandardDialog
       open={open}
       onClose={() => {
-        if (replaceError) setReplaceError(null);
+        if (replaceError) clearReplaceError();
         onClose(false);
       }}
       titleId="CHOOSE_PHOTO"
@@ -58,9 +58,8 @@ export default function UploadDialog({ open, onClose, userId }) {
           autoFocus
           disabled={!profileAsset}
           loading={replaceLoading}
-        >
-          <FormattedMessage id="SAVE" />
-        </Button>
+          id="SAVE"
+        />
       </DialogActions>
     </StandardDialog>
   );

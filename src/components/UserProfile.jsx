@@ -5,15 +5,16 @@ import { get } from 'lodash-es';
 import { getHighestRoleLabelId } from '../utils/roleUtils';
 import useUserMetadataSchemas from '../models/users/useUserMetadataSchemas';
 import useGetUserSightings from '../models/users/useGetUserSightings';
+import useGetUserUnprocessedAssetGroupSightings from '../models/users/useGetUserUnproccessedAssetGroupSightings';
 import { formatDate } from '../utils/formatters';
-import EntityHeaderNew from './EntityHeaderNew';
+import EntityHeader from './EntityHeader';
 import BigAvatar from './profilePhotos/BigAvatar';
 import MainColumn from './MainColumn';
 import SadScreen from './SadScreen';
 import EditUserMetadata from './EditUserMetadata';
 import Text from './Text';
 import RequestCollaborationButton from './RequestCollaborationButton';
-import MetadataCardNew from './cards/MetadataCardNew';
+import MetadataCard from './cards/MetadataCard';
 import SightingsCard from './cards/SightingsCard';
 import CollaborationsCard from './cards/CollaborationsCard';
 import CardContainer from './cards/CardContainer';
@@ -27,21 +28,29 @@ export default function UserProfile({
   someoneElse,
   noCollaborate = false,
 }) {
-  const { data: sightingsData } = useGetUserSightings(userId);
+  const {
+    data: sightingsData,
+    loading: sightingsLoading,
+  } = useGetUserSightings(userId);
   const intl = useIntl();
   const [editingProfile, setEditingProfile] = useState(false);
   const metadataSchemas = useUserMetadataSchemas(userId);
+  const {
+    data: agsData,
+    loading: agsLoading,
+  } = useGetUserUnprocessedAssetGroupSightings(userId);
 
   const metadata = useMemo(
     () => {
       if (!userData || !metadataSchemas) return [];
       return metadataSchemas
         .filter(
-          schema => schema.getValue(schema, userData) || !someoneElse,
+          schema =>
+            schema?.getValue(schema, userData) || !someoneElse,
         )
         .map(schema => ({
           ...schema,
-          value: schema.getValue(schema, userData),
+          value: schema?.getValue(schema, userData),
         }));
     },
     [userData, metadataSchemas],
@@ -61,10 +70,7 @@ export default function UserProfile({
 
   if (!userData)
     return (
-      <SadScreen
-        variant="notFoundOcean"
-        subtitleId="USER_NOT_FOUND"
-      />
+      <SadScreen variant="notFound" subtitleId="USER_NOT_FOUND" />
     );
 
   return (
@@ -74,9 +80,8 @@ export default function UserProfile({
         userId={userId}
         metadata={metadata}
         onClose={() => setEditingProfile(false)}
-        refreshUserData={refreshUserData}
       />
-      <EntityHeaderNew
+      <EntityHeader
         name={name}
         editable
         onSettingsClick={
@@ -103,15 +108,16 @@ export default function UserProfile({
         }
       >
         <Text
-          variant="subtitle2"
+          variant="body2"
+          domId="selenium-user-since"
           id="USER_SINCE"
           values={{ date: dateCreated }}
         />
-      </EntityHeaderNew>
+      </EntityHeader>
       {children}
       <div style={{ display: 'flex', flexWrap: 'wrap' }}>
         <CardContainer size="small">
-          <MetadataCardNew
+          <MetadataCard
             editable
             onEdit={
               () => setEditingProfile(true) // ?
@@ -129,22 +135,54 @@ export default function UserProfile({
         </CardContainer>
         <CardContainer>
           <SightingsCard
+            id="pending-sightings-card"
             title={
-              someoneElse ? (
-                <FormattedMessage
-                  id="USERS_SIGHTINGS"
-                  values={{ name }}
-                />
-              ) : (
-                <FormattedMessage id="SIGHTINGS" />
-              )
+              someoneElse
+                ? intl.formatMessage(
+                    { id: 'USERS_UNPROCESSED_AGS' },
+                    { name },
+                  )
+                : intl.formatMessage({ id: 'PENDING_SIGHTINGS' })
             }
-            columns={['individual', 'date', 'location', 'actions']}
-            hideSubmitted
-            sightings={get(sightingsData, 'sightings', [])}
+            columns={['date', 'location', 'actions']}
+            sightings={agsData || []}
+            linkPath="pending-sightings"
+            noSightingsMsg={
+              someoneElse
+                ? 'NO_PENDING_SIGHTINGS_NON_SELF'
+                : 'NO_PENDING_SIGHTINGS'
+            }
+            loading={agsLoading}
           />
-
-          {!someoneElse && <CollaborationsCard userId={userId} />}
+          <SightingsCard
+            id="sightings-card"
+            title={
+              someoneElse
+                ? intl.formatMessage(
+                    { id: 'USERS_SIGHTINGS' },
+                    { name },
+                  )
+                : intl.formatMessage({ id: 'SIGHTINGS' })
+            }
+            columns={[
+              'individual',
+              'date',
+              'locationIdValue',
+              'actions',
+            ]}
+            hideSubmitted
+            sightings={sightingsData || []}
+            loading={sightingsLoading}
+            noSightingsMsg={
+              someoneElse ? 'NO_SIGHTINGS_NON_SELF' : 'NO_SIGHTINGS'
+            }
+          />
+          {!someoneElse && (
+            <CollaborationsCard
+              htmlId="collab-card"
+              userId={userId}
+            />
+          )}
         </CardContainer>
       </div>
     </MainColumn>

@@ -3,7 +3,7 @@ import axios from 'axios';
 import { get } from 'lodash-es';
 import { formatError } from '../../utils/formatters';
 
-export default function usePatchCollaboration() {
+export default function usePatchNotification() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
@@ -38,6 +38,7 @@ export default function usePatchCollaboration() {
   };
 
   const markRead = async notificationId => {
+    setLoading(true);
     const result = await patchNotification(notificationId, [
       {
         op: 'replace',
@@ -45,7 +46,7 @@ export default function usePatchCollaboration() {
         value: true,
       },
     ]);
-
+    setLoading(false);
     return result;
   };
 

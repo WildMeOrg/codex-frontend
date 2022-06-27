@@ -1,12 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
+
 import Grid from '@material-ui/core/Grid';
 import FormControl from '@material-ui/core/FormControl';
 import TextField from '@material-ui/core/TextField';
+
+import useOnEnter from '../../hooks/useOnEnter';
 import Button from '../../components/Button';
 import SimpleFormPage from '../../components/SimpleFormPage';
 import CustomAlert from '../../components/Alert';
-
+import BaoParty from '../../components/svg/BaoParty';
 import useCreateAdminUser from '../../models/setup/useCreateAdminUser';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 
@@ -25,26 +28,31 @@ export default function CreateAdminUser() {
   const [password2, setPassword2] = useState('');
 
   const intl = useIntl();
-  useDocumentTitle('CODEX_INITIALIZED');
+  useDocumentTitle('CODEX_INITIALIZED', { appendSiteName: false });
 
-  function onKeyUp(e) {
-    if (e.key === 'Enter') {
-      document.querySelector(`#${buttonId}`).click();
-      e.preventDefault();
+  const actionDisabled =
+    email === '' || password1 === '' || password2 === '' || loading;
+
+  const createUser = () => {
+    if (actionDisabled) return;
+    if (password1 === password2) {
+      authenticate(email, password1, '/');
+    } else {
+      setError(
+        intl.formatMessage({
+          id: 'PASSWORDS_DO_NOT_MATCH',
+        }),
+      );
     }
-  }
+  };
 
-  useEffect(() => {
-    document.addEventListener('keyup', onKeyUp);
-    return () => {
-      document.removeEventListener('keyup', onKeyUp);
-    };
-  }, []);
+  useOnEnter(createUser);
 
   return (
     <SimpleFormPage
       titleId="CODEX_INITIALIZED"
       instructionsId="FIRST_STEP_CREATE_ADMIN"
+      BaoComponent={BaoParty}
     >
       <form>
         <Grid
@@ -117,17 +125,8 @@ export default function CreateAdminUser() {
               domId={buttonId}
               id="CREATE_USER"
               loading={loading}
-              onClick={() => {
-                if (password1 === password2) {
-                  authenticate(email, password1, '/');
-                } else {
-                  setError(
-                    intl.formatMessage({
-                      id: 'PASSWORDS_DO_NOT_MATCH',
-                    }),
-                  );
-                }
-              }}
+              disabled={actionDisabled}
+              onClick={createUser}
               display="primary"
             />
           </Grid>

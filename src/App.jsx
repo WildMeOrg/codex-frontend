@@ -1,5 +1,8 @@
-import React, { useEffect, useReducer } from 'react';
+import React, { useEffect } from 'react';
+import { hot } from 'react-hot-loader/root';
 import { BrowserRouter, useLocation } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from 'react-query';
+// import { ReactQueryDevtools } from 'react-query/devtools';
 import { get } from 'lodash-es';
 import { IntlProvider } from 'react-intl';
 import '@formatjs/intl-numberformat/polyfill';
@@ -9,11 +12,11 @@ import esPolyfill from '@formatjs/intl-numberformat/dist/locale-data/es';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { createTheme, ThemeProvider } from '@material-ui/core/styles';
 
+import errorTypes from './constants/errorTypes';
 import useSiteSettings from './models/site/useSiteSettings';
 import materialTheme from './styles/materialTheme';
 import messagesEn from '../locale/en.json';
 import messagesEs from '../locale/es.json';
-import { AppContext, initialState } from './context';
 import FrontDesk from './FrontDesk';
 import SadScreen from './components/SadScreen';
 import ErrorBoundary from './ErrorBoundary';
@@ -29,6 +32,8 @@ const messageMap = {
   es: messagesEs,
 };
 
+const queryClient = new QueryClient();
+
 const ScrollToTop = function() {
   const { pathname } = useLocation();
 
@@ -37,41 +42,17 @@ const ScrollToTop = function() {
   return null;
 };
 
-function reducer(state, action) {
-  const { type, data } = action;
-  if (type === 'SET_SIGHTINGS_NEEDS_FETCH') {
-    return { ...state, sightingsNeedsFetch: data };
-  }
-  if (type === 'SET_SITE_SETTINGS_NEEDS_FETCH') {
-    return { ...state, siteSettingsNeedsFetch: data };
-  }
-  if (type === 'SET_SITE_SETTINGS_SCHEMA_NEEDS_FETCH') {
-    return { ...state, siteSettingsSchemaNeedsFetch: data };
-  }
-  if (type === 'SET_SITE_SETTINGS_SCHEMA') {
-    return { ...state, siteSettingsSchema: data };
-  }
-  if (type === 'SET_SITE_SETTINGS_VERSION') {
-    return { ...state, siteSettingsVersion: data };
-  }
-  if (type === 'SET_SITE_SETTINGS') {
-    return { ...state, siteSettings: data };
-  }
-  if (type === 'SET_ME') {
-    return { ...state, me: data };
-  }
-  console.warn('Action not recognized', action);
-  return state;
-}
-
-const ContextualizedApp = function() {
+function AppWithQueryClient() {
   const locale = 'en';
   const { data, error } = useSiteSettings();
 
   const adminUserInitialized = get(data, 'site.adminUserInitialized');
   const primaryColor = get(data, ['site.look.themeColor', 'value']);
 
-  if (error) return <SadScreen variant="serverError" />;
+  if (error) {
+    document.title = 'Server Unavailable';
+    return <SadScreen variant={errorTypes.serverError} />;
+  }
   if (!primaryColor) return null;
   const theme = createTheme(materialTheme(primaryColor));
 
@@ -92,14 +73,17 @@ const ContextualizedApp = function() {
       </IntlProvider>
     </ThemeProvider>
   );
-};
+}
 
-export default function App() {
-  const [state, dispatch] = useReducer(reducer, initialState);
-
+function App() {
   return (
-    <AppContext.Provider value={{ state, dispatch }}>
-      <ContextualizedApp />
-    </AppContext.Provider>
+    <QueryClientProvider client={queryClient}>
+      <AppWithQueryClient />
+      {/* <ReactQueryDevtools initialIsOpen={false} /> */}
+    </QueryClientProvider>
   );
 }
+
+// react-hot-loader automatically ensures that it is not executed in production
+// and has a minimal footprint.
+export default hot(() => <App />);

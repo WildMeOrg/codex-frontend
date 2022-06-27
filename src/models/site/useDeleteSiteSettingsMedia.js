@@ -1,11 +1,13 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
 import { get } from 'lodash-es';
-import { AppContext, setSiteSettingsNeedsFetch } from '../../context';
+import { useQueryClient } from 'react-query';
+
+import queryKeys from '../../constants/queryKeys';
 import { formatError } from '../../utils/formatters';
 
 export default function useDeleteSiteSettingsMedia() {
-  const { dispatch } = useContext(AppContext);
+  const queryClient = useQueryClient();
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -15,7 +17,7 @@ export default function useDeleteSiteSettingsMedia() {
     try {
       setLoading(true);
       const response = await axios({
-        url: `${__houston_url__}/api/v1/site-settings/${data}`,
+        url: `${__houston_url__}/api/v1/site-settings/file/${data}`,
         withCredentials: true,
         method: 'delete',
       });
@@ -23,7 +25,7 @@ export default function useDeleteSiteSettingsMedia() {
       const successful = statusResponse === 204;
       setLoading(false);
       if (successful) {
-        dispatch(setSiteSettingsNeedsFetch(true));
+        queryClient.invalidateQueries(queryKeys.settingsConfig);
         setSuccess(true);
         setError(null);
         okStatus = true;

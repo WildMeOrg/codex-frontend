@@ -29,7 +29,7 @@ export default function UploadManager({
   fileRef.current = files;
 
   useEffect(() => {
-    const uppyInstance = Uppy({
+    const uppyInstance = new Uppy({
       meta: { type: 'Report sightings image upload' },
       restrictions: {
         allowedFileTypes: ['.jpg', '.jpeg', '.png'],
@@ -38,7 +38,7 @@ export default function UploadManager({
     });
 
     uppyInstance.use(Tus, {
-      endpoint: `${__houston_url__}/api/v1/asset_groups/tus`,
+      endpoint: `${__houston_url__}/api/v1/tus`,
       headers: {
         'x-tus-transaction-id': assetSubmissionId,
       },

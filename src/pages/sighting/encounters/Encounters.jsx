@@ -1,87 +1,197 @@
-import React, { useState } from 'react';
-import { get } from 'lodash-es';
+import React, { useState, useEffect } from 'react';
+import { get, pick } from 'lodash-es';
+import { useHistory } from 'react-router-dom';
+import { useQueryClient } from 'react-query';
 
 import AddIcon from '@material-ui/icons/Add';
 
 import CustomAlert from '../../../components/Alert';
 import CardContainer from '../../../components/cards/CardContainer';
-import MetadataCard from '../../../components/cards/MetadataCardNew';
+import MetadataCard from '../../../components/cards/MetadataCard';
+import Link from '../../../components/Link';
 import Text from '../../../components/Text';
 import Button from '../../../components/Button';
 import ButtonMenu from '../../../components/ButtonMenu';
 import MoreMenu from '../../../components/MoreMenu';
 import ConfirmDelete from '../../../components/ConfirmDelete';
 import useEncounterFieldSchemas from '../../../models/encounter/useEncounterFieldSchemas';
+import useGetMe from '../../../models/users/useGetMe';
 import useAddEncounter from '../../../models/encounter/useAddEncounter';
 import useDeleteEncounter from '../../../models/encounter/useDeleteEncounter';
+import useAddEncounterToAGS from '../../../models/assetGroupSighting/useAddEncounterToAGS';
+import useDeleteAGSEncounter from '../../../models/assetGroupSighting/useDeleteAGSEncounter';
 import AnnotationsCard from './AnnotationsCard';
 import EditEncounterMetadata from './EditEncounterMetadata';
-import CreateIndividualModal from './CreateIndividualModal';
 import ManuallyAssignModal from './ManuallyAssignModal';
+import AddAnnotationsDialog from './AddAnnotationsDialog';
+import queryKeys, {
+  getUserSightingsQueryKey,
+} from '../../../constants/queryKeys';
+import { deriveIndividualName } from '../../../utils/nameUtils';
 
 export default function Encounters({
   sightingData,
   refreshSightingData,
+  pending,
 }) {
+  const { data, loading: userDataLoading } = useGetMe();
+  const userId = get(data, 'guid');
+  const history = useHistory();
+  const queryClient = useQueryClient();
   const {
-    addEncounter,
-    loading: addEncounterLoading,
-    error: addEncounterError,
+    mutate: addEncounterToSighting,
+    isLoading: addEncounterToSightingLoading,
+    error: addEncounterToSightingError,
     setError: setAddEncounterError,
   } = useAddEncounter();
 
   const {
-    deleteEncounter,
-    loading: deleteEncounterInProgress,
-    error: deleteEncounterError,
-    setError: setDeleteEncounterError,
+    mutate: addEncounterToAGS,
+    isLoading: addEncounterToAGSLoading,
+    error: addEncounterToAGSError,
+  } = useAddEncounterToAGS();
+
+  const addEncounter = pending
+    ? addEncounterToAGS
+    : addEncounterToSighting;
+  const addEncounterLoading = pending
+    ? addEncounterToAGSLoading
+    : addEncounterToSightingLoading;
+  const addEncounterError = pending
+    ? addEncounterToAGSError
+    : addEncounterToSightingError;
+
+  const {
+    deleteEncounter: deleteSightingEncounter,
+    loading: deleteSightingEncounterLoading,
+    error: deleteSightingEncounterError,
+    onClearError: deleteEncounterOnClearError,
+    vulnerableObject,
+    setVulnerableObject,
   } = useDeleteEncounter();
 
-  const [
-    createIndividualEncounterId,
-    setCreateIndividualEncounterId,
-  ] = useState(null);
+  const {
+    deleteAGSEncounter,
+    isLoading: deleteAGSEncounterLoading,
+    error: deleteAGSEncounterError,
+    onClearError: deleteAgsEncounterOnClearError,
+  } = useDeleteAGSEncounter();
+
+  const deleteEncounterLoading = pending
+    ? deleteAGSEncounterLoading
+    : deleteSightingEncounterLoading;
+
   const [encounterToDelete, setEncounterToDelete] = useState(null);
   const [editEncounterInfo, setEditEncounterInfo] = useState(null);
   const [encounterToAssign, setEncounterToAssign] = useState(null);
+  const [
+    messageForConfirmDelete,
+    setMessageForConfirmDelete,
+  ] = useState(null);
+  const [
+    encounterToAddAnnotations,
+    setEncounterToAddAnnotations,
+  ] = useState(null);
 
-  const sightingId = get(sightingData, 'id');
+  const sightingId = get(sightingData, 'guid');
 
   const encounterFieldSchemas = useEncounterFieldSchemas();
   const encounters = get(sightingData, 'encounters', []);
+
+  const { identification: identificationStep } =
+    sightingData?.pipeline_status || {};
+
+  const {
+    complete: isIdentificationComplete,
+    failed: isIdentificationFailed,
+  } = identificationStep || {};
+  const isIdReady =
+    isIdentificationComplete && !isIdentificationFailed;
+
+  useEffect(
+    () => {
+      const message = vulnerableObject
+        ? 'BOTH_VULNERABLE_MESSAGE'
+        : 'CONFIRM_DELETE_ENCOUNTER_DESCRIPTION';
+      setMessageForConfirmDelete(message);
+    },
+    [vulnerableObject],
+  );
+
   return (
     <div>
       <ConfirmDelete
-        open={Boolean(encounterToDelete)}
-        onClose={() => setEncounterToDelete(null)}
+        open={Boolean(encounterToDelete && !userDataLoading)}
+        onClose={() => {
+          setMessageForConfirmDelete(
+            'CONFIRM_DELETE_ENCOUNTER_DESCRIPTION',
+          );
+          setVulnerableObject(null);
+          setEncounterToDelete(null);
+        }}
         onDelete={async () => {
-          const successful = await deleteEncounter(encounterToDelete);
+          let successful;
+          if (pending) {
+            successful = await deleteAGSEncounter(
+              sightingId,
+              encounterToDelete,
+            );
+          }
+          if (!pending && vulnerableObject) {
+            successful = await deleteSightingEncounter(
+              encounterToDelete,
+              true,
+              true,
+            );
+          }
+          if (!pending && !vulnerableObject) {
+            successful = await deleteSightingEncounter(
+              encounterToDelete,
+            );
+          }
           if (successful) {
             setEncounterToDelete(null);
-            refreshSightingData();
+            const navigateAway =
+              vulnerableObject && encounters.length <= 1;
+            setVulnerableObject(null);
+            if (navigateAway) {
+              history.push('/');
+              refreshSightingData();
+              queryClient.invalidateQueries(queryKeys.me);
+              queryClient.invalidateQueries(
+                getUserSightingsQueryKey(userId),
+              );
+            } else {
+              refreshSightingData();
+            }
           }
         }}
-        deleteInProgress={deleteEncounterInProgress}
-        error={deleteEncounterError}
-        onClearError={() => setDeleteEncounterError(null)}
-        messageId={
-          encounters.length <= 1
-            ? 'CANNOT_DELETE_FINAL_ENCOUNTER_DESCRIPTION'
-            : 'CONFIRM_DELETE_ENCOUNTER_DESCRIPTION'
+        deleteInProgress={deleteEncounterLoading}
+        error={
+          pending
+            ? deleteAGSEncounterError
+            : deleteSightingEncounterError
         }
-        deleteDisabled={encounters.length <= 1}
-      />
-
-      <CreateIndividualModal
-        encounterId={createIndividualEncounterId}
-        open={Boolean(createIndividualEncounterId)}
-        onClose={() => setCreateIndividualEncounterId(null)}
+        onClearError={
+          pending
+            ? deleteAgsEncounterOnClearError
+            : deleteEncounterOnClearError
+        }
+        messageId={messageForConfirmDelete}
       />
 
       <ManuallyAssignModal
+        sightingGuid={sightingId}
         encounterId={encounterToAssign}
         open={Boolean(encounterToAssign)}
         onClose={() => setEncounterToAssign(null)}
+      />
+
+      <AddAnnotationsDialog
+        sightingData={sightingData}
+        pending={pending}
+        encounter={encounterToAddAnnotations}
+        onClose={() => setEncounterToAddAnnotations(null)}
       />
 
       <EditEncounterMetadata
@@ -91,78 +201,104 @@ export default function Encounters({
         metadata={get(editEncounterInfo, 'encounterMetadata')}
         encounterId={get(editEncounterInfo, 'encounterId')}
         refreshSightingData={refreshSightingData}
+        pending={pending}
       />
 
       {encounters.map((encounter, i) => {
-        const encounterId = get(encounter, 'id');
+        const encounterId = get(encounter, 'guid');
         const encounterMetadata = encounterFieldSchemas.map(
           schema => ({
             ...schema,
             value: schema.getValue(schema, encounter),
           }),
         );
+
+        const individualGuid = encounter?.individual?.guid;
+        const individualName = deriveIndividualName(
+          encounter?.individual,
+          'FirstName',
+          'Unnamed Individual',
+        );
+
+        const actionButtonActions = [
+          {
+            id: 'view-individual',
+            labelId: 'VIEW_INDIVIDUAL',
+            href: `/individuals/${individualGuid}`,
+          },
+        ];
+
+        const identifyButtonActions = [
+          ...(isIdReady
+            ? [
+                {
+                  id: 'view-id-results',
+                  labelId: 'VIEW_IDENTIFICATION_RESULTS',
+                  href: `/match-results/${sightingId}`,
+                },
+              ]
+            : []),
+          {
+            id: 'create-new-individual',
+            labelId: 'CREATE_NEW_INDIVIDUAL',
+            href: `/create-individual?e=${encounterId}`,
+          },
+          {
+            id: 'identify-manually',
+            labelId: 'MANUALLY_ASSIGN',
+            onClick: () => setEncounterToAssign(encounterId),
+          },
+        ];
+
         return (
           <div
             style={{ marginTop: i > 0 ? 20 : 0 }}
-            key={encounter.id}
+            key={encounterId}
           >
             <div
               style={{
-                margin: '0 30px',
+                margin: '0 30px 4px 30px',
                 display: 'flex',
-                justifyContent: 'space-between',
                 alignItems: 'center',
               }}
             >
-              <Text
-                id="ANIMAL_CLUSTER_LABEL"
-                variant="h6"
-                values={{ i: i + 1 }}
-              />
+              {individualGuid ? (
+                <Link
+                  newTab
+                  href={`/individuals/${individualGuid}`}
+                  style={{ marginRight: 20 }}
+                >
+                  <Text variant="h5">{individualName}</Text>
+                </Link>
+              ) : (
+                <Text
+                  id="ANIMAL_CLUSTER_LABEL"
+                  variant="h5"
+                  values={{ i: i + 1 }}
+                  style={{ marginRight: 20 }}
+                />
+              )}
               <div style={{ display: 'flex', alignItems: 'center' }}>
                 <ButtonMenu
                   display="primary"
                   size="small"
                   buttonId="identify-animal-cluster"
-                  id="IDENTIFY"
-                  actions={[
-                    {
-                      id: 'start-id',
-                      label: 'Kickoff identification',
-                      onClick: Function.prototype,
-                    },
-                    {
-                      id: 'identify-manually',
-                      label: 'Manually assign',
-                      onClick: Function.prototype,
-                    },
-                  ]}
+                  id={individualGuid ? 'ACTIONS' : 'IDENTIFY'}
+                  disabled={pending}
+                  actions={
+                    individualGuid
+                      ? actionButtonActions
+                      : identifyButtonActions
+                  }
                 />
                 <MoreMenu
                   menuId="cluster-actions"
                   items={[
                     {
-                      id: 'view-history',
-                      onClick: () => {},
-                      label: 'View history',
-                    },
-                    {
-                      id: 'create-new-individual',
-                      label: 'Create new individual',
-                      onClick: () =>
-                        setCreateIndividualEncounterId(encounterId),
-                    },
-                    {
-                      id: 'manually-assign',
-                      label: 'Manually assign',
-                      onClick: () =>
-                        setEncounterToAssign(encounterId),
-                    },
-                    {
                       id: 'delete-cluster',
                       onClick: () =>
                         setEncounterToDelete(encounterId),
-                      label: 'Delete cluster',
+                      labelId: 'DELETE_ANIMAL',
                     },
                   ]}
                 />
@@ -170,7 +306,19 @@ export default function Encounters({
             </div>
             <div style={{ display: 'flex', flexWrap: 'wrap' }}>
               <CardContainer>
-                <AnnotationsCard annotations={[]} />
+                <AnnotationsCard
+                  pending={pending}
+                  sightingData={sightingData}
+                  onAddAnnotations={() =>
+                    setEncounterToAddAnnotations(encounter)
+                  }
+                  annotationReferences={get(
+                    encounter,
+                    'annotations',
+                    [],
+                  )}
+                  assets={get(sightingData, 'assets', [])}
+                />
               </CardContainer>
               <CardContainer size="small">
                 <MetadataCard
@@ -201,8 +349,21 @@ export default function Encounters({
         id="ADD_CLUSTER"
         loading={addEncounterLoading}
         onClick={async () => {
-          await addEncounter(sightingId, {});
-          refreshSightingData();
+          const copiedProperties = pick(sightingData, [
+            'time',
+            'timeSpecificity',
+            'locationId',
+          ]);
+          await addEncounter({
+            sightingGuid: sightingId,
+            operations: [
+              {
+                op: 'add',
+                path: '/encounters',
+                value: copiedProperties,
+              },
+            ],
+          });
         }}
         startIcon={<AddIcon />}
         style={{ margin: '12px 0px 20px 20px' }}

@@ -8,10 +8,17 @@ import InputLabel from '@material-ui/core/InputLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
 
 import fieldTypes from '../../../constants/fieldTypesNew';
-import useLabel from '../../../hooks/useLabel';
+import useEditLabel from '../../../hooks/useEditLabel';
 import useDescription from '../../../hooks/useDescription';
 import FormCore from './FormCore';
 import Text from '../../Text';
+
+const getSelectValue = val => val || '';
+const getMultiselectValue = val => {
+  if (Array.isArray(val)) return val;
+  if (val && typeof val === 'string') return val.split(',');
+  return [];
+};
 
 const SelectionEditor = function(props) {
   const {
@@ -23,34 +30,39 @@ const SelectionEditor = function(props) {
     ...rest
   } = props;
   const intl = useIntl();
+  const isMultiselect = schema.fieldType === fieldTypes.multiselect;
+  const safeValue = isMultiselect
+    ? getMultiselectValue(value)
+    : getSelectValue(value);
 
   function getLabel(object) {
-    if (object.labelId)
-      return intl.formatMessage({ id: object.labelId });
+    if (object?.labelId)
+      return intl.formatMessage({
+        id: object.labelId,
+      });
     return get(object, 'label', 'Missing label');
   }
 
-  const label = useLabel(schema, true);
+  const editLabel = useEditLabel(schema);
   const description = useDescription(schema);
   const showDescription = !minimalLabels && description;
-  const multiselect = schema.fieldType === fieldTypes.multiselect;
 
   const choices = get(schema, 'choices', []);
   const identifier = schema.id || schema.name;
 
   return (
     <FormCore schema={schema} width={width}>
-      <InputLabel>{label}</InputLabel>
+      <InputLabel>{editLabel}</InputLabel>
       <Select
         labelId={`${identifier}-selector-label`}
         id={`${identifier}-selector`}
         onChange={e => {
           onChange(e.target.value);
         }}
-        value={value}
-        multiple={multiselect}
+        value={safeValue}
+        multiple={isMultiselect}
         renderValue={currentValue => {
-          if (multiselect) {
+          if (isMultiselect) {
             const selectedChoices = choices.filter(c =>
               currentValue.includes(c.value),
             );
@@ -74,6 +86,7 @@ const SelectionEditor = function(props) {
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'flex-start',
+              minHeight: 42,
             }}
           >
             <Text component="span">{getLabel(option)}</Text>

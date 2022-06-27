@@ -1,63 +1,22 @@
-import { useState } from 'react';
-import axios from 'axios';
-import { get } from 'lodash-es';
-import { formatError } from '../../utils/formatters';
+import { useDelete } from '../../hooks/useMutate';
+import queryKeys from '../../constants/queryKeys';
 
 export default function useDeleteUser() {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(false);
-
-  const deleteUser = async (userGuid, currentPassword) => {
-    try {
-      setLoading(true);
+  return useDelete({
+    deriveUrl: ({ userGuid }) => `/users/${userGuid}`,
+    deriveData: ({ userGuid, password }) => {
       const userDeleteData = {
         op: 'remove',
         path: `/users/${userGuid}`,
         value: userGuid,
       };
-      const currentPasswordTest = currentPassword
-        ? [
-            {
-              op: 'test',
-              path: '/current_password',
-              value: currentPassword,
-            },
-          ]
-        : [];
-
-      const deleteResponse = await axios({
-        url: `${__houston_url__}/api/v1/users/${userGuid}`,
-        withCredentials: true,
-        method: 'delete',
-        data: [...currentPasswordTest, userDeleteData],
-      });
-      const responseStatus = get(deleteResponse, 'status');
-      const successful = responseStatus === 204;
-      if (successful) {
-        setLoading(false);
-        setSuccess(true);
-        setError(null);
-        return true;
-      }
-
-      setError(formatError(deleteResponse));
-      setSuccess(false);
-      return false;
-    } catch (postError) {
-      setLoading(false);
-      setError(formatError(postError));
-      setSuccess(false);
-      return false;
-    }
-  };
-
-  return {
-    deleteUser,
-    loading,
-    error,
-    setError,
-    success,
-    setSuccess,
-  };
+      const passwordTest = {
+        op: 'test',
+        path: '/current_password',
+        value: password,
+      };
+      return [passwordTest, userDeleteData];
+    },
+    fetchKeys: [queryKeys.users],
+  });
 }

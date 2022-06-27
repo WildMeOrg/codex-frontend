@@ -1,18 +1,21 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { useTheme } from '@material-ui/core/styles';
 
-export default function Link({
-  children,
-  href,
-  style,
-  disabled = false,
-  noUnderline = false,
-  external = false,
-  newTab = false,
-  onClick,
-  ...rest
-}) {
+function Link(
+  {
+    children,
+    href,
+    style,
+    disabled = false,
+    noUnderline = false,
+    external = false,
+    newTab = false,
+    onClick,
+    ...rest
+  },
+  ref,
+) {
   const theme = useTheme();
 
   const styles = {
@@ -24,7 +27,7 @@ export default function Link({
 
   if (disabled) {
     return (
-      <div style={styles} {...rest}>
+      <div style={styles} ref={ref} {...rest}>
         {children}
       </div>
     );
@@ -38,6 +41,7 @@ export default function Link({
         rel={newTab ? 'noreferrer' : undefined}
         style={styles}
         onClick={onClick}
+        ref={ref}
         {...rest}
       >
         {children}
@@ -46,8 +50,18 @@ export default function Link({
   }
 
   return (
-    <RouterLink to={href} style={styles} onClick={onClick} {...rest}>
+    <RouterLink
+      to={href}
+      style={styles}
+      onClick={onClick}
+      target={newTab ? '_blank' : undefined}
+      rel={newTab ? 'noreferrer' : undefined}
+      ref={ref}
+      {...rest}
+    >
       {children}
     </RouterLink>
   );
 }
+
+export default forwardRef(Link);

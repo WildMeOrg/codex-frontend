@@ -33,7 +33,7 @@ const fakeSearchResults = [
     locationsSighted: 2,
     lastSeen: Date.now(),
     profile: flukePic,
-  }
+  },
 ];
 
 const mockPhotos = [

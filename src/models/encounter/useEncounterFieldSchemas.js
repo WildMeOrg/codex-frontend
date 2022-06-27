@@ -1,38 +1,18 @@
 import { useMemo } from 'react';
+import { useIntl } from 'react-intl';
 import { get, startCase } from 'lodash-es';
 
 import useSiteSettings from '../site/useSiteSettings';
+import { defaultEncounterCategories } from '../../constants/fieldCategories';
 import fieldTypes from '../../constants/fieldTypesNew';
+import sexOptions from '../../constants/sexOptions';
 import {
   createFieldSchema,
   createCustomFieldSchema,
 } from '../../utils/fieldUtils';
 
-export const defaultEncounterCategories = {
-  animal: {
-    name: 'individual',
-    labelId: 'INDIVIDUAL_INFORMATION',
-    individualFields: true,
-  },
-};
-
-const sexChoices = [
-  // biologists not yet woke
-  {
-    value: 'male',
-    labelId: 'MALE',
-  },
-  {
-    value: 'female',
-    labelId: 'FEMALE',
-  },
-  {
-    value: 'unknown',
-    labelId: 'UNKNOWN',
-  },
-];
-
 export default function useSightingFieldSchemas() {
+  const intl = useIntl();
   const {
     data,
     loading,
@@ -43,12 +23,6 @@ export default function useSightingFieldSchemas() {
 
   const encounterFieldSchemas = useMemo(
     () => {
-      const regionChoices = get(
-        data,
-        ['site.custom.regions', 'value', 'locationID'],
-        [],
-      );
-
       const species = get(data, ['site.species', 'value'], []);
       const speciesOptions = species.map(s => {
         const mainCommonName = startCase(get(s, ['commonNames', 0]));
@@ -59,6 +33,11 @@ export default function useSightingFieldSchemas() {
           label: speciesLabel,
           value: s.id,
         };
+      });
+
+      speciesOptions.push({
+        label: intl.formatMessage({ id: 'UNKNOWN' }),
+        value: null,
       });
 
       const customFields = get(
@@ -75,16 +54,18 @@ export default function useSightingFieldSchemas() {
       );
 
       return [
-        createFieldSchema(fieldTypes.date, {
-          name: 'time',
+        createFieldSchema(fieldTypes.specifiedTime, {
+          name: 'specifiedTime',
           labelId: 'SIGHTING_TIME',
-          category: defaultEncounterCategories.animal.name,
-          hideOnBasicReport: true,
-        }),
-        createFieldSchema(fieldTypes.locationId, {
-          name: 'locationId',
-          labelId: 'REGION',
-          choices: regionChoices,
+          descriptionId: 'SIGHTING_TIME_DESCRIPTION',
+          getValue: (_, encounterData) => {
+            const timeSpecificity = get(
+              encounterData,
+              'timeSpecificity',
+            );
+            const time = get(encounterData, 'time');
+            return { time, timeSpecificity };
+          },
           category: defaultEncounterCategories.animal.name,
           hideOnBasicReport: true,
         }),
@@ -111,18 +92,19 @@ export default function useSightingFieldSchemas() {
           labelId: 'SPECIES',
           category: defaultEncounterCategories.animal.name,
           choices: speciesOptions,
+          defaultValue: null,
         }),
         createFieldSchema(fieldTypes.select, {
           name: 'sex',
           labelId: 'SEX',
           category: defaultEncounterCategories.animal.name,
-          choices: sexChoices,
+          choices: sexOptions,
+          defaultValue: null,
         }),
         ...customFieldSchemas,
       ];
     },
     [siteSettingsVersion],
   );
-
   return encounterFieldSchemas;
 }

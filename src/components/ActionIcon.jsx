@@ -7,6 +7,7 @@ import ViewIcon from '@material-ui/icons/Launch';
 import DeleteIcon from '@material-ui/icons/Delete';
 import DownloadIcon from '@material-ui/icons/GetApp';
 import CopyIcon from '@material-ui/icons/FileCopy';
+import RestoreIcon from '@material-ui/icons/Restore';
 
 import Link from './Link';
 
@@ -18,6 +19,14 @@ const variantMap = {
   view: {
     labelId: 'VIEW',
     component: ViewIcon,
+  },
+  revoke: {
+    labelId: 'MUTUAL_REVOKE',
+    component: DeleteIcon,
+  },
+  restore: {
+    labelId: 'RESTORE',
+    component: RestoreIcon,
   },
   delete: {
     labelId: 'DELETE',
@@ -31,12 +40,41 @@ const variantMap = {
     labelId: 'COPY',
     component: CopyIcon,
   },
+  removeEncFromIndividual: {
+    labelId: 'DETACH_ENCOUNTER_FROM_INDIVIDUAL',
+    component: DeleteIcon,
+  },
+  removeEncFromIndividualDisabled: {
+    labelId: 'DETACH_ENCOUNTER_FROM_INDIVIDUAL_DISABLED',
+    component: DeleteIcon,
+  },
 };
 
-const Core = function({ variant, labelId, ...rest }) {
+const Core = function({
+  variant,
+  labelId,
+  disabled = false,
+  ...rest
+}) {
   const intl = useIntl();
   const config = variantMap[variant];
   const label = intl.formatMessage({ id: labelId || config.labelId });
+  if (disabled) {
+    return (
+      <Tooltip title={label}>
+        <span>
+          <IconButton
+            style={{ padding: 4 }}
+            aria-label={label}
+            disabled={disabled}
+            {...rest}
+          >
+            <config.component />
+          </IconButton>
+        </span>
+      </Tooltip>
+    );
+  }
 
   return (
     <Tooltip title={label}>

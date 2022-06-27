@@ -1,89 +1,173 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
-import { FormattedMessage } from 'react-intl';
-import { get, capitalize } from 'lodash-es';
+import { FormattedMessage, useIntl } from 'react-intl';
+import {
+  get,
+  capitalize,
+  map,
+  reduce,
+  uniqBy,
+  slice,
+} from 'lodash-es';
+import { useQueryClient } from 'react-query';
 
-import SexIcon from '@material-ui/icons/Nature';
-import AgeIcon from '@material-ui/icons/Height';
-import StatusIcon from '@material-ui/icons/LocalHospital';
-
+import errorTypes from '../../constants/errorTypes';
+import { getIndividualQueryKey } from '../../constants/queryKeys';
 import useIndividual from '../../models/individual/useIndividual';
 import useDeleteIndividual from '../../models/individual/useDeleteIndividual';
 import usePatchIndividual from '../../models/individual/usePatchIndividual';
 
 // VERILY BAD HOTFIX //
 import defaultIndividualSrc from '../../assets/defaultIndividual.png';
-import FeaturedPhoto from '../sighting/featuredPhoto/FeaturedPhoto';
+import FeaturedPhoto from '../../components/FeaturedPhoto';
 // VERILY BAD HOTFIX //
 
 import useIndividualFieldSchemas from '../../models/individual/useIndividualFieldSchemas';
 import LoadingScreen from '../../components/LoadingScreen';
 import MoreMenu from '../../components/MoreMenu';
-import EntityHeaderNew from '../../components/EntityHeaderNew';
+import EntityHeader from '../../components/EntityHeader';
 import MainColumn from '../../components/MainColumn';
 import SadScreen from '../../components/SadScreen';
-import Button from '../../components/Button';
 import Text from '../../components/Text';
 import CardContainer from '../../components/cards/CardContainer';
-import SightingsCard from '../../components/cards/SightingsCard';
+import EncountersCard from '../../components/cards/EncountersCard';
 import MetadataCard from '../../components/cards/MetadataCard';
 import GalleryCard from '../../components/cards/GalleryCard';
 import ConfirmDelete from '../../components/ConfirmDelete';
 import RelationshipsCard from '../../components/cards/RelationshipsCard';
-import CooccurrenceCard from '../../components/cards/CooccurrenceCard';
+// import CooccurrenceCard from '../../components/cards/CooccurrenceCard';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import EditIndividualMetadata from './EditIndividualMetadata';
-import fakeAssets from './fakeAssets';
-import fakeCoocs from './fakeCoocs';
-import fakeRelationships from './fakeRelationships';
-
-const items = [
-  {
-    key: 'sex',
-    id: 'sex',
-    icon: SexIcon,
-    value: 'Male',
-    titleId: 'PROFILE_LABEL_SEX',
-  },
-  {
-    key: 'age',
-    id: 'age',
-    icon: AgeIcon,
-    value: 42,
-    titleId: 'PROFILE_LABEL_AGE',
-  },
-  {
-    id: 'status',
-    key: 'status',
-    icon: StatusIcon,
-    value: 'Alive',
-    titleId: 'PROFILE_LABEL_STATUS',
-  },
-];
+import MergeDialog from './MergeDialog';
+import {
+  deriveIndividualName,
+  deriveIndividualNameGuid,
+} from '../../utils/nameUtils';
 
 export default function Individual() {
+  const intl = useIntl();
   const { id } = useParams();
-  const { data, refresh, loading } = useIndividual(id);
+  const queryClient = useQueryClient();
+  const {
+    data: individualData,
+    statusCode: individualDataStatusCode,
+    loading,
+    error: individualDataError,
+  } = useIndividual(id);
   const history = useHistory();
   const fieldSchemas = useIndividualFieldSchemas();
 
-  const metadata = useMemo(
+  const refreshIndividualData = useCallback(
     () => {
-      if (!data || !fieldSchemas) return null;
-      return fieldSchemas.map(schema => ({
-        ...schema,
-        value: schema.getValue(schema, data),
-      }));
+      const queryKey = getIndividualQueryKey(id);
+      queryClient.invalidateQueries(queryKey);
     },
-    [data, fieldSchemas],
+    [queryClient, id],
   );
 
-  const defaultName = get(
-    data,
-    ['names', 'defaultName'],
-    'Unnamed individual',
+  const individualDataForFeaturedPhoto = useMemo(
+    () => {
+      const allAssets = reduce(
+        individualData?.encounters,
+        (memo, encounter) => {
+          const newAssets = map(
+            get(encounter, 'annotations', []),
+            annotation => ({
+              src: annotation?.asset_src,
+              guid: annotation?.asset_guid,
+              altText: annotation?.created
+                ? intl.formatMessage({
+                    id: 'ANNOTATION_CREATED',
+                  }) + annotation?.created
+                : intl.formatMessage({
+                    id: 'ANNOTATION_WITH_CREATION_DATE_UNKNOWN',
+                  }),
+            }),
+          );
+          return [...memo, ...newAssets];
+        },
+        [],
+      );
+      const assets = uniqBy(allAssets, asset => asset.src);
+      return {
+        assets,
+        featuredAssetGuid: individualData?.featuredAssetGuid,
+        guid: individualData?.guid,
+      };
+    },
+    [individualData],
   );
-  const nickname = get(data, ['names', 'nickname']);
+
+  const metadata = useMemo(
+    () => {
+      if (!individualData || !fieldSchemas) return null;
+      return fieldSchemas.map(schema => {
+        const augmentedSchema = {
+          ...schema,
+          value: schema.getValue(schema, individualData),
+        };
+
+        if (schema.name === 'firstName') {
+          augmentedSchema.nameGuid = deriveIndividualNameGuid(
+            individualData,
+            'FirstName',
+          );
+        } else if (schema.name === 'adoptionName') {
+          augmentedSchema.nameGuid = deriveIndividualNameGuid(
+            individualData,
+            'AdoptionName',
+          );
+        }
+
+        return augmentedSchema;
+      });
+    },
+    [individualData, fieldSchemas],
+  );
+  const encounters = get(individualData, 'encounters', []);
+
+  const assetSources = useMemo(
+    () => {
+      const combinedAssets = reduce(
+        encounters,
+        (memo, encounter) => {
+          const annotations = get(encounter, 'annotations', []);
+          const modifiedAssets = map(
+            annotations,
+            (annotation, index) => ({
+              number: index,
+              guid: annotation?.asset_guid,
+              src: annotation?.asset_src,
+              alt: annotation?.created
+                ? 'Annotation created: ' + annotation?.created
+                : 'Annotation image with no creation date',
+            }),
+          );
+          return [...memo, ...modifiedAssets];
+        },
+        [],
+      );
+      const uniqueModifiedAssets = uniqBy(
+        combinedAssets,
+        asset => asset.src,
+      );
+      const firstNineAssets = slice(uniqueModifiedAssets, 0, 9);
+      return firstNineAssets;
+    },
+    [individualData],
+  );
+
+  const [firstName, adoptionName] = useMemo(
+    () => [
+      deriveIndividualName(
+        individualData,
+        'FirstName',
+        intl.formatMessage({ id: 'UNNAMED_INDIVIDUAL' }),
+      ),
+      deriveIndividualName(individualData, 'AdoptionName'),
+    ],
+    [individualData],
+  );
 
   const {
     deleteIndividual,
@@ -99,32 +183,41 @@ export default function Individual() {
     setError: setPatchError,
   } = usePatchIndividual();
 
-  useDocumentTitle(capitalize(defaultName), {
+  useDocumentTitle(capitalize(firstName), {
     translateMessage: false,
   });
   const [editingProfile, setEditingProfile] = useState(false);
+  const [merging, setMerging] = useState(false);
   const [deletingIndividual, setDeletingIndividual] = useState(false);
   const [deleteEncounterId, setDeleteEncounterId] = useState(null);
 
-  if (loading) return <LoadingScreen />;
-
-  const individual = null;
-  if (!individual)
+  if (individualDataError)
     return (
       <SadScreen
-        variant="notFoundOcean"
-        subtitleId="INDIVIDUAL_NOT_FOUND"
+        statusCode={individualDataStatusCode}
+        variantOverrides={{
+          [errorTypes.notFound]: {
+            subtitleId: 'INDIVIDUAL_NOT_FOUND',
+            descriptionId: 'INDIVIDUAL_NOT_FOUND_DESCRIPTION',
+          },
+        }}
       />
     );
+  if (loading) return <LoadingScreen />;
 
   return (
     <MainColumn fullWidth>
+      <MergeDialog
+        open={merging}
+        onClose={() => setMerging(false)}
+        individualGuid={id}
+      />
       <EditIndividualMetadata
         open={editingProfile}
         onClose={() => setEditingProfile(false)}
         individualId={id}
         metadata={metadata}
-        refreshIndividualData={refresh}
+        refreshIndividualData={refreshIndividualData}
       />
       <ConfirmDelete
         open={Boolean(deleteEncounterId)}
@@ -134,10 +227,9 @@ export default function Individual() {
             id,
             deleteEncounterId,
           );
-
           if (deleteSuccessful) {
             setDeleteEncounterId(null);
-            refresh();
+            refreshIndividualData();
           }
         }}
         deleteInProgress={patchInProgress}
@@ -160,67 +252,78 @@ export default function Individual() {
         onClearError={() => setDeleteError(null)}
         messageId="CONFIRM_DELETE_INDIVIDUAL"
       />
-      <EntityHeaderNew
-        name={defaultName}
+      <EntityHeader
+        name={firstName}
         renderAvatar={
           <FeaturedPhoto
-            data={null}
-            loading={false}
-            refreshSightingData={Function.prototype}
+            data={individualDataForFeaturedPhoto}
+            loading={loading}
             defaultPhotoSrc={defaultIndividualSrc}
+            refreshData={refreshIndividualData}
+            individualId={individualData?.guid}
           />
         }
         renderOptions={
           <div style={{ display: 'flex' }}>
-            <Button display="primary">SUBSCRIBE</Button>
+            {/* <Button display="primary">SUBSCRIBE</Button> */}
             <MoreMenu
               menuId="individual-actions"
               items={[
                 {
-                  id: 'edit-profile',
-                  onClick: () => setEditingProfile(true),
-                  label: 'Edit profile',
-                },
-                {
-                  id: 'view-history',
-                  onClick: Function.prototype,
-                  label: 'View history',
+                  id: 'merge',
+                  onClick: () => setMerging(true),
+                  labelId: 'MERGE_WITH_ANOTHER_INDIVIDUAL',
                 },
                 {
                   id: 'delete-individual',
                   onClick: () => setDeletingIndividual(true),
-                  label: 'Delete individual',
+                  labelId: 'DELETE_INDIVIDUAL',
                 },
               ]}
             />
           </div>
         }
       >
-        <Text>{`Also known as ${nickname}.`}</Text>
-      </EntityHeaderNew>
+        {adoptionName && (
+          <Text>{`Also known as ${adoptionName}.`}</Text>
+        )}
+      </EntityHeader>
       <div style={{ display: 'flex', flexWrap: 'wrap' }}>
         <CardContainer size="small">
-          <GalleryCard title="Photos of Teddy" assets={fakeAssets} />
-          <MetadataCard editable metadata={items} />
+          <GalleryCard
+            title={intl.formatMessage(
+              { id: 'PHOTOS_OF' },
+              { name: firstName },
+            )}
+            assets={assetSources}
+          />
+          <MetadataCard
+            editable
+            metadata={metadata}
+            onEdit={() => setEditingProfile(true)}
+          />
         </CardContainer>
         <CardContainer>
-          <SightingsCard
+          <EncountersCard
             title={
               <FormattedMessage
                 id="SIGHTINGS_OF"
-                values={{ name: individual.name }}
+                values={{ name: firstName }}
               />
             }
-            columns={['date', 'submitter', 'location', 'actions']}
+            columns={['date', 'owner', 'location', 'actions']}
             onDelete={encounterId =>
               setDeleteEncounterId(encounterId)
             }
+            encounters={encounters}
           />
           <RelationshipsCard
-            title="Relationships"
-            relationships={fakeRelationships}
-          />
-          <CooccurrenceCard data={fakeCoocs} />
+            relationships={individualData?.relationships}
+            individualGuid={id}
+            loading={loading}
+            titleId="RELATIONSHIPS"
+          />{' '}
+          {/* <CooccurrenceCard data={fakeCoocs} /> */}
         </CardContainer>
       </div>
     </MainColumn>

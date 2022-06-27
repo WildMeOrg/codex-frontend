@@ -3,51 +3,13 @@ import { get } from 'lodash-es';
 
 import useSiteSettings from '../site/useSiteSettings';
 import fieldTypes from '../../constants/fieldTypesNew';
+import sexOptions from '../../constants/sexOptions';
 import {
   createFieldSchema,
   createCustomFieldSchema,
 } from '../../utils/fieldUtils';
-
-const sexChoices = [
-  {
-    value: 'male',
-    labelId: 'MALE',
-  },
-  {
-    value: 'female',
-    labelId: 'FEMALE',
-  },
-  {
-    value: 'non-binary',
-    labelId: 'NON_BINARY',
-  },
-  {
-    value: 'unknown',
-    labelId: 'UNKNOWN',
-  },
-];
-
-const statusChoices = [
-  {
-    value: 'alive',
-    labelId: 'ALIVE',
-  },
-  {
-    value: 'dead',
-    labelId: 'DEAD',
-  },
-  {
-    value: 'unknown',
-    labelId: 'UNKNOWN',
-  },
-];
-
-export const defaultCategories = {
-  general: {
-    name: 'general',
-    labelId: 'INDIVIDUAL_METADATA',
-  },
-};
+import { defaultIndividualCategories } from '../../constants/fieldCategories';
+import { deriveIndividualName } from '../../utils/nameUtils';
 
 export default function useIndividualFieldSchemas() {
   const {
@@ -76,35 +38,31 @@ export default function useIndividualFieldSchemas() {
 
       return [
         createFieldSchema(fieldTypes.string, {
-          name: 'names.defaultName',
-          labelId: 'NAME',
-          category: defaultCategories.general.name,
+          name: 'firstName',
+          labelId: 'FIRST_NAME',
+          category: defaultIndividualCategories.general.name,
           requiredForIndividualCreation: true,
           required: true,
           defaultValue: '',
+          getValue: (_, individualData) =>
+            deriveIndividualName(individualData, 'FirstName', ''),
         }),
         createFieldSchema(fieldTypes.string, {
-          name: 'names.nickname',
-          labelId: 'NICKNAMES',
-          category: defaultCategories.general.name,
+          name: 'adoptionName',
+          labelId: 'ADOPTION_NAME',
+          category: defaultIndividualCategories.general.name,
           requiredForIndividualCreation: true,
           defaultValue: '',
+          getValue: (_, individualData) =>
+            deriveIndividualName(individualData, 'AdoptionName', ''),
         }),
         createFieldSchema(fieldTypes.select, {
           name: 'sex',
           labelId: 'SEX',
-          category: defaultCategories.general.name,
-          choices: sexChoices,
+          category: defaultIndividualCategories.general.name,
+          choices: sexOptions,
           requiredForIndividualCreation: true,
-          defaultValue: '',
-        }),
-        createFieldSchema(fieldTypes.select, {
-          name: 'status',
-          labelId: 'STATUS',
-          category: defaultCategories.general.name,
-          choices: statusChoices,
-          requiredForIndividualCreation: true,
-          defaultValue: '',
+          defaultValue: null,
         }),
         ...customFieldSchemas,
       ];

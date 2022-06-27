@@ -17,7 +17,7 @@ export default function ProfileUploader({ title, onComplete }) {
   const assetSubmissionId = useMemo(uuid, []);
 
   useEffect(() => {
-    const uppyInstance = Uppy({
+    const uppyInstance = new Uppy({
       meta: { type: 'test' },
       restrictions: {
         maxNumberOfFiles: 1,
@@ -27,7 +27,7 @@ export default function ProfileUploader({ title, onComplete }) {
     });
 
     uppyInstance.use(Tus, {
-      endpoint: `${__houston_url__}/api/v1/asset_groups/tus`,
+      endpoint: `${__houston_url__}/api/v1/tus`,
       headers: {
         'x-tus-transaction-id': assetSubmissionId,
       },

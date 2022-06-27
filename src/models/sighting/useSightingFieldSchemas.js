@@ -5,30 +5,11 @@ import { get, map, omitBy } from 'lodash-es';
 import useDetectionConfig from '../site/useDetectionConfig';
 import useSiteSettings from '../site/useSiteSettings';
 import fieldTypes from '../../constants/fieldTypesNew';
+import { defaultSightingCategories } from '../../constants/fieldCategories';
 import {
   createFieldSchema,
   createCustomFieldSchema,
 } from '../../utils/fieldUtils';
-
-export const defaultSightingCategories = {
-  general: {
-    name: 'general',
-    labelId: 'GENERAL',
-    individualFields: false,
-  },
-  location: {
-    name: 'location',
-    labelId: 'LOCATION',
-    descriptionId: 'LOCATION_CATEGORY_DESCRIPTION',
-    required: true,
-    individualFields: false,
-  },
-  details: {
-    name: 'sightingDetails',
-    labelId: 'SIGHTING_DETAILS',
-    individualFields: false,
-  },
-};
 
 export default function useSightingFieldSchemas() {
   const intl = useIntl();
@@ -109,38 +90,37 @@ export default function useSightingFieldSchemas() {
       );
 
       return [
-        createFieldSchema(fieldTypes.date, {
-          name: 'startTime',
-          labelId: 'SIGHTING_START',
-          descriptionId: 'SIGHTING_START_TIME_DESCRIPTION',
+        createFieldSchema(fieldTypes.specifiedTime, {
+          name: 'specifiedTime',
+          labelId: 'SIGHTING_TIME',
+          descriptionId: 'SIGHTING_TIME_DESCRIPTION',
           category: defaultSightingCategories.general.name,
+          getValue: (_, sightingData) => {
+            const timeSpecificity = get(
+              sightingData,
+              'timeSpecificity',
+            );
+            const time = get(sightingData, 'time');
+            return { time, timeSpecificity };
+          },
           required: true,
         }),
-        createFieldSchema(fieldTypes.date, {
-          name: 'endTime',
-          labelId: 'SIGHTING_END',
-          descriptionId: 'SIGHTING_END_TIME_DESCRIPTION',
-          category: defaultSightingCategories.general.name,
-        }),
-        // createFieldSchema(fieldTypes.string, {
-        //   name: 'verbatimEventDate',
-        //   labelId: 'SIGHTING_VERBATIM_TIME',
-        //   descriptionId: 'SIGHTING_VERBATIM_TIME_DESCRIPTION',
-        //   category: defaultSightingCategories.general.name,
-        // }),
-        createFieldSchema(fieldTypes.multiselect, {
+        createFieldSchema(fieldTypes.select, {
+          // }), //   category: defaultSightingCategories.general.name, //   descriptionId: 'SIGHTING_VERBATIM_TIME_DESCRIPTION', //   labelId: 'SIGHTING_VERBATIM_TIME', //   name: 'verbatimEventDate', // createFieldSchema(fieldTypes.string, {
           name: 'speciesDetectionModel',
           labelId: 'SPECIES_DETECTION_MODEL',
           descriptionId: 'SPECIES_DETECTION_MODEL_DESCRIPTION',
           category: defaultSightingCategories.general.name,
           choices: modelChoices,
           hideOnMetadataCard: true,
+          required: true,
           editable: false,
         }),
         createFieldSchema(fieldTypes.locationId, {
           name: 'locationId',
           labelId: 'REGION',
           descriptionId: 'REGION_DESCRIPTION',
+          required: true,
           category: defaultSightingCategories.location.name,
           choices: regionChoices,
           editComponentProps: {

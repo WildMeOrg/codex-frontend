@@ -6,7 +6,7 @@ import useDocumentTitle from '../../hooks/useDocumentTitle';
 import useSiteSettings from '../../models/site/useSiteSettings';
 import MainColumn from '../../components/MainColumn';
 import Text from '../../components/Text';
-import ButtonLink from '../../components/ButtonLink';
+import SettingsBreadcrumbs from '../../components/SettingsBreadcrumbs';
 import categoryTypes from '../../constants/categoryTypes';
 import CategoryTable from './settings/CategoryTable';
 import CustomFieldTable from './settings/CustomFieldTable';
@@ -70,12 +70,7 @@ export default function FieldManagement() {
         style={{ padding: '16px 0 16px 16px' }}
         id="MANAGE_FIELDS"
       />
-      <ButtonLink
-        href="/admin"
-        style={{ marginTop: 8, width: 'fit-content' }}
-        display="back"
-        id="BACK"
-      />
+      <SettingsBreadcrumbs currentPageTextId="MANAGE_FIELDS" />
       <Grid
         container
         direction="column"
@@ -93,6 +88,7 @@ export default function FieldManagement() {
           titleId="CUSTOM_INDIVIDUAL_FIELDS"
           descriptionId="CUSTOM_INDIVIDUAL_FIELDS_DESCRIPTION"
           settingName="site.custom.customFields.MarkedIndividual"
+          noFieldsTextId="NO_CUSTOM_INDIVIDUAL_FIELDS_MESSAGE"
         />
         <CustomFieldTable
           categories={customSightingCategories}
@@ -100,6 +96,7 @@ export default function FieldManagement() {
           titleId="CUSTOM_SIGHTING_FIELDS"
           descriptionId="CUSTOM_SIGHTING_FIELDS_DESCRIPTION"
           settingName="site.custom.customFields.Occurrence"
+          noFieldsTextId="NO_CUSTOM_SIGHTING_FIELDS_MESSAGE"
         />
         <CustomFieldTable
           categories={customEncounterCategories}
@@ -107,6 +104,7 @@ export default function FieldManagement() {
           titleId="CUSTOM_ENCOUNTER_FIELDS"
           descriptionId="CUSTOM_ENCOUNTER_FIELDS_DESCRIPTION"
           settingName="site.custom.customFields.Encounter"
+          noFieldsTextId="NO_CUSTOM_ENCOUNTER_FIELDS_MESSAGE"
         />
       </Grid>
     </MainColumn>

@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
-import { get } from 'lodash-es';
+import React, { useEffect, useState } from 'react';
+import { get, isEmpty } from 'lodash-es';
 
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 
 import CustomAlert from '../../components/Alert';
 import usePatchSighting from '../../models/sighting/usePatchSighting';
-import usePatchAssetGroupSighting from '../../models/assetGroupSighting/usePatchAssetGroupSighting';
-import InputRow from '../../components/fields/edit/InputRowNew';
+import usePatchAGS from '../../models/assetGroupSighting/usePatchAGS';
+import InputRow from '../../components/fields/edit/InputRow';
 import Button from '../../components/Button';
 import StandardDialog from '../../components/StandardDialog';
 
@@ -28,53 +28,64 @@ export default function EditSightingMetadata({
   sightingId,
   metadata,
   onClose,
-  refreshSightingData,
   pending,
 }) {
   // console.log('deleteMe got here and refreshSightingData is: ');
   // console.log(refreshSightingData);
   const {
-    updateProperties: updateSightingProperties,
+    mutate: updateSightingProperties,
     loading: sightingLoading,
     error: sightingError,
-    setError: setSightingError,
+    clearError: clearSightingError,
   } = usePatchSighting();
 
   const {
-    updateProperties: updateAgsProperties,
+    mutate: updateAgsProperties,
     loading: agsLoading,
     error: agsError,
-    setError: setAgsError,
-  } = usePatchAssetGroupSighting();
+    clearError: clearAgsError,
+  } = usePatchAGS();
 
   const error = pending ? agsError : sightingError;
-  const setError = pending ? setAgsError : setSightingError;
+  const clearError = pending ? clearAgsError : clearSightingError;
   const loading = pending ? agsLoading : sightingLoading;
   const updateProperties = pending
     ? updateAgsProperties
     : updateSightingProperties;
 
-  const defaultFieldMetadata = metadata.filter(
-    field => !field.customField,
-  );
-  const customFieldMetadata = metadata.filter(
-    field => field.customField,
+  const [defaultFieldValues, setDefaultFieldValues] = useState({});
+
+  const [customFieldValues, setCustomFieldValues] = useState({});
+
+  useEffect(
+    () => {
+      const defaultFieldMetadata = metadata.filter(
+        field => !field.customField,
+      );
+      const customFieldMetadata = metadata.filter(
+        field => field.customField,
+      );
+      setDefaultFieldValues(
+        getInitialFormValues(defaultFieldMetadata, 'name'),
+      );
+      setCustomFieldValues(
+        getInitialFormValues(customFieldMetadata, 'id'),
+      );
+    },
+    [get(metadata, 'length')],
   );
 
-  const [defaultFieldValues, setDefaultFieldValues] = useState(
-    getInitialFormValues(defaultFieldMetadata, 'name'),
-  );
-
-  const [customFieldValues, setCustomFieldValues] = useState(
-    getInitialFormValues(customFieldMetadata, 'id'),
-  );
+  function handleClose() {
+    clearError();
+    onClose();
+  }
 
   return (
     <StandardDialog
       PaperProps={{ style: { width: 800 } }}
       maxWidth="lg"
       open={open}
-      onClose={onClose}
+      onClose={handleClose}
       titleId="EDIT_SIGHTING_METADATA"
     >
       <DialogContent style={{ minWidth: 200 }}>
@@ -124,26 +135,20 @@ export default function EditSightingMetadata({
         )}
       </DialogContent>
       <DialogActions style={{ padding: '0px 24px 24px 24px' }}>
-        <Button
-          display="basic"
-          onClick={() => {
-            setError(null);
-            onClose();
-          }}
-          id="CANCEL"
-        />
+        <Button display="basic" onClick={handleClose} id="CANCEL" />
         <Button
           loading={loading}
           display="primary"
           onClick={async () => {
-            const successfulUpdate = await updateProperties(
-              sightingId,
-              defaultFieldValues,
-            );
-            if (successfulUpdate) {
-              refreshSightingData();
-              onClose();
-            }
+            const properties = { ...defaultFieldValues };
+            if (!isEmpty(customFieldValues))
+              properties.customFields = customFieldValues;
+            const response = await updateProperties({
+              agsGuid: pending ? sightingId : undefined,
+              sightingGuid: pending ? undefined : sightingId,
+              properties,
+            });
+            if (response.status === 200) onClose();
           }}
           id="SAVE"
         />

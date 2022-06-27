@@ -23,9 +23,18 @@ export default function BulkImport() {
   useDocumentTitle('REPORT_SIGHTINGS');
 
   const { data: userData } = useGetMe();
-  const unprocessedAssetGroups = get(userData, 'unprocessed_asset_groups', [])
-  const unprocessedBulks = unprocessedAssetGroups.filter(ag => get(ag, 'uploadType') !== 'form')
-  const unprocessedAssetGroupId = get(unprocessedBulks, ['0', 'uuid']);
+  const unprocessedAssetGroups = get(
+    userData,
+    'unprocessed_asset_groups',
+    [],
+  );
+  const unprocessedBulks = unprocessedAssetGroups.filter(
+    ag => get(ag, 'uploadType') !== 'form',
+  );
+  const unprocessedAssetGroupId = get(unprocessedBulks, [
+    '0',
+    'uuid',
+  ]);
 
   const [reporting, setReporting] = useState(false);
 
@@ -96,6 +105,23 @@ export default function BulkImport() {
                 <FormattedMessage id="PHOTO_OPTIMIZE_3" />
               </Text>
             </div>
+          </Grid>
+          <Grid item style={{ marginTop: 20 }}>
+            <Text
+              variant="caption"
+              id="FLATFILE_POLICY"
+              values={{
+                privacyPolicy: (
+                  <Link
+                    newTab
+                    external
+                    href="https://flatfile.com/privacy/"
+                  >
+                    <FormattedMessage id="FLATFILE_POLICY_LINK" />
+                  </Link>
+                ),
+              }}
+            />
           </Grid>
           <Grid item>
             <Button

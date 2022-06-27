@@ -1,144 +1,135 @@
 import React from 'react';
-import { useIntl } from 'react-intl';
-import { get, capitalize } from 'lodash-es';
+// import { get } from 'lodash-es';
 
-import { formatDate } from '../../utils/formatters';
+// import { formatDate } from '../../utils/formatters';
 import DataDisplay from './DataDisplay';
 import Link from '../Link';
-import ButtonLink from '../ButtonLink';
-import Text from '../Text';
+// import ButtonLink from '../ButtonLink';
+import { cellRendererTypes } from './cellRenderers';
 
 export default function IndividualsDisplay({
   individuals,
   loading,
-  hitCount,
+  dataCount,
   ...rest
 }) {
-  const intl = useIntl();
-  const title = hitCount ? `${hitCount} matching individuals` : '';
+  const title = dataCount
+    ? `${dataCount} matching individuals`
+    : 'Matching individuals';
 
   const columns = [
     {
-      name: 'name',
-      label: intl.formatMessage({ id: 'NAME' }),
+      name: 'firstName',
+      sortName: 'elasticsearch.firstName_keyword',
+      labelId: 'NAME',
+      sortable: true,
       options: {
-        customBodyRender: (name, individual) => {
-          const id = get(individual, 'id', '');
-          return (
-            <Link href={`/individuals/${id}`}>
-              <Text variant="body2">{name}</Text>
-            </Link>
-          );
-        },
-      },
-    },
-    {
-      name: 'alias',
-      label: intl.formatMessage({ id: 'ALIAS' }),
-      align: 'left',
-      options: {
-        customBodyRender: alias => (
-          <Text variant="body2">{capitalize(alias)}</Text>
+        customBodyRender: (firstName, individual) => (
+          <Link to={`/individuals/${individual?.guid}`}>
+            {firstName || 'Unnamed individual'}
+          </Link>
         ),
       },
     },
     {
-      name: 'last_sighting',
-      label: intl.formatMessage({ id: 'LAST_SEEN' }),
+      name: 'last_seen',
+      labelId: 'LAST_SEEN',
+      sortable: false,
       align: 'left',
       options: {
-        customBodyRender: lastSightingTimestamp => (
-          <Text variant="body2">
-            {formatDate(lastSightingTimestamp)}
-          </Text>
-        ),
+        cellRenderer: cellRendererTypes.date,
+        cellRendererProps: { accessor: 'last_seen', fancy: true },
       },
     },
     {
-      name: 'taxonomy',
-      label: intl.formatMessage({ id: 'SPECIES' }),
+      name: 'taxonomy_guid',
+      labelId: 'SPECIES',
       align: 'left',
-      options: {
-        customBodyRender: taxonomy => (
-          <Text variant="body2">{capitalize(taxonomy)}</Text>
-        ),
-      },
+      sortable: false,
+      options: { cellRenderer: cellRendererTypes.species },
     },
     {
-      name: 'encounters',
-      label: intl.formatMessage({ id: 'SIGHTINGS' }),
+      name: 'num_encounters',
+      labelId: 'SIGHTING_COUNT',
+      sortable: false,
       align: 'left',
-      options: {
-        customBodyRender: encounters => (
-          <Text variant="body2">
-            {get(encounters, 'length', '-')}
-          </Text>
-        ),
-      },
+    },
+    {
+      name: 'created',
+      labelId: 'CREATION_DATE_RANGE',
+      align: 'left',
+      options: { cellRenderer: cellRendererTypes.date },
+    },
+    {
+      name: 'adoptionName',
+      labelId: 'ADOPTION_NAME',
+      sortable: false,
+      align: 'left',
     },
   ];
 
   return (
     <DataDisplay
+      idKey="guid"
       columns={columns}
       data={individuals}
       title={title}
       loading={loading}
-      onPrint={() => {
-        window.open('/individuals/picturebook', '_blank');
-      }}
-      dataCount={hitCount}
-      paginatedExternally
+      // onPrint={() => {
+      //   window.open('/individuals/picturebook', '_blank');
+      // }}
       showNoResultsBao
-      renderExpandedRow={expandedIndividual => (
-        <div style={{ display: 'flex' }}>
-          {/* <img
-              src={expandedIndividual.profile}
-              alt="Expanded individual"
-              style={{
-                width: 200,
-                height: 160,
-                padding: 20,
-              }}
-            /> */}
-          <div style={{ padding: '20px 0' }}>
-            <Text variant="h6" style={{ marginBottom: 8 }}>
-              Recent Activity
-            </Text>
-            {expandedIndividual.encounters.map(encounter => {
-              const encounterDate = get(encounter, 'date_occurred');
-              const formattedEncounterDate = encounterDate
-                ? formatDate(encounterDate, true)
-                : 'unknown date';
-              const submitter = get(
-                encounter,
-                'submitter_id',
-                'unknown user',
-              );
+      // renderExpandedRow={expandedIndividual => (
+      //   <div style={{ display: 'flex' }}>
+      //     {/* <img
+      //         src={expandedIndividual.profile}
+      //         alt="Expanded individual"
+      //         style={{
+      //           width: 200,
+      //           height: 160,
+      //           padding: 20,
+      //         }}
+      //       /> */}
+      //     <div style={{ padding: '20px 0' }}>
+      //       <Text variant="h6" style={{ marginBottom: 8 }}>
+      //         Recent Activity
+      //       </Text>
+      //       {get(expandedIndividual, 'encounters', []).map(
+      //         encounter => {
+      //           const encounterDate = get(encounter, 'date_occurred');
+      //           const formattedEncounterDate = encounterDate
+      //             ? formatDate(encounterDate, true)
+      //             : 'unknown date';
+      //           const submitter = get(
+      //             encounter,
+      //             'submitter_id',
+      //             'unknown user',
+      //           );
 
-              return (
-                <Text variant="body2" key={encounter.id}>
-                  {'Sighting on '}
-                  <Link href={`/sightings/${encounter.id}`}>
-                    {formattedEncounterDate}
-                  </Link>
-                  {' by '}
-                  <Link href={`/users/${submitter}`}>
-                    {submitter}
-                  </Link>
-                  .
-                </Text>
-              );
-            })}
-            <ButtonLink
-              style={{ marginTop: 16 }}
-              href={`/individuals/${expandedIndividual.id}`}
-            >
-              View Profile
-            </ButtonLink>
-          </div>
-        </div>
-      )}
+      //           return (
+      //             <Text variant="body2" key={encounter.id}>
+      //               {'Sighting on '}
+      //               <Link href={`/sightings/${encounter.id}`}>
+      //                 {formattedEncounterDate}
+      //               </Link>
+      //               {' by '}
+      //               <Link href={`/users/${submitter}`}>
+      //                 {submitter}
+      //               </Link>
+      //               .
+      //             </Text>
+      //           );
+      //         },
+      //       )}
+      //       <ButtonLink
+      //         style={{ marginTop: 16 }}
+      //         href={`/individuals/${expandedIndividual.id}`}
+      //       >
+      //         View Profile
+      //       </ButtonLink>
+      //     </div>
+      //   </div>
+      // )}
       {...rest}
     />
   );

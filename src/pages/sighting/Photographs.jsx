@@ -24,7 +24,11 @@ const useStyles = makeStyles({
   },
 });
 
-export default function Photographs({ assets, refreshSightingData }) {
+export default function Photographs({
+  sightingData,
+  assets,
+  pending,
+}) {
   const theme = useTheme();
   const intl = useIntl();
   const isSm = useMediaQuery(theme.breakpoints.down('xs'));
@@ -104,7 +108,8 @@ export default function Photographs({ assets, refreshSightingData }) {
           <AnnotationCreator
             onClose={() => setNewAnnotationAsset(null)}
             asset={newAnnotationAsset}
-            refreshSightingData={refreshSightingData}
+            sightingData={sightingData}
+            pending={pending}
           />
         )}
         <MorePhotoMenu

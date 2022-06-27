@@ -24,6 +24,7 @@ export default function CustomFieldTable({
   descriptionId,
   titleId,
   settingName,
+  noFieldsTextId,
 }) {
   const fieldSchemas = fields.map(houstonSchema => {
     const frontendSchema = createCustomFieldSchema(houstonSchema);
@@ -189,6 +190,7 @@ export default function CustomFieldTable({
         variant="secondary"
         columns={tableColumns}
         data={fieldSchemas}
+        noResultsTextId={noFieldsTextId}
       />
     </Grid>
   );

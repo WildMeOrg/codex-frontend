@@ -1,4 +1,5 @@
 import { get, keyBy, mapValues } from 'lodash-es';
+import { formatHoustonTime } from '../../../utils/formatters';
 
 function transformCustomFields(formData, schemas) {
   const schemaDict = keyBy(schemas, s => s.id);
@@ -17,25 +18,40 @@ export function prepareBasicReport(
     customSightingSchemas,
   );
 
+  const sightingTime = formatHoustonTime(
+    get(sightingData, ['specifiedTime', 'time']),
+  );
+  const sightingTimeSpecifity = get(sightingData, [
+    'specifiedTime',
+    'timeSpecificity',
+  ]);
+
   const report = {
     ...sightingData,
+    speciesDetectionModel: [
+      get(sightingData, 'speciesDetectionModel', 'None'),
+    ],
     assetReferences: simpleAssets
       ? assetReferences.map(a => get(a, 'path'))
       : assetReferences,
     decimalLatitude: sightingData.gps[0],
     decimalLongitude: sightingData.gps[1],
+    time: sightingTime,
+    timeSpecificity: sightingTimeSpecifity,
     encounters: [
       {
         decimalLatitude: sightingData.gps[0],
         decimalLongitude: sightingData.gps[1],
         locationId: sightingData.locationId,
         verbatimLocality: sightingData.verbatimLocality,
+        time: sightingTime,
+        timeSpecificity: sightingTimeSpecifity,
       },
     ],
     customFields: customSightingDictionary,
   };
-
   delete report.gps;
+  delete report.specifiedTime;
 
   return report;
 }
@@ -58,15 +74,16 @@ export function prepareReportWithEncounter(
     decimalLongitude: sightingData.gps[1],
     locationId: sightingData.locationId,
     verbatimLocality: sightingData.verbatimLocality,
+    time: formatHoustonTime(
+      get(sightingData, ['specifiedTime', 'time']),
+    ),
+    timeSpecificity: get(sightingData, [
+      'specifiedTime',
+      'timeSpecificity',
+    ]),
   };
 
-  if (!sightingData.endTime) encounter.time = sightingData.startTime;
-
-  if (safeEncounterData.taxonomy) {
-    encounter.taxonomy = {
-      id: encounterData.taxonomy,
-    };
-  }
+  if (encounter.taxonomy === '') encounter.taxonomy = null;
 
   if (customEncounterData) {
     const customEncounterDictonary = transformCustomFields(
@@ -83,8 +100,5 @@ export function prepareReportWithEncounter(
     assetReferences,
     simpleAssets,
   );
-  return {
-    ...report,
-    encounters: [encounter],
-  };
+  return { ...report, encounters: [encounter] };
 }

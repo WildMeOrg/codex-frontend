@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { useQueryClient } from 'react-query';
 import 'react-image-crop/dist/ReactCrop.css';
 
+import queryKeys from '../../constants/queryKeys';
 import SplashDialog from './SplashDialog';
 import CropDialog from './CropDialog';
 import UploadDialog from './UploadDialog';
@@ -12,9 +14,9 @@ export default function EditAvatar({
   square,
   imageSrc,
   imageGuid,
-  refreshUserData,
   userId,
 }) {
+  const queryClient = useQueryClient();
   const [cropping, setCropping] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [removing, setRemoving] = useState(false);
@@ -41,7 +43,7 @@ export default function EditAvatar({
         open={cropping}
         userId={userId}
         onClose={() => {
-          refreshUserData();
+          queryClient.invalidateQueries(queryKeys.me);
           setCropping(false);
         }}
         square={square}
@@ -53,7 +55,7 @@ export default function EditAvatar({
         open={(visible && !imageSrc) || uploading}
         onClose={uploadOccurred => {
           if (uploadOccurred) {
-            refreshUserData();
+            queryClient.invalidateQueries(queryKeys.me);
             setCropping(true);
           }
           setUploading(false);
@@ -64,7 +66,7 @@ export default function EditAvatar({
         userId={userId}
         open={removing}
         onClose={() => {
-          refreshUserData();
+          queryClient.invalidateQueries(queryKeys.me);
           setRemoving(false);
         }}
       />

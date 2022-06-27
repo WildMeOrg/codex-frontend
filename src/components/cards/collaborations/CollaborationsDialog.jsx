@@ -14,24 +14,23 @@ import collaborationStates from './collaborationStates';
 
 const collaborationSchemas = Object.values(collaborationStates);
 
-export default function UserEditDialog({
+export default function CollaborationsDialog({
   open,
   onClose,
   activeCollaboration,
-  refreshCollaborationData,
+  setCollabDialogButtonClickLoading = null,
 }) {
   const {
-    requestEditAccess,
+    mutate: requestEditAccess,
     loading: requestLoading,
     error: requestError,
-    setError: setRequestError,
+    clearError: clearRequestError,
   } = useRequestEditAccess();
 
   const {
-    patchCollaboration,
-    loading: patchLoading,
+    mutate: patchCollaboration,
+    isLoading: patchLoading,
     error: patchError,
-    setError: setPatchError,
   } = usePatchCollaboration();
 
   const loading = requestLoading || patchLoading;
@@ -48,8 +47,7 @@ export default function UserEditDialog({
 
   function cleanupAndClose() {
     setRequest(null);
-    setPatchError(null);
-    setRequestError(null);
+    clearRequestError();
     onClose();
   }
 
@@ -109,22 +107,23 @@ export default function UserEditDialog({
           <Button
             display="primary"
             onClick={async () => {
-              let successful;
+              if (setCollabDialogButtonClickLoading)
+                setCollabDialogButtonClickLoading(true);
+              let requestSuccessful;
               if (request.sendEditRequest) {
-                successful = await requestEditAccess(
-                  activeCollaboration.guid,
-                );
+                const response = await requestEditAccess({
+                  collaborationGuid: activeCollaboration.guid,
+                });
+                requestSuccessful = response?.status === 200;
               } else {
-                successful = await patchCollaboration(
-                  activeCollaboration.guid,
-                  request.actionPatch,
-                );
+                const response = await patchCollaboration({
+                  collaborationGuid: activeCollaboration.guid,
+                  operations: request.actionPatch,
+                });
+                requestSuccessful = response?.status === 200;
               }
 
-              if (successful) {
-                refreshCollaborationData();
-                cleanupAndClose();
-              }
+              if (requestSuccessful) cleanupAndClose();
             }}
             loading={loading}
             id="SAVE"

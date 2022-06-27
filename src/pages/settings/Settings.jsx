@@ -9,11 +9,11 @@ import MainColumn from '../../components/MainColumn';
 import ButtonLink from '../../components/ButtonLink';
 import UserDeleteDialog from '../../components/dialogs/UserDeleteDialog';
 import Button from '../../components/Button';
-import InputRow from '../../components/fields/edit/InputRowNew';
+import InputRow from '../../components/fields/edit/InputRow';
 import Text from '../../components/Text';
 import ErrorDialog from '../../components/dialogs/ErrorDialog';
 import useGetMe from '../../models/users/useGetMe';
-import usePatchUser from '../../models/users/usePatchUser';
+import { useReplaceUserProperty } from '../../models/users/usePatchUser';
 import { useNotificationSettingsSchemas } from './useUserSettingsSchemas';
 import { deriveNotificationPreferences } from './deriveNotificationPreferences';
 
@@ -29,16 +29,16 @@ function getInitialFormValues(schemas, data) {
 export default function Settings() {
   useDocumentTitle('SETTINGS_AND_PRIVACY');
 
-  const { data, refresh } = useGetMe();
+  const { data } = useGetMe();
 
   const [deactivating, setDeactivating] = useState(false);
 
   const {
-    replaceUserProperty,
+    mutate: replaceUserProperty,
     loading,
     error,
-    setError,
-  } = usePatchUser(get(data, 'guid'));
+    clearError,
+  } = useReplaceUserProperty();
   const schemas = useNotificationSettingsSchemas();
 
   const [formValues, setFormValues] = useState({});
@@ -60,7 +60,7 @@ export default function Settings() {
       <ErrorDialog
         open={Boolean(error)}
         onClose={() => {
-          setError(null);
+          clearError();
         }}
         errorMessage={error}
       />
@@ -69,7 +69,6 @@ export default function Settings() {
           open={deactivating}
           onClose={() => setDeactivating(false)}
           userData={data}
-          refreshUserData={refresh}
           deactivatingSelf
         />
       )}
@@ -152,11 +151,11 @@ export default function Settings() {
                               backendValues,
                               currentChangeValues,
                             );
-                            const successful = await replaceUserProperty(
-                              '/notification_preferences',
-                              newNotificationPreferences,
-                            );
-                            if (successful) refresh();
+                            await replaceUserProperty({
+                              userGuid: get(data, 'guid'),
+                              path: '/notification_preferences',
+                              value: newNotificationPreferences,
+                            });
                           }}
                         />
                         <Button

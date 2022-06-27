@@ -1,7 +1,8 @@
 import React from 'react';
-import { cloneDeep, get } from 'lodash-es';
 import { useIntl, FormattedMessage } from 'react-intl';
+
 import { v4 as uuid } from 'uuid';
+import { cloneDeep, get } from 'lodash-es';
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import IconButton from '@material-ui/core/IconButton';
@@ -11,9 +12,11 @@ import NewChildIcon from '@material-ui/icons/KeyboardReturn';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import TreeItem from '@material-ui/lab/TreeItem';
+
 import TextInput from './TextInput';
 import DeleteButton from '../DeleteButton';
 import Button from '../Button';
+import { flattenTree } from '../../utils/treeUtils';
 
 const textInputWidth = 200;
 
@@ -34,20 +37,6 @@ const Core = function({ children, required, width, style = {} }) {
     </FormControl>
   );
 };
-
-function flattenTree(tree) {
-  const flatTree = cloneDeep(tree);
-
-  function addLevel(leaves) {
-    leaves.forEach(leaf => {
-      flatTree.push(leaf);
-      if (leaf.locationID) addLevel(leaf.locationID);
-    });
-  }
-
-  addLevel(tree);
-  return flatTree;
-}
 
 function addChild(tree, parentId) {
   function updateLevel(leaves) {

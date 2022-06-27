@@ -33,10 +33,20 @@ export default function MoreMenu({ menuId, items = [], ...rest }) {
         keepMounted
         open={Boolean(anchorEl)}
         onClose={handleClose}
+        getContentAnchorEl={null}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'right',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
       >
         {items.map(item => (
           <MenuItem
             key={item.id}
+            disabled={item.disabled}
             onClick={e => {
               item.onClick(e);
               handleClose();

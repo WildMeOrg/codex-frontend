@@ -4,7 +4,9 @@ import { flatten, get } from 'lodash-es';
 import Text from '../../Text';
 
 function findLocationObject(searchId, locationList) {
-  if (locationList === [] || !locationList || !searchId) return null;
+  if (!locationList || !searchId || locationList.length === 0) {
+    return null;
+  }
   const match = locationList.find(
     location => location.id === searchId,
   );
@@ -16,7 +18,11 @@ function findLocationObject(searchId, locationList) {
   return findLocationObject(searchId, flatNextLevelLocations);
 }
 
-export default function LocationIdViewer({ value, choices }) {
+export default function LocationIdViewer({
+  value,
+  choices,
+  variant = 'body2',
+}) {
   const intl = useIntl();
   let locationIdLabel = useMemo(
     () => {
@@ -35,7 +41,7 @@ export default function LocationIdViewer({ value, choices }) {
   }
 
   return (
-    <Text component="span" variant="body2">
+    <Text component="span" variant={variant}>
       {locationIdLabel}
     </Text>
   );

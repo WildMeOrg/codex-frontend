@@ -1,18 +1,60 @@
-import { get, omit } from 'lodash-es';
+import {
+  get,
+  isEmpty,
+  mapKeys,
+  omit,
+  pickBy,
+  startsWith,
+} from 'lodash-es';
 import { v4 as uuid } from 'uuid';
+
+import { formatHoustonTime } from '../../../utils/formatters';
+import categoryTypes from '../../../constants/categoryTypes';
+import { deriveCustomFieldPrefix } from '../constants/bulkReportConstants';
+import parseAssetString from './parseAssetString';
 
 function updateTimes(encounter) {
   const year = get(encounter, 'timeYear', 0);
-  const month = get(encounter, 'timeMonth', 0);
+  const month = get(encounter, 'timeMonth', 1) - 1;
   const day = get(encounter, 'timeDay', 1);
   const hours = get(encounter, 'timeHour', 1);
   const minutes = get(encounter, 'timeMinutes', 0);
   const seconds = get(encounter, 'timeSeconds', 0);
-  const time = new Date(year, month, day, hours, minutes, seconds);
+  const time = formatHoustonTime(
+    new Date(year, month, day, hours, minutes, seconds),
+  );
   return {
     ...encounter,
     time,
   };
+}
+
+function deriveCustomFields(encounter, categoryType) {
+  const prefix = deriveCustomFieldPrefix(categoryType);
+
+  const customSightingFields = pickBy(
+    encounter,
+    (value, key) => value && startsWith(key, prefix),
+  );
+
+  return mapKeys(
+    customSightingFields,
+    (_, key) => key.split(prefix)[1],
+  );
+}
+
+function deriveCustomFieldKeys(encounter) {
+  const sightingsPrefixCustom = deriveCustomFieldPrefix(
+    categoryTypes.sighting,
+  );
+  const encountersPrefixCustom = deriveCustomFieldPrefix(
+    categoryTypes.encounter,
+  );
+  return Object.keys(encounter).filter(
+    key =>
+      startsWith(key, sightingsPrefixCustom) ||
+      startsWith(key, encountersPrefixCustom),
+  );
 }
 
 function assignIfPresent(
@@ -42,15 +84,20 @@ export default function prepareAssetGroup(
       'assetReferences',
       '',
     );
-    const sightingAssets = sightingAssetInput
-      .split(',')
-      .map(a => a.trim());
+    const sightingAssets = parseAssetString(sightingAssetInput);
     const matchingAssets = simpleAssetReferences.filter(path =>
       sightingAssets.includes(path),
     );
-
     if (!sightings[sightingId]) sightings[sightingId] = {};
-    sightings[sightingId].assetReferences = matchingAssets;
+    const assetReferencesAlreadyExist = Boolean(
+      sightings[sightingId]?.assetReferences,
+    );
+    if (assetReferencesAlreadyExist) {
+      sightings[sightingId].assetReferences.push(...matchingAssets);
+    } else {
+      sightings[sightingId].assetReferences = matchingAssets;
+    }
+
     assignIfPresent(
       newEncounter,
       sightings[sightingId],
@@ -72,30 +119,40 @@ export default function prepareAssetGroup(
       'verbatimLocality',
     );
 
-    const startTime = get(sightings, [sightingId, 'startTime']);
-    const startTimeAfter = newEncounter.time < startTime;
-    if (!startTime || startTimeAfter) {
+    if (get(newEncounter, 'comments')) {
       assignIfPresent(
         newEncounter,
         sightings[sightingId],
-        'time',
-        'startTime',
+        'comments',
       );
     }
 
-    const endTime = get(sightings, [sightingId, 'startTime']);
-    const endTimeBefore = newEncounter.time > startTime;
-    if (!endTime || endTimeBefore) {
-      assignIfPresent(
-        newEncounter,
-        sightings[sightingId],
-        'time',
-        'endTime',
-      );
+    assignIfPresent(
+      newEncounter,
+      sightings[sightingId],
+      'timeSpecificity',
+    );
+
+    assignIfPresent(newEncounter, sightings[sightingId], 'time');
+
+    const customSightingFields = deriveCustomFields(
+      newEncounter,
+      categoryTypes.sighting,
+    );
+    if (!isEmpty(customSightingFields)) {
+      sightings[sightingId].customFields = customSightingFields;
     }
 
     if (!get(sightings, [sightingId, 'encounters']))
       sightings[sightingId].encounters = [];
+
+    const customEncounterFields = deriveCustomFields(
+      newEncounter,
+      categoryTypes.encounter,
+    );
+    if (!isEmpty(customEncounterFields)) {
+      newEncounter.customFields = customEncounterFields;
+    }
 
     const finalEncounter = omit(newEncounter, [
       'sightingId',
@@ -106,6 +163,8 @@ export default function prepareAssetGroup(
       'timeHour',
       'timeMinutes',
       'timeSeconds',
+      'comments',
+      ...deriveCustomFieldKeys(newEncounter),
     ]);
     sightings[sightingId].encounters.push(finalEncounter);
   });

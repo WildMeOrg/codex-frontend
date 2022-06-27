@@ -14,22 +14,21 @@ import Alert from '../../components/Alert';
 import Button from '../../components/Button';
 import StandardDialog from '../../components/StandardDialog';
 import PasswordVerificationAlert from '../../components/PasswordVerificationAlert';
-import usePatchUser from '../../models/users/usePatchUser';
+import { useReplaceUserProperties } from '../../models/users/usePatchUser';
 import roleSchema from './constants/roleSchema';
 
-export default function UserEditDialog({
-  open,
-  onClose,
-  userData,
-  refreshUserData,
-}) {
+const validRoles = roleSchema.filter(role => role.id !== 'is_staff');
+
+export default function UserEditDialog({ open, onClose, userData }) {
   const [formValues, setFormValues] = useState({});
   const [touched, setTouched] = useState(false);
   const [password, setPassword] = useState('');
 
-  const { replaceUserProperties, loading, error } = usePatchUser(
-    get(userData, 'guid'),
-  );
+  const {
+    mutate: replaceUserProperties,
+    loading,
+    error,
+  } = useReplaceUserProperties();
 
   function cleanupAndClose() {
     setTouched(false);
@@ -44,12 +43,13 @@ export default function UserEditDialog({
       value: formValues[propertyId],
     }));
 
-    const success = await replaceUserProperties(properties, password);
+    const result = await replaceUserProperties({
+      userGuid: get(userData, 'guid'),
+      properties,
+      password,
+    });
 
-    if (success) {
-      refreshUserData();
-      cleanupAndClose();
-    }
+    if (result?.status === 200) cleanupAndClose();
   }
 
   return (
@@ -94,7 +94,7 @@ export default function UserEditDialog({
             <FormattedMessage id="ROLE" />
           </FormLabel>
           <FormGroup row>
-            {roleSchema.map(role => {
+            {validRoles.map(role => {
               const userDataChecked = get(userData, role.id, false);
               const formDataChecked = get(
                 formValues,

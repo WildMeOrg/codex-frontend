@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 
-import usePatchIndividual from '../../../models/individual/usePatchIndividual';
+import useAssignEncountersToIndividual from '../../../models/individual/useAssignEncountersToIndividual';
 import StandardDialog from '../../../components/StandardDialog';
 import Button from '../../../components/Button';
 import ButtonLink from '../../../components/ButtonLink';
@@ -14,21 +14,25 @@ export default function ManuallyAssignModal({
   open,
   onClose,
   encounterId,
+  sightingGuid,
 }) {
   const {
-    addEncounterToIndividual,
+    mutate: assignEncounters,
     success,
     loading,
     error,
-  } = usePatchIndividual();
+    clearSuccess,
+  } = useAssignEncountersToIndividual();
 
-  const [selectedIndividualId, setSelectedIndividualId] = useState(
-    null,
-  );
+  const [
+    selectedIndividualGuid,
+    setSelectedIndividualGuid,
+  ] = useState(null);
 
   const onCloseDialog = () => {
-    setSelectedIndividualId(null);
+    setSelectedIndividualGuid(null);
     onClose();
+    clearSuccess();
   };
 
   return (
@@ -45,14 +49,13 @@ export default function ManuallyAssignModal({
           <Text id="ASSIGN_CLUSTER_TO_INDIVIDUAL_DESCRIPTION" />
         ) : (
           <IndividualSelector
-            selectedIndividualId={selectedIndividualId}
-            setSelectedIndividualId={setSelectedIndividualId}
+            setSelectedIndividualGuid={setSelectedIndividualGuid}
           />
         )}
         {error && (
           <Alert
             titleId="SERVER_ERROR"
-            style={{ marginTop: 16, marginBottom: 8 }}
+            style={{ marginTop: 16, marginBottom: 8, width: 520 }}
             severity="error"
           >
             {error}
@@ -69,20 +72,19 @@ export default function ManuallyAssignModal({
           <ButtonLink
             id="VIEW_INDIVIDUAL"
             display="primary"
-            href={`/individuals/${selectedIndividualId}`}
+            href={`/individuals/${selectedIndividualGuid}`}
           />
         ) : (
           <Button
             display="primary"
-            disabled={!selectedIndividualId}
+            disabled={!selectedIndividualGuid}
             loading={loading}
             onClick={async () => {
-              const result = await addEncounterToIndividual(
-                selectedIndividualId,
-                encounterId,
-              );
-              console.log(result);
-              /* pick up here when success happens */
+              await assignEncounters({
+                sightingGuid,
+                individualGuid: selectedIndividualGuid,
+                encounterGuids: [encounterId],
+              });
             }}
             id="ASSIGN_CLUSTER"
           />

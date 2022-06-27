@@ -6,19 +6,20 @@ import Text from '../Text';
 export default function Card({
   title,
   titleId,
+  htmlId = null,
+  maxHeight = 360,
+  overflow = 'auto',
+  overflowX = 'auto',
   renderActions,
   children,
 }) {
   return (
     <Grid
+      id={htmlId}
       item
       style={{ flex: 'auto', flexBasis: '100%', width: '100%' }}
     >
-      <Paper
-        style={{
-          padding: 16,
-        }}
-      >
+      <Paper style={{ padding: 16 }}>
         <div
           style={{
             display: 'flex',
@@ -34,7 +35,9 @@ export default function Card({
           </Text>
           {renderActions}
         </div>
-        {children}
+        <div style={{ overflow, maxHeight, overflowX }}>
+          {children}
+        </div>
       </Paper>
     </Grid>
   );

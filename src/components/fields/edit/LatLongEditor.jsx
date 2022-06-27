@@ -10,14 +10,18 @@ import Button from '../../Button';
 import StandardDialog from '../../StandardDialog';
 import useDescription from '../../../hooks/useDescription';
 
+function getNumberString(n) {
+  if (n === 0) return '0';
+  return n ? n.toString() : '';
+}
+
 function deriveGpsStringsFromValue(value) {
   const currentLatitude = get(value, '0', null);
   const currentLongitude = get(value, '1', null);
+
   return {
-    latitudeString: currentLatitude ? currentLatitude.toString() : '',
-    longitudeString: currentLongitude
-      ? currentLongitude.toString()
-      : '',
+    latitudeString: getNumberString(currentLatitude),
+    longitudeString: getNumberString(currentLongitude),
   };
 }
 
@@ -34,6 +38,7 @@ export default function LatLongEditor({
 
   const [modalOpen, setModalOpen] = useState(false);
   const [mapLatLng, setMapLatLng] = useState(null);
+  const [savedMapLatLng, setSavedMapLatLng] = useState(null);
 
   const {
     latitudeString: initialLatitudeString,
@@ -50,14 +55,17 @@ export default function LatLongEditor({
 
   useEffect(
     () => {
-      const {
-        latitudeString,
-        longitudeString,
-      } = deriveGpsStringsFromValue(value);
-      setCurrentLatitudeString(latitudeString);
-      setCurrentLongitudeString(longitudeString);
+      if (savedMapLatLng) {
+        const {
+          latitudeString,
+          longitudeString,
+        } = deriveGpsStringsFromValue(savedMapLatLng);
+
+        setCurrentLatitudeString(latitudeString);
+        setCurrentLongitudeString(longitudeString);
+      }
     },
-    [get(value, '0'), get(value, '1')],
+    [get(savedMapLatLng, '0'), get(savedMapLatLng, '1')],
   );
 
   const currentLatitude = get(value, '0', null);
@@ -74,15 +82,12 @@ export default function LatLongEditor({
           id="gps-latitude"
           label={intl.formatMessage({ id: 'DECIMAL_LATITUDE' })}
           value={currentLatitudeString}
+          type="number"
           onChange={e => {
             const inputValue = e.target.value;
             const floatValue = parseFloat(inputValue);
-            if (Number.isNaN(floatValue)) {
-              onChange([parseFloat(inputValue), currentLongitude]);
-            } else {
-              onChange([null, currentLongitude]);
-              setCurrentLatitudeString(inputValue);
-            }
+            onChange([floatValue, currentLongitude]);
+            setCurrentLatitudeString(inputValue);
           }}
         />
         <TextField
@@ -90,15 +95,12 @@ export default function LatLongEditor({
           id="gps-longitude"
           label={intl.formatMessage({ id: 'DECIMAL_LONGITUDE' })}
           value={currentLongitudeString}
+          type="number"
           onChange={e => {
             const inputValue = e.target.value;
             const floatValue = parseFloat(inputValue);
-            if (Number.isNaN(floatValue)) {
-              onChange([currentLatitude, parseFloat(inputValue)]);
-            } else {
-              onChange([currentLatitude, null]);
-              setCurrentLongitudeString(inputValue);
-            }
+            onChange([currentLatitude, floatValue]);
+            setCurrentLongitudeString(inputValue);
           }}
         />
       </div>
@@ -129,6 +131,7 @@ export default function LatLongEditor({
           <Button
             display="primary"
             onClick={() => {
+              setSavedMapLatLng(mapLatLng);
               onChange(mapLatLng);
               onClose();
             }}

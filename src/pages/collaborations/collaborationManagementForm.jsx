@@ -3,21 +3,33 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { get } from 'lodash-es';
 import { TextField } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
+
 import Button from '../../components/Button';
 import CustomAlert from '../../components/Alert';
 import useEstablishCollaborationAsUserManager from '../../models/collaboration/useEstablishCollaborationAsUserManager';
+import {
+  mutuallyRevokedCollabExists,
+  collaborationAlreadyExists,
+} from '../../utils/formatters';
 
-export default function CollaborationManagementForm({ userData }) {
+export default function CollaborationManagementForm({
+  userData,
+  existingCollaborations,
+}) {
   const intl = useIntl();
   const [shouldDisplay, setShouldDisplay] = useState(false);
   const [user1, setUser1] = useState(null);
   const [user2, setUser2] = useState(null);
+  const [formError, setFormError] = useState(null);
   const {
-    establishCollaboration,
+    mutate: establishCollaboration,
     loading,
-    error,
+    error: establishCollaborationError,
     success,
   } = useEstablishCollaborationAsUserManager();
+
+  const error = establishCollaborationError || formError;
+
   return (
     <div>
       <div
@@ -40,16 +52,22 @@ export default function CollaborationManagementForm({ userData }) {
           }
           getOptionLabel={option => {
             const name = get(option, 'full_name', null);
-            if (name) return name;
             const email = get(option, 'email', null);
-            return (
-              intl.formatMessage({
-                id: 'UNNAMED_USER',
-              }) +
-              ' (' +
-              email +
-              ')'
-            );
+            const nameLabel = email
+              ? name + ' (' + email + ')'
+              : name;
+            if (name) return nameLabel;
+            const unnamedUserLabel = email
+              ? intl.formatMessage({
+                  id: 'UNNAMED_USER',
+                }) +
+                ' (' +
+                email +
+                ')'
+              : intl.formatMessage({
+                  id: 'UNNAMED_USER',
+                });
+            return unnamedUserLabel;
           }}
           getOptionSelected={(option, val) =>
             option.id ? option.id === val : false
@@ -78,16 +96,22 @@ export default function CollaborationManagementForm({ userData }) {
           }
           getOptionLabel={option => {
             const name = get(option, 'full_name', 'guid');
-            if (name) return name;
             const email = get(option, 'email', null);
-            return (
-              intl.formatMessage({
-                id: 'UNNAMED_USER',
-              }) +
-              ' (' +
-              email +
-              ')'
-            );
+            const nameLabel = email
+              ? name + ' (' + email + ')'
+              : name;
+            if (name) return nameLabel;
+            const unnamedUserLabel = email
+              ? intl.formatMessage({
+                  id: 'UNNAMED_USER',
+                }) +
+                ' (' +
+                email +
+                ')'
+              : intl.formatMessage({
+                  id: 'UNNAMED_USER',
+                });
+            return unnamedUserLabel;
           }}
           getOptionSelected={(option, val) =>
             option.id ? option.id === val : false
@@ -110,22 +134,46 @@ export default function CollaborationManagementForm({ userData }) {
           size="small"
           style={{ marginBottom: '20px' }}
           loading={loading}
+          id="CREATE_COLLABORATION"
           onClick={async () => {
-            const successful = await establishCollaboration(
-              // need the await here. Otherwise, setShouldDisplay(true) below fires before this completes
-              user1,
-              user2,
-            );
+            if (
+              mutuallyRevokedCollabExists(
+                existingCollaborations,
+                user1,
+                user2,
+              )
+            ) {
+              setFormError(
+                intl.formatMessage({
+                  id: 'REVOKED_COLLAB_EXISTS',
+                }),
+              );
+            } else if (
+              !collaborationAlreadyExists(
+                existingCollaborations,
+                user1,
+                user2,
+              )
+            ) {
+              await establishCollaboration({
+                user1Guid: user1,
+                user2Guid: user2,
+              });
+            } else {
+              setFormError(
+                intl.formatMessage({
+                  id: 'COLLABORATION_ALREADY_EXISTS',
+                }),
+              );
+            }
             setShouldDisplay(true);
           }}
-        >
-          <FormattedMessage id="CREATE_COLLABORATION" />
-        </Button>
+        />
       </div>
       {success && shouldDisplay && (
         <CustomAlert
           style={{ margin: '0px 24px 20px 24px' }}
-          titleId="COLLABORATION_CREATEDD"
+          titleId="COLLABORATION_CREATED"
           severity="success"
           onClose={() => {
             setShouldDisplay(false);

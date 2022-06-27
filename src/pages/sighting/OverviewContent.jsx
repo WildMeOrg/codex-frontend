@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import { get } from 'lodash-es';
 
 import CardContainer from '../../components/cards/CardContainer';
-import MetadataCard from '../../components/cards/MetadataCardNew';
+import MetadataCard from '../../components/cards/MetadataCard';
 import GpsCard from '../../components/cards/GpsCard';
-import StatusCard from './StatusCard';
+import StatusCard from './statusCard/StatusCard';
 import EditSightingMetadata from './EditSightingMetadata';
 
 export default function OverviewContent({
   sightingId,
-  metadata,
+  metadata = [],
   sightingData,
   refreshSightingData,
   pending,
@@ -17,16 +17,19 @@ export default function OverviewContent({
   const [editing, setEditing] = useState(false);
 
   const viewableMetadata = metadata.filter(
-    field => !field.hideOnMetadataCard,
+    field =>
+      !field.hideOnMetadataCard && Boolean(get(field, 'value')),
   );
-  const editableFields = viewableMetadata.filter(
-    field => field.editable,
+  const editableFields = metadata.filter(
+    field => field.editable && !field.hideOnMetadataCard,
   );
 
   const gpsField = viewableMetadata.find(
     field => field.name === 'gps',
   );
-  const gps = gpsField && get(gpsField, 'value');
+  const gps = get(gpsField, 'value', []);
+  const isGpsAllNulls =
+    gps.filter(entry => entry == null).length === gps.length;
 
   return (
     <div style={{ display: 'flex', flexWrap: 'wrap' }}>
@@ -50,7 +53,7 @@ export default function OverviewContent({
       {gps && (
         <CardContainer>
           <StatusCard sightingData={sightingData} />
-          <GpsCard lat={gps[0]} lng={gps[1]} />
+          {!isGpsAllNulls && <GpsCard lat={gps[0]} lng={gps[1]} />}
         </CardContainer>
       )}
     </div>

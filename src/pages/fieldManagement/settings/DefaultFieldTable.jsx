@@ -1,20 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
-import { get, capitalize } from 'lodash-es';
+import { get } from 'lodash-es';
 
 import Grid from '@material-ui/core/Grid';
 import CustomAlert from '../../../components/Alert';
 
-import usePutSiteSettings from '../../../models/site/usePutSiteSettings';
+import usePutSiteSetting from '../../../models/site/usePutSiteSetting';
 import DataDisplay from '../../../components/dataDisplays/DataDisplay';
 import ActionIcon from '../../../components/ActionIcon';
 import Text from '../../../components/Text';
 import categoryTypes from '../../../constants/categoryTypes';
-import {
-  RegionEditor,
-  RelationshipEditor,
-} from './defaultFieldComponents/Editors';
+import { RegionEditor } from './defaultFieldComponents/Editors';
+import RelationshipEditor from './defaultFieldComponents/RelationshipEditor';
 import SpeciesEditor from './defaultFieldComponents/SpeciesEditor';
+import { cellRendererTypes } from '../../../components/dataDisplays/cellRenderers';
 
 const configurableFields = [
   {
@@ -33,7 +32,7 @@ const configurableFields = [
   },
   {
     id: 'relationship',
-    backendPath: 'site.general.relationships',
+    backendPath: 'relationship_type_roles',
     labelId: 'RELATIONSHIP',
     type: categoryTypes.individual,
     Editor: RelationshipEditor,
@@ -45,7 +44,7 @@ function getInitialFormState(siteSettings) {
   const species = get(siteSettings, ['site.species', 'value'], []);
   const relationships = get(
     siteSettings,
-    ['site.general.relationships', 'value'],
+    ['relationship_type_roles', 'value'],
     [],
   );
 
@@ -59,7 +58,11 @@ export default function DefaultFieldTable({
   const intl = useIntl();
   const [formSettings, setFormSettings] = useState(null);
   const [editField, setEditField] = useState(null);
-  const { putSiteSetting, error, setError } = usePutSiteSettings();
+  const {
+    mutate: putSiteSetting,
+    error,
+    clearError,
+  } = usePutSiteSetting();
 
   useEffect(
     () => setFormSettings(getInitialFormState(siteSettings)),
@@ -79,11 +82,7 @@ export default function DefaultFieldTable({
     {
       name: 'type',
       label: intl.formatMessage({ id: 'TYPE' }),
-      options: {
-        customBodyRender: type => (
-          <Text variant="body2">{capitalize(type)}</Text>
-        ),
-      },
+      options: { cellRenderer: cellRendererTypes.capitalizedString },
     },
     {
       name: 'actions',
@@ -102,7 +101,7 @@ export default function DefaultFieldTable({
   ];
 
   const onCloseEditor = () => {
-    setError(null);
+    clearError();
     setEditField(null);
   };
 
@@ -117,22 +116,27 @@ export default function DefaultFieldTable({
             setFormSettings(getInitialFormState(siteSettings));
             onCloseEditor();
           }}
-          onSubmit={() => {
-            if (editField.id === 'region') {
-              putSiteSetting(
-                editField.backendPath,
-                formSettings.regions,
-              ).then(success => {
-                if (success) onCloseEditor();
+          onSubmit={async () => {
+            if (editField?.id === 'region') {
+              const response = await putSiteSetting({
+                property: editField.backendPath,
+                data: formSettings.regions,
               });
+              if (response?.status === 200) onCloseEditor();
             }
-            if (editField.id === 'species') {
-              putSiteSetting(
-                editField.backendPath,
-                formSettings.species,
-              ).then(success => {
-                if (success) onCloseEditor();
+            if (editField?.id === 'species') {
+              const response = await putSiteSetting({
+                property: editField.backendPath,
+                data: formSettings.species,
               });
+              if (response?.status === 200) onCloseEditor();
+            }
+            if (editField?.id === 'relationship') {
+              const response = await putSiteSetting({
+                property: editField.backendPath,
+                data: formSettings.relationships,
+              });
+              if (response?.status === 200) onCloseEditor();
             }
           }}
         >

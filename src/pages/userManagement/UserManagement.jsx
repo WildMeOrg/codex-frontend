@@ -14,35 +14,40 @@ import MenuItem from '@material-ui/core/MenuItem';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import CustomAlert from '../../components/Alert';
 import MainColumn from '../../components/MainColumn';
-import ButtonLink from '../../components/ButtonLink';
 import LabeledInput from '../../components/LabeledInput';
 import Button from '../../components/Button';
 import Text from '../../components/Text';
+import SettingsBreadcrumbs from '../../components/SettingsBreadcrumbs';
 import usePostUser from '../../models/users/usePostUser';
 import useGetUsers from '../../models/users/useGetUsers';
 import UserEditTable from './UserEditTable';
 import roleSchema from './constants/roleSchema';
 import CollaborationManagementForm from '../collaborations/collaborationManagementForm';
+import useGetAllCollaborations from '../../models/collaboration/useGetAllCollaborations';
+import UserManagersCollaborationEditTable from './UserManagerCollaborationEditTable';
+
+const validRoles = roleSchema.filter(role => role.id !== 'is_staff');
 
 export default function UserManagement() {
   const intl = useIntl();
   useDocumentTitle('MANAGE_USERS');
 
   const {
-    postUser,
+    mutate: postUser,
     error: postUserError,
     loading: postUserLoading,
-    setError: setPostUserError,
+    clearError: clearPostUserError,
     success: postUserSuccess,
-    setSuccess: setPostUserSuccess,
+    clearSuccess: clearPostUserSuccess,
   } = usePostUser();
 
+  const { data: userData } = useGetUsers();
+
   const {
-    data: userData,
-    loading: userDataLoading,
-    error: userDataError,
-    refresh: refreshUserData,
-  } = useGetUsers();
+    data: allCollaborationData,
+    loading: allCollaborationsLoading,
+    error: allCollaborationsError,
+  } = useGetAllCollaborations();
 
   const [newUserEmail, setNewUserEmail] = useState('');
   const [newUserPassword, setNewUserPassword] = useState('');
@@ -55,12 +60,7 @@ export default function UserManagement() {
         style={{ padding: '16px 0 16px 16px' }}
         id="MANAGE_USERS"
       />
-      <ButtonLink
-        href="/admin"
-        style={{ marginTop: 8, width: 'fit-content' }}
-        display="back"
-        id="BACK"
-      />
+      <SettingsBreadcrumbs currentPageTextId="MANAGE_USERS" />
       <Grid
         container
         direction="column"
@@ -151,7 +151,7 @@ export default function UserManagement() {
                     </div>
                   )}
                 >
-                  {roleSchema.map(role => (
+                  {validRoles.map(role => (
                     <MenuItem key={role.id} value={role.id}>
                       <FormattedMessage id={role.titleId} />
                     </MenuItem>
@@ -161,7 +161,7 @@ export default function UserManagement() {
             </div>
             {Boolean(postUserError) && (
               <CustomAlert
-                onClose={() => setPostUserError(null)}
+                onClose={clearPostUserError}
                 severity="error"
                 titleId="SUBMISSION_ERROR"
                 description={postUserError}
@@ -169,7 +169,7 @@ export default function UserManagement() {
             )}
             {Boolean(postUserSuccess) && (
               <CustomAlert
-                onClose={() => setPostUserSuccess(null)}
+                onClose={clearPostUserSuccess}
                 severity="success"
                 titleId="USER_CREATED_SUCCESSFULLY"
                 description={postUserSuccess}
@@ -180,16 +180,15 @@ export default function UserManagement() {
                 display="primary"
                 loading={postUserLoading}
                 onClick={async () => {
-                  const successful = await postUser(
-                    newUserEmail,
-                    newUserPassword,
-                    newUserRoles,
-                  );
+                  const successful = await postUser({
+                    email: newUserEmail,
+                    password: newUserPassword,
+                    roles: newUserRoles,
+                  });
                   if (successful) {
                     setNewUserEmail('');
                     setNewUserPassword('');
                     setNewUserRoles([]);
-                    refreshUserData();
                   }
                 }}
               >
@@ -214,12 +213,7 @@ export default function UserManagement() {
               flexDirection: 'column',
             }}
           >
-            <UserEditTable
-              data={userData}
-              loading={userDataLoading}
-              usersError={userDataError}
-              refreshUserData={refreshUserData}
-            />
+            <UserEditTable />
           </Paper>
         </Grid>
         <Grid item style={{ width: '100%' }}>
@@ -238,7 +232,33 @@ export default function UserManagement() {
               flexDirection: 'column',
             }}
           >
-            <CollaborationManagementForm userData={userData} />
+            <CollaborationManagementForm
+              userData={userData}
+              existingCollaborations={allCollaborationData}
+            />
+          </Paper>
+        </Grid>
+        <Grid item style={{ width: '100%' }}>
+          <Text
+            variant="h6"
+            style={{ marginTop: 20, marginLeft: 12 }}
+            id="EDIT_COLLABORATIONS"
+          />
+          <Paper
+            elevation={2}
+            style={{
+              marginTop: 20,
+              marginBottom: 12,
+              padding: 24,
+              display: 'flex',
+              flexDirection: 'column',
+            }}
+          >
+            <UserManagersCollaborationEditTable
+              inputData={allCollaborationData}
+              collaborationLoading={allCollaborationsLoading}
+              collaborationError={allCollaborationsError}
+            />
           </Paper>
         </Grid>
       </Grid>

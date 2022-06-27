@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
+import { useIntl } from 'react-intl';
 import { get } from 'lodash-es';
+import { useQueryClient } from 'react-query';
 
 import { useTheme } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
@@ -13,22 +15,28 @@ import CircleIcon from '@material-ui/icons/Lens';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 
 import useDocumentTitle from '../../hooks/useDocumentTitle';
-import CollaborationRequestDialog from '../../components/dialogs/CollaborationRequestDialog';
 import MainColumn from '../../components/MainColumn';
 import LoadingScreen from '../../components/LoadingScreen';
 import Text from '../../components/Text';
+import Link from '../../components/Link';
 import useNotifications from '../../models/notification/useNotifications';
 import usePatchNotification from '../../models/notification/usePatchNotification';
+import { calculatePrettyTimeElapsedSince } from '../../utils/formatters';
+import { notificationSchema } from '../../constants/notificationSchema';
+import { notificationTypes } from '../../components/dialogs/notificationDialogUtils';
+import queryKeys from '../../constants/queryKeys';
+import { getNotificationProps } from '../../utils/notificationUtils';
 
 export default function Notifications() {
+  const intl = useIntl();
   const theme = useTheme();
+  const queryClient = useQueryClient();
 
   useDocumentTitle('NOTIFICATIONS');
 
   const {
     data: notifications,
     loading: notificationsLoading,
-    refresh: refreshNotifications,
   } = useNotifications(true);
 
   const { markRead } = usePatchNotification();
@@ -50,11 +58,16 @@ export default function Notifications() {
         maxWidth: 1000,
       }}
     >
-      <CollaborationRequestDialog
-        open={Boolean(activeCollaborationNotification)}
-        onClose={() => setActiveCollaborationNotification(null)}
-        notification={activeCollaborationNotification}
-      />
+      {!notificationsLoading &&
+        Boolean(activeCollaborationNotification) && (
+          <activeCollaborationNotification.dialog
+            open={Boolean(activeCollaborationNotification)}
+            onClose={() => setActiveCollaborationNotification(null)}
+            notification={
+              activeCollaborationNotification?.notification
+            }
+          />
+        )}
       <Grid container direction="column" style={{ padding: 32 }}>
         <Grid item>
           <Text id="NOTIFICATIONS" variant="h4" />
@@ -69,15 +82,115 @@ export default function Notifications() {
           >
             <List>
               {safeNotifications.map(notification => {
+                const notificationType = notification?.message_type;
+                const currentNotificationSchema = get(
+                  notificationSchema,
+                  notificationType,
+                );
                 const read = get(notification, 'is_read', false);
+                const {
+                  userName,
+                  userNameGuid,
+                  user1Name,
+                  user2Name,
+                  yourIndName,
+                  yourIndividualGuid,
+                  theirIndividualName,
+                  theirIndividualGuid,
+                  formattedDeadline,
+                } = getNotificationProps(notification);
+                const createdDate = notification?.created;
+                const timeSince = calculatePrettyTimeElapsedSince(
+                  createdDate,
+                );
+                const notificationText = (
+                  <Text
+                    key={notification?.guid}
+                    style={{
+                      color: read
+                        ? theme.palette.text.secondary
+                        : theme.palette.text.primary,
+                    }}
+                    variant="body2"
+                  >
+                    {intl.formatMessage(
+                      {
+                        id:
+                          currentNotificationSchema?.notificationMessage,
+                      },
+                      {
+                        userName: (
+                          <span>
+                            <Link
+                              newTab
+                              href={`/users/${userNameGuid}`}
+                            >
+                              {userName}
+                            </Link>
+                          </span>
+                        ),
+                        user1Name,
+                        user2Name,
+                        yourIndividualName: (
+                          <span>
+                            <Link
+                              newTab
+                              href={`/individuals/${yourIndividualGuid}`}
+                            >
+                              {yourIndName}
+                            </Link>
+                          </span>
+                        ),
+                        theirIndividualName: (
+                          <span>
+                            <Link
+                              newTab
+                              href={`/individuals/${theirIndividualGuid}`}
+                            >
+                              {theirIndividualName}
+                            </Link>
+                          </span>
+                        ),
+                        formattedDeadline,
+                      },
+                    )}
+                  </Text>
+                );
+                const howLongAgoText = (
+                  <Text
+                    style={{
+                      color: read
+                        ? theme.palette.text.secondary
+                        : theme.palette.text.primary,
+                      fontSize: '14px',
+                    }}
+                  >
+                    {intl.formatMessage(
+                      { id: 'TIME_SINCE' },
+                      { timeSince },
+                    )}
+                  </Text>
+                );
+
                 return (
                   <ListItem
+                    key={get(notification, 'guid')}
                     onClick={async () => {
-                      setActiveCollaborationNotification(
+                      const clickedNotificationType =
+                        notification?.message_type;
+                      const notificationDialog =
+                        notificationTypes[clickedNotificationType];
+                      setActiveCollaborationNotification({
                         notification,
-                      );
+                        dialog: notificationDialog,
+                      });
                       await markRead(get(notification, 'guid'));
-                      refreshNotifications();
+                      queryClient.invalidateQueries(
+                        queryKeys.allNotifications,
+                      );
+                      queryClient.invalidateQueries(
+                        queryKeys.unreadNotifications,
+                      );
                     }}
                     style={{ cursor: 'pointer' }}
                   >
@@ -97,6 +210,7 @@ export default function Notifications() {
                       </ListItemIcon>
                     </ListItemAvatar>
                     <ListItemText
+                      style={{ flex: '1 1 0' }}
                       primary={
                         <Text
                           style={{
@@ -105,26 +219,10 @@ export default function Notifications() {
                               : theme.palette.text.primary,
                             fontWeight: 'bold',
                           }}
-                        >
-                          Collaboration request
-                        </Text>
+                          id={currentNotificationSchema?.titleId}
+                        />
                       }
-                      secondary={
-                        <Text
-                          style={{
-                            color: read
-                              ? theme.palette.text.secondary
-                              : theme.palette.text.primary,
-                          }}
-                          variant="body2"
-                        >
-                          {`${get(
-                            notification,
-                            'sender_name',
-                            'Unnamed User',
-                          )} sent you a collaboration request.`}
-                        </Text>
-                      }
+                      secondary={[notificationText, howLongAgoText]}
                     />
                   </ListItem>
                 );

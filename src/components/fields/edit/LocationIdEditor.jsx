@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import { Autocomplete } from '@material-ui/lab';
 import { TextField } from '@material-ui/core';
 import { get } from 'lodash-es';
 import Text from '../../Text';
 import useDescription from '../../../hooks/useDescription';
-import useLabel from '../../../hooks/useLabel';
+import useEditLabel from '../../../hooks/useEditLabel';
 import FormCore from './FormCore';
+import { collapseChoices } from '../../../utils/formatters';
 
 export default function LocationIdEditor(props) {
   const {
@@ -20,52 +21,25 @@ export default function LocationIdEditor(props) {
     ...rest
   } = props;
 
-  const label = useLabel(schema);
+  const editLabel = useEditLabel(schema);
   const description = useDescription(schema);
   const showDescription = !minimalLabels && description;
 
-  function getNumDescendents(targetChoice) {
-    let result = 0;
-    if (!targetChoice.locationID) return result;
-    const childCountsArr = targetChoice.locationID.map(child =>
-      getNumDescendents(child),
-    );
-    result =
-      targetChoice.locationID.length +
-      childCountsArr.reduce((a, b) => a + b, 0);
-    return result;
-  }
+  const collapsedChoices = useMemo(
+    () => collapseChoices(get(schema, 'choices', []), 0),
+    [get(schema, 'choices.length')],
+  );
 
-  function collapseChoices(choices, depth) {
-    const result = choices.map(choice => {
-      const numDescendants = getNumDescendents(choice);
-      const numDescendantsAsString = numDescendants
-        ? ` (${numDescendants})`
-        : '';
-      if (!choice.locationID) {
-        return {
-          depth,
-          name: choice.name + numDescendantsAsString,
-          id: choice.id,
-        };
-      }
-      const subchoices = [
-        {
-          depth,
-          name: choice.name + numDescendantsAsString,
-          id: choice.id,
-        },
-      ];
-      subchoices.push(collapseChoices(choice.locationID, depth + 1));
-      return subchoices;
-    });
-    return result.flat(100);
-  }
+  const currentRegionArray = value
+    ? collapsedChoices.filter(choice => get(choice, 'id') === value)
+    : null;
+  const currentRegion = get(currentRegionArray, [0], null);
 
   return (
     <FormCore schema={schema} width={width}>
       <Autocomplete
-        options={collapseChoices(schema.choices, 0)}
+        value={currentRegion}
+        options={collapsedChoices}
         renderOption={option => (
           <Text
             style={{ paddingLeft: option.depth * 10 }}
@@ -84,19 +58,12 @@ export default function LocationIdEditor(props) {
           }
         }}
         getOptionLabel={option => get(option, 'name', '')}
-        getOptionSelected={(option, val) => {
-          console.log('deleteMe option is: ');
-          console.log(option);
-          console.log('deleteMe val in LocationIdEditor is: ');
-          console.log(val);
-          option.id ? option.id === get(val, 'id') : false;
-        }}
         renderInput={params => (
           <TextField
             {...params}
             style={{ width: 280 }}
             variant="standard"
-            label={label}
+            label={editLabel}
           />
         )}
         multiple={multiple}

@@ -12,45 +12,54 @@ import FieldManagement from './pages/fieldManagement/FieldManagement';
 import UserManagement from './pages/userManagement/UserManagement';
 import AdminActions from './pages/adminActions/AdminActions';
 import ControlPanel from './pages/controlPanel/ControlPanel';
+import AssignEncounters from './pages/assignEncounters/AssignEncounters';
+import CreateIndividual from './pages/createIndividual/CreateIndividual';
 import Individual from './pages/individual/Individual';
-import CreateIndividual from './pages/individual/CreateIndividual';
-import PictureBook from './pages/individual/PictureBook';
+// import PictureBook from './pages/individual/PictureBook';
 import Sighting from './pages/sighting/Sighting';
+import AssetGroupSighting from './pages/sighting/AssetGroupSighting';
 import Splash from './pages/splash/Splash';
 import AssetGroup from './pages/assetGroup/AssetGroup';
-import Org from './pages/org/Org';
-import Orgs from './pages/org/Orgs';
-import CreateOrg from './pages/org/CreateOrg';
-// import Project from './pages/projects/Project';
-// import Projects from './pages/projects/Projects';
 import User from './pages/user/User';
 import Users from './pages/user/Users';
-import CreateUser from './pages/user/CreateUser';
+import MergeIndividuals from './pages/merge/MergeIndividuals';
+import IndividualsMergePending from './pages/merge/IndividualsMergePending';
 import BulkImport from './pages/bulkImport/BulkImport';
 import BulkImportSuccess from './pages/bulkImport/Success';
 import ReportSighting from './pages/reportSighting/ReportSighting';
-import ReportSuccess from './pages/reportSighting/Success';
 import Notifications from './pages/notifications/Notifications';
 import FourOhFour from './pages/fourohfour/FourOhFour';
 import useSiteSettings from './models/site/useSiteSettings';
 import SearchIndividuals from './pages/individual/SearchIndividuals';
 import SearchSightings from './pages/sighting/SearchSightings';
 import SiteSetup from './pages/setup/SiteSetup';
-import MatchReview from './pages/match/MatchReview';
-import FlagsOnly from './pages/match/iceland/FlagsOnly';
-import Iceland from './pages/match/iceland/Iceland';
+import MatchSighting from './pages/match/MatchSighting';
+import AuditLog from './pages/devTools/AuditLog';
 import Welcome from './pages/auth/Welcome';
+import EmailVerified from './pages/auth/EmailVerified';
 import Home from './pages/home/Home';
 import Settings from './pages/settings/Settings';
+import ResendVerificationEmail from './pages/auth/ResendVerificationEmail';
 import Footer from './components/Footer';
 import { defaultCrossfadeDuration } from './constants/defaults';
 
-export default function AuthenticatedSwitch() {
+export default function AuthenticatedSwitch({
+  emailNeedsVerification,
+}) {
   const { data: siteSettings } = useSiteSettings();
   const siteNeedsSetup = get(siteSettings, [
     'site.needsSetup',
     'value',
   ]);
+
+  if (emailNeedsVerification) {
+    return (
+      <main>
+        <AuthenticatedAppHeader />
+        <ResendVerificationEmail />
+      </main>
+    );
+  }
 
   return (
     <main>
@@ -84,10 +93,10 @@ export default function AuthenticatedSwitch() {
                     <SiteSetup />
                   ) : (
                     <Switch location={location}>
-                      <Route path="/admin/splash" exact>
+                      <Route path="/admin/front-page" exact>
                         <SplashSettings />
                       </Route>
-                      <Route path="/admin/splash/preview">
+                      <Route path="/admin/front-page/preview">
                         <Splash />
                       </Route>
                       <Route path="/admin/status">
@@ -108,20 +117,32 @@ export default function AuthenticatedSwitch() {
                       <Route path="/admin/settings">
                         <GeneralSettings />
                       </Route>
+                      <Route path="/email_verified">
+                        <EmailVerified />
+                      </Route>
                       <Route path="/admin">
                         <ControlPanel />
                       </Route>
-                      <Route path="/individuals/picturebook">
-                        <PictureBook />
+                      <Route path="/create-individual">
+                        <CreateIndividual />
                       </Route>
+                      <Route path="/assign-annotations">
+                        <AssignEncounters />
+                      </Route>
+                      {/* <Route path="/individuals/picturebook">
+                        <PictureBook />
+                      </Route> */}
                       <Route path="/individuals/:id">
                         <Individual />
                       </Route>
                       <Route path="/individuals">
                         <SearchIndividuals />
                       </Route>
-                      <Route path="/create/individual">
-                        <CreateIndividual />
+                      <Route path="/pending-merges/:guid">
+                        <IndividualsMergePending />
+                      </Route>
+                      <Route path="/merge">
+                        <MergeIndividuals />
                       </Route>
                       <Route path="/bulk-imports/:id">
                         <AssetGroup />
@@ -129,17 +150,17 @@ export default function AuthenticatedSwitch() {
                       <Route path="/notifications">
                         <Notifications />
                       </Route>
-                      <Route path="/match/:id">
-                        <MatchReview />
-                      </Route>
                       <Route path="/pending-sightings/:id">
-                        <Sighting pending />
+                        <AssetGroupSighting />
                       </Route>
                       <Route path="/sightings/:id">
                         <Sighting />
                       </Route>
                       <Route path="/sightings">
                         <SearchSightings />
+                      </Route>
+                      <Route path="/match-results/:sightingGuid">
+                        <MatchSighting />
                       </Route>
                       <Route path="/users/:id">
                         <User />
@@ -150,41 +171,17 @@ export default function AuthenticatedSwitch() {
                       <Route path="/settings">
                         <Settings />
                       </Route>
-                      <Route path="/create/user">
-                        <CreateUser />
-                      </Route>
-                      <Route path="/create/org">
-                        <CreateOrg />
-                      </Route>
-                      <Route path="/orgs/:id">
-                        <Org />
-                      </Route>
-                      <Route path="/orgs">
-                        <Orgs />
-                      </Route>
-                      {/* <Route path="/projects/:id">
-                        <Project />
-                      </Route>
-                      <Route path="/projects">
-                        <Projects />
-                      </Route> */}
                       <Route path="/bulk-import/success/:id">
                         <BulkImportSuccess />
                       </Route>
                       <Route path="/bulk-import">
                         <BulkImport />
                       </Route>
-                      <Route path="/report/success/:id">
-                        <ReportSuccess authenticated />
-                      </Route>
                       <Route path="/report">
                         <ReportSighting authenticated />
                       </Route>
-                      <Route path="/iceland/flags">
-                        <FlagsOnly />
-                      </Route>
-                      <Route path="/iceland">
-                        <Iceland />
+                      <Route path="/auditlog">
+                        <AuditLog />
                       </Route>
                       <Route path="/welcome">
                         <Welcome />

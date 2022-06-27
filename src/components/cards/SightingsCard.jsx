@@ -1,87 +1,37 @@
 import React, { useState, useMemo } from 'react';
 import { useIntl } from 'react-intl';
+import { get } from 'lodash-es';
+
 import { useTheme } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import ViewList from '@material-ui/icons/ViewList';
 import ViewMap from '@material-ui/icons/Language';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogActions from '@material-ui/core/DialogActions';
 
-import { get } from 'lodash-es';
-
-import { formatDate } from '../../utils/formatters';
+import { formatLocationFromSighting } from '../../utils/formatters';
 import useOptions from '../../hooks/useOptions';
-import StandardDialog from '../StandardDialog';
-import Button from '../Button';
-import MapInSighting from '../../pages/sighting/MapInSighting';
 import ActionIcon from '../ActionIcon';
+import { cellRendererTypes } from '../dataDisplays/cellRenderers';
 import DataDisplay from '../dataDisplays/DataDisplay';
 import Card from './Card';
+import SightingMapView from '../cards/SightingMapView';
 
 export default function SightingsCard({
   title,
-  titleId = 'SIGHTINGS',
+  titleId,
   sightings,
   columns = ['date', 'location', 'actions'],
   onDelete,
+  linkPath = 'sightings',
+  noSightingsMsg = 'NO_SIGHTINGS',
+  loading,
 }) {
-  const [modalOpen, setModalOpen] = useState(false);
-
-  const [gpsCoordinates, setGpsCoordiates] = useState(null);
-  const onClose = () => setModalOpen(false);
+  const [showMapView, setShowMapView] = useState(false);
   const theme = useTheme();
   const { regionOptions } = useOptions();
   const intl = useIntl();
 
-  const formatLocationFromSighting = (sighting, regionOpts) => {
-    const currentSightingLocId = get(sighting, 'locationId', '');
-    const currentLabelArray = regionOpts
-      .filter(
-        region => get(region, 'value', '') === currentSightingLocId,
-      )
-      .map(regionObj =>
-        get(
-          regionObj,
-          'label',
-          intl.formatMessage({ id: 'REGION_NAME_REMOVED' }),
-        ),
-      );
-    let currentLabel = null;
-    if (currentLabelArray.length > 0)
-      currentLabel = currentLabelArray[0];
-
-    const currentSightingVerbatimLoc = get(
-      sighting,
-      'verbatimLocality',
-      '',
-    );
-    const currentSightingLat = get(sighting, 'decimalLatitude', '');
-    const currentSightingLong = get(sighting, 'decimalLongitude', '');
-    if (currentSightingLocId && !currentSightingVerbatimLoc) {
-      return (
-        currentLabel ||
-        intl.formatMessage({ id: 'REGION_NAME_REMOVED' })
-      );
-    }
-
-    if (!currentSightingLocId && currentSightingVerbatimLoc) {
-      return currentSightingVerbatimLoc;
-    }
-    if (
-      !currentSightingLocId &&
-      !currentSightingVerbatimLoc &&
-      currentSightingLat &&
-      currentSightingLong
-    )
-      return intl.formatMessage({ id: 'VIEW_ON_MAP' });
-
-    if (currentSightingLocId && currentSightingVerbatimLoc) {
-      return currentLabel
-        ? currentLabel + ' (' + currentSightingVerbatimLoc + ')'
-        : intl.formatMessage({ id: 'REGION_NAME_REMOVED' });
-    }
-    return '';
-  };
+  const mapModeClicked = () => setShowMapView(true);
+  const listModeClicked = () => setShowMapView(false);
 
   const sightingsWithLocationData = useMemo(
     () => {
@@ -94,6 +44,7 @@ export default function SightingsCard({
         formattedLocation: formatLocationFromSighting(
           sighting,
           regionOptions,
+          intl,
         ),
       }));
     },
@@ -103,64 +54,44 @@ export default function SightingsCard({
   const allColumns = [
     {
       reference: 'date',
-      name: 'startTime',
-      label: 'Date',
+      name: 'time',
+      labelId: 'DATE_OF_SIGHTING',
       options: {
-        customBodyRender: value => formatDate(value, true),
-        getStringValue: value => formatDate(value, true),
+        cellRenderer: cellRendererTypes.specifiedTime,
+      },
+    },
+    {
+      reference: 'created',
+      name: 'created',
+      labelId: 'DATE_REPORTED',
+      options: {
+        cellRenderer: cellRendererTypes.date,
       },
     },
     {
       reference: 'location',
       name: 'formattedLocation',
-      label: 'Location',
+      labelId: 'LOCATION',
       options: {
-        customBodyRender: (_, sightingObj) => {
-          const currentSightingLat = get(
-            sightingObj,
-            'decimalLatitude',
-            '',
-          );
-          const currentSightingLong = get(
-            sightingObj,
-            'decimalLongitude',
-            '',
-          );
-          if (!currentSightingLat && !currentSightingLong)
-            return get(
-              sightingObj,
-              'formattedLocation',
-              intl.formatMessage({ id: 'LOCATION_NAME_MISSING' }),
-            );
-          return (
-            <Button
-              display="link"
-              onClick={() => {
-                setGpsCoordiates({
-                  lat: currentSightingLat,
-                  lng: currentSightingLong,
-                });
-                setModalOpen(true);
-              }}
-            >
-              {get(
-                sightingObj,
-                'formattedLocation',
-                intl.formatMessage({ id: 'LOCATION_NAME_MISSING' }),
-              )}
-            </Button>
-          );
-        },
+        cellRenderer: cellRendererTypes.location,
       },
     },
     {
+      reference: 'locationIdValue',
+      name: 'locationId_value',
+      labelId: 'LOCATION',
+    },
+    {
       reference: 'actions',
-      name: 'id',
-      label: 'Actions',
+      name: 'guid',
+      labelId: 'ACTIONS',
       options: {
         customBodyRender: value => (
           <div>
-            <ActionIcon variant="view" href={`/sightings/${value}`} />
+            <ActionIcon
+              variant="view"
+              href={`/${linkPath}/${value}`}
+            />
             {onDelete && (
               <ActionIcon
                 labelId="REMOVE"
@@ -174,51 +105,61 @@ export default function SightingsCard({
     },
   ];
 
-  const filteredColumns = allColumns.filter(c =>
+  const filteredColumns = allColumns?.filter(c =>
     columns.includes(c.reference),
   );
 
-  return [
-    <StandardDialog
-      open={modalOpen}
-      onClose={onClose}
-      titleId="GPS_TITLE"
-    >
-      <DialogContent style={{ marginBottom: 24 }}>
-        <MapInSighting
-          latitude={get(gpsCoordinates, 'lat')}
-          longitude={get(gpsCoordinates, 'lng')}
-        />
-      </DialogContent>
-      <DialogActions style={{ padding: '0px 24px 24px 24px' }}>
-        <Button id="CLOSE" display="basic" onClick={onClose} />
-      </DialogActions>
-    </StandardDialog>,
+  const noSightings = sightings && sightings.length === 0;
+
+  return (
     <Card
       title={title}
       titleId={titleId}
       renderActions={
         <div>
           <IconButton
-            style={{ color: theme.palette.primary.main }}
+            style={
+              showMapView ? {} : { color: theme.palette.primary.main }
+            }
             aria-label="View list"
+            onClick={listModeClicked}
           >
             <ViewList />
           </IconButton>
-          <IconButton aria-label="View chart">
+          <IconButton
+            style={
+              showMapView ? { color: theme.palette.primary.main } : {}
+            }
+            disabled={
+              sightingsWithLocationData?.filter(entry =>
+                get(entry, 'decimalLatitude'),
+              ).length < 1
+            }
+            aria-label="View map"
+            onClick={mapModeClicked}
+          >
             <ViewMap />
           </IconButton>
         </div>
       }
     >
-      {sightings && (
+      {!showMapView && (
         <DataDisplay
+          idKey="guid"
           noTitleBar
           tableSize="medium"
           columns={filteredColumns}
-          data={sightingsWithLocationData}
+          data={sightings}
+          loading={loading}
+          noResultsTextId={noSightingsMsg}
         />
       )}
-    </Card>,
-  ];
+      {!noSightings && showMapView && (
+        <SightingMapView
+          data={sightingsWithLocationData}
+          linkPath={linkPath}
+        />
+      )}
+    </Card>
+  );
 }

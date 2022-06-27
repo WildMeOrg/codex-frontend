@@ -1,8 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useIntl } from 'react-intl';
 import { get, partition } from 'lodash-es';
-
-import LinearProgress from '@material-ui/core/LinearProgress';
 
 import useGetMe from '../../models/users/useGetMe';
 import Card from './Card';
@@ -12,13 +10,27 @@ import Link from '../Link';
 import DataDisplay from '../dataDisplays/DataDisplay';
 import CollaborationsDialog from './collaborations/CollaborationsDialog';
 
-export default function CollaborationsCard({ userId }) {
+export default function CollaborationsCard({
+  userId,
+  htmlId = null,
+}) {
   const intl = useIntl();
   const [activeCollaboration, setActiveCollaboration] = useState(
     null,
   );
+  const [
+    collabDialogButtonClickLoading,
+    setCollabDialogButtonClickLoading,
+  ] = useState(false);
 
-  const { data, loading, refresh } = useGetMe();
+  const { data, loading } = useGetMe();
+
+  useEffect(
+    () => {
+      setCollabDialogButtonClickLoading(false);
+    },
+    [data],
+  );
 
   const collaborations = get(data, ['collaborations'], []);
   const tableData = collaborations.map(collaboration => {
@@ -114,31 +126,24 @@ export default function CollaborationsCard({ userId }) {
   ];
 
   return (
-    <Card title="Collaborations">
+    <Card title="Collaborations" htmlId={htmlId}>
       <CollaborationsDialog
         open={Boolean(activeCollaboration)}
         onClose={() => setActiveCollaboration(null)}
         activeCollaboration={activeCollaboration}
-        refreshCollaborationData={refresh}
+        setCollabDialogButtonClickLoading={
+          setCollabDialogButtonClickLoading
+        }
       />
-      {loading && (
-        <LinearProgress style={{ marginTop: 24, marginBottom: 8 }} />
-      )}
-      {tableData.length === 0 ? (
-        <Text
-          variant="body2"
-          id="NO_COLLABORATIONS"
-          style={{ marginTop: 12 }}
-        />
-      ) : (
-        <DataDisplay
-          style={{ marginTop: 12 }}
-          noTitleBar
-          columns={columns}
-          data={tableData}
-          idKey="guid"
-        />
-      )}
+      <DataDisplay
+        loading={loading || collabDialogButtonClickLoading}
+        noResultsTextId="NO_COLLABORATIONS"
+        style={{ marginTop: 12 }}
+        noTitleBar
+        columns={columns}
+        data={tableData}
+        idKey="guid"
+      />
     </Card>
   );
 }

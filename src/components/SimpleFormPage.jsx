@@ -1,14 +1,11 @@
 import React from 'react';
 import Paper from '@material-ui/core/Paper';
 import { useTheme } from '@material-ui/core/styles';
-import {
-  darken,
-  lighten,
-} from '@material-ui/core/styles/colorManipulator';
 import Text from './Text';
 
 export default function SimpleFormPage({
   titleId,
+  titleIntlValues,
   instructionsId,
   BaoComponent,
   baoStyles = {},
@@ -16,8 +13,6 @@ export default function SimpleFormPage({
 }) {
   const theme = useTheme();
   const themeColor = theme.palette.primary.main;
-  const themeColorDark = darken(themeColor, 0.05);
-  const themeColorLight = lighten(themeColor, 0.35);
 
   return (
     <div
@@ -35,12 +30,12 @@ export default function SimpleFormPage({
           variant="h2"
           style={{ paddingBottom: 32 }}
           id={titleId}
+          values={titleIntlValues}
         />
         {BaoComponent && (
           <BaoComponent
             style={{ width: 280, ...baoStyles }}
-            themeColor={themeColorDark}
-            themeColorLight={themeColorLight}
+            themeColor={themeColor}
           />
         )}
       </div>

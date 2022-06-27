@@ -1,21 +1,8 @@
 import { useMemo } from 'react';
-import { cloneDeep, get } from 'lodash-es';
+import { get } from 'lodash-es';
 
+import { flattenTree } from '../utils/treeUtils';
 import useSiteSettings from '../models/site/useSiteSettings';
-
-function flattenTree(regions) {
-  const flatTree = cloneDeep(regions);
-
-  function addLevel(leaves) {
-    leaves.forEach(leaf => {
-      flatTree.push(leaf);
-      if (leaf.locationID) addLevel(leaf.locationID);
-    });
-  }
-
-  addLevel(regions);
-  return flatTree;
-}
 
 export default function useOptions() {
   const {
@@ -24,7 +11,8 @@ export default function useOptions() {
     error,
     siteSettingsVersion,
   } = useSiteSettings();
-  if (loading || error) return null;
+
+  if (loading || error) return {};
 
   const options = useMemo(
     () => {

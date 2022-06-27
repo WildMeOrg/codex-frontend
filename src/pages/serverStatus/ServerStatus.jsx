@@ -8,12 +8,13 @@ import Skeleton from '@material-ui/lab/Skeleton';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useTheme } from '@material-ui/core/styles';
 
+import version from '../../constants/version';
 import useGetSiteInfo from '../../models/site/useGetSiteInfo';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import useServerStatus from '../../models/server/useServerStatus';
 import MainColumn from '../../components/MainColumn';
-import ButtonLink from '../../components/ButtonLink';
 import Text from '../../components/Text';
+import SettingsBreadcrumbs from '../../components/SettingsBreadcrumbs';
 import SummaryCard from './components/SummaryCard';
 import LegendItem from './components/LegendItem';
 import WaffleSquare from './components/WaffleSquare';
@@ -98,12 +99,7 @@ export default function ServerStatus() {
         style={{ padding: '16px 0 16px 16px' }}
         id="SERVER_STATUS"
       />
-      <ButtonLink
-        href="/admin"
-        style={{ marginTop: 8, width: 'fit-content' }}
-        display="back"
-        id="BACK"
-      />
+      <SettingsBreadcrumbs currentPageTextId="SERVER_STATUS" />
       <div style={{ padding: 16, boxSizing: 'border-box' }}>
         <Text variant="h5">Versions</Text>
         {siteInfoLoading ? (
@@ -114,6 +110,9 @@ export default function ServerStatus() {
           </>
         ) : (
           <>
+            <Text>{`Frontend version: ${
+              version.packageVersion
+            }`}</Text>
             <Text>
               {`Houston version: ${get(
                 siteInfo,
@@ -148,6 +147,7 @@ export default function ServerStatus() {
           </>
         ) : (
           <>
+            <Text>{`Frontend commit: ${version.commitHash}`}</Text>
             <Text>
               {`Houston git hash: ${get(
                 siteInfo,

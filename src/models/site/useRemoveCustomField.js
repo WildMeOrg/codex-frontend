@@ -1,11 +1,13 @@
-import { useState, useContext } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
 import { get } from 'lodash-es';
-import { AppContext, setSiteSettingsNeedsFetch } from '../../context';
+import { useQueryClient } from 'react-query';
+
+import queryKeys from '../../constants/queryKeys';
 import { formatError } from '../../utils/formatters';
 
 export default function useRemoveCustomField() {
-  const { dispatch } = useContext(AppContext);
+  const queryClient = useQueryClient();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
@@ -25,7 +27,7 @@ export default function useRemoveCustomField() {
     try {
       setLoading(true);
       const patchResponse = await axios({
-        url: `${__houston_url__}/api/v1/configuration/default`,
+        url: `${__houston_url__}/api/v1/site-settings/main`,
         withCredentials: true,
         method: 'patch',
         data: [operation],
@@ -35,7 +37,7 @@ export default function useRemoveCustomField() {
       setNeedsForce(false);
 
       if (successful) {
-        dispatch(setSiteSettingsNeedsFetch(true));
+        queryClient.invalidateQueries(queryKeys.settingsConfig);
         setLoading(false);
         setSuccess(true);
         setError(null);

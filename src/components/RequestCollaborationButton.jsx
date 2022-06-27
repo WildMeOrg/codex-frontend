@@ -7,26 +7,33 @@ import Button from './Button';
 
 export default function RequestCollaborationButton({ otherUserId }) {
   const {
-    requestCollaboration,
+    mutate: requestCollaboration,
     loading: requestCollaborationLoading,
   } = useRequestCollaboration();
   const {
     data: currentUserData,
-    loading: currentUserDataLoading,
-    refresh,
+    loading: userDataLoading,
+    isFetching: userDataFetching,
   } = useGetMe();
 
-  const loading =
-    requestCollaborationLoading || currentUserDataLoading;
+  const spinButton =
+    requestCollaborationLoading ||
+    userDataLoading ||
+    userDataFetching;
 
-  const matchingCollaboration = get(
+  const currentUserCollaborations = get(
     currentUserData,
     'collaborations',
     [],
-  ).find(collaboration => {
-    const collaboratingUserIds = get(collaboration, 'user_guids', []);
-    return collaboratingUserIds.includes(otherUserId);
-  });
+  );
+  const matchingCollaboration = currentUserCollaborations.find(
+    collaboration => {
+      const memberIds = Object.keys(
+        get(collaboration, 'members', {}),
+      );
+      return memberIds.includes(otherUserId);
+    },
+  );
 
   const matchingCollaborationMembers = Object.values(
     get(matchingCollaboration, 'members', {}),
@@ -42,11 +49,11 @@ export default function RequestCollaborationButton({ otherUserId }) {
   return (
     <Button
       onClick={async () => {
-        const successful = await requestCollaboration(otherUserId);
-        if (successful) refresh();
+        await requestCollaboration({ userGuid: otherUserId });
       }}
-      loading={loading}
-      disabled={matchingCollaborationPending}
+      loading={spinButton}
+      disabled={spinButton || matchingCollaborationPending}
+      display="panel"
       id={
         matchingCollaborationPending
           ? 'COLLABORATION_PENDING'

@@ -12,6 +12,7 @@ import AnnotatedPhotograph from '../../components/AnnotatedPhotograph';
 import AnnotationEditor from '../../components/AnnotationEditor';
 import Text from '../../components/Text';
 import ConfirmDelete from '../../components/ConfirmDelete';
+import MatchAnnotationDialog from './identification/MatchAnnotationDialog';
 import AnnotationDetail from './AnnotationDetail';
 import MoreAnnotationMenu from './MoreAnnotationMenu';
 import Keywords from './Keywords';
@@ -24,7 +25,11 @@ const useStyles = makeStyles({
   },
 });
 
-export default function Annotations({ assets, refreshSightingData }) {
+export default function Annotations({
+  assets,
+  refreshSightingData,
+  pending,
+}) {
   const theme = useTheme();
   const isSm = useMediaQuery(theme.breakpoints.down('xs'));
   const classes = useStyles();
@@ -32,7 +37,9 @@ export default function Annotations({ assets, refreshSightingData }) {
   const [detailId, setDetailId] = useState(null);
   const [editId, setEditId] = useState(null);
   const [deleteId, setDeleteId] = useState(null);
+  const [matchId, setMatchId] = useState(null);
   const [anchorInfo, setAnchorInfo] = useState(null);
+
   const {
     deleteAnnotation,
     loading: deleteInProgress,
@@ -72,6 +79,11 @@ export default function Annotations({ assets, refreshSightingData }) {
         margin: '0 20px',
       }}
     >
+      <MatchAnnotationDialog
+        annotationGuid={matchId}
+        open={Boolean(matchId)}
+        onClose={() => setMatchId(null)}
+      />
       <AnnotationDetail
         annotation={detailAnnotation}
         open={Boolean(detailId)}
@@ -80,9 +92,14 @@ export default function Annotations({ assets, refreshSightingData }) {
       />
       <MoreAnnotationMenu
         id="image-actions-menu"
+        pending={pending}
         anchorEl={get(anchorInfo, 'element')}
         open={Boolean(get(anchorInfo, 'element'))}
         onClose={() => setAnchorInfo(null)}
+        onClickStartIdentification={() => {
+          setMatchId(clickedAnnotationId);
+          setAnchorInfo(null);
+        }}
         onClickEditAnnotation={() => {
           setEditId(clickedAnnotationId);
           setAnchorInfo(null);

@@ -1,14 +1,17 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useIntl } from 'react-intl';
 import { get } from 'lodash-es';
 
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 
+import usePatchEncounter from '../../../models/encounter/usePatchEncounter';
+import usePatchAgsEncounter from '../../../models/encounter/usePatchAgsEncounter';
 import CustomAlert from '../../../components/Alert';
-import usePatchSighting from '../../../models/sighting/usePatchSighting';
-import InputRow from '../../../components/fields/edit/InputRowNew';
+import InputRow from '../../../components/fields/edit/InputRow';
 import Button from '../../../components/Button';
 import StandardDialog from '../../../components/StandardDialog';
+import Text from '../../../components/Text';
 
 function getInitialFormValues(schema, fieldKey) {
   return schema.reduce((memo, field) => {
@@ -25,32 +28,55 @@ function getInitialFormValues(schema, fieldKey) {
 export default function EditEncounterMetadata({
   open,
   sightingId,
-  // encounterId,
+  encounterId,
   metadata = [],
   onClose,
   refreshSightingData,
+  pending = true,
 }) {
+  const intl = useIntl();
+
   const {
-    updateProperties,
-    loading,
-    error,
-    setError,
-  } = usePatchSighting();
+    updateProperties: updateEncounterProperties,
+    loading: encounterLoading,
+    error: encounterError,
+    setError: setEncounterError,
+  } = usePatchEncounter();
 
-  const defaultFieldMetadata = metadata.filter(
-    field => !field.customField,
-  );
-  const customFieldMetadata = metadata.filter(
-    field => field.customField,
+  const {
+    updateProperties: updateAgsProperties,
+    loading: agsLoading,
+    error: agsError,
+    setError: setAgsError,
+  } = usePatchAgsEncounter();
+
+  const loading = pending ? agsLoading : encounterLoading;
+  const patchError = pending ? agsError : encounterError;
+  const setPatchError = pending ? setAgsError : setEncounterError;
+
+  const [defaultFieldValues, setDefaultFieldValues] = useState({});
+  const [customFieldValues, setCustomFieldValues] = useState({});
+  const [formErrors, setFormErrors] = useState([]);
+
+  useEffect(
+    () => {
+      const defaultFieldMetadata = metadata.filter(
+        field => !field.customField,
+      );
+      const customFieldMetadata = metadata.filter(
+        field => field.customField,
+      );
+      setDefaultFieldValues(
+        getInitialFormValues(defaultFieldMetadata, 'name'),
+      );
+      setCustomFieldValues(
+        getInitialFormValues(customFieldMetadata, 'id'),
+      );
+    },
+    [get(metadata, 'length')],
   );
 
-  const [defaultFieldValues, setDefaultFieldValues] = useState(
-    getInitialFormValues(defaultFieldMetadata, 'name'),
-  );
-
-  const [customFieldValues, setCustomFieldValues] = useState(
-    getInitialFormValues(customFieldMetadata, 'id'),
-  );
+  const showErrorAlert = patchError || formErrors.length > 0;
 
   return (
     <StandardDialog
@@ -97,19 +123,24 @@ export default function EditEncounterMetadata({
           );
         })}
 
-        {error && (
-          <CustomAlert
-            severity="error"
-            titleId="SUBMISSION_ERROR"
-            description={error}
-          />
+        {showErrorAlert && (
+          <CustomAlert severity="error" titleId="SUBMISSION_ERROR">
+            {formErrors.length > 0 &&
+              formErrors.map(formError => (
+                <Text key={formError} variant="body2">
+                  {formError}
+                </Text>
+              ))}
+            {patchError && <Text variant="body2">{patchError}</Text>}
+          </CustomAlert>
         )}
       </DialogContent>
       <DialogActions style={{ padding: '0px 24px 24px 24px' }}>
         <Button
           display="basic"
           onClick={() => {
-            setError(null);
+            setPatchError(null);
+            setFormErrors([]);
             onClose();
           }}
           id="CANCEL"
@@ -118,10 +149,55 @@ export default function EditEncounterMetadata({
           loading={loading}
           display="primary"
           onClick={async () => {
-            const successfulUpdate = await updateProperties(
-              sightingId,
-              defaultFieldValues,
+            let successfulUpdate = false;
+
+            // validation
+            const requiredFieldErrors = metadata.reduce(
+              (memo, schema) => {
+                if (!schema?.required) return memo;
+
+                const isEmpty = schema.customField
+                  ? !customFieldValues[schema.id]
+                  : !defaultFieldValues[schema.name];
+
+                if (isEmpty) {
+                  const fieldName = schema.labelId
+                    ? intl.formatMessage({ id: schema.labelId })
+                    : schema.label;
+
+                  memo.push(
+                    intl.formatMessage(
+                      { id: 'INCOMPLETE_FIELD' },
+                      { fieldName },
+                    ),
+                  );
+                }
+
+                return memo;
+              },
+              [],
             );
+
+            setFormErrors(requiredFieldErrors);
+            if (requiredFieldErrors.length > 0) return;
+
+            const properties = {
+              ...defaultFieldValues,
+              customFields: customFieldValues,
+            };
+
+            if (pending) {
+              successfulUpdate = await updateAgsProperties(
+                sightingId,
+                encounterId,
+                properties,
+              );
+            } else {
+              successfulUpdate = await updateEncounterProperties(
+                encounterId,
+                properties,
+              );
+            }
             if (successfulUpdate) {
               refreshSightingData();
               onClose();

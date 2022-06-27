@@ -6,6 +6,7 @@ package-lock.json
 .DS_Store
 .vscode/
 
-/src/constants/apiKeys.js
+#: created on build
+/src/constants/version.js
 
 dist.*.tar.gz
