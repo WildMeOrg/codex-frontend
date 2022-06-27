@@ -1,5 +1,9 @@
 {
-  "extends": ["airbnb", "prettier"],
+  "extends": [
+    "airbnb",
+    "airbnb/hooks",
+    "prettier"
+  ],
   "parser": "@babel/eslint-parser",
   "parserOptions": {
     "sourceType": "module",
@@ -24,6 +28,7 @@
     "semi": 2,
     "react/prop-types": 0,
     "jsx-no-bind": 0,
+    "react/jsx-no-bind": 0,
     "react/jsx-filename-extension": 0,
     "react/jsx-props-no-spreading": 0,
     "react/destructuring-assignment": 0,
@@ -51,7 +56,7 @@
     "no-mixed-operators": 0,
     "no-else-return": 0,
     "import/no-extraneous-dependencies": [
-      "error",
+      2,
       {
         "devDependencies": true,
         "optionalDependencies": false,

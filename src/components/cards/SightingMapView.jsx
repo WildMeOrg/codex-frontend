@@ -12,7 +12,7 @@ export default function SightingMapView({ data, linkPath }) {
     .map(entry => {
       return {
         guid: get(entry, 'guid'),
-        linkPath: linkPath,
+        linkPath,
         text: intl.formatMessage(
           { id: 'ENTITY_HEADER_SIGHTING_DATE' },
           { date: formatDate(get(entry, 'time'), true) },

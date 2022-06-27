@@ -110,9 +110,9 @@ export default function ServerStatus() {
           </>
         ) : (
           <>
-            <Text>{`Frontend version: ${
-              version.packageVersion
-            }`}</Text>
+            <Text>
+              {`Frontend version: ${version.packageVersion}`}
+            </Text>
             <Text>
               {`Houston version: ${get(
                 siteInfo,

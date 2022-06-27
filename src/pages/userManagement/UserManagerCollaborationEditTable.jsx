@@ -62,7 +62,7 @@ export default function UserManagersCollaborationEditTable({
     ];
     revokeCollab({
       collaborationGuid: collaboration?.guid,
-      operations: operations,
+      operations,
     });
   }
 
@@ -79,7 +79,7 @@ export default function UserManagersCollaborationEditTable({
     ];
     restoreCollab({
       collaborationGuid: collaboration?.guid,
-      operations: operations,
+      operations,
     });
   }
 

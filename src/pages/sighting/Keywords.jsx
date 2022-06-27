@@ -1,6 +1,5 @@
 import React from 'react';
 import { get } from 'lodash-es';
-import { FormattedMessage } from 'react-intl';
 
 import { useTheme } from '@material-ui/core/styles';
 import Chip from '@material-ui/core/Chip';

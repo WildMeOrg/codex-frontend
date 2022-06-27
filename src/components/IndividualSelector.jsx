@@ -10,7 +10,7 @@ import DataDisplay from './dataDisplays/DataDisplay';
 import Button from './Button';
 import Text from './Text';
 import CustomAlert from './Alert';
-import { cellRendererTypes } from '../components/dataDisplays/cellRenderers';
+import { cellRendererTypes } from './dataDisplays/cellRenderers';
 
 export default function IndividualSelector({
   setSelectedIndividualGuid,

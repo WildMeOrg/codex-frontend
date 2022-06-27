@@ -13,7 +13,7 @@ import ActionIcon from '../ActionIcon';
 import { cellRendererTypes } from '../dataDisplays/cellRenderers';
 import DataDisplay from '../dataDisplays/DataDisplay';
 import Card from './Card';
-import SightingMapView from '../cards/SightingMapView';
+import SightingMapView from './SightingMapView';
 
 export default function SightingsCard({
   title,

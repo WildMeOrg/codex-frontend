@@ -223,8 +223,9 @@ export default function AnnotationDetail({
             }}
           >
             <Text variant="h6">{`Viewpoint: ${viewpointLabel}`}</Text>
-            <Text variant="h6">{`Annotation class: ${annotation?.ia_class ||
-              'N/A'}`}</Text>
+            <Text variant="h6">
+              {`Annotation class: ${annotation?.ia_class || 'N/A'}`}
+            </Text>
           </div>
         </div>
       </div>

@@ -56,7 +56,7 @@ export default function Users() {
         onDelete={entity => {
           setUserToDelete(entity);
         }}
-        renderDetails={entity => {
+        renderDetails={() => {
           const affiliation = null;
           return affiliation ? <Text>{affiliation}</Text> : null;
         }}

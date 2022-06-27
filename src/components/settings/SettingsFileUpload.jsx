@@ -24,8 +24,6 @@ export default function SettingsFileUpload({
   onSetPostData = Function.prototype,
   maxFileSize = 10000000, // 10 MB
   variant = 'image',
-  onClose = Function.prototype,
-  onChange = Function.prototype,
 }) {
   const intl = useIntl();
   const siteSettings = useSiteSettings();

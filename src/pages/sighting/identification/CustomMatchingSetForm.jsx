@@ -7,7 +7,7 @@ import useIdConfigSchemas from '../../../models/identification/useIdConfigSchema
 import buildMatchingSetQuery from './buildMatchingSetQuery';
 
 export default function CustomMatchingSetForm({
-  idConfig, // use this to get matching set size!
+  // idConfig, // use this to get matching set size!
   setIdConfig,
 }) {
   const idConfigSchemas = useIdConfigSchemas();

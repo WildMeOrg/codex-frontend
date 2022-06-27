@@ -4,7 +4,7 @@ import { get } from 'lodash-es';
 import ActionIcon from '../ActionIcon';
 import Link from '../Link';
 import DataDisplay from './DataDisplay';
-import { cellRendererTypes } from '../dataDisplays/cellRenderers';
+import { cellRendererTypes } from './cellRenderers';
 
 export default function SightingsDisplay({
   sightings,

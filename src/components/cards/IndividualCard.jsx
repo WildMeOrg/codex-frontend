@@ -78,10 +78,9 @@ export default function IndividualCard({
           )}
           {dataReady && showSex && (
             <Text style={{ marginTop: 16 }}>
-              <Text
-                variant="body2"
-                component="span"
-              >{`${intl.formatMessage({ id: 'SEX' })}: `}</Text>
+              <Text variant="body2" component="span">
+                {`${intl.formatMessage({ id: 'SEX' })}: `}
+              </Text>
               <Text
                 variant="body2"
                 component="span"
