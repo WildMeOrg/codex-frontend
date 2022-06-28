@@ -75,9 +75,11 @@ export default function useMutate({
           ...deriveFetchKeys(mutationArgs),
         ];
 
+        /* eslint-disable no-await-in-loop no-restricted-syntax */
         for (const queryKey of fetches) {
           await queryClient.refetchQueries(queryKey);
         }
+        /* eslint-enable no-await-in-loop no-restricted-syntax */
 
         if (displayedError) setDisplayedError(null);
         setSuccess(true);
@@ -99,7 +101,7 @@ export default function useMutate({
       setDisplayedError(error);
       if (success) setSuccess(null);
     }
-  }, [error]);
+  }, [success, error]);
 
   const mutate = mutationArgs => mutation.mutateAsync(mutationArgs);
 
