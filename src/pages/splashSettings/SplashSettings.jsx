@@ -35,7 +35,7 @@ const newSettingFields = [
   'site.general.donationButtonUrl',
 ];
 
-export default function SiteSettings() {
+export default function SplashSettings() {
   const siteSettings = useSiteSettings();
   const {
     mutate: putSiteSettings,
