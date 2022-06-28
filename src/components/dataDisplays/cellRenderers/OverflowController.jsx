@@ -22,7 +22,7 @@ export default function OverflowController({ title, children }) {
   useEffect(() => {
     if (!refEl) return;
 
-    const debouncedHandleResize = debounce(function handleResize() {
+    const debouncedHandleResize = debounce(() => {
       const { clientWidth, scrollWidth } = refEl;
       const overflow = scrollWidth - clientWidth > 0;
       setIsOverflowed(overflow);

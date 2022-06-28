@@ -37,25 +37,21 @@ export default function useIdConfigSchemas() {
 
     const allAlgorithms = flatMap(
       Object.values(detectionConfig),
-      model => {
-        return flatMap(
-          get(model, 'supported_species', []),
-          species => {
-            if (!siteItisIds.includes(species?.itis_id)) return [];
-            const idAlgorithmObject = species?.id_algos || [];
-            const idAlgorithms = map(
-              idAlgorithmObject,
-              (algorithmSchema, algorithmKey) => ({
-                label: algorithmSchema?.description,
-                value: algorithmKey,
-                taxonomy: species?.scientific_name,
-                itisId: species?.itis_id,
-              }),
-            );
-            return idAlgorithms;
-          },
-        );
-      },
+      model =>
+        flatMap(get(model, 'supported_species', []), species => {
+          if (!siteItisIds.includes(species?.itis_id)) return [];
+          const idAlgorithmObject = species?.id_algos || [];
+          const idAlgorithms = map(
+            idAlgorithmObject,
+            (algorithmSchema, algorithmKey) => ({
+              label: algorithmSchema?.description,
+              value: algorithmKey,
+              taxonomy: species?.scientific_name,
+              itisId: species?.itis_id,
+            }),
+          );
+          return idAlgorithms;
+        }),
     );
 
     /* Would be great to maintain the list of all possible taxonomies

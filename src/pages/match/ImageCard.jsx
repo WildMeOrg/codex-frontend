@@ -17,13 +17,15 @@ export default function ImageCard({ titleId, annotation }) {
     siteSettingsVersion,
   } = useSiteSettings();
 
-  const regionChoices = useMemo(() => {
-    return get(
-      siteSettings,
-      ['site.custom.regions', 'value', 'locationID'],
-      [],
-    );
-  }, [siteSettingsVersion, siteSettings]);
+  const regionChoices = useMemo(
+    () =>
+      get(
+        siteSettings,
+        ['site.custom.regions', 'value', 'locationID'],
+        [],
+      ),
+    [siteSettingsVersion, siteSettings],
+  );
 
   const lineItemsBlank = !annotation;
   const individualName =

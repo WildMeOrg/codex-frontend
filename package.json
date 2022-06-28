@@ -57,7 +57,7 @@
     "copy-webpack-plugin": "^6.0.3",
     "css-loader": "^5.0.2",
     "emotion-theming": "^10.0.14",
-    "eslint": "~8.2.0",
+    "eslint": "~8.18.0",
     "eslint-config-airbnb": "~19.0.0",
     "eslint-config-prettier": "~8.5.0",
     "eslint-import-resolver-webpack": "^0.10.1",

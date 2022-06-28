@@ -80,16 +80,14 @@ export default function SightingsDisplay({
       labelId: 'ACTIONS',
       sortable: false,
       options: {
-        customBodyRender: guid => {
-          return (
-            <ActionIcon
-              labelId="VIEW"
-              variant="view"
-              href={`/sightings/${guid}`}
-              linkProps={{ newTab: true }}
-            />
-          );
-        },
+        customBodyRender: guid => (
+          <ActionIcon
+            labelId="VIEW"
+            variant="view"
+            href={`/sightings/${guid}`}
+            linkProps={{ newTab: true }}
+          />
+        ),
       },
     },
   ];

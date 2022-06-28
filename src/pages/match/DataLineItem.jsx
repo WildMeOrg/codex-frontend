@@ -11,9 +11,7 @@ export default function DataLineItem({
   blank,
   children,
 }) {
-  const skeletonWidth = useMemo(() => {
-    return Math.random() * 80 + 80;
-  }, []);
+  const skeletonWidth = useMemo(() => Math.random() * 80 + 80, []);
 
   const renderChildren = !blank && !loading;
   return (
