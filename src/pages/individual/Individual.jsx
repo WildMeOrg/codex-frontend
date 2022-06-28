@@ -71,13 +71,13 @@ export default function Individual() {
           annotation => ({
             src: annotation?.asset_src,
             guid: annotation?.asset_guid,
-            altText: annotation?.created
-              ? intl.formatMessage({
-                  id: 'ANNOTATION_CREATED',
-                }) + annotation?.created
-              : intl.formatMessage({
-                  id: 'ANNOTATION_WITH_CREATION_DATE_UNKNOWN',
-                }),
+            altText: annotation?.created ? 
+            [intl.formatMessage({
+              id: 'ANNOTATION_CREATED',
+            }), annotation.created].join('') : 
+            intl.formatMessage({
+              id: 'ANNOTATION_WITH_CREATION_DATE_UNKNOWN',
+            }),
           }),
         );
         return [...memo, ...newAssets];
@@ -90,7 +90,7 @@ export default function Individual() {
       featuredAssetGuid: individualData?.featuredAssetGuid,
       guid: individualData?.guid,
     };
-  }, [individualData]);
+  }, [intl, individualData]);
 
   const metadata = useMemo(() => {
     if (!individualData || !fieldSchemas) return null;
@@ -129,7 +129,7 @@ export default function Individual() {
             guid: annotation?.asset_guid,
             src: annotation?.asset_src,
             alt: annotation?.created
-              ? 'Annotation created: ' + annotation?.created
+              ? ['Annotation created: ', annotation.created].join('')
               : 'Annotation image with no creation date',
           }),
         );
@@ -143,7 +143,7 @@ export default function Individual() {
     );
     const firstNineAssets = slice(uniqueModifiedAssets, 0, 9);
     return firstNineAssets;
-  }, [individualData]);
+  }, [encounters]);
 
   const [firstName, adoptionName] = useMemo(
     () => [
@@ -154,7 +154,7 @@ export default function Individual() {
       ),
       deriveIndividualName(individualData, 'AdoptionName'),
     ],
-    [individualData],
+    [intl, individualData],
   );
 
   const {

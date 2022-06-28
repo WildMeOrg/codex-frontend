@@ -81,10 +81,7 @@ export default function ReportForm({
         customEncounterCategories: _customEncounterCategories,
         customSightingCategories: _customSightingCategories,
       };
-      /* eslint-disable react-hooks/exhaustive-deps */
-      /* siteSettingsVersion is used implicitly to ensure react catches updates to siteSettingsData */
     }, [siteSettingsData, siteSettingsVersion]);
-  /* eslint-enable react-hooks/exhaustive-deps */
 
   const sightingFieldSchemas = useSightingFieldSchemas();
 
