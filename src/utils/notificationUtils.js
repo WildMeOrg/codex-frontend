@@ -1,10 +1,8 @@
 import { get } from 'lodash-es';
-import { useIntl } from 'react-intl';
 
 import { formatDateCustom } from './formatters';
 
-export const getNotificationProps = notification => {
-  const intl = useIntl();
+export const getNotificationProps = (intl, notification) => {
   const userName = notification?.sender_name || 'Unnamed User';
   const userNameGuid = notification?.sender_guid;
   const user1Name =
