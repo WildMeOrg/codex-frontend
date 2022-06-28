@@ -6,7 +6,7 @@ import TextField from '@material-ui/core/TextField';
 // https://lowrey.me/test-if-a-string-is-alphanumeric-in-javascript/
 const isAlphaNumeric = ch => ch.match(/^[a-z0-9]+$/i) !== null;
 
-const Core = function({ children, required, width, style = {} }) {
+const Core = function ({ children, required, width, style = {} }) {
   return (
     <FormControl
       required={required}
@@ -17,7 +17,7 @@ const Core = function({ children, required, width, style = {} }) {
   );
 };
 
-const ProjectIdInput = function(props) {
+const ProjectIdInput = function (props) {
   const { schema, required, value, onChange, width, ...rest } = props;
 
   const intl = useIntl();

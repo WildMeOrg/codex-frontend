@@ -6,7 +6,7 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import Switch from '@material-ui/core/Switch';
 import Text from '../Text';
 
-const Core = function({ children, required, width, style = {} }) {
+const Core = function ({ children, required, width, style = {} }) {
   return (
     <FormControl
       required={required}

@@ -110,9 +110,7 @@ export default function IndividualEditor({
                     selected={isSelected}
                   >
                     <ListItemText
-                      primary={`${individual.id} (${
-                        individual.alias
-                      })`}
+                      primary={`${individual.id} (${individual.alias})`}
                       secondary={lastSeenMessage}
                     />
                   </ListItem>

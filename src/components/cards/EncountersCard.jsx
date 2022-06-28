@@ -34,23 +34,20 @@ export default function EncountersCard({
   const mapModeClicked = () => setShowMapView(true);
   const listModeClicked = () => setShowMapView(false);
 
-  const encountersWithLocationData = useMemo(
-    () => {
-      // hotfix //
-      if (!encounters) return [];
-      // hotfix //
+  const encountersWithLocationData = useMemo(() => {
+    // hotfix //
+    if (!encounters) return [];
+    // hotfix //
 
-      return encounters.map(encounter => ({
-        ...encounter,
-        formattedLocation: formatLocationFromSighting(
-          encounter,
-          regionOptions,
-          intl,
-        ),
-      }));
-    },
-    [get(encounters, 'length')],
-  );
+    return encounters.map(encounter => ({
+      ...encounter,
+      formattedLocation: formatLocationFromSighting(
+        encounter,
+        regionOptions,
+        intl,
+      ),
+    }));
+  }, [get(encounters, 'length')]);
 
   const tooFewEncounters = encounters.length <= 1;
 

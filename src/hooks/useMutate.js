@@ -94,15 +94,12 @@ export default function useMutate({
 
   const error = formatError(mutation);
 
-  useEffect(
-    () => {
-      if (error) {
-        setDisplayedError(error);
-        if (success) setSuccess(null);
-      }
-    },
-    [error],
-  );
+  useEffect(() => {
+    if (error) {
+      setDisplayedError(error);
+      if (success) setSuccess(null);
+    }
+  }, [error]);
 
   const mutate = mutationArgs => mutation.mutateAsync(mutationArgs);
 

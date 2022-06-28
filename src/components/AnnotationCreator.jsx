@@ -342,13 +342,12 @@ export default function AnnotationCreator({
             if (newAnnotationId) {
               if (focalEncounterGuid) {
                 // this doesn't happen if pending or if getting/creating an encounter failed or even if extra encouter Guids were created
-                addAnnotationsToSightingEncounterResponse = await addAnnotationsToSightingEncounter(
-                  {
+                addAnnotationsToSightingEncounterResponse =
+                  await addAnnotationsToSightingEncounter({
                     sightingGuid: sightingId,
                     encounterGuid: focalEncounterGuid,
                     annotationGuids: [newAnnotationId],
-                  },
-                );
+                  });
               }
               // hasErrors doesn't get information from inside the onClick call, but that's ok, because all three potential calls have info that we can use to check success
               const allSucceeded = pending

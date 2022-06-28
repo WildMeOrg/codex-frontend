@@ -16,12 +16,8 @@ import useDocumentTitle from '../../hooks/useDocumentTitle';
 const buttonId = 'createAdminUser';
 
 export default function CreateAdminUser() {
-  const {
-    authenticate,
-    error,
-    setError,
-    loading,
-  } = useCreateAdminUser();
+  const { authenticate, error, setError, loading } =
+    useCreateAdminUser();
 
   const [email, setEmail] = useState('');
   const [password1, setPassword1] = useState('');

@@ -10,10 +10,8 @@ import Text from '../../components/Text';
 
 export default function PhotoGallery({ sighting }) {
   const [activeAnnotation, setAnnotation] = useState(null);
-  const [
-    createAnnotationSource,
-    setCreateAnnotationSource,
-  ] = useState(null);
+  const [createAnnotationSource, setCreateAnnotationSource] =
+    useState(null);
   const photos = sighting.encounters.reduce((memo, encounter) => {
     const newPhotos = encounter.images.map(image => {
       const matchingAnnotations = encounter.annotations.filter(

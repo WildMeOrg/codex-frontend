@@ -42,13 +42,10 @@ export default function CreateIndividual() {
 
   const [formState, setFormState] = useState({});
 
-  useEffect(
-    () => {
-      const initialState = calculateInitialState(createFieldSchemas);
-      setFormState(initialState);
-    },
-    [createFieldSchemas?.length],
-  );
+  useEffect(() => {
+    const initialState = calculateInitialState(createFieldSchemas);
+    setFormState(initialState);
+  }, [createFieldSchemas?.length]);
 
   async function postIndividual() {
     const firstName = formState?.firstName;

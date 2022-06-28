@@ -18,14 +18,11 @@ export default function AssetGroupSighting() {
 
   const sightingId = assetGroupSightingData?.sightingGuid;
 
-  useEffect(
-    () => {
-      if (sightingId) {
-        history.push(`/sightings/${sightingId}${hash}`);
-      }
-    },
-    [sightingId],
-  );
+  useEffect(() => {
+    if (sightingId) {
+      history.push(`/sightings/${sightingId}${hash}`);
+    }
+  }, [sightingId]);
 
   return (
     <SightingCore

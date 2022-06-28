@@ -75,16 +75,13 @@ export default function SightingCore({
   or properties this may not update
   switch to data.version?
   */
-  const metadata = useMemo(
-    () => {
-      if (!data || !fieldSchemas) return null;
-      return fieldSchemas.map(schema => ({
-        ...schema,
-        value: schema.getValue(schema, data),
-      }));
-    },
-    [data, fieldSchemas],
-  );
+  const metadata = useMemo(() => {
+    if (!data || !fieldSchemas) return null;
+    return fieldSchemas.map(schema => ({
+      ...schema,
+      value: schema.getValue(schema, data),
+    }));
+  }, [data, fieldSchemas]);
 
   useDocumentTitle(`Sighting ${id}`, { translateMessage: false });
 

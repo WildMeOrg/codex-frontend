@@ -13,9 +13,8 @@ function createMapOptions() {
 }
 
 export default function MultiplePoints({ latLongLabelArr }) {
-  const [currentMarkerToShow, setCurrentMarkerToShow] = useState(
-    null,
-  );
+  const [currentMarkerToShow, setCurrentMarkerToShow] =
+    useState(null);
   const googleMapsApiKey = useGoogleMapsApiKey();
   return (
     <GoogleMapReact

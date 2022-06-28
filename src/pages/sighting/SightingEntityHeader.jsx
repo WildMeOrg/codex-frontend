@@ -54,21 +54,18 @@ export default function SightingEntityHeader({
 
   const sightingIsReviewed = Boolean(data?.review_time);
 
-  const dataForFeaturedPhoto = useMemo(
-    () => {
-      const assets = get(data, ['assets'], []);
-      const modifiedAssets = map(
-        assets,
-        asset => ({ ...asset, altText: asset?.filename }),
-        [],
-      );
-      return {
-        ...data,
-        assets: modifiedAssets,
-      };
-    },
-    [data],
-  );
+  const dataForFeaturedPhoto = useMemo(() => {
+    const assets = get(data, ['assets'], []);
+    const modifiedAssets = map(
+      assets,
+      asset => ({ ...asset, altText: asset?.filename }),
+      [],
+    );
+    return {
+      ...data,
+      assets: modifiedAssets,
+    };
+  }, [data]);
 
   const sightingTime = data?.time;
   const sightingTimeSpecificity = data?.timeSpecificity;

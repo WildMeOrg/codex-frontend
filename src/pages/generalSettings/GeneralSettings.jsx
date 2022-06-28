@@ -103,16 +103,11 @@ export default function GeneralSettings() {
     twitterTestResults?.success,
   );
 
-  useEffect(
-    () => {
-      setShowTwitterSuccess(
-        twitterStatusCode !== 400
-          ? twitterTestResults?.success
-          : false,
-      );
-    },
-    [twitterTestResults, twitterStatusCode],
-  );
+  useEffect(() => {
+    setShowTwitterSuccess(
+      twitterStatusCode !== 400 ? twitterTestResults?.success : false,
+    );
+  }, [twitterTestResults, twitterStatusCode]);
 
   const edmValues = allSettingsFields.map(fieldKey =>
     get(siteSettings, ['data', fieldKey, 'value']),

@@ -12,10 +12,8 @@ export default function MergeDialog({
   onClose,
   individualGuid,
 }) {
-  const [
-    selectedIndividualGuid,
-    setSelectedIndividualGuid,
-  ] = useState(null);
+  const [selectedIndividualGuid, setSelectedIndividualGuid] =
+    useState(null);
 
   const onCloseDialog = () => {
     setSelectedIndividualGuid(null);

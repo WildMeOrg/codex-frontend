@@ -33,14 +33,11 @@ export default function useRemoveAnnotationsFromAGSEncounter() {
     ? mutation?.error.toJSON().message
     : null;
 
-  useEffect(
-    () => {
-      if (error) {
-        setDisplayedError(error);
-      }
-    },
-    [error],
-  );
+  useEffect(() => {
+    if (error) {
+      setDisplayedError(error);
+    }
+  }, [error]);
 
   return {
     ...mutation,

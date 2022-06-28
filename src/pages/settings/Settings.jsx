@@ -42,13 +42,10 @@ export default function Settings() {
   const schemas = useNotificationSettingsSchemas();
 
   const [formValues, setFormValues] = useState({});
-  useEffect(
-    () => {
-      const initialValues = getInitialFormValues(schemas, data);
-      setFormValues({ ...initialValues, ...formValues });
-    },
-    [schemas, data],
-  );
+  useEffect(() => {
+    const initialValues = getInitialFormValues(schemas, data);
+    setFormValues({ ...initialValues, ...formValues });
+  }, [schemas, data]);
 
   const backendValues = useMemo(
     () => getInitialFormValues(schemas, data),
@@ -147,10 +144,11 @@ export default function Settings() {
                               ...backendValues,
                               [fieldKey]: fieldValue,
                             };
-                            const newNotificationPreferences = deriveNotificationPreferences(
-                              backendValues,
-                              currentChangeValues,
-                            );
+                            const newNotificationPreferences =
+                              deriveNotificationPreferences(
+                                backendValues,
+                                currentChangeValues,
+                              );
                             await replaceUserProperty({
                               userGuid: get(data, 'guid'),
                               path: '/notification_preferences',

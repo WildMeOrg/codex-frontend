@@ -84,14 +84,10 @@ export default function Encounters({
   const [encounterToDelete, setEncounterToDelete] = useState(null);
   const [editEncounterInfo, setEditEncounterInfo] = useState(null);
   const [encounterToAssign, setEncounterToAssign] = useState(null);
-  const [
-    messageForConfirmDelete,
-    setMessageForConfirmDelete,
-  ] = useState(null);
-  const [
-    encounterToAddAnnotations,
-    setEncounterToAddAnnotations,
-  ] = useState(null);
+  const [messageForConfirmDelete, setMessageForConfirmDelete] =
+    useState(null);
+  const [encounterToAddAnnotations, setEncounterToAddAnnotations] =
+    useState(null);
 
   const sightingId = get(sightingData, 'guid');
 
@@ -108,15 +104,12 @@ export default function Encounters({
   const isIdReady =
     isIdentificationComplete && !isIdentificationFailed;
 
-  useEffect(
-    () => {
-      const message = vulnerableObject
-        ? 'BOTH_VULNERABLE_MESSAGE'
-        : 'CONFIRM_DELETE_ENCOUNTER_DESCRIPTION';
-      setMessageForConfirmDelete(message);
-    },
-    [vulnerableObject],
-  );
+  useEffect(() => {
+    const message = vulnerableObject
+      ? 'BOTH_VULNERABLE_MESSAGE'
+      : 'CONFIRM_DELETE_ENCOUNTER_DESCRIPTION';
+    setMessageForConfirmDelete(message);
+  }, [vulnerableObject]);
 
   return (
     <div>

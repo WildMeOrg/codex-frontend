@@ -16,10 +16,8 @@ import {
 } from '../../utils/formatters';
 
 export default function EncounterCard({ encounterGuid }) {
-  const {
-    data: siteSettings,
-    siteSettingsVersion,
-  } = useSiteSettings();
+  const { data: siteSettings, siteSettingsVersion } =
+    useSiteSettings();
 
   const regionChoices = useMemo(
     () =>

@@ -12,32 +12,26 @@ export default function CustomMatchingSetForm({
 }) {
   const idConfigSchemas = useIdConfigSchemas();
 
-  const [algorithmSchema, regionSchema] = useMemo(
-    () => {
-      if (!idConfigSchemas) return [null, null];
-      const algorithmsObject = idConfigSchemas.find(
-        schema => schema.name === 'algorithms',
-      );
-      const regionsObject = idConfigSchemas.find(
-        schema => schema.name === 'locationId',
-      );
-      return [algorithmsObject, regionsObject];
-    },
-    [idConfigSchemas],
-  );
+  const [algorithmSchema, regionSchema] = useMemo(() => {
+    if (!idConfigSchemas) return [null, null];
+    const algorithmsObject = idConfigSchemas.find(
+      schema => schema.name === 'algorithms',
+    );
+    const regionsObject = idConfigSchemas.find(
+      schema => schema.name === 'locationId',
+    );
+    return [algorithmsObject, regionsObject];
+  }, [idConfigSchemas]);
 
   const [algorithms, setAlgorithms] = useState([]);
   const [region, setRegion] = useState('');
 
-  useEffect(
-    () => {
-      setIdConfig({
-        algorithms,
-        matching_set: buildMatchingSetQuery(regionSchema, region),
-      });
-    },
-    [algorithms?.length, region],
-  );
+  useEffect(() => {
+    setIdConfig({
+      algorithms,
+      matching_set: buildMatchingSetQuery(regionSchema, region),
+    });
+  }, [algorithms?.length, region]);
 
   return (
     <>

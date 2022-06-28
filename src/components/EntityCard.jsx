@@ -10,7 +10,7 @@ import Link from './Link';
 import Text from './Text';
 import InlineButton from './InlineButton';
 
-const Details = function({ entity, titleKey, renderDetails }) {
+const Details = function ({ entity, titleKey, renderDetails }) {
   return (
     <>
       <Text

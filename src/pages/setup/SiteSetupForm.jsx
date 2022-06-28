@@ -19,7 +19,7 @@ const newSettingFields = [
   'site.general.description',
 ];
 
-const SettingInput = function({
+const SettingInput = function ({
   customFieldCategories,
   schema,
   ...rest

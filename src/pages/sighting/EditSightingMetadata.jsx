@@ -55,23 +55,20 @@ export default function EditSightingMetadata({
 
   const [customFieldValues, setCustomFieldValues] = useState({});
 
-  useEffect(
-    () => {
-      const defaultFieldMetadata = metadata.filter(
-        field => !field.customField,
-      );
-      const customFieldMetadata = metadata.filter(
-        field => field.customField,
-      );
-      setDefaultFieldValues(
-        getInitialFormValues(defaultFieldMetadata, 'name'),
-      );
-      setCustomFieldValues(
-        getInitialFormValues(customFieldMetadata, 'id'),
-      );
-    },
-    [get(metadata, 'length')],
-  );
+  useEffect(() => {
+    const defaultFieldMetadata = metadata.filter(
+      field => !field.customField,
+    );
+    const customFieldMetadata = metadata.filter(
+      field => field.customField,
+    );
+    setDefaultFieldValues(
+      getInitialFormValues(defaultFieldMetadata, 'name'),
+    );
+    setCustomFieldValues(
+      getInitialFormValues(customFieldMetadata, 'id'),
+    );
+  }, [get(metadata, 'length')]);
 
   function handleClose() {
     clearError();

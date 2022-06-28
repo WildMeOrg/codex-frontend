@@ -20,12 +20,9 @@ export default function IndividualCard({
   const { data, loading, error } = useIndividual(individualGuid);
   const dataReady = !loading && !error;
 
-  useEffect(
-    () => {
-      if (data) setIndividualData(data);
-    },
-    [data],
-  );
+  useEffect(() => {
+    if (data) setIndividualData(data);
+  }, [data]);
 
   const firstName = deriveIndividualName(
     data,

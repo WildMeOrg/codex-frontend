@@ -47,9 +47,8 @@ export default function CustomFieldTable({
   const intl = useIntl();
   const [deleteField, setDeleteField] = useState(null);
   const [previewField, setPreviewField] = useState(null);
-  const [previewInitialValue, setPreviewInitialValue] = useState(
-    null,
-  );
+  const [previewInitialValue, setPreviewInitialValue] =
+    useState(null);
   const {
     removeCustomField,
     needsForce,
@@ -102,9 +101,7 @@ export default function CustomFieldTable({
               />
               <ActionIcon
                 variant="edit"
-                href={`/admin/fields/save-custom-field/${fieldTypeName}/${
-                  field.id
-                }`}
+                href={`/admin/fields/save-custom-field/${fieldTypeName}/${field.id}`}
               />
               <ActionIcon
                 variant="delete"

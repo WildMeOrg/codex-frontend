@@ -58,23 +58,20 @@ export default function EditEncounterMetadata({
   const [customFieldValues, setCustomFieldValues] = useState({});
   const [formErrors, setFormErrors] = useState([]);
 
-  useEffect(
-    () => {
-      const defaultFieldMetadata = metadata.filter(
-        field => !field.customField,
-      );
-      const customFieldMetadata = metadata.filter(
-        field => field.customField,
-      );
-      setDefaultFieldValues(
-        getInitialFormValues(defaultFieldMetadata, 'name'),
-      );
-      setCustomFieldValues(
-        getInitialFormValues(customFieldMetadata, 'id'),
-      );
-    },
-    [get(metadata, 'length')],
-  );
+  useEffect(() => {
+    const defaultFieldMetadata = metadata.filter(
+      field => !field.customField,
+    );
+    const customFieldMetadata = metadata.filter(
+      field => field.customField,
+    );
+    setDefaultFieldValues(
+      getInitialFormValues(defaultFieldMetadata, 'name'),
+    );
+    setCustomFieldValues(
+      getInitialFormValues(customFieldMetadata, 'id'),
+    );
+  }, [get(metadata, 'length')]);
 
   const showErrorAlert = patchError || formErrors.length > 0;
 

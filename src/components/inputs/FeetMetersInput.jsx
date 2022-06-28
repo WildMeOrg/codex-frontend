@@ -6,7 +6,7 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 
-const Core = function({ children, required, width, style = {} }) {
+const Core = function ({ children, required, width, style = {} }) {
   return (
     <FormControl
       required={required}

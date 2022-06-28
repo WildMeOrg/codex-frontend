@@ -22,21 +22,18 @@ export default function ReportSightingsPage({
     'recaptchaPublicKey',
     'value',
   ]);
-  useEffect(
-    () => {
-      if (
-        recaptchaPublicKey &&
-        !document.getElementById('recaptcha-script')
-      ) {
-        const recaptchaApiUrl = `https://www.google.com/recaptcha/api.js?render=${recaptchaPublicKey}`;
-        const recaptchaScript = document.createElement('script');
-        recaptchaScript.src = recaptchaApiUrl;
-        recaptchaScript.id = 'recaptcha-script';
-        document.head.appendChild(recaptchaScript);
-      }
-    },
-    [recaptchaPublicKey],
-  );
+  useEffect(() => {
+    if (
+      recaptchaPublicKey &&
+      !document.getElementById('recaptcha-script')
+    ) {
+      const recaptchaApiUrl = `https://www.google.com/recaptcha/api.js?render=${recaptchaPublicKey}`;
+      const recaptchaScript = document.createElement('script');
+      recaptchaScript.src = recaptchaApiUrl;
+      recaptchaScript.id = 'recaptcha-script';
+      document.head.appendChild(recaptchaScript);
+    }
+  }, [recaptchaPublicKey]);
 
   return (
     <MainColumn

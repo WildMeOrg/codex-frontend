@@ -57,105 +57,93 @@ export default function Individual() {
   const history = useHistory();
   const fieldSchemas = useIndividualFieldSchemas();
 
-  const refreshIndividualData = useCallback(
-    () => {
-      const queryKey = getIndividualQueryKey(id);
-      queryClient.invalidateQueries(queryKey);
-    },
-    [queryClient, id],
-  );
+  const refreshIndividualData = useCallback(() => {
+    const queryKey = getIndividualQueryKey(id);
+    queryClient.invalidateQueries(queryKey);
+  }, [queryClient, id]);
 
-  const individualDataForFeaturedPhoto = useMemo(
-    () => {
-      const allAssets = reduce(
-        individualData?.encounters,
-        (memo, encounter) => {
-          const newAssets = map(
-            get(encounter, 'annotations', []),
-            annotation => ({
-              src: annotation?.asset_src,
-              guid: annotation?.asset_guid,
-              altText: annotation?.created
-                ? intl.formatMessage({
-                    id: 'ANNOTATION_CREATED',
-                  }) + annotation?.created
-                : intl.formatMessage({
-                    id: 'ANNOTATION_WITH_CREATION_DATE_UNKNOWN',
-                  }),
-            }),
-          );
-          return [...memo, ...newAssets];
-        },
-        [],
-      );
-      const assets = uniqBy(allAssets, asset => asset.src);
-      return {
-        assets,
-        featuredAssetGuid: individualData?.featuredAssetGuid,
-        guid: individualData?.guid,
+  const individualDataForFeaturedPhoto = useMemo(() => {
+    const allAssets = reduce(
+      individualData?.encounters,
+      (memo, encounter) => {
+        const newAssets = map(
+          get(encounter, 'annotations', []),
+          annotation => ({
+            src: annotation?.asset_src,
+            guid: annotation?.asset_guid,
+            altText: annotation?.created
+              ? intl.formatMessage({
+                  id: 'ANNOTATION_CREATED',
+                }) + annotation?.created
+              : intl.formatMessage({
+                  id: 'ANNOTATION_WITH_CREATION_DATE_UNKNOWN',
+                }),
+          }),
+        );
+        return [...memo, ...newAssets];
+      },
+      [],
+    );
+    const assets = uniqBy(allAssets, asset => asset.src);
+    return {
+      assets,
+      featuredAssetGuid: individualData?.featuredAssetGuid,
+      guid: individualData?.guid,
+    };
+  }, [individualData]);
+
+  const metadata = useMemo(() => {
+    if (!individualData || !fieldSchemas) return null;
+    return fieldSchemas.map(schema => {
+      const augmentedSchema = {
+        ...schema,
+        value: schema.getValue(schema, individualData),
       };
-    },
-    [individualData],
-  );
 
-  const metadata = useMemo(
-    () => {
-      if (!individualData || !fieldSchemas) return null;
-      return fieldSchemas.map(schema => {
-        const augmentedSchema = {
-          ...schema,
-          value: schema.getValue(schema, individualData),
-        };
+      if (schema.name === 'firstName') {
+        augmentedSchema.nameGuid = deriveIndividualNameGuid(
+          individualData,
+          'FirstName',
+        );
+      } else if (schema.name === 'adoptionName') {
+        augmentedSchema.nameGuid = deriveIndividualNameGuid(
+          individualData,
+          'AdoptionName',
+        );
+      }
 
-        if (schema.name === 'firstName') {
-          augmentedSchema.nameGuid = deriveIndividualNameGuid(
-            individualData,
-            'FirstName',
-          );
-        } else if (schema.name === 'adoptionName') {
-          augmentedSchema.nameGuid = deriveIndividualNameGuid(
-            individualData,
-            'AdoptionName',
-          );
-        }
-
-        return augmentedSchema;
-      });
-    },
-    [individualData, fieldSchemas],
-  );
+      return augmentedSchema;
+    });
+  }, [individualData, fieldSchemas]);
   const encounters = get(individualData, 'encounters', []);
 
-  const assetSources = useMemo(
-    () => {
-      const combinedAssets = reduce(
-        encounters,
-        (memo, encounter) => {
-          const annotations = get(encounter, 'annotations', []);
-          const modifiedAssets = map(
-            annotations,
-            (annotation, index) => ({
-              number: index,
-              guid: annotation?.asset_guid,
-              src: annotation?.asset_src,
-              alt: annotation?.created
-                ? 'Annotation created: ' + annotation?.created
-                : 'Annotation image with no creation date',
-            }),
-          );
-          return [...memo, ...modifiedAssets];
-        },
-        [],
-      );
-      const uniqueModifiedAssets = uniqBy(
-        combinedAssets,
-        asset => asset.src,
-      );
-      const firstNineAssets = slice(uniqueModifiedAssets, 0, 9);
-      return firstNineAssets;
-    },
-    [individualData],
-  );
+  const assetSources = useMemo(() => {
+    const combinedAssets = reduce(
+      encounters,
+      (memo, encounter) => {
+        const annotations = get(encounter, 'annotations', []);
+        const modifiedAssets = map(
+          annotations,
+          (annotation, index) => ({
+            number: index,
+            guid: annotation?.asset_guid,
+            src: annotation?.asset_src,
+            alt: annotation?.created
+              ? 'Annotation created: ' + annotation?.created
+              : 'Annotation image with no creation date',
+          }),
+        );
+        return [...memo, ...modifiedAssets];
+      },
+      [],
+    );
+    const uniqueModifiedAssets = uniqBy(
+      combinedAssets,
+      asset => asset.src,
+    );
+    const firstNineAssets = slice(uniqueModifiedAssets, 0, 9);
+    return firstNineAssets;
+  }, [individualData]);
 
   const [firstName, adoptionName] = useMemo(
     () => [
@@ -223,10 +211,11 @@ export default function Individual() {
         open={Boolean(deleteEncounterId)}
         onClose={() => setDeleteEncounterId(null)}
         onDelete={async () => {
-          const deleteSuccessful = await removeEncounterFromIndividual(
-            id,
-            deleteEncounterId,
-          );
+          const deleteSuccessful =
+            await removeEncounterFromIndividual(
+              id,
+              deleteEncounterId,
+            );
           if (deleteSuccessful) {
             setDeleteEncounterId(null);
             refreshIndividualData();

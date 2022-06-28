@@ -34,7 +34,7 @@ const stepMap = {
   },
 };
 
-const ArrowButton = function({ onClick, disabled, Icon }) {
+const ArrowButton = function ({ onClick, disabled, Icon }) {
   const theme = useTheme();
 
   return (
@@ -53,7 +53,7 @@ const ArrowButton = function({ onClick, disabled, Icon }) {
   );
 };
 
-const StepButton = function({
+const StepButton = function ({
   translationId,
   step,
   setStep,

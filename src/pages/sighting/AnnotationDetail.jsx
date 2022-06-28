@@ -32,14 +32,11 @@ export default function AnnotationDetail({
   const [addingTag, setAddingTag] = useState(false);
 
   const { data: keywordOptions } = useKeywords();
-  const filteredKeywordOptions = useMemo(
-    () => {
-      const annotationKeywords = get(annotation, 'keywords');
-      if (!annotationKeywords || !keywordOptions) return [];
-      return differenceBy(keywordOptions, annotationKeywords, 'guid');
-    },
-    [get(annotation, 'guid'), keywordOptions],
-  );
+  const filteredKeywordOptions = useMemo(() => {
+    const annotationKeywords = get(annotation, 'keywords');
+    if (!annotationKeywords || !keywordOptions) return [];
+    return differenceBy(keywordOptions, annotationKeywords, 'guid');
+  }, [get(annotation, 'guid'), keywordOptions]);
 
   /* Feels weird but it's what material wants: https://material-ui.com/components/autocomplete/#controllable-states */
   const [newTagSelectValue, setNewTagSelectValue] = useState(null);

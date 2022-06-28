@@ -50,7 +50,7 @@ const variantMap = {
   },
 };
 
-const Core = function({
+const Core = function ({
   variant,
   labelId,
   disabled = false,

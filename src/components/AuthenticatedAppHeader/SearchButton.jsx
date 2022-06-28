@@ -97,9 +97,7 @@ export default function SearchButton({
                   style={{ color: theme.palette.text.primary }}
                 />
               </InputAdornment>
-            ) : (
-              undefined
-            ),
+            ) : undefined,
             disableUnderline: true,
             autoFocus: true,
             placeholder: intl.formatMessage({

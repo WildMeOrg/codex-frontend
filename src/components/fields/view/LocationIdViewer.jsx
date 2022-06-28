@@ -24,17 +24,14 @@ export default function LocationIdViewer({
   variant = 'body2',
 }) {
   const intl = useIntl();
-  let locationIdLabel = useMemo(
-    () => {
-      const locationObject = findLocationObject(value, choices);
-      return get(
-        locationObject,
-        'name',
-        intl.formatMessage({ id: 'REGION_LABEL_NOT_FOUND' }),
-      );
-    },
-    [value, get(choices, 'length', 0)],
-  );
+  let locationIdLabel = useMemo(() => {
+    const locationObject = findLocationObject(value, choices);
+    return get(
+      locationObject,
+      'name',
+      intl.formatMessage({ id: 'REGION_LABEL_NOT_FOUND' }),
+    );
+  }, [value, get(choices, 'length', 0)]);
 
   if (value === null || value === undefined) {
     locationIdLabel = intl.formatMessage({ id: 'REGION_NOT_SET' });

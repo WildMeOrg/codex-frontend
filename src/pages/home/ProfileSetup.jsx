@@ -77,9 +77,7 @@ export default function ProfileSetup({ userData }) {
               helperText={
                 noNameError ? (
                   <FormattedMessage id="FULL_NAME_IS_REQUIRED" />
-                ) : (
-                  undefined
-                )
+                ) : undefined
               }
             />
             <Text

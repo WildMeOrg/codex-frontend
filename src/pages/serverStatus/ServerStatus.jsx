@@ -61,10 +61,8 @@ const categoryData = {
 export default function ServerStatus() {
   const theme = useTheme();
   const isXs = useMediaQuery(theme.breakpoints.only('xs'));
-  const {
-    data: siteInfo,
-    loading: siteInfoLoading,
-  } = useGetSiteInfo();
+  const { data: siteInfo, loading: siteInfoLoading } =
+    useGetSiteInfo();
 
   useDocumentTitle('SERVER_STATUS');
 
