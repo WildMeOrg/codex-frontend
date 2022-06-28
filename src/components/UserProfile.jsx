@@ -28,33 +28,25 @@ export default function UserProfile({
   someoneElse,
   noCollaborate = false,
 }) {
-  const {
-    data: sightingsData,
-    loading: sightingsLoading,
-  } = useGetUserSightings(userId);
+  const { data: sightingsData, loading: sightingsLoading } =
+    useGetUserSightings(userId);
   const intl = useIntl();
   const [editingProfile, setEditingProfile] = useState(false);
   const metadataSchemas = useUserMetadataSchemas(userId);
-  const {
-    data: agsData,
-    loading: agsLoading,
-  } = useGetUserUnprocessedAssetGroupSightings(userId);
+  const { data: agsData, loading: agsLoading } =
+    useGetUserUnprocessedAssetGroupSightings(userId);
 
-  const metadata = useMemo(
-    () => {
-      if (!userData || !metadataSchemas) return [];
-      return metadataSchemas
-        .filter(
-          schema =>
-            schema?.getValue(schema, userData) || !someoneElse,
-        )
-        .map(schema => ({
-          ...schema,
-          value: schema?.getValue(schema, userData),
-        }));
-    },
-    [userData, metadataSchemas],
-  );
+  const metadata = useMemo(() => {
+    if (!userData || !metadataSchemas) return [];
+    return metadataSchemas
+      .filter(
+        schema => schema?.getValue(schema, userData) || !someoneElse,
+      )
+      .map(schema => ({
+        ...schema,
+        value: schema?.getValue(schema, userData),
+      }));
+  }, [userData, metadataSchemas]);
 
   const imageSrc = get(userData, ['profile_fileupload', 'src']);
   const imageGuid = get(userData, ['profile_fileupload', 'guid']);
@@ -100,9 +92,7 @@ export default function UserProfile({
           />
         }
         renderOptions={
-          noCollaborate ? (
-            undefined
-          ) : (
+          noCollaborate ? undefined : (
             <RequestCollaborationButton otherUserId={userId} />
           )
         }

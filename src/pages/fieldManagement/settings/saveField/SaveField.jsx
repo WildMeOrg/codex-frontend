@@ -56,49 +56,46 @@ export default function SaveField() {
   const disableForm =
     loading || lookupFieldError || fetchSiteSettingsError;
 
-  useEffect(
-    () => {
-      if (!data) return undefined;
-      if (newField) {
-        setFormData({
-          id: uuid(),
-          timeCreated: Date.now(),
-          required: false,
-          name: 'field_name',
-          type: fieldTypeInfo.string.backendType,
-          default: fieldTypeInfo.string.initialDefaultValue,
-          multiple: fieldTypeInfo.string.backendMultiple,
-          schema: {
-            displayType: fieldTypeInfo.string.value,
-            label: 'Field label',
-            description: 'Field description',
-            category: null,
-          },
-        });
-      } else {
-        const backendFieldType = get(customFieldTypes, [
-          type,
-          'backendPath',
-        ]);
-        const fieldsInType = get(
-          data,
-          [backendFieldType, 'value', 'definitions'],
-          [],
-        );
-        const matchingField = fieldsInType.find(
-          field => field.id === id,
-        );
+  useEffect(() => {
+    if (!data) return undefined;
+    if (newField) {
+      setFormData({
+        id: uuid(),
+        timeCreated: Date.now(),
+        required: false,
+        name: 'field_name',
+        type: fieldTypeInfo.string.backendType,
+        default: fieldTypeInfo.string.initialDefaultValue,
+        multiple: fieldTypeInfo.string.backendMultiple,
+        schema: {
+          displayType: fieldTypeInfo.string.value,
+          label: 'Field label',
+          description: 'Field description',
+          category: null,
+        },
+      });
+    } else {
+      const backendFieldType = get(customFieldTypes, [
+        type,
+        'backendPath',
+      ]);
+      const fieldsInType = get(
+        data,
+        [backendFieldType, 'value', 'definitions'],
+        [],
+      );
+      const matchingField = fieldsInType.find(
+        field => field.id === id,
+      );
 
-        if (matchingField) {
-          setFormData(matchingField);
-        } else {
-          setLookupFieldError(true);
-        }
+      if (matchingField) {
+        setFormData(matchingField);
+      } else {
+        setLookupFieldError(true);
       }
-      return undefined;
-    },
-    [data],
-  );
+    }
+    return undefined;
+  }, [data]);
 
   const fieldSchema = formData
     ? createCustomFieldSchema(formData)

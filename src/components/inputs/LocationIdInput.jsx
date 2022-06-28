@@ -27,7 +27,7 @@ function getNewLeaf() {
   };
 }
 
-const Core = function({ children, required, width, style = {} }) {
+const Core = function ({ children, required, width, style = {} }) {
   return (
     <FormControl
       required={required}

@@ -5,7 +5,7 @@ import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import TextField from '@material-ui/core/TextField';
 
-const Core = function({ children, required, width, style = {} }) {
+const Core = function ({ children, required, width, style = {} }) {
   return (
     <FormControl
       required={required}
@@ -16,7 +16,7 @@ const Core = function({ children, required, width, style = {} }) {
   );
 };
 
-const TextInput = function(props) {
+const TextInput = function (props) {
   const {
     schema,
     required,

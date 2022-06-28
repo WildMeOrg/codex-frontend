@@ -62,25 +62,22 @@ export default function useFetch({
 
   const error = formatError(result);
   const statusCodeFromError = result?.error?.response?.status;
-  useEffect(
-    () => {
-      if (result?.status === 'loading') {
-        setDisplayedLoading(true);
-      } else {
-        if (statusCode !== statusCodeFromError)
-          setStatusCode(statusCodeFromError);
-        if (displayedError !== error) setDisplayedError(error);
-        setDisplayedLoading(false);
-      }
-    },
-    [
-      error,
-      result?.status,
-      statusCodeFromError,
-      statusCode,
-      displayedError,
-    ],
-  );
+  useEffect(() => {
+    if (result?.status === 'loading') {
+      setDisplayedLoading(true);
+    } else {
+      if (statusCode !== statusCodeFromError)
+        setStatusCode(statusCodeFromError);
+      if (displayedError !== error) setDisplayedError(error);
+      setDisplayedLoading(false);
+    }
+  }, [
+    error,
+    result?.status,
+    statusCodeFromError,
+    statusCode,
+    displayedError,
+  ]);
 
   return {
     ...result,

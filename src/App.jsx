@@ -34,7 +34,7 @@ const messageMap = {
 
 const queryClient = new QueryClient();
 
-const ScrollToTop = function() {
+const ScrollToTop = function () {
   const { pathname } = useLocation();
 
   useEffect(() => window.scrollTo(0, 0), [pathname]);

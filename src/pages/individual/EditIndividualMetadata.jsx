@@ -73,23 +73,17 @@ export default function EditIndividualMetadata({
   const showErrorAlert =
     patchIndividualError || formErrors.length > 0;
 
-  const handleClose = useCallback(
-    () => {
-      setDefaultFieldValues(
-        getInitialFormValues(
-          getDefaultFieldMetadata(metadata),
-          'name',
-        ),
-      );
-      setCustomFieldValues(
-        getInitialFormValues(getCustomFieldMetadata(metadata), 'id'),
-      );
-      setPatchIndividualError(null);
-      setFormErrors([]);
-      onClose();
-    },
-    [metadata, setPatchIndividualError, onClose],
-  );
+  const handleClose = useCallback(() => {
+    setDefaultFieldValues(
+      getInitialFormValues(getDefaultFieldMetadata(metadata), 'name'),
+    );
+    setCustomFieldValues(
+      getInitialFormValues(getCustomFieldMetadata(metadata), 'id'),
+    );
+    setPatchIndividualError(null);
+    setFormErrors([]);
+    onClose();
+  }, [metadata, setPatchIndividualError, onClose]);
 
   return (
     <StandardDialog

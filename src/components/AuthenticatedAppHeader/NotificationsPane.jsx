@@ -97,9 +97,8 @@ export default function NotificationsPane({
                 ? deriveButtonPath(mergedIndividualGuid)
                 : defaultButtonPath;
               const createdDate = notification?.created;
-              const timeSince = calculatePrettyTimeElapsedSince(
-                createdDate,
-              );
+              const timeSince =
+                calculatePrettyTimeElapsedSince(createdDate);
 
               return (
                 <React.Fragment key={notification.guid}>

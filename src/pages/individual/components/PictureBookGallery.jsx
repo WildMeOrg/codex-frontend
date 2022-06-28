@@ -64,85 +64,79 @@ export default function PictureBookGallery({
   const [displayImages, setDisplayImages] = useState([]);
   const [galleryRatio, setGalleryRatio] = useState();
 
-  useEffect(
-    () => {
-      try {
-        if (isLoading) {
-          if (images.length === 0) {
+  useEffect(() => {
+    try {
+      if (isLoading) {
+        if (images.length === 0) {
+          setIsLoading(false);
+          if (onLoad) onLoad();
+          return;
+        }
+
+        const prepareGallery = async () => {
+          // Preload Images
+          let loadedImages = [];
+          if (images.length <= 3) {
+            loadedImages = await preloadImages(images);
+          } else {
+            // If an image does not load, replace it with the next image
+            // in the array
+            let startingIndex = 0;
+            let numImagesToLoad = 3;
+            let numRemainingImagesToTry = images.length;
+
+            while (
+              loadedImages.length < 3 &&
+              numRemainingImagesToTry > 0
+            ) {
+              const imagesToTry = images.slice(
+                startingIndex,
+                startingIndex + numImagesToLoad,
+              );
+
+              // eslint-disable-next-line no-await-in-loop
+              const results = await preloadImages(imagesToTry);
+              loadedImages.push(...results);
+
+              startingIndex += numImagesToLoad;
+              numRemainingImagesToTry -= numImagesToLoad;
+              numImagesToLoad = Math.min(
+                3 - loadedImages.length,
+                numRemainingImagesToTry,
+              );
+            }
+          }
+
+          if (loadedImages.length === 0) {
             setIsLoading(false);
             if (onLoad) onLoad();
             return;
           }
 
-          const prepareGallery = async () => {
-            // Preload Images
-            let loadedImages = [];
-            if (images.length <= 3) {
-              loadedImages = await preloadImages(images);
-            } else {
-              // If an image does not load, replace it with the next image
-              // in the array
-              let startingIndex = 0;
-              let numImagesToLoad = 3;
-              let numRemainingImagesToTry = images.length;
+          // Determine Gallery Aspect Ratio
+          const ratio = getGalleryRatio(loadedImages);
 
-              while (
-                loadedImages.length < 3 &&
-                numRemainingImagesToTry > 0
-              ) {
-                const imagesToTry = images.slice(
-                  startingIndex,
-                  startingIndex + numImagesToLoad,
-                );
-
-                // eslint-disable-next-line no-await-in-loop
-                const results = await preloadImages(imagesToTry);
-                loadedImages.push(...results);
-
-                startingIndex += numImagesToLoad;
-                numRemainingImagesToTry -= numImagesToLoad;
-                numImagesToLoad = Math.min(
-                  3 - loadedImages.length,
-                  numRemainingImagesToTry,
-                );
-              }
-            }
-
-            if (loadedImages.length === 0) {
-              setIsLoading(false);
-              if (onLoad) onLoad();
-              return;
-            }
-
-            // Determine Gallery Aspect Ratio
-            const ratio = getGalleryRatio(loadedImages);
-
-            setDisplayImages(loadedImages.map(({ src }) => src));
-            setGalleryRatio(ratio);
-          };
-          prepareGallery();
-        }
-      } catch (err) {
-        console.error('Error loading picture book gallery');
-        console.error(err);
-        if (isLoading) {
-          setIsLoading(false);
-          if (onLoad) onLoad();
-        }
+          setDisplayImages(loadedImages.map(({ src }) => src));
+          setGalleryRatio(ratio);
+        };
+        prepareGallery();
       }
-    },
-    [images, isLoading],
-  );
-
-  useEffect(
-    () => {
-      if (isLoading && galleryRatio) {
+    } catch (err) {
+      console.error('Error loading picture book gallery');
+      console.error(err);
+      if (isLoading) {
         setIsLoading(false);
         if (onLoad) onLoad();
       }
-    },
-    [isLoading, galleryRatio],
-  );
+    }
+  }, [images, isLoading]);
+
+  useEffect(() => {
+    if (isLoading && galleryRatio) {
+      setIsLoading(false);
+      if (onLoad) onLoad();
+    }
+  }, [isLoading, galleryRatio]);
 
   if (
     images.length === 0 ||

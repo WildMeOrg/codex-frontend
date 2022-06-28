@@ -55,16 +55,12 @@ export default function SiteSettings() {
   useDocumentTitle('FRONT_PAGE');
 
   const [currentValues, setCurrentValues] = useState(null);
-  const [splashVideoPostData, setSplashVideoPostData] = useState(
-    null,
-  );
-  const [splashImagePostData, setSplashImagePostData] = useState(
-    null,
-  );
-  const [
-    customCardImagePostData,
-    setCustomCardImagePostData,
-  ] = useState(null);
+  const [splashVideoPostData, setSplashVideoPostData] =
+    useState(null);
+  const [splashImagePostData, setSplashImagePostData] =
+    useState(null);
+  const [customCardImagePostData, setCustomCardImagePostData] =
+    useState(null);
 
   const edmValues = newSettingFields.map(fieldKey =>
     get(siteSettings, ['data', fieldKey, 'value']),

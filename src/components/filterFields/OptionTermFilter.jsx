@@ -10,7 +10,7 @@ import FormControl from '@material-ui/core/FormControl';
 
 import Text from '../Text';
 
-const OptionTermFilter = function(props) {
+const OptionTermFilter = function (props) {
   const {
     label,
     labelId,
@@ -103,9 +103,7 @@ const OptionTermFilter = function(props) {
               <Text component="span" variant="caption">
                 {option.description}
               </Text>
-            ) : (
-              undefined
-            )}
+            ) : undefined}
           </MenuItem>
         ))}
       </Select>

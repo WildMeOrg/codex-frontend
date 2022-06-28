@@ -24,10 +24,8 @@ export default function ManuallyAssignModal({
     clearSuccess,
   } = useAssignEncountersToIndividual();
 
-  const [
-    selectedIndividualGuid,
-    setSelectedIndividualGuid,
-  ] = useState(null);
+  const [selectedIndividualGuid, setSelectedIndividualGuid] =
+    useState(null);
 
   const onCloseDialog = () => {
     setSelectedIndividualGuid(null);

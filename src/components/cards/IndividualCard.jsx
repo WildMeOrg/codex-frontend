@@ -20,12 +20,9 @@ export default function IndividualCard({
   const { data, loading, error } = useIndividual(individualGuid);
   const dataReady = !loading && !error;
 
-  useEffect(
-    () => {
-      if (data) setIndividualData(data);
-    },
-    [data],
-  );
+  useEffect(() => {
+    if (data) setIndividualData(data);
+  }, [data]);
 
   const firstName = deriveIndividualName(
     data,
@@ -78,10 +75,9 @@ export default function IndividualCard({
           )}
           {dataReady && showSex && (
             <Text style={{ marginTop: 16 }}>
-              <Text
-                variant="body2"
-                component="span"
-              >{`${intl.formatMessage({ id: 'SEX' })}: `}</Text>
+              <Text variant="body2" component="span">
+                {`${intl.formatMessage({ id: 'SEX' })}: `}
+              </Text>
               <Text
                 variant="body2"
                 component="span"

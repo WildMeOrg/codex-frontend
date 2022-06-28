@@ -7,37 +7,31 @@ import useIdConfigSchemas from '../../../models/identification/useIdConfigSchema
 import buildMatchingSetQuery from './buildMatchingSetQuery';
 
 export default function CustomMatchingSetForm({
-  idConfig, // use this to get matching set size!
+  // idConfig, // use this to get matching set size!
   setIdConfig,
 }) {
   const idConfigSchemas = useIdConfigSchemas();
 
-  const [algorithmSchema, regionSchema] = useMemo(
-    () => {
-      if (!idConfigSchemas) return [null, null];
-      const algorithmsObject = idConfigSchemas.find(
-        schema => schema.name === 'algorithms',
-      );
-      const regionsObject = idConfigSchemas.find(
-        schema => schema.name === 'locationId',
-      );
-      return [algorithmsObject, regionsObject];
-    },
-    [idConfigSchemas],
-  );
+  const [algorithmSchema, regionSchema] = useMemo(() => {
+    if (!idConfigSchemas) return [null, null];
+    const algorithmsObject = idConfigSchemas.find(
+      schema => schema.name === 'algorithms',
+    );
+    const regionsObject = idConfigSchemas.find(
+      schema => schema.name === 'locationId',
+    );
+    return [algorithmsObject, regionsObject];
+  }, [idConfigSchemas]);
 
   const [algorithms, setAlgorithms] = useState([]);
   const [region, setRegion] = useState('');
 
-  useEffect(
-    () => {
-      setIdConfig({
-        algorithms,
-        matching_set: buildMatchingSetQuery(regionSchema, region),
-      });
-    },
-    [algorithms?.length, region],
-  );
+  useEffect(() => {
+    setIdConfig({
+      algorithms,
+      matching_set: buildMatchingSetQuery(regionSchema, region),
+    });
+  }, [algorithms?.length, region]);
 
   return (
     <>

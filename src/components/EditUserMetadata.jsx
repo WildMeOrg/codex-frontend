@@ -45,12 +45,9 @@ export default function EditUserMetadata({
   const [passwordRequired, setPasswordRequired] = useState(false);
   const [password, setPassword] = useState('');
 
-  useEffect(
-    () => {
-      setFieldValues(getInitialFormValues(metadata));
-    },
-    [metadata],
-  );
+  useEffect(() => {
+    setFieldValues(getInitialFormValues(metadata));
+  }, [metadata]);
 
   return (
     <StandardDialog

@@ -12,13 +12,10 @@ export default function Marker({
   children,
 }) {
   const [showInfo, setShowInfo] = useState(false);
-  useEffect(
-    () => {
-      const thisMarkersSightingId = get(entry, 'guid');
-      setShowInfo(currentMarkerToShow === thisMarkersSightingId);
-    },
-    [currentMarkerToShow],
-  );
+  useEffect(() => {
+    const thisMarkersSightingId = get(entry, 'guid');
+    setShowInfo(currentMarkerToShow === thisMarkersSightingId);
+  }, [currentMarkerToShow]);
   return (
     <div>
       {showInfo ? (

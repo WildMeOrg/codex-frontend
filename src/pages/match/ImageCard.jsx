@@ -18,13 +18,12 @@ export default function ImageCard({ titleId, annotation }) {
   } = useSiteSettings();
 
   const regionChoices = useMemo(
-    () => {
-      return get(
+    () =>
+      get(
         siteSettings,
         ['site.custom.regions', 'value', 'locationID'],
         [],
-      );
-    },
+      ),
     [siteSettingsVersion, siteSettings],
   );
 

@@ -15,30 +15,27 @@ export default function SadScreen({
 }) {
   const theme = useTheme();
 
-  const errorSchema = useMemo(
-    () => {
-      let displayVariant = variant || errorTypes.genericError;
-      if (statusCode === 404) {
-        displayVariant = errorTypes.notFound;
-      } else if (statusCode === 403) {
-        displayVariant = errorTypes.noPermissions;
-      } else if (statusCode === 401) {
-        displayVariant = errorTypes.notAuthenticated;
-      }
-      const propOverrides = pickBy(rest, prop => prop !== undefined);
-      const variantSpecificOverrides = get(
-        variantOverrides,
-        displayVariant,
-        {},
-      );
-      return {
-        ...errorSchemas[displayVariant],
-        ...propOverrides,
-        ...variantSpecificOverrides,
-      };
-    },
-    [statusCode, variant],
-  );
+  const errorSchema = useMemo(() => {
+    let displayVariant = variant || errorTypes.genericError;
+    if (statusCode === 404) {
+      displayVariant = errorTypes.notFound;
+    } else if (statusCode === 403) {
+      displayVariant = errorTypes.noPermissions;
+    } else if (statusCode === 401) {
+      displayVariant = errorTypes.notAuthenticated;
+    }
+    const propOverrides = pickBy(rest, prop => prop !== undefined);
+    const variantSpecificOverrides = get(
+      variantOverrides,
+      displayVariant,
+      {},
+    );
+    return {
+      ...errorSchemas[displayVariant],
+      ...propOverrides,
+      ...variantSpecificOverrides,
+    };
+  }, [statusCode, variant]);
 
   return (
     <div

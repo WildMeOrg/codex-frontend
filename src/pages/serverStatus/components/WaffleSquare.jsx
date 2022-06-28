@@ -17,7 +17,7 @@ const LightTooltip = withStyles(theme => ({
   },
 }))(Tooltip);
 
-const WaffleSquare = function({
+const WaffleSquare = function ({
   job,
   size = 10,
   gap = '3px',

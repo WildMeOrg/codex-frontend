@@ -34,10 +34,8 @@ export default function Notifications() {
 
   useDocumentTitle('NOTIFICATIONS');
 
-  const {
-    data: notifications,
-    loading: notificationsLoading,
-  } = useNotifications(true);
+  const { data: notifications, loading: notificationsLoading } =
+    useNotifications(true);
 
   const { markRead } = usePatchNotification();
 
@@ -100,9 +98,8 @@ export default function Notifications() {
                   formattedDeadline,
                 } = getNotificationProps(notification);
                 const createdDate = notification?.created;
-                const timeSince = calculatePrettyTimeElapsedSince(
-                  createdDate,
-                );
+                const timeSince =
+                  calculatePrettyTimeElapsedSince(createdDate);
                 const notificationText = (
                   <Text
                     key={notification?.guid}
@@ -115,8 +112,7 @@ export default function Notifications() {
                   >
                     {intl.formatMessage(
                       {
-                        id:
-                          currentNotificationSchema?.notificationMessage,
+                        id: currentNotificationSchema?.notificationMessage,
                       },
                       {
                         userName: (

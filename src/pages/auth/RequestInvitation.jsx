@@ -5,7 +5,6 @@ import useDocumentTitle from '../../hooks/useDocumentTitle';
 import TextInput from '../../components/inputs/TextInput';
 import ButtonLink from '../../components/ButtonLink';
 import Button from '../../components/Button';
-import Text from '../../components/Text';
 import SimpleFormPage from '../../components/SimpleFormPage';
 import BaoLetter from '../../components/svg/BaoLetter';
 
@@ -15,7 +14,6 @@ export default function RequestInvitation() {
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const [requestSent, setRequestSent] = useState(false);
-  const [error, setError] = useState('');
 
   useDocumentTitle('REQUEST_INVITE');
 
@@ -96,15 +94,6 @@ export default function RequestInvitation() {
             id="SEND_REQUEST"
           />
         </Grid>
-        {error && (
-          <Text
-            variant="caption"
-            color="error"
-            style={{ paddingLeft: 8 }}
-          >
-            {error}
-          </Text>
-        )}
       </Grid>
     </SimpleFormPage>
   );

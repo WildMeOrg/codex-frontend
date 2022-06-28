@@ -17,9 +17,8 @@ export default function RelationshipRoleAutocomplete({
   individualId,
 }) {
   const intl = useIntl();
-  const { data: individualData, loading } = useIndividual(
-    individualId,
-  );
+  const { data: individualData, loading } =
+    useIndividual(individualId);
   const individualFirstName = deriveIndividualName(
     individualData,
     'FirstName',

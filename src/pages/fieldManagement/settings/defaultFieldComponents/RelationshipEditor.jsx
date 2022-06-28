@@ -17,7 +17,7 @@ function createType(relationships) {
 }
 
 function validateRelationships(relationships) {
-  let errors = [];
+  const errors = [];
   const types = Object.values(relationships);
   const typeLabels = types.map(t => t?.label);
   const emptyTypeLabels = typeLabels.filter(label => !label);

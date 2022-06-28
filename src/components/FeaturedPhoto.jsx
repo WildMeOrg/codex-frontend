@@ -19,10 +19,8 @@ export default function FeaturedPhoto({
   const intl = useIntl();
   const theme = useTheme();
   const [hovered, setHovered] = useState(false);
-  const [
-    selectingFeaturedPhoto,
-    setSelectingFeaturedPhoto,
-  ] = useState(false);
+  const [selectingFeaturedPhoto, setSelectingFeaturedPhoto] =
+    useState(false);
   const assets = get(data, 'assets', []);
   const editable = assets.length > 1;
   const featuredPhotoGuid = get(data, ['featuredAssetGuid']);
