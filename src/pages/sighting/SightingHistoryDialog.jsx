@@ -171,7 +171,9 @@ export default function SightingHistoryDialog({ open, onClose }) {
                   <ListItemText
                     primary={
                       <span>
-                        <Link>{change.user}</Link>
+                        <Link href="temporary.url">
+                          {change.user}
+                        </Link>
                         <span>
                           {` at ${format(change.time, 'HH:mm')}`}
                         </span>

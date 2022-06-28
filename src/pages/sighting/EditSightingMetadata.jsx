@@ -68,7 +68,7 @@ export default function EditSightingMetadata({
     setCustomFieldValues(
       getInitialFormValues(customFieldMetadata, 'id'),
     );
-  }, [get(metadata, 'length')]);
+  }, [metadata, metadata?.length]);
 
   function handleClose() {
     clearError();
