@@ -114,7 +114,7 @@ export default function GeneralSettings() {
   );
   useEffect(() => {
     setCurrentValues(zipObject(allSettingsFields, edmValues));
-  }, edmValues);
+  }, [edmValues]);
 
   const loading = assetPostLoading || formPostLoading;
   const error = putSiteSettingsError || settingsAssetPostError;

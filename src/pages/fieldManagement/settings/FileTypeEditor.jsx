@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { FormattedMessage } from 'react-intl';
 
 import FormControl from '@material-ui/core/FormControl';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -37,13 +36,10 @@ export default function FileTypeEditor({
           size="small"
           style={{ marginTop: 16 }}
           onClick={() => setModalOpen(true)}
+          id="X_FILETYPES"
+          values={{ x: filetypes.length }}
           {...rest}
-        >
-          <FormattedMessage
-            id="X_FILETYPES"
-            values={{ x: filetypes.length }}
-          />
-        </Button>
+        />
       </div>
       <StandardDialog
         open={modalOpen}
@@ -108,15 +104,12 @@ export default function FileTypeEditor({
               onChange([...filetypes, '']);
             }}
             size="small"
-          >
-            <FormattedMessage
-              id={
-                filetypes.length > 0
-                  ? 'ADD_ANOTHER_FILETYPE'
-                  : 'ADD_FILETYPE'
-              }
-            />
-          </Button>
+            id={
+              filetypes.length > 0
+                ? 'ADD_ANOTHER_FILETYPE'
+                : 'ADD_FILETYPE'
+            }
+          />
         </DialogContent>
         <DialogActions style={{ padding: '0px 24px 24px 24px' }}>
           <Button
@@ -124,9 +117,8 @@ export default function FileTypeEditor({
             onClick={() => {
               onClose();
             }}
-          >
-            <FormattedMessage id="FINISH" />
-          </Button>
+            id="FINISH"
+          />
         </DialogActions>
       </StandardDialog>
     </div>
