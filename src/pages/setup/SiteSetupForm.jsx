@@ -44,7 +44,7 @@ export default function SiteSettings({ primaryButtonId }) {
   );
   useEffect(() => {
     setCurrentValues(zipObject(newSettingFields, edmValues));
-  }, edmValues);
+  }, [edmValues]);
 
   const customFieldCategories = get(
     newSiteSettings,

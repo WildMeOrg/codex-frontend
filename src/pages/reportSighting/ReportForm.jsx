@@ -81,7 +81,10 @@ export default function ReportForm({
         customEncounterCategories: _customEncounterCategories,
         customSightingCategories: _customSightingCategories,
       };
+      /* eslint-disable react-hooks/exhaustive-deps */
+      /* siteSettingsVersion is used implicitly to ensure react catches updates to siteSettingsData */
     }, [siteSettingsData, siteSettingsVersion]);
+  /* eslint-enable react-hooks/exhaustive-deps */
 
   const sightingFieldSchemas = useSightingFieldSchemas();
 
@@ -133,7 +136,14 @@ export default function ReportForm({
     setCustomSightingFormValues(initialCustomSightingFormValues);
     setEncounterFormValues(initialDefaultEncounterFormValues);
     setCustomEncounterFormValues(initialCustomEncounterFormValues);
-  }, [sightingFieldSchemas, encounterFieldSchemas]);
+  }, [
+    customEncounterSchemas,
+    customSightingSchemas,
+    defaultEncounterSchemas,
+    defaultSightingSchemas,
+    sightingFieldSchemas,
+    encounterFieldSchemas,
+  ]);
 
   // const locationSuggestion = useMemo(
   //   () => getLocationSuggestion(exifData),
