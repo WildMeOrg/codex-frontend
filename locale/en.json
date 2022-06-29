@@ -1123,5 +1123,9 @@
   "SIGHTING_DELETE_VULNERABLE_INDIVIDUAL_MESSAGE": "Deleting this sighting would result in assigned individuals being deleted. Are you sure you want to continue?",
   "REQUEST_REQUIRES_ADDITIONAL_CONFIRMATION": "Request requires additional confirmation",
   "COLLABORATION_DENIED_TITLE": "Collaboration denied",
-  "COLLABORATION_DENIED_BRIEF": "{userName} denied your collaboration request"
+  "COLLABORATION_DENIED_BRIEF": "{userName} denied your collaboration request",
+  "PAGINATION_FIRST_PAGE": "first page",
+  "PAGINATION_LAST_PAGE": "last page",
+  "PAGINATION_PREVIOUS_PAGE": "previous page",
+  "PAGINATION_NEXT_PAGE": "next page"
 }

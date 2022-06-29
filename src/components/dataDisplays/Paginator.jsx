@@ -1,4 +1,5 @@
 import React from 'react';
+import { useIntl } from 'react-intl';
 import { isFinite } from 'lodash-es';
 
 import IconButton from '@material-ui/core/IconButton';
@@ -21,6 +22,7 @@ export default function Paginator({
   setSearchParams = Function.prototype,
   count,
 }) {
+  const intl = useIntl();
   const { limit, offset } = searchParams || {};
 
   if (!isValidLimit(limit) || !isValidOffset(offset)) return null;
@@ -57,28 +59,36 @@ export default function Paginator({
       <IconButton
         onClick={handleFirstPageButtonClick}
         disabled={page === 0}
-        aria-label="first page"
+        aria-label={intl.formatMessage({
+          id: 'PAGINATION_FIRST_PAGE',
+        })}
       >
         <FirstPageIcon />
       </IconButton>
       <IconButton
         onClick={handleBackButtonClick}
         disabled={page === 0}
-        aria-label="previous page"
+        aria-label={intl.formatMessage({
+          id: 'PAGINATION_PREVIOUS_PAGE',
+        })}
       >
         <KeyboardArrowLeft />
       </IconButton>
       <IconButton
         onClick={handleNextButtonClick}
         disabled={page >= pageCount}
-        aria-label="next page"
+        aria-label={intl.formatMessage({
+          id: 'PAGINATION_NEXT_PAGE',
+        })}
       >
         <KeyboardArrowRight />
       </IconButton>
       <IconButton
         onClick={handleLastPageButtonClick}
         disabled={page >= pageCount}
-        aria-label="last page"
+        aria-label={intl.formatMessage({
+          id: 'PAGINATION_LAST_PAGE',
+        })}
       >
         <LastPageIcon />
       </IconButton>
