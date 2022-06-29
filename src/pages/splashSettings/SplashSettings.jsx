@@ -62,12 +62,12 @@ export default function SplashSettings() {
   const [customCardImagePostData, setCustomCardImagePostData] =
     useState(null);
 
-  const edmValues = newSettingFields.map(fieldKey =>
-    get(siteSettings, ['data', fieldKey, 'value']),
-  );
   useEffect(() => {
+    const edmValues = newSettingFields.map(fieldKey =>
+      get(siteSettings, ['data', fieldKey, 'value']),
+    );
     setCurrentValues(zipObject(newSettingFields, edmValues));
-  }, [edmValues]);
+  }, [newSettingFields]);
 
   const customFieldCategories = get(
     siteSettings,

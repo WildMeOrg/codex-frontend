@@ -109,12 +109,12 @@ export default function GeneralSettings() {
     );
   }, [twitterTestResults, twitterStatusCode]);
 
-  const edmValues = allSettingsFields.map(fieldKey =>
-    get(siteSettings, ['data', fieldKey, 'value']),
-  );
   useEffect(() => {
+    const edmValues = allSettingsFields.map(fieldKey =>
+      get(siteSettings, ['data', fieldKey, 'value']),
+    );
     setCurrentValues(zipObject(allSettingsFields, edmValues));
-  }, [edmValues]);
+  }, [allSettingsFields]);
 
   const loading = assetPostLoading || formPostLoading;
   const error = putSiteSettingsError || settingsAssetPostError;

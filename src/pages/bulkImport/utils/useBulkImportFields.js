@@ -86,7 +86,7 @@ export default function useBulkImportFields() {
   }, [intl, sightingFieldSchemas, regionOptions]);
 
   const encounterFieldSchemas = useEncounterFieldSchemas();
-  
+
   const flatfileEncounterFields = useMemo(() => {
     if (!encounterFieldSchemas || !regionOptions || !speciesOptions)
       return {};

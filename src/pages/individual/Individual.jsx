@@ -71,13 +71,16 @@ export default function Individual() {
           annotation => ({
             src: annotation?.asset_src,
             guid: annotation?.asset_guid,
-            altText: annotation?.created ? 
-            [intl.formatMessage({
-              id: 'ANNOTATION_CREATED',
-            }), annotation.created].join('') : 
-            intl.formatMessage({
-              id: 'ANNOTATION_WITH_CREATION_DATE_UNKNOWN',
-            }),
+            altText: annotation?.created
+              ? [
+                  intl.formatMessage({
+                    id: 'ANNOTATION_CREATED',
+                  }),
+                  annotation.created,
+                ].join('')
+              : intl.formatMessage({
+                  id: 'ANNOTATION_WITH_CREATION_DATE_UNKNOWN',
+                }),
           }),
         );
         return [...memo, ...newAssets];

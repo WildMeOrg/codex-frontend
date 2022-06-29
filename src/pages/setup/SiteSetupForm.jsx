@@ -39,12 +39,12 @@ export default function SiteSettings({ primaryButtonId }) {
 
   const [currentValues, setCurrentValues] = useState(null);
 
-  const edmValues = newSettingFields.map(fieldKey =>
-    get(newSiteSettings, ['data', fieldKey, 'value']),
-  );
   useEffect(() => {
+    const edmValues = newSettingFields.map(fieldKey =>
+      get(newSiteSettings, ['data', fieldKey, 'value']),
+    );
     setCurrentValues(zipObject(newSettingFields, edmValues));
-  }, [edmValues]);
+  }, [newSettingFields]);
 
   const customFieldCategories = get(
     newSiteSettings,
