@@ -36,7 +36,6 @@ export default function AnnotatedPhotograph({
         width,
       }}
     >
-      /* eslint-enable */
       {showSelectableIcon && (
         <IconButton
           aria-label="select annotation"
@@ -119,5 +118,6 @@ export default function AnnotatedPhotograph({
         })}
       </svg>
     </div>
+    /* eslint-enable */
   );
 }

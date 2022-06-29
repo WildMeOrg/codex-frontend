@@ -17,7 +17,7 @@ export default function useSightingFieldSchemas() {
     useSiteSettings();
 
   const encounterFieldSchemas = useMemo(() => {
-    if (loading || error) return null;
+    if (loading || error) return [];
 
     const species = get(data, ['site.species', 'value'], []);
     const speciesOptions = species.map(s => {
