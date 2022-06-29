@@ -84,24 +84,40 @@ export default function ReportForm({
     }, [siteSettingsData, siteSettingsVersion]);
 
   const sightingFieldSchemas = useSightingFieldSchemas();
-
-  const defaultSightingSchemas = sightingFieldSchemas.filter(
-    schema => !schema.customField,
-  );
-  const customSightingSchemas = sightingFieldSchemas.filter(
-    schema => schema.customField,
-  );
-
   const encounterFieldSchemas = useEncounterFieldSchemas();
-  const visibleEncounterFieldSchemas = encounterFieldSchemas.filter(
-    schema => !schema.hideOnBasicReport,
-  );
-  const defaultEncounterSchemas = visibleEncounterFieldSchemas.filter(
-    schema => !schema.customField,
-  );
-  const customEncounterSchemas = visibleEncounterFieldSchemas.filter(
-    schema => schema.customField,
-  );
+
+  const {
+    defaultSightingSchemas,
+    customSightingSchemas,
+    defaultEncounterSchemas,
+    customEncounterSchemas,
+  } = useMemo(() => {
+    const _defaultSightingSchemas = sightingFieldSchemas.filter(
+      schema => !schema.customField,
+    );
+    const _customSightingSchemas = sightingFieldSchemas.filter(
+      schema => schema.customField,
+    );
+
+    const visibleEncounterFieldSchemas = encounterFieldSchemas.filter(
+      schema => !schema.hideOnBasicReport,
+    );
+    const _defaultEncounterSchemas =
+      visibleEncounterFieldSchemas.filter(
+        schema => !schema.customField,
+      );
+    const _customEncounterSchemas =
+      visibleEncounterFieldSchemas.filter(
+        schema => schema.customField,
+      );
+
+    return {
+      defaultSightingSchemas: _defaultSightingSchemas,
+      customSightingSchemas: _customSightingSchemas,
+      defaultEncounterSchemas: _defaultEncounterSchemas,
+      customEncounterSchemas: _customEncounterSchemas,
+    };
+  }, [sightingFieldSchemas, encounterFieldSchemas]);
 
   const [acceptedTerms, setAcceptedTerms] = useState(authenticated);
   // const [exifButtonClicked, setExifButtonClicked] = useState(false);
