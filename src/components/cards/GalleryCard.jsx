@@ -20,7 +20,7 @@ export default function GalleryCard({
     <Card
       title={title}
       titleId={titleId}
-      renderActions={<Link>See all</Link>}
+      renderActions={<Link href="temp.url">See all</Link>}
       overflow="hidden"
       overflowX="hidden"
     >
