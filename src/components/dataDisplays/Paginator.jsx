@@ -1,4 +1,5 @@
 import React from 'react';
+import { isFinite } from 'lodash-es';
 
 import IconButton from '@material-ui/core/IconButton';
 import FirstPageIcon from '@material-ui/icons/FirstPage';
@@ -6,20 +7,32 @@ import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import LastPageIcon from '@material-ui/icons/LastPage';
 
+function isValidLimit(limit) {
+  return isFinite(limit) && limit > 0;
+}
+
+function isValidOffset(offset) {
+  return isFinite(offset) && offset >= 0;
+}
+
 /* Will update the offset property of searchParams only */
 export default function Paginator({
   searchParams = {},
   setSearchParams = Function.prototype,
   count,
 }) {
-  const page = Math.round(searchParams?.offset / searchParams?.limit);
+  const { limit, offset } = searchParams || {};
 
-  const pageCount = Math.ceil(count / searchParams?.limit) - 1;
+  if (!isValidLimit(limit) || !isValidOffset(offset)) return null;
+
+  const page = Math.round(offset / limit);
+
+  const pageCount = Math.ceil(count / limit) - 1;
 
   const onChangePage = (_, nextPage) => {
     setSearchParams({
       ...searchParams,
-      offset: searchParams?.limit * nextPage,
+      offset: limit * nextPage,
     });
   };
 
