@@ -6,6 +6,28 @@ import isValid from 'date-fns/isValid';
 import parse from 'date-fns/parse';
 import subHours from 'date-fns/subHours';
 
+const initialState = {
+  lastHour: {
+    totalTurnaroundTime: 0,
+    totalRunTime: 0,
+    jobsProcessed: 0,
+    error: false,
+  },
+  twoWeeks: {
+    totalTurnaroundTime: 0,
+    totalRunTime: 0,
+    jobsProcessed: 0,
+    jobsInQueue: 0,
+  },
+  byStatus: {
+    inDetectionQueue: [],
+    inIdentificationQueue: [],
+    error: [],
+    completed: [],
+    inProgress: [],
+  },
+};
+
 const updateLastHourData = (obj, job, dateLimit) => {
   if (!job.time_completed) return;
 
@@ -75,28 +97,6 @@ const categorizeJob = (obj, job) => {
 };
 
 export default function useServerStatus() {
-  const initialState = {
-    lastHour: {
-      totalTurnaroundTime: 0,
-      totalRunTime: 0,
-      jobsProcessed: 0,
-      error: false,
-    },
-    twoWeeks: {
-      totalTurnaroundTime: 0,
-      totalRunTime: 0,
-      jobsProcessed: 0,
-      jobsInQueue: 0,
-    },
-    byStatus: {
-      inDetectionQueue: [],
-      inIdentificationQueue: [],
-      error: [],
-      completed: [],
-      inProgress: [],
-    },
-  };
-
   const [jobData, setJobData] = useState(initialState);
   const [error, setError] = useState(null);
   const [isFetched, setIsFetched] = useState(false);
@@ -131,7 +131,7 @@ export default function useServerStatus() {
     };
 
     fetchData();
-  }, [initialState]);
+  }, []);
 
   return [jobData, error, isFetched];
 }
