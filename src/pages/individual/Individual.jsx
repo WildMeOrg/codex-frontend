@@ -72,12 +72,10 @@ export default function Individual() {
             src: annotation?.asset_src,
             guid: annotation?.asset_guid,
             altText: annotation?.created
-              ? [
-                  intl.formatMessage({
-                    id: 'ANNOTATION_CREATED',
-                  }),
-                  annotation.created,
-                ].join('')
+              ? intl.formatMessage(
+                  { id: 'ANNOTATION_CREATED_ON_DATE' },
+                  { date: annotation.created },
+                )
               : intl.formatMessage({
                   id: 'ANNOTATION_WITH_CREATION_DATE_UNKNOWN',
                 }),
@@ -132,8 +130,13 @@ export default function Individual() {
             guid: annotation?.asset_guid,
             src: annotation?.asset_src,
             alt: annotation?.created
-              ? ['Annotation created: ', annotation.created].join('')
-              : 'Annotation image with no creation date',
+              ? intl.formatMessage(
+                  { id: 'ANNOTATION_CREATED_ON_DATE' },
+                  { date: annotation.created },
+                )
+              : intl.formatMessage({
+                  id: 'ANNOTATION_WITH_CREATION_DATE_UNKNOWN',
+                }),
           }),
         );
         return [...memo, ...modifiedAssets];
@@ -146,7 +149,7 @@ export default function Individual() {
     );
     const firstNineAssets = slice(uniqueModifiedAssets, 0, 9);
     return firstNineAssets;
-  }, [encounters]);
+  }, [encounters, intl]);
 
   const [firstName, adoptionName] = useMemo(
     () => [
