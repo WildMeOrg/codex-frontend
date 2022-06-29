@@ -119,9 +119,9 @@ export default function ServerStatus() {
               )}`}
             </Text>
             <Text>
-              {`ACM version: ${get(
+              {`Sage version: ${get(
                 siteInfo,
-                ['acm', 'version'],
+                ['sage', 'version'],
                 'Unknown',
               )}`}
             </Text>
