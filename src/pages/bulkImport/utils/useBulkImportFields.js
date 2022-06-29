@@ -83,9 +83,10 @@ export default function useBulkImportFields() {
         ...additionalProperties,
       };
     });
-  }, [sightingFieldSchemas, regionOptions]);
+  }, [intl, sightingFieldSchemas, regionOptions]);
 
   const encounterFieldSchemas = useEncounterFieldSchemas();
+  
   const flatfileEncounterFields = useMemo(() => {
     if (!encounterFieldSchemas || !regionOptions || !speciesOptions)
       return {};
@@ -118,7 +119,8 @@ export default function useBulkImportFields() {
         ...additionalProperties,
       };
     });
-  }, [encounterFieldSchemas, speciesOptions]);
+  }, [intl, encounterFieldSchemas, speciesOptions]);
+
   const additionalFlatfileFields = [
     {
       label: intl.formatMessage({

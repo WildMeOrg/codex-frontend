@@ -15,9 +15,10 @@ export default function useSightingFieldSchemas() {
   const intl = useIntl();
   const { data, loading, error, siteSettingsVersion } =
     useSiteSettings();
-  if (loading || error) return null;
 
   const encounterFieldSchemas = useMemo(() => {
+    if (loading || error) return null;
+
     const species = get(data, ['site.species', 'value'], []);
     const speciesOptions = species.map(s => {
       const mainCommonName = startCase(get(s, ['commonNames', 0]));
@@ -94,6 +95,6 @@ export default function useSightingFieldSchemas() {
       }),
       ...customFieldSchemas,
     ];
-  }, [siteSettingsVersion]);
+  }, [intl, data, loading, error, siteSettingsVersion]);
   return encounterFieldSchemas;
 }

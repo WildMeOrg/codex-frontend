@@ -131,7 +131,7 @@ export default function useServerStatus() {
     };
 
     fetchData();
-  }, []);
+  }, [initialState]);
 
   return [jobData, error, isFetched];
 }

@@ -75,11 +75,11 @@ export default function useMutate({
           ...deriveFetchKeys(mutationArgs),
         ];
 
-        /* eslint-disable no-await-in-loop no-restricted-syntax */
+        /* eslint-disable */
         for (const queryKey of fetches) {
           await queryClient.refetchQueries(queryKey);
         }
-        /* eslint-enable no-await-in-loop no-restricted-syntax */
+        /* eslint-enable */
 
         if (displayedError) setDisplayedError(null);
         setSuccess(true);

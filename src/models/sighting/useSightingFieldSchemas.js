@@ -144,7 +144,7 @@ export default function useSightingFieldSchemas() {
       }),
       ...customFieldSchemas,
     ];
-  }, [siteSettingsVersion, loading, error]);
+  }, [intl, data, detectionConfig, siteSettingsVersion, loading, error]);
 
   return sightingFieldSchemas;
 }

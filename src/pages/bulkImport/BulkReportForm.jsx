@@ -108,7 +108,7 @@ export default function BulkReportForm({ assetReferences }) {
       // wait for these to become non-zero to be confident that availableFields is fully populated before sending off to FlatFile
       setEverythingReadyForFlatfile(true);
     }
-  }, [encounterFieldSchemas, sightingFieldSchemas]);
+  }, [numEncounterFieldsForFlatFile, numSightingFieldsForFlatFile, encounterFieldSchemas, sightingFieldSchemas]);
 
   if (!everythingReadyForFlatfile) return <LoadingScreen />;
 
