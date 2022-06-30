@@ -11,7 +11,7 @@ import { useTheme } from '@material-ui/core/styles';
 import version from '../../constants/version';
 import useGetSiteInfo from '../../models/site/useGetSiteInfo';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
-import useServerStatus from '../../models/server/useServerStatus';
+import useSageJobs from '../../models/sage/useSageJobs';
 import MainColumn from '../../components/MainColumn';
 import Text from '../../components/Text';
 import SettingsBreadcrumbs from '../../components/SettingsBreadcrumbs';
@@ -19,6 +19,7 @@ import SummaryCard from './components/SummaryCard';
 import LegendItem from './components/LegendItem';
 import WaffleSquare from './components/WaffleSquare';
 import { getElapsedTimeInWords } from '../../utils/formatters';
+import { getSageJobsStatistics } from '../../utils/sageUtils';
 
 const skeletonHeight = `${16 / 0.6}px`;
 
@@ -66,8 +67,9 @@ export default function ServerStatus() {
 
   useDocumentTitle('SERVER_STATUS');
 
-  const [results, error, isFetched] = useServerStatus();
-  const { lastHour, twoWeeks, byStatus } = results;
+  const { data, error, isFetched } = useSageJobs();
+  const { lastHour, twoWeeks, byStatus } =
+    getSageJobsStatistics(data);
 
   const jobsProcessedInLastHour = get(lastHour, 'jobsProcessed', 0);
   const jobsProcessedInTwoWeeks = get(twoWeeks, 'jobsProcessed', 0);
