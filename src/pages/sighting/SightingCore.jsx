@@ -181,8 +181,8 @@ export default function SightingCore({
       />
       {!isPreparationComplete ? (
         <CustomAlert
-          titleId="PENDING_IMAGE_PROCESSING"
-          descriptionId="PENDING_IMAGE_PROCESSING_MESSAGE"
+          titleId="SIGHTING_PREPARATION_ALERT_TITLE"
+          descriptionId="SIGHTING_PREPARATION_ALERT_MESSAGE"
           severity="info"
           style={{ marginBottom: 24 }}
         />
