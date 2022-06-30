@@ -91,7 +91,7 @@ export default function Individual() {
       featuredAssetGuid: individualData?.featuredAssetGuid,
       guid: individualData?.guid,
     };
-  }, [individualData]);
+  }, [intl, individualData]);
 
   const metadata = useMemo(() => {
     if (!individualData || !fieldSchemas) return null;
@@ -149,7 +149,7 @@ export default function Individual() {
     );
     const firstNineAssets = slice(uniqueModifiedAssets, 0, 9);
     return firstNineAssets;
-  }, [individualData, intl]);
+  }, [encounters, intl]);
 
   const [firstName, adoptionName] = useMemo(
     () => [
@@ -160,7 +160,7 @@ export default function Individual() {
       ),
       deriveIndividualName(individualData, 'AdoptionName'),
     ],
-    [individualData],
+    [intl, individualData],
   );
 
   const {

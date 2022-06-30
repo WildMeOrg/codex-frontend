@@ -45,7 +45,7 @@ export default function Settings() {
   useEffect(() => {
     const initialValues = getInitialFormValues(schemas, data);
     setFormValues({ ...initialValues, ...formValues });
-  }, [schemas, data]);
+  }, [formValues, schemas, data]);
 
   const backendValues = useMemo(
     () => getInitialFormValues(schemas, data),

@@ -78,7 +78,7 @@ export default function useIdConfigSchemas() {
         },
       }),
     ];
-  }, [siteSettingsVersion, detectionConfig, loading, error]);
+  }, [data, siteSettingsVersion, detectionConfig, loading, error]);
 
   return sightingFieldSchemas;
 }

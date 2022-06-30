@@ -95,7 +95,7 @@ export default function SaveField() {
       }
     }
     return undefined;
-  }, [data]);
+  }, [id, newField, type, data]);
 
   const fieldSchema = formData
     ? createCustomFieldSchema(formData)

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useMemo, useEffect, useState } from 'react';
 import { useLocation } from 'react-router';
 import { set, get } from 'lodash-es';
 
@@ -36,8 +36,10 @@ export default function CreateIndividual() {
   } = usePostIndividual();
 
   const fieldSchemas = useIndividualFieldSchemas();
-  const createFieldSchemas = fieldSchemas.filter(
-    f => f.requiredForIndividualCreation,
+
+  const createFieldSchemas = useMemo(
+    () => fieldSchemas.filter(f => f.requiredForIndividualCreation),
+    [fieldSchemas, fieldSchemas?.length],
   );
 
   const [formState, setFormState] = useState({});
@@ -45,7 +47,7 @@ export default function CreateIndividual() {
   useEffect(() => {
     const initialState = calculateInitialState(createFieldSchemas);
     setFormState(initialState);
-  }, [createFieldSchemas?.length]);
+  }, [createFieldSchemas]);
 
   async function postIndividual() {
     const firstName = formState?.firstName;

@@ -61,7 +61,7 @@ export default function useIndividualFieldSchemas() {
       }),
       ...customFieldSchemas,
     ];
-  }, [siteSettingsVersion, loading, error]);
+  }, [data, siteSettingsVersion, loading, error]);
 
   return individualFieldSchemas;
 }

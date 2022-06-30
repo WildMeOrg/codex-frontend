@@ -40,7 +40,7 @@ export default function IntelligentAgentSettings({
     );
     const allSettingsValid = every(agentSettingsValid, Boolean);
     setIntelligentAgentFieldsValid(allSettingsValid);
-  }, [currentValues, intelligentAgentSchema]);
+  }, [currentValues, intelligentAgentSettingsFields]);
 
   return intelligentAgentSchema.map(intelligentAgent => {
     const currentPlatformFields = get(

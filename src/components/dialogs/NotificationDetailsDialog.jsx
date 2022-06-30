@@ -38,7 +38,7 @@ export default function NotificationDetailsDialog({
     theirIndividualName,
     theirIndividualGuid,
     formattedDeadline,
-  } = getNotificationProps(notification);
+  } = getNotificationProps(intl, notification);
 
   return (
     <StandardDialog

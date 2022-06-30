@@ -84,7 +84,7 @@ export default function useUserMetadataSchemas(displayedUserId) {
       }),
       ...intelligentAgentFields,
     ];
-  }, [isAdmin, siteSettings]);
+  }, [isAdmin, includeEmail, siteSettings]);
 
   if (loading || error) return null;
   return userMetadataSchemas;

@@ -141,6 +141,7 @@ export default function MatchSighting() {
       setSelectedMatchCandidate(matchCandidates?.[0]);
   }, [
     queryAnnotations,
+    selectedQueryAnnotation,
     selectedQueryAnnotation?.guid,
     matchCandidates,
   ]);
