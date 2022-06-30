@@ -1,6 +1,5 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { v4 as uuid } from 'uuid';
 import FormControl from '@material-ui/core/FormControl';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -21,7 +20,7 @@ export default function OptionEditor({
 }) {
   const options = value || [];
   const displayedOptions =
-    options.length > 0 ? options : [{ label: '', value: '', id: 6 }];
+    options.length > 0 ? options : [{ label: '', value: '' }];
 
   return (
     <StandardDialog
@@ -32,7 +31,7 @@ export default function OptionEditor({
       <DialogContent style={{ minWidth: 200 }}>
         {displayedOptions.map((option, optionIndex) => {
           const otherOptions = options.filter(
-            o => o.id !== option.id,
+            o => o.value !== option.value,
           );
           const showDeleteButton = displayedOptions.length !== 1;
           return (
@@ -42,7 +41,7 @@ export default function OptionEditor({
                 flexDirection: 'column',
                 marginBottom: 12,
               }}
-              key={option.id}
+              key={option.value}
             >
               <div style={{ display: 'flex', alignItems: 'center' }}>
                 <Text variant="subtitle2" id="OPTION" />
@@ -98,7 +97,6 @@ export default function OptionEditor({
               {
                 label: '',
                 value: '',
-                id: uuid(),
               },
             ]);
           }}
