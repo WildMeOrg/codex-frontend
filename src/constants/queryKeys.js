@@ -12,6 +12,7 @@ export default {
   unreadNotifications: 'unreadNotifications',
   twitterBotTestResults: 'twitterBotTestResults',
   publicData: 'publicData',
+  sageJobs: ['sage', 'jobs'],
 };
 
 export function getAuditLogQueryKey(guid) {
