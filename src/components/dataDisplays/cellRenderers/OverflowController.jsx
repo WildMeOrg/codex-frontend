@@ -20,7 +20,7 @@ export default function OverflowController({ title, children }) {
   }, []);
 
   useEffect(() => {
-    if (!refEl) return Function.prototype;
+    if (!refEl) return undefined;
 
     const debouncedHandleResize = debounce(() => {
       const { clientWidth, scrollWidth } = refEl;
