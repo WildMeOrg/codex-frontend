@@ -67,7 +67,7 @@ export default function SplashSettings() {
       get(siteSettings, ['data', fieldKey, 'value']),
     );
     setCurrentValues(zipObject(newSettingFields, edmValues));
-  }, [newSettingFields]);
+  }, [siteSettings, newSettingFields]);
 
   const customFieldCategories = get(
     siteSettings,

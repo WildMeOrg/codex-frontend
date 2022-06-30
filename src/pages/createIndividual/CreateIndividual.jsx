@@ -39,7 +39,7 @@ export default function CreateIndividual() {
 
   const createFieldSchemas = useMemo(
     () => fieldSchemas.filter(f => f.requiredForIndividualCreation),
-    [fieldSchemas],
+    [fieldSchemas, fieldSchemas?.length],
   );
 
   const [formState, setFormState] = useState({});
@@ -47,7 +47,7 @@ export default function CreateIndividual() {
   useEffect(() => {
     const initialState = calculateInitialState(createFieldSchemas);
     setFormState(initialState);
-  }, [createFieldSchemas, createFieldSchemas?.length]);
+  }, [createFieldSchemas]);
 
   async function postIndividual() {
     const firstName = formState?.firstName;

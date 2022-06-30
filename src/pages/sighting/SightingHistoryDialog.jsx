@@ -7,7 +7,7 @@ import List from '@material-ui/core/List';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import ListItem from '@material-ui/core/ListItem';
 import Divider from '@material-ui/core/Divider';
-import ListItemText from '@material-ui/core/ListItemText';
+// import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import Avatar from '@material-ui/core/Avatar';
@@ -15,7 +15,7 @@ import IconButton from '@material-ui/core/IconButton';
 import InfoIcon from '@material-ui/icons/Info';
 
 import StandardDialog from '../../components/StandardDialog';
-import Link from '../../components/Link';
+// import Link from '../../components/Link';
 import Button from '../../components/Button';
 import Text from '../../components/Text';
 
@@ -168,10 +168,10 @@ export default function SightingHistoryDialog({ open, onClose }) {
                   <ListItemAvatar>
                     <Avatar>{change.user[0].toUpperCase()}</Avatar>
                   </ListItemAvatar>
-                  <ListItemText
+                  {/* <ListItemText
                     primary={
                       <span>
-                        <Link href="temporary.url">
+                        <Link>
                           {change.user}
                         </Link>
                         <span>
@@ -180,7 +180,7 @@ export default function SightingHistoryDialog({ open, onClose }) {
                       </span>
                     }
                     secondary={change.event}
-                  />
+                  /> */}
                   <ListItemSecondaryAction>
                     <IconButton
                       onClick={() => setSelectedEvent(change)}

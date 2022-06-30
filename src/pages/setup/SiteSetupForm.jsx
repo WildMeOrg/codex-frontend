@@ -44,7 +44,7 @@ export default function SiteSettings({ primaryButtonId }) {
       get(newSiteSettings, ['data', fieldKey, 'value']),
     );
     setCurrentValues(zipObject(newSettingFields, edmValues));
-  }, [newSettingFields]);
+  }, [newSiteSettings, newSettingFields]);
 
   const customFieldCategories = get(
     newSiteSettings,

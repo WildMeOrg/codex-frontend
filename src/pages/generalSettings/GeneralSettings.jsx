@@ -114,7 +114,7 @@ export default function GeneralSettings() {
       get(siteSettings, ['data', fieldKey, 'value']),
     );
     setCurrentValues(zipObject(allSettingsFields, edmValues));
-  }, [allSettingsFields]);
+  }, [siteSettings, allSettingsFields]);
 
   const loading = assetPostLoading || formPostLoading;
   const error = putSiteSettingsError || settingsAssetPostError;

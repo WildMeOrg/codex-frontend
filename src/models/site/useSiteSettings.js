@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { get, merge } from 'lodash-es';
 import axios from 'axios';
 import { useQuery } from 'react-query';
@@ -58,5 +59,8 @@ export default function useSiteSettings() {
     data = merge(configuration, schemaData);
   }
 
-  return { data, loading, error, siteSettingsVersion };
+  return useMemo(
+    () => ({ data, loading, error, siteSettingsVersion }),
+    [data, loading, error, siteSettingsVersion],
+  );
 }
