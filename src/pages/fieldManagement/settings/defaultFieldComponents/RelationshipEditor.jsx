@@ -3,8 +3,8 @@ import { get, uniq } from 'lodash-es';
 import { v4 as uuid } from 'uuid';
 
 import ConfigureDefaultField from './ConfigureDefaultField';
-import Button from '../../../../components/Button';
 import Text from '../../../../components/Text';
+import Button from '../../../../components/Button';
 import Alert from '../../../../components/Alert';
 import Type from './relationshipComponents/Type';
 

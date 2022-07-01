@@ -1127,5 +1127,9 @@
   "PAGINATION_FIRST_PAGE": "first page",
   "PAGINATION_LAST_PAGE": "last page",
   "PAGINATION_PREVIOUS_PAGE": "previous page",
-  "PAGINATION_NEXT_PAGE": "next page"
+  "PAGINATION_NEXT_PAGE": "next page",
+  "SOCIAL_GROUPS": "Social groups",
+  "CONFIGURATION_SOCIAL_GROUP_ROLES_DESCRIPTION": "These roles populate the dropdown menu for any social groups made. It is recommended to include a generic role, such as, \"Member\"",
+  "CONFIGURATION_SOCIAL_GROUP_ROLES_LABEL": "Social group roles",
+  "NEW_SOCIAL_GROUP_ROLE": "Add role"
 }
