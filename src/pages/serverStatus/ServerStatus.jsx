@@ -67,7 +67,7 @@ export default function ServerStatus() {
 
   useDocumentTitle('SERVER_STATUS');
 
-  const { data, error, isFetched } = useSageJobs();
+  const { data, error, isLoading } = useSageJobs();
   const { lastHour, twoWeeks, byStatus } =
     getSageJobsStatistics(data);
 
@@ -189,7 +189,7 @@ export default function ServerStatus() {
                   <SummaryCard
                     xs={12}
                     sm={4}
-                    loading={!isFetched}
+                    loading={isLoading}
                     title={
                       <FormattedMessage id="SERVER_SUMMARY_TURNAROUND_TIME" />
                     }
@@ -213,7 +213,7 @@ export default function ServerStatus() {
                   <SummaryCard
                     xs={12}
                     sm={4}
-                    loading={!isFetched}
+                    loading={isLoading}
                     title={
                       <FormattedMessage id="SERVER_SUMMARY_RUN_TIME" />
                     }
@@ -237,7 +237,7 @@ export default function ServerStatus() {
                   <SummaryCard
                     xs={12}
                     sm={4}
-                    loading={!isFetched}
+                    loading={isLoading}
                     title={
                       <FormattedMessage id="SERVER_SUMMARY_JOBS_PROCESSED" />
                     }
@@ -267,7 +267,7 @@ export default function ServerStatus() {
               <SummaryCard
                 xs={12}
                 sm={4}
-                loading={!isFetched}
+                loading={isLoading}
                 title={
                   <FormattedMessage id="SERVER_SUMMARY_TURNAROUND_TIME" />
                 }
@@ -291,7 +291,7 @@ export default function ServerStatus() {
               <SummaryCard
                 xs={12}
                 sm={4}
-                loading={!isFetched}
+                loading={isLoading}
                 title={
                   <FormattedMessage id="SERVER_SUMMARY_RUN_TIME" />
                 }
@@ -313,7 +313,7 @@ export default function ServerStatus() {
               <SummaryCard
                 xs={12}
                 sm={4}
-                loading={!isFetched}
+                loading={isLoading}
                 title={
                   <FormattedMessage id="SERVER_SUMMARY_JOBS_IN_QUEUE" />
                 }
@@ -342,7 +342,15 @@ export default function ServerStatus() {
                 )}
               </dl>
             </header>
-            {isFetched ? (
+            {isLoading ? (
+              <>
+                <Skeleton height={skeletonHeight} />
+                <Skeleton height={skeletonHeight} />
+                <Skeleton height={skeletonHeight} />
+                <Skeleton height={skeletonHeight} />
+                <Skeleton height={skeletonHeight} width="60%" />
+              </>
+            ) : (
               <div style={{ padding: 0, margin: -3 }}>
                 {Object.entries(byStatus)
                   .filter(entry => entry[1].length > 0)
@@ -367,14 +375,6 @@ export default function ServerStatus() {
                     </React.Fragment>
                   ))}
               </div>
-            ) : (
-              <>
-                <Skeleton height={skeletonHeight} />
-                <Skeleton height={skeletonHeight} />
-                <Skeleton height={skeletonHeight} />
-                <Skeleton height={skeletonHeight} />
-                <Skeleton height={skeletonHeight} width="60%" />
-              </>
             )}
           </>
         )}
