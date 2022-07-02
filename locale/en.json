@@ -137,6 +137,8 @@
   "IMAGE_PROCESSING_ERROR": "Image processing error",
   "IMAGE_PROCESSING_ERROR_MESSAGE": "An unknown error has occurred; delete and rerun this import. If this problem occurs again, report this error on the Community Forums.",
   "HISTORY": "History",
+  "SIGHTING_PREPARATION_ALERT_TITLE": "This sighting has not finished processing",
+  "SIGHTING_PREPARATION_ALERT_MESSAGE": "Until this step is complete, images cannot be viewed and some functionality is unavailable.",
   "SIGHTING_PREPARATION_SKIPPED_MESSAGE": "Sighting preparation skipped.",
   "DETECTION_SKIPPED_MESSAGE": "Detection skipped.",
   "DETECTION_SKIPPED_NO_IMAGES_MESSAGE": "Detection skipped - no images to annotate.",
