@@ -1,32 +1,8 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
-import { get } from 'lodash-es';
+import { get, isObject } from 'lodash-es';
 import compareAsc from 'date-fns/compareAsc';
 import isValid from 'date-fns/isValid';
 import parse from 'date-fns/parse';
 import subHours from 'date-fns/subHours';
-
-const initialState = {
-  lastHour: {
-    totalTurnaroundTime: 0,
-    totalRunTime: 0,
-    jobsProcessed: 0,
-    error: false,
-  },
-  twoWeeks: {
-    totalTurnaroundTime: 0,
-    totalRunTime: 0,
-    jobsProcessed: 0,
-    jobsInQueue: 0,
-  },
-  byStatus: {
-    inDetectionQueue: [],
-    inIdentificationQueue: [],
-    error: [],
-    completed: [],
-    inProgress: [],
-  },
-};
 
 const updateLastHourData = (obj, job, dateLimit) => {
   if (!job.time_completed) return;
@@ -96,42 +72,38 @@ const categorizeJob = (obj, job) => {
   if (obj.byStatus[category]) obj.byStatus[category].push(job);
 };
 
-export default function useServerStatus() {
-  const [jobData, setJobData] = useState(initialState);
-  const [error, setError] = useState(null);
-  const [isFetched, setIsFetched] = useState(false);
+export function getSageJobsStatistics(jobs) {
+  const statistics = {
+    lastHour: {
+      totalTurnaroundTime: 0,
+      totalRunTime: 0,
+      jobsProcessed: 0,
+      error: false,
+    },
+    twoWeeks: {
+      totalTurnaroundTime: 0,
+      totalRunTime: 0,
+      jobsProcessed: 0,
+      jobsInQueue: 0,
+    },
+    byStatus: {
+      inDetectionQueue: [],
+      inIdentificationQueue: [],
+      error: [],
+      completed: [],
+      inProgress: [],
+    },
+  };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const result = await axios(
-          'https://kaiju.dyn.wildme.io:5010/api/engine/job/status/',
-        );
+  if (!isObject(jobs)) return statistics;
 
-        const data = get(result, 'data.response.json_result');
+  const oneHourAgo = subHours(Date.now(), 1);
 
-        const summary = { ...initialState };
+  Object.entries(jobs).forEach(([jobId, job]) => {
+    updateLastHourData(statistics, job, oneHourAgo);
+    updateTwoWeekData(statistics, job);
+    categorizeJob(statistics, { ...job, job_id: jobId });
+  });
 
-        const oneHourAgo = subHours(Date.now(), 1);
-
-        Object.entries(data).forEach(([jobId, job]) => {
-          updateLastHourData(summary, job, oneHourAgo);
-          updateTwoWeekData(summary, job);
-          categorizeJob(summary, { ...job, job_id: jobId });
-        });
-
-        setJobData(summary);
-      } catch (requestError) {
-        console.error('Error requesting computer vision server data');
-        console.error(requestError.message);
-        setError(true);
-      } finally {
-        setIsFetched(true);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  return [jobData, error, isFetched];
+  return statistics;
 }
