@@ -2,6 +2,7 @@ import React, { forwardRef } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useTheme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
+import Tooltip from '@material-ui/core/Tooltip';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import BackIcon from '@material-ui/icons/KeyboardBackspace';
 
@@ -12,6 +13,7 @@ const Core = function (
     loading = false,
     style,
     disabled,
+    tooltiptext = '',
     size,
     ...rest
   },
@@ -28,19 +30,23 @@ const Core = function (
 
   if (display === 'back') {
     return (
-      <Button
-        size="small"
-        startIcon={<BackIcon />}
-        disabled={disabled}
-        style={{
-          padding: '4px 16px',
-          ...style,
-        }}
-        ref={ref}
-        {...rest}
-      >
-        {children}
-      </Button>
+      <Tooltip title={tooltiptext}>
+        <span>
+          <Button
+            size="small"
+            startIcon={<BackIcon />}
+            disabled={disabled}
+            style={{
+              padding: '4px 16px',
+              ...style,
+            }}
+            ref={ref}
+            {...rest}
+          >
+            {children}
+          </Button>
+        </span>
+      </Tooltip>
     );
   }
 
@@ -97,18 +103,22 @@ const Core = function (
       fontSize: '14px',
     };
     return (
-      <button
-        type="button"
-        style={{ ...roleStyles, ...style }}
-        ref={ref}
-        {...rest}
-      >
-        {loading ? (
-          <CircularProgress size={24} style={spinnerStyles} />
-        ) : (
-          children
-        )}
-      </button>
+      <Tooltip title={tooltiptext}>
+        <span>
+          <button
+            type="button"
+            style={{ ...roleStyles, ...style }}
+            ref={ref}
+            {...rest}
+          >
+            {loading ? (
+              <CircularProgress size={24} style={spinnerStyles} />
+            ) : (
+              children
+            )}
+          </button>
+        </span>
+      </Tooltip>
     );
   }
 
@@ -118,21 +128,25 @@ const Core = function (
   }
 
   return (
-    <Button
-      color={color}
-      variant={variant}
-      disabled={disabled}
-      style={{ ...roleStyles, ...style }}
-      size={size}
-      ref={ref}
-      {...rest}
-    >
-      {loading ? (
-        <CircularProgress size={24} style={spinnerStyles} />
-      ) : (
-        children
-      )}
-    </Button>
+    <Tooltip title={tooltiptext}>
+      <span>
+        <Button
+          color={color}
+          variant={variant}
+          disabled={disabled}
+          style={{ ...roleStyles, ...style }}
+          size={size}
+          ref={ref}
+          {...rest}
+        >
+          {loading ? (
+            <CircularProgress size={24} style={spinnerStyles} />
+          ) : (
+            children
+          )}
+        </Button>
+      </span>
+    </Tooltip>
   );
 };
 

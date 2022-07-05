@@ -1,5 +1,6 @@
 import React from 'react';
-import { FormattedMessage } from 'react-intl';
+import { useIntl, FormattedMessage } from 'react-intl';
+
 import FormControl from '@material-ui/core/FormControl';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -18,9 +19,12 @@ export default function OptionEditor({
   onChange,
   ...rest
 }) {
+  const intl = useIntl();
   const options = value || [];
   const displayedOptions =
-    options.length > 0 ? options : [{ label: '', value: '' }];
+    options.length > 0
+      ? options
+      : [{ label: '', value: '', created: new Date() }];
 
   return (
     <StandardDialog
@@ -31,7 +35,9 @@ export default function OptionEditor({
       <DialogContent style={{ minWidth: 200 }}>
         {displayedOptions.map((option, optionIndex) => {
           const otherOptions = options.filter(
-            o => o.value !== option.value,
+            o =>
+              o?.created !== option?.created ||
+              o.value !== option?.value,
           );
           const showDeleteButton = displayedOptions.length !== 1;
           return (
@@ -41,7 +47,7 @@ export default function OptionEditor({
                 flexDirection: 'column',
                 marginBottom: 12,
               }}
-              key={option.value}
+              key={option?.created || option?.value}
             >
               <div style={{ display: 'flex', alignItems: 'center' }}>
                 <Text variant="subtitle2" id="OPTION" />
@@ -97,6 +103,7 @@ export default function OptionEditor({
               {
                 label: '',
                 value: '',
+                created: Date.now(),
               },
             ]);
           }}
@@ -110,7 +117,24 @@ export default function OptionEditor({
         </Button>
       </DialogContent>
       <DialogActions style={{ padding: '0px 24px 24px 24px' }}>
-        <Button display="primary" onClick={onSubmit}>
+        <Button
+          disabled={
+            displayedOptions.filter(
+              option => !option?.value || !option?.label,
+            ).length > 0
+          }
+          tooltiptext={
+            displayedOptions.filter(
+              option => !option?.value || !option?.label,
+            ).length > 0
+              ? intl.formatMessage({
+                  id: 'UNFINISHED_OPTIONS',
+                })
+              : ''
+          }
+          display="primary"
+          onClick={onSubmit}
+        >
           <FormattedMessage id="FINISH" />
         </Button>
       </DialogActions>
