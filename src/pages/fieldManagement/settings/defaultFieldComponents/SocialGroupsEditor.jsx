@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import { v4 as uuid } from 'uuid';
 import { get, uniq } from 'lodash-es';
+import Switch from '@material-ui/core/Switch';
 
 import ConfigureDefaultField from './ConfigureDefaultField';
 import Text from '../../../../components/Text';
@@ -29,6 +30,15 @@ function validateSocialGroups(roles) {
       'Two or more roles have the same label. Make sure each label is different',
     );
   return errors.length > 0 ? errors : null;
+}
+
+function updateRoleMultipleInGroupStatus(roles, roleGuid, newStatus) {
+  roles.map(role => {
+    if (role?.guid === roleGuid)
+      return { ...role, multipleInGroup: newStatus };
+    else return role;
+  });
+  return roles;
 }
 
 export default function SocialGroupsEditor({

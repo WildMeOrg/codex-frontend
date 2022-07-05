@@ -35,14 +35,14 @@ function updateRoleLabel(roles, roleGuid, newRoleLabel) {
   return modifiedRoles;
 }
 
-function updateRoleMultipleInGroupStatus(roles, roleGuid, newStatus) {
-  roles.map(role => {
-    if (role?.guid === roleGuid)
-      return { ...role, multipleInGroup: newStatus };
-    else return role;
-  });
-  return roles;
-}
+// function updateRoleMultipleInGroupStatus(roles, roleGuid, newStatus) {
+//   roles.map(role => {
+//     if (role?.guid === roleGuid)
+//       return { ...role, multipleInGroup: newStatus };
+//     else return role;
+//   });
+//   return roles;
+// } // TODO deleteMe
 
 export default function Role({ roles, currentRole, onChange }) {
   const roleGuid = currentRole?.guid;
