@@ -70,7 +70,7 @@ export default function UnauthenticatedSwitch() {
                       <Create />
                     </Route>
                     <Route path="/login">
-                      <Login redirect="/" />
+                      <Login />
                     </Route>
                     <Route path="/email_verified">
                       <EmailVerified />
@@ -79,7 +79,7 @@ export default function UnauthenticatedSwitch() {
                       <Splash />
                     </Route>
                     <Route>
-                      <Login showBanner redirect={pathname} />
+                      <Login showBanner nextLocation={location} />
                     </Route>
                   </Switch>
                 </div>

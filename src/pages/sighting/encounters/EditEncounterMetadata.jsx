@@ -71,7 +71,7 @@ export default function EditEncounterMetadata({
     setCustomFieldValues(
       getInitialFormValues(customFieldMetadata, 'id'),
     );
-  }, [get(metadata, 'length')]);
+  }, [metadata?.length]);
 
   const showErrorAlert = patchError || formErrors.length > 0;
 

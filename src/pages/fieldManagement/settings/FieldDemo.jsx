@@ -26,7 +26,7 @@ export default function FieldDemo({
   useEffect(() => {
     if (demoFieldValue !== initialValue)
       setDemoFieldValue(initialValue);
-  }, [initialValue]);
+  }, [demoFieldValue, initialValue]);
 
   return (
     <StandardDialog

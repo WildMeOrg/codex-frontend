@@ -88,12 +88,16 @@ export default function SightingCore({
   // const [historyOpen, setHistoryOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
-  const isPreparationInProgress = get(
+  /*
+  Preparation can never be skipped, even when there are no images,
+  so that case can be ignored.
+  */
+  const isPreparationComplete = get(
     data,
-    'pipeline_status.preparation.inProgress',
+    'pipeline_status.preparation.complete',
   );
 
-  const activeTab = isPreparationInProgress
+  const activeTab = !isPreparationComplete
     ? sightingTabs['#overview']
     : sightingTabs[window.location.hash] || sightingTabs['#overview'];
 
@@ -170,15 +174,15 @@ export default function SightingCore({
         data={data}
         loading={loading}
         pending={pending}
-        preparing={isPreparationInProgress}
+        preparing={!isPreparationComplete}
         guid={id}
         // setHistoryOpen={setHistoryOpen}
         setDeleteDialogOpen={setDeleteDialogOpen}
       />
-      {isPreparationInProgress ? (
+      {!isPreparationComplete ? (
         <CustomAlert
-          titleId="PENDING_IMAGE_PROCESSING"
-          descriptionId="PENDING_IMAGE_PROCESSING_MESSAGE"
+          titleId="SIGHTING_PREPARATION_ALERT_TITLE"
+          descriptionId="SIGHTING_PREPARATION_ALERT_MESSAGE"
           severity="info"
           style={{ marginBottom: 24 }}
         />

@@ -129,14 +129,14 @@ export default function PictureBookGallery({
         if (onLoad) onLoad();
       }
     }
-  }, [images, isLoading]);
+  }, [onLoad, images, isLoading]);
 
   useEffect(() => {
     if (isLoading && galleryRatio) {
       setIsLoading(false);
       if (onLoad) onLoad();
     }
-  }, [isLoading, galleryRatio]);
+  }, [onLoad, isLoading, galleryRatio]);
 
   if (
     images.length === 0 ||

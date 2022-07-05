@@ -75,9 +75,11 @@ export default function useMutate({
           ...deriveFetchKeys(mutationArgs),
         ];
 
+        /* eslint-disable */
         for (const queryKey of fetches) {
           await queryClient.refetchQueries(queryKey);
         }
+        /* eslint-enable */
 
         if (displayedError) setDisplayedError(null);
         setSuccess(true);
@@ -99,7 +101,7 @@ export default function useMutate({
       setDisplayedError(error);
       if (success) setSuccess(null);
     }
-  }, [error]);
+  }, [success, error]);
 
   const mutate = mutationArgs => mutation.mutateAsync(mutationArgs);
 

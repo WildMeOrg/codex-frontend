@@ -5,6 +5,7 @@ import { useIntl } from 'react-intl';
 
 export default function useLogin() {
   const intl = useIntl();
+
   const errorMessage = intl.formatMessage({
     id: 'INVALID_EMAIL_OR_PASSWORD',
   });
@@ -12,7 +13,7 @@ export default function useLogin() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const authenticate = async (email, password, redirect = '/') => {
+  const authenticate = async (email, password, nextLocation) => {
     try {
       setLoading(true);
       const response = await axios.request({
@@ -27,7 +28,18 @@ export default function useLogin() {
       const successful = get(response, 'data.success', false);
 
       if (successful) {
-        window.location.href = redirect;
+        let url = '/';
+        if (nextLocation) {
+          url = nextLocation?.pathname;
+          url = nextLocation?.search
+            ? url + nextLocation.search
+            : url;
+          url = nextLocation?.hash ? url + nextLocation.hash : url;
+        }
+        window.location.href = url;
+        // Fun quirk - a reload is required if there is a hash in the URL.
+        // https://stackoverflow.com/questions/10612438/javascript-reload-the-page-with-hash-value
+        if (nextLocation?.hash) window.location.reload();
       } else {
         setError(errorMessage);
       }

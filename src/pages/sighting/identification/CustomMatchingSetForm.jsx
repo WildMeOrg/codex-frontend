@@ -31,7 +31,13 @@ export default function CustomMatchingSetForm({
       algorithms,
       matching_set: buildMatchingSetQuery(regionSchema, region),
     });
-  }, [algorithms?.length, region]);
+  }, [
+    setIdConfig,
+    algorithms,
+    algorithms?.length,
+    regionSchema,
+    region,
+  ]);
 
   return (
     <>

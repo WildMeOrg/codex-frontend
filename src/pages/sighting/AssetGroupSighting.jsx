@@ -22,7 +22,7 @@ export default function AssetGroupSighting() {
     if (sightingId) {
       history.push(`/sightings/${sightingId}${hash}`);
     }
-  }, [sightingId]);
+  }, [hash, history, sightingId]);
 
   return (
     <SightingCore

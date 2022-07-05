@@ -61,7 +61,7 @@ export default function useFilterIndividuals({
         'x-total-count',
       ]);
       return {
-        resultCount: parseInt(resultCountString),
+        resultCount: parseInt(resultCountString, 10),
         results: get(result, ['data', 'data']),
       };
     },

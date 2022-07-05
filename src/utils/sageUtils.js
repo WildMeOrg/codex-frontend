@@ -1,6 +1,4 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
-import { get } from 'lodash-es';
+import { get, isObject } from 'lodash-es';
 import compareAsc from 'date-fns/compareAsc';
 import isValid from 'date-fns/isValid';
 import parse from 'date-fns/parse';
@@ -74,8 +72,8 @@ const categorizeJob = (obj, job) => {
   if (obj.byStatus[category]) obj.byStatus[category].push(job);
 };
 
-export default function useServerStatus() {
-  const initialState = {
+export function getSageJobsStatistics(jobs) {
+  const statistics = {
     lastHour: {
       totalTurnaroundTime: 0,
       totalRunTime: 0,
@@ -97,41 +95,15 @@ export default function useServerStatus() {
     },
   };
 
-  const [jobData, setJobData] = useState(initialState);
-  const [error, setError] = useState(null);
-  const [isFetched, setIsFetched] = useState(false);
+  if (!isObject(jobs)) return statistics;
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const result = await axios(
-          'https://kaiju.dyn.wildme.io:5010/api/engine/job/status/',
-        );
+  const oneHourAgo = subHours(Date.now(), 1);
 
-        const data = get(result, 'data.response.json_result');
+  Object.entries(jobs).forEach(([jobId, job]) => {
+    updateLastHourData(statistics, job, oneHourAgo);
+    updateTwoWeekData(statistics, job);
+    categorizeJob(statistics, { ...job, job_id: jobId });
+  });
 
-        const summary = { ...initialState };
-
-        const oneHourAgo = subHours(Date.now(), 1);
-
-        Object.entries(data).forEach(([jobId, job]) => {
-          updateLastHourData(summary, job, oneHourAgo);
-          updateTwoWeekData(summary, job);
-          categorizeJob(summary, { ...job, job_id: jobId });
-        });
-
-        setJobData(summary);
-      } catch (requestError) {
-        console.error('Error requesting computer vision server data');
-        console.error(requestError.message);
-        setError(true);
-      } finally {
-        setIsFetched(true);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  return [jobData, error, isFetched];
+  return statistics;
 }

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { get } from 'lodash-es';
+import { useIntl } from 'react-intl';
 import { useQueryClient } from 'react-query';
 
 import Grid from '@material-ui/core/Grid';
@@ -28,6 +29,7 @@ export default function NotificationsPane({
   shouldOpen,
   setShouldOpen,
 }) {
+  const intl = useIntl();
   const queryClient = useQueryClient();
   const [
     activeCollaborationNotification,
@@ -83,7 +85,7 @@ export default function NotificationsPane({
                 theirIndividualName,
                 theirIndividualGuid,
                 formattedDeadline,
-              } = getNotificationProps(notification);
+              } = getNotificationProps(intl, notification);
               const deriveButtonPath = get(
                 currentNotificationSchema,
                 'deriveButtonPath',
