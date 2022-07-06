@@ -1131,5 +1131,6 @@
   "SOCIAL_GROUPS": "Social groups",
   "CONFIGURATION_SOCIAL_GROUP_ROLES_DESCRIPTION": "These roles populate the dropdown menu for any social groups made. It is recommended to include a generic role, such as, \"Member\"",
   "CONFIGURATION_SOCIAL_GROUP_ROLES_LABEL": "Social group roles",
-  "NEW_SOCIAL_GROUP_ROLE": "Add role"
+  "NEW_SOCIAL_GROUP_ROLE": "Add role",
+  "ALLOW_MULTIPLE_OF_THIS_ROLE": "Allow multiple of this role"
 }

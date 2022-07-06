@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 
 import { v4 as uuid } from 'uuid';
-import { get, uniq } from 'lodash-es';
-import Switch from '@material-ui/core/Switch';
+import { get, uniq, map } from 'lodash-es';
 
 import ConfigureDefaultField from './ConfigureDefaultField';
 import Text from '../../../../components/Text';
@@ -32,14 +31,14 @@ function validateSocialGroups(roles) {
   return errors.length > 0 ? errors : null;
 }
 
-function updateRoleMultipleInGroupStatus(roles, roleGuid, newStatus) {
-  roles.map(role => {
-    if (role?.guid === roleGuid)
-      return { ...role, multipleInGroup: newStatus };
-    else return role;
-  });
-  return roles;
-}
+// function updateRoleMultipleInGroupStatus(roles, roleGuid, newStatus) {
+//   roles.map(role => {
+//     if (role?.guid === roleGuid)
+//       return { ...role, multipleInGroup: newStatus };
+//     else return role;
+//   });
+//   return roles;
+// } // TODO deleteMe
 
 export default function SocialGroupsEditor({
   onClose,
@@ -95,14 +94,18 @@ export default function SocialGroupsEditor({
           padding: 20,
         }}
       >
-        {roles.map(role => (
-          <Role
-            key={role?.guid}
-            roles={roles}
-            currentRole={role}
-            onChange={setRoles}
-          />
-        ))}
+        {map(
+          roles,
+          role => (
+            <Role
+              key={role?.guid}
+              roles={roles}
+              currentRole={role}
+              onChange={setRoles}
+            />
+          ),
+          [],
+        )}
       </div>
       {fromErrors && (
         <Alert severity="error" titleId="AN_ERROR_OCCURRED">
