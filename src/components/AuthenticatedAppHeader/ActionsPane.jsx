@@ -33,7 +33,6 @@ const actions = [
   {
     id: 'review-pending-public-sightings',
     href: '/pending-public-sightings',
-    adminOrUserManagerOnly: true,
     permissionsTest: userData =>
       userData?.is_admin || userData?.is_data_manager,
     messageId: 'PENDING_PUBLIC_SIGHTINGS',
@@ -42,7 +41,6 @@ const actions = [
   {
     id: 'control-panel',
     href: '/admin',
-    adminOrUserManagerOnly: true,
     permissionsTest: userData =>
       userData?.is_admin || userData?.is_user_manager,
     messageId: 'CONTROL_PANEL',
