@@ -123,7 +123,8 @@ export default function OptionEditor({
               option => !option?.value || !option?.label,
             ).length > 0
           }
-          tooltiptext={
+          showTooltip
+          tooltipText={
             displayedOptions.filter(
               option => !option?.value || !option?.label,
             ).length > 0

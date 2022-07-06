@@ -13,7 +13,6 @@ const Core = function (
     loading = false,
     style,
     disabled,
-    tooltiptext = '',
     size,
     ...rest
   },
@@ -27,26 +26,21 @@ const Core = function (
   let spinnerStyles = {
     color: theme.palette.common.white,
   };
-
   if (display === 'back') {
     return (
-      <Tooltip title={tooltiptext}>
-        <span>
-          <Button
-            size="small"
-            startIcon={<BackIcon />}
-            disabled={disabled}
-            style={{
-              padding: '4px 16px',
-              ...style,
-            }}
-            ref={ref}
-            {...rest}
-          >
-            {children}
-          </Button>
-        </span>
-      </Tooltip>
+      <Button
+        size="small"
+        startIcon={<BackIcon />}
+        disabled={disabled}
+        style={{
+          padding: '4px 16px',
+          ...style,
+        }}
+        ref={ref}
+        {...rest}
+      >
+        {children}
+      </Button>
     );
   }
 
@@ -103,22 +97,18 @@ const Core = function (
       fontSize: '14px',
     };
     return (
-      <Tooltip title={tooltiptext}>
-        <span>
-          <button
-            type="button"
-            style={{ ...roleStyles, ...style }}
-            ref={ref}
-            {...rest}
-          >
-            {loading ? (
-              <CircularProgress size={24} style={spinnerStyles} />
-            ) : (
-              children
-            )}
-          </button>
-        </span>
-      </Tooltip>
+      <button
+        type="button"
+        style={{ ...roleStyles, ...style }}
+        ref={ref}
+        {...rest}
+      >
+        {loading ? (
+          <CircularProgress size={24} style={spinnerStyles} />
+        ) : (
+          children
+        )}
+      </button>
     );
   }
 
@@ -128,29 +118,70 @@ const Core = function (
   }
 
   return (
-    <Tooltip title={tooltiptext}>
-      <span>
-        <Button
-          color={color}
-          variant={variant}
-          disabled={disabled}
-          style={{ ...roleStyles, ...style }}
-          size={size}
-          ref={ref}
-          {...rest}
-        >
-          {loading ? (
-            <CircularProgress size={24} style={spinnerStyles} />
-          ) : (
-            children
-          )}
-        </Button>
-      </span>
-    </Tooltip>
+    <Button
+      color={color}
+      variant={variant}
+      disabled={disabled}
+      style={{ ...roleStyles, ...style }}
+      size={size}
+      ref={ref}
+      {...rest}
+    >
+      {loading ? (
+        <CircularProgress size={24} style={spinnerStyles} />
+      ) : (
+        children
+      )}
+    </Button>
   );
 };
 
+const ButtonWithTooltip = function (
+  {
+    display = 'panel',
+    loading = false,
+    style,
+    disabled,
+    showTooltip = false,
+    tooltipText = '',
+    size,
+    ...rest
+  },
+  ref,
+) {
+  if (showTooltip)
+    return (
+      <Tooltip title={tooltipText}>
+        <span>
+          <CoreForwardRef
+            display={display}
+            loading={loading}
+            style={style}
+            disabled={disabled}
+            size={size}
+            ref={ref}
+            {...rest}
+          />
+        </span>
+      </Tooltip>
+    );
+  else
+    return (
+      <CoreForwardRef
+        display={display}
+        loading={loading}
+        style={style}
+        disabled={disabled}
+        size={size}
+        ref={ref}
+        {...rest}
+      />
+    );
+};
+
 const CoreForwardRef = forwardRef(Core);
+
+const ButtonForwardRef = forwardRef(ButtonWithTooltip);
 
 function CustomButton(
   { id, domId = undefined, values, children, ...rest },
@@ -158,14 +189,14 @@ function CustomButton(
 ) {
   if (!id)
     return (
-      <CoreForwardRef id={domId} ref={ref} {...rest}>
+      <ButtonForwardRef id={domId} ref={ref} {...rest}>
         {children}
-      </CoreForwardRef>
+      </ButtonForwardRef>
     );
   return (
-    <CoreForwardRef id={domId} ref={ref} {...rest}>
+    <ButtonForwardRef id={domId} ref={ref} {...rest}>
       <FormattedMessage id={id} values={values} />
-    </CoreForwardRef>
+    </ButtonForwardRef>
   );
 }
 
