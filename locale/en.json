@@ -1128,5 +1128,5 @@
   "PAGINATION_LAST_PAGE": "last page",
   "PAGINATION_PREVIOUS_PAGE": "previous page",
   "PAGINATION_NEXT_PAGE": "next page",
-  "UNFINISHED_OPTIONS": "Options must have valid values and labels"
+  "UNFINISHED_OPTIONS": "Options must have valid values and labels and unique values"
 }

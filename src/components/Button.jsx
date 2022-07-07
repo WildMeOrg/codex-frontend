@@ -138,12 +138,12 @@ const Core = function (
 
 const ButtonWithTooltip = function (
   {
+    showTooltip = false,
+    tooltipText = '',
     display = 'panel',
     loading = false,
     style,
     disabled,
-    showTooltip = false,
-    tooltipText = '',
     size,
     ...rest
   },
