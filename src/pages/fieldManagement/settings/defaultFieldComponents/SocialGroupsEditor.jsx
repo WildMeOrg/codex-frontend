@@ -7,7 +7,7 @@ import ConfigureDefaultField from './ConfigureDefaultField';
 import Text from '../../../../components/Text';
 import Button from '../../../../components/Button';
 import Alert from '../../../../components/Alert';
-import Role from './SocialGroupComponents/Role';
+import SocialGroupRole from './SocialGroupComponents/SocialGroupRole';
 
 function createRole(roles) {
   const newRoleGuid = uuid();
@@ -31,15 +31,6 @@ function validateSocialGroups(roles) {
   return errors.length > 0 ? errors : null;
 }
 
-// function updateRoleMultipleInGroupStatus(roles, roleGuid, newStatus) {
-//   roles.map(role => {
-//     if (role?.guid === roleGuid)
-//       return { ...role, multipleInGroup: newStatus };
-//     else return role;
-//   });
-//   return roles;
-// } // TODO deleteMe
-
 export default function SocialGroupsEditor({
   onClose,
   onSubmit,
@@ -48,10 +39,6 @@ export default function SocialGroupsEditor({
 }) {
   const [fromErrors, setFormErrors] = useState(null);
   function setRoles(roles) {
-    console.log('deleteMe setRoles is called and roles are now: ');
-    console.log(roles);
-    console.log('deleteMe formSettings are currently: ');
-    console.log(formSettings);
     setFormSettings({ ...formSettings, socialGroups: roles });
   }
 
@@ -97,7 +84,7 @@ export default function SocialGroupsEditor({
         {map(
           roles,
           role => (
-            <Role
+            <SocialGroupRole
               key={role?.guid}
               roles={roles}
               currentRole={role}

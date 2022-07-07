@@ -48,8 +48,6 @@ const configurableFields = [
 ];
 
 function getInitialFormState(siteSettings) {
-  console.log('deleteMe siteSettings are: ');
-  console.log(siteSettings);
   const regions = get(siteSettings, ['site.custom.regions', 'value']);
   const species = get(siteSettings, ['site.species', 'value'], []);
   const relationships = get(
@@ -153,10 +151,6 @@ export default function DefaultFieldTable({
               if (response?.status === 200) onCloseEditor();
             }
             if (editField?.id === 'socialGroups') {
-              console.log(
-                'deleteMe got here upon submission and formSettings.socialGroups is: ',
-              );
-              console.log(formSettings.socialGroups);
               const response = await putSiteSetting({
                 property: editField.backendPath,
                 data: formSettings.socialGroups,
