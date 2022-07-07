@@ -137,46 +137,18 @@ const Core = function (
 };
 
 const ButtonWithTooltip = function (
-  {
-    showTooltip = false,
-    tooltipText = '',
-    display = 'panel',
-    loading = false,
-    style,
-    disabled,
-    size,
-    ...rest
-  },
+  { showTooltip = false, tooltipText = '', ...rest },
   ref,
 ) {
   if (showTooltip)
     return (
       <Tooltip title={tooltipText}>
         <span>
-          <CoreForwardRef
-            display={display}
-            loading={loading}
-            style={style}
-            disabled={disabled}
-            size={size}
-            ref={ref}
-            {...rest}
-          />
+          <CoreForwardRef ref={ref} {...rest} />
         </span>
       </Tooltip>
     );
-  else
-    return (
-      <CoreForwardRef
-        display={display}
-        loading={loading}
-        style={style}
-        disabled={disabled}
-        size={size}
-        ref={ref}
-        {...rest}
-      />
-    );
+  else return <CoreForwardRef ref={ref} {...rest} />;
 };
 
 const CoreForwardRef = forwardRef(Core);
