@@ -153,7 +153,10 @@ export default function DefaultFieldTable({
               if (response?.status === 200) onCloseEditor();
             }
             if (editField?.id === 'socialGroups') {
-              console.log('deleteMe got here');
+              console.log(
+                'deleteMe got here upon submission and formSettings.socialGroups is: ',
+              );
+              console.log(formSettings.socialGroups);
               const response = await putSiteSetting({
                 property: editField.backendPath,
                 data: formSettings.socialGroups,

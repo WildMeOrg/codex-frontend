@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useIntl } from 'react-intl';
 
 import { find, filter } from 'lodash-es';
@@ -62,30 +62,36 @@ export default function Role({ roles, currentRole, onChange }) {
   const intl = useIntl();
   const roleGuid = currentRole?.guid;
   const roleLabel = currentRole?.label;
-  const [checked, setChecked] = useState(
-    currentRole?.multipleInGroup,
-  );
+  const [checked, setChecked] = useState(undefined);
+
+  useEffect(() => {
+    console.log('deleteMe setting checked to: ');
+    console.log(currentRole?.multipleInGroup);
+    console.log('deleteMe currentRole is: ');
+    console.log(currentRole);
+    setChecked(currentRole?.multipleInGroup);
+  }, [roles, currentRole]);
 
   return (
     <div style={{ marginLeft: 32, marginTop: 10 }} key={roleGuid}>
       <FormGroup>
         <FormControlLabel
-          control={
-            <Switch
-              checked={checked}
-              onChange={e => {
-                updateRoleMultipleInGroupStatus(
-                  roles,
-                  roleGuid,
-                  e.target.checked,
-                  setChecked,
-                );
-              }}
-            />
-          }
+          control={<Switch />}
           label={intl.formatMessage({
             id: 'ALLOW_MULTIPLE_OF_THIS_ROLE',
           })}
+          // value={currentRole?.multipleInGroup}
+          checked={checked}
+          onChange={e => {
+            onChange(
+              updateRoleMultipleInGroupStatus(
+                roles,
+                roleGuid,
+                e.target.checked,
+                setChecked,
+              ),
+            );
+          }}
         />
       </FormGroup>
       <TextInput
