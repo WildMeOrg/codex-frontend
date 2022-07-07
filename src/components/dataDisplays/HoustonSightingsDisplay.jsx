@@ -4,7 +4,7 @@ import ActionIcon from '../ActionIcon';
 import { cellRendererTypes } from '../dataDisplays/cellRenderers';
 import DataDisplay from './DataDisplay';
 
-export default function SightingsCard({
+export default function HoustonSightingsDisplay({
   sightings,
   columns = ['date', 'location', 'actions'],
   onDelete,

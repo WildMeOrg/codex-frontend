@@ -25,18 +25,18 @@ const actions = [
     icon: BulkImportIcon,
   },
   {
-    id: 'settings',
-    href: '/settings',
-    messageId: 'SETTINGS_AND_PRIVACY',
-    icon: SettingsIcon,
-  },
-  {
     id: 'review-pending-public-sightings',
     href: '/pending-public-sightings',
     permissionsTest: userData =>
       userData?.is_admin || userData?.is_data_manager,
     messageId: 'PENDING_PUBLIC_SIGHTINGS',
     icon: PublicIcon,
+  },
+  {
+    id: 'settings',
+    href: '/settings',
+    messageId: 'SETTINGS_AND_PRIVACY',
+    icon: SettingsIcon,
   },
   {
     id: 'control-panel',
