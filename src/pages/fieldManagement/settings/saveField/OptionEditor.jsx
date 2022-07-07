@@ -133,7 +133,7 @@ export default function OptionEditor({
       <DialogActions style={{ padding: '0px 24px 24px 24px' }}>
         <Button
           disabled={!areAllOptionsValid}
-          showTooltip
+          showTooltip={!areAllOptionsValid}
           tooltipText={
             !areAllOptionsValid
               ? intl.formatMessage({
