@@ -26,7 +26,7 @@ function updateRoleLabel(roles, roleGuid, newRoleLabel) {
   const modifiedRoles = roles.map(role => {
     if (role?.guid === roleGuid)
       return { ...role, label: newRoleLabel };
-    else return role;
+    return role;
   });
   return modifiedRoles;
 }
@@ -35,7 +35,7 @@ function updateRoleMultipleInGroupStatus(roles, roleGuid, newStatus) {
   const modifiedRoles = roles.map(role => {
     if (role?.guid === roleGuid)
       return { ...role, multipleInGroup: newStatus };
-    else return role;
+    return role;
   });
   return modifiedRoles;
 }

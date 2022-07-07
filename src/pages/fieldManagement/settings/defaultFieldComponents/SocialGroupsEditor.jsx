@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useIntl } from 'react-intl';
 
 import { v4 as uuid } from 'uuid';
 import { get, uniq, map } from 'lodash-es';
@@ -17,16 +18,22 @@ function createRole(roles) {
   ];
 }
 
-function validateSocialGroups(roles) {
+function validateSocialGroups(roles, intl) {
   const errors = [];
   const roleLabels = roles.map(role => role?.label);
   const emptyRoleLabels = roleLabels.filter(label => !label);
   if (emptyRoleLabels.length > 0)
-    errors.push('One or more roles are missing labels');
+    errors.push(
+      intl.formatMessage({
+        id: 'ONE_OR_MORE_ROLES_MISSING_LABELS',
+      }),
+    );
   const uniqueRoleLabels = uniq(roleLabels);
   if (uniqueRoleLabels.length !== roleLabels.length)
     errors.push(
-      'Two or more roles have the same label. Make sure each label is different',
+      intl.formatMessage({
+        id: 'TWO_OR_MORE_ROLES_SAME_LABEL',
+      }),
     );
   return errors.length > 0 ? errors : null;
 }
@@ -37,6 +44,7 @@ export default function SocialGroupsEditor({
   formSettings,
   setFormSettings,
 }) {
+  const intl = useIntl();
   const [fromErrors, setFormErrors] = useState(null);
   function setRoles(roles) {
     setFormSettings({ ...formSettings, socialGroups: roles });
@@ -48,7 +56,7 @@ export default function SocialGroupsEditor({
     <ConfigureDefaultField
       onClose={onClose}
       onSubmit={() => {
-        const errors = validateSocialGroups(roles);
+        const errors = validateSocialGroups(roles, intl);
         setFormErrors(errors);
         if (!errors) onSubmit();
       }}
@@ -72,6 +80,19 @@ export default function SocialGroupsEditor({
           style={{ width: 200 }}
           size="small"
           id="NEW_SOCIAL_GROUP_ROLE"
+        />
+      </div>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          width: 500,
+        }}
+      >
+        <Text
+          variant="caption"
+          id="CONFIGURATION_SOCIAL_GROUP_ROLES_DESCRIPTION"
         />
       </div>
       <div
