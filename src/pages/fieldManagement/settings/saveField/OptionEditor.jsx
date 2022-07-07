@@ -1,6 +1,6 @@
 import React from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
-import { map, filter, uniq } from 'lodash-es';
+import { map, some, uniqBy } from 'lodash-es';
 
 import FormControl from '@material-ui/core/FormControl';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -25,13 +25,13 @@ export default function OptionEditor({
   const displayedOptions =
     options.length > 0 ? options : [{ label: '', value: '' }];
 
-  const areAllOptionsNonEmpty =
-    filter(
-      displayedOptions,
-      option => !option?.value || !option?.label,
-    ).length === 0;
+  const areAllOptionsNonEmpty = !some(
+    displayedOptions,
+    option => !option?.value || !option?.label,
+  );
+
   const areAllValuesUnique =
-    uniq(map(displayedOptions, option => option?.value)).length ===
+    uniqBy(displayedOptions, option => option?.value).length ===
     displayedOptions.length;
 
   const areAllOptionsValid =
@@ -44,72 +44,66 @@ export default function OptionEditor({
       titleId="OPTION_EDITOR"
     >
       <DialogContent style={{ minWidth: 200 }}>
-        {map(
-          displayedOptions,
-          (option, optionIndex) => {
-            const otherOptions = options.filter(
-              (o, oIdx) => oIdx !== optionIndex,
-            );
-            const showDeleteButton = displayedOptions.length !== 1;
-            return (
-              <div
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  marginBottom: 12,
-                }}
-                key={optionIndex}
-              >
-                <div
-                  style={{ display: 'flex', alignItems: 'center' }}
-                >
-                  <Text variant="subtitle2" id="OPTION" />
-                  {showDeleteButton && (
-                    <DeleteButton
-                      onClick={() => onChange(otherOptions)}
-                    />
-                  )}
-                </div>
-                <div
-                  style={{ display: 'flex', alignItems: 'flex-end' }}
-                  {...rest}
-                >
-                  <FormControl style={{ marginRight: 12 }}>
-                    <TextInput
-                      onChange={label => {
-                        const newOptions = [...options];
-                        newOptions[optionIndex] = {
-                          ...option,
-                          label,
-                        };
-                        onChange(newOptions);
-                      }}
-                      width={200}
-                      schema={{ labelId: 'OPTION_LABEL' }}
-                      value={option.label}
-                    />
-                  </FormControl>
-                  <FormControl style={{ marginLeft: 12 }}>
-                    <TextInput
-                      onChange={newValue => {
-                        const newOptions = [...options];
-                        newOptions[optionIndex] = {
-                          ...option,
-                          value: newValue,
-                        };
-                        onChange(newOptions);
-                      }}
-                      width={200}
-                      schema={{ labelId: 'OPTION_VALUE' }}
-                      value={option.value}
-                    />
-                  </FormControl>
-                </div>
+        {map(displayedOptions, (option, optionIndex) => {
+          const otherOptions = options.filter(
+            (o, oIdx) => oIdx !== optionIndex,
+          );
+          const showDeleteButton = displayedOptions.length !== 1;
+          return (
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                marginBottom: 12,
+              }}
+              key={optionIndex}
+            >
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <Text variant="subtitle2" id="OPTION" />
+                {showDeleteButton && (
+                  <DeleteButton
+                    onClick={() => onChange(otherOptions)}
+                  />
+                )}
               </div>
-            );
-          },
-          [],
-        )}
+              <div
+                style={{ display: 'flex', alignItems: 'flex-end' }}
+                {...rest}
+              >
+                <FormControl style={{ marginRight: 12 }}>
+                  <TextInput
+                    onChange={label => {
+                      const newOptions = [...options];
+                      newOptions[optionIndex] = {
+                        ...option,
+                        label,
+                      };
+                      onChange(newOptions);
+                    }}
+                    width={200}
+                    schema={{ labelId: 'OPTION_LABEL' }}
+                    value={option.label}
+                  />
+                </FormControl>
+                <FormControl style={{ marginLeft: 12 }}>
+                  <TextInput
+                    onChange={newValue => {
+                      const newOptions = [...options];
+                      newOptions[optionIndex] = {
+                        ...option,
+                        value: newValue,
+                      };
+                      onChange(newOptions);
+                    }}
+                    width={200}
+                    schema={{ labelId: 'OPTION_VALUE' }}
+                    value={option.value}
+                  />
+                </FormControl>
+              </div>
+            </div>
+          );
+        })}
         <Button
           style={{ marginTop: 16 }}
           onClick={() => {
