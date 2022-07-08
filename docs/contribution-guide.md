@@ -30,3 +30,7 @@ If you want to help translate the project, that is very much appreciated and nee
 - Components that are reused widely go in `/src/components`
 - Post any questions in Github issues or send an email to ben@wildme.org 
 - Thanks for contributing =)
+
+## Making a hotfix
+
+Likely you wont need to make a hotfix unless you are a Wild Me employee, but if the need arises please follow the [hotfix procedures](https://github.com/WildMeOrg/codex-frontend/blob/master/docs/hotfix-procedure.md).
