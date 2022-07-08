@@ -6,8 +6,9 @@ export default function useActionsColumnWidth(numberOfActions) {
   const theme = useTheme();
 
   const actionWidth = '1.5rem';
-  const totalActionPadding = `${numberOfActions *
-    theme.spacing(1)}px`;
+  const totalActionPadding = `${
+    numberOfActions * theme.spacing(1)
+  }px`;
   const tableCellPadding = `${theme.spacing(4)}px`;
   const actionLabelWidth = '73px';
 

@@ -4,7 +4,7 @@ import MuiAlert from '@material-ui/lab/Alert';
 import AlertTitle from '@material-ui/lab/AlertTitle';
 import Text from './Text';
 
-const Core = function({
+const Core = function ({
   descriptionId = '',
   description,
   descriptionValues,

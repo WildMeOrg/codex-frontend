@@ -103,23 +103,18 @@ export default function GeneralSettings() {
     twitterTestResults?.success,
   );
 
-  useEffect(
-    () => {
-      setShowTwitterSuccess(
-        twitterStatusCode !== 400
-          ? twitterTestResults?.success
-          : false,
-      );
-    },
-    [twitterTestResults, twitterStatusCode],
-  );
-
-  const edmValues = allSettingsFields.map(fieldKey =>
-    get(siteSettings, ['data', fieldKey, 'value']),
-  );
   useEffect(() => {
+    setShowTwitterSuccess(
+      twitterStatusCode !== 400 ? twitterTestResults?.success : false,
+    );
+  }, [twitterTestResults, twitterStatusCode]);
+
+  useEffect(() => {
+    const edmValues = allSettingsFields.map(fieldKey =>
+      get(siteSettings, ['data', fieldKey, 'value']),
+    );
     setCurrentValues(zipObject(allSettingsFields, edmValues));
-  }, edmValues);
+  }, [siteSettings, allSettingsFields]);
 
   const loading = assetPostLoading || formPostLoading;
   const error = putSiteSettingsError || settingsAssetPostError;

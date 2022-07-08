@@ -84,39 +84,28 @@ export default function Encounters({
   const [encounterToDelete, setEncounterToDelete] = useState(null);
   const [editEncounterInfo, setEditEncounterInfo] = useState(null);
   const [encounterToAssign, setEncounterToAssign] = useState(null);
-  const [
-    messageForConfirmDelete,
-    setMessageForConfirmDelete,
-  ] = useState(null);
-  const [
-    encounterToAddAnnotations,
-    setEncounterToAddAnnotations,
-  ] = useState(null);
+  const [messageForConfirmDelete, setMessageForConfirmDelete] =
+    useState(null);
+  const [encounterToAddAnnotations, setEncounterToAddAnnotations] =
+    useState(null);
 
   const sightingId = get(sightingData, 'guid');
 
   const encounterFieldSchemas = useEncounterFieldSchemas();
   const encounters = get(sightingData, 'encounters', []);
 
-  const { identification: identificationStep } =
-    sightingData?.pipeline_status || {};
-
-  const {
-    complete: isIdentificationComplete,
-    failed: isIdentificationFailed,
-  } = identificationStep || {};
-  const isIdReady =
-    isIdentificationComplete && !isIdentificationFailed;
-
-  useEffect(
-    () => {
-      const message = vulnerableObject
-        ? 'BOTH_VULNERABLE_MESSAGE'
-        : 'CONFIRM_DELETE_ENCOUNTER_DESCRIPTION';
-      setMessageForConfirmDelete(message);
-    },
-    [vulnerableObject],
+  const isIdentificationComplete = get(
+    sightingData,
+    'pipeline_status.identification.complete',
+    false,
   );
+
+  useEffect(() => {
+    const message = vulnerableObject
+      ? 'BOTH_VULNERABLE_MESSAGE'
+      : 'CONFIRM_DELETE_ENCOUNTER_DESCRIPTION';
+    setMessageForConfirmDelete(message);
+  }, [vulnerableObject]);
 
   return (
     <div>
@@ -229,7 +218,7 @@ export default function Encounters({
         ];
 
         const identifyButtonActions = [
-          ...(isIdReady
+          ...(isIdentificationComplete
             ? [
                 {
                   id: 'view-id-results',

@@ -20,7 +20,7 @@ import BaoWaving from '../../components/svg/BaoWaving';
 
 const buttonId = 'submitLogin';
 
-export default function Login({ showBanner, redirect = '/' }) {
+export default function Login({ showBanner, nextLocation }) {
   const { authenticate, error, setError, loading } = useLogin();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -105,7 +105,7 @@ export default function Login({ showBanner, redirect = '/' }) {
               domId={buttonId}
               loading={loading}
               onClick={() => {
-                authenticate(email, password, redirect);
+                authenticate(email, password, nextLocation);
               }}
               display="primary"
               id="LOG_IN"

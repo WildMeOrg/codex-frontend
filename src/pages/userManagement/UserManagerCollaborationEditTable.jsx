@@ -20,10 +20,8 @@ export default function UserManagersCollaborationEditTable({
 }) {
   const intl = useIntl();
 
-  const {
-    data: currentUserData,
-    loading: userDataLoading,
-  } = useGetMe();
+  const { data: currentUserData, loading: userDataLoading } =
+    useGetMe();
 
   const {
     mutate: revokeCollab,
@@ -62,7 +60,7 @@ export default function UserManagersCollaborationEditTable({
     ];
     revokeCollab({
       collaborationGuid: collaboration?.guid,
-      operations: operations,
+      operations,
     });
   }
 
@@ -79,7 +77,7 @@ export default function UserManagersCollaborationEditTable({
     ];
     restoreCollab({
       collaborationGuid: collaboration?.guid,
-      operations: operations,
+      operations,
     });
   }
 

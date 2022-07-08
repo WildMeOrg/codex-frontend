@@ -100,14 +100,14 @@ export const fieldTypeInfo = {
     initialDefaultValue: null,
     exampleValue: 12,
   },
-  [fieldTypes.file]: {
-    labelId: 'FILE_UPLOADER',
-    value: fieldTypes.file,
-    backendType: backendTypes.string,
-    backendMultiple: false,
-    canProvideDefaultValue: false,
-    exampleValue: null,
-  },
+  // [fieldTypes.file]: {
+  //   labelId: 'FILE_UPLOADER',
+  //   value: fieldTypes.file,
+  //   backendType: backendTypes.string,
+  //   backendMultiple: false,
+  //   canProvideDefaultValue: false,
+  //   exampleValue: null,
+  // },
   [fieldTypes.latlong]: {
     labelId: 'LAT_LONG_SELECTOR',
     value: fieldTypes.latlong,

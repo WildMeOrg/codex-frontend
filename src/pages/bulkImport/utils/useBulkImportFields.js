@@ -58,73 +58,69 @@ export default function useBulkImportFields() {
   const intl = useIntl();
   const { regionOptions, speciesOptions } = useOptions();
   const sightingFieldSchemas = useSightingFieldSchemas();
-  const flatfileSightingFields = useMemo(
-    () => {
-      if (!sightingFieldSchemas) return {};
-      const bulkSightingFields = sightingFieldSchemas.filter(
-        f => !sightingOmitList.includes(f.name),
-      );
-      return bulkSightingFields.map(f => {
-        const additionalProperties = {};
-        if (
-          f?.fieldType === 'select' ||
-          f?.fieldType === 'multiselect'
-        ) {
-          additionalProperties.type = 'select';
-        }
-        if (f?.choices) additionalProperties.options = f.choices;
-        if (f.name === 'locationId') {
-          additionalProperties.type = 'select';
-          additionalProperties.options = regionOptions;
-          additionalProperties.validators = [requiredValidator];
-        }
-        return {
-          label: deriveLabel(f, intl),
-          key: deriveKey(f, categoryTypes.sighting),
-          ...additionalProperties,
-        };
-      });
-    },
-    [sightingFieldSchemas, regionOptions],
-  );
+  const flatfileSightingFields = useMemo(() => {
+    if (!sightingFieldSchemas) return {};
+    const bulkSightingFields = sightingFieldSchemas.filter(
+      f => !sightingOmitList.includes(f.name),
+    );
+    return bulkSightingFields.map(f => {
+      const additionalProperties = {};
+      if (
+        f?.fieldType === 'select' ||
+        f?.fieldType === 'multiselect'
+      ) {
+        additionalProperties.type = 'select';
+      }
+      if (f?.choices) additionalProperties.options = f.choices;
+      if (f.name === 'locationId') {
+        additionalProperties.type = 'select';
+        additionalProperties.options = regionOptions;
+        additionalProperties.validators = [requiredValidator];
+      }
+      return {
+        label: deriveLabel(f, intl),
+        key: deriveKey(f, categoryTypes.sighting),
+        ...additionalProperties,
+      };
+    });
+  }, [intl, sightingFieldSchemas, regionOptions]);
 
   const encounterFieldSchemas = useEncounterFieldSchemas();
-  const flatfileEncounterFields = useMemo(
-    () => {
-      if (!encounterFieldSchemas || !regionOptions || !speciesOptions)
-        return {};
-      const bulkEncounterFields = encounterFieldSchemas.filter(
-        f => !encounterOmitList.includes(f.name),
-      );
-      return bulkEncounterFields.map(f => {
-        const additionalProperties = {};
-        if (
-          f?.fieldType === 'select' ||
-          f?.fieldType === 'multiselect'
-        ) {
-          additionalProperties.type = 'select';
-        }
-        if (f?.choices) additionalProperties.options = f.choices;
-        if (f.name === 'taxonomy') {
-          additionalProperties.type = 'select';
-          additionalProperties.options = speciesOptions;
-        }
-        if (f.name === 'sex') {
-          const sanitizedSexOptions = Object.values(
-            omitBy(sexOptions, sex => sex?.labelId === 'BLANK'),
-          );
-          additionalProperties.type = 'select';
-          additionalProperties.options = sanitizedSexOptions;
-        }
-        return {
-          label: deriveLabel(f, intl),
-          key: deriveKey(f, categoryTypes.encounter),
-          ...additionalProperties,
-        };
-      });
-    },
-    [encounterFieldSchemas, speciesOptions],
-  );
+
+  const flatfileEncounterFields = useMemo(() => {
+    if (!encounterFieldSchemas || !regionOptions || !speciesOptions)
+      return {};
+    const bulkEncounterFields = encounterFieldSchemas.filter(
+      f => !encounterOmitList.includes(f.name),
+    );
+    return bulkEncounterFields.map(f => {
+      const additionalProperties = {};
+      if (
+        f?.fieldType === 'select' ||
+        f?.fieldType === 'multiselect'
+      ) {
+        additionalProperties.type = 'select';
+      }
+      if (f?.choices) additionalProperties.options = f.choices;
+      if (f.name === 'taxonomy') {
+        additionalProperties.type = 'select';
+        additionalProperties.options = speciesOptions;
+      }
+      if (f.name === 'sex') {
+        const sanitizedSexOptions = Object.values(
+          omitBy(sexOptions, sex => sex?.labelId === 'BLANK'),
+        );
+        additionalProperties.type = 'select';
+        additionalProperties.options = sanitizedSexOptions;
+      }
+      return {
+        label: deriveLabel(f, intl),
+        key: deriveKey(f, categoryTypes.encounter),
+        ...additionalProperties,
+      };
+    });
+  }, [intl, encounterFieldSchemas, speciesOptions]);
+
   const additionalFlatfileFields = [
     {
       label: intl.formatMessage({

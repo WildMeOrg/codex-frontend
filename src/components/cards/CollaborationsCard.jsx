@@ -15,9 +15,8 @@ export default function CollaborationsCard({
   htmlId = null,
 }) {
   const intl = useIntl();
-  const [activeCollaboration, setActiveCollaboration] = useState(
-    null,
-  );
+  const [activeCollaboration, setActiveCollaboration] =
+    useState(null);
   const [
     collabDialogButtonClickLoading,
     setCollabDialogButtonClickLoading,
@@ -25,12 +24,9 @@ export default function CollaborationsCard({
 
   const { data, loading } = useGetMe();
 
-  useEffect(
-    () => {
-      setCollabDialogButtonClickLoading(false);
-    },
-    [data],
-  );
+  useEffect(() => {
+    setCollabDialogButtonClickLoading(false);
+  }, [data]);
 
   const collaborations = get(data, ['collaborations'], []);
   const tableData = collaborations.map(collaboration => {

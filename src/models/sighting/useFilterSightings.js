@@ -35,7 +35,7 @@ export default function useFilterSightings({ queries, params = {} }) {
         'x-total-count',
       ]);
       return {
-        resultCount: parseInt(resultCountString),
+        resultCount: parseInt(resultCountString, 10),
         results: get(result, ['data', 'data']),
       };
     },

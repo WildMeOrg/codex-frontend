@@ -3,7 +3,7 @@ import { useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import ImageList from '@material-ui/core/ImageList';
 import ImageListItem from '@material-ui/core/ImageListItem';
-import Link from '../Link';
+// import Link from '../Link';
 import Card from './Card';
 
 export default function GalleryCard({
@@ -20,9 +20,9 @@ export default function GalleryCard({
     <Card
       title={title}
       titleId={titleId}
-      renderActions={<Link>See all</Link>}
-      overflow={'hidden'}
-      overflowX={'hidden'}
+      // renderActions={<Link>See all</Link>}
+      overflow="hidden"
+      overflowX="hidden"
     >
       <ImageList
         cols={3}

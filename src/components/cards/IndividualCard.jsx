@@ -20,12 +20,9 @@ export default function IndividualCard({
   const { data, loading, error } = useIndividual(individualGuid);
   const dataReady = !loading && !error;
 
-  useEffect(
-    () => {
-      if (data) setIndividualData(data);
-    },
-    [data],
-  );
+  useEffect(() => {
+    if (data) setIndividualData(data);
+  }, [data]);
 
   const firstName = deriveIndividualName(
     data,
@@ -67,21 +64,17 @@ export default function IndividualCard({
           ) : (
             <Skeleton variant="text" height={30} width={140} />
           )}
-          {adoptionName && (
-            <>
-              {dataReady ? (
-                <Text variant="body2">{adoptionName}</Text>
-              ) : (
-                <Skeleton variant="text" height={20} width={80} />
-              )}
-            </>
+          {adoptionName && dataReady && (
+            <Text variant="body2">{adoptionName}</Text>
+          )}
+          {adoptionName && !dataReady && (
+            <Skeleton variant="text" height={20} width={80} />
           )}
           {dataReady && showSex && (
             <Text style={{ marginTop: 16 }}>
-              <Text
-                variant="body2"
-                component="span"
-              >{`${intl.formatMessage({ id: 'SEX' })}: `}</Text>
+              <Text variant="body2" component="span">
+                {`${intl.formatMessage({ id: 'SEX' })}: `}
+              </Text>
               <Text
                 variant="body2"
                 component="span"

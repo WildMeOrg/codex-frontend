@@ -14,7 +14,7 @@ import BannerLogo from './BannerLogo';
 import Link from './Link';
 import IndividualIcon from './icons/IndividualIcon';
 
-const Entry = function({ messageId, Icon, disabled, ...rest }) {
+const Entry = function ({ messageId, Icon, disabled, ...rest }) {
   const theme = useTheme();
 
   return (

@@ -51,13 +51,10 @@ export default function ResolutionSelector({
     individual => selectorSchema.getProperty(individual),
   );
 
-  const choices = useMemo(
-    () => {
-      if (individualProperties?.length === 0) return [];
-      return selectorSchema.deriveChoices(individualProperties);
-    },
-    [selectorSchema, individualProperties],
-  );
+  const choices = useMemo(() => {
+    if (individualProperties?.length === 0) return [];
+    return selectorSchema.deriveChoices(individualProperties);
+  }, [selectorSchema, individualProperties]);
 
   return (
     <FormControl style={{ width: 320, marginTop: 12 }}>

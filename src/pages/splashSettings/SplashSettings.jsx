@@ -35,7 +35,7 @@ const newSettingFields = [
   'site.general.donationButtonUrl',
 ];
 
-export default function SiteSettings() {
+export default function SplashSettings() {
   const siteSettings = useSiteSettings();
   const {
     mutate: putSiteSettings,
@@ -55,23 +55,19 @@ export default function SiteSettings() {
   useDocumentTitle('FRONT_PAGE');
 
   const [currentValues, setCurrentValues] = useState(null);
-  const [splashVideoPostData, setSplashVideoPostData] = useState(
-    null,
-  );
-  const [splashImagePostData, setSplashImagePostData] = useState(
-    null,
-  );
-  const [
-    customCardImagePostData,
-    setCustomCardImagePostData,
-  ] = useState(null);
+  const [splashVideoPostData, setSplashVideoPostData] =
+    useState(null);
+  const [splashImagePostData, setSplashImagePostData] =
+    useState(null);
+  const [customCardImagePostData, setCustomCardImagePostData] =
+    useState(null);
 
-  const edmValues = newSettingFields.map(fieldKey =>
-    get(siteSettings, ['data', fieldKey, 'value']),
-  );
   useEffect(() => {
+    const edmValues = newSettingFields.map(fieldKey =>
+      get(siteSettings, ['data', fieldKey, 'value']),
+    );
     setCurrentValues(zipObject(newSettingFields, edmValues));
-  }, edmValues);
+  }, [siteSettings, newSettingFields]);
 
   const customFieldCategories = get(
     siteSettings,

@@ -34,7 +34,7 @@ const colors = [
   },
 ];
 
-const Core = function({ children, required, width, style = {} }) {
+const Core = function ({ children, required, width, style = {} }) {
   return (
     <FormControl
       required={required}
@@ -45,7 +45,7 @@ const Core = function({ children, required, width, style = {} }) {
   );
 };
 
-const ColorInput = function(props) {
+const ColorInput = function (props) {
   const {
     schema,
     required,

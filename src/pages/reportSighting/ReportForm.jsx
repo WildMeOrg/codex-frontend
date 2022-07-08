@@ -56,10 +56,8 @@ export default function ReportForm({
 }) {
   const intl = useIntl();
   const history = useHistory();
-  const {
-    data: siteSettingsData,
-    siteSettingsVersion,
-  } = useSiteSettings();
+  const { data: siteSettingsData, siteSettingsVersion } =
+    useSiteSettings();
   const recaptchaPublicKey = get(siteSettingsData, [
     'recaptchaPublicKey',
     'value',
@@ -67,11 +65,8 @@ export default function ReportForm({
 
   const [sightingType, setSightingType] = useState(null);
 
-  const {
-    customEncounterCategories,
-    customSightingCategories,
-  } = useMemo(
-    () => {
+  const { customEncounterCategories, customSightingCategories } =
+    useMemo(() => {
       const _customEncounterCategories = deriveCustomFieldCategories(
         siteSettingsData,
         'encounter',
@@ -86,29 +81,43 @@ export default function ReportForm({
         customEncounterCategories: _customEncounterCategories,
         customSightingCategories: _customSightingCategories,
       };
-    },
-    [siteSettingsData, siteSettingsVersion],
-  );
+    }, [siteSettingsData, siteSettingsVersion]);
 
   const sightingFieldSchemas = useSightingFieldSchemas();
-
-  const defaultSightingSchemas = sightingFieldSchemas.filter(
-    schema => !schema.customField,
-  );
-  const customSightingSchemas = sightingFieldSchemas.filter(
-    schema => schema.customField,
-  );
-
   const encounterFieldSchemas = useEncounterFieldSchemas();
-  const visibleEncounterFieldSchemas = encounterFieldSchemas.filter(
-    schema => !schema.hideOnBasicReport,
-  );
-  const defaultEncounterSchemas = visibleEncounterFieldSchemas.filter(
-    schema => !schema.customField,
-  );
-  const customEncounterSchemas = visibleEncounterFieldSchemas.filter(
-    schema => schema.customField,
-  );
+
+  const {
+    defaultSightingSchemas,
+    customSightingSchemas,
+    defaultEncounterSchemas,
+    customEncounterSchemas,
+  } = useMemo(() => {
+    const _defaultSightingSchemas = sightingFieldSchemas.filter(
+      schema => !schema.customField,
+    );
+    const _customSightingSchemas = sightingFieldSchemas.filter(
+      schema => schema.customField,
+    );
+
+    const visibleEncounterFieldSchemas = encounterFieldSchemas.filter(
+      schema => !schema.hideOnBasicReport,
+    );
+    const _defaultEncounterSchemas =
+      visibleEncounterFieldSchemas.filter(
+        schema => !schema.customField,
+      );
+    const _customEncounterSchemas =
+      visibleEncounterFieldSchemas.filter(
+        schema => schema.customField,
+      );
+
+    return {
+      defaultSightingSchemas: _defaultSightingSchemas,
+      customSightingSchemas: _customSightingSchemas,
+      defaultEncounterSchemas: _defaultEncounterSchemas,
+      customEncounterSchemas: _customEncounterSchemas,
+    };
+  }, [sightingFieldSchemas, encounterFieldSchemas]);
 
   const [acceptedTerms, setAcceptedTerms] = useState(authenticated);
   // const [exifButtonClicked, setExifButtonClicked] = useState(false);
@@ -117,37 +126,37 @@ export default function ReportForm({
   const [termsError, setTermsError] = useState(false);
 
   const [sightingFormValues, setSightingFormValues] = useState({});
-  const [
-    customSightingFormValues,
-    setCustomSightingFormValues,
-  ] = useState({});
+  const [customSightingFormValues, setCustomSightingFormValues] =
+    useState({});
   const [encounterFormValues, setEncounterFormValues] = useState({});
-  const [
-    customEncounterFormValues,
-    setCustomEncounterFormValues,
-  ] = useState({});
+  const [customEncounterFormValues, setCustomEncounterFormValues] =
+    useState({});
 
-  useEffect(
-    () => {
-      const initialDefaultSightingFormValues = getInitialFormValues(
-        defaultSightingSchemas,
-      );
-      const initialCustomSightingFormValues = getInitialFormValues(
-        customSightingSchemas,
-      );
-      const initialDefaultEncounterFormValues = getInitialFormValues(
-        defaultEncounterSchemas,
-      );
-      const initialCustomEncounterFormValues = getInitialFormValues(
-        customEncounterSchemas,
-      );
-      setSightingFormValues(initialDefaultSightingFormValues);
-      setCustomSightingFormValues(initialCustomSightingFormValues);
-      setEncounterFormValues(initialDefaultEncounterFormValues);
-      setCustomEncounterFormValues(initialCustomEncounterFormValues);
-    },
-    [sightingFieldSchemas, encounterFieldSchemas],
-  );
+  useEffect(() => {
+    const initialDefaultSightingFormValues = getInitialFormValues(
+      defaultSightingSchemas,
+    );
+    const initialCustomSightingFormValues = getInitialFormValues(
+      customSightingSchemas,
+    );
+    const initialDefaultEncounterFormValues = getInitialFormValues(
+      defaultEncounterSchemas,
+    );
+    const initialCustomEncounterFormValues = getInitialFormValues(
+      customEncounterSchemas,
+    );
+    setSightingFormValues(initialDefaultSightingFormValues);
+    setCustomSightingFormValues(initialCustomSightingFormValues);
+    setEncounterFormValues(initialDefaultEncounterFormValues);
+    setCustomEncounterFormValues(initialCustomEncounterFormValues);
+  }, [
+    customEncounterSchemas,
+    customSightingSchemas,
+    defaultEncounterSchemas,
+    defaultSightingSchemas,
+    sightingFieldSchemas,
+    encounterFieldSchemas,
+  ]);
 
   // const locationSuggestion = useMemo(
   //   () => getLocationSuggestion(exifData),
@@ -269,12 +278,13 @@ export default function ReportForm({
           <Button
             onClick={async () => {
               // check that required fields are complete
-              const nextIncompleteFields = defaultSightingSchemas.filter(
-                field =>
-                  field.required &&
-                  field.defaultValue ===
-                    sightingFormValues[field.name],
-              );
+              const nextIncompleteFields =
+                defaultSightingSchemas.filter(
+                  field =>
+                    field.required &&
+                    field.defaultValue ===
+                      sightingFormValues[field.name],
+                );
               setIncompleteFields(nextIncompleteFields);
 
               // check that terms and conditions were accepted

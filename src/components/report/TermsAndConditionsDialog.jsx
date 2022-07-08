@@ -221,8 +221,8 @@ export default function TermsAndConditionsDialog({
                 property rights, including without limitation
                 copyright and trade-mark rights, in all materials on
                 or comprising the Platform (
-                <Definition>&quot;Content&quot;</Definition>),
-                including, without limitation, all written, audio
+                <Definition>&quot;Content&quot;</Definition>
+                ), including, without limitation, all written, audio
                 visual or other materials and graphical elements on
                 the Platform, but excluding User Content. We grant you
                 a limited license to use, download, print, or
@@ -326,10 +326,10 @@ export default function TermsAndConditionsDialog({
               You are solely responsible for your Account, your
               contact information and other information made available
               through your Account or otherwise via this Platform (
-              <Definition>your &quot;Information&quot;</Definition>).
-              You assume all risks associated with your Information,
-              including reliance on its quality, accuracy or
-              reliability by any other person or entity. You must
+              <Definition>your &quot;Information&quot;</Definition>
+              ). You assume all risks associated with your
+              Information, including reliance on its quality, accuracy
+              or reliability by any other person or entity. You must
               notify Wild Me immediately of any breach of security or
               unauthorized use of your user account. Although Wild Me
               will not be liable for your losses caused by any

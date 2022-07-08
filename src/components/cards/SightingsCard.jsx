@@ -13,7 +13,7 @@ import ActionIcon from '../ActionIcon';
 import { cellRendererTypes } from '../dataDisplays/cellRenderers';
 import DataDisplay from '../dataDisplays/DataDisplay';
 import Card from './Card';
-import SightingMapView from '../cards/SightingMapView';
+import SightingMapView from './SightingMapView';
 
 export default function SightingsCard({
   title,
@@ -33,23 +33,20 @@ export default function SightingsCard({
   const mapModeClicked = () => setShowMapView(true);
   const listModeClicked = () => setShowMapView(false);
 
-  const sightingsWithLocationData = useMemo(
-    () => {
-      // hotfix //
-      if (!sightings) return [];
-      // hotfix //
+  const sightingsWithLocationData = useMemo(() => {
+    // hotfix //
+    if (!sightings) return [];
+    // hotfix //
 
-      return sightings.map(sighting => ({
-        ...sighting,
-        formattedLocation: formatLocationFromSighting(
-          sighting,
-          regionOptions,
-          intl,
-        ),
-      }));
-    },
-    [get(sightings, 'length')],
-  );
+    return sightings.map(sighting => ({
+      ...sighting,
+      formattedLocation: formatLocationFromSighting(
+        sighting,
+        regionOptions,
+        intl,
+      ),
+    }));
+  }, [get(sightings, 'length')]);
 
   const allColumns = [
     {

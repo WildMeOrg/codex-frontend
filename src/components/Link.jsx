@@ -35,6 +35,8 @@ function Link(
 
   if (external) {
     return (
+      /* eslint-disable react/jsx-no-target-blank */
+      /* This rule is actually followed, but eslint doesn't understand the ternary */
       <a
         href={href}
         target={newTab ? '_blank' : undefined}
@@ -46,6 +48,7 @@ function Link(
       >
         {children}
       </a>
+      /* eslint-enable react/jsx-no-target-blank */
     );
   }
 

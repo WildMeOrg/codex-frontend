@@ -7,7 +7,7 @@ import useEditLabel from '../../../hooks/useEditLabel';
 import useDescription from '../../../hooks/useDescription';
 import FormCore from './FormCore';
 
-const TextInput = function(props) {
+const TextInput = function (props) {
   const {
     schema,
     value,

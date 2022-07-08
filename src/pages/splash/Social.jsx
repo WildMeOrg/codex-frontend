@@ -8,7 +8,7 @@ import TwitterIcon from '@material-ui/icons/Twitter';
 import useSiteSettings from '../../models/site/useSiteSettings';
 import Text from '../../components/Text';
 
-const SocialButton = function({ Icon, href }) {
+const SocialButton = function ({ Icon, href }) {
   const theme = useTheme();
 
   return (

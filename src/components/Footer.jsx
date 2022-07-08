@@ -13,7 +13,7 @@ import Link from './Link';
 import BannerLogo from './BannerLogo';
 import Text from './Text';
 
-const Menu = function({ labelId, schema, themeColor }) {
+const Menu = function ({ labelId, schema, themeColor }) {
   const { data } = useSiteSettings();
   const matches = useMediaQuery(
     '(min-width: 300px) and (max-width: 900px)',

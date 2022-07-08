@@ -46,121 +46,105 @@ export default function MatchSighting() {
     error: matchResultsError,
   } = useMatchResults(sightingGuid);
 
-  const [
-    selectedQueryAnnotation,
-    setSelectedQueryAnnotation,
-  ] = useState(null);
+  const [selectedQueryAnnotation, setSelectedQueryAnnotation] =
+    useState(null);
 
-  const [
-    selectedMatchCandidate,
-    setSelectedMatchCandidate,
-  ] = useState(null);
+  const [selectedMatchCandidate, setSelectedMatchCandidate] =
+    useState(null);
 
   const [reviewDialogOpen, setReviewDialogOpen] = useState(false);
 
-  const queryAnnotations = useMemo(
-    () => {
-      const annotationData = get(matchResults, 'annotation_data', {});
-      const originalQueryAnnotations = get(
-        matchResults,
-        'query_annotations',
-        [],
-      );
-      return originalQueryAnnotations.map((annotSageData, index) => {
-        const hotspotterAnnotationScores = get(
-          annotSageData,
-          ['algorithms', 'hotspotter_nosv', 'scores_by_annotation'],
-          [],
-        );
-        const topScoreAnnotation = maxBy(
-          hotspotterAnnotationScores,
-          'score',
-        );
-        const annotHoustonData = get(
-          annotationData,
-          annotSageData?.guid,
-          {},
-        );
-        return {
-          ...annotHoustonData,
-          ...annotSageData,
-          topScore: topScoreAnnotation?.score,
-          index,
-        };
-      });
-    },
-    [matchResults],
-  );
-
-  const matchCandidates = useMemo(
-    () => {
+  const queryAnnotations = useMemo(() => {
+    const annotationData = get(matchResults, 'annotation_data', {});
+    const originalQueryAnnotations = get(
+      matchResults,
+      'query_annotations',
+      [],
+    );
+    return originalQueryAnnotations.map((annotSageData, index) => {
       const hotspotterAnnotationScores = get(
-        selectedQueryAnnotation,
+        annotSageData,
         ['algorithms', 'hotspotter_nosv', 'scores_by_annotation'],
         [],
       );
-
-      function findMatchingAnnotation(scoreObject) {
-        return get(matchResults, [
-          'annotation_data',
-          scoreObject?.guid,
-        ]);
-      }
-
-      return hotspotterAnnotationScores
-        .filter(findMatchingAnnotation)
-        .map((scoreObject, index) => {
-          const matchingAnnotation = findMatchingAnnotation(
-            scoreObject,
-          );
-          return {
-            ...matchingAnnotation,
-            ...scoreObject,
-            index,
-          };
-        });
-    },
-    [matchResults, selectedQueryAnnotation],
-  );
-
-  const confirmMatchHref = useMemo(
-    () => {
-      const individualGuid1 = deriveIndividualGuid(
-        selectedQueryAnnotation,
+      const topScoreAnnotation = maxBy(
+        hotspotterAnnotationScores,
+        'score',
       );
-      const individualGuid2 = deriveIndividualGuid(
-        selectedMatchCandidate,
+      const annotHoustonData = get(
+        annotationData,
+        annotSageData?.guid,
+        {},
       );
-      const encounterGuid1 = selectedQueryAnnotation?.encounter_guid;
-      const encounterGuid2 = selectedMatchCandidate?.encounter_guid;
-      if (individualGuid1 && individualGuid2) {
-        return `/merge?i=${individualGuid1}&i=${individualGuid2}`;
-      } else if (individualGuid1 || individualGuid2) {
-        const individualGuid = individualGuid1 || individualGuid2;
-        const encounterGuid = individualGuid1
-          ? encounterGuid2
-          : encounterGuid1;
-        return `/assign-annotations?i=${individualGuid}&e=${encounterGuid}`;
-      } else {
-        return `/create-individual?e=${encounterGuid1}&e=${encounterGuid2}`;
-      }
-    },
-    [selectedQueryAnnotation, selectedMatchCandidate],
-  );
+      return {
+        ...annotHoustonData,
+        ...annotSageData,
+        topScore: topScoreAnnotation?.score,
+        index,
+      };
+    });
+  }, [matchResults]);
 
-  useEffect(
-    () => {
-      if (!selectedQueryAnnotation)
-        setSelectedQueryAnnotation(queryAnnotations?.[0]);
-      if (matchCandidates)
-        setSelectedMatchCandidate(matchCandidates?.[0]);
-    },
-    [
-      queryAnnotations,
-      selectedQueryAnnotation?.guid,
-      matchCandidates,
-    ],
-  );
+  const matchCandidates = useMemo(() => {
+    const hotspotterAnnotationScores = get(
+      selectedQueryAnnotation,
+      ['algorithms', 'hotspotter_nosv', 'scores_by_annotation'],
+      [],
+    );
+
+    function findMatchingAnnotation(scoreObject) {
+      return get(matchResults, [
+        'annotation_data',
+        scoreObject?.guid,
+      ]);
+    }
+
+    return hotspotterAnnotationScores
+      .filter(findMatchingAnnotation)
+      .map((scoreObject, index) => {
+        const matchingAnnotation =
+          findMatchingAnnotation(scoreObject);
+        return {
+          ...matchingAnnotation,
+          ...scoreObject,
+          index,
+        };
+      });
+  }, [matchResults, selectedQueryAnnotation]);
+
+  const confirmMatchHref = useMemo(() => {
+    const individualGuid1 = deriveIndividualGuid(
+      selectedQueryAnnotation,
+    );
+    const individualGuid2 = deriveIndividualGuid(
+      selectedMatchCandidate,
+    );
+    const encounterGuid1 = selectedQueryAnnotation?.encounter_guid;
+    const encounterGuid2 = selectedMatchCandidate?.encounter_guid;
+    if (individualGuid1 && individualGuid2) {
+      return `/merge?i=${individualGuid1}&i=${individualGuid2}`;
+    } else if (individualGuid1 || individualGuid2) {
+      const individualGuid = individualGuid1 || individualGuid2;
+      const encounterGuid = individualGuid1
+        ? encounterGuid2
+        : encounterGuid1;
+      return `/assign-annotations?i=${individualGuid}&e=${encounterGuid}`;
+    } else {
+      return `/create-individual?e=${encounterGuid1}&e=${encounterGuid2}`;
+    }
+  }, [selectedQueryAnnotation, selectedMatchCandidate]);
+
+  useEffect(() => {
+    if (!selectedQueryAnnotation)
+      setSelectedQueryAnnotation(queryAnnotations?.[0]);
+    if (matchCandidates)
+      setSelectedMatchCandidate(matchCandidates?.[0]);
+  }, [
+    queryAnnotations,
+    selectedQueryAnnotation,
+    selectedQueryAnnotation?.guid,
+    matchCandidates,
+  ]);
 
   useDocumentTitle(`Match results for sighting ${sightingGuid}`, {
     translateMessage: false,
