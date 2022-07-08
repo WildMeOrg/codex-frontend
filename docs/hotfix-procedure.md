@@ -14,7 +14,7 @@ Next you need to fix the bug. Unfortunately this guide can't tell you how to fix
 7. Merge the pull request 
 8. Create a new tag for your release and deploy to production. 
 
-Finally, you need to get your change into the develop branch as well.
+Finally, you need to get your change into the develop branch as well. From your hotfix branch, run:
 
 9. `git pull origin develop`
 10. Fix any merge conflicts and verify the bugfix works on develop as well.

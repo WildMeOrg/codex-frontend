@@ -33,4 +33,4 @@ If you want to help translate the project, that is very much appreciated and nee
 
 ## Making a hotfix
 
-Likely you wont need to make a hotfix unless you are a Wild Me employee, but if the need arises please follow the [hotfix procedures](https://github.com/WildMeOrg/codex-frontend/blob/master/docs/hotfix-procedure.md).
+Likely you wont need to make a hotfix unless you are a Wild Me employee, but if the need arises please follow the [hotfix procedures](https://github.com/WildMeOrg/codex-frontend/blob/develop/docs/hotfix-procedure.md).
