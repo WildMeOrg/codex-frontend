@@ -5,7 +5,7 @@ First, resolve any potential merge conflicts with main on the develop branch
 1. `git checkout develop`
 2. `git pull origin develop`
 3. `git checkout main`
-4. `git merge develop`
+4. `git merge develop` (there should be no merge conflicts)
 
 Then, draft a new release of the main branch on GitHub:
 
