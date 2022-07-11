@@ -1,7 +1,7 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
 
-import { get, find, filter } from 'lodash-es';
+import { get, filter } from 'lodash-es';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Switch from '@material-ui/core/Switch';
 import FormGroup from '@material-ui/core/FormGroup';
@@ -11,15 +11,7 @@ import TextInput from '../../../../../components/inputs/TextInput';
 import DeleteButton from '../../../../../components/DeleteButton';
 
 function deleteRole(roles, roleGuid) {
-  const focalRole = find(roles, role => role?.guid === roleGuid);
-  if (focalRole) {
-    const remainingRoles = filter(
-      roles,
-      role => role?.guid !== roleGuid,
-    );
-    return remainingRoles;
-  }
-  return roles;
+  return filter(roles, role => role?.guid !== roleGuid);
 }
 
 function updateRoleLabel(roles, roleGuid, newRoleLabel) {
@@ -52,7 +44,7 @@ export default function SocialGroupRole({
   const checked = get(currentRole, 'multipleInGroup', false);
 
   return (
-    <div style={{ marginLeft: 32, marginTop: 10 }} key={roleGuid}>
+    <div style={{ marginLeft: 32, marginTop: 10 }}>
       <FormGroup>
         <FormControlLabel
           control={

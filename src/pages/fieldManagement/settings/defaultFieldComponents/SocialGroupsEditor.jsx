@@ -2,12 +2,11 @@ import React, { useState } from 'react';
 import { useIntl } from 'react-intl';
 
 import { v4 as uuid } from 'uuid';
-import { get, uniq, map } from 'lodash-es';
+import { get, uniq, map, some, filter } from 'lodash-es';
 
 import ConfigureDefaultField from './ConfigureDefaultField';
 import Text from '../../../../components/Text';
 import Button from '../../../../components/Button';
-import Alert from '../../../../components/Alert';
 import SocialGroupRole from './SocialGroupComponents/SocialGroupRole';
 
 function createRole(roles) {
@@ -21,13 +20,13 @@ function createRole(roles) {
 function validateSocialGroups(roles, intl) {
   const errors = [];
   const roleLabels = roles.map(role => role?.label);
-  const emptyRoleLabels = roleLabels.filter(label => !label);
-  if (emptyRoleLabels.length > 0)
+  if (some(roleLabels, roleLabel => !roleLabel)) {
     errors.push(
       intl.formatMessage({
         id: 'ONE_OR_MORE_ROLES_MISSING_LABELS',
       }),
     );
+  }
   const uniqueRoleLabels = uniq(roleLabels);
   if (uniqueRoleLabels.length !== roleLabels.length)
     errors.push(
@@ -45,22 +44,28 @@ export default function SocialGroupsEditor({
   setFormSettings,
 }) {
   const intl = useIntl();
-  const [fromErrors, setFormErrors] = useState(null);
+  const [formErrors, setFormErrors] = useState(null);
   function setRoles(roles) {
     setFormSettings({ ...formSettings, socialGroups: roles });
   }
 
   const roles = get(formSettings, 'socialGroups', []);
+  const safeRoles = filter(roles, role => Boolean(role));
 
   return (
     <ConfigureDefaultField
       onClose={onClose}
       onSubmit={() => {
-        const errors = validateSocialGroups(roles, intl);
+        const errors = validateSocialGroups(safeRoles, intl);
         setFormErrors(errors);
         if (!errors) onSubmit();
       }}
       open
+      error={formErrors?.map(error => (
+        <Text key={error} variant="body2">
+          {error}
+        </Text>
+      ))}
     >
       <div
         style={{
@@ -70,12 +75,13 @@ export default function SocialGroupsEditor({
         }}
       >
         <Text
+          style={{ maxWidth: 500 }}
           variant="h5"
           id="CONFIGURATION_SOCIAL_GROUP_ROLES_LABEL"
         />
         <Button
           onClick={() => {
-            setRoles(createRole(roles));
+            setRoles(createRole(safeRoles));
           }}
           style={{ width: 200 }}
           size="small"
@@ -87,7 +93,7 @@ export default function SocialGroupsEditor({
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          width: 500,
+          maxWidth: 500,
         }}
       >
         <Text
@@ -102,28 +108,15 @@ export default function SocialGroupsEditor({
           padding: 20,
         }}
       >
-        {map(
-          roles,
-          role => (
-            <SocialGroupRole
-              key={role?.guid}
-              roles={roles}
-              currentRole={role}
-              onChange={setRoles}
-            />
-          ),
-          [],
-        )}
+        {map(safeRoles, role => (
+          <SocialGroupRole
+            key={role?.guid}
+            roles={safeRoles}
+            currentRole={role}
+            onChange={setRoles}
+          />
+        ))}
       </div>
-      {fromErrors && (
-        <Alert severity="error" titleId="AN_ERROR_OCCURRED">
-          {fromErrors.map(error => (
-            <Text key={error} variant="body2">
-              {error}
-            </Text>
-          ))}
-        </Alert>
-      )}
     </ConfigureDefaultField>
   );
 }

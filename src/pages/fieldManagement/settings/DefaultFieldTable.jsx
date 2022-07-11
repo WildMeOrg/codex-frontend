@@ -48,17 +48,22 @@ const configurableFields = [
 ];
 
 function getInitialFormState(siteSettings) {
-  const regions = get(siteSettings, ['site.custom.regions', 'value']);
+  const regions = get(
+    siteSettings,
+    ['site.custom.regions', 'value'],
+    [],
+  );
   const species = get(siteSettings, ['site.species', 'value'], []);
   const relationships = get(
     siteSettings,
     ['relationship_type_roles', 'value'],
     [],
   );
-  const socialGroups = get(siteSettings, [
-    'social_group_roles',
-    'value',
-  ]);
+  const socialGroups = get(
+    siteSettings,
+    ['social_group_roles', 'value'],
+    [],
+  );
 
   return { regions, species, relationships, socialGroups };
 }
