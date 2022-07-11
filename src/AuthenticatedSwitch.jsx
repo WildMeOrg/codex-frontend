@@ -6,7 +6,7 @@ import { TransitionGroup } from 'react-transition-group';
 import AuthenticatedAppHeader from './components/AuthenticatedAppHeader';
 import SaveCustomField from './pages/fieldManagement/settings/saveField/SaveField';
 import GeneralSettings from './pages/generalSettings/GeneralSettings';
-import ServerStatus from './pages/serverStatus/ServerStatus';
+import SiteStatus from './pages/siteStatus/SiteStatus';
 import SplashSettings from './pages/splashSettings/SplashSettings';
 import FieldManagement from './pages/fieldManagement/FieldManagement';
 import UserManagement from './pages/userManagement/UserManagement';
@@ -100,7 +100,7 @@ export default function AuthenticatedSwitch({
                         <Splash />
                       </Route>
                       <Route path="/admin/status">
-                        <ServerStatus />
+                        <SiteStatus />
                       </Route>
                       <Route path="/admin/users">
                         <UserManagement />

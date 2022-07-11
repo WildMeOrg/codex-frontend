@@ -727,7 +727,7 @@
   "LOCATION_DESCRIPTION": "The precise decimal latitude and longitude where the sighting took place.",
   "WEBSITE": "Website",
   "REVIEW_MATCH_CANDIDATES": "Review match candidates",
-  "SERVER_STATUS": "Server Status",
+  "SITE_STATUS_PAGE_TITLE": "Site Status",
   "YOUR_NAME": "Your name",
   "CHOOSE_PHOTO": "Choose photo",
   "EMAIL_ADDRESS": "Email address",

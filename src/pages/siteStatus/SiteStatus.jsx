@@ -62,13 +62,13 @@ const categoryData = {
   },
 };
 
-export default function ServerStatus() {
+export default function SiteStatus() {
   const theme = useTheme();
   const isXs = useMediaQuery(theme.breakpoints.only('xs'));
   const { data: siteInfo, loading: siteInfoLoading } =
     useGetSiteInfo();
 
-  useDocumentTitle('SERVER_STATUS');
+  useDocumentTitle('SITE_STATUS_PAGE_TITLE');
 
   const { data, error, isLoading } = useSageJobs();
   const { lastHour, twoWeeks, byStatus } =
@@ -106,9 +106,9 @@ export default function ServerStatus() {
         variant="h3"
         component="h3"
         style={{ padding: '16px 0 16px 16px' }}
-        id="SERVER_STATUS"
+        id="SITE_STATUS_PAGE_TITLE"
       />
-      <SettingsBreadcrumbs currentPageTextId="SERVER_STATUS" />
+      <SettingsBreadcrumbs currentPageTextId="SITE_STATUS_PAGE_TITLE" />
       <div style={{ padding: 16, boxSizing: 'border-box' }}>
         <Text variant="h5" id="VERSIONS" />
         <SuperText
