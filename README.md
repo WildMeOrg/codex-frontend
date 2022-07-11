@@ -6,7 +6,7 @@ The frontend for Codex, written in React with Material UI components. This proje
 
 Found a bug? Submit a report [here](https://github.com/WildMeOrg/codex-frontend/issues/new).
 
-Developer contributions are very much appreciated. Refer to the [contribution guide](https://github.com/WildMeOrg/codex-frontend/blob/master/CONTRIBUTION_GUIDE.md). If you are a Python dev looking to help with our project, take a look at the [backend](https://github.com/WildMeOrg/houston). If you are a data scientist looking to help, take a look at [WBIA](https://github.com/WildMeOrg/wildbook-ia).
+Developer contributions are very much appreciated. Refer to the [contribution guide](https://github.com/WildMeOrg/codex-frontend/blob/develop/docs/contribution-guide.md). If you are a Python dev looking to help with our project, take a look at the [backend](https://github.com/WildMeOrg/houston). If you are a data scientist looking to help, take a look at [WBIA](https://github.com/WildMeOrg/wildbook-ia).
 
 We are also looking for help from designers and 3D modelers! Please send an email to ben@wildme.org if you are interested.
 

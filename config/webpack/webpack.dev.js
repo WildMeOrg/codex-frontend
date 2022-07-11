@@ -1,4 +1,6 @@
+const path = require('path');
 const webpack = require('webpack');
+const UnusedWebpackPlugin = require('unused-webpack-plugin');
 
 module.exports = {
   mode: 'development',
@@ -13,5 +15,10 @@ module.exports = {
     port: 3000,
     writeToDisk: true,
   },
-  plugins: [new webpack.HotModuleReplacementPlugin()],
+  plugins: [
+    new webpack.HotModuleReplacementPlugin(),
+    new UnusedWebpackPlugin({
+      directories: [path.join(__dirname, '../../src')],
+    }),
+  ],
 };

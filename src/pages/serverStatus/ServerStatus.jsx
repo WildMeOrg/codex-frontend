@@ -11,14 +11,18 @@ import { useTheme } from '@material-ui/core/styles';
 import version from '../../constants/version';
 import useGetSiteInfo from '../../models/site/useGetSiteInfo';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
-import useServerStatus from '../../models/server/useServerStatus';
+import useSageJobs from '../../models/sage/useSageJobs';
 import MainColumn from '../../components/MainColumn';
+import SuperText, {
+  superTextTypes,
+} from '../../components/SuperText';
 import Text from '../../components/Text';
 import SettingsBreadcrumbs from '../../components/SettingsBreadcrumbs';
 import SummaryCard from './components/SummaryCard';
 import LegendItem from './components/LegendItem';
 import WaffleSquare from './components/WaffleSquare';
 import { getElapsedTimeInWords } from '../../utils/formatters';
+import { getSageJobsStatistics } from '../../utils/sageUtils';
 
 const skeletonHeight = `${16 / 0.6}px`;
 
@@ -66,8 +70,9 @@ export default function ServerStatus() {
 
   useDocumentTitle('SERVER_STATUS');
 
-  const [results, error, isFetched] = useServerStatus();
-  const { lastHour, twoWeeks, byStatus } = results;
+  const { data, error, isLoading } = useSageJobs();
+  const { lastHour, twoWeeks, byStatus } =
+    getSageJobsStatistics(data);
 
   const jobsProcessedInLastHour = get(lastHour, 'jobsProcessed', 0);
   const jobsProcessedInTwoWeeks = get(twoWeeks, 'jobsProcessed', 0);
@@ -89,6 +94,12 @@ export default function ServerStatus() {
     ROUND_PRECISION,
   );
 
+  const houstonVersion = get(siteInfo, ['houston', 'version']);
+  const sageVersion = get(siteInfo, ['sage', 'version']);
+  const edmBuildDate = get(siteInfo, ['edm', 'built']);
+  const houstonHash = get(siteInfo, ['houston', 'git_version']);
+  const edmHash = get(siteInfo, ['edm', 'hash']);
+
   return (
     <MainColumn>
       <Text
@@ -99,69 +110,180 @@ export default function ServerStatus() {
       />
       <SettingsBreadcrumbs currentPageTextId="SERVER_STATUS" />
       <div style={{ padding: 16, boxSizing: 'border-box' }}>
-        <Text variant="h5">Versions</Text>
-        {siteInfoLoading ? (
-          <>
-            <Skeleton width={200} />
-            <Skeleton width={200} />
-            <Skeleton width={200} />
-          </>
-        ) : (
-          <>
-            <Text>
-              {`Frontend version: ${version.packageVersion}`}
-            </Text>
-            <Text>
-              {`Houston version: ${get(
-                siteInfo,
-                ['houston', 'version'],
-                'Unknown',
-              )}`}
-            </Text>
-            <Text>
-              {`ACM version: ${get(
-                siteInfo,
-                ['acm', 'version'],
-                'Unknown',
-              )}`}
-            </Text>
-            <Text>
-              {`EDM build date: ${get(
-                siteInfo,
-                ['edm', 'built'],
-                'Unknown',
-              )}`}
-            </Text>
-          </>
-        )}
-
-        <Text variant="h5" style={{ marginTop: 20 }}>
-          Hashes
-        </Text>
-        {siteInfoLoading ? (
-          <>
-            <Skeleton width={300} />
-            <Skeleton width={300} />
-          </>
-        ) : (
-          <>
-            <Text>{`Frontend commit: ${version.commitHash}`}</Text>
-            <Text>
-              {`Houston git hash: ${get(
-                siteInfo,
-                ['houston', 'git_version'],
-                'Unknown',
-              )}`}
-            </Text>
-            <Text>
-              {`EDM hash: ${get(
-                siteInfo,
-                ['edm', 'hash'],
-                'Unknown',
-              )}`}
-            </Text>
-          </>
-        )}
+        <Text variant="h5" id="VERSIONS" />
+        <SuperText
+          loading={siteInfoLoading}
+          data={[
+            {
+              type: superTextTypes.text,
+              id: 'COMPONENT_VERSION',
+              values: { component: 'Frontend' },
+            },
+            {
+              key: 'only-spacer',
+              type: superTextTypes.spacer,
+            },
+            {
+              types: superTextTypes.text,
+              children: version.packageVersion,
+              hide: !version.packageVersion,
+            },
+            {
+              types: superTextTypes.text,
+              id: 'UNKNOWN',
+              hide: Boolean(version.packageVersion),
+            },
+          ]}
+        />
+        <SuperText
+          loading={siteInfoLoading}
+          data={[
+            {
+              type: superTextTypes.text,
+              id: 'COMPONENT_VERSION',
+              values: { component: 'Houston' },
+            },
+            {
+              key: 'only-spacer',
+              type: superTextTypes.spacer,
+            },
+            {
+              types: superTextTypes.text,
+              children: houstonVersion,
+              hide: !houstonVersion,
+            },
+            {
+              types: superTextTypes.text,
+              id: 'UNKNOWN',
+              hide: Boolean(houstonVersion),
+            },
+          ]}
+        />
+        <SuperText
+          loading={siteInfoLoading}
+          data={[
+            {
+              type: superTextTypes.text,
+              id: 'COMPONENT_VERSION',
+              values: { component: 'Sage' },
+            },
+            {
+              key: 'only-spacer',
+              type: superTextTypes.spacer,
+            },
+            {
+              types: superTextTypes.text,
+              children: sageVersion,
+              hide: !sageVersion,
+            },
+            {
+              types: superTextTypes.text,
+              id: 'UNKNOWN',
+              hide: Boolean(sageVersion),
+            },
+          ]}
+        />
+        <SuperText
+          loading={siteInfoLoading}
+          data={[
+            {
+              type: superTextTypes.text,
+              id: 'COMPONENT_BUILD_DATE',
+              values: { component: 'EDM' },
+            },
+            {
+              key: 'only-spacer',
+              type: superTextTypes.spacer,
+            },
+            {
+              types: superTextTypes.text,
+              children: edmBuildDate,
+              hide: !edmBuildDate,
+            },
+            {
+              types: superTextTypes.text,
+              id: 'UNKNOWN',
+              hide: Boolean(edmBuildDate),
+            },
+          ]}
+        />
+        <Text
+          variant="h5"
+          id="COMMIT_HASHES"
+          style={{ marginTop: 20 }}
+        />
+        <SuperText
+          loading={siteInfoLoading}
+          data={[
+            {
+              type: superTextTypes.text,
+              id: 'COMPONENT_COMMIT_HASH',
+              values: { component: 'Frontend' },
+            },
+            {
+              key: 'only-spacer',
+              type: superTextTypes.spacer,
+            },
+            {
+              types: superTextTypes.text,
+              children: version.commitHash,
+              hide: !version.commitHash,
+            },
+            {
+              types: superTextTypes.text,
+              id: 'UNKNOWN',
+              hide: Boolean(version.commitHash),
+            },
+          ]}
+        />
+        <SuperText
+          loading={siteInfoLoading}
+          data={[
+            {
+              type: superTextTypes.text,
+              id: 'COMPONENT_COMMIT_HASH',
+              values: { component: 'Houston' },
+            },
+            {
+              key: 'only-spacer',
+              type: superTextTypes.spacer,
+            },
+            {
+              types: superTextTypes.text,
+              children: houstonHash,
+              hide: !houstonHash,
+            },
+            {
+              types: superTextTypes.text,
+              id: 'UNKNOWN',
+              hide: Boolean(houstonHash),
+            },
+          ]}
+        />
+        <SuperText
+          loading={siteInfoLoading}
+          data={[
+            {
+              type: superTextTypes.text,
+              id: 'COMPONENT_COMMIT_HASH',
+              values: { component: 'EDM' },
+            },
+            {
+              key: 'only-spacer',
+              type: superTextTypes.spacer,
+            },
+            {
+              types: superTextTypes.text,
+              children: edmHash,
+              hide: !edmHash,
+            },
+            {
+              types: superTextTypes.text,
+              id: 'UNKNOWN',
+              hide: Boolean(edmHash),
+            },
+          ]}
+        />
         {error ? (
           <Text color="error" id="REQUEST_ERROR" />
         ) : (
@@ -187,7 +309,7 @@ export default function ServerStatus() {
                   <SummaryCard
                     xs={12}
                     sm={4}
-                    loading={!isFetched}
+                    loading={isLoading}
                     title={
                       <FormattedMessage id="SERVER_SUMMARY_TURNAROUND_TIME" />
                     }
@@ -211,7 +333,7 @@ export default function ServerStatus() {
                   <SummaryCard
                     xs={12}
                     sm={4}
-                    loading={!isFetched}
+                    loading={isLoading}
                     title={
                       <FormattedMessage id="SERVER_SUMMARY_RUN_TIME" />
                     }
@@ -235,7 +357,7 @@ export default function ServerStatus() {
                   <SummaryCard
                     xs={12}
                     sm={4}
-                    loading={!isFetched}
+                    loading={isLoading}
                     title={
                       <FormattedMessage id="SERVER_SUMMARY_JOBS_PROCESSED" />
                     }
@@ -265,7 +387,7 @@ export default function ServerStatus() {
               <SummaryCard
                 xs={12}
                 sm={4}
-                loading={!isFetched}
+                loading={isLoading}
                 title={
                   <FormattedMessage id="SERVER_SUMMARY_TURNAROUND_TIME" />
                 }
@@ -289,7 +411,7 @@ export default function ServerStatus() {
               <SummaryCard
                 xs={12}
                 sm={4}
-                loading={!isFetched}
+                loading={isLoading}
                 title={
                   <FormattedMessage id="SERVER_SUMMARY_RUN_TIME" />
                 }
@@ -311,7 +433,7 @@ export default function ServerStatus() {
               <SummaryCard
                 xs={12}
                 sm={4}
-                loading={!isFetched}
+                loading={isLoading}
                 title={
                   <FormattedMessage id="SERVER_SUMMARY_JOBS_IN_QUEUE" />
                 }
@@ -340,7 +462,15 @@ export default function ServerStatus() {
                 )}
               </dl>
             </header>
-            {isFetched ? (
+            {isLoading ? (
+              <>
+                <Skeleton height={skeletonHeight} />
+                <Skeleton height={skeletonHeight} />
+                <Skeleton height={skeletonHeight} />
+                <Skeleton height={skeletonHeight} />
+                <Skeleton height={skeletonHeight} width="60%" />
+              </>
+            ) : (
               <div style={{ padding: 0, margin: -3 }}>
                 {Object.entries(byStatus)
                   .filter(entry => entry[1].length > 0)
@@ -365,14 +495,6 @@ export default function ServerStatus() {
                     </React.Fragment>
                   ))}
               </div>
-            ) : (
-              <>
-                <Skeleton height={skeletonHeight} />
-                <Skeleton height={skeletonHeight} />
-                <Skeleton height={skeletonHeight} />
-                <Skeleton height={skeletonHeight} />
-                <Skeleton height={skeletonHeight} width="60%" />
-              </>
             )}
           </>
         )}
