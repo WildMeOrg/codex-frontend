@@ -88,19 +88,12 @@ export default function SocialGroupsEditor({
           id="NEW_SOCIAL_GROUP_ROLE"
         />
       </div>
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          maxWidth: 500,
-        }}
-      >
-        <Text
-          variant="caption"
-          id="CONFIGURATION_SOCIAL_GROUP_ROLES_DESCRIPTION"
-        />
-      </div>
+      <Text
+        style={{ maxWidth: 500 }}
+        variant="caption"
+        component="p"
+        id="CONFIGURATION_SOCIAL_GROUP_ROLES_DESCRIPTION"
+      />
       <div
         style={{
           display: 'flex',
