@@ -50,7 +50,7 @@ export default function SocialGroupsEditor({
   }
 
   const roles = get(formSettings, 'socialGroups', []);
-  const safeRoles = filter(roles, role => Boolean(role));
+  const safeRoles = filter(roles, role => Boolean(role?.guid));
 
   return (
     <ConfigureDefaultField

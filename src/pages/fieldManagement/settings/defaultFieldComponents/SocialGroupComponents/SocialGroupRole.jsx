@@ -8,6 +8,8 @@ import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 import TextInput from '../../../../../components/inputs/TextInput';
+import Alert from '../../../../../components/Alert';
+import Text from '../../../../../components/Text';
 import DeleteButton from '../../../../../components/DeleteButton';
 
 function deleteRole(roles, roleGuid) {
@@ -43,6 +45,21 @@ export default function SocialGroupRole({
 
   const checked = get(currentRole, 'multipleInGroup', false);
 
+  if (!roleGuid)
+    return (
+      <Alert
+        severity="error"
+        titleId="AN_ERROR_OCCURRED"
+        style={{
+          margin: '16px auto 8px auto',
+          maxHeight: '80vh',
+          width: 600,
+          padding: '0 40px',
+        }}
+      >
+        <Text id="ROLE_GUID_MISSING" />
+      </Alert>
+    );
   return (
     <div style={{ marginLeft: 32, marginTop: 10 }}>
       <FormGroup>

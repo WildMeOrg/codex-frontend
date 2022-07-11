@@ -1134,5 +1134,6 @@
   "NEW_SOCIAL_GROUP_ROLE": "Add role",
   "ALLOW_MULTIPLE_OF_THIS_ROLE": "Allow multiple of this role",
   "ONE_OR_MORE_ROLES_MISSING_LABELS": "One or more roles are missing labels",
-  "TWO_OR_MORE_ROLES_SAME_LABEL": "Two or more roles have the same label. Make sure each label is different"
+  "TWO_OR_MORE_ROLES_SAME_LABEL": "Two or more roles have the same label. Make sure each label is different",
+  "ROLE_GUID_MISSING": "Role is missing ID"
 }
