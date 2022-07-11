@@ -124,6 +124,7 @@ export default function SiteStatus() {
               type: superTextTypes.spacer,
             },
             {
+              key: 'version',
               types: superTextTypes.text,
               children: version.packageVersion,
               hide: !version.packageVersion,
@@ -148,6 +149,7 @@ export default function SiteStatus() {
               type: superTextTypes.spacer,
             },
             {
+              key: 'version',
               types: superTextTypes.text,
               children: houstonVersion,
               hide: !houstonVersion,
@@ -172,6 +174,7 @@ export default function SiteStatus() {
               type: superTextTypes.spacer,
             },
             {
+              key: 'version',
               types: superTextTypes.text,
               children: sageVersion,
               hide: !sageVersion,
@@ -196,6 +199,7 @@ export default function SiteStatus() {
               type: superTextTypes.spacer,
             },
             {
+              key: 'build-date',
               types: superTextTypes.text,
               children: edmBuildDate,
               hide: !edmBuildDate,
@@ -225,6 +229,7 @@ export default function SiteStatus() {
               type: superTextTypes.spacer,
             },
             {
+              key: 'commit-hash',
               types: superTextTypes.text,
               children: version.commitHash,
               hide: !version.commitHash,
@@ -249,6 +254,7 @@ export default function SiteStatus() {
               type: superTextTypes.spacer,
             },
             {
+              key: 'commit-hash',
               types: superTextTypes.text,
               children: houstonHash,
               hide: !houstonHash,
@@ -273,6 +279,7 @@ export default function SiteStatus() {
               type: superTextTypes.spacer,
             },
             {
+              key: 'commit-hash',
               types: superTextTypes.text,
               children: edmHash,
               hide: !edmHash,
