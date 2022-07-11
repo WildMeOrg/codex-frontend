@@ -12,6 +12,7 @@ import Text from '../../../components/Text';
 import categoryTypes from '../../../constants/categoryTypes';
 import { RegionEditor } from './defaultFieldComponents/Editors';
 import RelationshipEditor from './defaultFieldComponents/RelationshipEditor';
+import SocialGroupsEditor from './defaultFieldComponents/SocialGroupsEditor';
 import SpeciesEditor from './defaultFieldComponents/SpeciesEditor';
 import { cellRendererTypes } from '../../../components/dataDisplays/cellRenderers';
 
@@ -37,18 +38,34 @@ const configurableFields = [
     type: categoryTypes.individual,
     Editor: RelationshipEditor,
   },
+  {
+    id: 'socialGroups',
+    backendPath: 'social_group_roles',
+    labelId: 'SOCIAL_GROUPS',
+    type: categoryTypes.individual,
+    Editor: SocialGroupsEditor,
+  },
 ];
 
 function getInitialFormState(siteSettings) {
-  const regions = get(siteSettings, ['site.custom.regions', 'value']);
+  const regions = get(
+    siteSettings,
+    ['site.custom.regions', 'value'],
+    [],
+  );
   const species = get(siteSettings, ['site.species', 'value'], []);
   const relationships = get(
     siteSettings,
     ['relationship_type_roles', 'value'],
     [],
   );
+  const socialGroups = get(
+    siteSettings,
+    ['social_group_roles', 'value'],
+    [],
+  );
 
-  return { regions, species, relationships };
+  return { regions, species, relationships, socialGroups };
 }
 
 export default function DefaultFieldTable({
@@ -135,6 +152,13 @@ export default function DefaultFieldTable({
               const response = await putSiteSetting({
                 property: editField.backendPath,
                 data: formSettings.relationships,
+              });
+              if (response?.status === 200) onCloseEditor();
+            }
+            if (editField?.id === 'socialGroups') {
+              const response = await putSiteSetting({
+                property: editField.backendPath,
+                data: formSettings.socialGroups,
               });
               if (response?.status === 200) onCloseEditor();
             }
