@@ -33,7 +33,9 @@ jobs:
 
       # Build images
       - name: Build docker image
-        run: ./build-n-push.sh --tag dev
+        run: |
+          TAG=$(echo ${GITHUB_REF_NAME} | sed 's/^v\([0-9.].\)/\1/')
+          ./build-n-push.sh --tag ${TAG} --git-ref ${GITHUB_REF_NAME}
         working-directory: ./prod
 
       # Notify status in Slack
