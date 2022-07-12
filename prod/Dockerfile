@@ -1,7 +1,8 @@
 FROM node:lts as dist-build
+ARG git_ref=develop
 RUN set -x \
     && cd /tmp \
-    && git clone https://github.com/WildMeOrg/codex-frontend.git
+    && git clone --branch ${git_ref} https://github.com/WildMeOrg/codex-frontend.git
 # Install dependencies & build distribution
 RUN set -ex \
     && cd /tmp/codex-frontend \
