@@ -100,6 +100,11 @@ export default function AssetGroup() {
   );
   const isPreparationFailed = pipelineStatusPreparation.failed;
 
+  const showPreparationInProgressAlert = !(
+    isPreparationFailed ||
+    isProgressSettled(pipelineStatusPreparation)
+  );
+
   return (
     <MainColumn fullWidth>
       <ConfirmDelete
@@ -157,26 +162,25 @@ export default function AssetGroup() {
           severity="error"
         />
       )}
-      {!isPreparationFailed &&
-        !isProgressSettled(pipelineStatusPreparation) && (
-          <>
-            <LinearProgress
-              style={{
-                borderTopLeftRadius: '4px',
-                borderTopRightRadius: '4px',
-              }}
-            />
-            <CustomAlert
-              titleId="PENDING_IMAGE_PROCESSING"
-              descriptionId="PENDING_IMAGE_PROCESSING_MESSAGE"
-              severity="info"
-              style={{
-                borderTopLeftRadius: '0px',
-                borderTopRightRadius: '0px',
-              }}
-            />
-          </>
-        )}
+      {showPreparationInProgressAlert && (
+        <>
+          <LinearProgress
+            style={{
+              borderTopLeftRadius: 4,
+              borderTopRightRadius: 4,
+            }}
+          />
+          <CustomAlert
+            titleId="PENDING_IMAGE_PROCESSING"
+            descriptionId="PENDING_IMAGE_PROCESSING_MESSAGE"
+            severity="info"
+            style={{
+              borderTopLeftRadius: 0,
+              borderTopRightRadius: 0,
+            }}
+          />
+        </>
+      )}
       <AGSTable
         assetGroupSightings={get(data, 'asset_group_sightings', [])}
       />
