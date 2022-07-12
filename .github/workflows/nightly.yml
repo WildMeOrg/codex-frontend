@@ -34,9 +34,16 @@ jobs:
       #   run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
 
       # Build images
-      - name: Build docker image
+      - name: Build docker image (push)
+        if: ${{ github.event_name == 'push' }}
         run: |
           TAG=$(echo ${GITHUB_REF_NAME} | sed 's/^v\([0-9.].\)/\1/')
+          ./build-n-push.sh --tag ${TAG} --git-ref ${GITHUB_REF_NAME}
+        working-directory: ./prod
+      - name: Build docker image (pull_request)
+        if: ${{ github.event_name == 'pull_request' }}
+        run: |
+          TAG=$(echo ${GITHUB_REF_NAME} | sed 's/([0-9].\)\/merge/pr-\1/')
           ./build-n-push.sh --tag ${TAG} --git-ref ${GITHUB_REF_NAME}
         working-directory: ./prod
 
