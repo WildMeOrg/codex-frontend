@@ -81,7 +81,14 @@ const WaffleSquare = function ({
   });
   formattedJobData[dateReceivedLabel] = dateReceivedValue;
 
-  const ariaLabel = `${jobCounterLabel} ${jobCounterValue}; ${statusLabel} ${statusValue}; ${dateReceivedLabel} ${dateReceivedValue}`;
+  const ariaLabel = intl.formatMessage(
+    { id: 'SERVER_TOOLTIP_SUMMARY' },
+    {
+      jobcounter: jobCounterValue,
+      status: statusValue,
+      dateReceived: dateReceivedValue,
+    },
+  );
 
   return (
     <LightTooltip

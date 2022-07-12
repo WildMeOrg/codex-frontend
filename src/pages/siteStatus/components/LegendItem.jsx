@@ -1,11 +1,18 @@
 import React from 'react';
+import { useIntl } from 'react-intl';
+
 import Text from '../../../components/Text';
 
 export default function LegendItem({ color, label }) {
+  const intl = useIntl();
+
   return (
     <div style={{ display: 'flex', alignItems: 'center' }}>
       <dt
-        aria-label={`${color} legend box`}
+        aria-label={intl.formatMessage(
+          { id: 'SERVER_COLOR_LEGEND_BOX' },
+          { color },
+        )}
         style={{
           backgroundColor: color,
           display: 'inline-block',

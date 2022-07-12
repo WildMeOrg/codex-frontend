@@ -20,7 +20,7 @@ function SuperTextElement({ datum }) {
   const spaces = datum?.spaces || 1;
   if (isSpacer) return repeat(' ', spaces);
 
-  const textProps = omit(datum, ['type']);
+  const textProps = omit(datum, ['type', 'hide']);
   return <Text component="span" {...textProps} />;
 }
 
