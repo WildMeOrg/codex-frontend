@@ -1,1 +1,0 @@
-This `Dockerfile` is used to make a static build of the frontend code that is then served by nginx. This is intended to be a temporary solution. We would ideally like to mount the built code into the basic nginx image for serving. This method however requires less configuration, which is fine for a temporary solution.
