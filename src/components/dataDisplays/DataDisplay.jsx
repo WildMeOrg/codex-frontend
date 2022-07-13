@@ -65,7 +65,6 @@ export default function DataDisplay({
   tableStyles = {},
   cellStyles = {},
   stickyHeader = true,
-  horizontalScroll = true,
   maxHeight,
   ...rest
 }) {
@@ -262,8 +261,7 @@ export default function DataDisplay({
         component={variant === 'secondary' ? Paper : undefined}
         elevation={variant === 'secondary' ? 2 : undefined}
         style={{
-          overflowX: horizontalScroll ? 'auto' : undefined,
-          maxHeight: maxHeight,
+          maxHeight,
           ...paperStyles,
         }}
       >
