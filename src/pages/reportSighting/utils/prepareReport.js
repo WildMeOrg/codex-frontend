@@ -47,6 +47,7 @@ export function prepareBasicReport(
         time: sightingTime,
         timeSpecificity: sightingTimeSpecifity,
       },
+      {},
     ],
     customFields: customSightingDictionary,
   };
