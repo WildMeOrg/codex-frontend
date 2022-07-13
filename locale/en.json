@@ -1124,7 +1124,7 @@
   "COLLABORATION_RESTORE_ERROR": "Error restoring the collaboration",
   "COLLAB_RESTORE_ERROR_SUPPLEMENTAL": "Collaboration was not successfully restored.",
   "PENDING": "pending",
-  "REVIEW_PENDING_PUBLIC_SIGHTINGS": "Review pending public sightings",
+  "PENDING_CITIZEN_SCIENCE_SIGHTINGS": "Pending citizen science sightings",
   "CANDIDATE_ANNOTATIONS": "Candidate annotations",
   "SIGHTING_DELETE_VULNERABLE_INDIVIDUAL_MESSAGE": "Deleting this sighting would result in assigned individuals being deleted. Are you sure you want to continue?",
   "REQUEST_REQUIRES_ADDITIONAL_CONFIRMATION": "Request requires additional confirmation",

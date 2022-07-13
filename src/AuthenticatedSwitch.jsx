@@ -20,7 +20,7 @@ import Sighting from './pages/sighting/Sighting';
 import AssetGroupSighting from './pages/sighting/AssetGroupSighting';
 import Splash from './pages/splash/Splash';
 import AssetGroup from './pages/assetGroup/AssetGroup';
-import ReviewPendingPublicSightings from './pages/assetGroup/ReviewPendingPublicSightings';
+import PendingCitizenScienceSightings from './pages/pendingCitizenScienceSightings/PendingCitizenScienceSightings';
 import User from './pages/user/User';
 import Users from './pages/user/Users';
 import MergeIndividuals from './pages/merge/MergeIndividuals';
@@ -151,8 +151,8 @@ export default function AuthenticatedSwitch({
                       <Route path="/notifications">
                         <Notifications />
                       </Route>
-                      <Route path="/pending-public-sightings">
-                        <ReviewPendingPublicSightings />
+                      <Route path="/pending-citizen-science-sightings">
+                        <PendingCitizenScienceSightings />
                       </Route>
                       <Route path="/pending-sightings/:id">
                         <AssetGroupSighting />

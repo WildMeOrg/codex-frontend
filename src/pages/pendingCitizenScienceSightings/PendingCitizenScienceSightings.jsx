@@ -18,12 +18,12 @@ const columns = [
   'actions',
 ];
 
-export default function ReviewPendingPublicSightings() {
+export default function PendingCitizenScienceSightings() {
   const intl = useIntl();
 
   const { data, loading, error, statusCode } = usePublicAGS();
 
-  useDocumentTitle('REVIEW_PENDING_PUBLIC_SIGHTINGS');
+  useDocumentTitle('PENDING_CITIZEN_SCIENCE_SIGHTINGS');
 
   if (error) return <SadScreen statusCode={statusCode} />;
   if (loading) return <LoadingScreen />;
@@ -32,11 +32,10 @@ export default function ReviewPendingPublicSightings() {
     <MainColumn fullWidth>
       <EntityHeader
         name={intl.formatMessage({
-          id: 'REVIEW_PENDING_PUBLIC_SIGHTINGS',
+          id: 'PENDING_CITIZEN_SCIENCE_SIGHTINGS',
         })}
       />
       <HoustonSightingsDisplay
-        titleId="PENDING_PUBLIC_SIGHTINGS"
         noSightingsMsg="NO_PENDING_PUBLIC_SIGHTINGS"
         linkPath="pending-sightings"
         columns={columns}

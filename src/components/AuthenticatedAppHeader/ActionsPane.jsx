@@ -25,11 +25,11 @@ const actions = [
     icon: BulkImportIcon,
   },
   {
-    id: 'review-pending-public-sightings',
-    href: '/pending-public-sightings',
+    id: 'pending-citizen-science-sightings',
+    href: '/pending-citizen-science-sightings',
     permissionsTest: userData =>
       userData?.is_admin || userData?.is_data_manager,
-    messageId: 'PENDING_PUBLIC_SIGHTINGS',
+    messageId: 'PENDING_CITIZEN_SCIENCE_SIGHTINGS',
     icon: PublicIcon,
   },
   {
