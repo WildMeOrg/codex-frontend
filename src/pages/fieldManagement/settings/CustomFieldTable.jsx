@@ -188,6 +188,7 @@ export default function CustomFieldTable({
         columns={tableColumns}
         data={fieldSchemas}
         noResultsTextId={noFieldsTextId}
+        maxHeight={300}
       />
     </Grid>
   );

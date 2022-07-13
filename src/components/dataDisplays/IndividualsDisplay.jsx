@@ -75,6 +75,7 @@ export default function IndividualsDisplay({
       data={individuals}
       title={title}
       loading={loading}
+      maxHeight={600}
       // onPrint={() => {
       //   window.open('/individuals/picturebook', '_blank');
       // }}

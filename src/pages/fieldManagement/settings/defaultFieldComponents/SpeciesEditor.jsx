@@ -174,6 +174,7 @@ export default function SpeciesEditor({
           columns={tableColumns}
           data={searchResults || suggestedValues}
           idKey="itisTsn"
+          maxHeight={300}
         />
         <Text
           component="p"

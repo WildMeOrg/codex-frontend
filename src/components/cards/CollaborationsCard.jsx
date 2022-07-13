@@ -139,6 +139,7 @@ export default function CollaborationsCard({
         columns={columns}
         data={tableData}
         idKey="guid"
+        maxHeight={600}
       />
     </Card>
   );

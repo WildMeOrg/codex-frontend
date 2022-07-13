@@ -71,6 +71,7 @@ export default function MatchCandidatesTable({
           setSelectedMatchCandidate(nextSelection);
         }
       }}
+      maxHeight={300}
     />
   );
 }
