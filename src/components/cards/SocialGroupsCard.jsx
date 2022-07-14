@@ -6,10 +6,6 @@ import { TextField } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
-// import { useTheme } from '@material-ui/core/styles';
-// import IconButton from '@material-ui/core/IconButton';
-// import ViewChart from '@material-ui/icons/BubbleChart';
-// import ViewList from '@material-ui/icons/ViewList';
 
 import { get, map, find } from 'lodash-es';
 
@@ -26,82 +22,15 @@ import RelationshipDisplay from '../dataDisplays/RelationshipDisplay';
 import RelationshipRoleAutocomplete from '../inputs/RelationshipRoleAutocomplete';
 import useDeleteRelationships from '../../models/relationships/useDeleteRelationship';
 
-// Keeping this in because it will be re-implemented post-MVP
-// import SvgText from '../SvgText';
-// import FemaleIcon from '../svg/FemaleIcon';
-// import MaleIcon from '../svg/MaleIcon';
-// import SexUnsureIcon from '../svg/SexUnsureIcon';
-
-// const linkLength = 35;
-
-// const colorMap = {
-//   Brother: '#66c2a5',
-//   Mother: '#fc8d62',
-//   Friend: '#8da0cb',
-// };
-
-// const sexIconMap = {
-//   Male: MaleIcon,
-//   Female: FemaleIcon,
-//   Unsure: SexUnsureIcon,
-// };
-
-// const Node = function({
-//   x,
-//   y,
-//   fill,
-//   title,
-//   subtitle,
-//   linkColor,
-//   Icon,
-//   size = 8,
-// }) {
-//   const theme = useTheme();
-//   const linkStroke = linkColor || theme.palette.grey['900'];
-
-//   return (
-//     <g>
-//       <line
-//         x1={x}
-//         y1={y}
-//         x2={50}
-//         y2={50}
-//         stroke={linkStroke}
-//         strokeWidth={0.5}
-//       />
-//       <circle
-//         cx={x}
-//         cy={y}
-//         r={size}
-//         fill={fill}
-//         stroke={linkStroke}
-//         strokeWidth={0.5}
-//       />
-//       {Icon && (
-//         <Icon
-//           style={{ transform: `translate(${x}px, ${y - 5.5}px)` }}
-//         />
-//       )}
-//       <SvgText x={x} y={subtitle ? y + 2.5 : y + 1} fontSize="2.75">
-//         {title}
-//       </SvgText>
-//       {subtitle && (
-//         <SvgText x={x} y={y + 5.5} fontSize="2">
-//           {subtitle}
-//         </SvgText>
-//       )}
-//     </g>
-//   );
-// };
-
 export default function RelationshipsCard({
   relationships = [],
   individualGuid,
   loading,
-  noDataMessage = 'NO_RELATIONSHIPS',
+  noDataMessage = 'NO_SOCIAL_GROUPS',
   title,
   titleId,
-}) {
+})
+{
   const intl = useIntl();
   const noRelationships =
     Array.isArray(relationships) && relationships.length === 0;
@@ -140,7 +69,8 @@ export default function RelationshipsCard({
     currentType &&
     currentRole1 &&
     currentRole2;
-  const types = useMemo(() => {
+  const types = useMemo(() =>
+  {
     const possibleRelationships = get(
       siteSettings,
       ['relationship_type_roles', 'value'],
@@ -154,7 +84,8 @@ export default function RelationshipsCard({
     () =>
       map(
         relationships,
-        relationship => {
+        relationship =>
+        {
           const selfIndividualMember = find(
             get(relationship, 'individual_members'),
             individualMember =>
@@ -179,7 +110,8 @@ export default function RelationshipsCard({
     [relationships],
   );
 
-  const onDelete = async relationshipGuid => {
+  const onDelete = async relationshipGuid =>
+  {
     const response = await deleteRelationship({
       relationshipGuid,
       individualGuid,
@@ -191,22 +123,26 @@ export default function RelationshipsCard({
       });
   };
 
-  const onChangeType = newType => {
+  const onChangeType = newType =>
+  {
     setCurrentType(newType);
     setCurrentRole1(null);
     setCurrentRole2(null);
     setCurrentRoles(get(newType, 'roles', []));
   };
 
-  const onChangeRole1 = newRole => {
+  const onChangeRole1 = newRole =>
+  {
     setCurrentRole1(newRole);
   };
 
-  const onChangeRole2 = newRole => {
+  const onChangeRole2 = newRole =>
+  {
     setCurrentRole2(newRole);
   };
 
-  const onCloseDialog = () => {
+  const onCloseDialog = () =>
+  {
     setSelectedIndividualGuid(null);
     setOpenRelationshipDialog(false);
     setCurrentType(null);
@@ -216,7 +152,8 @@ export default function RelationshipsCard({
     clearDeleteRelationshipError();
   };
 
-  const onSubmit = async () => {
+  const onSubmit = async () =>
+  {
     const response = await postRelationship({
       individual_1_guid: individualGuid,
       individual_2_guid: selectedIndividualGuid,
@@ -224,7 +161,8 @@ export default function RelationshipsCard({
       individual_2_role_guid: currentRole2?.guid,
       type_guid: currentType?.guid,
     });
-    if (response?.status === 200) {
+    if (response?.status === 200)
+    {
       onCloseDialog();
     }
   };
@@ -241,7 +179,8 @@ export default function RelationshipsCard({
           open: false,
         })
       }
-      onDelete={async () => {
+      onDelete={async () =>
+      {
         onDelete(confirmDeleteDialog?.relationshipGuid);
       }}
       deleteInProgress={deleteRelationshipLoading}
@@ -252,7 +191,7 @@ export default function RelationshipsCard({
     <StandardDialog
       open={openRelationshipDialog}
       onClose={onCloseDialog}
-      titleId="ADD_RELATIONSHIP"
+      titleId="ADD_SOCIAL_TO_GROUP"
     >
       <DialogContent>
         <IndividualSelector
@@ -337,7 +276,7 @@ export default function RelationshipsCard({
               postRelationshipLoading
             }
             disabled={!allValid}
-            id="ADD_RELATIONSHIP"
+            id="ADD_SOCIAL_TO_GROUP"
           />
         </div>
       </DialogActions>
@@ -375,56 +314,13 @@ export default function RelationshipsCard({
 
       <Button
         style={{ marginTop: 16 }}
-        id="ADD_RELATIONSHIP"
+        id="ADD_SOCIAL_TO_GROUP"
         display="primary"
         loading={loading || loadingRelationships}
         startIcon={<AddIcon />}
         size="small"
         onClick={() => setOpenRelationshipDialog(true)}
       />
-      {/* {relationships.length === 0 ? (
-        <Text style={{ marginTop: 8, marginBottom: 12 }}>
-          This individual has no relationships.
-        </Text>
-      ) : (
-        <div>
-          <svg viewBox="0 0 100 100">
-            <rect
-              x={0}
-              width={100}
-              y={0}
-              height={100}
-              fill={backgroundColor}
-            />
-            {relationships.map((relationship, i) => {
-              const currentAngle =
-                (i * 2 * Math.PI) / relationships.length -
-                0.5 * Math.PI;
-              const x = Math.sin(currentAngle) * linkLength + 50;
-              const y = Math.cos(currentAngle) * linkLength + 50;
-
-              const Icon = sexIconMap[relationship.sex];
-              return (
-                <Node
-                  title={relationship.individual}
-                  subtitle={relationship.type}
-                  x={x}
-                  y={y}
-                  fill={colorMap[relationship.type]}
-                  Icon={Icon}
-                />
-              );
-            })}
-            <Node
-              title="Teddy"
-              x={50}
-              y={50}
-              size={10}
-              fill={theme.palette.grey['100']}
-            />
-          </svg>
-        </div>
-      )} */}
     </Card>,
   ];
 }

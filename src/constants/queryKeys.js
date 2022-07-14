@@ -12,6 +12,7 @@ export default {
   unreadNotifications: 'unreadNotifications',
   twitterBotTestResults: 'twitterBotTestResults',
   publicData: 'publicData',
+  socialGroups: 'socialGroups',
   sageJobs: ['sage', 'jobs'],
 };
 
