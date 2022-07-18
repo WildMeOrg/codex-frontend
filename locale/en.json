@@ -1148,5 +1148,7 @@
   "ONE_OR_MORE_ROLES_MISSING_LABELS": "One or more roles are missing labels",
   "TWO_OR_MORE_ROLES_SAME_LABEL": "Two or more roles have the same label. Make sure each label is different",
   "ROLE_GUID_MISSING": "Role is missing ID",
-  "UNFINISHED_OPTIONS": "Options must have valid values and labels and unique values"
+  "UNFINISHED_OPTIONS": "Options must have valid values and labels and unique values",
+  "PROGRESS_STATISTICS_QUEUE_POSITION_X": "queued behind <focus>{ahead, number}</focus> {ahead, plural, one {job} other {jobs}}",
+  "PROGRESS_STATISTICS_QUEUE_POSITION_UNKNOWN": "queue position <focus>UNKNOWN</focus>"
 }
