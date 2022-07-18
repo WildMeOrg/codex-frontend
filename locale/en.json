@@ -1150,5 +1150,8 @@
   "ROLE_GUID_MISSING": "Role is missing ID",
   "UNFINISHED_OPTIONS": "Options must have valid values and labels and unique values",
   "PROGRESS_STATISTICS_QUEUE_POSITION_X": "queued behind <focus>{ahead, number}</focus> {ahead, plural, one {job} other {jobs}}",
-  "PROGRESS_STATISTICS_QUEUE_POSITION_UNKNOWN": "queue position <focus>UNKNOWN</focus>"
+  "PROGRESS_STATISTICS_QUEUE_POSITION_UNKNOWN": "queue position <focus>UNKNOWN</focus>",
+  "PROGRESS_STATISTICS_TIME_REMAINING": "{timeRemaining} left",
+  "PROGRESS_STATISTICS_TIME_REMAINING_WRAPPING_UP": "wrapping up...",
+  "PROGRESS_STATISTICS_TIME_REMAINING_UNKNOWN": "UNKNOWN time remaining"
 }
