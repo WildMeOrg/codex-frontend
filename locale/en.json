@@ -1148,5 +1148,9 @@
   "ONE_OR_MORE_ROLES_MISSING_LABELS": "One or more roles are missing labels",
   "TWO_OR_MORE_ROLES_SAME_LABEL": "Two or more roles have the same label. Make sure each label is different",
   "ROLE_GUID_MISSING": "Role is missing ID",
-  "UNFINISHED_OPTIONS": "Options must have valid values and labels and unique values"
+  "UNFINISHED_OPTIONS": "Options must have valid values and labels and unique values",
+  "MATCHED_OPTION_MESSAGE": "The following options(s) were found: {matchedOptionsString}.",
+  "UNMATCHED_OPTION_MESSAGE": "The following asset(s) were not found and will be ignored: {unmatchedOptionsString}.",
+  "MATCHED_ASSET_MESSAGE": "The following asset(s) were found: {matchedAssetsString}.",
+  "UNMATCHED_ASSET_MESSAGE": "The following asset(s) were not found and will be ignored: {unmatchedAssetsString}."
 }

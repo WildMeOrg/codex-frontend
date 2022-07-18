@@ -65,12 +65,11 @@ export default function useBulkImportFields() {
     );
     return bulkSightingFields.map(f => {
       const additionalProperties = {};
-      if (
-        f?.fieldType === 'select' ||
-        f?.fieldType === 'multiselect'
-      ) {
+      if (f?.fieldType === 'select') {
         additionalProperties.type = 'select';
       }
+      if (f?.fieldType === 'multiselect')
+        additionalProperties.type = 'string';
       if (f?.choices) additionalProperties.options = f.choices;
       if (f.name === 'locationId') {
         additionalProperties.type = 'select';
@@ -95,12 +94,11 @@ export default function useBulkImportFields() {
     );
     return bulkEncounterFields.map(f => {
       const additionalProperties = {};
-      if (
-        f?.fieldType === 'select' ||
-        f?.fieldType === 'multiselect'
-      ) {
+      if (f?.fieldType === 'select') {
         additionalProperties.type = 'select';
       }
+      if (f?.fieldType === 'multiselect')
+        additionalProperties.type = 'string';
       if (f?.choices) additionalProperties.options = f.choices;
       if (f.name === 'taxonomy') {
         additionalProperties.type = 'select';
