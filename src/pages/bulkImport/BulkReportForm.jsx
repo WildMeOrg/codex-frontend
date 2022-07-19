@@ -32,38 +32,19 @@ import {
 
 function vectorizeCustomMultiselect(
   sightingData,
-  customMultiselectKeysAndOpts,
+  customMultiselects,
 ) {
-  console.log('deleteMe vectorizeCustomMultiselect entered');
-  console.log('deleteMe sightingData is: ');
-  console.log(sightingData);
-  console.log('deleteMe customMultiselectKeysAndOpts is: ');
-  console.log(customMultiselectKeysAndOpts);
-  const modifiedSightingData = sightingData; // it looks like the original sightingData is also getting mutated by the below. Advice on how to avoid that?
+  const modifiedSightingData = sightingData; // TODO confirm that this is still true. it looks like the original sightingData is also getting mutated by the below. Advice on how to avoid that?
 
-  sightingData.forEach((sighting, sightingIdx) => {
-    customMultiselectKeysAndOpts.forEach(element => {
-      console.log('deleteMe sighting is: ');
-      console.log(sighting);
-      console.log('deleteMe element is: ');
-      console.log(element);
-      const currentSightingOpts = get(sighting, [
-        element?.key,
-      ])?.split(',');
-      console.log('deleteMe currentSightingOpts are: ');
-      console.log(currentSightingOpts);
+  modifiedSightingData.forEach((sighting, sightingIdx) => {
+    customMultiselects.forEach(element => {
+      const currentSightingOpts = get(sighting, [element?.key])
+        ?.split(',')
+        ?.map(opt => opt.trim());
       const targetMultiselectKeyOptPair = filter(
-        customMultiselectKeysAndOpts,
-        keyOptPair => {
-          console.log('deleteMe keyOptPair is: ');
-          console.log(keyOptPair);
-          console.log('deleteMe element?.key is: ');
-          console.log(element?.key);
-          return keyOptPair?.key === element?.key;
-        },
+        customMultiselects,
+        customMultiselect => customMultiselect?.key === element?.key,
       );
-      console.log('deleteMe targetMultiselectKeyOptPair are: ');
-      console.log(targetMultiselectKeyOptPair);
       const validOptObjs = get(targetMultiselectKeyOptPair, [
         '0',
         'options',
@@ -72,42 +53,16 @@ function vectorizeCustomMultiselect(
         validOptObjs,
         validOptObj => validOptObj?.label,
       );
-      console.log('deleteMe validOpts are: ');
-      console.log(validOpts);
       const filteredCurrentSigthingOpts = filter(
         currentSightingOpts,
         currentSightingOpt => validOpts.includes(currentSightingOpt),
       );
-      console.log('deleteMe filteredCurrentSigthingOpts are: ');
-      console.log(filteredCurrentSigthingOpts);
       modifiedSightingData[sightingIdx][element?.key] =
         filteredCurrentSigthingOpts;
     });
   });
-  // const multiselectCustomFieldSchema = filter(
-  //   [...sightingFieldSchemas, ...encounterFieldSchemas],
-  //   schema => schema?.fieldType === 'multiselect',
-  // );
-  // const multiselectCustomFieldIds = map(
-  //   multiselectCustomFieldSchema,
-  //   customField => customField?.id,
-  // );
-  // const availableFieldsKeyAndOpts = map(availableFields, field => {
-  //   return { key: field?.key, options: field?.options };
-  // });
-  // const customMultiselectKeysAndOpts = filter(
-  //   availableFieldsKeyAndOpts,
-  //   keyAndOpt => {
-  //     let matches = keyAndOpt?.key?.match(
-  //       /custom-(encounter|sighting)-(.*)/,
-  //     ); //TODO deleteMe generalize this using the below
-  //     return multiselectCustomFieldIds.includes(
-  //       matches && matches[2],
-  //     );
-  //   },
-  // );
-  console.log('deleteMe modifiedSightingData are: ');
-  console.log(modifiedSightingData);
+  console.log('deleteMe is sightingData mutated?');
+  console.log(sightingData);
   return modifiedSightingData;
 }
 
@@ -156,41 +111,13 @@ function onRecordInit(record) {
   return validateMinMax(record);
 }
 
-// function getCustomFields(siteSettings, property) {
-//   return get(
-//     siteSettings,
-//     [`site.custom.customFields.${property}`, 'value', 'definitions'],
-//     [],
-//   );
-// } // TODO deleteMe consolidate this with the one in FieldManagement if this works
-
 export default function BulkReportForm({ assetReferences }) {
-  // console.log('deleteMe assetReferences are: ');
-  // console.log(assetReferences);
   const theme = useTheme();
   const history = useHistory();
   const intl = useIntl();
 
   const { data: siteSettingsData } = useSiteSettings();
 
-  // const customEncounterFields = getCustomFields(
-  //   siteSettingsData,
-  //   'Encounter',
-  // );
-  // console.log('deleteMe customEncounterFields is: ');
-  // console.log(customEncounterFields);
-  // const customIndividualFields = getCustomFields(
-  //   siteSettingsData,
-  //   'MarkedIndividual',
-  // );
-  // console.log('deleteMe customIndividualFields is: ');
-  // console.log(customIndividualFields);
-  // const customSightingFields = getCustomFields(
-  //   siteSettingsData,
-  //   'Occurrence',
-  // );
-  // console.log('deleteMe customSightingFields is: ');
-  // console.log(customSightingFields);
   const [sightingData, setSightingData] = useState(null);
   const [detectionModel, setDetectionModel] = useState('');
   const queryClient = useQueryClient();
@@ -204,56 +131,38 @@ export default function BulkReportForm({ assetReferences }) {
     numSightingFieldsForFlatFile,
     availableFields,
   } = useBulkImportFields();
-  // console.log('deleteMe availableFields are: ');
-  // console.log(availableFields);
   const sightingFieldSchemas = useSightingFieldSchemas();
   const encounterFieldSchemas = useEncounterFieldSchemas();
 
-  const multiselectCustomFieldSchema = filter(
+  const multiselectCustomFieldIds = reduce(
     [...sightingFieldSchemas, ...encounterFieldSchemas],
-    schema => schema?.fieldType === 'multiselect',
+    (memo, currentSchema) => {
+      if (currentSchema?.fieldType === 'multiselect')
+        return [...memo, currentSchema?.id];
+      return memo;
+    },
+    [],
   );
-  // console.log('deleteMe multiselectCustomFieldSchema are: ');
-  // console.log(multiselectCustomFieldSchema);
-  const multiselectCustomFieldIds = map(
-    multiselectCustomFieldSchema,
-    customField => customField?.id,
-  );
-  // console.log('deleteMe multiselectCustomFieldIds are: ');
-  // console.log(multiselectCustomFieldIds);
 
-  const availableFieldsKeyAndOpts = map(availableFields, field => ({
-    key: field?.key,
-    options: field?.options,
-  }));
-
-  // console.log('deleteMe availableFieldsKeyAndOpts are: ');
-  // console.log(availableFieldsKeyAndOpts);
-
-  const customMultiselectKeysAndOpts = filter(
-    availableFieldsKeyAndOpts,
-    keyAndOpt => {
-      const matches = keyAndOpt?.key?.match(
+  const matchingCustomMultiselects = filter(
+    availableFields,
+    field => {
+      const matches = field?.key?.match(
         /custom-(encounter|sighting)-(.*)/,
       ); // TODO deleteMe generalize this using the below
-      // return Object.keys(encounter).filter(
-      //   key =>
-      //     startsWith(key, sightingsPrefixCustom) ||
-      //     startsWith(key, encountersPrefixCustom),
-      // );
       return multiselectCustomFieldIds.includes(
         matches && matches[2],
       );
     },
   );
-  // console.log('deleteMe customMultiselectKeysAndOpts are: ');
-  // console.log(customMultiselectKeysAndOpts);
+
+  // console.log('deleteMe matchingCustomMultiselects');
+  // console.log(matchingCustomMultiselects);
 
   const multiselectCustomFieldHooks = reduce(
-    customMultiselectKeysAndOpts,
+    matchingCustomMultiselects,
     (memo, customMultiselectKeyAndOpt) => {
       const newCustomFieldIdFunct = {};
-      // console.log('deleteMe got here a1');
       newCustomFieldIdFunct[customMultiselectKeyAndOpt?.key] =
         values =>
           validateCustomMultiSelectStrings(
@@ -261,16 +170,10 @@ export default function BulkReportForm({ assetReferences }) {
             values,
             intl,
           );
-      // console.log('deleteMe got here a2');
-      // console.log('deleteMe newCustomFieldIdFunct is: ');
-      // console.log(newCustomFieldIdFunct);
       return { ...memo, ...newCustomFieldIdFunct };
     },
     {},
   );
-
-  // console.log('deleteMe multiselectCustomFieldHooks are: ');
-  // console.log(multiselectCustomFieldHooks);
 
   const recaptchaPublicKey = get(siteSettingsData, [
     'recaptchaPublicKey',
@@ -347,8 +250,6 @@ export default function BulkReportForm({ assetReferences }) {
               onRecordChange(record, recordIndex, filenames, intl)
             }
             onData={async results => {
-              console.log('deleteMe results in onData are: ');
-              console.log(results);
               setSightingData(results.data);
             }}
             fieldHooks={{
@@ -421,14 +322,10 @@ export default function BulkReportForm({ assetReferences }) {
       >
         <Button
           onClick={async () => {
-            console.log(
-              'deleteMe sightingData before prepareAssetGroup is: ',
-            );
-            console.log(sightingData);
             const sightingDataWithVectorizedMultiselect =
               vectorizeCustomMultiselect(
                 sightingData,
-                customMultiselectKeysAndOpts,
+                matchingCustomMultiselects,
               );
             const sightings = prepareAssetGroup(
               sightingDataWithVectorizedMultiselect,

@@ -51,16 +51,28 @@ export function validateAssetStrings(
   assetStringInputs,
   intl,
 ) {
+  console.log('deleteMe intl is: ');
+  console.log(intl);
   const validationMessages = assetStringInputs.map(
     assetStringInput => {
+      console.log('deleteMe assetStringInput is: ');
+      console.log(assetStringInput);
       const [assetString, rowIndex] = assetStringInput;
       const assets = parseBulkImportString(assetString);
+      console.log('deleteMe assets are: ');
+      console.log(assets);
       if (assets.length === 0) return null;
       const [matchedAssets, unmatchedAssets] = partition(assets, a =>
         filenames.includes(a),
       );
+      console.log('deleteMe matchedAssets are: ');
+      console.log(matchedAssets);
+      console.log('deleteMe unmatchedAssets are: ');
+      console.log(unmatchedAssets);
 
       const matchedAssetsString = matchedAssets.join(', ');
+      console.log('deleteMe matchedAssetsString is: ');
+      console.log(matchedAssetsString);
       const unmatchedAssetsString = unmatchedAssets.join(', ');
       const matchedAssetsMessage = intl.formatMessage(
         {
@@ -80,6 +92,8 @@ export function validateAssetStrings(
       message = message.concat(
         unmatchedAssets.length > 0 ? unmatchedAssetsMessage : '',
       );
+      console.log('deleteMe message is: ');
+      console.log(message);
 
       const level = unmatchedAssets.length > 0 ? 'warning' : 'info';
 
@@ -103,6 +117,11 @@ export function validateCustomMultiSelectStrings( // TODO deleteMe somehow DRY w
   customMultiselectInputs,
   intl,
 ) {
+  console.log('deleteMe entered validateCustomMultiSelectStrings');
+  console.log('deleteMe optionObjs are: ');
+  console.log(optionObjs);
+  console.log('deleteMe customMultiselectInputs are: ');
+  console.log(customMultiselectInputs);
   const options = map(optionObjs, optionObj => optionObj?.value);
   const validationMessages = customMultiselectInputs.map(
     customMultiselectInput => {

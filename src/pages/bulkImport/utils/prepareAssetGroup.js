@@ -36,17 +36,6 @@ function deriveCustomFields(encounter, categoryType) {
     encounter,
     (value, key) => value && startsWith(key, prefix),
   );
-  console.log(
-    'deleteMe customSightingFields in deriveCustomFields are: ',
-  );
-  console.log(customSightingFields);
-
-  const deleteMeReturnVal = mapKeys(
-    customSightingFields,
-    (_, key) => key.split(prefix)[1],
-  );
-  console.log('deleteMe deleteMeReturnVal is: ');
-  console.log(deleteMeReturnVal);
 
   return mapKeys(
     customSightingFields,
@@ -84,10 +73,6 @@ export default function prepareAssetGroup(
   encounters,
   assetReferences,
 ) {
-  console.log('deleteMe encounters are: ');
-  console.log(encounters);
-  console.log('deleteMe assetReferences are: ');
-  console.log(assetReferences);
   const sightings = {};
   const simpleAssetReferences = assetReferences.map(a => a.path);
   encounters.forEach(encounter => {
@@ -154,8 +139,6 @@ export default function prepareAssetGroup(
       newEncounter,
       categoryTypes.sighting,
     );
-    console.log('deleteMe customSightingFields are: ');
-    console.log(customSightingFields);
     if (!isEmpty(customSightingFields)) {
       sightings[sightingId].customFields = customSightingFields;
     }
@@ -167,13 +150,9 @@ export default function prepareAssetGroup(
       newEncounter,
       categoryTypes.encounter,
     );
-    console.log('deleteMe customEncounterFields are: ');
-    console.log(customEncounterFields);
     if (!isEmpty(customEncounterFields)) {
       newEncounter.customFields = customEncounterFields;
     }
-    console.log('deleteMe newEncounter near the end is: ');
-    console.log(newEncounter);
 
     const finalEncounter = omit(newEncounter, [
       'sightingId',
@@ -188,10 +167,6 @@ export default function prepareAssetGroup(
       ...deriveCustomFieldKeys(newEncounter),
     ]);
     sightings[sightingId].encounters.push(finalEncounter);
-    console.log('deleteMe finalEncounter is: ');
-    console.log(finalEncounter);
-    console.log('deleteMe final sightings are: ');
-    console.log(sightings);
   });
 
   return Object.values(sightings);
