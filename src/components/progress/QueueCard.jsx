@@ -22,9 +22,9 @@ function emphasizedH5(chunk) {
   );
 }
 
-export default function QueueCard({ ahead }) {
+export default function QueueCard({ ahead, style }) {
   return (
-    <Paper variant="outlined" style={{ padding: 4 }}>
+    <Paper variant="outlined" style={{ padding: 4, ...style }}>
       <Text
         variant="caption"
         component="p"

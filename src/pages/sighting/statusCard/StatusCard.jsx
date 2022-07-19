@@ -17,6 +17,7 @@ import TimelineStep from './TimelineStep';
 import stages from './stages';
 import useSiteSettings from '../../../models/site/useSiteSettings';
 import wildbookBySystemGuid from '../../../constants/wildbookBySystemGuid';
+import PipelineStepProgressGrid from './PipelineStepProgressGrid';
 
 function getDateString(date) {
   return date ? formatDate(date, true) : 'unknown date';
@@ -90,6 +91,7 @@ export default function StatusCard({ sightingData }) {
   const {
     start: preparationStartTime,
     end: preparationEndTime,
+    inProgress: isPreparationInProgress,
     message: preparationMessage,
   } = preparationStep || {};
 
@@ -98,6 +100,7 @@ export default function StatusCard({ sightingData }) {
   const {
     start: detectionStartTime,
     end: detectionEndTime,
+    inProgress: isDetectionInProgress,
     message: detectionMessage,
   } = detectionStep || {};
 
@@ -144,6 +147,7 @@ export default function StatusCard({ sightingData }) {
   const {
     start: identificationStartTime,
     end: identificationEndTime,
+    inProgress: isIdentificationInProgress,
     complete: isIdentificationComplete,
     message: identificationMessage,
   } = identificationStep || {};
@@ -204,7 +208,14 @@ export default function StatusCard({ sightingData }) {
             id: 'SIGHTING_PREPARATION_FAILED',
           })}
           failedAlertDescription={preparationMessage}
-        />
+        >
+          {isPreparationInProgress && (
+            <PipelineStepProgressGrid
+              pipelineStep={preparationStep}
+              style={{ marginTop: 8 }}
+            />
+          )}
+        </TimelineStep>
         <TimelineStep
           Icon={DetectionIcon}
           titleId="ANIMAL_DETECTION"
@@ -222,7 +233,14 @@ export default function StatusCard({ sightingData }) {
           })}
           failedText={intl.formatMessage({ id: 'DETECTION_FAILED' })}
           failedAlertDescription={detectionMessage}
-        />
+        >
+          {isDetectionInProgress && (
+            <PipelineStepProgressGrid
+              pipelineStep={detectionStep}
+              style={{ marginTop: 8 }}
+            />
+          )}
+        </TimelineStep>
         <TimelineStep
           Icon={CurationIcon}
           titleId="SIGHTING_CURATION"
@@ -283,6 +301,12 @@ export default function StatusCard({ sightingData }) {
           })}
           failedAlertDescription={identificationMessage}
         >
+          {isIdentificationInProgress && (
+            <PipelineStepProgressGrid
+              pipelineStep={identificationStep}
+              style={{ marginTop: 8 }}
+            />
+          )}
           {isIdentificationComplete && (
             <div style={{ marginTop: 4 }}>
               <ButtonLink

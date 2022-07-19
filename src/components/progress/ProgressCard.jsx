@@ -7,18 +7,19 @@ import Paper from '@material-ui/core/Paper';
 
 import Text from '../Text';
 
-export default function ProgressCard({ progress }) {
+export default function ProgressCard({ progress, style }) {
   const isProgressFinite = isFinite(progress);
   const progressPercentage = isProgressFinite ? progress * 100 : 0;
 
   return (
-    <Paper variant="outlined" style={{ padding: 4 }}>
+    <Paper variant="outlined" style={{ padding: 4, ...style }}>
       <div
         style={{
           display: 'flex',
           flexWrap: isProgressFinite ? 'nowrap' : 'wrap',
           alignItems: 'center',
           justifyContent: 'center',
+          flexGrow: 1,
         }}
       >
         <div

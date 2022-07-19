@@ -11,7 +11,7 @@ import Paper from '@material-ui/core/Paper';
 import Text from '../Text';
 
 // timeRemaining is in fractional seconds.
-export default function TimeRemainingCard({ timeRemaining }) {
+export default function TimeRemainingCard({ timeRemaining, style }) {
   const intlProps = {
     id: 'PROGRESS_STATISTICS_TIME_REMAINING_UNKNOWN',
   };
@@ -33,7 +33,7 @@ export default function TimeRemainingCard({ timeRemaining }) {
   }
 
   return (
-    <Paper variant="outlined" style={{ padding: 4 }}>
+    <Paper variant="outlined" style={{ padding: 4, ...style }}>
       <Text
         variant="caption"
         component="p"
