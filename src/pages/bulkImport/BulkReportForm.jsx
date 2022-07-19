@@ -98,8 +98,6 @@ async function onRecordChange(record, recordIndex, filenames, intl) {
       intl,
     );
     const assetMessage = get(assetValidationResponse, [0, 0]);
-    console.log('deleteMe assetMessage is: ');
-    console.log(assetMessage);
     if (assetMessage) {
       messages = { ...messages, assetReferences: assetMessage };
     }
