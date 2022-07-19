@@ -1,7 +1,6 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
 import { get } from 'lodash-es';
-import { formatDistance } from 'date-fns';
 
 import Timeline from '@material-ui/lab/Timeline';
 import ReportIcon from '@material-ui/icons/ArtTrack';
@@ -10,7 +9,10 @@ import DetectionIcon from '@material-ui/icons/Search';
 import CurationIcon from '@material-ui/icons/LowPriority';
 import IdentificationIcon from '@material-ui/icons/Visibility';
 
-import { formatDate } from '../../../utils/formatters';
+import {
+  formatDate,
+  formatDateCustom,
+} from '../../../utils/formatters';
 import Card from '../../../components/cards/Card';
 import ButtonLink from '../../../components/ButtonLink';
 import TimelineStep from './TimelineStep';
@@ -21,26 +23,6 @@ import PipelineStepProgressGrid from './PipelineStepProgressGrid';
 
 function getDateString(date) {
   return date ? formatDate(date, true) : 'unknown date';
-}
-
-function getProgressText(intl, startDate) {
-  let timeDelta = '';
-  const currentTime = new Date();
-  const startTime = new Date(startDate);
-  try {
-    timeDelta = formatDistance(currentTime, startTime);
-  } catch (error) {
-    console.error(error);
-  }
-
-  if (!startDate || !timeDelta)
-    return intl.formatMessage({ id: 'IN_PROGRESS' });
-  return intl.formatMessage(
-    {
-      id: 'SIGHTING_STATE_IN_PROGRESS',
-    },
-    { timeDelta },
-  );
 }
 
 function getStage(pipelineStep) {
@@ -97,6 +79,10 @@ export default function StatusCard({ sightingData }) {
 
   const preparationStage = getStage(preparationStep);
 
+  const formattedPreparationStartTime = preparationStartTime
+    ? formatDateCustom(preparationStartTime, 'PPp')
+    : '';
+
   const {
     start: detectionStartTime,
     end: detectionEndTime,
@@ -114,8 +100,11 @@ export default function StatusCard({ sightingData }) {
     detectionSkippedLabelId = 'DETECTION_SKIPPED_NO_MODEL_MESSAGE';
   }
 
+  const formattedDetectionStartTime = detectionStartTime
+    ? formatDateCustom(detectionStartTime, 'PPp')
+    : '';
+
   const {
-    start: curationStartTime,
     end: curationEndTime,
     inProgress: isCurationInProgress,
     message: curationMessage,
@@ -173,6 +162,10 @@ export default function StatusCard({ sightingData }) {
     });
   }
 
+  const formattedIdentificationStartTime = identificationStartTime
+    ? formatDateCustom(identificationStartTime, 'PPp')
+    : '';
+
   return (
     <Card titleId="IDENTIFICATION_PIPELINE_STATUS" maxHeight={900}>
       <Timeline>
@@ -192,7 +185,16 @@ export default function StatusCard({ sightingData }) {
           notStartedText={intl.formatMessage({
             id: 'WAITING_ELLIPSES',
           })}
-          inProgressText={getProgressText(intl, preparationStartTime)}
+          inProgressText={
+            formattedPreparationStartTime
+              ? intl.formatMessage(
+                  { id: 'SIGHTING_PREPARATION_STARTED_ON_MESSAGE' },
+                  { date: formattedPreparationStartTime },
+                )
+              : intl.formatMessage({
+                  id: 'SIGHTING_PREPARATION_STARTED_ON_UNKNOWN_MESSAGE',
+                })
+          }
           finishedText={intl.formatMessage(
             { id: 'SIGHTING_PREPARATION_FINISHED_MESSAGE' },
             {
@@ -223,7 +225,16 @@ export default function StatusCard({ sightingData }) {
           notStartedText={intl.formatMessage({
             id: 'WAITING_ELLIPSES',
           })}
-          inProgressText={getProgressText(intl, detectionStartTime)}
+          inProgressText={
+            formattedDetectionStartTime
+              ? intl.formatMessage(
+                  { id: 'DETECTION_STARTED_ON_MESSAGE' },
+                  { date: formattedDetectionStartTime },
+                )
+              : intl.formatMessage({
+                  id: 'DETECTION_STARTED_ON_UNKNOWN_MESSAGE',
+                })
+          }
           finishedText={intl.formatMessage(
             { id: 'DETECTION_FINISHED_MESSAGE' },
             { date: getDateString(detectionEndTime) },
@@ -251,7 +262,7 @@ export default function StatusCard({ sightingData }) {
           inProgressText={
             currentUserHasEditPermission
               ? intl.formatMessage({ id: 'CURATION_INSTRUCTIONS' })
-              : getProgressText(intl, curationStartTime)
+              : intl.formatMessage({ id: 'IN_PROGRESS' })
           }
           finishedText={curationFinishedLabel}
           skippedText={intl.formatMessage({
@@ -287,10 +298,16 @@ export default function StatusCard({ sightingData }) {
           notStartedText={intl.formatMessage({
             id: 'WAITING_ELLIPSES',
           })}
-          inProgressText={getProgressText(
-            intl,
-            identificationStartTime,
-          )}
+          inProgressText={
+            formattedIdentificationStartTime
+              ? intl.formatMessage(
+                  { id: 'IDENTIFICATION_STARTED_ON_MESSAGE' },
+                  { date: formattedIdentificationStartTime },
+                )
+              : intl.formatMessage({
+                  id: 'IDENTIFICATION_STARTED_ON_UNKNOWN_MESSAGE',
+                })
+          }
           finishedText={intl.formatMessage(
             { id: 'IDENTIFICATION_FINISHED_MESSAGE' },
             { date: getDateString(identificationEndTime) },
