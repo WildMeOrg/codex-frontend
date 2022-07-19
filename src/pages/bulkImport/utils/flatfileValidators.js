@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { partition, map } from 'lodash-es';
+import { partition } from 'lodash-es';
 
 import parseBulkImportString from './parseBulkImportString';
 
@@ -46,125 +46,50 @@ export function validateMinMax(record) {
   return recordHookResponse;
 }
 
-export function validateAssetStrings(
-  filenames,
-  assetStringInputs,
+export function validateStrings(
+  validEntries,
+  stringInputs,
+  matchedMessage,
+  unMatchedMessage,
   intl,
 ) {
-  console.log('deleteMe intl is: ');
-  console.log(intl);
-  const validationMessages = assetStringInputs.map(
-    assetStringInput => {
-      console.log('deleteMe assetStringInput is: ');
-      console.log(assetStringInput);
-      const [assetString, rowIndex] = assetStringInput;
-      const assets = parseBulkImportString(assetString);
-      console.log('deleteMe assets are: ');
-      console.log(assets);
-      if (assets.length === 0) return null;
-      const [matchedAssets, unmatchedAssets] = partition(assets, a =>
-        filenames.includes(a),
-      );
-      console.log('deleteMe matchedAssets are: ');
-      console.log(matchedAssets);
-      console.log('deleteMe unmatchedAssets are: ');
-      console.log(unmatchedAssets);
+  const validationMessages = stringInputs.map(stringInput => {
+    const [str, rowIndex] = stringInput;
+    const strs = parseBulkImportString(str);
+    if (strs.length === 0) return null;
+    const [matchedStrs, unmatchedStrs] = partition(strs, a =>
+      validEntries.includes(a),
+    );
+    const matchedString = matchedStrs.join(', ');
+    const unmatchedString = unmatchedStrs.join(', ');
+    const completeMatchedMessage = intl.formatMessage(
+      { id: matchedMessage },
+      { results: matchedString },
+    );
+    const completeUnmatchedMessage = intl.formatMessage(
+      {
+        id: unMatchedMessage,
+      },
+      { results: unmatchedString },
+    );
 
-      const matchedAssetsString = matchedAssets.join(', ');
-      console.log('deleteMe matchedAssetsString is: ');
-      console.log(matchedAssetsString);
-      const unmatchedAssetsString = unmatchedAssets.join(', ');
-      const matchedAssetsMessage = intl.formatMessage(
+    let message =
+      matchedStrs.length > 0 ? completeMatchedMessage : '';
+    message = message.concat(
+      unmatchedStrs.length > 0 ? completeUnmatchedMessage : '',
+    );
+
+    const level = unmatchedStrs.length > 0 ? 'warning' : 'info';
+
+    const rowMessage = {
+      info: [
         {
-          id: 'MATCHED_ASSET_MESSAGE',
+          message,
+          level,
         },
-        { matchedAssetsString },
-      );
-      const unmatchedAssetsMessage = intl.formatMessage(
-        {
-          id: 'UNMATCHED_ASSET_MESSAGE',
-        },
-        { unmatchedAssetsString },
-      );
-
-      let message =
-        matchedAssets.length > 0 ? matchedAssetsMessage : '';
-      message = message.concat(
-        unmatchedAssets.length > 0 ? unmatchedAssetsMessage : '',
-      );
-      console.log('deleteMe message is: ');
-      console.log(message);
-
-      const level = unmatchedAssets.length > 0 ? 'warning' : 'info';
-
-      const rowMessage = {
-        info: [
-          {
-            message,
-            level,
-          },
-        ],
-      };
-      return [rowMessage, rowIndex];
-    },
-  );
-
-  return validationMessages.filter(message => message);
-}
-
-export function validateCustomMultiSelectStrings( // TODO deleteMe somehow DRY with the above
-  optionObjs,
-  customMultiselectInputs,
-  intl,
-) {
-  console.log('deleteMe entered validateCustomMultiSelectStrings');
-  console.log('deleteMe optionObjs are: ');
-  console.log(optionObjs);
-  console.log('deleteMe customMultiselectInputs are: ');
-  console.log(customMultiselectInputs);
-  const options = map(optionObjs, optionObj => optionObj?.value);
-  const validationMessages = customMultiselectInputs.map(
-    customMultiselectInput => {
-      const [optionString, rowIndex] = customMultiselectInput;
-      const customOptions = parseBulkImportString(optionString);
-      if (customOptions.length === 0) return null;
-      const [matchedOptions, unmatchedOptions] = partition(
-        customOptions,
-        a => options.includes(a),
-      );
-
-      const matchedOptionsString = matchedOptions.join(', ');
-      const unmatchedOptionsString = unmatchedOptions.join(', ');
-      const matchedOptionMessage = intl.formatMessage(
-        { id: 'MATCHED_OPTION_MESSAGE' },
-        { matchedOptionsString },
-      );
-      const unmatchedOptionMessage = intl.formatMessage(
-        {
-          id: 'UNMATCHED_OPTION_MESSAGE',
-        },
-        { unmatchedOptionsString },
-      );
-
-      let message =
-        matchedOptions.length > 0 ? matchedOptionMessage : '';
-      message = message.concat(
-        unmatchedOptions.length > 0 ? unmatchedOptionMessage : '',
-      );
-
-      const level = unmatchedOptions.length > 0 ? 'warning' : 'info';
-
-      const rowMessage = {
-        info: [
-          {
-            message,
-            level,
-          },
-        ],
-      };
-      return [rowMessage, rowIndex];
-    },
-  );
-
+      ],
+    };
+    return [rowMessage, rowIndex];
+  });
   return validationMessages.filter(message => message);
 }

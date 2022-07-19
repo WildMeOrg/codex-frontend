@@ -26,15 +26,14 @@ import useBulkImportFields from './utils/useBulkImportFields';
 import {
   validateMinMax,
   validateIndividualNames,
-  validateAssetStrings,
-  validateCustomMultiSelectStrings,
+  validateStrings,
 } from './utils/flatfileValidators';
 
 function vectorizeCustomMultiselect(
   sightingData,
   customMultiselects,
 ) {
-  const modifiedSightingData = sightingData; // TODO confirm that this is still true. it looks like the original sightingData is also getting mutated by the below. Advice on how to avoid that?
+  const modifiedSightingData = sightingData; // it looks like the original sightingData is also getting mutated by the below. Advice on how to avoid that?
 
   modifiedSightingData.forEach((sighting, sightingIdx) => {
     customMultiselects.forEach(element => {
@@ -61,8 +60,6 @@ function vectorizeCustomMultiselect(
         filteredCurrentSigthingOpts;
     });
   });
-  console.log('deleteMe is sightingData mutated?');
-  console.log(sightingData);
   return modifiedSightingData;
 }
 
@@ -93,12 +90,16 @@ async function onRecordChange(record, recordIndex, filenames, intl) {
 
   const assetString = record?.assetReferences;
   if (assetString) {
-    const assetValidationResponse = validateAssetStrings(
+    const assetValidationResponse = validateStrings(
       filenames,
       [[assetString, recordIndex]],
+      'MATCHED_ASSET_MESSAGE',
+      'UNMATCHED_ASSET_MESSAGE',
       intl,
     );
     const assetMessage = get(assetValidationResponse, [0, 0]);
+    console.log('deleteMe assetMessage is: ');
+    console.log(assetMessage);
     if (assetMessage) {
       messages = { ...messages, assetReferences: assetMessage };
     }
@@ -156,18 +157,20 @@ export default function BulkReportForm({ assetReferences }) {
     },
   );
 
-  // console.log('deleteMe matchingCustomMultiselects');
-  // console.log(matchingCustomMultiselects);
-
   const multiselectCustomFieldHooks = reduce(
     matchingCustomMultiselects,
     (memo, customMultiselectKeyAndOpt) => {
       const newCustomFieldIdFunct = {};
       newCustomFieldIdFunct[customMultiselectKeyAndOpt?.key] =
         values =>
-          validateCustomMultiSelectStrings(
-            customMultiselectKeyAndOpt?.options,
+          validateStrings(
+            map(
+              customMultiselectKeyAndOpt?.options,
+              opt => opt?.value,
+            ),
             values,
+            'MATCHED_OPTION_MESSAGE',
+            'UNMATCHED_OPTION_MESSAGE',
             intl,
           );
       return { ...memo, ...newCustomFieldIdFunct };
@@ -204,7 +207,6 @@ export default function BulkReportForm({ assetReferences }) {
   const safeAssetReferences = assetReferences || [];
   const filenames = safeAssetReferences.map(a => a?.path);
   const flatfileKey = get(siteSettingsData, ['flatfileKey', 'value']);
-  // const TODO
 
   return (
     <>
@@ -265,9 +267,11 @@ export default function BulkReportForm({ assetReferences }) {
                 }
               },
               assetReferences: assetStringInputs =>
-                validateAssetStrings(
+                validateStrings(
                   filenames,
                   assetStringInputs,
+                  'MATCHED_ASSET_MESSAGE',
+                  'UNMATCHED_ASSET_MESSAGE',
                   intl,
                 ),
               ...multiselectCustomFieldHooks,
