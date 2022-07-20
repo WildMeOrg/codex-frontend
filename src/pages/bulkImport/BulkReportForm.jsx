@@ -146,6 +146,8 @@ export default function BulkReportForm({ assetReferences }) {
   const matchingCustomMultiselects = filter(
     availableFields,
     field => {
+      // const re = new RegExp('custom-(encounter|sighting)-(.*)', 'g');
+      // const matches = field?.key?.match(re); // TODO deleteMe generalize this using the below
       const matches = field?.key?.match(
         /custom-(encounter|sighting)-(.*)/,
       ); // TODO deleteMe generalize this using the below
