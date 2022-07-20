@@ -140,7 +140,7 @@ export default function BulkReportForm({ assetReferences }) {
   const sightingFieldSchemas = useSightingFieldSchemas();
   const encounterFieldSchemas = useEncounterFieldSchemas();
 
-  const multiselectCustomFieldIds = reduce(
+  const multiselectFieldIds = reduce(
     [...sightingFieldSchemas, ...encounterFieldSchemas],
     (memo, currentSchema) => {
       if (currentSchema?.fieldType === 'multiselect')
@@ -156,9 +156,7 @@ export default function BulkReportForm({ assetReferences }) {
       const matches = field?.key?.match(
         /custom-(encounter|sighting|individual)-(.*)/,
       ); // I imagine that there's a way to generalize this to work with deriveCustomFieldPrefix, but I played around with new regExp() using variables, and couldn't seem to get it to work. Would love some help with this.
-      return multiselectCustomFieldIds.includes(
-        matches && matches[2],
-      );
+      return multiselectFieldIds.includes(matches && matches[2]);
     },
   );
 
