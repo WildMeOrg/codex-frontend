@@ -33,33 +33,40 @@ function vectorizeCustomMultiselect(
   sightingData,
   customMultiselects,
 ) {
-  const modifiedSightingData = sightingData; // it looks like the original sightingData is also getting mutated by the below. Advice on how to avoid that?
-
-  modifiedSightingData.forEach((sighting, sightingIdx) => {
-    customMultiselects.forEach(element => {
-      const currentSightingOpts = get(sighting, [element?.key])
-        ?.split(',')
-        ?.map(opt => opt.trim());
-      const targetMultiselectKeyOptPair = filter(
-        customMultiselects,
-        customMultiselect => customMultiselect?.key === element?.key,
-      );
-      const validOptObjs = get(targetMultiselectKeyOptPair, [
-        '0',
-        'options',
-      ]);
-      const validOpts = map(
-        validOptObjs,
-        validOptObj => validOptObj?.label,
-      );
-      const filteredCurrentSigthingOpts = filter(
-        currentSightingOpts,
-        currentSightingOpt => validOpts.includes(currentSightingOpt),
-      );
-      modifiedSightingData[sightingIdx][element?.key] =
-        filteredCurrentSigthingOpts;
-    });
-  });
+  const modifiedSightingData = reduce(
+    sightingData,
+    (memo, sighting) => {
+      customMultiselects.forEach(element => {
+        const currentSightingOpts =
+          get(sighting, [element?.key])
+            ?.split(',')
+            ?.map(opt => opt.trim()) || [];
+        const targetMultiselect =
+          filter(
+            customMultiselects,
+            customMultiselect =>
+              customMultiselect?.key === element?.key,
+          ) || [];
+        const allValidOpts =
+          get(targetMultiselect, ['0', 'options'])?.map(
+            validOptObj => validOptObj?.label,
+          ) || [];
+        const validCurrentSightingOpts = filter(
+          currentSightingOpts,
+          currentSightingOpt =>
+            allValidOpts.includes(currentSightingOpt),
+        );
+        sighting[element?.key] = validCurrentSightingOpts; // how do I make it so that this doesn't mutate the original sightingData but gives me to correct final modifiedSightingData result? I experimented a lot with this and didn't find a satisfying result.
+      });
+      return [
+        ...memo,
+        {
+          ...sighting,
+        },
+      ];
+    },
+    [],
+  );
   return modifiedSightingData;
 }
 
@@ -146,11 +153,9 @@ export default function BulkReportForm({ assetReferences }) {
   const matchingCustomMultiselects = filter(
     availableFields,
     field => {
-      // const re = new RegExp('custom-(encounter|sighting)-(.*)', 'g');
-      // const matches = field?.key?.match(re); // TODO deleteMe generalize this using the below
       const matches = field?.key?.match(
-        /custom-(encounter|sighting)-(.*)/,
-      ); // TODO deleteMe generalize this using the below
+        /custom-(encounter|sighting|individual)-(.*)/,
+      ); // I imagine that there's a way to generalize this to work with deriveCustomFieldPrefix, but I played around with new regExp() using variables, and couldn't seem to get it to work. Would love some help with this.
       return multiselectCustomFieldIds.includes(
         matches && matches[2],
       );
