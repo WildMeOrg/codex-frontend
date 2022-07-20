@@ -172,6 +172,7 @@ export default function StatusCard({ sightingData }) {
         <TimelineStep
           Icon={ReportIcon}
           titleId="SIGHTING_SUBMISSION"
+          isUserInTheLoop={false}
           stage={stages.finished}
           finishedText={intl.formatMessage(
             { id: 'SIGHTING_SUBMISSION_REPORT_DATE' },
@@ -181,6 +182,7 @@ export default function StatusCard({ sightingData }) {
         <TimelineStep
           Icon={PreparationIcon}
           titleId="SIGHTING_PREPARATION"
+          isUserInTheLoop={false}
           stage={preparationStage}
           notStartedText={intl.formatMessage({
             id: 'WAITING_ELLIPSES',
@@ -221,6 +223,7 @@ export default function StatusCard({ sightingData }) {
         <TimelineStep
           Icon={DetectionIcon}
           titleId="ANIMAL_DETECTION"
+          isUserInTheLoop={false}
           stage={detectionStage}
           notStartedText={intl.formatMessage({
             id: 'WAITING_ELLIPSES',
@@ -255,6 +258,7 @@ export default function StatusCard({ sightingData }) {
         <TimelineStep
           Icon={CurationIcon}
           titleId="SIGHTING_CURATION"
+          isUserInTheLoop
           stage={curationStage}
           notStartedText={intl.formatMessage({
             id: 'WAITING_ELLIPSES',
@@ -294,6 +298,7 @@ export default function StatusCard({ sightingData }) {
         <TimelineStep
           Icon={IdentificationIcon}
           titleId="IDENTIFICATION"
+          isUserInTheLoop={false}
           stage={identificationStage}
           notStartedText={intl.formatMessage({
             id: 'WAITING_ELLIPSES',

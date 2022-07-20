@@ -7,9 +7,15 @@ import TimelineContent from '@material-ui/lab/TimelineContent';
 import TimelineDot from '@material-ui/lab/TimelineDot';
 import ProgressIcon from '@material-ui/icons/Cached';
 import ErrorIcon from '@material-ui/icons/PriorityHigh';
+import CircularProgress from '@material-ui/core/CircularProgress';
+
 import CustomAlert from '../../../components/Alert';
 import Text from '../../../components/Text';
 import stages from './stages';
+
+function CircularProgressAsIcon() {
+  return <CircularProgress size={24} thickness={8} />;
+}
 
 export default function TimelineStep({
   titleId,
@@ -21,6 +27,7 @@ export default function TimelineStep({
   skippedText,
   failedText,
   failedAlertDescription,
+  isUserInTheLoop,
   children,
 }) {
   const theme = useTheme();
@@ -35,7 +42,11 @@ export default function TimelineStep({
     stage === stages.finished || stage === stages.skipped;
 
   let IconToRender = Icon;
-  if (stage === stages.current) IconToRender = ProgressIcon;
+  if (stage === stages.current) {
+    IconToRender = isUserInTheLoop
+      ? ProgressIcon
+      : CircularProgressAsIcon;
+  }
   if (stage === stages.failed) IconToRender = ErrorIcon;
 
   let iconColor;
