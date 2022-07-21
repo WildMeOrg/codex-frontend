@@ -61,7 +61,6 @@ export default function DataDisplay({
   sortExternally,
   searchParams,
   setSearchParams,
-  paperStyles = {},
   tableStyles = {},
   cellStyles = {},
   stickyHeader = true,
@@ -262,7 +261,6 @@ export default function DataDisplay({
         elevation={variant === 'secondary' ? 2 : undefined}
         style={{
           maxHeight,
-          ...paperStyles,
         }}
       >
         <Table

@@ -7,9 +7,9 @@ export default function Card({
   title,
   titleId,
   htmlId = null,
-  maxHeight = 360,
   overflow = 'auto',
   overflowX = 'auto',
+  styles = {},
   renderActions,
   children,
 }) {
@@ -35,7 +35,7 @@ export default function Card({
           </Text>
           {renderActions}
         </div>
-        <div style={{ overflow, maxHeight, overflowX }}>
+        <div style={{ overflow, overflowX, ...styles }}>
           {children}
         </div>
       </Paper>
