@@ -29,5 +29,5 @@ After completion of the previous steps, draft a new release of the main branch o
 
 1. Navigate to [https://github.com/WildMeOrg/codex-frontend/releases/new](https://github.com/WildMeOrg/codex-frontend/releases/new).
 2. Designate the target as the main branch.
-3. Create a new tag following the SemVer pattern outlined [here](https://semver.org/) (vX.Y.Z). Note that this exact pattern (no period between v and the first name, for instance) must be followed explicitly. The release title should be the same as the tag, you can leave the release description blank.
+3. Create a new tag following the SemVer pattern outlined [here](https://semver.org/) (vX.Y.Z). Note that this exact pattern (no period between v and the first name, for instance) must be followed explicitly. The release title should be the same as the tag. You can leave the release description blank.
 4. Publish the release.
