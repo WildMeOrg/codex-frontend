@@ -1,11 +1,11 @@
 export default {
   individual: {
     name: 'individual',
-    backendPath: 'site.custom.customFields.MarkedIndividual',
+    backendPath: 'site.custom.customFields.Individual',
   },
   sighting: {
     name: 'sighting',
-    backendPath: 'site.custom.customFields.Occurrence',
+    backendPath: 'site.custom.customFields.Sighting',
   },
   encounter: {
     name: 'encounter',
