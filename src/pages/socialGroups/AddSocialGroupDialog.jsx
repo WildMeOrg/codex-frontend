@@ -2,26 +2,17 @@ import React, { useState } from 'react';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 
-import usePostSocialGroup from '../../models/socialGroups/usePostSocialGroup'
+import usePostSocialGroup from '../../models/socialGroups/usePostSocialGroup';
 import StandardDialog from '../../components/StandardDialog';
 import Button from '../../components/Button';
 import TextInput from '../../components/inputs/TextInput';
 
-export default function AddSocialGroupDialog({
-  open,
-  onClose,
-})
-{
-  const {
-    mutate: postSocialGroup,
-    loading,
-  } = usePostSocialGroup();
+export default function AddSocialGroupDialog({ open, onClose }) {
+  const { mutate: postSocialGroup, loading } = usePostSocialGroup();
 
-  const [name, setName] =
-    useState('');
+  const [name, setName] = useState('');
 
-  const onCloseDialog = () =>
-  {
+  const onCloseDialog = () => {
     setName('');
     onClose();
   };
@@ -47,7 +38,10 @@ export default function AddSocialGroupDialog({
           display="primary"
           disabled={name === ''}
           loading={loading}
-          onClick={() => postSocialGroup({ name })}
+          onClick={async () => {
+            const result = await postSocialGroup({ name });
+            if (result?.status === 200) onCloseDialog();
+          }}
           id="ADD"
         />
       </DialogActions>

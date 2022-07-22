@@ -19,6 +19,7 @@
   "ANNOTATION_CLASS": "Annotation class",
   "INDIVIDUAL_METADATA": "Individual profile",
   "COMMIT": "Commit",
+  "SOCIAL_GROUP_DELETE_CONFIRMATION": "Are you sure you want to delete this social group? This action cannot be undone.",
   "REGION_MATCHING_SET_DESCRIPTION": "Select the region you would like to match against. Sub-regions will be included in the matching set. If no region is selected, all regions will be matched against.",
   "CREATED": "Created",
   "BLANK": " ",

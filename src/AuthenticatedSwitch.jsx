@@ -169,9 +169,9 @@ export default function AuthenticatedSwitch({
                       <Route path="/users">
                         <Users />
                       </Route>
-                        <Route path="/social-groups">
-                          <SocialGroups />
-                        </Route>
+                      <Route path="/social-groups">
+                        <SocialGroups />
+                      </Route>
                       <Route path="/settings">
                         <Settings />
                       </Route>

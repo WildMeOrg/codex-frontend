@@ -29,8 +29,7 @@ export default function RelationshipsCard({
   noDataMessage = 'NO_SOCIAL_GROUPS',
   title,
   titleId,
-})
-{
+}) {
   const intl = useIntl();
   const noRelationships =
     Array.isArray(relationships) && relationships.length === 0;
@@ -43,7 +42,6 @@ export default function RelationshipsCard({
     clearError: clearPostRelationshipError,
   } = usePostRelationship();
 
-  console.log(siteSettings);
   const {
     mutate: deleteRelationship,
     loading: deleteRelationshipLoading,
@@ -69,8 +67,7 @@ export default function RelationshipsCard({
     currentType &&
     currentRole1 &&
     currentRole2;
-  const types = useMemo(() =>
-  {
+  const types = useMemo(() => {
     const possibleRelationships = get(
       siteSettings,
       ['relationship_type_roles', 'value'],
@@ -84,8 +81,7 @@ export default function RelationshipsCard({
     () =>
       map(
         relationships,
-        relationship =>
-        {
+        relationship => {
           const selfIndividualMember = find(
             get(relationship, 'individual_members'),
             individualMember =>
@@ -110,8 +106,7 @@ export default function RelationshipsCard({
     [relationships],
   );
 
-  const onDelete = async relationshipGuid =>
-  {
+  const onDelete = async relationshipGuid => {
     const response = await deleteRelationship({
       relationshipGuid,
       individualGuid,
@@ -123,26 +118,22 @@ export default function RelationshipsCard({
       });
   };
 
-  const onChangeType = newType =>
-  {
+  const onChangeType = newType => {
     setCurrentType(newType);
     setCurrentRole1(null);
     setCurrentRole2(null);
     setCurrentRoles(get(newType, 'roles', []));
   };
 
-  const onChangeRole1 = newRole =>
-  {
+  const onChangeRole1 = newRole => {
     setCurrentRole1(newRole);
   };
 
-  const onChangeRole2 = newRole =>
-  {
+  const onChangeRole2 = newRole => {
     setCurrentRole2(newRole);
   };
 
-  const onCloseDialog = () =>
-  {
+  const onCloseDialog = () => {
     setSelectedIndividualGuid(null);
     setOpenRelationshipDialog(false);
     setCurrentType(null);
@@ -152,8 +143,7 @@ export default function RelationshipsCard({
     clearDeleteRelationshipError();
   };
 
-  const onSubmit = async () =>
-  {
+  const onSubmit = async () => {
     const response = await postRelationship({
       individual_1_guid: individualGuid,
       individual_2_guid: selectedIndividualGuid,
@@ -161,8 +151,7 @@ export default function RelationshipsCard({
       individual_2_role_guid: currentRole2?.guid,
       type_guid: currentType?.guid,
     });
-    if (response?.status === 200)
-    {
+    if (response?.status === 200) {
       onCloseDialog();
     }
   };
@@ -179,8 +168,7 @@ export default function RelationshipsCard({
           open: false,
         })
       }
-      onDelete={async () =>
-      {
+      onDelete={async () => {
         onDelete(confirmDeleteDialog?.relationshipGuid);
       }}
       deleteInProgress={deleteRelationshipLoading}
