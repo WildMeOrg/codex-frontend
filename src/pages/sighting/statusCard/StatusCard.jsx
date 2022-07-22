@@ -13,13 +13,14 @@ import {
   formatDate,
   formatDateCustom,
 } from '../../../utils/formatters';
+import { getProgress } from '../../../utils/pipelineStatusUtils';
 import Card from '../../../components/cards/Card';
 import ButtonLink from '../../../components/ButtonLink';
+import ProgressMetrics from '../../../components/progress/ProgressMetrics';
 import TimelineStep from './TimelineStep';
 import stages from './stages';
 import useSiteSettings from '../../../models/site/useSiteSettings';
 import wildbookBySystemGuid from '../../../constants/wildbookBySystemGuid';
-import PipelineStepProgressGrid from './PipelineStepProgressGrid';
 
 function getDateString(date) {
   return date ? formatDate(date, true) : 'unknown date';
@@ -212,9 +213,9 @@ export default function StatusCard({ sightingData }) {
           failedAlertDescription={preparationMessage}
         >
           {isPreparationInProgress && (
-            <PipelineStepProgressGrid
-              pipelineStep={preparationStep}
-              style={{ marginTop: 8 }}
+            <ProgressMetrics
+              progress={getProgress(preparationStep)}
+              style={{ marginTop: 20 }}
             />
           )}
         </TimelineStep>
@@ -246,9 +247,9 @@ export default function StatusCard({ sightingData }) {
           failedAlertDescription={detectionMessage}
         >
           {isDetectionInProgress && (
-            <PipelineStepProgressGrid
-              pipelineStep={detectionStep}
-              style={{ marginTop: 8 }}
+            <ProgressMetrics
+              progress={getProgress(detectionStep)}
+              style={{ marginTop: 20 }}
             />
           )}
         </TimelineStep>
@@ -319,9 +320,9 @@ export default function StatusCard({ sightingData }) {
           failedAlertDescription={identificationMessage}
         >
           {isIdentificationInProgress && (
-            <PipelineStepProgressGrid
-              pipelineStep={identificationStep}
-              style={{ marginTop: 8 }}
+            <ProgressMetrics
+              progress={getProgress(identificationStep)}
+              style={{ marginTop: 20 }}
             />
           )}
           {isIdentificationComplete && (

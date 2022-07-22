@@ -1154,12 +1154,11 @@
   "TWO_OR_MORE_ROLES_SAME_LABEL": "Two or more roles have the same label. Make sure each label is different",
   "ROLE_GUID_MISSING": "Role is missing ID",
   "UNFINISHED_OPTIONS": "Options must have valid values and labels and unique values",
-  "PROGRESS_STATISTICS_QUEUE_POSITION_X": "queued behind <focus>{ahead, number}</focus> {ahead, plural, one {job} other {jobs}}",
-  "PROGRESS_STATISTICS_QUEUE_POSITION_UNKNOWN": "queue position <focus>UNKNOWN</focus>",
-  "PROGRESS_STATISTICS_TIME_REMAINING": "{timeRemaining} left",
-  "PROGRESS_STATISTICS_TIME_REMAINING_WRAPPING_UP": "wrapping up...",
-  "PROGRESS_STATISTICS_TIME_REMAINING_UNKNOWN": "UNKNOWN time remaining",
-  "PROGRESS_STATISTICS_PROGRESS_UNKNOWN": "UNKNOWN progress",
-  "PROGRESS_STATISTICS_STARTED_ON": "started <focus>{date}</focus>",
-  "PROGRESS_STATISTICS_STARTED_ON_UNKNOWN": "started <focus>UNKNOWN date</focus>"
+  "PROGRESS_STATISTICS_UNKNOWN_PROGRESS": "unknown progress",
+  "PROGRESS_STATISTICS_UNKNOWN_ETA_&_UNKNOWN_QUEUE": "Unknown time remaining. Queued behind an unknown number of jobs.",
+  "PROGRESS_STATISTICS_UNKNOWN_ETA_&_QUEUE": "Unknown time remaining. Queued behind {ahead, number} {ahead, plural, one {job} other {jobs}}.",
+  "PROGRESS_STATISTICS_WRAPPING_ETA_&_UNKNOWN_QUEUE": "Wrapping up... Queued behind an unknown number of jobs.",
+  "PROGRESS_STATISTICS_WRAPPING_ETA_&_QUEUE": "Wrapping up... Queued behind {ahead, number} {ahead, plural, one {job} other {jobs}}.",
+  "PROGRESS_STATISTICS_ETA_&_UNKNOWN_QUEUE": "{timeRemaining} left. Queued behind an unknown number of jobs.",
+  "PROGRESS_STATISTICS_ETA_&_QUEUE": "{timeRemaining} left. Queued behind {ahead, number} {ahead, plural, one {job} other {jobs}}."
 }

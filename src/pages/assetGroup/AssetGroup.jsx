@@ -4,15 +4,14 @@ import { useIntl } from 'react-intl';
 import { get } from 'lodash-es';
 import { useQueryClient } from 'react-query';
 
-import Grid from '@material-ui/core/Grid';
-import LinearProgress from '@material-ui/core/LinearProgress';
+import { makeStyles, lighten } from '@material-ui/core/styles';
 
 import errorTypes from '../../constants/errorTypes';
 import useDeleteAssetGroup from '../../models/assetGroup/useDeleteAssetGroup';
 import useAssetGroup from '../../models/assetGroup/useAssetGroup';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import { formatDate } from '../../utils/formatters';
-
+import { getProgress } from '../../utils/pipelineStatusUtils';
 import queryKeys from '../../constants/queryKeys';
 import MainColumn from '../../components/MainColumn';
 import LoadingScreen from '../../components/LoadingScreen';
@@ -23,20 +22,26 @@ import MoreMenu from '../../components/MoreMenu';
 import ConfirmDelete from '../../components/ConfirmDelete';
 import EntityHeader from '../../components/EntityHeader';
 import CustomAlert from '../../components/Alert';
-import QueueCard from '../../components/progress/QueueCard';
-import ProgressCard from '../../components/progress/ProgressCard';
-import StartDateCard from '../../components/progress/StartDateCard';
-import TimeRemainingCard from '../../components/progress/TimeRemainingCard';
+import ProgressMetrics from '../../components/progress/ProgressMetrics';
 import AGSTable from './AGSTable';
 
 const POLLING_INTERVAL = 5000; // 5 seconds
 
-const cardStyle = {
-  height: '100%',
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-};
+const useStyles = makeStyles(theme => ({
+  alert: {
+    // extend the progress bar the full width of the alert
+    '& .MuiAlert-message': {
+      flexGrow: 1,
+    },
+    // use the info alert's colors instead of the primary site color
+    '& .MuiLinearProgress-colorPrimary': {
+      backgroundColor: lighten(theme.palette.info.light, 0.5),
+    },
+    '& .MuiLinearProgress-barColorPrimary': {
+      backgroundColor: theme.palette.info.main,
+    },
+  },
+}));
 
 function isProgressSettled(pipelineStatus) {
   const { skipped, failed, complete } = pipelineStatus || {};
@@ -66,6 +71,7 @@ export default function AssetGroup() {
   const history = useHistory();
   const queryClient = useQueryClient();
   const intl = useIntl();
+  const classes = useStyles();
 
   const { data, loading, error, statusCode } = useAssetGroup(guid, {
     queryOptions: { refetchInterval: deriveRefetchInterval },
@@ -110,14 +116,7 @@ export default function AssetGroup() {
     'pipeline_status.preparation',
     {},
   );
-
-  const {
-    failed: isPreparationFailed,
-    start: preparationStart,
-    ahead: preparationAhead,
-    eta: preparationEta,
-    progress: preparationProgress,
-  } = pipelineStatusPreparation;
+  const isPreparationFailed = pipelineStatusPreparation.failed;
 
   const showPreparationInProgressAlert = !(
     isPreparationFailed ||
@@ -182,50 +181,17 @@ export default function AssetGroup() {
         />
       )}
       {showPreparationInProgressAlert && (
-        <>
-          <LinearProgress
-            style={{
-              borderTopLeftRadius: 4,
-              borderTopRightRadius: 4,
-            }}
+        <CustomAlert
+          titleId="PENDING_IMAGE_PROCESSING"
+          descriptionId="PENDING_IMAGE_PROCESSING_MESSAGE"
+          severity="info"
+          className={classes.alert}
+        >
+          <ProgressMetrics
+            progress={getProgress(pipelineStatusPreparation)}
+            style={{ marginTop: 20 }}
           />
-          <CustomAlert
-            titleId="PENDING_IMAGE_PROCESSING"
-            descriptionId="PENDING_IMAGE_PROCESSING_MESSAGE"
-            severity="info"
-            style={{
-              borderTopLeftRadius: 0,
-              borderTopRightRadius: 0,
-            }}
-          >
-            <Grid container spacing={1} style={{ paddingTop: 8 }}>
-              <Grid item xs={6}>
-                <QueueCard
-                  ahead={preparationAhead}
-                  style={cardStyle}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <StartDateCard
-                  startDate={preparationStart}
-                  style={cardStyle}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <ProgressCard
-                  progress={preparationProgress}
-                  style={cardStyle}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TimeRemainingCard
-                  timeRemaining={preparationEta}
-                  style={cardStyle}
-                />
-              </Grid>
-            </Grid>
-          </CustomAlert>
-        </>
+        </CustomAlert>
       )}
       <AGSTable
         assetGroupSightings={get(data, 'asset_group_sightings', [])}
