@@ -9,7 +9,6 @@ export default function Card({
   htmlId = null,
   overflow = 'auto',
   overflowX = 'auto',
-  styles = {},
   renderActions,
   children,
 }) {
@@ -35,9 +34,7 @@ export default function Card({
           </Text>
           {renderActions}
         </div>
-        <div style={{ overflow, overflowX, ...styles }}>
-          {children}
-        </div>
+        <div style={{ overflow, overflowX }}>{children}</div>
       </Paper>
     </Grid>
   );

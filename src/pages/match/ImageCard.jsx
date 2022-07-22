@@ -40,7 +40,7 @@ export default function ImageCard({ titleId, annotation }) {
   );
 
   return (
-    <Card titleId={titleId} styles={{ maxHeight: 'unset' }}>
+    <Card titleId={titleId}>
       <AnnotatedPhotograph
         assetMetadata={{
           alt: 'Selected query annotation',
