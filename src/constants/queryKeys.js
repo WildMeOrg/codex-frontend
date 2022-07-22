@@ -76,6 +76,10 @@ export function getSightingTermQueryKey(searchTerm) {
   return ['sightingQuickSearch', searchTerm];
 }
 
+export function getSocialGroupQueryKey(guid) {
+  return ['socialGroup', guid];
+}
+
 export function getIndividualFilterQueryKey(
   filters,
   page,

@@ -20,6 +20,7 @@ import Sighting from './pages/sighting/Sighting';
 import AssetGroupSighting from './pages/sighting/AssetGroupSighting';
 import Splash from './pages/splash/Splash';
 import SocialGroups from './pages/socialGroups/SocialGroups';
+import SocialGroup from './pages/socialGroups/SocialGroup';
 import AssetGroup from './pages/assetGroup/AssetGroup';
 import User from './pages/user/User';
 import Users from './pages/user/Users';
@@ -168,6 +169,9 @@ export default function AuthenticatedSwitch({
                       </Route>
                       <Route path="/users">
                         <Users />
+                      </Route>
+                      <Route path="/social-groups/:guid">
+                        <SocialGroup />
                       </Route>
                       <Route path="/social-groups">
                         <SocialGroups />
