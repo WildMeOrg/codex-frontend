@@ -1,5 +1,5 @@
 import React from 'react';
-import { isFinite } from 'lodash-es';
+import { isFinite, round } from 'lodash-es';
 import { FormattedMessage, FormattedNumber } from 'react-intl';
 import {
   formatDuration,
@@ -63,8 +63,9 @@ export default function ProgressMetrics({
   style,
 }) {
   const { ahead, eta, progress } = progressObj || {};
+
   const isProgressValid = isFinite(progress);
-  const progressBarPercentage = isProgressValid ? progress * 100 : 0;
+  const roundedProgress = isProgressValid ? round(progress, 2) : null;
 
   const subtitleIntlProps = getSubtitleIntlProps({ ahead, eta });
 
@@ -87,7 +88,7 @@ export default function ProgressMetrics({
         >
           <LinearProgress
             variant="determinate"
-            value={progressBarPercentage}
+            value={roundedProgress ? roundedProgress * 100 : 0}
           />
         </div>
         <Text
@@ -96,7 +97,10 @@ export default function ProgressMetrics({
           style={{ minWidth: '2.5rem', flexShrink: 0 }}
         >
           {isProgressValid ? (
-            <FormattedNumber value={progress} style="percent" />
+            <FormattedNumber
+              value={roundedProgress}
+              style="percent"
+            />
           ) : (
             <FormattedMessage id="PROGRESS_STATISTICS_UNKNOWN_PROGRESS" />
           )}
