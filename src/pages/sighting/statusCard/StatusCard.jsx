@@ -26,6 +26,10 @@ function getDateString(date) {
   return date ? formatDate(date, true) : 'unknown date';
 }
 
+function getDateTimeString(date) {
+  return date ? formatDateCustom(date, 'PPp') : '';
+}
+
 function getStage(pipelineStep) {
   const { skipped, inProgress, complete, failed } =
     pipelineStep || {};
@@ -80,9 +84,9 @@ export default function StatusCard({ sightingData }) {
 
   const preparationStage = getStage(preparationStep);
 
-  const formattedPreparationStartTime = preparationStartTime
-    ? formatDateCustom(preparationStartTime, 'PPp')
-    : '';
+  const formattedPreparationStartTime = getDateTimeString(
+    preparationStartTime,
+  );
 
   const {
     start: detectionStartTime,
@@ -101,9 +105,9 @@ export default function StatusCard({ sightingData }) {
     detectionSkippedLabelId = 'DETECTION_SKIPPED_NO_MODEL_MESSAGE';
   }
 
-  const formattedDetectionStartTime = detectionStartTime
-    ? formatDateCustom(detectionStartTime, 'PPp')
-    : '';
+  const formattedDetectionStartTime = getDateTimeString(
+    detectionStartTime,
+  );
 
   const {
     end: curationEndTime,
@@ -163,9 +167,9 @@ export default function StatusCard({ sightingData }) {
     });
   }
 
-  const formattedIdentificationStartTime = identificationStartTime
-    ? formatDateCustom(identificationStartTime, 'PPp')
-    : '';
+  const formattedIdentificationStartTime = getDateTimeString(
+    identificationStartTime,
+  );
 
   return (
     <Card titleId="IDENTIFICATION_PIPELINE_STATUS" maxHeight={900}>
