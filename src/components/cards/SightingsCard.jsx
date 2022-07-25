@@ -33,20 +33,23 @@ export default function SightingsCard({
   const mapModeClicked = () => setShowMapView(true);
   const listModeClicked = () => setShowMapView(false);
 
-  const sightingsWithLocationData = useMemo(() => {
-    // hotfix //
-    if (!sightings) return [];
-    // hotfix //
+  const sightingsWithLocationData = useMemo(
+    () => {
+      // hotfix //
+      if (!sightings) return [];
+      // hotfix //
 
-    return sightings.map(sighting => ({
-      ...sighting,
-      formattedLocation: formatLocationFromSighting(
-        sighting,
-        regionOptions,
-        intl,
-      ),
-    }));
-  }, [get(sightings, 'length')]);
+      return sightings.map(sighting => ({
+        ...sighting,
+        formattedLocation: formatLocationFromSighting(
+          sighting,
+          regionOptions,
+          intl,
+        ),
+      }));
+    },
+    [get(sightings, 'length')],
+  );
 
   const allColumns = [
     {
@@ -149,7 +152,7 @@ export default function SightingsCard({
           data={sightings}
           loading={loading}
           noResultsTextId={noSightingsMsg}
-          maxHeight={400}
+          tableContainerStyles={{ maxHeight: 400 }}
         />
       )}
       {!noSightings && showMapView && (

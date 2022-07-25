@@ -78,8 +78,7 @@ export default function IndividualsDisplay({
       // onPrint={() => {
       //   window.open('/individuals/picturebook', '_blank');
       // }}
-      showNoResultsBao
-      // renderExpandedRow={expandedIndividual => (
+      showNoResultsBao // renderExpandedRow={expandedIndividual => (
       //   <div style={{ display: 'flex' }}>
       //     {/* <img
       //         src={expandedIndividual.profile}

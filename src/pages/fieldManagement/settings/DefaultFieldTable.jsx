@@ -198,7 +198,7 @@ export default function DefaultFieldTable({
         variant="secondary"
         columns={tableColumns}
         data={configurableFields}
-        maxHeight={300}
+        tableContainerStyles={{ maxHeight: 300 }}
       />
     </Grid>
   );

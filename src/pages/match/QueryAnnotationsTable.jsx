@@ -43,8 +43,7 @@ export default function QueryAnnotationsTable({
     <DataDisplay
       idKey="guid"
       title="Query annotations"
-      data={queryAnnotations}
-      // variant="secondary"
+      data={queryAnnotations} // variant="secondary"
       columns={columns}
       hideDownloadCsv
       hideFilterColumns
@@ -55,7 +54,7 @@ export default function QueryAnnotationsTable({
           setSelectedQueryAnnotation(nextSelection);
         }
       }}
-      maxHeight={300}
+      tableContainerStyles={{ maxHeight: 300 }}
     />
   );
 }
