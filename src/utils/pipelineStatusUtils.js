@@ -1,5 +1,5 @@
 import { pick } from 'lodash-es';
 
-export function getProgress(pipelineStepStatus) {
-  return pick(pipelineStepStatus, ['ahead', 'eta', 'progress']);
+export function getProgress(pipelineStepState) {
+  return pick(pipelineStepState, ['ahead', 'eta', 'progress']);
 }
