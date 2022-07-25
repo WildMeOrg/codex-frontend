@@ -42,6 +42,7 @@ export default function DetectionStep({ sightingData }) {
   }
 
   const formattedStart = getDateTimeString(start);
+  const formattedEnd = getDateString(end);
 
   return (
     <TimelineStep
@@ -61,10 +62,16 @@ export default function DetectionStep({ sightingData }) {
               id: 'DETECTION_STARTED_ON_UNKNOWN_MESSAGE',
             })
       }
-      finishedText={intl.formatMessage(
-        { id: 'DETECTION_FINISHED_MESSAGE' },
-        { date: getDateString(end) },
-      )}
+      finishedText={
+        formattedEnd
+          ? intl.formatMessage(
+              { id: 'DETECTION_FINISHED_MESSAGE' },
+              { date: formattedEnd },
+            )
+          : intl.formatMessage({
+              id: 'DETECTION_FINISHED_MESSAGE_UNKNOWN',
+            })
+      }
       skippedText={intl.formatMessage({
         id: skippedLabelId,
       })}

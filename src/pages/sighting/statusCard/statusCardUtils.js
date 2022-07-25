@@ -5,7 +5,7 @@ import {
 import stages from './stages';
 
 export function getDateString(date) {
-  return date ? formatDate(date, true) : 'unknown date';
+  return date ? formatDate(date, true) : '';
 }
 
 export function getDateTimeString(date) {

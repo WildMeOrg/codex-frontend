@@ -13,15 +13,23 @@ export default function SubmissionStep({ sightingData }) {
 
   const dateCreated = get(sightingData, 'submissionTime');
 
+  const formattedDateCreated = getDateString(dateCreated);
+
   return (
     <TimelineStep
       Icon={ReportIcon}
       titleId="SIGHTING_SUBMISSION"
       stage={stages.finished}
-      finishedText={intl.formatMessage(
-        { id: 'SIGHTING_SUBMISSION_REPORT_DATE' },
-        { date: getDateString(dateCreated) },
-      )}
+      finishedText={
+        formattedDateCreated
+          ? intl.formatMessage(
+              { id: 'SIGHTING_SUBMISSION_REPORT_DATE' },
+              { date: formattedDateCreated },
+            )
+          : intl.formatMessage({
+              id: 'SIGHTING_SUBMISSION_REPORT_DATE_UNKNOWN',
+            })
+      }
     />
   );
 }

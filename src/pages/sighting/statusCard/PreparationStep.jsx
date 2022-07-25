@@ -38,6 +38,7 @@ export default function PreparationStep({ sightingData }) {
   const stage = getStage(preparationState);
 
   const formattedStart = getDateTimeString(start);
+  const formattedEnd = getDateString(end);
 
   return (
     <TimelineStep
@@ -57,14 +58,24 @@ export default function PreparationStep({ sightingData }) {
               id: 'SIGHTING_PREPARATION_STARTED_ON_UNKNOWN_MESSAGE',
             })
       }
-      finishedText={intl.formatMessage(
-        { id: 'SIGHTING_PREPARATION_FINISHED_MESSAGE' },
-        {
-          photoCount: assetCount,
-          date: getDateString(end),
-          nonWrapping: withNonWrappingSpan,
-        },
-      )}
+      finishedText={
+        formattedEnd
+          ? intl.formatMessage(
+              { id: 'SIGHTING_PREPARATION_FINISHED_MESSAGE' },
+              {
+                photoCount: assetCount,
+                date: formattedEnd,
+                nonWrapping: withNonWrappingSpan,
+              },
+            )
+          : intl.formatMessage(
+              { id: 'SIGHTING_PREPARATION_FINISHED_MESSAGE_UNKNOWN' },
+              {
+                photoCount: assetCount,
+                nonWrapping: withNonWrappingSpan,
+              },
+            )
+      }
       skippedText={intl.formatMessage({
         id: 'SIGHTING_PREPARATION_SKIPPED_MESSAGE',
       })}

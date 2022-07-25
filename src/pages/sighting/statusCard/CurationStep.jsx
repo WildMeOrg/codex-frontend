@@ -14,6 +14,44 @@ function scrollToTop() {
   window.scrollTo(0, 0);
 }
 
+function getFinishedTextIntlArgs(end, migrated, migratedSiteName) {
+  const formattedEnd = getDateString(end);
+
+  if (!migrated) {
+    if (formattedEnd) {
+      return [
+        { id: 'CURATION_FINISHED_MESSAGE' },
+        { date: formattedEnd },
+      ];
+    }
+
+    return [{ id: 'CURATION_FINISHED_MESSAGE_UNKNOWN' }];
+  }
+
+  if (!migratedSiteName) {
+    if (formattedEnd) {
+      return [
+        { id: 'MIGRATION_FINISHED_MESSAGE_DEFAULT' },
+        { date: formattedEnd },
+      ];
+    }
+
+    return [{ id: 'MIGRATION_FINISHED_MESSAGE_DEFAULT_UNKNOWN' }];
+  }
+
+  if (formattedEnd) {
+    return [
+      { id: 'MIGRATION_FINISHED_MESSAGE_SITE' },
+      { date: formattedEnd, migratedSiteName },
+    ];
+  }
+
+  return [
+    { id: 'MIGRATION_FINISHED_MESSAGE_SITE_UNKNOWN' },
+    { migratedSiteName },
+  ];
+}
+
 export default function CurationStep({ sightingData }) {
   const intl = useIntl();
   const systemGuid = get(useSiteSettings(), 'data.system_guid.value');
@@ -40,24 +78,6 @@ export default function CurationStep({ sightingData }) {
     asset => get(asset, 'annotations.length', 0) > 0,
   );
 
-  let finishedLabel;
-  if (migrated) {
-    finishedLabel = migratedSiteName
-      ? intl.formatMessage(
-          { id: 'MIGRATION_FINISHED_MESSAGE_SITE' },
-          { date: getDateString(end), migratedSiteName },
-        )
-      : intl.formatMessage(
-          { id: 'MIGRATION_FINISHED_MESSAGE_DEFAULT' },
-          { date: getDateString(end) },
-        );
-  } else {
-    finishedLabel = intl.formatMessage(
-      { id: 'CURATION_FINISHED_MESSAGE' },
-      { date: getDateString(end) },
-    );
-  }
-
   return (
     <TimelineStep
       Icon={CurationIcon}
@@ -71,7 +91,9 @@ export default function CurationStep({ sightingData }) {
           ? intl.formatMessage({ id: 'CURATION_INSTRUCTIONS' })
           : intl.formatMessage({ id: 'IN_PROGRESS' })
       }
-      finishedText={finishedLabel}
+      finishedText={intl.formatMessage(
+        ...getFinishedTextIntlArgs(end, migrated, migratedSiteName),
+      )}
       skippedText={intl.formatMessage({
         id: 'CURATION_SKIPPED_MESSAGE',
       })}
