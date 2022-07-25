@@ -60,9 +60,8 @@ export default function MatchCandidatesTable({
       idKey="guid"
       titleId="CANDIDATE_ANNOTATIONS"
       data={matchCandidates}
-      columns={
-        columns // variant="secondary"
-      }
+      columns={columns}
+      // variant="secondary"
       noResultsTextId="NO_MATCH_CANDIDATES"
       hideDownloadCsv
       hideFilterColumns

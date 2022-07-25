@@ -260,7 +260,7 @@ export default function DataDisplay({
       <TableContainer
         component={variant === 'secondary' ? Paper : undefined}
         elevation={variant === 'secondary' ? 2 : undefined}
-        style={{ ...tableContainerStyles }}
+        style={tableContainerStyles}
       >
         <Table
           stickyHeader={stickyHeader}
