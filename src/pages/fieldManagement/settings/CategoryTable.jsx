@@ -291,6 +291,7 @@ export default function FieldSettings() {
         variant="secondary"
         columns={categoryColumns}
         data={categories}
+        tableContainerStyles={{ maxHeight: 300 }}
       />
     </Grid>
   );
