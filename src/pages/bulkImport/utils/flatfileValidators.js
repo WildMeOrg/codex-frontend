@@ -55,9 +55,9 @@ export function validateStrings(
 ) {
   const validationMessages = stringInputs.map(stringInput => {
     const [str, rowIndex] = stringInput;
-    const strs = parseBulkImportString(str);
-    if (strs.length === 0) return null;
-    const [matchedStrs, unmatchedStrs] = partition(strs, a =>
+    const parsedString = parseBulkImportString(str);
+    if (parsedString.length === 0) return null;
+    const [matchedStrs, unmatchedStrs] = partition(parsedString, a =>
       validEntries.includes(a),
     );
     const matchedString = matchedStrs.join(', ');

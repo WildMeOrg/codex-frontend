@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FlatfileButton } from '@flatfile/react';
-import { get, filter, map, reduce } from 'lodash-es';
+import { get, map, filter } from 'lodash-es';
 import { useHistory } from 'react-router-dom';
 import { useQueryClient } from 'react-query';
 import { useIntl } from 'react-intl';
@@ -28,47 +28,11 @@ import {
   validateIndividualNames,
   validateStrings,
 } from './utils/flatfileValidators';
-
-function vectorizeCustomMultiselect(
-  sightingData,
-  customMultiselects,
-) {
-  const modifiedSightingData = reduce(
-    sightingData,
-    (memo, sighting) => {
-      customMultiselects.forEach(element => {
-        const currentSightingOpts =
-          get(sighting, [element?.key])
-            ?.split(',')
-            ?.map(opt => opt.trim()) || [];
-        const targetMultiselect =
-          filter(
-            customMultiselects,
-            customMultiselect =>
-              customMultiselect?.key === element?.key,
-          ) || [];
-        const allValidOpts =
-          get(targetMultiselect, ['0', 'options'])?.map(
-            validOptObj => validOptObj?.label,
-          ) || [];
-        const validCurrentSightingOpts = filter(
-          currentSightingOpts,
-          currentSightingOpt =>
-            allValidOpts.includes(currentSightingOpt),
-        );
-        sighting[element?.key] = validCurrentSightingOpts; // how do I make it so that this doesn't mutate the original sightingData but gives me to correct final modifiedSightingData result? I experimented a lot with this and didn't find a satisfying result.
-      });
-      return [
-        ...memo,
-        {
-          ...sighting,
-        },
-      ];
-    },
-    [],
-  );
-  return modifiedSightingData;
-}
+import {
+  addValidMultiselectOptionsToSightingData,
+  generateCustomMultiselectFlatFileHooks,
+} from './utils/bulkImportFormatters';
+import fieldTypes from '../../constants/fieldTypesNew';
 
 async function onRecordChange(record, recordIndex, filenames, intl) {
   let messages = validateMinMax(record);
@@ -127,8 +91,10 @@ export default function BulkReportForm({ assetReferences }) {
   const [sightingData, setSightingData] = useState(null);
   const [detectionModel, setDetectionModel] = useState('');
   const queryClient = useQueryClient();
-  const [everythingReadyForFlatfile, setEverythingReadyForFlatfile] =
-    useState(false);
+  const [
+    everythingReadyForFlatfile,
+    setEverythingReadyForFlatfile,
+  ] = useState(false);
 
   const { postAssetGroup, loading, error } = usePostAssetGroup();
 
@@ -140,46 +106,22 @@ export default function BulkReportForm({ assetReferences }) {
   const sightingFieldSchemas = useSightingFieldSchemas();
   const encounterFieldSchemas = useEncounterFieldSchemas();
 
-  const multiselectFieldIds = reduce(
-    [...sightingFieldSchemas, ...encounterFieldSchemas],
-    (memo, currentSchema) => {
-      if (currentSchema?.fieldType === 'multiselect')
-        return [...memo, currentSchema?.id];
-      return memo;
-    },
-    [],
-  );
-
-  const matchingCustomMultiselects = filter(
+  const customMultiselects = filter(
     availableFields,
-    field => {
-      const matches = field?.key?.match(
-        /custom-(encounter|sighting|individual)-(.*)/,
-      ); // I imagine that there's a way to generalize this to work with deriveCustomFieldPrefix, but I played around with new regExp() using variables, and couldn't seem to get it to work. Would love some help with this.
-      return multiselectFieldIds.includes(matches && matches[2]);
-    },
+    field =>
+      field.customField && field.fieldType === fieldTypes.multiselect,
+  )?.map(({ customField, fieldType, ...rest }) => rest);
+
+  const multiselectCustomFieldHooks = generateCustomMultiselectFlatFileHooks(
+    customMultiselects,
+    intl,
   );
 
-  const multiselectCustomFieldHooks = reduce(
-    matchingCustomMultiselects,
-    (memo, customMultiselectKeyAndOpt) => {
-      const newCustomFieldIdFunct = {};
-      newCustomFieldIdFunct[customMultiselectKeyAndOpt?.key] =
-        values =>
-          validateStrings(
-            map(
-              customMultiselectKeyAndOpt?.options,
-              opt => opt?.value,
-            ),
-            values,
-            'MATCHED_OPTION_MESSAGE',
-            'UNMATCHED_OPTION_MESSAGE',
-            intl,
-          );
-      return { ...memo, ...newCustomFieldIdFunct };
-    },
-    {},
-  );
+  const sanitizedAvailableFields =
+    map(
+      availableFields,
+      ({ customField, fieldType, ...rest }) => rest,
+    ) || [];
 
   const recaptchaPublicKey = get(siteSettingsData, [
     'recaptchaPublicKey',
@@ -190,20 +132,23 @@ export default function BulkReportForm({ assetReferences }) {
     schema => schema.name === 'speciesDetectionModel',
   );
 
-  useEffect(() => {
-    if (
-      numEncounterFieldsForFlatFile > 0 &&
-      numSightingFieldsForFlatFile > 0
-    ) {
-      // wait for these to become non-zero to be confident that availableFields is fully populated before sending off to FlatFile
-      setEverythingReadyForFlatfile(true);
-    }
-  }, [
-    numEncounterFieldsForFlatFile,
-    numSightingFieldsForFlatFile,
-    encounterFieldSchemas,
-    sightingFieldSchemas,
-  ]);
+  useEffect(
+    () => {
+      if (
+        numEncounterFieldsForFlatFile > 0 &&
+        numSightingFieldsForFlatFile > 0
+      ) {
+        // wait for these to become non-zero to be confident that availableFields is fully populated before sending off to FlatFile
+        setEverythingReadyForFlatfile(true);
+      }
+    },
+    [
+      numEncounterFieldsForFlatFile,
+      numSightingFieldsForFlatFile,
+      encounterFieldSchemas,
+      sightingFieldSchemas,
+    ],
+  );
 
   if (!everythingReadyForFlatfile) return <LoadingScreen />;
 
@@ -218,7 +163,9 @@ export default function BulkReportForm({ assetReferences }) {
           Review available fields
         </Text>
       </div>
-      <BulkFieldBreakdown availableFields={availableFields} />
+      <BulkFieldBreakdown
+        availableFields={sanitizedAvailableFields}
+      />
 
       <Grid item style={{ marginTop: 12 }}>
         <div style={{ marginLeft: 12 }}>
@@ -245,7 +192,7 @@ export default function BulkReportForm({ assetReferences }) {
               disableManualInput: true,
               title: 'Import sightings data',
               type: 'bulk_import',
-              fields: availableFields,
+              fields: sanitizedAvailableFields,
               styleOverrides: {
                 primaryButtonColor: theme.palette.primary.main,
               },
@@ -329,13 +276,12 @@ export default function BulkReportForm({ assetReferences }) {
       >
         <Button
           onClick={async () => {
-            const sightingDataWithVectorizedMultiselect =
-              vectorizeCustomMultiselect(
-                sightingData,
-                matchingCustomMultiselects,
-              );
+            const sightingDataWithValidOptions = addValidMultiselectOptionsToSightingData(
+              sightingData,
+              customMultiselects,
+            );
             const sightings = prepareAssetGroup(
-              sightingDataWithVectorizedMultiselect,
+              sightingDataWithValidOptions,
               assetReferences,
             );
             const assetGroup = {
