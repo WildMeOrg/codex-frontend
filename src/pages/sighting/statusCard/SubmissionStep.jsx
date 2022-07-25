@@ -23,11 +23,11 @@ export default function SubmissionStep({ sightingData }) {
       finishedText={
         formattedDateCreated
           ? intl.formatMessage(
-              { id: 'SIGHTING_SUBMISSION_REPORT_DATE' },
+              { id: 'STATUS_SUBMISSION_REPORT_ON' },
               { date: formattedDateCreated },
             )
           : intl.formatMessage({
-              id: 'SIGHTING_SUBMISSION_REPORT_DATE_UNKNOWN',
+              id: 'STATUS_SUBMISSION_REPORT_ON_UNKNOWN',
             })
       }
     />

@@ -20,34 +20,40 @@ function getFinishedTextIntlArgs(end, migrated, migratedSiteName) {
   if (!migrated) {
     if (formattedEnd) {
       return [
-        { id: 'CURATION_FINISHED_MESSAGE' },
+        { id: 'STATUS_CURATION_FINISHED_ON' },
         { date: formattedEnd },
       ];
     }
 
-    return [{ id: 'CURATION_FINISHED_MESSAGE_UNKNOWN' }];
+    return [{ id: 'STATUS_CURATION_FINISHED_ON_UNKNOWN' }];
   }
 
   if (!migratedSiteName) {
     if (formattedEnd) {
       return [
-        { id: 'MIGRATION_FINISHED_MESSAGE_DEFAULT' },
+        {
+          id: 'STATUS_CURATION_MIGRATED_FROM_UNKNOWN_SITE_FINISHED_ON',
+        },
         { date: formattedEnd },
       ];
     }
 
-    return [{ id: 'MIGRATION_FINISHED_MESSAGE_DEFAULT_UNKNOWN' }];
+    return [
+      {
+        id: 'STATUS_CURATION_MIGRATED_FROM_UNKNOWN_SITE_FINISHED_ON_UNKNOWN',
+      },
+    ];
   }
 
   if (formattedEnd) {
     return [
-      { id: 'MIGRATION_FINISHED_MESSAGE_SITE' },
+      { id: 'STATUS_CURATION_MIGRATED_FROM_SITE_FINISHED_ON' },
       { date: formattedEnd, migratedSiteName },
     ];
   }
 
   return [
-    { id: 'MIGRATION_FINISHED_MESSAGE_SITE_UNKNOWN' },
+    { id: 'STATUS_CURATION_MIGRATED_FROM_SITE_FINISHED_ON_UNKNOWN' },
     { migratedSiteName },
   ];
 }
@@ -88,16 +94,18 @@ export default function CurationStep({ sightingData }) {
       })}
       inProgressText={
         currentUserHasEditPermission
-          ? intl.formatMessage({ id: 'CURATION_INSTRUCTIONS' })
-          : intl.formatMessage({ id: 'IN_PROGRESS' })
+          ? intl.formatMessage({ id: 'STATUS_CURATION_CURRENT_EDIT' })
+          : intl.formatMessage({ id: 'STATUS_CURATION_CURRENT_VIEW' })
       }
       finishedText={intl.formatMessage(
         ...getFinishedTextIntlArgs(end, migrated, migratedSiteName),
       )}
       skippedText={intl.formatMessage({
-        id: 'CURATION_SKIPPED_MESSAGE',
+        id: 'STATUS_CURATION_SKIPPED',
       })}
-      failedText={intl.formatMessage({ id: 'CURATION_FAILED' })}
+      failedText={intl.formatMessage({
+        id: 'STATUS_CURATION_FAILED',
+      })}
       failedAlertDescription={message}
     >
       {isInProgress && currentUserHasEditPermission && (
@@ -105,8 +113,8 @@ export default function CurationStep({ sightingData }) {
           <ButtonLink
             id={
               someAssetsHaveAnnotations
-                ? 'CURATION_ASSIGN_ANNOTATIONS'
-                : 'CURATION_ANNOTATE_PHOTOS'
+                ? 'STATUS_CURATION_CURRENT_ASSIGN_ANNOTATIONS'
+                : 'STATUS_CURATION_CURRENT_ANNOTATE_PHOTOS'
             }
             href={
               someAssetsHaveAnnotations

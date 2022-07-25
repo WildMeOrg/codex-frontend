@@ -32,13 +32,13 @@ export default function DetectionStep({ sightingData }) {
   } = detectionState;
 
   const stage = getStage(detectionState);
-  let skippedLabelId = 'DETECTION_SKIPPED_MESSAGE';
+  let skippedLabelId = 'STATUS_DETECTION_SKIPPED';
   if (assetCount === 0) {
-    skippedLabelId = 'DETECTION_SKIPPED_NO_IMAGES_MESSAGE';
+    skippedLabelId = 'STATUS_DETECTION_SKIPPED_NO_IMAGES';
   } else if (
     get(sightingData, 'speciesDetectionModel[0]') === 'None'
   ) {
-    skippedLabelId = 'DETECTION_SKIPPED_NO_MODEL_MESSAGE';
+    skippedLabelId = 'STATUS_DETECTION_SKIPPED_NO_MODEL';
   }
 
   const formattedStart = getDateTimeString(start);
@@ -55,27 +55,29 @@ export default function DetectionStep({ sightingData }) {
       inProgressText={
         formattedStart
           ? intl.formatMessage(
-              { id: 'DETECTION_STARTED_ON_MESSAGE' },
+              { id: 'STATUS_DETECTION_STARTED_ON' },
               { date: formattedStart },
             )
           : intl.formatMessage({
-              id: 'DETECTION_STARTED_ON_UNKNOWN_MESSAGE',
+              id: 'STATUS_DETECTION_STARTED_ON_UNKNOWN',
             })
       }
       finishedText={
         formattedEnd
           ? intl.formatMessage(
-              { id: 'DETECTION_FINISHED_MESSAGE' },
+              { id: 'STATUS_DETECTION_FINISHED_ON' },
               { date: formattedEnd },
             )
           : intl.formatMessage({
-              id: 'DETECTION_FINISHED_MESSAGE_UNKNOWN',
+              id: 'STATUS_DETECTION_FINISHED_ON_UNKNOWN',
             })
       }
       skippedText={intl.formatMessage({
         id: skippedLabelId,
       })}
-      failedText={intl.formatMessage({ id: 'DETECTION_FAILED' })}
+      failedText={intl.formatMessage({
+        id: 'STATUS_DETECTION_FAILED',
+      })}
       failedAlertDescription={message}
     >
       {isInProgress && (

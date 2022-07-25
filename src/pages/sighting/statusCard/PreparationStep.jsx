@@ -51,17 +51,17 @@ export default function PreparationStep({ sightingData }) {
       inProgressText={
         formattedStart
           ? intl.formatMessage(
-              { id: 'SIGHTING_PREPARATION_STARTED_ON_MESSAGE' },
+              { id: 'STATUS_PREPARATION_STARTED_ON' },
               { date: formattedStart },
             )
           : intl.formatMessage({
-              id: 'SIGHTING_PREPARATION_STARTED_ON_UNKNOWN_MESSAGE',
+              id: 'STATUS_PREPARATION_STARTED_ON_UNKNOWN',
             })
       }
       finishedText={
         formattedEnd
           ? intl.formatMessage(
-              { id: 'SIGHTING_PREPARATION_FINISHED_MESSAGE' },
+              { id: 'STATUS_PREPARATION_FINISHED_ON' },
               {
                 photoCount: assetCount,
                 date: formattedEnd,
@@ -69,7 +69,7 @@ export default function PreparationStep({ sightingData }) {
               },
             )
           : intl.formatMessage(
-              { id: 'SIGHTING_PREPARATION_FINISHED_MESSAGE_UNKNOWN' },
+              { id: 'STATUS_PREPARATION_FINISHED_ON_UNKNOWN' },
               {
                 photoCount: assetCount,
                 nonWrapping: withNonWrappingSpan,
@@ -77,10 +77,10 @@ export default function PreparationStep({ sightingData }) {
             )
       }
       skippedText={intl.formatMessage({
-        id: 'SIGHTING_PREPARATION_SKIPPED_MESSAGE',
+        id: 'STATUS_PREPARATION_SKIPPED',
       })}
       failedText={intl.formatMessage({
-        id: 'SIGHTING_PREPARATION_FAILED',
+        id: 'STATUS_PREPARATION_FAILED',
       })}
       failedAlertDescription={message}
     >

@@ -39,19 +39,19 @@ export default function IdentificationStep({ sightingData }) {
   if (migrated) {
     skippedLabel = migratedSiteName
       ? intl.formatMessage(
-          { id: 'IDENTIFICATION_SKIPPED_MIGRATED_MESSAGE_SITE' },
+          { id: 'STATUS_IDENTIFICATION_SKIPPED_MIGRATED_FROM_SITE' },
           { migratedSiteName },
         )
       : intl.formatMessage({
-          id: 'IDENTIFICATION_SKIPPED_MIGRATED_MESSAGE_DEFAULT',
+          id: 'STATUS_IDENTIFICATION_SKIPPED_MIGRATED_FROM_UNKNOWN_SITE',
         });
   } else if (assetCount === 0) {
     skippedLabel = intl.formatMessage({
-      id: 'IDENTIFICATION_SKIPPED_NO_IMAGES_MESSAGE',
+      id: 'STATUS_IDENTIFICATION_SKIPPED_NO_IMAGES',
     });
   } else {
     skippedLabel = intl.formatMessage({
-      id: 'IDENTIFICATION_SKIPPED_MESSAGE',
+      id: 'STATUS_IDENTIFICATION_SKIPPED',
     });
   }
 
@@ -69,26 +69,26 @@ export default function IdentificationStep({ sightingData }) {
       inProgressText={
         formattedStart
           ? intl.formatMessage(
-              { id: 'IDENTIFICATION_STARTED_ON_MESSAGE' },
+              { id: 'STATUS_IDENTIFICATION_STARTED_ON' },
               { date: formattedStart },
             )
           : intl.formatMessage({
-              id: 'IDENTIFICATION_STARTED_ON_UNKNOWN_MESSAGE',
+              id: 'STATUS_IDENTIFICATION_STARTED_ON_UNKNOWN',
             })
       }
       finishedText={
         formattedEnd
           ? intl.formatMessage(
-              { id: 'IDENTIFICATION_FINISHED_MESSAGE' },
+              { id: 'STATUS_IDENTIFICATION_FINISHED_ON' },
               { date: formattedEnd },
             )
           : intl.formatMessage({
-              id: 'IDENTIFICATION_FINISHED_MESSAGE_UNKNOWN',
+              id: 'STATUS_IDENTIFICATION_FINISHED_ON_UNKNOWN',
             })
       }
       skippedText={skippedLabel}
       failedText={intl.formatMessage({
-        id: 'IDENTIFICATION_FAILED',
+        id: 'STATUS_IDENTIFICATION_FAILED',
       })}
       failedAlertDescription={message}
     >
@@ -101,7 +101,7 @@ export default function IdentificationStep({ sightingData }) {
       {isComplete && (
         <div style={{ marginTop: 4 }}>
           <ButtonLink
-            id="IDENTIFICATION_VIEW_RESULTS"
+            id="STATUS_IDENTIFICATION_FINISHED_VIEW_RESULTS"
             href={`/match-results/${sightingData?.guid}`}
             display="panel"
             size="small"
