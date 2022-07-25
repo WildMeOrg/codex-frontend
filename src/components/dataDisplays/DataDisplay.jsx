@@ -65,7 +65,6 @@ export default function DataDisplay({
   cellStyles = {},
   stickyHeader = true,
   tableContainerStyles = {},
-  // maxHeight,
   ...rest
 }) {
   const intl = useIntl();

@@ -13,8 +13,6 @@ export function prepareBasicReport(
   assetReferences,
   simpleAssets = false,
 ) {
-  console.log('deleteMe sightingData in prepareBasicReport is: ');
-  console.log(sightingData);
   const customSightingDictionary = transformCustomFields(
     customSightingData,
     customSightingSchemas,

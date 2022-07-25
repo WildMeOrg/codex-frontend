@@ -100,7 +100,6 @@ export default function SightingsDisplay({
       title={title}
       loading={loading}
       showNoResultsBao
-      tableContainerStyles={{ maxHeight: 600 }}
       // renderExpandedRow={expandedSighting => (
       //   <div style={{ display: 'flex' }}>
       //     <img

@@ -43,7 +43,8 @@ export default function QueryAnnotationsTable({
     <DataDisplay
       idKey="guid"
       title="Query annotations"
-      data={queryAnnotations} // variant="secondary"
+      data={queryAnnotations}
+      // variant="secondary"
       columns={columns}
       hideDownloadCsv
       hideFilterColumns
