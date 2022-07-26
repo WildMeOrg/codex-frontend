@@ -63,6 +63,7 @@ export default function BannerLogo({
                 ? theme.palette.common.black
                 : theme.palette.common.white,
               margin: '0 12px 0 8px',
+              minWidth: 200,
             }}
           >
             {siteName}
