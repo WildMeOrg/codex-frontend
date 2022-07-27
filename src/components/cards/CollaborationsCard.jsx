@@ -33,6 +33,8 @@ export default function CollaborationsCard({
   );
 
   const collaborations = get(data, ['collaborations'], []);
+  console.log('deleteMe collaborations are: ');
+  console.log(collaborations);
   const tableData = collaborations.map(collaboration => {
     const collaborationMembers = Object.values(
       get(collaboration, 'members', []),

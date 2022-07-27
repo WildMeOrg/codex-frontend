@@ -67,6 +67,8 @@ export default function DataDisplay({
   tableContainerStyles = {},
   ...rest
 }) {
+  console.log('deleteMe data is: ');
+  console.log(data);
   const intl = useIntl();
   const theme = useTheme();
   const themeColor = theme.palette.primary.main;
