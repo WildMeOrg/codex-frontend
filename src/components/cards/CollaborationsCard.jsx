@@ -37,6 +37,8 @@ export default function CollaborationsCard({
     const collaborationMembers = Object.values(
       get(collaboration, 'members', []),
     );
+    console.log('deleteMe tableData is: ');
+    console.log(tableData);
     /* If there is a member with viewState "creator", this is not actually a collaboration
        member it is the user manager who created the collaboration. */
     const filteredCollaborationMembers = collaborationMembers.filter(
