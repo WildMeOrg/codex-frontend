@@ -18,7 +18,7 @@ import SettingsBreadcrumbs from '../../components/SettingsBreadcrumbs';
 import DataDisplay from '../../components/dataDisplays/DataDisplay';
 import AddSocialGroupDialog from './AddSocialGroupDialog';
 
-export default function AssetGroup() {
+export default function SocialGroups() {
   const intl = useIntl();
 
   const { data, loading, error, statusCode } = useSocialGroups();
@@ -49,8 +49,8 @@ export default function AssetGroup() {
       options: {
         customBodyRender: (_, { guid }) => [
           <ActionIcon
-            key="edit"
-            variant="edit"
+            key="view"
+            variant="view"
             href={`/social-groups/${guid}`}
           />,
           <ActionIcon

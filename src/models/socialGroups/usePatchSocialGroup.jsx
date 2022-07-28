@@ -1,6 +1,7 @@
 import { usePatch } from '../../hooks/useMutate';
 import queryKeys, {
   getSocialGroupQueryKey,
+  getIndividualQueryKey,
 } from '../../constants/queryKeys';
 
 export default function usePatchSocialGroup() {
@@ -22,6 +23,11 @@ export default function usePatchSocialGroup() {
       return patchData.filter(o => o.value);
     },
     invalidateKeys: [queryKeys.socialGroups],
-    deriveFetchKeys: ({ guid }) => [getSocialGroupQueryKey(guid)],
+    deriveFetchKeys: ({ guid, affectedIndividualGuids = [] }) => {
+      const individualQueries = affectedIndividualGuids.map(i =>
+        getIndividualQueryKey(i),
+      );
+      return [getSocialGroupQueryKey(guid), ...individualQueries];
+    },
   });
 }

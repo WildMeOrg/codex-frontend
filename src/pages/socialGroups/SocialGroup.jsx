@@ -63,10 +63,10 @@ export default function SocialGroup() {
         values={{ dateCreated: formatDate(data?.created, true) }}
       />
       <ButtonLink
-        href="/social-groups"
+        href="/settings/social-groups"
         style={{ margin: '8px 0 0 16px', width: 'fit-content' }}
         display="back"
-        id="BACK_TO_ALL_SOCIAL_GROUPS"
+        id="ALL_SOCIAL_GROUPS"
       />
 
       <Grid

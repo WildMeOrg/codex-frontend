@@ -95,8 +95,6 @@ export default function ControlPanel() {
 
   const { data: userData } = useGetMe();
 
-  console.log(userData);
-
   return (
     <MainColumn>
       <Text variant="h3" id="CONTROL_PANEL" style={{ padding: 20 }} />

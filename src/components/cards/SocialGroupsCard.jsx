@@ -1,25 +1,15 @@
-import React, { useState, useMemo } from 'react';
-import { useIntl } from 'react-intl';
+import React, { useState, useCallback } from 'react';
+import { get, omit } from 'lodash-es';
 
-import { Autocomplete } from '@material-ui/lab';
-import { TextField } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogActions from '@material-ui/core/DialogActions';
-
-import { get, map, find } from 'lodash-es';
 
 import Button from '../Button';
 import Card from './Card';
-import CustomAlert from '../Alert';
-import StandardDialog from '../StandardDialog';
 import AddToSocialGroupDialog from '../dialogs/AddToSocialGroupDialog';
-import useSiteSettings from '../../models/site/useSiteSettings';
 import Text from '../Text';
 import usePatchSocialGroup from '../../models/socialGroups/usePatchSocialGroup';
 import ConfirmDelete from '../ConfirmDelete';
-import RelationshipDisplay from '../dataDisplays/RelationshipDisplay';
-import RelationshipRoleAutocomplete from '../inputs/RelationshipRoleAutocomplete';
+import SocialGroupsDisplay from '../../pages/individual/components/SocialGroupsDisplay';
 
 export default function SocialGroupsCard({
   socialGroups = [],
@@ -29,11 +19,8 @@ export default function SocialGroupsCard({
   title,
   titleId,
 }) {
-  const intl = useIntl();
   const noSocialGroups =
     Array.isArray(socialGroups) && socialGroups.length === 0;
-  const { data: siteSettings, loading: siteSettingsLoading } =
-    useSiteSettings();
   const {
     mutate: patchSocialGroup,
     error: patchError,
@@ -42,65 +29,42 @@ export default function SocialGroupsCard({
   } = usePatchSocialGroup();
 
   const [addDialogOpen, setAddDialogOpen] = useState(false);
+  const [groupToRemove, setGroupToRemove] = useState(null);
+
+  const handleClose = useCallback(() => {
+    setGroupToRemove(null);
+  }, []);
+
+  const handleClickDelete = useCallback(socialGroup => {
+    setGroupToRemove(socialGroup);
+  }, []);
+
+  const removeIndividualFromSocialGroup = useCallback(async () => {
+    const safeMembers = get(groupToRemove, 'members', {});
+    const newMembers = omit(safeMembers, individualGuid);
+    const result = await patchSocialGroup({
+      guid: groupToRemove?.guid,
+      members: newMembers,
+      affectedIndividualGuids: [individualGuid],
+    });
+    if (result.status === 200) handleClose();
+  }, [individualGuid, groupToRemove, handleClose]);
 
   return [
     <ConfirmDelete
-      open={false}
-      onClose={Function.prototype}
-      onDelete={Function.prototype}
+      open={Boolean(groupToRemove)}
+      onClose={handleClose}
+      onDelete={removeIndividualFromSocialGroup}
       deleteInProgress={false}
       error={null}
       onClearError={false}
-      messageId="CONFIRM_REMOVE_RELATIONSHIP"
+      messageId="CONFIRM_REMOVE_INDIVIDUAL_FROM_SOCIAL_GROUP"
     />,
     <AddToSocialGroupDialog
       open={addDialogOpen}
       onClose={() => setAddDialogOpen(false)}
+      individualGuid={individualGuid}
     />,
-    <StandardDialog
-      open={false}
-      onClose={Function.prototype}
-      titleId="ADD_SOCIAL_TO_GROUP"
-    >
-      <DialogContent>
-        {/* <IndividualSelector
-          excludedIndividuals={[individualGuid]}
-          setSelectedIndividualGuid={setSelectedIndividualGuid}
-        /> */}
-      </DialogContent>
-      <DialogActions
-        style={{
-          padding: '0px 24px 24px 24px',
-          display: 'flex',
-          alignItems: 'flex-end',
-          flexDirection: 'column',
-        }}
-      >
-        {false && (
-          <CustomAlert
-            style={{ margin: '20px 0', width: '100%' }}
-            severity="error"
-            titleId="SERVER_ERROR"
-          >
-            <Text variant="body2">{false}</Text>
-          </CustomAlert>
-        )}
-        <div>
-          <Button
-            display="basic"
-            onClick={Function.prototype}
-            id="CANCEL"
-          />
-          <Button
-            display="primary"
-            onClick={Function.prototype}
-            loading={false}
-            disabled={false}
-            id="ADD_SOCIAL_TO_GROUP"
-          />
-        </div>
-      </DialogActions>
-    </StandardDialog>,
     <Card title={title} titleId={titleId} maxHeight={600}>
       {noSocialGroups ? (
         <Text
@@ -109,11 +73,10 @@ export default function SocialGroupsCard({
           style={{ marginTop: 12 }}
         />
       ) : (
-        <RelationshipDisplay
-          tableSize="medium"
-          data={[]}
+        <SocialGroupsDisplay
+          data={socialGroups}
           loading={loading}
-          setConfirmDeleteDialog={Function.prototype}
+          onClickDelete={handleClickDelete}
         />
       )}
 

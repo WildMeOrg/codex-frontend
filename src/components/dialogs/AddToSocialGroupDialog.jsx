@@ -10,24 +10,34 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 
 import useSiteSettings from '../../models/site/useSiteSettings';
+import useSocialGroup from '../../models/socialGroups/useSocialGroup';
 import useSocialGroups from '../../models/socialGroups/useSocialGroups';
+import usePatchSocialGroup from '../../models/socialGroups/usePatchSocialGroup';
 import InputRow from '../fields/edit/InputRow';
-import Text from '../Text';
 import Button from '../Button';
 import StandardDialog from '../StandardDialog';
 
-export default function AddToSocialGroupDialog({ open, onClose }) {
-  const {
-    data: socialGroups,
-    loading,
-    error,
-    statusCode,
-  } = useSocialGroups();
-  const { data: siteSettings, loading: siteSettingsLoading } =
-    useSiteSettings();
-
+export default function AddToSocialGroupDialog({
+  open,
+  onClose,
+  individualGuid,
+}) {
   const [selectedGroup, setSelectedGroup] = useState('');
   const [selectedRole, setSelectedRole] = useState('');
+
+  const { data: socialGroups, loading, error } = useSocialGroups();
+  const { data: siteSettings, loading: siteSettingsLoading } =
+    useSiteSettings();
+  const {
+    data: selectedGroupData,
+    loading: selectedGroupDataLoading,
+    error: selectedGroupDataError,
+  } = useSocialGroup(selectedGroup);
+  const {
+    mutate: patchSocialGroup,
+    error: patchError,
+    loading: patchLoading,
+  } = usePatchSocialGroup();
 
   const handleClose = useCallback(() => {
     setSelectedGroup('');
@@ -43,7 +53,6 @@ export default function AddToSocialGroupDialog({ open, onClose }) {
   );
 
   const formComplete = Boolean(selectedGroup && selectedRole);
-  console.log(siteSettings);
 
   return (
     <StandardDialog
@@ -64,7 +73,9 @@ export default function AddToSocialGroupDialog({ open, onClose }) {
               onChange={e => setSelectedGroup(e.target.value)}
             >
               {safeSocialGroups.map(group => (
-                <MenuItem value={group?.guid}>{group?.name}</MenuItem>
+                <MenuItem key={group?.guid} value={group?.guid}>
+                  {group?.name}
+                </MenuItem>
               ))}
             </Select>
           </FormControl>
@@ -80,7 +91,9 @@ export default function AddToSocialGroupDialog({ open, onClose }) {
               onChange={e => setSelectedRole(e.target.value)}
             >
               {roles.map(role => (
-                <MenuItem value={role?.guid}>{role?.label}</MenuItem>
+                <MenuItem key={role?.guid} value={role?.guid}>
+                  {role?.label}
+                </MenuItem>
               ))}
             </Select>
           </FormControl>
@@ -89,9 +102,21 @@ export default function AddToSocialGroupDialog({ open, onClose }) {
       <DialogActions style={{ padding: '0px 24px 24px 24px' }}>
         <Button onClick={handleClose} id="CLOSE" />
         <Button
-          disabled={!formComplete}
+          disabled={selectedGroupDataLoading || !formComplete}
           display="primary"
-          onClick={handleClose}
+          loading={patchLoading}
+          onClick={async () => {
+            const newMembers = {
+              ...(selectedGroupData?.members || {}),
+              [individualGuid]: { role_guids: [selectedRole] },
+            };
+            const result = await patchSocialGroup({
+              guid: selectedGroup,
+              members: newMembers,
+              affectedIndividualGuids: [individualGuid],
+            });
+            if (result.status === 200) handleClose();
+          }}
           id="ADD"
         />
       </DialogActions>
