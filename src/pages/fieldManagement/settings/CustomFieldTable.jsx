@@ -101,7 +101,7 @@ export default function CustomFieldTable({
               />
               <ActionIcon
                 variant="edit"
-                href={`/admin/fields/save-custom-field/${fieldTypeName}/${field.id}`}
+                href={`/settings/fields/save-custom-field/${fieldTypeName}/${field.id}`}
               />
               <ActionIcon
                 variant="delete"
@@ -171,7 +171,7 @@ export default function CustomFieldTable({
               display="panel"
               startIcon={<AddIcon />}
               disabled={addButtonDisabled}
-              href={`/admin/fields/save-custom-field/${fieldTypeName}`}
+              href={`/settings/fields/save-custom-field/${fieldTypeName}`}
             />
           </span>
         </Tooltip>

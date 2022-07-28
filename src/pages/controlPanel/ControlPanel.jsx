@@ -4,11 +4,13 @@ import { get } from 'lodash-es';
 import { useTheme } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import SplashSettingsIcon from '@material-ui/icons/Home';
-import SiteSettingsIcon from '@material-ui/icons/Settings';
+import SiteSettingsIcon from '@material-ui/icons/SettingsApplications';
+import PreferencesIcon from '@material-ui/icons/Settings';
 import CustomFieldsIcon from '@material-ui/icons/Tune';
 import SiteStatusIcon from '@material-ui/icons/Speed';
 import UserManagementIcon from '@material-ui/icons/People';
 import AdministrationIcon from '@material-ui/icons/Gavel';
+import GroupWorkIcon from '@material-ui/icons/GroupWork';
 
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import useGetMe from '../../models/users/useGetMe';
@@ -21,43 +23,57 @@ const adminPages = [
     icon: SiteSettingsIcon,
     name: 'general_settings',
     labelId: 'GENERAL_SETTINGS',
-    href: '/admin/settings',
+    href: '/settings/general',
     roles: ['is_admin'],
   },
   {
     icon: SplashSettingsIcon,
     name: 'front-page-config',
     labelId: 'FRONT_PAGE',
-    href: '/admin/front-page',
+    href: '/settings/front-page',
     roles: ['is_admin'],
   },
   {
     icon: CustomFieldsIcon,
     name: 'field-management',
     labelId: 'MANAGE_FIELDS',
-    href: '/admin/fields',
+    href: '/settings/fields',
     roles: ['is_admin'],
+  },
+  {
+    icon: GroupWorkIcon,
+    name: 'social-groups',
+    labelId: 'SOCIAL_GROUPS',
+    href: '/settings/social-groups',
+    roles: ['is_admin', 'is_user_manager', 'is_researcher'],
   },
   {
     icon: SiteStatusIcon,
     name: 'site-status',
     labelId: 'SITE_STATUS',
-    href: '/admin/status',
-    roles: ['is_admin', 'is_user_manager'],
+    href: '/settings/status',
+    roles: ['is_admin', 'is_user_manager', 'is_researcher'],
   },
   {
     icon: UserManagementIcon,
     name: 'user-management',
     labelId: 'MANAGE_USERS',
-    href: '/admin/users',
+    href: '/settings/users',
     roles: ['is_admin', 'is_user_manager'],
   },
   {
     icon: AdministrationIcon,
     name: 'admin-actions',
     labelId: 'ADMINISTRATOR_ACTIONS',
-    href: '/admin/actions',
+    href: '/settings/actions',
     roles: ['is_admin'],
+  },
+  {
+    icon: PreferencesIcon,
+    name: 'user-preferences',
+    labelId: 'SETTINGS_AND_PRIVACY',
+    href: '/settings/user-preferences',
+    roles: ['is_admin', 'is_user_manager', 'is_researcher'],
   },
 ];
 

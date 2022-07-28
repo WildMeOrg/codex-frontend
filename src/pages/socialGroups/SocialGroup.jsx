@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 
+import useDocumentTitle from '../../hooks/useDocumentTitle';
 import useSocialGroup from '../../models/socialGroups/useSocialGroup';
 import usePatchSocialGroup from '../../models/socialGroups/usePatchSocialGroup';
 import { formatDate } from '../../utils/formatters';
@@ -34,6 +35,7 @@ export default function SocialGroup() {
   useEffect(() => {
     if (data?.name) setName(data.name);
   }, [data?.name]);
+  useDocumentTitle(data?.name || 'SOCIAL_GROUP');
 
   if (error) return <SadScreen statusCode={statusCode} />;
   if (loading) return <LoadingScreen />;

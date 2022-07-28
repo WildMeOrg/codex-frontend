@@ -14,7 +14,7 @@ import Text from '../../components/Text';
 import ActionIcon from '../../components/ActionIcon';
 import Button from '../../components/Button';
 import ConfirmDelete from '../../components/ConfirmDelete';
-import EntityHeader from '../../components/EntityHeader';
+import SettingsBreadcrumbs from '../../components/SettingsBreadcrumbs';
 import DataDisplay from '../../components/dataDisplays/DataDisplay';
 import AddSocialGroupDialog from './AddSocialGroupDialog';
 
@@ -67,7 +67,7 @@ export default function AssetGroup() {
   if (loading) return <LoadingScreen />;
 
   return (
-    <MainColumn fullWidth>
+    <MainColumn>
       <AddSocialGroupDialog
         open={addDialogOpen}
         onClose={() => setAddDialogOpen(false)}
@@ -86,11 +86,13 @@ export default function AssetGroup() {
         onClearError={clearDeleteError}
         messageId="SOCIAL_GROUP_DELETE_CONFIRMATION"
       />
-      <EntityHeader
-        name={intl.formatMessage({ id: 'SOCIAL_GROUPS' })}
-      >
-        <Text variant="body2">Wassoup</Text>
-      </EntityHeader>
+      <Text
+        variant="h3"
+        component="h3"
+        style={{ padding: '16px 0 16px 16px' }}
+        id="SOCIAL_GROUPS"
+      />
+      <SettingsBreadcrumbs currentPageTextId="SOCIAL_GROUPS" />
 
       <Button
         id="ADD_SOCIAL_GROUP"

@@ -320,7 +320,7 @@ export default function Individual() {
             titleId="RELATIONSHIPS"
           />
           <SocialGroupsCard
-            relationships={individualData?.relationships}
+            socialGroups={get(individualData, 'social_groups', [])}
             individualGuid={id}
             loading={loading}
             titleId="SOCIAL_GROUPS"

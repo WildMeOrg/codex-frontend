@@ -219,7 +219,7 @@ export default function SplashSettings() {
                 id="PREVIEW_CHANGES"
                 newTab
                 external
-                href="/admin/front-page/preview"
+                href="/settings/front-page/preview"
               />
             </CustomAlert>
           )}

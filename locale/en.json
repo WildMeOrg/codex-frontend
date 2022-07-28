@@ -206,7 +206,7 @@
   "FIRST_NAME": "First name",
   "ADOPTION_NAME": "Adoption name",
   "ALIAS": "Alias",
-  "SETTINGS_AND_PRIVACY": "My settings & privacy",
+  "SETTINGS_AND_PRIVACY": "Settings & privacy",
   "SEARCH_ITIS_SPECIES": "Search ITIS species",
   "SEARCH_INDIVIDUALS_INSTRUCTION": "Search for an individual by name or guid",
   "SEARCH_SIGHTINGS_INSTRUCTION": "Search for a sighting by location, owner or guid",

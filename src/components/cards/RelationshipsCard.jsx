@@ -114,7 +114,6 @@ export default function RelationshipsCard({
     clearError: clearPostRelationshipError,
   } = usePostRelationship();
 
-  console.log(siteSettings);
   const {
     mutate: deleteRelationship,
     loading: deleteRelationshipLoading,

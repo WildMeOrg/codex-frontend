@@ -467,7 +467,7 @@ export default function SaveField() {
                     data: { definitions: newFields },
                   });
                   if (response?.status === 200)
-                    history.push('/admin/fields');
+                    history.push('/settings/fields');
                 }}
               />
             </Grid>
