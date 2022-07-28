@@ -52,7 +52,12 @@ const adminPages = [
     name: 'site-status',
     labelId: 'SITE_STATUS',
     href: '/settings/status',
-    roles: ['is_admin', 'is_user_manager', 'is_researcher'],
+    roles: [
+      'is_admin',
+      'is_user_manager',
+      'is_researcher',
+      'is_contributor',
+    ],
   },
   {
     icon: UserManagementIcon,
@@ -73,49 +78,41 @@ const adminPages = [
     name: 'user-preferences',
     labelId: 'SETTINGS_AND_PRIVACY',
     href: '/settings/user-preferences',
-    roles: ['is_admin', 'is_user_manager', 'is_researcher'],
+    roles: [
+      'is_admin',
+      'is_user_manager',
+      'is_researcher',
+      'is_contributor',
+    ],
   },
 ];
 
 export default function ControlPanel() {
   const theme = useTheme();
 
-  const disabledStyles = {
-    boxShadow: 'none',
-    color: theme.palette.text.disabled,
-    backgroundColor: theme.palette.action.disabled,
-    cursor: 'default',
-  };
-
   useDocumentTitle('CONTROL_PANEL');
   const [hoveredCard, setHoveredCard] = useState(null);
 
   const { data: userData } = useGetMe();
+
+  console.log(userData);
 
   return (
     <MainColumn>
       <Text variant="h3" id="CONTROL_PANEL" style={{ padding: 20 }} />
       <div style={{ display: 'flex', flexWrap: 'wrap' }}>
         {adminPages.map(page => {
-          const buttonEnabled = page.roles.some(r =>
-            get(userData, r),
-          );
-          const additionalStyles = buttonEnabled
-            ? {}
-            : disabledStyles;
-          const hovered = buttonEnabled && hoveredCard === page.name;
-          let iconFill = hovered
+          const showButton = page.roles.some(r => get(userData, r));
+          if (!showButton) return null;
+          const hovered = hoveredCard === page.name;
+          const iconFill = hovered
             ? theme.palette.primary.light
             : theme.palette.grey['800'];
-          iconFill = buttonEnabled
-            ? iconFill
-            : theme.palette.text.disabled;
 
           return (
             <Link
               key={page.name}
               to={page.href}
-              disabled={!buttonEnabled}
               onMouseEnter={() => setHoveredCard(page.name)}
               onMouseLeave={() => setHoveredCard(null)}
               noUnderline
@@ -131,7 +128,6 @@ export default function ControlPanel() {
                   cursor: 'pointer',
                   margin: 12,
                   height: 160,
-                  ...additionalStyles,
                 }}
                 elevation={hovered ? 10 : undefined}
               >
