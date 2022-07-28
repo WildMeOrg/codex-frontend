@@ -146,8 +146,7 @@ export default function DataDisplay({
         anchorEl={anchorEl}
         placement="bottom-end"
         transition
-        disablePortal
-        // style={{ zIndex: 9999 }}
+        style={{ zIndex: 9999 }}
       >
         {({ TransitionProps }) => (
           <Fade {...TransitionProps} timeout={350}>
