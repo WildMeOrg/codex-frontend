@@ -144,6 +144,7 @@ export default function DataDisplay({
         anchorEl={anchorEl}
         placement="bottom-end"
         transition
+        style={{ zIndex: theme.zIndex.appBar - 1 }}
       >
         {({ TransitionProps }) => (
           <Fade {...TransitionProps} timeout={350}>
