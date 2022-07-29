@@ -47,8 +47,9 @@ export default function CustomFieldTable({
   const intl = useIntl();
   const [deleteField, setDeleteField] = useState(null);
   const [previewField, setPreviewField] = useState(null);
-  const [previewInitialValue, setPreviewInitialValue] =
-    useState(null);
+  const [previewInitialValue, setPreviewInitialValue] = useState(
+    null,
+  );
   const {
     removeCustomField,
     needsForce,
@@ -162,7 +163,9 @@ export default function CustomFieldTable({
         <Text variant="h5" component="h5" id={titleId} />
         <Tooltip
           placement="bottom-end"
-          title={intl.formatMessage({ id: addButtonTooltipId })}
+          title={intl.formatMessage({
+            id: addButtonTooltipId,
+          })}
         >
           <span>
             <ButtonLink
@@ -188,6 +191,7 @@ export default function CustomFieldTable({
         columns={tableColumns}
         data={fieldSchemas}
         noResultsTextId={noFieldsTextId}
+        tableContainerStyles={{ maxHeight: 300 }}
       />
     </Grid>
   );

@@ -20,11 +20,7 @@ export default function useIndividualFieldSchemas() {
 
     const customFields = get(
       data,
-      [
-        'site.custom.customFields.MarkedIndividual',
-        'value',
-        'definitions',
-      ],
+      ['site.custom.customFields.Individual', 'value', 'definitions'],
       [],
     );
     const customFieldSchemas = customFields.map(

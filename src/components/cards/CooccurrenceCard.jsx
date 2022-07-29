@@ -34,6 +34,7 @@ export default function CooccurrenceCard({
           },
         ]}
         data={data}
+        tableContainerStyles={{ maxHeight: 600 }}
       />
     </Card>
   );

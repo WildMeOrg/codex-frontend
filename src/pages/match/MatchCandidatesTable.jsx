@@ -59,8 +59,9 @@ export default function MatchCandidatesTable({
     <DataDisplay
       idKey="guid"
       titleId="CANDIDATE_ANNOTATIONS"
-      data={matchCandidates} // variant="secondary"
+      data={matchCandidates}
       columns={columns}
+      // variant="secondary"
       noResultsTextId="NO_MATCH_CANDIDATES"
       hideDownloadCsv
       hideFilterColumns
@@ -71,6 +72,7 @@ export default function MatchCandidatesTable({
           setSelectedMatchCandidate(nextSelection);
         }
       }}
+      tableContainerStyles={{ maxHeight: 300 }}
     />
   );
 }

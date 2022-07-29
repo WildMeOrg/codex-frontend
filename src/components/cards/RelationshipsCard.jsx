@@ -341,7 +341,7 @@ export default function RelationshipsCard({
         </div>
       </DialogActions>
     </StandardDialog>,
-    <Card title={title} titleId={titleId} maxHeight={600}>
+    <Card title={title} titleId={titleId}>
       {/* // renderActions={
       //   <div>
       //     <IconButton

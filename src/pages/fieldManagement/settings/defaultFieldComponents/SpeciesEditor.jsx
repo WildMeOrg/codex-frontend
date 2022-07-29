@@ -167,13 +167,13 @@ export default function SpeciesEditor({
         )}
         <DataDisplay
           cellStyles={{ padding: '0 8px 0 12px' }}
-          paperStyles={{ maxHeight: 360 }}
           style={{ marginTop: 12 }}
           noTitleBar
           variant="secondary"
           columns={tableColumns}
           data={searchResults || suggestedValues}
           idKey="itisTsn"
+          tableContainerStyles={{ maxHeight: 300 }}
         />
         <Text
           component="p"

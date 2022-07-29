@@ -13,6 +13,7 @@ export default {
   twitterBotTestResults: 'twitterBotTestResults',
   publicData: 'publicData',
   socialGroups: 'socialGroups',
+  publicAssetGroupSightings: 'publicAssetGroupSightings',
   sageJobs: ['sage', 'jobs'],
 };
 

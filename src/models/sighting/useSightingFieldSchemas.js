@@ -74,7 +74,7 @@ export default function useSightingFieldSchemas() {
 
     const customFields = get(
       data,
-      ['site.custom.customFields.Occurrence', 'value', 'definitions'],
+      ['site.custom.customFields.Sighting', 'value', 'definitions'],
       [],
     );
     const customFieldSchemas = customFields.map(

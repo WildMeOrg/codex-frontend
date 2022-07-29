@@ -18,9 +18,9 @@ import SettingsFileUpload from '../../components/settings/SettingsFileUpload';
 import SettingsTextInput from '../../components/settings/SettingsTextInput';
 
 const customFields = {
-  sighting: 'site.custom.customFields.Occurrence',
+  sighting: 'site.custom.customFields.Sighting',
   encounter: 'site.custom.customFields.Encounter',
-  individual: 'site.custom.customFields.MarkedIndividual',
+  individual: 'site.custom.customFields.Individual',
 };
 
 const newSettingFields = [

@@ -170,7 +170,7 @@ export default function StatusCard({ sightingData }) {
   }
 
   return (
-    <Card titleId="IDENTIFICATION_PIPELINE_STATUS" maxHeight={900}>
+    <Card titleId="IDENTIFICATION_PIPELINE_STATUS">
       <Timeline>
         <TimelineStep
           Icon={ReportIcon}
