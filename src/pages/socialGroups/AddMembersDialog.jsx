@@ -26,7 +26,8 @@ export default function AddMembersDialog({
     useState('');
   const [selectedRole, setSelectedRole] = useState('');
 
-  const { data: siteSettings } = useSiteSettings();
+  const { data: siteSettings, loading: siteSettingsLoading } =
+    useSiteSettings();
   const {
     mutate: patchSocialGroup,
     error: patchError,
@@ -63,7 +64,10 @@ export default function AddMembersDialog({
           width="100%"
           setSelectedIndividualGuid={setSelectedIndividualGuid}
         />
-        <InputRow schema={{ labelId: 'ROLE' }}>
+        <InputRow
+          loading={siteSettingsLoading}
+          schema={{ labelId: 'ROLE' }}
+        >
           <FormControl>
             <InputLabel>
               <FormattedMessage id="ROLE" />
