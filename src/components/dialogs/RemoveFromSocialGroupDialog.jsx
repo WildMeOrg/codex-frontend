@@ -17,6 +17,11 @@ export default function RemoveFromSocialGroupDialog({
     clearError: clearPatchError,
   } = usePatchSocialGroup();
 
+  const handleClose = useCallback(() => {
+    if (patchError) clearPatchError();
+    onClose();
+  }, [patchError]);
+
   const removeIndividualFromSocialGroup = useCallback(async () => {
     const safeMembers = get(socialGroup, 'members', {});
     const newMembers = omit(safeMembers, individualGuid);
@@ -31,7 +36,7 @@ export default function RemoveFromSocialGroupDialog({
   return (
     <ConfirmDelete
       open={open}
-      onClose={onClose}
+      onClose={handleClose}
       onDelete={removeIndividualFromSocialGroup}
       deleteInProgress={patchLoading}
       error={patchError}
