@@ -11,6 +11,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 
 import useSiteSettings from '../../models/site/useSiteSettings';
 import usePatchSocialGroup from '../../models/socialGroups/usePatchSocialGroup';
+import CustomAlert from '../../components/Alert';
 import InputRow from '../../components/fields/edit/InputRow';
 import IndividualSelector from '../../components/IndividualSelector';
 import Button from '../../components/Button';
@@ -20,25 +21,25 @@ export default function AddMembersDialog({
   open,
   onClose,
   socialGroup,
-})
-{
-  const [selectedIndividualGuid, setSelectedIndividualGuid] = useState('');
+}) {
+  const [selectedIndividualGuid, setSelectedIndividualGuid] =
+    useState('');
   const [selectedRole, setSelectedRole] = useState('');
 
-  const { data: siteSettings, loading: siteSettingsLoading } =
-    useSiteSettings();
+  const { data: siteSettings } = useSiteSettings();
   const {
     mutate: patchSocialGroup,
     error: patchError,
     loading: patchLoading,
+    clearError: clearPatchError,
   } = usePatchSocialGroup();
 
-  const handleClose = useCallback(() =>
-  {
+  const handleClose = useCallback(() => {
     setSelectedIndividualGuid(null);
     setSelectedRole('');
+    if (patchError) clearPatchError();
     onClose();
-  }, []);
+  }, [patchError]);
 
   const roles = get(
     siteSettings,
@@ -46,7 +47,9 @@ export default function AddMembersDialog({
     [],
   );
 
-  const formComplete = Boolean(selectedIndividualGuid && selectedRole);
+  const formComplete = Boolean(
+    selectedIndividualGuid && selectedRole,
+  );
 
   return (
     <StandardDialog
@@ -79,27 +82,50 @@ export default function AddMembersDialog({
           </FormControl>
         </InputRow>
       </DialogContent>
-      <DialogActions style={{ padding: '0px 24px 24px 24px' }}>
-        <Button onClick={handleClose} id="CLOSE" />
-        <Button
-          disabled={!formComplete}
-          display="primary"
-          loading={patchLoading}
-          onClick={async () =>
-          {
-            const newMembers = {
-              ...(socialGroup?.members || {}),
-              [selectedIndividualGuid]: { role_guids: [selectedRole] },
-            };
-            const result = await patchSocialGroup({
-              guid: socialGroup?.guid,
-              members: newMembers,
-              affectedIndividualGuids: [selectedIndividualGuid],
-            });
-            if (result.status === 200) handleClose();
-          }}
-          id="ADD"
-        />
+      <DialogActions
+        style={{
+          padding: '0px 24px 24px 24px',
+          display: 'flex',
+          alignItems: 'flex-end',
+          flexDirection: 'column',
+        }}
+      >
+        {patchError && (
+          <CustomAlert
+            style={{ margin: '20px 0', width: '100%' }}
+            severity="error"
+            titleId="SERVER_ERROR"
+          >
+            {patchError}
+          </CustomAlert>
+        )}
+        <div>
+          <Button
+            style={{ marginRight: 4 }}
+            onClick={handleClose}
+            id="CLOSE"
+          />
+          <Button
+            disabled={!formComplete}
+            display="primary"
+            loading={patchLoading}
+            onClick={async () => {
+              const newMembers = {
+                ...(socialGroup?.members || {}),
+                [selectedIndividualGuid]: {
+                  role_guids: [selectedRole],
+                },
+              };
+              const result = await patchSocialGroup({
+                guid: socialGroup?.guid,
+                members: newMembers,
+                affectedIndividualGuids: [selectedIndividualGuid],
+              });
+              if (result.status === 200) handleClose();
+            }}
+            id="ADD"
+          />
+        </div>
       </DialogActions>
     </StandardDialog>
   );

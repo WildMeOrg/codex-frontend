@@ -32,10 +32,15 @@ export default function SocialGroup() {
   const [addDialogOpen, setAddDialogOpen] = useState(false);
   const [individualToRemove, setIndividualToRemove] = useState(null);
 
-  const openAddDialog = useCallback(() => setAddDialogOpen(true), [])
-  const handleCloseAddDialog = useCallback(() => setAddDialogOpen(false), [])
-  const handleCloseDeleteDialog = useCallback(() =>
-    setIndividualToRemove(null), []);
+  const openAddDialog = useCallback(() => setAddDialogOpen(true), []);
+  const handleCloseAddDialog = useCallback(
+    () => setAddDialogOpen(false),
+    [],
+  );
+  const handleCloseDeleteDialog = useCallback(
+    () => setIndividualToRemove(null),
+    [],
+  );
 
   const { data, loading, error, statusCode } = useSocialGroup(guid);
   const safeMembers = get(data, 'members', {});
@@ -55,7 +60,9 @@ export default function SocialGroup() {
   useEffect(() => {
     if (data?.name) setName(data.name);
   }, [data?.name]);
-  useDocumentTitle(data?.name || 'SOCIAL_GROUP');
+  useDocumentTitle(data?.name || 'SOCIAL_GROUP', {
+    translateMessage: false,
+  });
 
   if (error) return <SadScreen statusCode={statusCode} />;
   if (loading) return <LoadingScreen />;
@@ -166,8 +173,14 @@ export default function SocialGroup() {
           </Paper>
         </Grid>
         <Grid item style={{ width: '100%' }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <Text
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+            }}
+          >
+            <Text
               variant="h6"
               style={{ marginTop: 20, marginLeft: 12 }}
               id="MEMBERS"
@@ -190,20 +203,25 @@ export default function SocialGroup() {
             individuals={membersWithRoles}
             hideFilterSearch
             removeColumns={['adoptionName', 'taxonomy_guid']}
-            addColumns={[{
-              reference: 'actions',
-              name: 'guid',
-              labelId: 'ACTIONS',
-              options: {
-                customBodyRender: (individualGuid) =>
-                {
-                  const handleClickDelete = () => setIndividualToRemove(individualGuid);
-                  return (
-                    <ActionIcon onClick={handleClickDelete} variant="delete" />
-                  )
-                }
-              }
-            }]}
+            addColumns={[
+              {
+                reference: 'actions',
+                name: 'guid',
+                labelId: 'ACTIONS',
+                options: {
+                  customBodyRender: individualGuid => {
+                    const handleClickDelete = () =>
+                      setIndividualToRemove(individualGuid);
+                    return (
+                      <ActionIcon
+                        onClick={handleClickDelete}
+                        variant="delete"
+                      />
+                    );
+                  },
+                },
+              },
+            ]}
             loading={membersLoading}
             showNoResultsBao={false}
             noResultsTextId="NO_INDIVIDUALS_IN_SOCIAL_GROUP"

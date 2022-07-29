@@ -9,8 +9,7 @@ export default function RemoveFromSocialGroupDialog({
   onClose,
   socialGroup,
   individualGuid,
-})
-{
+}) {
   const {
     mutate: patchSocialGroup,
     error: patchError,
@@ -18,8 +17,7 @@ export default function RemoveFromSocialGroupDialog({
     clearError: clearPatchError,
   } = usePatchSocialGroup();
 
-  const removeIndividualFromSocialGroup = useCallback(async () =>
-  {
+  const removeIndividualFromSocialGroup = useCallback(async () => {
     const safeMembers = get(socialGroup, 'members', {});
     const newMembers = omit(safeMembers, individualGuid);
     const result = await patchSocialGroup({
