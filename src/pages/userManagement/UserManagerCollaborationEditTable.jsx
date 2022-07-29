@@ -20,8 +20,10 @@ export default function UserManagersCollaborationEditTable({
 }) {
   const intl = useIntl();
 
-  const { data: currentUserData, loading: userDataLoading } =
-    useGetMe();
+  const {
+    data: currentUserData,
+    loading: userDataLoading,
+  } = useGetMe();
 
   const {
     mutate: revokeCollab,
@@ -199,6 +201,7 @@ export default function UserManagersCollaborationEditTable({
         columns={tableColumns}
         data={tableFriendlyData || []}
         noResultsTextId="NO_COLLABORATIONS_MESSAGE"
+        tableContainerStyles={{ maxHeight: 500 }}
       />
       {collaborationError ? (
         <Text

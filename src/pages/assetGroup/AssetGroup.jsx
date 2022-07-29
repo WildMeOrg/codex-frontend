@@ -26,18 +26,25 @@ import AGSTable from './AGSTable';
 
 const POLLING_INTERVAL = 5000; // 5 seconds
 
+function isProgressSettled(pipelineStatus) {
+  const { skipped, failed, complete } = pipelineStatus || {};
+
+  return skipped || complete || failed;
+}
+
 function deriveRefetchInterval(resultData, query) {
-  const { complete, status } =
-    resultData?.data?.progress_preparation || {};
+  const pipelineStatus = get(
+    resultData,
+    'data.pipeline_status.preparation',
+    {},
+  );
 
-  const error = query.state?.error && { ...query.state.error };
+  const isSettled = isProgressSettled(pipelineStatus);
 
-  const isProgressSettled =
-    complete || ['failed', 'cancelled'].includes(status) || error;
+  const isError = Boolean(query.state?.error);
 
-  const refetchInterval = isProgressSettled
-    ? false
-    : POLLING_INTERVAL;
+  const refetchInterval =
+    isSettled || isError ? false : POLLING_INTERVAL;
 
   return refetchInterval;
 }
@@ -86,15 +93,17 @@ export default function AssetGroup() {
     intl.formatMessage({ id: 'UNNAMED_USER' });
   const creatorUrl = `/users/${sightingCreator?.guid}`;
 
-  const {
-    complete: isPreparationProgressComplete,
-    failed: isPreparationProgressFailed,
-    cancelled: isPreparationProgressCancelled,
-  } = get(data, 'progress_preparation', {});
-  const showPreparationErrorAlert =
-    isPreparationProgressFailed || isPreparationProgressCancelled;
-  const showPreparationInProgressAlert =
-    !showPreparationErrorAlert && !isPreparationProgressComplete;
+  const pipelineStatusPreparation = get(
+    data,
+    'pipeline_status.preparation',
+    {},
+  );
+  const isPreparationFailed = pipelineStatusPreparation.failed;
+
+  const showPreparationInProgressAlert = !(
+    isPreparationFailed ||
+    isProgressSettled(pipelineStatusPreparation)
+  );
 
   return (
     <MainColumn fullWidth>
@@ -146,7 +155,7 @@ export default function AssetGroup() {
           </Text>
         )}
       </EntityHeader>
-      {showPreparationErrorAlert && (
+      {isPreparationFailed && (
         <CustomAlert
           titleId="IMAGE_PROCESSING_ERROR"
           descriptionId="IMAGE_PROCESSING_ERROR_MESSAGE"
@@ -157,8 +166,8 @@ export default function AssetGroup() {
         <>
           <LinearProgress
             style={{
-              borderTopLeftRadius: '4px',
-              borderTopRightRadius: '4px',
+              borderTopLeftRadius: 4,
+              borderTopRightRadius: 4,
             }}
           />
           <CustomAlert
@@ -166,8 +175,8 @@ export default function AssetGroup() {
             descriptionId="PENDING_IMAGE_PROCESSING_MESSAGE"
             severity="info"
             style={{
-              borderTopLeftRadius: '0px',
-              borderTopRightRadius: '0px',
+              borderTopLeftRadius: 0,
+              borderTopRightRadius: 0,
             }}
           />
         </>

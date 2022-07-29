@@ -47,6 +47,7 @@ export default function RelationshipDisplay({
       columns={relationshipCols}
       data={data}
       loading={loading}
+      tableContainerStyles={{ maxHeight: 400 }}
     />
   );
 }

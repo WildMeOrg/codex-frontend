@@ -6,7 +6,7 @@ import { TransitionGroup } from 'react-transition-group';
 import AuthenticatedAppHeader from './components/AuthenticatedAppHeader';
 import SaveCustomField from './pages/fieldManagement/settings/saveField/SaveField';
 import GeneralSettings from './pages/generalSettings/GeneralSettings';
-import ServerStatus from './pages/serverStatus/ServerStatus';
+import SiteStatus from './pages/siteStatus/SiteStatus';
 import SplashSettings from './pages/splashSettings/SplashSettings';
 import FieldManagement from './pages/fieldManagement/FieldManagement';
 import UserManagement from './pages/userManagement/UserManagement';
@@ -20,6 +20,7 @@ import Sighting from './pages/sighting/Sighting';
 import AssetGroupSighting from './pages/sighting/AssetGroupSighting';
 import Splash from './pages/splash/Splash';
 import AssetGroup from './pages/assetGroup/AssetGroup';
+import PendingCitizenScienceSightings from './pages/pendingCitizenScienceSightings/PendingCitizenScienceSightings';
 import User from './pages/user/User';
 import Users from './pages/user/Users';
 import MergeIndividuals from './pages/merge/MergeIndividuals';
@@ -100,7 +101,7 @@ export default function AuthenticatedSwitch({
                         <Splash />
                       </Route>
                       <Route path="/admin/status">
-                        <ServerStatus />
+                        <SiteStatus />
                       </Route>
                       <Route path="/admin/users">
                         <UserManagement />
@@ -149,6 +150,9 @@ export default function AuthenticatedSwitch({
                       </Route>
                       <Route path="/notifications">
                         <Notifications />
+                      </Route>
+                      <Route path="/pending-citizen-science-sightings">
+                        <PendingCitizenScienceSightings />
                       </Route>
                       <Route path="/pending-sightings/:id">
                         <AssetGroupSighting />

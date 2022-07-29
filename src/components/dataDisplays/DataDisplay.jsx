@@ -61,9 +61,10 @@ export default function DataDisplay({
   sortExternally,
   searchParams,
   setSearchParams,
-  paperStyles = {},
   tableStyles = {},
   cellStyles = {},
+  stickyHeader = true,
+  tableContainerStyles = {},
   ...rest
 }) {
   const intl = useIntl();
@@ -80,8 +81,9 @@ export default function DataDisplay({
   );
   const [filter, setFilter] = useState('');
   const [internalSortColumn, setInternalSortColumn] = useState(null);
-  const [internalSortDirection, setInternalSortDirection] =
-    useState(null);
+  const [internalSortDirection, setInternalSortDirection] = useState(
+    null,
+  );
   const [anchorEl, setAnchorEl] = useState(null);
   const filterPopperOpen = Boolean(anchorEl);
 
@@ -142,6 +144,7 @@ export default function DataDisplay({
         anchorEl={anchorEl}
         placement="bottom-end"
         transition
+        style={{ zIndex: theme.zIndex.appBar - 1 }}
       >
         {({ TransitionProps }) => (
           <Fade {...TransitionProps} timeout={350}>
@@ -258,9 +261,10 @@ export default function DataDisplay({
       <TableContainer
         component={variant === 'secondary' ? Paper : undefined}
         elevation={variant === 'secondary' ? 2 : undefined}
-        style={paperStyles}
+        style={tableContainerStyles}
       >
         <Table
+          stickyHeader={stickyHeader}
           style={{ minWidth: 10, ...tableStyles }}
           size={tableSize}
           aria-label={title}

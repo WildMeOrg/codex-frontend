@@ -123,7 +123,7 @@ export default function IndividualSelector({
       {canShowTable && (
         <DataDisplay
           idKey="guid"
-          paperStyles={{ maxHeight: 360 }}
+          tableContainerStyles={{ maxHeight: 360 }}
           style={{ marginTop: 12 }}
           noTitleBar
           variant="secondary"

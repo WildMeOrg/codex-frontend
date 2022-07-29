@@ -73,6 +73,7 @@ export default function AGSTable({ assetGroupSightings }) {
       data={transformedData}
       columns={columns}
       style={{ marginTop: 20 }}
+      tableContainerStyles={{ maxHeight: 600 }}
     />
   );
 }

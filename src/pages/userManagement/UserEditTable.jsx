@@ -116,6 +116,7 @@ export default function UserEditTable() {
         columns={tableColumns}
         data={activeUsers}
         loading={loading}
+        tableContainerStyles={{ maxHeight: 500 }}
       />
       {usersError ? (
         <Text

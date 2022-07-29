@@ -9,7 +9,8 @@ export default function useOptions() {
     useSiteSettings();
 
   return useMemo(() => {
-    if (loading || error) return {};
+    if (loading || error)
+      return { regionOptions: [], speciesOptions: [] };
 
     const backendRegionOptions = get(
       data,

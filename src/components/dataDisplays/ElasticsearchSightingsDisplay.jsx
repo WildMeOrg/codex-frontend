@@ -6,7 +6,7 @@ import Link from '../Link';
 import DataDisplay from './DataDisplay';
 import { cellRendererTypes } from './cellRenderers';
 
-export default function SightingsDisplay({
+export default function ElasticsearchSightingsDisplay({
   sightings,
   loading,
   dataCount,

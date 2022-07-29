@@ -34,20 +34,23 @@ export default function EncountersCard({
   const mapModeClicked = () => setShowMapView(true);
   const listModeClicked = () => setShowMapView(false);
 
-  const encountersWithLocationData = useMemo(() => {
-    // hotfix //
-    if (!encounters) return [];
-    // hotfix //
+  const encountersWithLocationData = useMemo(
+    () => {
+      // hotfix //
+      if (!encounters) return [];
+      // hotfix //
 
-    return encounters.map(encounter => ({
-      ...encounter,
-      formattedLocation: formatLocationFromSighting(
-        encounter,
-        regionOptions,
-        intl,
-      ),
-    }));
-  }, [get(encounters, 'length')]);
+      return encounters.map(encounter => ({
+        ...encounter,
+        formattedLocation: formatLocationFromSighting(
+          encounter,
+          regionOptions,
+          intl,
+        ),
+      }));
+    },
+    [get(encounters, 'length')],
+  );
 
   const tooFewEncounters = encounters.length <= 1;
 
@@ -162,6 +165,7 @@ export default function EncountersCard({
           columns={filteredColumns}
           data={encountersWithLocationData}
           tableStyles={{ tableLayout: 'fixed' }}
+          tableContainerStyles={{ maxHeight: 600 }}
         />
       )}
       {!noEncounters && showMapView && <div>Map goes here</div>}

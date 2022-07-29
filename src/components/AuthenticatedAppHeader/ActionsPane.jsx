@@ -8,6 +8,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
 import Divider from '@material-ui/core/Divider';
 import SettingsIcon from '@material-ui/icons/Settings';
+import PublicIcon from '@material-ui/icons/SupervisedUserCircle';
 import ControlPanelIcon from '@material-ui/icons/PermDataSetting';
 import BulkImportIcon from '@material-ui/icons/PostAdd';
 import LogoutIcon from '@material-ui/icons/ExitToApp';
@@ -24,6 +25,14 @@ const actions = [
     icon: BulkImportIcon,
   },
   {
+    id: 'pending-citizen-science-sightings',
+    href: '/pending-citizen-science-sightings',
+    permissionsTest: userData =>
+      userData?.is_admin || userData?.is_data_manager,
+    messageId: 'PENDING_CITIZEN_SCIENCE_SIGHTINGS',
+    icon: PublicIcon,
+  },
+  {
     id: 'settings',
     href: '/settings',
     messageId: 'SETTINGS_AND_PRIVACY',
@@ -32,7 +41,8 @@ const actions = [
   {
     id: 'control-panel',
     href: '/admin',
-    adminOrUserManagerOnly: true,
+    permissionsTest: userData =>
+      userData?.is_admin || userData?.is_user_manager,
     messageId: 'CONTROL_PANEL',
     icon: ControlPanelIcon,
   },
@@ -46,8 +56,6 @@ export default function NotificationsPane({
   const theme = useTheme();
   const closePopover = () => setAnchorEl(null);
 
-  const isAdministrator = get(userData, 'is_admin', false);
-  const isUserManager = get(userData, 'is_user_manager', false);
   const name = get(userData, 'full_name') || 'Unnamed user';
   const profileSrc = get(userData, ['profile_fileupload', 'src']);
 
@@ -84,10 +92,10 @@ export default function NotificationsPane({
         </Link>
         <Divider style={{ margin: '8px 16px' }} />
         {actions.map(action => {
-          const elevatedPermissions =
-            isAdministrator || isUserManager;
-          if (action.adminOrUserManagerOnly && !elevatedPermissions)
-            return null;
+          if (action.permissionsTest) {
+            const visible = action.permissionsTest(userData);
+            if (!visible) return null;
+          }
           return (
             <Link
               key={action.id}
