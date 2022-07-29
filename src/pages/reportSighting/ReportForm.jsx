@@ -297,6 +297,7 @@ export default function ReportForm({
                 const report =
                   sightingType === 'one'
                     ? prepareReportWithEncounter(
+                        sightingType,
                         sightingFormValues,
                         customSightingFormValues,
                         customSightingSchemas,
@@ -307,6 +308,7 @@ export default function ReportForm({
                         true,
                       )
                     : prepareBasicReport(
+                        sightingType,
                         sightingFormValues,
                         customSightingFormValues,
                         customSightingSchemas,
