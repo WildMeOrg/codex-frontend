@@ -79,7 +79,9 @@ export default function IndividualsDisplay({
     },
   ];
 
-  const filteredColumns = columns.filter(c => !removeColumns.includes(c.name));
+  const filteredColumns = columns.filter(
+    c => !removeColumns.includes(c.name),
+  );
   const amendedColumns = [...filteredColumns, ...addColumns];
 
   return (

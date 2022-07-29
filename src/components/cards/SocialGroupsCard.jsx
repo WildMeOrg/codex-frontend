@@ -50,45 +50,48 @@ export default function SocialGroupsCard({
     if (result.status === 200) handleClose();
   }, [individualGuid, groupToRemove, handleClose]);
 
-  return <>
-    <ConfirmDelete
-      open={Boolean(groupToRemove)}
-      onClose={handleClose}
-      onDelete={removeIndividualFromSocialGroup}
-      deleteInProgress={false}
-      error={null}
-      onClearError={false}
-      messageId="CONFIRM_REMOVE_INDIVIDUAL_FROM_SOCIAL_GROUP"
-    />
-    <AddToSocialGroupDialog
-      open={addDialogOpen}
-      onClose={() => setAddDialogOpen(false)}
-      individualGuid={individualGuid}
-    />
-    <Card title={title} titleId={titleId} maxHeight={600}>
-      {noSocialGroups ? (
-        <Text
-          variant="body2"
-          id={noDataMessage}
-          style={{ marginTop: 12 }}
-        />
-      ) : (
-        <SocialGroupsDisplay
-          data={socialGroups}
-          loading={loading}
-          onClickDelete={handleClickDelete}
-        />
-      )}
-
-      <Button
-        style={{ marginTop: 16 }}
-        id="ADD_TO_SOCIAL_GROUP"
-        display="primary"
-        loading={loading}
-        startIcon={<AddIcon />}
-        size="small"
-        onClick={() => setAddDialogOpen(true)}
+  return (
+    <>
+      <ConfirmDelete
+        open={Boolean(groupToRemove)}
+        onClose={handleClose}
+        onDelete={removeIndividualFromSocialGroup}
+        deleteInProgress={false}
+        error={null}
+        onClearError={false}
+        messageId="CONFIRM_REMOVE_INDIVIDUAL_FROM_SOCIAL_GROUP"
       />
-    </Card>
-  </>
+      <AddToSocialGroupDialog
+        open={addDialogOpen}
+        onClose={() => setAddDialogOpen(false)}
+        individualGuid={individualGuid}
+      />
+      <Card title={title} titleId={titleId} maxHeight={600}>
+        {noSocialGroups ? (
+          <Text
+            variant="body2"
+            id={noDataMessage}
+            style={{ marginTop: 12 }}
+          />
+        ) : (
+          <SocialGroupsDisplay
+            individualGuid={individualGuid}
+            data={socialGroups}
+            loading={loading}
+            onClickDelete={handleClickDelete}
+          />
+        )}
+
+        <Button
+          style={{ marginTop: 16 }}
+          id="ADD_TO_SOCIAL_GROUP"
+          display="primary"
+          loading={loading}
+          startIcon={<AddIcon />}
+          size="small"
+          onClick={() => setAddDialogOpen(true)}
+        />
+      </Card>
+    </>
+  );
 }

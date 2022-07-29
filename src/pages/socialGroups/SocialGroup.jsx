@@ -28,7 +28,8 @@ export default function SocialGroup() {
   const { data, loading, error, statusCode } = useSocialGroup(guid);
   const safeMembers = get(data, 'members', {});
   const memberGuids = Object.keys(safeMembers);
-  const { data: membersWithData, loading: membersLoading } = useQueryIndividualsByGuid(memberGuids);
+  const { data: membersWithData, loading: membersLoading } =
+    useQueryIndividualsByGuid(memberGuids);
 
   const {
     mutate: patchSocialGroup,
@@ -49,15 +50,13 @@ export default function SocialGroup() {
 
   const nameChanged = name !== data?.name;
   const safeMembersWithData = membersWithData || [];
-  const membersWithRoles = safeMembersWithData.map(member =>
-  {
+  const membersWithRoles = safeMembersWithData.map(member => {
     const membershipData = safeMembers[member?.guid];
-    const roleGuid = get(membershipData, ['role_guids', 0]);
     return {
       ...member,
-      role: roleGuid,
-    }
-  })
+      role: get(membershipData, ['role_guids', 0]),
+    };
+  });
 
   return (
     <MainColumn fullWidth>
