@@ -1,15 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { get } from 'lodash-es';
 
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
+import AddIcon from '@material-ui/icons/Add';
 
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import useSocialGroup from '../../models/socialGroups/useSocialGroup';
 import useQueryIndividualsByGuid from '../../models/individual/useQueryIndividualsByGuid';
 import usePatchSocialGroup from '../../models/socialGroups/usePatchSocialGroup';
 import { formatDate } from '../../utils/formatters';
+import RemoveFromSocialGroupDialog from '../../components/dialogs/RemoveFromSocialGroupDialog';
+import ActionIcon from '../../components/ActionIcon';
 import IndividualsDisplay from '../../components/dataDisplays/IndividualsDisplay';
 import InputRow from '../../components/fields/edit/InputRow';
 import TextInput from '../../components/inputs/TextInput';
@@ -20,11 +23,20 @@ import LoadingScreen from '../../components/LoadingScreen';
 import MainColumn from '../../components/MainColumn';
 import SadScreen from '../../components/SadScreen';
 import Text from '../../components/Text';
+import AddMembersDialog from './AddMembersDialog';
 
 const nameSchema = { labelId: 'NAME_OF_GROUP' };
 
 export default function SocialGroup() {
   const { guid } = useParams();
+  const [addDialogOpen, setAddDialogOpen] = useState(false);
+  const [individualToRemove, setIndividualToRemove] = useState(null);
+
+  const openAddDialog = useCallback(() => setAddDialogOpen(true), [])
+  const handleCloseAddDialog = useCallback(() => setAddDialogOpen(false), [])
+  const handleCloseDeleteDialog = useCallback(() =>
+    setIndividualToRemove(null), []);
+
   const { data, loading, error, statusCode } = useSocialGroup(guid);
   const safeMembers = get(data, 'members', {});
   const memberGuids = Object.keys(safeMembers);
@@ -60,6 +72,17 @@ export default function SocialGroup() {
 
   return (
     <MainColumn fullWidth>
+      <AddMembersDialog
+        open={addDialogOpen}
+        onClose={handleCloseAddDialog}
+        socialGroup={data}
+      />
+      <RemoveFromSocialGroupDialog
+        open={Boolean(individualToRemove)}
+        onClose={handleCloseDeleteDialog}
+        socialGroup={data}
+        individualGuid={individualToRemove}
+      />
       <ErrorDialog
         open={Boolean(patchError)}
         onClose={clearPatchError}
@@ -143,11 +166,21 @@ export default function SocialGroup() {
           </Paper>
         </Grid>
         <Grid item style={{ width: '100%' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <Text
-            variant="h6"
-            style={{ marginTop: 20, marginLeft: 12 }}
-            id="MEMBERS"
-          />
+              variant="h6"
+              style={{ marginTop: 20, marginLeft: 12 }}
+              id="MEMBERS"
+            />
+
+            <Button
+              style={{ marginTop: 16 }}
+              id="ADD_MEMBERS"
+              startIcon={<AddIcon />}
+              size="small"
+              onClick={openAddDialog}
+            />
+          </div>
 
           <IndividualsDisplay
             style={{ marginTop: 20 }}
@@ -157,7 +190,23 @@ export default function SocialGroup() {
             individuals={membersWithRoles}
             hideFilterSearch
             removeColumns={['adoptionName', 'taxonomy_guid']}
+            addColumns={[{
+              reference: 'actions',
+              name: 'guid',
+              labelId: 'ACTIONS',
+              options: {
+                customBodyRender: (individualGuid) =>
+                {
+                  const handleClickDelete = () => setIndividualToRemove(individualGuid);
+                  return (
+                    <ActionIcon onClick={handleClickDelete} variant="delete" />
+                  )
+                }
+              }
+            }]}
             loading={membersLoading}
+            showNoResultsBao={false}
+            noResultsTextId="NO_INDIVIDUALS_IN_SOCIAL_GROUP"
           />
         </Grid>
       </Grid>

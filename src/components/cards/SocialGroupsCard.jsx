@@ -1,14 +1,12 @@
 import React, { useState, useCallback } from 'react';
-import { get, omit } from 'lodash-es';
 
 import AddIcon from '@material-ui/icons/Add';
 
 import Button from '../Button';
 import Card from './Card';
+import RemoveFromSocialGroupDialog from '../dialogs/RemoveFromSocialGroupDialog';
 import AddToSocialGroupDialog from '../dialogs/AddToSocialGroupDialog';
 import Text from '../Text';
-import usePatchSocialGroup from '../../models/socialGroups/usePatchSocialGroup';
-import ConfirmDelete from '../ConfirmDelete';
 import SocialGroupsDisplay from '../../pages/individual/components/SocialGroupsDisplay';
 
 export default function SocialGroupsCard({
@@ -21,12 +19,6 @@ export default function SocialGroupsCard({
 }) {
   const noSocialGroups =
     Array.isArray(socialGroups) && socialGroups.length === 0;
-  const {
-    mutate: patchSocialGroup,
-    error: patchError,
-    loading: patchLoading,
-    clearError: clearPatchError,
-  } = usePatchSocialGroup();
 
   const [addDialogOpen, setAddDialogOpen] = useState(false);
   const [groupToRemove, setGroupToRemove] = useState(null);
@@ -39,27 +31,13 @@ export default function SocialGroupsCard({
     setGroupToRemove(socialGroup);
   }, []);
 
-  const removeIndividualFromSocialGroup = useCallback(async () => {
-    const safeMembers = get(groupToRemove, 'members', {});
-    const newMembers = omit(safeMembers, individualGuid);
-    const result = await patchSocialGroup({
-      guid: groupToRemove?.guid,
-      members: newMembers,
-      affectedIndividualGuids: [individualGuid],
-    });
-    if (result.status === 200) handleClose();
-  }, [individualGuid, groupToRemove, handleClose]);
-
   return (
     <>
-      <ConfirmDelete
+      <RemoveFromSocialGroupDialog
         open={Boolean(groupToRemove)}
         onClose={handleClose}
-        onDelete={removeIndividualFromSocialGroup}
-        deleteInProgress={false}
-        error={null}
-        onClearError={false}
-        messageId="CONFIRM_REMOVE_INDIVIDUAL_FROM_SOCIAL_GROUP"
+        socialGroup={groupToRemove}
+        individualGuid={individualGuid}
       />
       <AddToSocialGroupDialog
         open={addDialogOpen}

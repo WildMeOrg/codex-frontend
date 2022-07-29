@@ -14,6 +14,7 @@ import GroupWorkIcon from '@material-ui/icons/GroupWork';
 
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import useGetMe from '../../models/users/useGetMe';
+import LoadingScreen from '../../components/LoadingScreen';
 import MainColumn from '../../components/MainColumn';
 import Link from '../../components/Link';
 import Text from '../../components/Text';
@@ -93,7 +94,8 @@ export default function ControlPanel() {
   useDocumentTitle('CONTROL_PANEL');
   const [hoveredCard, setHoveredCard] = useState(null);
 
-  const { data: userData } = useGetMe();
+  const { data: userData, loading } = useGetMe();
+  if (loading) return <LoadingScreen />;
 
   return (
     <MainColumn>

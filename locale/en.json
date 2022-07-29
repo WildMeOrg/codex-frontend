@@ -1132,6 +1132,7 @@
   "PASSWORD_RESET_SUCCESS": "Password reset success",
   "RETURN_TO_LOGIN_PAGE": "Return to login page",
   "RESTORE": "Restore",
+  "NO_INDIVIDUALS_IN_SOCIAL_GROUP": "This group contains no individuals.",
   "COLLABORATION_RESTORE_SUCCESS": "Successfully restored the collaboration",
   "COLLABORATION_RESTORE_ERROR": "Error restoring the collaboration",
   "COLLAB_RESTORE_ERROR_SUPPLEMENTAL": "Collaboration was not successfully restored.",
