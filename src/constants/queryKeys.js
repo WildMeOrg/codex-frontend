@@ -72,6 +72,10 @@ export function getIndividualTermQueryKey(searchTerm) {
   return ['individualQuickSearch', searchTerm];
 }
 
+export function getIndividualGuidQueryKey(individualGuids) {
+  return ['individualQuickSearch', individualGuids];
+}
+
 export function getSightingTermQueryKey(searchTerm) {
   return ['sightingQuickSearch', searchTerm];
 }

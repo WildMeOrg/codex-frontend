@@ -47,6 +47,7 @@ export default function SearchIndividuals() {
     >
       <IndividualsDisplay
         individuals={searchResults || []}
+        removeColumns={['role']}
         hideFilterSearch
         loading={loading}
         sortExternally

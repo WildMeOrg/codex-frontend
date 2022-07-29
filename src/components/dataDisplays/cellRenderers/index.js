@@ -7,6 +7,7 @@ import DateRenderer from './DateRenderer';
 import FloatRenderer from './FloatRenderer';
 import ViewpointRenderer from './ViewpointRenderer';
 import SpeciesRenderer from './SpeciesRenderer';
+import SocialGroupRoleRenderer from './SocialGroupRoleRenderer';
 
 export const cellRendererTypes = {
   default: 'default',
@@ -18,6 +19,7 @@ export const cellRendererTypes = {
   float: 'float',
   viewpoint: 'viewpoint',
   species: 'species',
+  socialGroupRole: 'socialGroupRole',
 };
 
 export const cellRenderers = {
@@ -30,4 +32,5 @@ export const cellRenderers = {
   [cellRendererTypes.float]: FloatRenderer,
   [cellRendererTypes.viewpoint]: ViewpointRenderer,
   [cellRendererTypes.species]: SpeciesRenderer,
+  [cellRendererTypes.socialGroupRole]: SocialGroupRoleRenderer,
 };

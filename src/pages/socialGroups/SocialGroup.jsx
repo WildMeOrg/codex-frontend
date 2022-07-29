@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { get } from 'lodash-es';
 
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import useSocialGroup from '../../models/socialGroups/useSocialGroup';
+import useQueryIndividualsByGuid from '../../models/individual/useQueryIndividualsByGuid';
 import usePatchSocialGroup from '../../models/socialGroups/usePatchSocialGroup';
 import { formatDate } from '../../utils/formatters';
+import IndividualsDisplay from '../../components/dataDisplays/IndividualsDisplay';
 import InputRow from '../../components/fields/edit/InputRow';
 import TextInput from '../../components/inputs/TextInput';
 import ErrorDialog from '../../components/dialogs/ErrorDialog';
@@ -23,6 +26,10 @@ const nameSchema = { labelId: 'NAME_OF_GROUP' };
 export default function SocialGroup() {
   const { guid } = useParams();
   const { data, loading, error, statusCode } = useSocialGroup(guid);
+  const safeMembers = get(data, 'members', {});
+  const memberGuids = Object.keys(safeMembers);
+  const { data: membersWithData, loading: membersLoading } = useQueryIndividualsByGuid(memberGuids);
+
   const {
     mutate: patchSocialGroup,
     loading: patchLoading,
@@ -41,6 +48,16 @@ export default function SocialGroup() {
   if (loading) return <LoadingScreen />;
 
   const nameChanged = name !== data?.name;
+  const safeMembersWithData = membersWithData || [];
+  const membersWithRoles = safeMembersWithData.map(member =>
+  {
+    const membershipData = safeMembers[member?.guid];
+    const roleGuid = get(membershipData, ['role_guids', 0]);
+    return {
+      ...member,
+      role: roleGuid,
+    }
+  })
 
   return (
     <MainColumn fullWidth>
@@ -132,18 +149,17 @@ export default function SocialGroup() {
             style={{ marginTop: 20, marginLeft: 12 }}
             id="MEMBERS"
           />
-          <Paper
-            elevation={2}
-            style={{
-              marginTop: 20,
-              marginBottom: 12,
-              padding: '8px 24px 24px 24px',
-              display: 'flex',
-              flexDirection: 'column',
-            }}
-          >
-            Content will go here.
-          </Paper>
+
+          <IndividualsDisplay
+            style={{ marginTop: 20 }}
+            noTitleBar
+            tableSize="medium"
+            variant="secondary"
+            individuals={membersWithRoles}
+            hideFilterSearch
+            removeColumns={['adoptionName', 'taxonomy_guid']}
+            loading={membersLoading}
+          />
         </Grid>
       </Grid>
     </MainColumn>

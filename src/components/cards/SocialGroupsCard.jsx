@@ -50,7 +50,7 @@ export default function SocialGroupsCard({
     if (result.status === 200) handleClose();
   }, [individualGuid, groupToRemove, handleClose]);
 
-  return [
+  return <>
     <ConfirmDelete
       open={Boolean(groupToRemove)}
       onClose={handleClose}
@@ -59,12 +59,12 @@ export default function SocialGroupsCard({
       error={null}
       onClearError={false}
       messageId="CONFIRM_REMOVE_INDIVIDUAL_FROM_SOCIAL_GROUP"
-    />,
+    />
     <AddToSocialGroupDialog
       open={addDialogOpen}
       onClose={() => setAddDialogOpen(false)}
       individualGuid={individualGuid}
-    />,
+    />
     <Card title={title} titleId={titleId} maxHeight={600}>
       {noSocialGroups ? (
         <Text
@@ -89,6 +89,6 @@ export default function SocialGroupsCard({
         size="small"
         onClick={() => setAddDialogOpen(true)}
       />
-    </Card>,
-  ];
+    </Card>
+  </>
 }
