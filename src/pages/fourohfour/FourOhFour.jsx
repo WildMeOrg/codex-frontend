@@ -4,7 +4,7 @@ import errorTypes from '../../constants/errorTypes';
 import SadScreen from '../../components/SadScreen';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 
-export default function() {
+export default function () {
   useDocumentTitle('Page not found', { translateMessage: false });
   return <SadScreen variant={errorTypes.notFound} />;
 }

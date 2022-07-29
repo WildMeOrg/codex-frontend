@@ -3,6 +3,7 @@ export const notificationTypeNames = {
   collaboration_request: 'collaboration_request',
   collaboration_approved: 'collaboration_approved',
   collaboration_revoke: 'collaboration_revoke',
+  collaboration_denied: 'collaboration_denied',
   collaboration_edit_request: 'collaboration_edit_request',
   collaboration_edit_approved: 'collaboration_edit_approved',
   collaboration_edit_revoke: 'collaboration_edit_revoke',
@@ -48,6 +49,15 @@ notificationSchemaPlaceholder[
   titleId: 'COLLABORATION_REVOKE_TITLE',
   notificationMessage: 'COLLABORATION_REVOKE_BRIEF',
   moreDetailedDescription: 'COLLABORATION_REVOKE_BRIEF',
+  showNotificationDialog: false,
+  buttonPath: '/#collab-card',
+};
+notificationSchemaPlaceholder[
+  notificationTypeNames.collaboration_denied
+] = {
+  titleId: 'COLLABORATION_DENIED_TITLE',
+  notificationMessage: 'COLLABORATION_DENIED_BRIEF',
+  moreDetailedDescription: 'COLLABORATION_DENIED_BRIEF',
   showNotificationDialog: false,
   buttonPath: '/#collab-card',
 };

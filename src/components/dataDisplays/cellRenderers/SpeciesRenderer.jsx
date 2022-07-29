@@ -11,16 +11,13 @@ export default function SpeciesRenderer({
 }) {
   const { speciesOptions } = useOptions();
 
-  const matchingSpeciesLabel = useMemo(
-    () => {
-      if (!speciesOptions || !value) return '';
-      const matchingSpecies = speciesOptions.find(
-        species => species?.value === value,
-      );
-      return matchingSpecies?.label;
-    },
-    [value, speciesOptions],
-  );
+  const matchingSpeciesLabel = useMemo(() => {
+    if (!speciesOptions || !value) return '';
+    const matchingSpecies = speciesOptions.find(
+      species => species?.value === value,
+    );
+    return matchingSpecies?.label;
+  }, [value, speciesOptions]);
 
   return noWrap ? (
     <OverflowController title={matchingSpeciesLabel}>

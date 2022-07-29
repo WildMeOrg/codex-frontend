@@ -25,8 +25,11 @@ export default function AnnotatedPhotograph({
   const showSelectableIcon = selectable && !selected;
 
   return (
+    /* eslint-disable */
+    /* This needs a11y support, created DEX-1266 to track */
     <div
       onClick={onClick}
+      role="button"
       style={{
         background: theme.palette.grey['600'],
         position: 'relative',
@@ -115,5 +118,6 @@ export default function AnnotatedPhotograph({
         })}
       </svg>
     </div>
+    /* eslint-enable */
   );
 }

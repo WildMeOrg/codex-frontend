@@ -7,7 +7,7 @@ import TimelineContent from '@material-ui/lab/TimelineContent';
 import TimelineDot from '@material-ui/lab/TimelineDot';
 import ProgressIcon from '@material-ui/icons/Cached';
 import ErrorIcon from '@material-ui/icons/PriorityHigh';
-
+import CustomAlert from '../../../components/Alert';
 import Text from '../../../components/Text';
 import stages from './stages';
 
@@ -20,6 +20,7 @@ export default function TimelineStep({
   finishedText,
   skippedText,
   failedText,
+  failedAlertDescription,
   children,
 }) {
   const theme = useTheme();
@@ -51,6 +52,13 @@ export default function TimelineStep({
       <TimelineContent>
         <Text variant="h6" id={titleId} />
         <Text variant="caption">{descriptionText}</Text>
+        {stage === stages.failed && failedAlertDescription && (
+          <CustomAlert
+            description={failedAlertDescription}
+            severity="error"
+            style={{ marginTop: '4px' }}
+          />
+        )}
         {children}
       </TimelineContent>
     </TimelineItem>

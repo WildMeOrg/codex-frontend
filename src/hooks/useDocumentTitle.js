@@ -4,7 +4,7 @@ import { get } from 'lodash-es';
 
 import useSiteSettings from '../models/site/useSiteSettings';
 
-export default function(message, configuration = {}) {
+export default function (message, configuration = {}) {
   const intl = useIntl();
   const appendSiteNameConfiguration = get(
     configuration,
@@ -23,17 +23,14 @@ export default function(message, configuration = {}) {
   const siteName = get(siteSettings, ['data', 'site.name', 'value']);
   const appendSiteName = siteName && appendSiteNameConfiguration;
 
-  useEffect(
-    () => {
-      const translatedMessage = translateMessage
-        ? intl.formatMessage({ id: message }, messageValues)
-        : message;
-      if (appendSiteName && siteName) {
-        document.title = `${translatedMessage} • ${siteName}`;
-      } else {
-        document.title = translatedMessage;
-      }
-    },
-    [message, refreshKey, siteName, appendSiteName],
-  );
+  useEffect(() => {
+    const translatedMessage = translateMessage
+      ? intl.formatMessage({ id: message }, messageValues)
+      : message;
+    if (appendSiteName && siteName) {
+      document.title = `${translatedMessage} • ${siteName}`;
+    } else {
+      document.title = translatedMessage;
+    }
+  }, [message, refreshKey, siteName, appendSiteName]);
 }

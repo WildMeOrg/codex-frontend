@@ -48,25 +48,18 @@ export default function LatLongEditor({
   const [currentLatitudeString, setCurrentLatitudeString] = useState(
     initialLatitudeString,
   );
-  const [
-    currentLongitudeString,
-    setCurrentLongitudeString,
-  ] = useState(initialLongitudeString);
+  const [currentLongitudeString, setCurrentLongitudeString] =
+    useState(initialLongitudeString);
 
-  useEffect(
-    () => {
-      if (savedMapLatLng) {
-        const {
-          latitudeString,
-          longitudeString,
-        } = deriveGpsStringsFromValue(savedMapLatLng);
+  useEffect(() => {
+    if (savedMapLatLng) {
+      const { latitudeString, longitudeString } =
+        deriveGpsStringsFromValue(savedMapLatLng);
 
-        setCurrentLatitudeString(latitudeString);
-        setCurrentLongitudeString(longitudeString);
-      }
-    },
-    [get(savedMapLatLng, '0'), get(savedMapLatLng, '1')],
-  );
+      setCurrentLatitudeString(latitudeString);
+      setCurrentLongitudeString(longitudeString);
+    }
+  }, [get(savedMapLatLng, '0'), get(savedMapLatLng, '1')]);
 
   const currentLatitude = get(value, '0', null);
   const currentLongitude = get(value, '1', null);

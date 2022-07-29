@@ -20,9 +20,9 @@ export default function IndividualsDisplay({
   const columns = [
     {
       name: 'firstName',
-      sortName: 'firstName',
+      sortName: 'elasticsearch.firstName_keyword',
       labelId: 'NAME',
-      sortable: false,
+      sortable: true,
       options: {
         customBodyRender: (firstName, individual) => (
           <Link to={`/individuals/${individual?.guid}`}>

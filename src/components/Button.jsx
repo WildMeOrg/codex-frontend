@@ -2,10 +2,11 @@ import React, { forwardRef } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useTheme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
+import Tooltip from '@material-ui/core/Tooltip';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import BackIcon from '@material-ui/icons/KeyboardBackspace';
 
-const Core = function(
+const Core = function (
   {
     children,
     display = 'panel',
@@ -25,7 +26,6 @@ const Core = function(
   let spinnerStyles = {
     color: theme.palette.common.white,
   };
-
   if (display === 'back') {
     return (
       <Button
@@ -136,7 +136,24 @@ const Core = function(
   );
 };
 
+const ButtonWithTooltip = function (
+  { showTooltip = false, tooltipText = '', ...rest },
+  ref,
+) {
+  if (showTooltip)
+    return (
+      <Tooltip title={tooltipText}>
+        <span>
+          <CoreForwardRef ref={ref} {...rest} />
+        </span>
+      </Tooltip>
+    );
+  else return <CoreForwardRef ref={ref} {...rest} />;
+};
+
 const CoreForwardRef = forwardRef(Core);
+
+const ButtonForwardRef = forwardRef(ButtonWithTooltip);
 
 function CustomButton(
   { id, domId = undefined, values, children, ...rest },
@@ -144,14 +161,14 @@ function CustomButton(
 ) {
   if (!id)
     return (
-      <CoreForwardRef id={domId} ref={ref} {...rest}>
+      <ButtonForwardRef id={domId} ref={ref} {...rest}>
         {children}
-      </CoreForwardRef>
+      </ButtonForwardRef>
     );
   return (
-    <CoreForwardRef id={domId} ref={ref} {...rest}>
+    <ButtonForwardRef id={domId} ref={ref} {...rest}>
       <FormattedMessage id={id} values={values} />
-    </CoreForwardRef>
+    </ButtonForwardRef>
   );
 }
 

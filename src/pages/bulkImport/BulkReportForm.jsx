@@ -78,10 +78,8 @@ export default function BulkReportForm({ assetReferences }) {
   const [sightingData, setSightingData] = useState(null);
   const [detectionModel, setDetectionModel] = useState('');
   const queryClient = useQueryClient();
-  const [
-    everythingReadyForFlatfile,
-    setEverythingReadyForFlatfile,
-  ] = useState(false);
+  const [everythingReadyForFlatfile, setEverythingReadyForFlatfile] =
+    useState(false);
 
   const { postAssetGroup, loading, error } = usePostAssetGroup();
 
@@ -102,18 +100,20 @@ export default function BulkReportForm({ assetReferences }) {
     schema => schema.name === 'speciesDetectionModel',
   );
 
-  useEffect(
-    () => {
-      if (
-        numEncounterFieldsForFlatFile > 0 &&
-        numSightingFieldsForFlatFile > 0
-      ) {
-        // wait for these to become non-zero to be confident that availableFields is fully populated before sending off to FlatFile
-        setEverythingReadyForFlatfile(true);
-      }
-    },
-    [encounterFieldSchemas, sightingFieldSchemas],
-  );
+  useEffect(() => {
+    if (
+      numEncounterFieldsForFlatFile > 0 &&
+      numSightingFieldsForFlatFile > 0
+    ) {
+      // wait for these to become non-zero to be confident that availableFields is fully populated before sending off to FlatFile
+      setEverythingReadyForFlatfile(true);
+    }
+  }, [
+    numEncounterFieldsForFlatFile,
+    numSightingFieldsForFlatFile,
+    encounterFieldSchemas,
+    sightingFieldSchemas,
+  ]);
 
   if (!everythingReadyForFlatfile) return <LoadingScreen />;
 

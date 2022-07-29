@@ -16,34 +16,31 @@ export default function IntelligentAgentSettings({
   siteSettings,
   setIntelligentAgentFieldsValid,
 }) {
-  useEffect(
-    () => {
-      const agentSettingsValid = intelligentAgentSchema.map(
-        intelligentAgent => {
-          const currentPlatformEnablingField = get(intelligentAgent, [
-            'data',
-            'enablingField',
-          ]);
-          const isCurrentPlatformEnabled = get(
-            currentValues,
-            currentPlatformEnablingField,
-            false,
-          );
-          const noCredsMissing =
-            intelligentAgentSettingsFields.filter(
-              currentField => get(currentValues, currentField) === '',
-            ).length === 0;
-          return (
-            !isCurrentPlatformEnabled ||
-            (isCurrentPlatformEnabled && noCredsMissing)
-          );
-        },
-      );
-      const allSettingsValid = every(agentSettingsValid, Boolean);
-      setIntelligentAgentFieldsValid(allSettingsValid);
-    },
-    [currentValues, intelligentAgentSchema],
-  );
+  useEffect(() => {
+    const agentSettingsValid = intelligentAgentSchema.map(
+      intelligentAgent => {
+        const currentPlatformEnablingField = get(intelligentAgent, [
+          'data',
+          'enablingField',
+        ]);
+        const isCurrentPlatformEnabled = get(
+          currentValues,
+          currentPlatformEnablingField,
+          false,
+        );
+        const noCredsMissing =
+          intelligentAgentSettingsFields.filter(
+            currentField => get(currentValues, currentField) === '',
+          ).length === 0;
+        return (
+          !isCurrentPlatformEnabled ||
+          (isCurrentPlatformEnabled && noCredsMissing)
+        );
+      },
+    );
+    const allSettingsValid = every(agentSettingsValid, Boolean);
+    setIntelligentAgentFieldsValid(allSettingsValid);
+  }, [currentValues, intelligentAgentSettingsFields]);
 
   return intelligentAgentSchema.map(intelligentAgent => {
     const currentPlatformFields = get(

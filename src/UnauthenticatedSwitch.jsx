@@ -10,6 +10,7 @@ import RequestInvitation from './pages/auth/RequestInvitation';
 import Forgot from './pages/auth/Forgot';
 import PasswordReset from './pages/auth/PasswordReset';
 import Create from './pages/auth/Create';
+import EmailVerified from './pages/auth/EmailVerified';
 import Splash from './pages/splash/Splash';
 import Footer from './components/Footer';
 import { defaultCrossfadeDuration } from './constants/defaults';
@@ -69,13 +70,16 @@ export default function UnauthenticatedSwitch() {
                       <Create />
                     </Route>
                     <Route path="/login">
-                      <Login redirect="/" />
+                      <Login />
+                    </Route>
+                    <Route path="/email_verified">
+                      <EmailVerified />
                     </Route>
                     <Route path="/" exact>
                       <Splash />
                     </Route>
                     <Route>
-                      <Login showBanner redirect={pathname} />
+                      <Login showBanner nextLocation={location} />
                     </Route>
                   </Switch>
                 </div>

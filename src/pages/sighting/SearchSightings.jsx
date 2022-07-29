@@ -5,7 +5,7 @@ import useFilterSightings from '../../models/sighting/useFilterSightings';
 import SearchPage from '../../components/SearchPage';
 import FilterPanel from '../../components/FilterPanel';
 import SearchFilterList from '../../components/SearchFilterList';
-import SightingsDisplay from '../../components/dataDisplays/SightingsDisplay';
+import ElasticsearchSightingsDisplay from '../../components/dataDisplays/ElasticsearchSightingsDisplay';
 import Paginator from '../../components/dataDisplays/Paginator';
 
 const rowsPerPage = 100;
@@ -47,7 +47,7 @@ export default function SearchSightings() {
         />
       }
     >
-      <SightingsDisplay
+      <ElasticsearchSightingsDisplay
         sightings={searchResults || []}
         loading={loading}
         sortExternally

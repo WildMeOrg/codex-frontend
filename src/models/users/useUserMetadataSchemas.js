@@ -22,72 +22,69 @@ export default function useUserMetadataSchemas(displayedUserId) {
     get(currentUserData, 'guid') === displayedUserId;
   const includeEmail = isAdmin || isCurrentUser;
 
-  const userMetadataSchemas = useMemo(
-    () => {
-      const adminFields = includeEmail
-        ? [
-            createFieldSchema(fieldTypes.string, {
-              name: 'email',
-              labelId: 'PROFILE_LABEL_EMAIL',
-              icon: EmailIcon,
-              viewComponent: EmailViewer,
-            }),
-          ]
-        : [];
-      const enabledIntelligentAgentFields = filter(
-        intelligentAgentSchema,
-        intelligentAgent => {
-          const currentPlatformEnablingField = get(intelligentAgent, [
-            'data',
-            'enablingField',
-          ]);
-          const isEnabled = get(siteSettings, [
-            'data',
-            currentPlatformEnablingField,
-            'value',
-          ]);
-          return isEnabled;
-        },
-      );
-      const intelligentAgentFields = map(
-        enabledIntelligentAgentFields,
-        intelligentAgent =>
+  const userMetadataSchemas = useMemo(() => {
+    const adminFields = includeEmail
+      ? [
           createFieldSchema(fieldTypes.string, {
-            name: intelligentAgent.userMetadataKey,
-            labelId: intelligentAgent.viewLabelId,
-            editLabelId: intelligentAgent.editLabelId,
-            icon: intelligentAgent.icon,
+            name: 'email',
+            labelId: 'PROFILE_LABEL_EMAIL',
+            icon: EmailIcon,
+            viewComponent: EmailViewer,
           }),
-      );
+        ]
+      : [];
+    const enabledIntelligentAgentFields = filter(
+      intelligentAgentSchema,
+      intelligentAgent => {
+        const currentPlatformEnablingField = get(intelligentAgent, [
+          'data',
+          'enablingField',
+        ]);
+        const isEnabled = get(siteSettings, [
+          'data',
+          currentPlatformEnablingField,
+          'value',
+        ]);
+        return isEnabled;
+      },
+    );
+    const intelligentAgentFields = map(
+      enabledIntelligentAgentFields,
+      intelligentAgent =>
+        createFieldSchema(fieldTypes.string, {
+          name: intelligentAgent.userMetadataKey,
+          labelId: intelligentAgent.viewLabelId,
+          editLabelId: intelligentAgent.editLabelId,
+          icon: intelligentAgent.icon,
+        }),
+    );
 
-      return [
-        createFieldSchema(fieldTypes.string, {
-          name: 'full_name',
-          labelId: 'FULL_NAME',
-          hideInMetadataCard: true, // name already viewable on page
-        }),
-        ...adminFields,
-        createFieldSchema(fieldTypes.string, {
-          name: 'forum_id',
-          labelId: 'PROFILE_LABEL_FORUM_ID',
-          icon: ForumIcon,
-          viewComponent: ForumIdViewer,
-        }),
-        createFieldSchema(fieldTypes.string, {
-          name: 'affiliation',
-          labelId: 'PROFILE_LABEL_AFFILIATION',
-          icon: AffiliationIcon,
-        }),
-        createFieldSchema(fieldTypes.string, {
-          name: 'location',
-          labelId: 'PROFILE_LABEL_LOCATION',
-          icon: LocationIcon,
-        }),
-        ...intelligentAgentFields,
-      ];
-    },
-    [isAdmin, siteSettings],
-  );
+    return [
+      createFieldSchema(fieldTypes.string, {
+        name: 'full_name',
+        labelId: 'FULL_NAME',
+        hideInMetadataCard: true, // name already viewable on page
+      }),
+      ...adminFields,
+      createFieldSchema(fieldTypes.string, {
+        name: 'forum_id',
+        labelId: 'PROFILE_LABEL_FORUM_ID',
+        icon: ForumIcon,
+        viewComponent: ForumIdViewer,
+      }),
+      createFieldSchema(fieldTypes.string, {
+        name: 'affiliation',
+        labelId: 'PROFILE_LABEL_AFFILIATION',
+        icon: AffiliationIcon,
+      }),
+      createFieldSchema(fieldTypes.string, {
+        name: 'location',
+        labelId: 'PROFILE_LABEL_LOCATION',
+        icon: LocationIcon,
+      }),
+      ...intelligentAgentFields,
+    ];
+  }, [isAdmin, includeEmail, siteSettings]);
 
   if (loading || error) return null;
   return userMetadataSchemas;

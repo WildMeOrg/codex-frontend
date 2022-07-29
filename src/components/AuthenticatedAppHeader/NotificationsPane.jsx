@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { useIntl } from 'react-intl';
 import { get } from 'lodash-es';
+import { useIntl } from 'react-intl';
 import { useQueryClient } from 'react-query';
 
 import Grid from '@material-ui/core/Grid';
@@ -8,7 +8,6 @@ import Popover from '@material-ui/core/Popover';
 import Avatar from '@material-ui/core/Avatar';
 import Divider from '@material-ui/core/Divider';
 import LinearProgress from '@material-ui/core/LinearProgress';
-import { useTheme } from '@material-ui/core/styles';
 
 import usePatchNotification from '../../models/notification/usePatchNotification';
 import Link from '../Link';
@@ -32,7 +31,6 @@ export default function NotificationsPane({
 }) {
   const intl = useIntl();
   const queryClient = useQueryClient();
-  const theme = useTheme();
   const [
     activeCollaborationNotification,
     setActiveCollaborationNotification,
@@ -87,7 +85,7 @@ export default function NotificationsPane({
                 theirIndividualName,
                 theirIndividualGuid,
                 formattedDeadline,
-              } = getNotificationProps(notification);
+              } = getNotificationProps(intl, notification);
               const deriveButtonPath = get(
                 currentNotificationSchema,
                 'deriveButtonPath',
@@ -101,9 +99,9 @@ export default function NotificationsPane({
                 ? deriveButtonPath(mergedIndividualGuid)
                 : defaultButtonPath;
               const createdDate = notification?.created;
-              const timeSince = calculatePrettyTimeElapsedSince(
-                createdDate,
-              );
+              const timeSince =
+                calculatePrettyTimeElapsedSince(createdDate);
+
               return (
                 <React.Fragment key={notification.guid}>
                   <Grid
@@ -116,7 +114,9 @@ export default function NotificationsPane({
                     }}
                   >
                     <div style={{ display: 'flex' }}>
-                      <Avatar>{user1Name[0].toUpperCase()}</Avatar>
+                      <Avatar style={{ width: 56, height: 56 }}>
+                        {userName[0].toUpperCase()}
+                      </Avatar>
                       <NotificationPaneDisplayText
                         currentNotificationSchema={
                           currentNotificationSchema
@@ -130,6 +130,7 @@ export default function NotificationsPane({
                         theirIndividualName={theirIndividualName}
                         theirIndividualGuid={theirIndividualGuid}
                         formattedDeadline={formattedDeadline}
+                        timeSince={timeSince}
                       />
                     </div>
                     <div>
@@ -178,24 +179,6 @@ export default function NotificationsPane({
                       )}
                     </div>
                   </Grid>
-                  <Grid
-                    item
-                    style={{
-                      display: 'flex',
-                      paddingLeft: 12,
-                      marginLeft: 4,
-                      width: 'max-content',
-                    }}
-                  >
-                    <Text
-                      style={{ color: theme.palette.text.secondary }}
-                    >
-                      {intl.formatMessage(
-                        { id: 'TIME_SINCE' },
-                        { timeSince },
-                      )}
-                    </Text>
-                  </Grid>
                   <Grid item>
                     <Divider />
                   </Grid>
@@ -206,13 +189,13 @@ export default function NotificationsPane({
           {!notifications ||
             (notifications.length === 0 && (
               <Grid item style={{ padding: 16 }}>
-                <Text>You have no unread notifications.</Text>
+                <Text id="NO_UNREAD_NOTIFICATIONS" />
               </Grid>
             ))}
           <Divider />
           <Grid item style={{ padding: 16 }}>
             <Link to="/notifications" noUnderline>
-              <Text id="VIEW_ALL_NOTIFICATIONS_MORE_DETAIL" />
+              <Text id="VIEW_ALL_NOTIFICATIONS" />
             </Link>
           </Grid>
         </Grid>

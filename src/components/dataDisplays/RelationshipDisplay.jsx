@@ -21,24 +21,22 @@ export default function RelationshipDisplay({
       name: 'guid',
       labelId: 'Actions',
       options: {
-        customBodyRender: (_, relationship) => {
-          return [
-            <ActionIcon
-              variant="view"
-              href={`/individuals/${relationship?.nonSelfGuid}`}
-              linkProps={{ newTab: true }}
-            />,
-            <ActionIcon
-              variant="delete"
-              onClick={() => {
-                setConfirmDeleteDialog({
-                  relationshipGuid: relationship?.guid,
-                  open: true,
-                });
-              }}
-            />,
-          ];
-        },
+        customBodyRender: (_, relationship) => [
+          <ActionIcon
+            variant="view"
+            href={`/individuals/${relationship?.nonSelfGuid}`}
+            linkProps={{ newTab: true }}
+          />,
+          <ActionIcon
+            variant="delete"
+            onClick={() => {
+              setConfirmDeleteDialog({
+                relationshipGuid: relationship?.guid,
+                open: true,
+              });
+            }}
+          />,
+        ],
       },
     },
   ];
@@ -49,6 +47,7 @@ export default function RelationshipDisplay({
       columns={relationshipCols}
       data={data}
       loading={loading}
+      tableContainerStyles={{ maxHeight: 400 }}
     />
   );
 }

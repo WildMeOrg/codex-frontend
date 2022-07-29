@@ -21,9 +21,9 @@ import IntelligentAgentSettings from './IntelligentAgentSettings';
 import { intelligentAgentSchema } from '../../constants/intelligentAgentSchema';
 
 const customFields = {
-  sighting: 'site.custom.customFields.Occurrence',
+  sighting: 'site.custom.customFields.Sighting',
   encounter: 'site.custom.customFields.Encounter',
-  individual: 'site.custom.customFields.MarkedIndividual',
+  individual: 'site.custom.customFields.Individual',
 };
 
 const generalSettingsFields = [
@@ -103,23 +103,18 @@ export default function GeneralSettings() {
     twitterTestResults?.success,
   );
 
-  useEffect(
-    () => {
-      setShowTwitterSuccess(
-        twitterStatusCode !== 400
-          ? twitterTestResults?.success
-          : false,
-      );
-    },
-    [twitterTestResults, twitterStatusCode],
-  );
-
-  const edmValues = allSettingsFields.map(fieldKey =>
-    get(siteSettings, ['data', fieldKey, 'value']),
-  );
   useEffect(() => {
+    setShowTwitterSuccess(
+      twitterStatusCode !== 400 ? twitterTestResults?.success : false,
+    );
+  }, [twitterTestResults, twitterStatusCode]);
+
+  useEffect(() => {
+    const edmValues = allSettingsFields.map(fieldKey =>
+      get(siteSettings, ['data', fieldKey, 'value']),
+    );
     setCurrentValues(zipObject(allSettingsFields, edmValues));
-  }, edmValues);
+  }, [siteSettings, allSettingsFields]);
 
   const loading = assetPostLoading || formPostLoading;
   const error = putSiteSettingsError || settingsAssetPostError;

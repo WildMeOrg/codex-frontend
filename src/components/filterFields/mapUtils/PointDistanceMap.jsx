@@ -57,34 +57,25 @@ export default function PointDistanceMap({
 
   const mapReadyToRender = mapsApi && mapObject;
 
-  useEffect(
-    () => {
-      if (lastCircle) {
-        lastCircle.setOptions({
-          radius: 1000 * distance,
-        });
-      }
-    },
-    [distance],
-  );
+  useEffect(() => {
+    if (lastCircle) {
+      lastCircle.setOptions({
+        radius: 1000 * distance,
+      });
+    }
+  }, [distance]);
 
-  useEffect(
-    () => {
-      const lat = get(gps, '0');
-      const lng = get(gps, '1');
-      if (lat && lng) draw(parseFloat(lat), parseFloat(lng));
-    },
-    [gps],
-  );
+  useEffect(() => {
+    const lat = get(gps, '0');
+    const lng = get(gps, '1');
+    if (lat && lng) draw(parseFloat(lat), parseFloat(lng));
+  }, [gps]);
 
-  useEffect(
-    () => {
-      if (latitude && longitude) {
-        draw(parseFloat(latitude), parseFloat(longitude));
-      }
-    },
-    [mapReadyToRender],
-  );
+  useEffect(() => {
+    if (latitude && longitude) {
+      draw(parseFloat(latitude), parseFloat(longitude));
+    }
+  }, [mapReadyToRender]);
 
   const googleMapsApiKey = useGoogleMapsApiKey();
 

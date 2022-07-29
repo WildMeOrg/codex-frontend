@@ -34,11 +34,13 @@ import { cellRendererTypes } from '../../../components/dataDisplays/cellRenderer
 const defaultCategories = [
   ...Object.values(defaultSightingCategories).map(c => ({
     ...c,
+    key: c.name,
     type: categoryTypes.sighting,
     isDefault: true,
   })),
   ...Object.values(defaultIndividualCategories).map(c => ({
     ...c,
+    key: c.name,
     type: categoryTypes.individual,
     isDefault: true,
   })),
@@ -63,12 +65,22 @@ export default function FieldSettings() {
     [],
   );
 
-  const categories = [...defaultCategories, ...customFieldCategories];
+  const customFieldCategoriesWithKey = customFieldCategories.map(
+    c => ({
+      ...c,
+      key: c?.id,
+    }),
+  );
+
+  const categories = [
+    ...defaultCategories,
+    ...customFieldCategoriesWithKey,
+  ];
 
   const categoryColumns = [
     {
       name: 'labelId',
-      label: intl.formatMessage({ id: 'LABEL' }),
+      labelId: 'LABEL',
       options: {
         customBodyRender: (labelId, category) => {
           if (labelId) return <Text variant="body2" id={labelId} />;
@@ -82,14 +94,12 @@ export default function FieldSettings() {
     },
     {
       name: 'type',
-      label: intl.formatMessage({
-        id: 'TYPE',
-      }),
+      labelId: 'TYPE',
       options: { cellRenderer: cellRendererTypes.capitalizedString },
     },
     {
       name: 'actions',
-      label: intl.formatMessage({ id: 'ACTIONS' }),
+      labelId: 'ACTIONS',
       options: {
         customBodyRender: (_, category) => {
           const { isDefault } = category;
@@ -204,19 +214,21 @@ export default function FieldSettings() {
           </DialogContent>
           <DialogActions style={{ padding: '0px 24px 24px 24px' }}>
             {dialogData.isDefault ? (
-              <Button display="basic" onClick={onCloseCategoryDialog}>
-                <FormattedMessage id="CLOSE" />
-              </Button>
+              <Button
+                display="basic"
+                onClick={onCloseCategoryDialog}
+                id="CLOSE"
+              />
             ) : (
               <>
                 <Button
                   display="basic"
                   onClick={onCloseCategoryDialog}
-                >
-                  <FormattedMessage id="CANCEL" />
-                </Button>
+                  id="CANCEL"
+                />
                 <Button
                   display="primary"
+                  id="SAVE"
                   onClick={async () => {
                     if (!(dialogData.label && dialogData.type)) {
                       setError(
@@ -237,9 +249,7 @@ export default function FieldSettings() {
                         onCloseCategoryDialog();
                     }
                   }}
-                >
-                  <FormattedMessage id="SAVE" />
-                </Button>
+                />
               </>
             )}
           </DialogActions>
@@ -266,9 +276,8 @@ export default function FieldSettings() {
               timeCreated: Date.now(),
             })
           }
-        >
-          <FormattedMessage id="ADD_NEW" />
-        </Button>
+          id="ADD_NEW"
+        />
       </div>
       <Text
         component="p"
@@ -278,9 +287,11 @@ export default function FieldSettings() {
       />
       <DataDisplay
         noTitleBar
+        idKey="key"
         variant="secondary"
         columns={categoryColumns}
         data={categories}
+        tableContainerStyles={{ maxHeight: 300 }}
       />
     </Grid>
   );

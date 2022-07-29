@@ -1,6 +1,7 @@
 import React from 'react';
-import { FormattedMessage } from 'react-intl';
-import { v4 as uuid } from 'uuid';
+import { useIntl, FormattedMessage } from 'react-intl';
+import { map, some, uniqBy } from 'lodash-es';
+
 import FormControl from '@material-ui/core/FormControl';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -19,9 +20,22 @@ export default function OptionEditor({
   onChange,
   ...rest
 }) {
+  const intl = useIntl();
   const options = value || [];
   const displayedOptions =
-    options.length > 0 ? options : [{ label: '', value: '', id: 6 }];
+    options.length > 0 ? options : [{ label: '', value: '' }];
+
+  const areAllOptionsNonEmpty = !some(
+    displayedOptions,
+    option => !option?.value || !option?.label,
+  );
+
+  const areAllValuesUnique =
+    uniqBy(displayedOptions, option => option?.value).length ===
+    displayedOptions.length;
+
+  const areAllOptionsValid =
+    areAllOptionsNonEmpty && areAllValuesUnique;
 
   return (
     <StandardDialog
@@ -30,9 +44,9 @@ export default function OptionEditor({
       titleId="OPTION_EDITOR"
     >
       <DialogContent style={{ minWidth: 200 }}>
-        {displayedOptions.map((option, optionIndex) => {
+        {map(displayedOptions, (option, optionIndex) => {
           const otherOptions = options.filter(
-            o => o.id !== option.id,
+            (o, oIdx) => oIdx !== optionIndex,
           );
           const showDeleteButton = displayedOptions.length !== 1;
           return (
@@ -42,7 +56,7 @@ export default function OptionEditor({
                 flexDirection: 'column',
                 marginBottom: 12,
               }}
-              key={option.id}
+              key={optionIndex}
             >
               <div style={{ display: 'flex', alignItems: 'center' }}>
                 <Text variant="subtitle2" id="OPTION" />
@@ -98,7 +112,6 @@ export default function OptionEditor({
               {
                 label: '',
                 value: '',
-                id: uuid(),
               },
             ]);
           }}
@@ -112,7 +125,19 @@ export default function OptionEditor({
         </Button>
       </DialogContent>
       <DialogActions style={{ padding: '0px 24px 24px 24px' }}>
-        <Button display="primary" onClick={onSubmit}>
+        <Button
+          disabled={!areAllOptionsValid}
+          showTooltip={!areAllOptionsValid}
+          tooltipText={
+            !areAllOptionsValid
+              ? intl.formatMessage({
+                  id: 'UNFINISHED_OPTIONS',
+                })
+              : undefined
+          }
+          display="primary"
+          onClick={onSubmit}
+        >
           <FormattedMessage id="FINISH" />
         </Button>
       </DialogActions>

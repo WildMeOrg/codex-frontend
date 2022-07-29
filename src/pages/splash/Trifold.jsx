@@ -8,7 +8,7 @@ import AnalysisIcon from '@material-ui/icons/BarChart';
 import Text from '../../components/Text';
 import useSiteSettings from '../../models/site/useSiteSettings';
 
-const Card = function({ Icon, titleId, descriptionId }) {
+const Card = function ({ Icon, titleId, descriptionId }) {
   const theme = useTheme();
 
   return (

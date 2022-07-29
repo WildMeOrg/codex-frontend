@@ -13,9 +13,8 @@ export default function Create({ callback }) {
   const history = useHistory();
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
-  const [passwordConfirmation, setPasswordConfirmation] = useState(
-    '',
-  );
+  const [passwordConfirmation, setPasswordConfirmation] =
+    useState('');
   const [loading, setLoading] = useState(false);
 
   useDocumentTitle('CREATE_ACCOUNT');

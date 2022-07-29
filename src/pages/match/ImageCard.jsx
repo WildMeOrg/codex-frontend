@@ -18,13 +18,12 @@ export default function ImageCard({ titleId, annotation }) {
   } = useSiteSettings();
 
   const regionChoices = useMemo(
-    () => {
-      return get(
+    () =>
+      get(
         siteSettings,
         ['site.custom.regions', 'value', 'locationID'],
         [],
-      );
-    },
+      ),
     [siteSettingsVersion, siteSettings],
   );
 
@@ -41,7 +40,7 @@ export default function ImageCard({ titleId, annotation }) {
   );
 
   return (
-    <Card titleId={titleId} maxHeight="unset">
+    <Card titleId={titleId}>
       <AnnotatedPhotograph
         assetMetadata={{
           alt: 'Selected query annotation',

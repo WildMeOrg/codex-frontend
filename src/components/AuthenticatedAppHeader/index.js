@@ -29,10 +29,8 @@ import queryKeys from '../../constants/queryKeys';
 export default function AppHeader() {
   const theme = useTheme();
   const { data: meData } = useGetMe();
-  const {
-    data: notifications,
-    loading: notificationsLoading,
-  } = useNotifications();
+  const { data: notifications, loading: notificationsLoading } =
+    useNotifications();
   const queryClient = useQueryClient();
   const refreshNotifications = () => {
     queryClient.invalidateQueries(queryKeys.allNotifications);
@@ -43,18 +41,13 @@ export default function AppHeader() {
   const isSm = useMediaQuery(theme.breakpoints.down('sm'));
 
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [
-    shouldOpenNotificationPane,
-    setShouldOpenNotificationPane,
-  ] = useState(false);
+  const [shouldOpenNotificationPane, setShouldOpenNotificationPane] =
+    useState(false);
   const [exploreOpen, setExploreOpen] = React.useState(false);
-  const [userMenuAnchorEl, setUserMenuAnchorEl] = React.useState(
-    null,
-  );
-  const [
-    notificationsAnchorEl,
-    setNotificationsAnchorEl,
-  ] = React.useState(null);
+  const [userMenuAnchorEl, setUserMenuAnchorEl] =
+    React.useState(null);
+  const [notificationsAnchorEl, setNotificationsAnchorEl] =
+    React.useState(null);
 
   const handleClick = () => {
     setDrawerOpen(false);

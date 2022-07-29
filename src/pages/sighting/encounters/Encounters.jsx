@@ -84,29 +84,28 @@ export default function Encounters({
   const [encounterToDelete, setEncounterToDelete] = useState(null);
   const [editEncounterInfo, setEditEncounterInfo] = useState(null);
   const [encounterToAssign, setEncounterToAssign] = useState(null);
-  const [
-    messageForConfirmDelete,
-    setMessageForConfirmDelete,
-  ] = useState(null);
-  const [
-    encounterToAddAnnotations,
-    setEncounterToAddAnnotations,
-  ] = useState(null);
+  const [messageForConfirmDelete, setMessageForConfirmDelete] =
+    useState(null);
+  const [encounterToAddAnnotations, setEncounterToAddAnnotations] =
+    useState(null);
 
   const sightingId = get(sightingData, 'guid');
 
   const encounterFieldSchemas = useEncounterFieldSchemas();
   const encounters = get(sightingData, 'encounters', []);
 
-  useEffect(
-    () => {
-      const message = vulnerableObject
-        ? 'BOTH_VULNERABLE_MESSAGE'
-        : 'CONFIRM_DELETE_ENCOUNTER_DESCRIPTION';
-      setMessageForConfirmDelete(message);
-    },
-    [vulnerableObject],
+  const isIdentificationComplete = get(
+    sightingData,
+    'pipeline_status.identification.complete',
+    false,
   );
+
+  useEffect(() => {
+    const message = vulnerableObject
+      ? 'BOTH_VULNERABLE_MESSAGE'
+      : 'CONFIRM_DELETE_ENCOUNTER_DESCRIPTION';
+    setMessageForConfirmDelete(message);
+  }, [vulnerableObject]);
 
   return (
     <div>
@@ -219,11 +218,15 @@ export default function Encounters({
         ];
 
         const identifyButtonActions = [
-          {
-            id: 'view-id-results',
-            labelId: 'VIEW_IDENTIFICATION_RESULTS',
-            href: `/match-results/${sightingId}`,
-          },
+          ...(isIdentificationComplete
+            ? [
+                {
+                  id: 'view-id-results',
+                  labelId: 'VIEW_IDENTIFICATION_RESULTS',
+                  href: `/match-results/${sightingId}`,
+                },
+              ]
+            : []),
           {
             id: 'create-new-individual',
             labelId: 'CREATE_NEW_INDIVIDUAL',

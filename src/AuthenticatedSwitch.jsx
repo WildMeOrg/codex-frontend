@@ -6,7 +6,7 @@ import { TransitionGroup } from 'react-transition-group';
 import AuthenticatedAppHeader from './components/AuthenticatedAppHeader';
 import SaveCustomField from './pages/fieldManagement/settings/saveField/SaveField';
 import GeneralSettings from './pages/generalSettings/GeneralSettings';
-import ServerStatus from './pages/serverStatus/ServerStatus';
+import SiteStatus from './pages/siteStatus/SiteStatus';
 import SplashSettings from './pages/splashSettings/SplashSettings';
 import FieldManagement from './pages/fieldManagement/FieldManagement';
 import UserManagement from './pages/userManagement/UserManagement';
@@ -20,6 +20,7 @@ import Sighting from './pages/sighting/Sighting';
 import AssetGroupSighting from './pages/sighting/AssetGroupSighting';
 import Splash from './pages/splash/Splash';
 import AssetGroup from './pages/assetGroup/AssetGroup';
+import PendingCitizenScienceSightings from './pages/pendingCitizenScienceSightings/PendingCitizenScienceSightings';
 import User from './pages/user/User';
 import Users from './pages/user/Users';
 import MergeIndividuals from './pages/merge/MergeIndividuals';
@@ -36,17 +37,30 @@ import SiteSetup from './pages/setup/SiteSetup';
 import MatchSighting from './pages/match/MatchSighting';
 import AuditLog from './pages/devTools/AuditLog';
 import Welcome from './pages/auth/Welcome';
+import EmailVerified from './pages/auth/EmailVerified';
 import Home from './pages/home/Home';
 import Settings from './pages/settings/Settings';
+import ResendVerificationEmail from './pages/auth/ResendVerificationEmail';
 import Footer from './components/Footer';
 import { defaultCrossfadeDuration } from './constants/defaults';
 
-export default function AuthenticatedSwitch() {
+export default function AuthenticatedSwitch({
+  emailNeedsVerification,
+}) {
   const { data: siteSettings } = useSiteSettings();
   const siteNeedsSetup = get(siteSettings, [
     'site.needsSetup',
     'value',
   ]);
+
+  if (emailNeedsVerification) {
+    return (
+      <main>
+        <AuthenticatedAppHeader />
+        <ResendVerificationEmail />
+      </main>
+    );
+  }
 
   return (
     <main>
@@ -80,14 +94,14 @@ export default function AuthenticatedSwitch() {
                     <SiteSetup />
                   ) : (
                     <Switch location={location}>
-                      <Route path="/admin/splash" exact>
+                      <Route path="/admin/front-page" exact>
                         <SplashSettings />
                       </Route>
-                      <Route path="/admin/splash/preview">
+                      <Route path="/admin/front-page/preview">
                         <Splash />
                       </Route>
                       <Route path="/admin/status">
-                        <ServerStatus />
+                        <SiteStatus />
                       </Route>
                       <Route path="/admin/users">
                         <UserManagement />
@@ -103,6 +117,9 @@ export default function AuthenticatedSwitch() {
                       </Route>
                       <Route path="/admin/settings">
                         <GeneralSettings />
+                      </Route>
+                      <Route path="/email_verified">
+                        <EmailVerified />
                       </Route>
                       <Route path="/admin">
                         <ControlPanel />
@@ -133,6 +150,9 @@ export default function AuthenticatedSwitch() {
                       </Route>
                       <Route path="/notifications">
                         <Notifications />
+                      </Route>
+                      <Route path="/pending-citizen-science-sightings">
+                        <PendingCitizenScienceSightings />
                       </Route>
                       <Route path="/pending-sightings/:id">
                         <AssetGroupSighting />

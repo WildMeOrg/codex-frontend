@@ -6,7 +6,7 @@ import IconButton from '@material-ui/core/IconButton';
 
 import Text from '../Text';
 
-const Core = function({ Icon, onClick, titleId, style = {} }) {
+const Core = function ({ Icon, onClick, titleId, style = {} }) {
   const theme = useTheme();
 
   return (

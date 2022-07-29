@@ -13,7 +13,7 @@ import ActionIcon from '../ActionIcon';
 import { cellRendererTypes } from '../dataDisplays/cellRenderers';
 import DataDisplay from '../dataDisplays/DataDisplay';
 import Card from './Card';
-import SightingMapView from '../cards/SightingMapView';
+import SightingMapView from './SightingMapView';
 
 export default function SightingsCard({
   title,
@@ -55,7 +55,7 @@ export default function SightingsCard({
     {
       reference: 'date',
       name: 'time',
-      label: 'Date reported',
+      labelId: 'DATE_OF_SIGHTING',
       options: {
         cellRenderer: cellRendererTypes.specifiedTime,
       },
@@ -63,7 +63,7 @@ export default function SightingsCard({
     {
       reference: 'created',
       name: 'created',
-      label: 'Date created',
+      labelId: 'DATE_REPORTED',
       options: {
         cellRenderer: cellRendererTypes.date,
       },
@@ -71,7 +71,7 @@ export default function SightingsCard({
     {
       reference: 'location',
       name: 'formattedLocation',
-      label: 'Location',
+      labelId: 'LOCATION',
       options: {
         cellRenderer: cellRendererTypes.location,
       },
@@ -79,12 +79,12 @@ export default function SightingsCard({
     {
       reference: 'locationIdValue',
       name: 'locationId_value',
-      label: 'Location',
+      labelId: 'LOCATION',
     },
     {
       reference: 'actions',
       name: 'guid',
-      label: 'Actions',
+      labelId: 'ACTIONS',
       options: {
         customBodyRender: value => (
           <div>
@@ -152,6 +152,7 @@ export default function SightingsCard({
           data={sightings}
           loading={loading}
           noResultsTextId={noSightingsMsg}
+          tableContainerStyles={{ maxHeight: 400 }}
         />
       )}
       {!noSightings && showMapView && (

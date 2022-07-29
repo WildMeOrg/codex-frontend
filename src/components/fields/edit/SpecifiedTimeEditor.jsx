@@ -88,9 +88,7 @@ export default function SpecifiedTimeEditor(props) {
                 <Text component="span" variant="caption">
                   {option.description}
                 </Text>
-              ) : (
-                undefined
-              )}
+              ) : undefined}
             </MenuItem>
           ))}
         </Select>

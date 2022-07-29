@@ -67,15 +67,15 @@ export default function CustomFieldTable({
     () => [
       {
         name: 'label',
-        label: intl.formatMessage({ id: 'LABEL' }),
+        labelId: 'LABEL',
       },
       {
         name: 'name',
-        label: intl.formatMessage({ id: 'VALUE' }),
+        labelId: 'VALUE',
       },
       {
         name: 'typeLabelId',
-        label: intl.formatMessage({ id: 'FIELD_TYPE' }),
+        labelId: 'FIELD_TYPE',
         options: {
           customBodyRender: labelId => (
             <Text variant="body2" id={labelId} />
@@ -84,11 +84,11 @@ export default function CustomFieldTable({
       },
       {
         name: 'categoryLabel',
-        label: intl.formatMessage({ id: 'CATEGORY' }),
+        labelId: 'CATEGORY',
       },
       {
         name: 'actions',
-        label: intl.formatMessage({ id: 'ACTIONS' }),
+        labelId: 'ACTIONS',
         options: {
           customBodyRender: (_, field) => (
             <div>
@@ -115,7 +115,7 @@ export default function CustomFieldTable({
         },
       },
     ],
-    [],
+    [intl, fieldTypeName],
   );
 
   const onCloseConfirmDelete = () => {
@@ -165,7 +165,9 @@ export default function CustomFieldTable({
         <Text variant="h5" component="h5" id={titleId} />
         <Tooltip
           placement="bottom-end"
-          title={intl.formatMessage({ id: addButtonTooltipId })}
+          title={intl.formatMessage({
+            id: addButtonTooltipId,
+          })}
         >
           <span>
             <ButtonLink
@@ -191,6 +193,7 @@ export default function CustomFieldTable({
         columns={tableColumns}
         data={fieldSchemas}
         noResultsTextId={noFieldsTextId}
+        tableContainerStyles={{ maxHeight: 300 }}
       />
     </Grid>
   );

@@ -18,9 +18,9 @@ import SettingsFileUpload from '../../components/settings/SettingsFileUpload';
 import SettingsTextInput from '../../components/settings/SettingsTextInput';
 
 const customFields = {
-  sighting: 'site.custom.customFields.Occurrence',
+  sighting: 'site.custom.customFields.Sighting',
   encounter: 'site.custom.customFields.Encounter',
-  individual: 'site.custom.customFields.MarkedIndividual',
+  individual: 'site.custom.customFields.Individual',
 };
 
 const newSettingFields = [
@@ -35,43 +35,39 @@ const newSettingFields = [
   'site.general.donationButtonUrl',
 ];
 
-export default function SiteSettings() {
+export default function SplashSettings() {
   const siteSettings = useSiteSettings();
   const {
     mutate: putSiteSettings,
     loading: formPostLoading,
     error: putSiteSettingsError,
     success: formPostSuccess,
-    setSuccess: setFormPostSuccess,
+    clearSuccess: clearFormPostSuccess,
   } = usePutSiteSettings();
 
   const {
     mutate: postSettingsAsset,
     error: settingsAssetPostError,
     loading: assetPostLoading,
-    setSuccess: setAssetPostSuccess,
+    clearSuccess: clearAssetPostSuccess,
   } = usePostSettingsAsset();
 
-  useDocumentTitle('SPLASH_PAGE');
+  useDocumentTitle('FRONT_PAGE');
 
   const [currentValues, setCurrentValues] = useState(null);
-  const [splashVideoPostData, setSplashVideoPostData] = useState(
-    null,
-  );
-  const [splashImagePostData, setSplashImagePostData] = useState(
-    null,
-  );
-  const [
-    customCardImagePostData,
-    setCustomCardImagePostData,
-  ] = useState(null);
+  const [splashVideoPostData, setSplashVideoPostData] =
+    useState(null);
+  const [splashImagePostData, setSplashImagePostData] =
+    useState(null);
+  const [customCardImagePostData, setCustomCardImagePostData] =
+    useState(null);
 
-  const edmValues = newSettingFields.map(fieldKey =>
-    get(siteSettings, ['data', fieldKey, 'value']),
-  );
   useEffect(() => {
+    const edmValues = newSettingFields.map(fieldKey =>
+      get(siteSettings, ['data', fieldKey, 'value']),
+    );
     setCurrentValues(zipObject(newSettingFields, edmValues));
-  }, edmValues);
+  }, [siteSettings, newSettingFields]);
 
   const customFieldCategories = get(
     siteSettings,
@@ -88,9 +84,9 @@ export default function SiteSettings() {
       <Text
         variant="h3"
         style={{ padding: '16px 0 16px 16px' }}
-        id="SPLASH_PAGE"
+        id="FRONT_PAGE"
       />
-      <SettingsBreadcrumbs currentPageTextId="SPLASH_PAGE" />
+      <SettingsBreadcrumbs currentPageTextId="FRONT_PAGE" />
       <Grid
         container
         direction="column"
@@ -209,8 +205,8 @@ export default function SiteSettings() {
           {success && (
             <CustomAlert
               onClose={() => {
-                setFormPostSuccess(false);
-                setAssetPostSuccess(false);
+                clearFormPostSuccess();
+                clearAssetPostSuccess();
               }}
               severity="success"
               titleId="SUCCESS"
@@ -223,7 +219,7 @@ export default function SiteSettings() {
                 id="PREVIEW_CHANGES"
                 newTab
                 external
-                href="/admin/splash/preview"
+                href="/admin/front-page/preview"
               />
             </CustomAlert>
           )}

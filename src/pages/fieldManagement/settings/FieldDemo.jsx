@@ -3,7 +3,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import StandardDialog from '../../../components/StandardDialog';
 import Text from '../../../components/Text';
 
-const Editor = function({ schema, value, onChange }) {
+const Editor = function ({ schema, value, onChange }) {
   const componentProps = schema.editComponentProps || {};
 
   return (
@@ -23,13 +23,10 @@ export default function FieldDemo({
   fieldProps,
 }) {
   const [demoFieldValue, setDemoFieldValue] = useState(initialValue);
-  useEffect(
-    () => {
-      if (demoFieldValue !== initialValue)
-        setDemoFieldValue(initialValue);
-    },
-    [initialValue],
-  );
+  useEffect(() => {
+    if (demoFieldValue !== initialValue)
+      setDemoFieldValue(initialValue);
+  }, [demoFieldValue, initialValue]);
 
   return (
     <StandardDialog

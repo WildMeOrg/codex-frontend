@@ -20,7 +20,7 @@ const getMultiselectValue = val => {
   return [];
 };
 
-const SelectionEditor = function(props) {
+const SelectionEditor = function (props) {
   const {
     schema,
     value,
@@ -94,9 +94,7 @@ const SelectionEditor = function(props) {
               <Text component="span" variant="caption">
                 {option.description}
               </Text>
-            ) : (
-              undefined
-            )}
+            ) : undefined}
           </MenuItem>
         ))}
       </Select>

@@ -105,10 +105,8 @@ export default function RelationshipsCard({
   const intl = useIntl();
   const noRelationships =
     Array.isArray(relationships) && relationships.length === 0;
-  const {
-    data: siteSettings,
-    loading: loadingRelationships,
-  } = useSiteSettings();
+  const { data: siteSettings, loading: loadingRelationships } =
+    useSiteSettings();
   const {
     mutate: postRelationship,
     error: postRelationshipError,
@@ -128,14 +126,10 @@ export default function RelationshipsCard({
     relationshipGuid: null,
     open: false,
   });
-  const [
-    openRelationshipDialog,
-    setOpenRelationshipDialog,
-  ] = useState(false);
-  const [
-    selectedIndividualGuid,
-    setSelectedIndividualGuid,
-  ] = useState(null);
+  const [openRelationshipDialog, setOpenRelationshipDialog] =
+    useState(false);
+  const [selectedIndividualGuid, setSelectedIndividualGuid] =
+    useState(null);
   const [currentRoles, setCurrentRoles] = useState(null);
   const [currentType, setCurrentType] = useState(null);
   const [currentRole1, setCurrentRole1] = useState(null);
@@ -145,19 +139,16 @@ export default function RelationshipsCard({
     currentType &&
     currentRole1 &&
     currentRole2;
-  const types = useMemo(
-    () => {
-      const possibleRelationships = get(
-        siteSettings,
-        ['relationship_type_roles', 'value'],
-        {},
-      );
-      const _types = Object.values(possibleRelationships);
-      setCurrentRoles(get(_types, 'roles', []));
-      return _types;
-    },
-    [siteSettings],
-  );
+  const types = useMemo(() => {
+    const possibleRelationships = get(
+      siteSettings,
+      ['relationship_type_roles', 'value'],
+      {},
+    );
+    const _types = Object.values(possibleRelationships);
+    setCurrentRoles(get(_types, 'roles', []));
+    return _types;
+  }, [siteSettings]);
   const relationshipTableData = useMemo(
     () =>
       map(
@@ -350,7 +341,7 @@ export default function RelationshipsCard({
         </div>
       </DialogActions>
     </StandardDialog>,
-    <Card title={title} titleId={titleId} maxHeight={600}>
+    <Card title={title} titleId={titleId}>
       {/* // renderActions={
       //   <div>
       //     <IconButton

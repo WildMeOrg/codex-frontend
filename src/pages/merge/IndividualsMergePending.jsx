@@ -60,10 +60,8 @@ export default function IndividualsMergePending() {
     ? formatDateCustom(deadline, 'LLLL do')
     : intl.formatMessage({ id: 'DATE_MISSING' });
 
-  const {
-    component: BaoComponent,
-    width: baoWidth,
-  } = mergeRequestError ? baoOptions.spills : baoOptions.letter;
+  const { component: BaoComponent, width: baoWidth } =
+    mergeRequestError ? baoOptions.spills : baoOptions.letter;
 
   return (
     <MainColumn

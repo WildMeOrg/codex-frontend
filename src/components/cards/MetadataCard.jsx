@@ -62,9 +62,7 @@ export default function MetadataCard({
           >
             <EditIcon />
           </IconButton>
-        ) : (
-          undefined
-        )
+        ) : undefined
       }
     >
       <List dense>

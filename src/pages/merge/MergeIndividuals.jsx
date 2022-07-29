@@ -26,10 +26,8 @@ export default function MergeIndividuals() {
   const searchParams = new URLSearchParams(search);
   const individualGuids = searchParams.getAll('i') || [];
 
-  const {
-    data: mergeConflicts,
-    fetchConflictsError,
-  } = useFetchMergeConflicts(individualGuids);
+  const { data: mergeConflicts, fetchConflictsError } =
+    useFetchMergeConflicts(individualGuids);
 
   const {
     mutate: mergeIndividuals,
