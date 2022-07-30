@@ -82,8 +82,6 @@ export default function useBulkImportFields() {
         return {
           label: deriveLabel(f, intl),
           key: deriveKey(f, categoryTypes.sighting),
-          // customField: Boolean(f?.customField),
-          // fieldType: f?.fieldType,
           ...additionalProperties,
         };
       });
@@ -124,8 +122,6 @@ export default function useBulkImportFields() {
         return {
           label: deriveLabel(f, intl),
           key: deriveKey(f, categoryTypes.encounter),
-          // customField: Boolean(f?.customField),
-          // fieldType: f?.fieldType,
           ...additionalProperties,
         };
       });
