@@ -36,7 +36,6 @@ export default function BannerLogo({
     <Container
       href={href}
       onClick={onClick}
-      style={{ display: 'flex' }}
       {...containerProps}
       {...rest}
     >
