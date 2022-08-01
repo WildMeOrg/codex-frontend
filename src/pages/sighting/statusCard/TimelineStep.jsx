@@ -5,8 +5,9 @@ import TimelineItem from '@material-ui/lab/TimelineItem';
 import TimelineSeparator from '@material-ui/lab/TimelineSeparator';
 import TimelineContent from '@material-ui/lab/TimelineContent';
 import TimelineDot from '@material-ui/lab/TimelineDot';
-import ProgressIcon from '@material-ui/icons/Cached';
+import ProgressIcon from '@material-ui/icons/HourglassEmpty';
 import ErrorIcon from '@material-ui/icons/PriorityHigh';
+
 import CustomAlert from '../../../components/Alert';
 import Text from '../../../components/Text';
 import stages from './stages';
