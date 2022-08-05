@@ -333,7 +333,7 @@ export default function SiteStatus() {
                           ).unit
                         }
                         unitDisplay="long"
-                        style="unit" // eslint-disable-line react/style-prop-object
+                        style="unit"
                       />
                     }
                   />
@@ -357,7 +357,7 @@ export default function SiteStatus() {
                           ).unit
                         }
                         unitDisplay="long"
-                        style="unit" // eslint-disable-line react/style-prop-object
+                        style="unit"
                       />
                     }
                   />
@@ -411,7 +411,7 @@ export default function SiteStatus() {
                       ).unit
                     }
                     unitDisplay="long"
-                    style="unit" // eslint-disable-line react/style-prop-object
+                    style="unit"
                   />
                 }
               />
@@ -433,7 +433,7 @@ export default function SiteStatus() {
                         .unit
                     }
                     unitDisplay="long"
-                    style="unit" // eslint-disable-line react/style-prop-object
+                    style="unit"
                   />
                 }
               />
