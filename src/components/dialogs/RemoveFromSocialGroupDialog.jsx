@@ -24,14 +24,14 @@ export default function RemoveFromSocialGroupDialog({
 
   const removeIndividualFromSocialGroup = useCallback(async () => {
     const safeMembers = get(socialGroup, 'members', {});
-    const newMembers = omit(safeMembers, individualGuid);
+    const nextMembers = omit(safeMembers, individualGuid);
     const result = await patchSocialGroup({
       guid: socialGroup?.guid,
-      members: newMembers,
+      members: nextMembers,
       affectedIndividualGuids: [individualGuid],
     });
-    if (result.status === 200) onClose();
-  }, [individualGuid, socialGroup, onClose]);
+    if (result?.status === 200) handleClose();
+  }, [individualGuid, socialGroup, handleClose]);
 
   return (
     <ConfirmDelete

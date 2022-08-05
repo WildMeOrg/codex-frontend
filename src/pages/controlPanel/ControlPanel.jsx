@@ -81,6 +81,10 @@ const adminPages = [
     href: '/settings/preferences',
     roles: [
       'is_admin',
+      'is_exporter',
+      'is_internal',
+      'is_staff',
+      'is_data_manager',
       'is_user_manager',
       'is_researcher',
       'is_contributor',

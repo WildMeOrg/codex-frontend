@@ -38,17 +38,20 @@ export default function SocialGroupsDisplay({
       name: 'guid',
       labelId: 'ACTIONS',
       options: {
-        customBodyRender: (guid, socialGroup) => [
-          <ActionIcon
-            variant="view"
-            href={`/social-groups/${guid}`}
-            linkProps={{ newTab: true }}
-          />,
-          <ActionIcon
-            variant="delete"
-            onClick={() => onClickDelete(socialGroup)}
-          />,
-        ],
+        customBodyRender: (guid, socialGroup) => (
+          <>
+            <ActionIcon
+              variant="view"
+              href={`/social-groups/${guid}`}
+              linkProps={{ newTab: true }}
+            />
+            ,
+            <ActionIcon
+              variant="delete"
+              onClick={() => onClickDelete(socialGroup)}
+            />
+          </>
+        ),
       },
     },
   ];

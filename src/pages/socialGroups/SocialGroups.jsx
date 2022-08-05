@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useIntl } from 'react-intl';
 
 import AddIcon from '@material-ui/icons/Add';
 
@@ -19,8 +18,6 @@ import DataDisplay from '../../components/dataDisplays/DataDisplay';
 import AddSocialGroupDialog from './AddSocialGroupDialog';
 
 export default function SocialGroups() {
-  const intl = useIntl();
-
   const { data, loading, error, statusCode } = useSocialGroups();
   const {
     mutate: deleteSocialGroup,
@@ -107,6 +104,7 @@ export default function SocialGroups() {
         idKey="guid"
         data={data}
         columns={columns}
+        noResultsTextId="NO_SOCIAL_GROUPS_ON_SITE"
       />
     </MainColumn>
   );

@@ -24,7 +24,7 @@ export default function AddMembersDialog({
 }) {
   const [selectedIndividualGuid, setSelectedIndividualGuid] =
     useState('');
-  const [selectedRole, setSelectedRole] = useState('');
+  const [selectedRoleGuid, setSelectedRoleGuid] = useState('');
 
   const { data: siteSettings, loading: siteSettingsLoading } =
     useSiteSettings();
@@ -36,8 +36,8 @@ export default function AddMembersDialog({
   } = usePatchSocialGroup();
 
   const handleClose = useCallback(() => {
-    setSelectedIndividualGuid(null);
-    setSelectedRole('');
+    setSelectedIndividualGuid('');
+    setSelectedRoleGuid('');
     if (patchError) clearPatchError();
     onClose();
   }, [patchError]);
@@ -49,7 +49,7 @@ export default function AddMembersDialog({
   );
 
   const formComplete = Boolean(
-    selectedIndividualGuid && selectedRole,
+    selectedIndividualGuid && selectedRoleGuid,
   );
 
   return (
@@ -74,8 +74,8 @@ export default function AddMembersDialog({
             </InputLabel>
             <Select
               style={{ width: 200 }}
-              value={selectedRole}
-              onChange={e => setSelectedRole(e.target.value)}
+              value={selectedRoleGuid}
+              onChange={e => setSelectedRoleGuid(e.target.value)}
             >
               {roles.map(role => (
                 <MenuItem key={role?.guid} value={role?.guid}>
@@ -117,7 +117,7 @@ export default function AddMembersDialog({
               const newMembers = {
                 ...(socialGroup?.members || {}),
                 [selectedIndividualGuid]: {
-                  role_guids: [selectedRole],
+                  role_guids: [selectedRoleGuid],
                 },
               };
               const result = await patchSocialGroup({

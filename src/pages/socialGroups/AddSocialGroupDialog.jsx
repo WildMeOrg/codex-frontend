@@ -35,14 +35,13 @@ export default function AddSocialGroupDialog({ open, onClose }) {
         <TextInput
           schema={{ labelId: 'NAME_OF_GROUP' }}
           value={name}
-          onChange={newName => setName(newName)}
+          onChange={setName}
           variant="outlined"
         />
       </DialogContent>
       <DialogActions
         style={{
           padding: '0px 24px 24px 24px',
-          display: 'flex',
           alignItems: 'flex-end',
           flexDirection: 'column',
         }}

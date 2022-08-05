@@ -13,7 +13,7 @@ export default function SocialGroupsCard({
   socialGroups = [],
   individualGuid,
   loading,
-  noDataMessageId = 'NO_SOCIAL_GROUPS',
+  noDataMessageId = 'NO_SOCIAL_GROUPS_ON_INDIVIDUAL',
   title,
   titleId,
 }) {

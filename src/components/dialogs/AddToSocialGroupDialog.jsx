@@ -146,7 +146,7 @@ export default function AddToSocialGroupDialog({
                 members: newMembers,
                 affectedIndividualGuids: [individualGuid],
               });
-              if (result.status === 200) handleClose();
+              if (result?.status === 200) handleClose();
             }}
             id="ADD"
           />

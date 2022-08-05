@@ -1,20 +1,17 @@
 import useFetch from '../../hooks/useFetch';
-import { getIndividualGuidQueryKey } from '../../constants/queryKeys';
+import { getIndividualGuidSearchQueryKey } from '../../constants/queryKeys';
 
 export default function useQueryIndividualsByGuid(
   individualGuids = [],
 ) {
   const query = {
-    bool: {
-      minimum_should_match: 1,
-      should: individualGuids.map(guid => ({ term: { guid } })),
-    },
+    terms: { guid: individualGuids },
   };
 
   return useFetch({
     method: 'post',
     url: '/individuals/search',
-    queryKey: getIndividualGuidQueryKey(individualGuids),
+    queryKey: getIndividualGuidSearchQueryKey(individualGuids),
     data: query,
     queryOptions: {
       enabled:

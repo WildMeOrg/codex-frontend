@@ -1,11 +1,13 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { useIntl } from 'react-intl';
 import { get } from 'lodash-es';
 
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import AddIcon from '@material-ui/icons/Add';
 
+import errorTypes from '../../constants/errorTypes';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import useSocialGroup from '../../models/socialGroups/useSocialGroup';
 import useQueryIndividualsByGuid from '../../models/individual/useQueryIndividualsByGuid';
@@ -28,11 +30,15 @@ import AddMembersDialog from './AddMembersDialog';
 const nameSchema = { labelId: 'NAME_OF_GROUP' };
 
 export default function SocialGroup() {
+  const intl = useIntl();
   const { guid } = useParams();
   const [addDialogOpen, setAddDialogOpen] = useState(false);
   const [individualToRemove, setIndividualToRemove] = useState(null);
 
-  const openAddDialog = useCallback(() => setAddDialogOpen(true), []);
+  const handleOpenAddDialog = useCallback(
+    () => setAddDialogOpen(true),
+    [],
+  );
   const handleCloseAddDialog = useCallback(
     () => setAddDialogOpen(false),
     [],
@@ -60,11 +66,26 @@ export default function SocialGroup() {
   useEffect(() => {
     if (data?.name) setName(data.name);
   }, [data?.name]);
-  useDocumentTitle(data?.name || 'SOCIAL_GROUP', {
+
+  const socialGroupName =
+    data?.name || intl.formatMessage({ id: 'UNNAMED_SOCIAL_GROUP' });
+
+  useDocumentTitle(socialGroupName || 'SOCIAL_GROUP', {
     translateMessage: false,
   });
 
-  if (error) return <SadScreen statusCode={statusCode} />;
+  if (error)
+    return (
+      <SadScreen
+        statusCode={statusCode}
+        variantOverrides={{
+          [errorTypes.notFound]: {
+            subtitleId: 'SOCIAL_GROUP_NOT_FOUND',
+            descriptionId: 'SOCIAL_GROUP_NOT_FOUND_DESCRIPTION',
+          },
+        }}
+      />
+    );
   if (loading) return <LoadingScreen />;
 
   const nameChanged = name !== data?.name;
@@ -100,7 +121,7 @@ export default function SocialGroup() {
         component="h3"
         style={{ padding: '16px 0 8px 16px' }}
       >
-        {data?.name}
+        {socialGroupName}
       </Text>
       <Text
         variant="subtitle1"
@@ -137,7 +158,7 @@ export default function SocialGroup() {
               flexDirection: 'column',
             }}
           >
-            <InputRow schema={nameSchema} loading={false}>
+            <InputRow schema={nameSchema}>
               <div
                 style={{
                   display: 'flex',
@@ -147,7 +168,8 @@ export default function SocialGroup() {
                 <TextInput
                   schema={nameSchema}
                   value={name}
-                  onChange={newName => setName(newName)}
+                  onChange={setName}
+                  disabled={patchLoading}
                   variant="outlined"
                 />
                 {nameChanged && (
@@ -191,7 +213,7 @@ export default function SocialGroup() {
               id="ADD_MEMBERS"
               startIcon={<AddIcon />}
               size="small"
-              onClick={openAddDialog}
+              onClick={handleOpenAddDialog}
             />
           </div>
 

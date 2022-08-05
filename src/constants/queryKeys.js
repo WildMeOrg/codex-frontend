@@ -1,3 +1,7 @@
+function sortIfArray(value) {
+  return Array.isArray(value) ? value.sort() : value;
+}
+
 export default {
   me: 'me',
   settingsConfig: 'settingsConfig',
@@ -73,8 +77,8 @@ export function getIndividualTermQueryKey(searchTerm) {
   return ['individualQuickSearch', searchTerm];
 }
 
-export function getIndividualGuidQueryKey(individualGuids) {
-  return ['individualQuickSearch', individualGuids];
+export function getIndividualGuidSearchQueryKey(individualGuids) {
+  return ['individualQuickSearch', sortIfArray(individualGuids)];
 }
 
 export function getSightingTermQueryKey(searchTerm) {
