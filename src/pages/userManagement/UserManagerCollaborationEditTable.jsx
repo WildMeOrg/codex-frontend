@@ -20,10 +20,8 @@ export default function UserManagersCollaborationEditTable({
 }) {
   const intl = useIntl();
 
-  const {
-    data: currentUserData,
-    loading: userDataLoading,
-  } = useGetMe();
+  const { data: currentUserData, loading: userDataLoading } =
+    useGetMe();
 
   const {
     mutate: revokeCollab,

@@ -76,9 +76,9 @@ const adminPages = [
   },
   {
     icon: PreferencesIcon,
-    name: 'user-preferences',
-    labelId: 'SETTINGS_AND_PRIVACY',
-    href: '/settings/user-preferences',
+    name: 'preferences',
+    labelId: 'PREFERENCES',
+    href: '/settings/preferences',
     roles: [
       'is_admin',
       'is_user_manager',

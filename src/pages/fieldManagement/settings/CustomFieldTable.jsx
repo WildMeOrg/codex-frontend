@@ -47,9 +47,8 @@ export default function CustomFieldTable({
   const intl = useIntl();
   const [deleteField, setDeleteField] = useState(null);
   const [previewField, setPreviewField] = useState(null);
-  const [previewInitialValue, setPreviewInitialValue] = useState(
-    null,
-  );
+  const [previewInitialValue, setPreviewInitialValue] =
+    useState(null);
   const {
     removeCustomField,
     needsForce,
