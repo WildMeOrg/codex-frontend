@@ -98,7 +98,7 @@ export default function RelationshipsCard({
   relationships = [],
   individualGuid,
   loading,
-  noDataMessage = 'NO_RELATIONSHIPS',
+  noDataMessageId = 'NO_RELATIONSHIPS',
   title,
   titleId,
 }) {
@@ -359,7 +359,7 @@ export default function RelationshipsCard({
       {noRelationships && (
         <Text
           variant="body2"
-          id={noDataMessage}
+          id={noDataMessageId}
           style={{ marginTop: 12 }}
         />
       )}

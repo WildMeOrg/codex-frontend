@@ -1,10 +1,20 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { useIntl } from 'react-intl';
 import { get } from 'lodash-es';
 
 import useSiteSettings from '../../../models/site/useSiteSettings';
 import Text from '../../Text';
 import OverflowController from './OverflowController';
+
+function Core({ value, ...rest }, ref) {
+  return (
+    <Text variant="body2" ref={ref} {...rest}>
+      {value}
+    </Text>
+  );
+}
+
+const CoreForwardRef = forwardRef(Core);
 
 export default function SocialGroupRoleRenderer({
   value,
@@ -16,18 +26,17 @@ export default function SocialGroupRoleRenderer({
   const { data } = useSiteSettings();
   const roles = get(data, ['social_group_roles', 'value'], []);
   const matchingRole = roles.find(role => role?.guid === value);
+  const knownRole = value && matchingRole?.label;
   const label =
-    matchingRole?.label || intl.formatMessage({ id: 'UNKNOWN_ROLE' });
+    knownRole || intl.formatMessage({ id: 'UNKNOWN_ROLE' });
+
+  const CoreComponent = <CoreForwardRef value={label} {...rest} />;
 
   return noWrap ? (
     <OverflowController title={label}>
-      <Text variant="body2" {...rest}>
-        {label}
-      </Text>
+      {CoreComponent}
     </OverflowController>
   ) : (
-    <Text variant="body2" {...rest}>
-      {label}
-    </Text>
+    CoreComponent
   );
 }

@@ -13,7 +13,7 @@ export default function SocialGroupsCard({
   socialGroups = [],
   individualGuid,
   loading,
-  noDataMessage = 'NO_SOCIAL_GROUPS',
+  noDataMessageId = 'NO_SOCIAL_GROUPS',
   title,
   titleId,
 }) {
@@ -44,11 +44,11 @@ export default function SocialGroupsCard({
         onClose={() => setAddDialogOpen(false)}
         individualGuid={individualGuid}
       />
-      <Card title={title} titleId={titleId} maxHeight={600}>
+      <Card title={title} titleId={titleId}>
         {noSocialGroups ? (
           <Text
             variant="body2"
-            id={noDataMessage}
+            id={noDataMessageId}
             style={{ marginTop: 12 }}
           />
         ) : (
@@ -57,6 +57,7 @@ export default function SocialGroupsCard({
             data={socialGroups}
             loading={loading}
             onClickDelete={handleClickDelete}
+            tableContainerStyles={{ maxHeight: 600 }}
           />
         )}
 
