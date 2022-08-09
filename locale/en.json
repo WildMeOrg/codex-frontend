@@ -1083,7 +1083,7 @@
   "NO_PERMISSIONS_ERROR_DETAILS": "You do not have permissions to access the requested resource.",
   "NOT_AUTHENTICATED_ERROR_DETAILS": "Your request could not be processed due to an authentication error. Log in and try again.",
   "CONFIRM_REMOVE_RELATIONSHIP": "Are you sure you want to delete this relationship?",
-  "CONFIRM_REMOVE_INDIVIDUAL_FROM_SOCIAL_GROUP": "Are you sure you want to remove the individual from this social group?",
+  "CONFIRM_REMOVE_INDIVIDUAL_FROM_SOCIAL_GROUP": "Are you sure you want to remove this individual from this social group?",
   "TWITTER_HANDLE": "Twitter handle",
   "CONFIGURATION_INTELLIGENT_AGENT_TWITTERBOT_ENABLED_LABEL": "Allow Twitter submissions?",
   "CONFIGURATION_INTELLIGENT_AGENT_TWITTERBOT_ENABLED_DESCRIPTION": "Any Twitter user will be able to create submissions to this platform via tweet. Platform users can add their Twitter handle on their user profile to maintain ownership of the sightings. Otherwise, the data will be public. Make sure that the bio of the platform twitter account reminds users to include image(s), a hashtag of the species, region/location id, and time/date.",

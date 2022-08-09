@@ -45,7 +45,6 @@ export default function SocialGroupsDisplay({
               href={`/social-groups/${guid}`}
               linkProps={{ newTab: true }}
             />
-            ,
             <ActionIcon
               variant="delete"
               onClick={() => onClickDelete(socialGroup)}

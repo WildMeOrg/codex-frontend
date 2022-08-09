@@ -1,5 +1,5 @@
 import useFetch from '../../hooks/useFetch';
-import { getIndividualGuidSearchQueryKey } from '../../constants/queryKeys';
+import { getIndividualsByGuidsQueryKey } from '../../constants/queryKeys';
 
 export default function useQueryIndividualsByGuid(
   individualGuids = [],
@@ -11,7 +11,7 @@ export default function useQueryIndividualsByGuid(
   return useFetch({
     method: 'post',
     url: '/individuals/search',
-    queryKey: getIndividualGuidSearchQueryKey(individualGuids),
+    queryKey: getIndividualsByGuidsQueryKey(individualGuids),
     data: query,
     queryOptions: {
       enabled:

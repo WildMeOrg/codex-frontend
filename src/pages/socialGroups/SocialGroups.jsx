@@ -76,7 +76,7 @@ export default function SocialGroups() {
           const result = await deleteSocialGroup({
             guid: pendingDeleteGuid,
           });
-          if (result.status === 204) setPendingDeleteGuid(null);
+          if (result?.status === 204) setPendingDeleteGuid(null);
         }}
         deleteInProgress={deletePending}
         error={deleteError}

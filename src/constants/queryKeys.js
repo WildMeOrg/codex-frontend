@@ -77,7 +77,7 @@ export function getIndividualTermQueryKey(searchTerm) {
   return ['individualQuickSearch', searchTerm];
 }
 
-export function getIndividualGuidSearchQueryKey(individualGuids) {
+export function getIndividualsByGuidsQueryKey(individualGuids) {
   return ['individualQuickSearch', sortIfArray(individualGuids)];
 }
 
