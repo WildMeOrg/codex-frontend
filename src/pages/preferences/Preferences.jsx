@@ -6,7 +6,6 @@ import Paper from '@material-ui/core/Paper';
 
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import MainColumn from '../../components/MainColumn';
-import ButtonLink from '../../components/ButtonLink';
 import UserDeleteDialog from '../../components/dialogs/UserDeleteDialog';
 import Button from '../../components/Button';
 import SettingsBreadcrumbs from '../../components/SettingsBreadcrumbs';
