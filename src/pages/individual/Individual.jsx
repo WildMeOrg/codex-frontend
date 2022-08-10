@@ -291,6 +291,7 @@ export default function Individual() {
               { id: 'PHOTOS_OF' },
               { name: firstName },
             )}
+            individualGuid={id}
             assets={assetSources}
           />
           <MetadataCard

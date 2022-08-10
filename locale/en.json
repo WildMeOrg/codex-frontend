@@ -1181,5 +1181,6 @@
   "STATUS_IDENTIFICATION_SKIPPED_NO_IMAGES": "Identification skipped - no images to match.",
   "STATUS_IDENTIFICATION_SKIPPED_MIGRATED_FROM_SITE": "Identification skipped - this sighting was migrated from {migratedSiteName}.",
   "STATUS_IDENTIFICATION_SKIPPED_MIGRATED_FROM_UNKNOWN_SITE": "Identification skipped - this sighting was migrated from a Wildbook database.",
-  "STATUS_IDENTIFICATION_FAILED": "Identification failed."
+  "STATUS_IDENTIFICATION_FAILED": "Identification failed.",
+  "INDIVIDUAL_GALLERY_SEE_ALL": "See all"
 }
