@@ -23,8 +23,8 @@ export default function AddToSocialGroupDialog({
   onClose,
   individualGuid,
 }) {
-  const [selectedGroup, setSelectedGroup] = useState('');
-  const [selectedRole, setSelectedRole] = useState('');
+  const [selectedGroupGuid, setSelectedGroupGuid] = useState('');
+  const [selectedRoleGuid, setSelectedRoleGuid] = useState('');
 
   const { data: socialGroups, loading: socialGroupsLoading } =
     useSocialGroups();
@@ -33,7 +33,7 @@ export default function AddToSocialGroupDialog({
   const {
     data: selectedGroupData,
     loading: selectedGroupDataLoading,
-  } = useSocialGroup(selectedGroup);
+  } = useSocialGroup(selectedGroupGuid);
   const {
     mutate: patchSocialGroup,
     loading: patchLoading,
@@ -42,8 +42,8 @@ export default function AddToSocialGroupDialog({
   } = usePatchSocialGroup();
 
   const handleClose = useCallback(() => {
-    setSelectedGroup('');
-    setSelectedRole('');
+    setSelectedGroupGuid('');
+    setSelectedRoleGuid('');
     if (patchError) clearPatchError();
     onClose();
   }, [patchError]);
@@ -55,7 +55,7 @@ export default function AddToSocialGroupDialog({
     [],
   );
 
-  const formComplete = Boolean(selectedGroup && selectedRole);
+  const formComplete = Boolean(selectedGroupGuid && selectedRoleGuid);
 
   return (
     <StandardDialog
@@ -75,8 +75,8 @@ export default function AddToSocialGroupDialog({
             </InputLabel>
             <Select
               style={{ width: 200 }}
-              value={selectedGroup}
-              onChange={e => setSelectedGroup(e.target.value)}
+              value={selectedGroupGuid}
+              onChange={e => setSelectedGroupGuid(e.target.value)}
             >
               {safeSocialGroups.map(group => (
                 <MenuItem key={group?.guid} value={group?.guid}>
@@ -96,8 +96,8 @@ export default function AddToSocialGroupDialog({
             </InputLabel>
             <Select
               style={{ width: 200 }}
-              value={selectedRole}
-              onChange={e => setSelectedRole(e.target.value)}
+              value={selectedRoleGuid}
+              onChange={e => setSelectedRoleGuid(e.target.value)}
             >
               {roles.map(role => (
                 <MenuItem key={role?.guid} value={role?.guid}>
@@ -139,10 +139,10 @@ export default function AddToSocialGroupDialog({
             onClick={async () => {
               const newMembers = {
                 ...(selectedGroupData?.members || {}),
-                [individualGuid]: { role_guids: [selectedRole] },
+                [individualGuid]: { role_guids: [selectedRoleGuid] },
               };
               const result = await patchSocialGroup({
-                guid: selectedGroup,
+                guid: selectedGroupGuid,
                 members: newMembers,
                 affectedIndividualGuids: [individualGuid],
               });

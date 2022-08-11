@@ -34,7 +34,7 @@ import { random } from 'lodash-es'; // correct!
 random(10);
 ```
 
-In situations where a lodash utility and a native utility exist, we should use the native utility unless there is a reason to use lodash (eg. `Array.map()` instead of `_.map()`).
+In situations where a lodash utility and a native utility exist, we should use the native utility unless there is a reason to use lodash (eg. native JS `map` instead of `_.map()`).
 
 ## Conventions
 
