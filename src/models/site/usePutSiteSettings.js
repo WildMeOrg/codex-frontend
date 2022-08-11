@@ -3,7 +3,7 @@ import queryKeys from '../../constants/queryKeys';
 
 export default function usePutSiteSettings() {
   return usePost({
-    url: '/site-settings/main/',
+    url: '/site-settings/data/',
     deriveData: ({ data }) => data,
     fetchKeys: [
       queryKeys.settingsConfig,

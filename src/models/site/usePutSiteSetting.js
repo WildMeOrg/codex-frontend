@@ -3,10 +3,8 @@ import queryKeys from '../../constants/queryKeys';
 
 export default function usePutSiteSetting() {
   return usePost({
-    deriveUrl: ({ property }) => `/site-settings/main/${property}`,
-    deriveData: ({ data }) => ({
-      _value: data,
-    }),
+    deriveUrl: ({ property }) => `/site-settings/data/${property}`,
+    deriveData: ({ data }) =>  data,
     fetchKeys: [
       queryKeys.settingsConfig,
       queryKeys.twitterBotTestResults,

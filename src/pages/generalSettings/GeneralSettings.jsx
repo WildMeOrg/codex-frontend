@@ -3,7 +3,7 @@ import { get, reduce, zipObject } from 'lodash-es';
 
 import Grid from '@material-ui/core/Grid';
 
-import useSiteSettings from '../../models/site/useSiteSettings';
+import useSiteSettings from '../../models/site/useSiteSettings3';
 import usePutSiteSettings from '../../models/site/usePutSiteSettings';
 import usePostSettingsAsset from '../../models/site/usePostSettingsAsset';
 

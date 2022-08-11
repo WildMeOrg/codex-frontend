@@ -5,6 +5,7 @@ import { useQuery } from 'react-query';
 
 import queryKeys from '../../constants/queryKeys';
 
+
 export default function useSiteSettings() {
   const settingsSchemaResult = useQuery(
     queryKeys.settingsSchema,
@@ -58,6 +59,7 @@ export default function useSiteSettings() {
      * will be necesssary. */
     data = merge(configuration, schemaData);
   }
+  console.log('old parsed data', data, siteSettingsVersion, );
 
   return useMemo(
     () => ({ data, loading, error, siteSettingsVersion }),
