@@ -1,7 +1,7 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
-import { capitalize } from 'lodash-es';
+import { capitalize, pick, transform } from 'lodash-es';
 
 import { useTheme } from '@material-ui/core/styles';
 
@@ -15,6 +15,43 @@ import LoadingScreen from '../../components/LoadingScreen';
 import MainColumn from '../../components/MainColumn';
 import SadScreen from '../../components/SadScreen';
 import Text from '../../components/Text';
+import GalleryItem from './components/GalleryItem';
+
+function transformToAssets(individualData) {
+  if (!individualData?.encounters) return [];
+
+  const dataByAsset = transform(
+    individualData.encounters,
+    (memo, encounter) => {
+      // Each asset needs information from the annotation that it belongs to.
+      // Every encounter annotation will be used, but multiple annotations may have the same asset.
+      if (encounter?.annotations) {
+        encounter.annotations.forEach(annotation => {
+          const annotationData = pick(annotation, ['guid', 'bounds']);
+          const assetGuid = annotation?.asset_guid;
+
+          if (assetGuid) {
+            if (!memo[assetGuid]) {
+              const assetMetadata = { src: annotation.asset_src };
+
+              memo[assetGuid] = {
+                guid: assetGuid,
+                metadata: assetMetadata,
+                annotations: [],
+              };
+            }
+            memo[assetGuid].annotations.push(annotationData);
+          }
+        });
+      }
+
+      return memo;
+    },
+    {},
+  );
+
+  return Object.values(dataByAsset);
+}
 
 export default function IndividualGallery() {
   const intl = useIntl();
@@ -22,6 +59,9 @@ export default function IndividualGallery() {
   const { guid } = useParams();
 
   const { data, statusCode, loading, error } = useIndividual(guid);
+
+  const galleryAssets = transformToAssets(data);
+  const gridColumnWidth = 300;
 
   const name = deriveIndividualName(
     data,
@@ -67,6 +107,24 @@ export default function IndividualGallery() {
         id="PHOTOS_OF"
         values={{ name }}
       />
+      <ul
+        style={{
+          listStyle: 'none',
+          display: 'grid',
+          gap: '24px 12px',
+          padding: '0 16px',
+          justifyContent: 'center',
+          gridTemplateColumns: `repeat(auto-fit, ${gridColumnWidth}px)`,
+        }}
+      >
+        {galleryAssets.map(galleryAsset => (
+          <GalleryItem
+            key={galleryAsset.guid}
+            {...galleryAsset}
+            width={gridColumnWidth}
+          />
+        ))}
+      </ul>
     </MainColumn>
   );
 }
