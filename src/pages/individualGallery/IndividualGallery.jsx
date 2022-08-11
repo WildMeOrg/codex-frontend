@@ -9,6 +9,7 @@ import useDocumentTitle from '../../hooks/useDocumentTitle';
 import useIndividual from '../../models/individual/useIndividual';
 import { deriveIndividualName } from '../../utils/nameUtils';
 import errorTypes from '../../constants/errorTypes';
+import CustomAlert from '../../components/Alert';
 import Button from '../../components/Button';
 import Link from '../../components/Link';
 import LoadingScreen from '../../components/LoadingScreen';
@@ -106,6 +107,11 @@ export default function IndividualGallery() {
         style={{ padding: '4px 0 16px 16px' }}
         id="PHOTOS_OF"
         values={{ name }}
+      />
+      <CustomAlert
+        style={{ margin: '0 16px 16px 16px' }}
+        severity="info"
+        descriptionId="INDIVIDUAL_GALLERY_UNABLE_TO_DISPLAY_ANNOTATIONS"
       />
       <ul
         style={{

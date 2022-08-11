@@ -5,6 +5,17 @@ import { useTheme } from '@material-ui/core/styles';
 
 import AnnotatedPhotograph from '../../../components/AnnotatedPhotograph';
 
+const assetFormats = {
+  master: [4096, 4096],
+};
+
+function isAssetImageClamped({ imageWidth, imageHeight }) {
+  return (
+    imageWidth === assetFormats.master[0] ||
+    imageHeight === assetFormats.master[1]
+  );
+}
+
 export default function DerivedAnnotatedPhotograph(props) {
   const theme = useTheme();
   const [{ imageWidth, imageHeight }, setImageDimensions] = useState(
@@ -13,6 +24,7 @@ export default function DerivedAnnotatedPhotograph(props) {
 
   function handleImageLoad(e) {
     const { naturalWidth, naturalHeight } = e.target;
+
     if (naturalWidth && naturalHeight) {
       setImageDimensions({
         imageWidth: naturalWidth,
@@ -24,8 +36,9 @@ export default function DerivedAnnotatedPhotograph(props) {
   const width = get(props, 'width', 300);
   const height = get(props, 'height', width);
   const assetSrc = get(props, 'assetMetadata.src');
+  const isClamped = isAssetImageClamped({ imageWidth, imageHeight });
 
-  if (imageWidth && imageHeight) {
+  if (imageWidth && imageHeight && !isClamped) {
     return (
       <AnnotatedPhotograph
         {...props}
