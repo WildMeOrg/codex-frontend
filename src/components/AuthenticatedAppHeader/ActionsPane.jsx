@@ -27,8 +27,7 @@ const actions = [
   {
     id: 'pending-citizen-science-sightings',
     href: '/pending-citizen-science-sightings',
-    permissionsTest: userData =>
-      userData?.is_admin || userData?.is_data_manager,
+    permissionsTest: userData => userData?.is_admin,
     messageId: 'PENDING_CITIZEN_SCIENCE_SIGHTINGS',
     icon: PublicIcon,
   },
