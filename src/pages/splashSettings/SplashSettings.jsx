@@ -67,7 +67,7 @@ export default function SplashSettings() {
       get(siteSettings, ['data', fieldKey, 'value']),
     );
     setCurrentValues(zipObject(newSettingFields, edmValues));
-  }, [siteSettings, newSettingFields]);
+  }, [siteSettings]);
 
   const customFieldCategories = get(
     siteSettings,
@@ -219,7 +219,7 @@ export default function SplashSettings() {
                 id="PREVIEW_CHANGES"
                 newTab
                 external
-                href="/admin/front-page/preview"
+                href="/settings/front-page/preview"
               />
             </CustomAlert>
           )}

@@ -11,6 +11,8 @@ export default function IndividualsDisplay({
   individuals,
   loading,
   dataCount,
+  addColumns = [],
+  removeColumns = [],
   ...rest
 }) {
   const title = dataCount
@@ -29,6 +31,15 @@ export default function IndividualsDisplay({
             {firstName || 'Unnamed individual'}
           </Link>
         ),
+      },
+    },
+    {
+      name: 'role',
+      labelId: 'ROLE',
+      sortable: false,
+      align: 'left',
+      options: {
+        cellRenderer: cellRendererTypes.socialGroupRole,
       },
     },
     {
@@ -68,10 +79,15 @@ export default function IndividualsDisplay({
     },
   ];
 
+  const filteredColumns = columns.filter(
+    c => !removeColumns.includes(c.name),
+  );
+  const amendedColumns = [...filteredColumns, ...addColumns];
+
   return (
     <DataDisplay
       idKey="guid"
-      columns={columns}
+      columns={amendedColumns}
       data={individuals}
       title={title}
       loading={loading}

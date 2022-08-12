@@ -7,7 +7,6 @@ import Popover from '@material-ui/core/Popover';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
 import Divider from '@material-ui/core/Divider';
-import SettingsIcon from '@material-ui/icons/Settings';
 import PublicIcon from '@material-ui/icons/SupervisedUserCircle';
 import ControlPanelIcon from '@material-ui/icons/PermDataSetting';
 import BulkImportIcon from '@material-ui/icons/PostAdd';
@@ -32,16 +31,8 @@ const actions = [
     icon: PublicIcon,
   },
   {
-    id: 'settings',
-    href: '/settings',
-    messageId: 'SETTINGS_AND_PRIVACY',
-    icon: SettingsIcon,
-  },
-  {
     id: 'control-panel',
-    href: '/admin',
-    permissionsTest: userData =>
-      userData?.is_admin || userData?.is_user_manager,
+    href: '/settings',
     messageId: 'CONTROL_PANEL',
     icon: ControlPanelIcon,
   },
