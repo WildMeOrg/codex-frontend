@@ -125,18 +125,26 @@ export default function IndividualGallery() {
         id="PHOTOS_OF"
         values={{ name }}
       />
-      <CustomAlert
-        style={{ margin: '0 16px 16px 16px' }}
-        severity="info"
-        descriptionId="INDIVIDUAL_GALLERY_UNABLE_TO_DISPLAY_ANNOTATIONS"
-      />
+      <div
+        style={{
+          display: 'grid',
+          gap: 12,
+          gridTemplateColumns: `repeat(auto-fit, ${gridColumnWidth}px)`,
+          margin: '0 16px 16px 16px',
+        }}
+      >
+        <CustomAlert
+          style={{ gridColumn: '1 / -1' }}
+          severity="info"
+          descriptionId="INDIVIDUAL_GALLERY_UNABLE_TO_DISPLAY_ANNOTATIONS"
+        />
+      </div>
       <ul
         style={{
           listStyle: 'none',
           display: 'grid',
           gap: '24px 12px',
           padding: '0 16px',
-          justifyContent: 'center',
           gridTemplateColumns: `repeat(auto-fit, ${gridColumnWidth}px)`,
         }}
       >
