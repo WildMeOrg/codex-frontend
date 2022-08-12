@@ -24,6 +24,22 @@ function transformToAssets(individualData) {
   const dataByAsset = transform(
     individualData.encounters,
     (memo, encounter) => {
+      const sharedEncounterData = {
+        owner: {
+          guid: encounter?.owner?.guid,
+          fullName: encounter?.owner?.full_name,
+        },
+        time: {
+          time: encounter?.time,
+          timeSpecificity: encounter?.timeSpecificity,
+        },
+        location: {
+          label: encounter?.locationId_value,
+          decimalLatitude: encounter?.decimalLatitude,
+          decimalLongitude: encounter?.decimalLongitude,
+        },
+      };
+
       // Each asset needs information from the annotation that it belongs to.
       // Every encounter annotation will be used, but multiple annotations may have the same asset.
       if (encounter?.annotations) {
@@ -39,6 +55,7 @@ function transformToAssets(individualData) {
                 guid: assetGuid,
                 metadata: assetMetadata,
                 annotations: [],
+                ...sharedEncounterData,
               };
             }
             memo[assetGuid].annotations.push(annotationData);
