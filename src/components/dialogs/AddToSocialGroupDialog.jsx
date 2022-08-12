@@ -26,13 +26,20 @@ export default function AddToSocialGroupDialog({
   const [selectedGroupGuid, setSelectedGroupGuid] = useState('');
   const [selectedRoleGuid, setSelectedRoleGuid] = useState('');
 
-  const { data: socialGroups, loading: socialGroupsLoading } =
-    useSocialGroups();
-  const { data: siteSettings, loading: siteSettingsLoading } =
-    useSiteSettings();
+  const {
+    data: socialGroups,
+    loading: socialGroupsLoading,
+    error: getSocialGroupsError,
+  } = useSocialGroups();
+  const {
+    data: siteSettings,
+    loading: siteSettingsLoading,
+    error: getSiteSettingsError,
+  } = useSiteSettings();
   const {
     data: selectedGroupData,
     loading: selectedGroupDataLoading,
+    error: getSelectedGroupError,
   } = useSocialGroup(selectedGroupGuid);
   const {
     mutate: patchSocialGroup,
@@ -55,6 +62,10 @@ export default function AddToSocialGroupDialog({
     [],
   );
 
+  const fetchError =
+    getSocialGroupsError ||
+    getSiteSettingsError ||
+    getSelectedGroupError;
   const formComplete = Boolean(selectedGroupGuid && selectedRoleGuid);
 
   return (
@@ -65,6 +76,15 @@ export default function AddToSocialGroupDialog({
       maxWidth="xl"
     >
       <DialogContent>
+        {fetchError && (
+          <CustomAlert
+            style={{ margin: '20px 0', width: '100%' }}
+            severity="error"
+            titleId="AN_ERROR_OCCURRED"
+          >
+            {fetchError}
+          </CustomAlert>
+        )}
         <InputRow
           loading={socialGroupsLoading}
           schema={{ labelId: 'SOCIAL_GROUP' }}
@@ -77,6 +97,7 @@ export default function AddToSocialGroupDialog({
               style={{ width: 200 }}
               value={selectedGroupGuid}
               onChange={e => setSelectedGroupGuid(e.target.value)}
+              disabled={Boolean(fetchError)}
             >
               {safeSocialGroups.map(group => (
                 <MenuItem key={group?.guid} value={group?.guid}>
@@ -98,6 +119,7 @@ export default function AddToSocialGroupDialog({
               style={{ width: 200 }}
               value={selectedRoleGuid}
               onChange={e => setSelectedRoleGuid(e.target.value)}
+              disabled={Boolean(fetchError)}
             >
               {roles.map(role => (
                 <MenuItem key={role?.guid} value={role?.guid}>
