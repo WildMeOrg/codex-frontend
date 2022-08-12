@@ -1188,5 +1188,6 @@
   "INDIVIDUAL_GALLERY_SEE_ALL": "See all",
   "INDIVIDUAL_GALLERY_TITLE": "{name}'s gallery",
   "INDIVIDUAL_GALLERY_UNABLE_TO_DISPLAY_ANNOTATIONS": "We are currently unable to show annotations for uploaded images with either a width or a height exceeding 4,096 pixels.",
-  "INDIVIDUAL_BACK_TO_PROFILE": "Return to {name}'s profile"
+  "INDIVIDUAL_BACK_TO_PROFILE": "Return to {name}'s profile",
+  "ERROR_FETCHING_IMAGE": "Error fetching image"
 }

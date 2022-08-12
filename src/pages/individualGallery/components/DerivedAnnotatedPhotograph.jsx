@@ -4,6 +4,7 @@ import { get } from 'lodash-es';
 import { useTheme } from '@material-ui/core/styles';
 
 import AnnotatedPhotograph from '../../../components/AnnotatedPhotograph';
+import CustomAlert from '../../../components/Alert';
 
 const assetFormats = {
   master: [4096, 4096],
@@ -18,6 +19,7 @@ function isAssetImageClamped({ imageWidth, imageHeight }) {
 
 export default function DerivedAnnotatedPhotograph(props) {
   const theme = useTheme();
+  const [isError, setIsError] = useState(false);
   const [{ imageWidth, imageHeight }, setImageDimensions] = useState(
     {},
   );
@@ -50,16 +52,30 @@ export default function DerivedAnnotatedPhotograph(props) {
     );
   }
 
+  const imageCardStyles = {
+    width,
+    height,
+    background: theme.palette.grey['600'],
+  };
+
+  const errorCardStyles = {
+    ...imageCardStyles,
+    padding: 8,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  };
+
   return (
     <div style={{ position: 'relative' }}>
-      <div
-        style={{
-          width,
-          height,
-          background: theme.palette.grey['600'],
-        }}
-      >
-        {assetSrc && (
+      <div style={isError ? errorCardStyles : imageCardStyles}>
+        {isError && (
+          <CustomAlert
+            severity="error"
+            descriptionId="ERROR_FETCHING_IMAGE"
+          />
+        )}
+        {!isError && assetSrc && (
           <img
             src={assetSrc}
             alt={props.assetMetadata?.alt}
@@ -70,6 +86,7 @@ export default function DerivedAnnotatedPhotograph(props) {
               objectFit: 'scale-down',
             }}
             onLoad={handleImageLoad}
+            onError={() => setIsError(true)}
           />
         )}
       </div>
