@@ -1,7 +1,7 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
-import { capitalize, pick, transform } from 'lodash-es';
+import { capitalize, transform } from 'lodash-es';
 
 import { useTheme } from '@material-ui/core/styles';
 
@@ -44,7 +44,12 @@ function transformToAssets(individualData) {
       // Every encounter annotation will be used, but multiple annotations may have the same asset.
       if (encounter?.annotations) {
         encounter.annotations.forEach(annotation => {
-          const annotationData = pick(annotation, ['guid', 'bounds']);
+          const {
+            guid,
+            bounds,
+            ia_class: iAClass,
+          } = annotation || {};
+          const annotationData = { guid, bounds, iAClass };
           const assetGuid = annotation?.asset_guid;
 
           if (assetGuid) {

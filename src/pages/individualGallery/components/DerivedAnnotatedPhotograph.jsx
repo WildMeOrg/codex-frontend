@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { get } from 'lodash-es';
+import { get, uniq } from 'lodash-es';
+import { useIntl } from 'react-intl';
 
 import { useTheme } from '@material-ui/core/styles';
 
@@ -19,6 +20,7 @@ function isAssetImageClamped({ imageWidth, imageHeight }) {
 
 export default function DerivedAnnotatedPhotograph(props) {
   const theme = useTheme();
+  const intl = useIntl();
   const [isError, setIsError] = useState(false);
   const [{ imageWidth, imageHeight }, setImageDimensions] = useState(
     {},
@@ -38,7 +40,22 @@ export default function DerivedAnnotatedPhotograph(props) {
   const width = get(props, 'width', 300);
   const height = get(props, 'height', width);
   const assetSrc = get(props, 'assetMetadata.src');
+  const annotations = get(props, 'annotations') || [];
+  const uniqueAssetClasses = uniq(
+    annotations.map(annotation => annotation?.iAClass),
+  );
   const isClamped = isAssetImageClamped({ imageWidth, imageHeight });
+
+  const altText = intl.formatMessage(
+    { id: 'INDIVIDUAL_GALLERY_IMAGE_ALT' },
+    {
+      annotationCount: annotations.length,
+      assetClassCount: uniqueAssetClasses.length,
+      assetClassesList: intl.formatList(uniqueAssetClasses, {
+        type: 'conjunction',
+      }),
+    },
+  );
 
   if (imageWidth && imageHeight && !isClamped) {
     return (
@@ -46,6 +63,7 @@ export default function DerivedAnnotatedPhotograph(props) {
         {...props}
         assetMetadata={{
           ...props.assetMetadata,
+          alt: altText,
           dimensions: { width: imageWidth, height: imageHeight },
         }}
       />
@@ -72,13 +90,14 @@ export default function DerivedAnnotatedPhotograph(props) {
         {isError && (
           <CustomAlert
             severity="error"
-            descriptionId="ERROR_FETCHING_IMAGE"
+            titleId="ERROR_FETCHING_IMAGE"
+            description={altText}
           />
         )}
         {!isError && assetSrc && (
           <img
             src={assetSrc}
-            alt={props.assetMetadata?.alt}
+            alt={altText}
             loading="lazy"
             style={{
               width: '100%',
