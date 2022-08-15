@@ -176,7 +176,6 @@ export default function CollaborationManagementForm({
       </div>
       {success && (
         <CustomAlert
-          style={{ margin: '0px 24px 20px 24px' }}
           titleId="COLLABORATION_CREATED"
           severity="success"
           onClose={clearSuccess}
@@ -184,16 +183,14 @@ export default function CollaborationManagementForm({
       )}
       {error && (
         <CustomAlert
-          style={{ margin: '20px 0', width: '100%' }}
           severity="error"
           titleId="SERVER_ERROR"
+          description={error}
           onClose={() => {
             clearEstablishCollaborationError();
             setFormError(null);
           }}
-        >
-          {error}
-        </CustomAlert>
+        />
       )}
     </div>
   );
