@@ -13,12 +13,10 @@ import pjson from '../package.json';
 import App from './App';
 
 axios
-  .get(`${__houston_url__}/api/v1/site-settings/main/sentryDsn`)
+  .get(`${__houston_url__}/api/v1/site-settings/data/sentryDsn`)
   .then(response => {
     const sentryDsn = get(response, [
       'data',
-      'response',
-      'configuration',
       'sentryDsn',
       'value',
     ]);
