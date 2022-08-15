@@ -71,7 +71,7 @@ export default function CollaborationManagementForm({
             return unnamedUserLabel;
           }}
           getOptionSelected={(option, val) =>
-            option.id ? option.id === val : false
+            option.guid ? option.guid === val.guid : false
           }
           renderInput={params => (
             <TextField
@@ -115,7 +115,7 @@ export default function CollaborationManagementForm({
             return unnamedUserLabel;
           }}
           getOptionSelected={(option, val) =>
-            option.id ? option.id === val : false
+            option.guid ? option.guid === val.guid : false
           }
           renderInput={params => (
             <TextField
