@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
-import { capitalize, transform } from 'lodash-es';
+import { capitalize } from 'lodash-es';
 
 import { useTheme } from '@material-ui/core/styles';
 
@@ -18,11 +18,12 @@ import SadScreen from '../../components/SadScreen';
 import Text from '../../components/Text';
 import GalleryItem from './components/GalleryItem';
 
+const gridColumnWidth = 300;
+
 function transformToAssets(individualData) {
   if (!individualData?.encounters) return [];
 
-  const dataByAsset = transform(
-    individualData.encounters,
+  const dataByAsset = individualData.encounters.reduce(
     (memo, encounter) => {
       const sharedEncounterData = {
         owner: {
@@ -83,8 +84,10 @@ export default function IndividualGallery() {
 
   const { data, statusCode, loading, error } = useIndividual(guid);
 
-  const galleryAssets = transformToAssets(data);
-  const gridColumnWidth = 300;
+  const galleryAssets = useMemo(
+    () => transformToAssets(data),
+    [data],
+  );
 
   const name = deriveIndividualName(
     data,
