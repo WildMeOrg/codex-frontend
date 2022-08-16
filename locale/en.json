@@ -149,6 +149,8 @@
   "IDENTIFICATION": "Identification",
   "WAITING_ELLIPSES": "Waiting...",
   "REPORTED_BY": "Reported by ",
+  "REPORTED_BY_USER": "Reported by <link>{name}</link>",
+  "REPORTED_BY_UNNAMED_USER": "Reported by <link>Unnamed User</link>",
   "GENERAL_SETTINGS": "General settings",
   "ONE_SIGHTING_TOGGLE_DESCRIPTION": "This sighting has only one individual and I would like to report metadata about it now.",
   "FRONT_PAGE": "Front page",
@@ -1028,6 +1030,7 @@
   "COLLAB_REVOKE_ERROR_SUPPLEMENTAL": "Note that collaborations cannot be revoked unless they are mutually approved.",
   "PENDING_SIGHTINGS": "Pending Sightings",
   "UNKNOWN_DATE": "Unknown date",
+  "UNKNOWN_ENCOUNTER_DATE": "unknown encounter date",
   "CREATED_ON_DATE": "Created on {createdDate}",
   "SENT_YOU_A_COLLABORATION_REQUEST": "{userName} sent you a collaboration request",
   "A_COLLABORATION_WAS_CREATED_ON_YOUR_BEHALF": "A collaboration was created on your behalf",
@@ -1181,5 +1184,11 @@
   "STATUS_IDENTIFICATION_SKIPPED_NO_IMAGES": "Identification skipped - no images to match.",
   "STATUS_IDENTIFICATION_SKIPPED_MIGRATED_FROM_SITE": "Identification skipped - this sighting was migrated from {migratedSiteName}.",
   "STATUS_IDENTIFICATION_SKIPPED_MIGRATED_FROM_UNKNOWN_SITE": "Identification skipped - this sighting was migrated from a Wildbook database.",
-  "STATUS_IDENTIFICATION_FAILED": "Identification failed."
+  "STATUS_IDENTIFICATION_FAILED": "Identification failed.",
+  "INDIVIDUAL_GALLERY_SEE_ALL": "See all",
+  "INDIVIDUAL_GALLERY_TITLE": "{name}'s gallery",
+  "INDIVIDUAL_GALLERY_IMAGE_ALT": "{annotationCount} {annotationCount, plural, one {annotation} other {annotations}} with {assetClassCount, plural, one {class} other {classes}} {assetClassesList}",
+  "INDIVIDUAL_GALLERY_UNABLE_TO_DISPLAY_ANNOTATIONS": "We are currently unable to show annotations for uploaded images with either a width or a height exceeding 4,096 pixels.",
+  "INDIVIDUAL_BACK_TO_PROFILE": "Return to {name}'s profile",
+  "ERROR_FETCHING_IMAGE": "Error fetching image"
 }

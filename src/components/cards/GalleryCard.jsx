@@ -1,14 +1,17 @@
 import React from 'react';
+import { FormattedMessage } from 'react-intl';
+
 import { useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import ImageList from '@material-ui/core/ImageList';
 import ImageListItem from '@material-ui/core/ImageListItem';
-// import Link from '../Link';
+import Link from '../Link';
 import Card from './Card';
 
 export default function GalleryCard({
   title,
   titleId = 'GALLERY',
+  individualGuid,
   assets,
 }) {
   const theme = useTheme();
@@ -20,7 +23,13 @@ export default function GalleryCard({
     <Card
       title={title}
       titleId={titleId}
-      // renderActions={<Link>See all</Link>}
+      renderActions={
+        individualGuid ? (
+          <Link to={`/individuals/${individualGuid}/gallery`}>
+            <FormattedMessage id="INDIVIDUAL_GALLERY_SEE_ALL" />
+          </Link>
+        ) : null
+      }
       overflow="hidden"
       overflowX="hidden"
     >

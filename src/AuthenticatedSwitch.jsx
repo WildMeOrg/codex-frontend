@@ -15,6 +15,7 @@ import ControlPanel from './pages/controlPanel/ControlPanel';
 import AssignEncounters from './pages/assignEncounters/AssignEncounters';
 import CreateIndividual from './pages/createIndividual/CreateIndividual';
 import Individual from './pages/individual/Individual';
+import IndividualGallery from './pages/individualGallery/IndividualGallery';
 // import PictureBook from './pages/individual/PictureBook';
 import Sighting from './pages/sighting/Sighting';
 import AssetGroupSighting from './pages/sighting/AssetGroupSighting';
@@ -141,6 +142,9 @@ export default function AuthenticatedSwitch({
                       {/* <Route path="/individuals/picturebook">
                         <PictureBook />
                       </Route> */}
+                      <Route path="/individuals/:guid/gallery">
+                        <IndividualGallery />
+                      </Route>
                       <Route path="/individuals/:id">
                         <Individual />
                       </Route>
