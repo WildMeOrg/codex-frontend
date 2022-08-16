@@ -17,7 +17,6 @@ export default function CollaborationManagementForm({
   existingCollaborations,
 }) {
   const intl = useIntl();
-  const [shouldDisplay, setShouldDisplay] = useState(false);
   const [user1, setUser1] = useState(null);
   const [user2, setUser2] = useState(null);
   const [formError, setFormError] = useState(null);
@@ -25,7 +24,9 @@ export default function CollaborationManagementForm({
     mutate: establishCollaboration,
     loading,
     error: establishCollaborationError,
+    clearError: clearEstablishCollaborationError,
     success,
+    clearSuccess,
   } = useEstablishCollaborationAsUserManager();
 
   const error = establishCollaborationError || formError;
@@ -70,7 +71,7 @@ export default function CollaborationManagementForm({
             return unnamedUserLabel;
           }}
           getOptionSelected={(option, val) =>
-            option.id ? option.id === val : false
+            option.guid ? option.guid === val.guid : false
           }
           renderInput={params => (
             <TextField
@@ -114,7 +115,7 @@ export default function CollaborationManagementForm({
             return unnamedUserLabel;
           }}
           getOptionSelected={(option, val) =>
-            option.id ? option.id === val : false
+            option.guid ? option.guid === val.guid : false
           }
           renderInput={params => (
             <TextField
@@ -136,6 +137,10 @@ export default function CollaborationManagementForm({
           loading={loading}
           id="CREATE_COLLABORATION"
           onClick={async () => {
+            clearSuccess();
+            clearEstablishCollaborationError();
+            setFormError(null);
+
             if (
               mutuallyRevokedCollabExists(
                 existingCollaborations,
@@ -166,31 +171,26 @@ export default function CollaborationManagementForm({
                 }),
               );
             }
-            setShouldDisplay(true);
           }}
         />
       </div>
-      {success && shouldDisplay && (
+      {success && (
         <CustomAlert
-          style={{ margin: '0px 24px 20px 24px' }}
           titleId="COLLABORATION_CREATED"
           severity="success"
-          onClose={() => {
-            setShouldDisplay(false);
-          }}
+          onClose={clearSuccess}
         />
       )}
-      {error && shouldDisplay && (
+      {error && (
         <CustomAlert
-          style={{ margin: '20px 0', width: '100%' }}
           severity="error"
           titleId="SERVER_ERROR"
+          description={error}
           onClose={() => {
-            setShouldDisplay(false);
+            clearEstablishCollaborationError();
+            setFormError(null);
           }}
-        >
-          {error}
-        </CustomAlert>
+        />
       )}
     </div>
   );
