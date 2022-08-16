@@ -1013,7 +1013,7 @@
   "CREATE_COLLABORATIONS": "Create Collaborations",
   "CREATE_COLLABORATION": "Create Collaboration",
   "COLLABORATION_CREATED": "Collaboration Created",
-  "EDIT_COLLABORATIONS": "Edit Collaborations",
+  "USER_MANAGEMENT_COLLABORATIONS": "Collaborations",
   "USER_ONE": "User 1",
   "USER_TWO": "User 2",
   "COLLABORATION_STATUS": "Status",

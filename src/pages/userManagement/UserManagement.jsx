@@ -242,7 +242,7 @@ export default function UserManagement() {
           <Text
             variant="h6"
             style={{ marginTop: 20, marginLeft: 12 }}
-            id="EDIT_COLLABORATIONS"
+            id="USER_MANAGEMENT_COLLABORATIONS"
           />
           <Paper
             elevation={2}

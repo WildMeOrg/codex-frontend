@@ -188,7 +188,7 @@ export default function UserManagersCollaborationEditTable({
       <DataDisplay
         idKey="guid"
         loading={isLoading}
-        titleId="EDIT_COLLABORATIONS"
+        titleId="USER_MANAGEMENT_COLLABORATIONS"
         style={{ marginTop: 8 }}
         variant="secondary"
         columns={tableColumns}
