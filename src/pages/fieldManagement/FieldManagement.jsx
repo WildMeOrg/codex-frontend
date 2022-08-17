@@ -25,7 +25,7 @@ export default function FieldManagement() {
     data: siteSettings,
     loading,
     error,
-    siteSettingsVersion,
+    dataUpdatedAt: siteSettingsTimestamp,
   } = useSiteSettings();
 
   useDocumentTitle('MANAGE_FIELDS');
@@ -79,7 +79,7 @@ export default function FieldManagement() {
       >
         <DefaultFieldTable
           siteSettings={siteSettings}
-          siteSettingsVersion={siteSettingsVersion}
+          siteSettingsTimestamp={siteSettingsTimestamp}
         />
         <CategoryTable />
         <CustomFieldTable

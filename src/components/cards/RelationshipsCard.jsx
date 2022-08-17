@@ -105,8 +105,11 @@ export default function RelationshipsCard({
   const intl = useIntl();
   const noRelationships =
     Array.isArray(relationships) && relationships.length === 0;
-  const { data: siteSettings, loading: loadingRelationships } =
-    useSiteSettings();
+  const {
+    data: siteSettings,
+    loading: loadingRelationships,
+    dataUpdatedAt: siteSettingsTimestamp,
+  } = useSiteSettings();
   const {
     mutate: postRelationship,
     error: postRelationshipError,
@@ -148,7 +151,7 @@ export default function RelationshipsCard({
     const _types = Object.values(possibleRelationships);
     setCurrentRoles(get(_types, 'roles', []));
     return _types;
-  }, [siteSettings]);
+  }, [siteSettingsTimestamp]);
   const relationshipTableData = useMemo(
     () =>
       map(

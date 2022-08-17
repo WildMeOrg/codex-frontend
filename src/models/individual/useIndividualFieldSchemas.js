@@ -12,8 +12,12 @@ import { defaultIndividualCategories } from '../../constants/fieldCategories';
 import { deriveIndividualName } from '../../utils/nameUtils';
 
 export default function useIndividualFieldSchemas() {
-  const { data, loading, error, siteSettingsVersion } =
-    useSiteSettings();
+  const {
+    data,
+    loading,
+    error,
+    dataUpdatedAt: siteSettingsTimestamp,
+  } = useSiteSettings();
 
   const individualFieldSchemas = useMemo(() => {
     if (loading || error) return [];
@@ -57,7 +61,7 @@ export default function useIndividualFieldSchemas() {
       }),
       ...customFieldSchemas,
     ];
-  }, [data, siteSettingsVersion, loading, error]);
+  }, [siteSettingsTimestamp, loading, error]);
 
   return individualFieldSchemas;
 }

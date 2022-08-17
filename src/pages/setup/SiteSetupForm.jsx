@@ -28,7 +28,10 @@ const SettingInput = function ({
 };
 
 export default function SiteSetupForm({ primaryButtonId }) {
-  const { data: newSiteSettings } = useSiteSettings();
+  const {
+    data: newSiteSettings,
+    dataUpdatedAt: siteSettingsTimestamp,
+  } = useSiteSettings();
   const {
     mutate: putSiteSettings,
     error,
@@ -44,7 +47,7 @@ export default function SiteSetupForm({ primaryButtonId }) {
       get(newSiteSettings, [fieldKey, 'value']),
     );
     setCurrentValues(zipObject(newSettingFields, edmValues));
-  }, [newSiteSettings]);
+  }, [siteSettingsTimestamp]);
 
   const customFieldCategories = get(
     newSiteSettings,

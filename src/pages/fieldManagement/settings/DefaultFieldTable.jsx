@@ -70,7 +70,7 @@ function getInitialFormState(siteSettings) {
 
 export default function DefaultFieldTable({
   siteSettings,
-  siteSettingsVersion,
+  siteSettingsTimestamp,
 }) {
   const intl = useIntl();
   const [formSettings, setFormSettings] = useState(null);
@@ -83,7 +83,7 @@ export default function DefaultFieldTable({
 
   useEffect(
     () => setFormSettings(getInitialFormState(siteSettings)),
-    [siteSettingsVersion],
+    [siteSettingsTimestamp],
   );
 
   const tableColumns = [

@@ -37,6 +37,8 @@ const newSettingFields = [
 
 export default function SplashSettings() {
   const siteSettings = useSiteSettings();
+  const { dataUpdatedAt: siteSettingsTimestamp } = siteSettings;
+
   const {
     mutate: putSiteSettings,
     loading: formPostLoading,
@@ -67,13 +69,13 @@ export default function SplashSettings() {
       get(siteSettings, ['data', fieldKey, 'value']),
     );
     setCurrentValues(zipObject(newSettingFields, edmValues));
-  }, []);
+  }, [siteSettingsTimestamp]);
 
-  const customFieldCategories = get(
-    siteSettings,
-    ['data', 'site.custom.customFieldCategories', 'value'],
-    [],
-  );
+  const customFieldCategories = get(siteSettings, [
+    'data',
+    'site.custom.customFieldCategories',
+    'value',
+  ]);
 
   const loading = assetPostLoading || formPostLoading;
   const error = putSiteSettingsError || settingsAssetPostError;

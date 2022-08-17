@@ -18,7 +18,7 @@ export default function useSightingFieldSchemas() {
     data,
     loading: siteSettingsLoading,
     error: siteSettingsError,
-    siteSettingsVersion,
+    dataUpdatedAt: siteSettingsTimestamp,
   } = useSiteSettings();
 
   const {
@@ -144,14 +144,7 @@ export default function useSightingFieldSchemas() {
       }),
       ...customFieldSchemas,
     ];
-  }, [
-    intl,
-    data,
-    detectionConfig,
-    siteSettingsVersion,
-    loading,
-    error,
-  ]);
+  }, [intl, detectionConfig, siteSettingsTimestamp, loading, error]);
 
   return sightingFieldSchemas;
 }

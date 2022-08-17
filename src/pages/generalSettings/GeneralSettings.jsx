@@ -65,6 +65,7 @@ const allSettingsFields = [
 
 export default function GeneralSettings() {
   const siteSettings = useSiteSettings();
+  const { dataUpdatedAt: siteSettingsTimestamp } = siteSettings;
 
   const [currentValues, setCurrentValues] = useState(null);
   const [logoPostData, setLogoPostData] = useState(null);
@@ -114,7 +115,7 @@ export default function GeneralSettings() {
       get(siteSettings, ['data', fieldKey, 'value']),
     );
     setCurrentValues(zipObject(allSettingsFields, edmValues));
-  }, [allSettingsFields]);
+  }, [siteSettingsTimestamp, allSettingsFields]);
 
   const loading = assetPostLoading || formPostLoading;
   const error = putSiteSettingsError || settingsAssetPostError;
