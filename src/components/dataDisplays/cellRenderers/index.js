@@ -1,4 +1,5 @@
 import DefaultRenderer from './DefaultRenderer';
+import ActionGroupRenderer from './ActionGroupRenderer';
 import UserRenderer from './UserRenderer';
 import LocationRenderer from './LocationRenderer';
 import SpecifiedTimeRenderer from './SpecifiedTimeRenderer';
@@ -11,6 +12,7 @@ import SocialGroupRoleRenderer from './SocialGroupRoleRenderer';
 
 export const cellRendererTypes = {
   default: 'default',
+  actionGroup: 'actionGroup',
   user: 'user',
   location: 'location',
   specifiedTime: 'specifiedTime',
@@ -24,6 +26,7 @@ export const cellRendererTypes = {
 
 export const cellRenderers = {
   [cellRendererTypes.default]: DefaultRenderer,
+  [cellRendererTypes.actionGroup]: ActionGroupRenderer,
   [cellRendererTypes.user]: UserRenderer,
   [cellRendererTypes.location]: LocationRenderer,
   [cellRendererTypes.specifiedTime]: SpecifiedTimeRenderer,
