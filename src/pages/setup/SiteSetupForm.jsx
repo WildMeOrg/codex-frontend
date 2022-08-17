@@ -27,10 +27,11 @@ const SettingInput = function ({
   return <LabeledInput schema={schema} {...rest} />;
 };
 
-export default function SiteSettings({ primaryButtonId }) {
+export default function SiteSettings({ primaryButtonId })
+{
   const newSiteSettings = useSiteSettings();
   const {
-    mutate: putSiteSettings,
+    mutate: putSiteSetting,
     error,
     setError,
     success,
@@ -41,24 +42,21 @@ export default function SiteSettings({ primaryButtonId }) {
 
   useEffect(() => {
     const edmValues = newSettingFields.map(fieldKey =>
-      get(newSiteSettings, ['data', fieldKey, 'value']),
+      get(newSiteSettings, [fieldKey, 'value']),
     );
     setCurrentValues(zipObject(newSettingFields, edmValues));
-  }, [newSiteSettings, newSettingFields]);
+  }, [newSiteSettings]);
 
   const customFieldCategories = get(
     newSiteSettings,
-    ['data', 'site.custom.customFieldCategories', 'value'],
+    ['site.custom.customFieldCategories', 'value'],
     [],
   );
 
   return (
     <Grid container direction="column" style={{ marginTop: 40 }}>
       {newSettingFields.map(settingKey => {
-        const matchingSetting = get(newSiteSettings, [
-          'data',
-          settingKey,
-        ]);
+        const matchingSetting = get(newSiteSettings, settingKey);
         const valueIsDefined =
           get(currentValues, settingKey, undefined) !== undefined;
 
@@ -178,7 +176,8 @@ export default function SiteSettings({ primaryButtonId }) {
             if (currentValues['site.name'] === '') {
               setError('Site name is required.');
             } else {
-              putSiteSettings({
+              putSiteSetting({
+                property: '',
                 data: {
                   ...currentValues,
                   'site.needsSetup': false,

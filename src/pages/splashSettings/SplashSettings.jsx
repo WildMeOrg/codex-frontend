@@ -5,7 +5,7 @@ import Grid from '@material-ui/core/Grid';
 
 import usePostSettingsAsset from '../../models/site/usePostSettingsAsset';
 import useSiteSettings from '../../models/site/useSiteSettings';
-import usePutSiteSettings from '../../models/site/usePutSiteSettings';
+import usePutSiteSetting from '../../models/site/usePutSiteSetting';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import CustomAlert from '../../components/Alert';
 import MainColumn from '../../components/MainColumn';
@@ -38,12 +38,12 @@ const newSettingFields = [
 export default function SplashSettings() {
   const siteSettings = useSiteSettings();
   const {
-    mutate: putSiteSettings,
+    mutate: putSiteSetting,
     loading: formPostLoading,
     error: putSiteSettingsError,
     success: formPostSuccess,
     clearSuccess: clearFormPostSuccess,
-  } = usePutSiteSettings();
+  } = usePutSiteSetting();
 
   const {
     mutate: postSettingsAsset,
@@ -67,7 +67,7 @@ export default function SplashSettings() {
       get(siteSettings, ['data', fieldKey, 'value']),
     );
     setCurrentValues(zipObject(newSettingFields, edmValues));
-  }, [siteSettings]);
+  }, []);
 
   const customFieldCategories = get(
     siteSettings,
@@ -252,7 +252,10 @@ export default function SplashSettings() {
                   };
                 }
               });
-              putSiteSettings({ data: currentValues });
+              putSiteSetting({
+                  property: '',
+                  data: currentValues,
+              });
               if (splashVideoPostData)
                 postSettingsAsset({ data: splashVideoPostData });
               if (splashImagePostData)

@@ -4,7 +4,7 @@ import { get, reduce, zipObject } from 'lodash-es';
 import Grid from '@material-ui/core/Grid';
 
 import useSiteSettings from '../../models/site/useSiteSettings';
-import usePutSiteSettings from '../../models/site/usePutSiteSettings';
+import usePutSiteSetting from '../../models/site/usePutSiteSetting';
 import usePostSettingsAsset from '../../models/site/usePostSettingsAsset';
 
 import CustomAlert from '../../components/Alert';
@@ -75,14 +75,14 @@ export default function GeneralSettings() {
   const isTwitterEnabled = Boolean(
     get(currentValues, 'intelligent_agent_twitterbot_enabled'),
   );
-
+  
   const {
-    mutate: putSiteSettings,
-    error: putSiteSettingsError,
+    mutate: putSiteSetting,
+    error: putSiteSettingError,
     loading: formPostLoading,
     success: formPostSuccess,
     clearSuccess: setClearPostSuccess,
-  } = usePutSiteSettings();
+  } = usePutSiteSetting();
 
   const {
     mutate: postSettingsAsset,
@@ -114,10 +114,10 @@ export default function GeneralSettings() {
       get(siteSettings, ['data', fieldKey, 'value']),
     );
     setCurrentValues(zipObject(allSettingsFields, edmValues));
-  }, [siteSettings, allSettingsFields]);
+  }, [allSettingsFields]);
 
   const loading = assetPostLoading || formPostLoading;
-  const error = putSiteSettingsError || settingsAssetPostError;
+  const error = putSiteSettingError || settingsAssetPostError;
   const success = formPostSuccess && !error && !loading;
 
   return (
@@ -323,7 +323,7 @@ export default function GeneralSettings() {
                   };
                 }
               });
-              putSiteSettings({ data: currentValues });
+              putSiteSetting({ property: '', data: currentValues });
               if (logoPostData)
                 postSettingsAsset({
                   data: logoPostData,
