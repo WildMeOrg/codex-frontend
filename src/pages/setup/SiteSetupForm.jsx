@@ -27,8 +27,8 @@ const SettingInput = function ({
   return <LabeledInput schema={schema} {...rest} />;
 };
 
-export default function SiteSettings({ primaryButtonId }) {
-  const newSiteSettings = useSiteSettings();
+export default function SiteSetupForm({ primaryButtonId }) {
+  const { data: newSiteSettings } = useSiteSettings();
   const {
     mutate: putSiteSettings,
     error,
@@ -41,10 +41,10 @@ export default function SiteSettings({ primaryButtonId }) {
 
   useEffect(() => {
     const edmValues = newSettingFields.map(fieldKey =>
-      get(newSiteSettings, ['data', fieldKey, 'value']),
+      get(newSiteSettings, [fieldKey, 'value']),
     );
     setCurrentValues(zipObject(newSettingFields, edmValues));
-  }, [newSiteSettings, newSettingFields]);
+  }, [newSiteSettings]);
 
   const customFieldCategories = get(
     newSiteSettings,
@@ -55,10 +55,7 @@ export default function SiteSettings({ primaryButtonId }) {
   return (
     <Grid container direction="column" style={{ marginTop: 40 }}>
       {newSettingFields.map(settingKey => {
-        const matchingSetting = get(newSiteSettings, [
-          'data',
-          settingKey,
-        ]);
+        const matchingSetting = get(newSiteSettings, settingKey);
         const valueIsDefined =
           get(currentValues, settingKey, undefined) !== undefined;
 

@@ -5,7 +5,6 @@ export default function useGetSiteSettings() {
   return useFetch({
     queryKey: queryKeys.settingsSchema,
     url: '/site-settings/data',
-    dataAccessor: result =>
-      result?.data?.data
+    dataAccessor: result => result?.data?.data,
   });
 }
