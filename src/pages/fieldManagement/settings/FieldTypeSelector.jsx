@@ -31,7 +31,6 @@ const fieldTypeCategories = [
       fieldTypes.file,
       fieldTypes.individual,
       fieldTypes.latlong,
-      fieldTypes.relationships,
       fieldTypes.feetmeters,
     ],
   },
