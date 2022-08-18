@@ -8,7 +8,7 @@ export default function usePutSiteSetting() {
       value: data,
     }),
     fetchKeys: [
-      queryKeys.settingsConfig,
+      queryKeys.settingsSchema,
       queryKeys.twitterBotTestResults,
     ],
   });

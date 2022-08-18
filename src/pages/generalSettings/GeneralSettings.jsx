@@ -20,12 +20,6 @@ import SettingsTextInput from '../../components/settings/SettingsTextInput';
 import IntelligentAgentSettings from './IntelligentAgentSettings';
 import { intelligentAgentSchema } from '../../constants/intelligentAgentSchema';
 
-const customFields = {
-  sighting: 'site.custom.customFields.Sighting',
-  encounter: 'site.custom.customFields.Encounter',
-  individual: 'site.custom.customFields.Individual',
-};
-
 const generalSettingsFields = [
   'site.name',
   'site.private',
@@ -298,32 +292,6 @@ export default function GeneralSettings() {
           )}
           <Button
             onClick={() => {
-              /* Prepare custom fields objects to send to backend */
-              Object.values(customFields).forEach(customFieldKey => {
-                const fields = currentValues[customFieldKey];
-                if (!fields) {
-                  currentValues[customFieldKey] = {
-                    definitions: [],
-                  };
-                } else {
-                  const newFields = get(
-                    fields,
-                    'definitions',
-                    [],
-                  ).map(field => {
-                    const choices = get(field, ['schema', 'choices']);
-                    if (!choices) return field;
-                    return {
-                      ...field,
-                      options: choices.map(choice => choice.label),
-                    };
-                  });
-
-                  currentValues[customFieldKey] = {
-                    definitions: newFields,
-                  };
-                }
-              });
               putSiteSettings({ data: currentValues });
               if (logoPostData)
                 postSettingsAsset({

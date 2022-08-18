@@ -5,6 +5,6 @@ export default function usePostSettingsAsset() {
   return usePost({
     url: '/site-settings/file/',
     deriveData: ({ data }) => data,
-    fetchKeys: [queryKeys.settingsConfig],
+    fetchKeys: [queryKeys.settingsSchema],
   });
 }

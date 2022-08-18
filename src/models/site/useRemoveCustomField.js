@@ -37,7 +37,7 @@ export default function useRemoveCustomField() {
       setNeedsForce(false);
 
       if (successful) {
-        queryClient.invalidateQueries(queryKeys.settingsConfig);
+        queryClient.invalidateQueries(queryKeys.settingsSchema);
         setLoading(false);
         setSuccess(true);
         setError(null);

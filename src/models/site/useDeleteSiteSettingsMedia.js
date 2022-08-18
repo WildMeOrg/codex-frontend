@@ -25,7 +25,7 @@ export default function useDeleteSiteSettingsMedia() {
       const successful = statusResponse === 204;
       setLoading(false);
       if (successful) {
-        queryClient.invalidateQueries(queryKeys.settingsConfig);
+        queryClient.invalidateQueries(queryKeys.settingsSchema);
         setSuccess(true);
         setError(null);
         okStatus = true;

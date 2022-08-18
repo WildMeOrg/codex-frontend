@@ -17,12 +17,6 @@ import Text from '../../components/Text';
 import SettingsFileUpload from '../../components/settings/SettingsFileUpload';
 import SettingsTextInput from '../../components/settings/SettingsTextInput';
 
-const customFields = {
-  sighting: 'site.custom.customFields.Sighting',
-  encounter: 'site.custom.customFields.Encounter',
-  individual: 'site.custom.customFields.Individual',
-};
-
 const newSettingFields = [
   'site.general.customCardLine1',
   'site.general.customCardLine2',
@@ -228,32 +222,6 @@ export default function SplashSettings() {
 
           <Button
             onClick={() => {
-              /* Prepare custom fields objects to send to backend */
-              Object.values(customFields).forEach(customFieldKey => {
-                const fields = currentValues[customFieldKey];
-                if (!fields) {
-                  currentValues[customFieldKey] = {
-                    definitions: [],
-                  };
-                } else {
-                  const newFields = get(
-                    fields,
-                    'definitions',
-                    [],
-                  ).map(field => {
-                    const choices = get(field, ['schema', 'choices']);
-                    if (!choices) return field;
-                    return {
-                      ...field,
-                      options: choices.map(choice => choice.label),
-                    };
-                  });
-
-                  currentValues[customFieldKey] = {
-                    definitions: newFields,
-                  };
-                }
-              });
               putSiteSettings({ data: currentValues });
               if (splashVideoPostData)
                 postSettingsAsset({ data: splashVideoPostData });
