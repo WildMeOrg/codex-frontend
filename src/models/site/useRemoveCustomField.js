@@ -27,7 +27,7 @@ export default function useRemoveCustomField() {
     try {
       setLoading(true);
       const patchResponse = await axios({
-        url: `${__houston_url__}/api/v1/site-settings/main`,
+        url: `${__houston_url__}/api/v1/site-settings/data`,
         withCredentials: true,
         method: 'patch',
         data: [operation],
