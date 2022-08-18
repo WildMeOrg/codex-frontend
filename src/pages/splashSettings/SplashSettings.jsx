@@ -3,8 +3,8 @@ import { get, zipObject } from 'lodash-es';
 
 import Grid from '@material-ui/core/Grid';
 
-import usePostSettingsAsset from '../../models/site/usePostSettingsAsset';
 import useSiteSettings from '../../models/site/useSiteSettings';
+import usePutSiteSetting from '../../models/site/usePutSiteSetting';
 import usePutSiteSettings from '../../models/site/usePutSiteSettings';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import CustomAlert from '../../components/Alert';
@@ -34,19 +34,19 @@ export default function SplashSettings() {
   const { dataUpdatedAt: siteSettingsTimestamp } = siteSettings;
 
   const {
+    mutate: putSiteSetting,
+    error: putSiteSettingError,
+    loading: putSiteSettingLoading,
+    clearSuccess: clearPutSiteSettingSuccess,
+  } = usePutSiteSetting();
+
+  const {
     mutate: putSiteSettings,
     loading: formPostLoading,
     error: putSiteSettingsError,
     success: formPostSuccess,
     clearSuccess: clearFormPostSuccess,
   } = usePutSiteSettings();
-
-  const {
-    mutate: postSettingsAsset,
-    error: settingsAssetPostError,
-    loading: assetPostLoading,
-    clearSuccess: clearAssetPostSuccess,
-  } = usePostSettingsAsset();
 
   useDocumentTitle('FRONT_PAGE');
 
@@ -71,8 +71,8 @@ export default function SplashSettings() {
     'value',
   ]);
 
-  const loading = assetPostLoading || formPostLoading;
-  const error = putSiteSettingsError || settingsAssetPostError;
+  const loading = putSiteSettingLoading || formPostLoading;
+  const error = putSiteSettingsError || putSiteSettingError;
   const success = formPostSuccess && !error && !loading;
 
   return (
@@ -202,7 +202,7 @@ export default function SplashSettings() {
             <CustomAlert
               onClose={() => {
                 clearFormPostSuccess();
-                clearAssetPostSuccess();
+                clearPutSiteSettingSuccess();
               }}
               severity="success"
               titleId="SUCCESS"
@@ -224,11 +224,20 @@ export default function SplashSettings() {
             onClick={() => {
               putSiteSettings({ data: currentValues });
               if (splashVideoPostData)
-                postSettingsAsset({ data: splashVideoPostData });
+                putSiteSetting({
+                  property: 'splashVideo',
+                  data: splashVideoPostData,
+                });
               if (splashImagePostData)
-                postSettingsAsset({ data: splashImagePostData });
+                putSiteSetting({
+                  property: 'splashImage',
+                  data: splashImagePostData,
+                });
               if (customCardImagePostData)
-                postSettingsAsset({ data: customCardImagePostData });
+                putSiteSetting({
+                  property: 'customCardImage',
+                  data: customCardImagePostData,
+                });
             }}
             style={{ marginTop: 12 }}
             display="primary"

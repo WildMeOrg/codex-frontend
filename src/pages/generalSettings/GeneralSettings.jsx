@@ -4,8 +4,8 @@ import { get, reduce, zipObject } from 'lodash-es';
 import Grid from '@material-ui/core/Grid';
 
 import useSiteSettings from '../../models/site/useSiteSettings';
+import usePutSiteSetting from '../../models/site/usePutSiteSetting';
 import usePutSiteSettings from '../../models/site/usePutSiteSettings';
-import usePostSettingsAsset from '../../models/site/usePostSettingsAsset';
 
 import CustomAlert from '../../components/Alert';
 import Button from '../../components/Button';
@@ -72,19 +72,19 @@ export default function GeneralSettings() {
   );
 
   const {
-    mutate: putSiteSettings,
-    error: putSiteSettingsError,
-    loading: formPostLoading,
-    success: formPostSuccess,
-    clearSuccess: setClearPostSuccess,
-  } = usePutSiteSettings();
+    mutate: putSiteSetting,
+    error: putSiteSettingError,
+    loading: putSiteSettingLoading,
+    clearSuccess: clearPutSiteSettingSuccess,
+  } = usePutSiteSetting();
 
   const {
-    mutate: postSettingsAsset,
-    loading: assetPostLoading,
-    error: settingsAssetPostError,
-    clearSuccess: setClearAssetPostSuccess,
-  } = usePostSettingsAsset();
+    mutate: putSiteSettings,
+    error: putSiteSettingsError,
+    loading: putSiteSettingsLoading,
+    success: putSiteSettingsSuccess,
+    clearSuccess: clearPostSuccess,
+  } = usePutSiteSettings();
 
   const {
     data: twitterTestResults,
@@ -111,9 +111,9 @@ export default function GeneralSettings() {
     setCurrentValues(zipObject(allSettingsFields, edmValues));
   }, [siteSettingsTimestamp, allSettingsFields]);
 
-  const loading = assetPostLoading || formPostLoading;
-  const error = putSiteSettingsError || settingsAssetPostError;
-  const success = formPostSuccess && !error && !loading;
+  const loading = putSiteSettingLoading || putSiteSettingsLoading;
+  const error = putSiteSettingsError || putSiteSettingError;
+  const success = putSiteSettingsSuccess && !error && !loading;
 
   return (
     <MainColumn>
@@ -270,8 +270,8 @@ export default function GeneralSettings() {
           {success && (
             <CustomAlert
               onClose={() => {
-                setClearPostSuccess();
-                setClearAssetPostSuccess();
+                clearPutSiteSettingSuccess();
+                clearPostSuccess();
               }}
               severity="success"
               titleId="SUCCESS"
@@ -294,7 +294,8 @@ export default function GeneralSettings() {
             onClick={() => {
               putSiteSettings({ data: currentValues });
               if (logoPostData)
-                postSettingsAsset({
+                putSiteSetting({
+                  property: 'logo',
                   data: logoPostData,
                 });
             }}

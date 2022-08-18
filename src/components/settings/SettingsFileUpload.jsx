@@ -110,7 +110,7 @@ export default function SettingsFileUpload({
       </div>
       <div
         style={{
-          marginTop: 24,
+          marginTop: 32,
           marginLeft: 80,
           width: 400,
           minWidth: 400,
