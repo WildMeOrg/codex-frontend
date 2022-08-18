@@ -56,7 +56,6 @@ export default function SocialGroups() {
               variant="delete"
               onClick={() => setPendingDeleteGuid(guid)}
             />
-            ,
           </>
         ),
       },

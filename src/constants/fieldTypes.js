@@ -6,7 +6,6 @@ const fieldTypes = {
   float: 'float',
   feetmeters: 'feetmeters', // float represents meters, but GUI supports feet
   individual: 'individual', // string (individual ID)
-  relationships: 'relationships', // { targetIndividualId: string, direction: enum, type: enum, id: int }
   integer: 'integer',
   file: 'file',
   latlong: 'latlong', // [float, float] defines [lat, lng]
@@ -84,22 +83,6 @@ export const fieldTypeChoices = [
     defaultValue: null,
     backendType: backendTypes.individual,
     backendMultiple: false,
-  },
-  {
-    labelId: 'RELATIONSHIPS_SELECTOR',
-    value: fieldTypes.relationships,
-    defaultValue: [],
-    backendType: backendTypes.string,
-    backendMultiple: true,
-    configuration: [
-      {
-        labelId: 'RELATIONSHIP_OPTIONS',
-        descriptionId: 'RELATIONSHIP_OPTIONS_HELPER_TEXT',
-        value: 'choices',
-        type: fieldTypes.optioneditor,
-        defaultValue: [],
-      },
-    ],
   },
   {
     labelId: 'INTEGER_LABEL',
@@ -221,7 +204,6 @@ export const customFieldCategories = [
       fieldTypes.file,
       fieldTypes.individual,
       fieldTypes.latlong,
-      fieldTypes.relationships,
       fieldTypes.feetmeters,
     ],
   },
