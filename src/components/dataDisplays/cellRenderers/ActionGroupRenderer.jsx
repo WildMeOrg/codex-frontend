@@ -19,10 +19,14 @@ export default function ActionGroupRenderer({
   datum,
   onView,
   viewHref,
+  viewItemProps = {},
   onEdit,
   editHref,
+  editItemProps = {},
   onDelete,
   deleteHref,
+  deleteItemProps = {},
+  children,
 }) {
   const showView = viewHref || onView;
   const showEdit = editHref || onEdit;
@@ -53,6 +57,7 @@ export default function ActionGroupRenderer({
         <ActionIcon
           variant="view"
           labelId="VIEW"
+          {...viewItemProps}
           href={finalViewHref}
           onClick={handleView}
         />
@@ -61,6 +66,7 @@ export default function ActionGroupRenderer({
         <ActionIcon
           variant="edit"
           labelId="EDIT"
+          {...editItemProps}
           href={finalEditHref}
           onClick={handleEdit}
         />
@@ -69,10 +75,12 @@ export default function ActionGroupRenderer({
         <ActionIcon
           variant="delete"
           labelId="DELETE"
+          {...deleteItemProps}
           href={finalDeleteHref}
           onClick={handleDelete}
         />
       )}
+      {children}
     </div>
   );
 }
