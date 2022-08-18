@@ -44,18 +44,20 @@ export default function SocialGroups() {
       name: 'actions',
       labelId: 'ACTIONS',
       options: {
-        customBodyRender: (_, { guid }) => <>
-          <ActionIcon
-            key="view"
-            variant="view"
-            href={`/social-groups/${guid}`}
-          />
-          <ActionIcon
-            key="delete"
-            variant="delete"
-            onClick={() => setPendingDeleteGuid(guid)}
-          />,
-        </>,
+        customBodyRender: (_, { guid }) => (
+          <>
+            <ActionIcon
+              key="view"
+              variant="view"
+              href={`/social-groups/${guid}`}
+            />
+            <ActionIcon
+              key="delete"
+              variant="delete"
+              onClick={() => setPendingDeleteGuid(guid)}
+            />
+          </>
+        ),
       },
     },
   ];
