@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { get } from 'lodash-es';
 
@@ -62,22 +62,23 @@ export default function CustomFieldTable({
   );
   const fieldTypeName = fieldTypeDefinition.name;
 
-  const onViewCustomField = useMemo(
-    () => (_, field) => {
+  const onViewCustomField = useCallback(
+    (_, field) =>
+    {
       setPreviewInitialValue(field.defaultValue);
       setPreviewField(field);
     },
     [],
   );
 
-  const deriveEditHref = useMemo(
-    () => (_, field) =>
+  const deriveEditHref = useCallback(
+    (_, field) =>
       `/settings/fields/save-custom-field/${fieldTypeName}/${field.id}`,
     [fieldTypeName],
   );
 
-  const onDeleteCustomField = useMemo(
-    () => (_, field) => setDeleteField(field),
+  const onDeleteCustomField = useCallback(
+    (_, field) => setDeleteField(field),
     [],
   );
 
