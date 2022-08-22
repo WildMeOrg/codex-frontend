@@ -62,14 +62,10 @@ export default function CustomFieldTable({
   );
   const fieldTypeName = fieldTypeDefinition.name;
 
-  const onViewCustomField = useCallback(
-    (_, field) =>
-    {
-      setPreviewInitialValue(field.defaultValue);
-      setPreviewField(field);
-    },
-    [],
-  );
+  const onViewCustomField = useCallback((_, field) => {
+    setPreviewInitialValue(field.defaultValue);
+    setPreviewField(field);
+  }, []);
 
   const deriveEditHref = useCallback(
     (_, field) =>

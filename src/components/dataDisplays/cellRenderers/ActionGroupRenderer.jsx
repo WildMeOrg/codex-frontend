@@ -48,7 +48,16 @@ export default function ActionGroupRenderer({
       finalEditHref: convertHref(editHref, value, datum),
       finalDeleteHref: convertHref(deleteHref, value, datum),
     }),
-    [value, datum, onView, onEdit, onDelete, viewHref, editHref, deleteHref],
+    [
+      value,
+      datum,
+      onView,
+      onEdit,
+      onDelete,
+      viewHref,
+      editHref,
+      deleteHref,
+    ],
   );
 
   return (
