@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { get } from 'lodash-es';
 
@@ -6,8 +6,8 @@ import Grid from '@material-ui/core/Grid';
 import Tooltip from '@material-ui/core/Tooltip';
 import AddIcon from '@material-ui/icons/Add';
 
+import { cellRendererTypes } from '../../../components/dataDisplays/cellRenderers';
 import useRemoveCustomField from '../../../models/site/useRemoveCustomField';
-import ActionIcon from '../../../components/ActionIcon';
 import ButtonLink from '../../../components/ButtonLink';
 import ConfirmDelete from '../../../components/ConfirmDelete';
 import Text from '../../../components/Text';
@@ -62,6 +62,22 @@ export default function CustomFieldTable({
   );
   const fieldTypeName = fieldTypeDefinition.name;
 
+  const onViewCustomField = useCallback((_, field) => {
+    setPreviewInitialValue(field.defaultValue);
+    setPreviewField(field);
+  }, []);
+
+  const deriveEditHref = useCallback(
+    (_, field) =>
+      `/settings/fields/save-custom-field/${fieldTypeName}/${field.id}`,
+    [fieldTypeName],
+  );
+
+  const onDeleteCustomField = useCallback(
+    (_, field) => setDeleteField(field),
+    [],
+  );
+
   const tableColumns = useMemo(
     () => [
       {
@@ -89,30 +105,16 @@ export default function CustomFieldTable({
         name: 'actions',
         labelId: 'ACTIONS',
         options: {
-          customBodyRender: (_, field) => (
-            <div>
-              <ActionIcon
-                variant="view"
-                labelId="PREVIEW"
-                onClick={() => {
-                  setPreviewInitialValue(field.defaultValue);
-                  setPreviewField(field);
-                }}
-              />
-              <ActionIcon
-                variant="edit"
-                href={`/settings/fields/save-custom-field/${fieldTypeName}/${field.id}`}
-              />
-              <ActionIcon
-                variant="delete"
-                onClick={() => setDeleteField(field)}
-              />
-            </div>
-          ),
+          cellRenderer: cellRendererTypes.actionGroup,
+          cellRendererProps: {
+            onView: onViewCustomField,
+            editHref: deriveEditHref,
+            onDelete: onDeleteCustomField,
+          },
         },
       },
     ],
-    [intl, fieldTypeName],
+    [onViewCustomField, deriveEditHref, onDeleteCustomField],
   );
 
   const onCloseConfirmDelete = () => {
