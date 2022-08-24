@@ -2,8 +2,6 @@ import React from 'react';
 import { useIntl } from 'react-intl';
 import { get } from 'lodash-es';
 
-import Grid from '@material-ui/core/Grid';
-
 import CustomAlert from '../../components/Alert';
 import Text from '../../components/Text';
 import DataDisplay from '../../components/dataDisplays/DataDisplay';
@@ -188,8 +186,8 @@ export default function UserManagersCollaborationEditTable({
       },
     },
   ];
-  return [
-    <Grid item>
+  return (
+    <>
       <DataDisplay
         idKey="guid"
         loading={isLoading}
@@ -252,6 +250,6 @@ export default function UserManagersCollaborationEditTable({
           onClose={clearRestoreSuccess}
         />
       )}
-    </Grid>,
-  ];
+    </>
+  );
 }
