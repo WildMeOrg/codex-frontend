@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { get } from 'lodash-es';
 
 import CardContainer from '../../components/cards/CardContainer';
@@ -20,8 +20,12 @@ export default function OverviewContent({
     field =>
       !field.hideOnMetadataCard && Boolean(get(field, 'value')),
   );
-  const editableFields = metadata.filter(
-    field => field.editable && !field.hideOnMetadataCard,
+  const editableFields = useMemo(
+    () =>
+      metadata.filter(
+        field => field.editable && !field.hideOnMetadataCard,
+      ),
+    [metadata],
   );
 
   const gpsField = viewableMetadata.find(
