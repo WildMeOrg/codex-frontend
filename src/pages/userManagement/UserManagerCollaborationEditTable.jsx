@@ -31,20 +31,8 @@ export default function UserManagersCollaborationEditTable({
     clearError: onClearRevokeError,
   } = usePatchCollaboration();
 
-  const {
-    mutate: restoreCollab,
-    success: restoreSuccess,
-    loading: restoreLoading,
-    clearSuccess: clearRestoreSuccess,
-    error: restoreError,
-    clearError: onClearRestoreError,
-  } = usePatchCollaboration();
-
   const isLoading =
-    userDataLoading ||
-    revokeLoading ||
-    restoreLoading ||
-    collaborationLoading;
+    userDataLoading || revokeLoading || collaborationLoading;
 
   function processRevoke(collaboration) {
     const operations = [
@@ -58,23 +46,6 @@ export default function UserManagersCollaborationEditTable({
       },
     ];
     revokeCollab({
-      collaborationGuid: collaboration?.guid,
-      operations,
-    });
-  }
-
-  function processRestore(collaboration) {
-    const operations = [
-      {
-        op: 'replace',
-        path: '/managed_view_permission',
-        value: {
-          user_guid: get(currentUserData, 'guid'),
-          permission: 'approved',
-        },
-      },
-    ];
-    restoreCollab({
       collaborationGuid: collaboration?.guid,
       operations,
     });
@@ -163,21 +134,12 @@ export default function UserManagersCollaborationEditTable({
               revokedPermission ||
             get(collaboration, 'viewStatusTwo') === revokedPermission;
           return (
-            <div
-              style={{ display: 'flex', justifyContent: 'flex-end' }}
-            >
-              {isRevoked ? (
-                <ActionIcon
-                  variant="restore"
-                  onClick={() => processRestore(collaboration)}
-                />
-              ) : (
-                <ActionIcon
-                  variant="revoke"
-                  onClick={() => processRevoke(collaboration)}
-                />
-              )}
-            </div>
+            !isRevoked && (
+              <ActionIcon
+                variant="revoke"
+                onClick={() => processRevoke(collaboration)}
+              />
+            )
           );
         },
       },
@@ -217,34 +179,12 @@ export default function UserManagersCollaborationEditTable({
             })}
         </CustomAlert>
       )}
-      {restoreError && (
-        <CustomAlert
-          style={{ marginTop: 16 }}
-          severity="error"
-          titleId="COLLABORATION_RESTORE_ERROR"
-          onClose={onClearRestoreError}
-        >
-          {restoreError +
-            '. ' +
-            intl.formatMessage({
-              id: 'COLLAB_RESTORE_ERROR_SUPPLEMENTAL',
-            })}
-        </CustomAlert>
-      )}
       {revokeSuccess && (
         <CustomAlert
           style={{ marginTop: 16 }}
           severity="success"
           titleId="COLLABORATION_REVOKE_SUCCESS"
           onClose={clearRevokeSuccess}
-        />
-      )}
-      {restoreSuccess && (
-        <CustomAlert
-          style={{ marginTop: 16 }}
-          severity="success"
-          titleId="COLLABORATION_RESTORE_SUCCESS"
-          onClose={clearRestoreSuccess}
         />
       )}
     </>
