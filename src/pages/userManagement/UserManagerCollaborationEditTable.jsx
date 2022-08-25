@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useIntl } from 'react-intl';
 import { get } from 'lodash-es';
 
 import { collaborationLabels } from './constants/collaboration';
 import { formatUserMessage } from './utils';
+import EditCollaborationDialog from './components/EditCollaborationDialog';
 import CustomAlert from '../../components/Alert';
 import Text from '../../components/Text';
 import DataDisplay from '../../components/dataDisplays/DataDisplay';
 import ActionIcon from '../../components/ActionIcon';
+import { cellRenderers } from '../../components/dataDisplays/cellRenderers';
 import usePatchCollaboration from '../../models/collaboration/usePatchCollaboration';
 import {
   getRequestedState,
@@ -15,13 +17,20 @@ import {
   summaryStates,
 } from '../../models/collaboration/model';
 
-function Actions({ datum: collaborationRow, handleRevoke }) {
-  return collaborationRow?.isRevocable ? (
-    <ActionIcon
-      variant="revoke"
-      onClick={() => handleRevoke(collaborationRow)}
-    />
-  ) : null;
+const ActionGroupRenderer = cellRenderers.actionGroup;
+
+function Actions({ onRevoke, ...actionGroupRendererProps }) {
+  const collaborationRow = actionGroupRendererProps.datum;
+
+  return (
+    <ActionGroupRenderer {...actionGroupRendererProps}>
+      <ActionIcon
+        variant="revoke"
+        disabled={!collaborationRow.isRevocable}
+        onClick={() => onRevoke(collaborationRow)}
+      />
+    </ActionGroupRenderer>
+  );
 }
 
 export default function UserManagersCollaborationEditTable({
@@ -30,6 +39,12 @@ export default function UserManagersCollaborationEditTable({
   collaborationError,
 }) {
   const intl = useIntl();
+  const [activeCollaborationGuid, setActiveCollaborationGuid] =
+    useState(null);
+
+  const activeCollaboration = inputData?.find(
+    collaboration => collaboration?.guid === activeCollaborationGuid,
+  );
 
   const {
     mutate: revokeCollab,
@@ -59,6 +74,10 @@ export default function UserManagersCollaborationEditTable({
     }));
 
     revokeCollab({ collaborationGuid, operations });
+  }
+
+  function handleEditCollaboration(_, collaborationRow) {
+    setActiveCollaborationGuid(collaborationRow?.guid);
   }
 
   function tranformDataForCollabTable(originalData) {
@@ -130,13 +149,19 @@ export default function UserManagersCollaborationEditTable({
         displayInFilter: false,
         customBodyComponent: Actions,
         cellRendererProps: {
-          handleRevoke: processRevoke,
+          onRevoke: processRevoke,
+          onEdit: handleEditCollaboration,
         },
       },
     },
   ];
   return (
     <>
+      <EditCollaborationDialog
+        open={Boolean(activeCollaborationGuid)}
+        onClose={() => setActiveCollaborationGuid(null)}
+        collaboration={activeCollaboration}
+      />
       <DataDisplay
         idKey="guid"
         loading={isLoading}

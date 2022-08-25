@@ -1,4 +1,4 @@
-const states = {
+export const states = {
   denied: 'denied',
   approved: 'approved',
   pending: 'pending',
@@ -45,11 +45,11 @@ function isRevoked(collaboration, stateField) {
   );
 }
 
-function isViewApproved(collaboration) {
+export function isViewApproved(collaboration) {
   return isApproved(collaboration, 'viewState');
 }
 
-function isEditApproved(collaboration) {
+export function isEditApproved(collaboration) {
   return isApproved(collaboration, 'editState');
 }
 
@@ -61,7 +61,7 @@ function isEditPending(collaboration) {
   return isPending(collaboration, 'editState');
 }
 
-function isViewRevoked(collaboration) {
+export function isViewRevoked(collaboration) {
   return isRevoked(collaboration, 'viewState');
 }
 

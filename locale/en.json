@@ -1016,6 +1016,7 @@
   "USER_MANAGEMENT_COLLABORATIONS": "Collaborations",
   "USER_ONE": "User 1",
   "USER_TWO": "User 2",
+  "USER_X": "User {userNumber, number}",
   "COLLABORATION_CURRENT_ACCESS": "Current access",
   "COLLABORATION_REQUESTED_ACCESS": "Requested access",
   "COLLABORATION_STATUS": "Status",
@@ -1188,5 +1189,8 @@
   "ERROR_FETCHING_IMAGE": "Error fetching image",
   "COLLABORATION_STATE_VIEW": "View",
   "COLLABORATION_STATE_EDIT": "Edit",
-  "COLLABORATION_STATE_REVOKED": "Revoked"
+  "COLLABORATION_STATE_REVOKED": "Revoked",
+  "EDIT_COLLABORATION": "Edit collaboration",
+  "EDIT_COLLABORATION_CURRENT_STATE_LABEL": "Current state",
+  "EDIT_COLLABORATION_CURRENT_STATE_DESCRIPTION": "Changing the state will cancel any pending requests."
 }
