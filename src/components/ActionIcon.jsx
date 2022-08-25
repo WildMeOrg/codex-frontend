@@ -5,6 +5,7 @@ import IconButton from '@material-ui/core/IconButton';
 import EditIcon from '@material-ui/icons/Edit';
 import ViewIcon from '@material-ui/icons/Launch';
 import DeleteIcon from '@material-ui/icons/Delete';
+import RemoveCircleIcon from '@material-ui/icons/RemoveCircle';
 import DownloadIcon from '@material-ui/icons/GetApp';
 import CopyIcon from '@material-ui/icons/FileCopy';
 
@@ -21,7 +22,7 @@ const variantMap = {
   },
   revoke: {
     labelId: 'MUTUAL_REVOKE',
-    component: DeleteIcon,
+    component: RemoveCircleIcon,
   },
   delete: {
     labelId: 'DELETE',
