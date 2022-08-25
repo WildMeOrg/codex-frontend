@@ -8,7 +8,6 @@ import Text from '../../components/Text';
 import DataDisplay from '../../components/dataDisplays/DataDisplay';
 import ActionIcon from '../../components/ActionIcon';
 import usePatchCollaboration from '../../models/collaboration/usePatchCollaboration';
-import useGetMe from '../../models/users/useGetMe';
 
 const revokedPermission = 'revoked';
 
@@ -32,9 +31,6 @@ export default function UserManagersCollaborationEditTable({
 }) {
   const intl = useIntl();
 
-  const { data: currentUserData, loading: userDataLoading } =
-    useGetMe();
-
   const {
     mutate: revokeCollab,
     success: revokeSuccess,
@@ -44,24 +40,25 @@ export default function UserManagersCollaborationEditTable({
     clearError: onClearRevokeError,
   } = usePatchCollaboration();
 
-  const isLoading =
-    userDataLoading || revokeLoading || collaborationLoading;
+  const isLoading = revokeLoading || collaborationLoading;
 
-  function processRevoke(collaboration) {
-    const operations = [
-      {
-        op: 'replace',
-        path: '/managed_view_permission',
-        value: {
-          user_guid: get(currentUserData, 'guid'),
-          permission: 'revoked',
-        },
+  function processRevoke(collaborationRow) {
+    const {
+      guid: collaborationGuid,
+      userOneGuid,
+      userTwoGuid,
+    } = collaborationRow || {};
+    
+    const operations = [userOneGuid, userTwoGuid].map(userGuid => ({
+      op: 'replace',
+      path: '/managed_view_permission',
+      value: {
+        user_guid: userGuid,
+        permission: 'revoked',
       },
-    ];
-    revokeCollab({
-      collaborationGuid: collaboration?.guid,
-      operations,
-    });
+    }));
+
+    revokeCollab({ collaborationGuid, operations });
   }
 
   function tranformDataForCollabTable(originalData) {
