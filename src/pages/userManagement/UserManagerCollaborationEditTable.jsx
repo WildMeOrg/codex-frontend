@@ -171,13 +171,9 @@ export default function UserManagersCollaborationEditTable({
           severity="error"
           titleId="COLLABORATION_REVOKE_ERROR"
           onClose={onClearRevokeError}
-        >
-          {revokeError +
-            '. ' +
-            intl.formatMessage({
-              id: 'COLLAB_REVOKE_ERROR_SUPPLEMENTAL',
-            })}
-        </CustomAlert>
+          descriptionId="COLLAB_REVOKE_ERROR_SUPPLEMENTAL"
+          descriptionValues={{ error: revokeError }}
+        />
       )}
       {revokeSuccess && (
         <CustomAlert

@@ -1028,7 +1028,7 @@
   "COLLABORATION_REVOKE_SUCCESS": "Successfully revoked the collaboration",
   "UNKNOWN_ERROR": "Unknown error",
   "REVOKED_COLLAB_EXISTS": "Could not create collaboration - a revoked collaboration between those users already exists",
-  "COLLAB_REVOKE_ERROR_SUPPLEMENTAL": "Note that collaborations cannot be revoked unless they are mutually approved.",
+  "COLLAB_REVOKE_ERROR_SUPPLEMENTAL": "{error}. Note that collaborations cannot be revoked unless they are mutually approved.",
   "PENDING_SIGHTINGS": "Pending Sightings",
   "UNKNOWN_DATE": "Unknown date",
   "UNKNOWN_ENCOUNTER_DATE": "unknown encounter date",
