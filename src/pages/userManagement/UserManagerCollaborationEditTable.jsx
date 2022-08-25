@@ -2,6 +2,7 @@ import React from 'react';
 import { useIntl } from 'react-intl';
 import { get } from 'lodash-es';
 
+import { formatUserMessage } from './utils';
 import CustomAlert from '../../components/Alert';
 import Text from '../../components/Text';
 import DataDisplay from '../../components/dataDisplays/DataDisplay';
@@ -91,9 +92,15 @@ export default function UserManagersCollaborationEditTable({
       // Note: the collaboration API call returned a members OBJECT instead of array of objects, which made some tranformation gymnastics here necessary
       return {
         guid: get(collaboration, 'guid'),
-        userOne: get(member1, 'full_name', get(member1, 'email')),
+        userOne: formatUserMessage(
+          { fullName: member1?.full_name, email: member1?.email },
+          intl,
+        ),
         userOneGuid: get(member1, 'guid'),
-        userTwo: get(member2, 'full_name', get(member2, 'email')),
+        userTwo: formatUserMessage(
+          { fullName: member2?.full_name, email: member2?.email },
+          intl,
+        ),
         userTwoGuid: get(member2, 'guid'),
         viewStatusOne: get(member1, 'viewState'),
         viewStatusTwo: get(member2, 'viewState'),
@@ -114,11 +121,6 @@ export default function UserManagersCollaborationEditTable({
       name: 'userOne',
       align: 'left',
       labelId: 'USER_ONE',
-      options: {
-        customBodyRender: userOne => (
-          <Text variant="body2">{userOne}</Text>
-        ),
-      },
     },
     {
       name: 'viewStatusOne',
@@ -136,11 +138,6 @@ export default function UserManagersCollaborationEditTable({
       name: 'userTwo',
       align: 'left',
       labelId: 'USER_TWO',
-      options: {
-        customBodyRender: userTwo => (
-          <Text variant="body2">{userTwo}</Text>
-        ),
-      },
     },
     {
       name: 'viewStatusTwo',
