@@ -2,26 +2,26 @@ import React from 'react';
 import { useIntl } from 'react-intl';
 import { get } from 'lodash-es';
 
+import { collaborationLabels } from './constants/collaboration';
 import { formatUserMessage } from './utils';
 import CustomAlert from '../../components/Alert';
 import Text from '../../components/Text';
 import DataDisplay from '../../components/dataDisplays/DataDisplay';
 import ActionIcon from '../../components/ActionIcon';
 import usePatchCollaboration from '../../models/collaboration/usePatchCollaboration';
-
-const revokedPermission = 'revoked';
+import {
+  getRequestedState,
+  getSummaryState,
+  summaryStates,
+} from '../../models/collaboration/model';
 
 function Actions({ datum: collaborationRow, handleRevoke }) {
-  const isRevoked =
-    get(collaborationRow, 'viewStatusOne') === revokedPermission ||
-    get(collaborationRow, 'viewStatusTwo') === revokedPermission;
-
-  return isRevoked ? null : (
+  return collaborationRow?.isRevocable ? (
     <ActionIcon
       variant="revoke"
       onClick={() => handleRevoke(collaborationRow)}
     />
-  );
+  ) : null;
 }
 
 export default function UserManagersCollaborationEditTable({
@@ -48,7 +48,7 @@ export default function UserManagersCollaborationEditTable({
       userOneGuid,
       userTwoGuid,
     } = collaborationRow || {};
-    
+
     const operations = [userOneGuid, userTwoGuid].map(userGuid => ({
       op: 'replace',
       path: '/managed_view_permission',
@@ -71,6 +71,11 @@ export default function UserManagersCollaborationEditTable({
       const member2 = get(collaborators, 1, {});
 
       // Note: the collaboration API call returned a members OBJECT instead of array of objects, which made some tranformation gymnastics here necessary
+      const currentAccess = getSummaryState(collaboration);
+      const currentAccessLabel = collaborationLabels[currentAccess];
+      const requestedAccessLabel =
+        collaborationLabels[getRequestedState(collaboration)];
+
       return {
         guid: get(collaboration, 'guid'),
         userOne: formatUserMessage(
@@ -83,17 +88,16 @@ export default function UserManagersCollaborationEditTable({
           intl,
         ),
         userTwoGuid: get(member2, 'guid'),
-        viewStatusOne: get(member1, 'viewState'),
-        viewStatusTwo: get(member2, 'viewState'),
+        currentAccess: currentAccessLabel
+          ? intl.formatMessage({ id: currentAccessLabel })
+          : '',
+        requestedAccess: requestedAccessLabel
+          ? intl.formatMessage({ id: requestedAccessLabel })
+          : '',
+        isRevocable: Boolean(
+          currentAccess && currentAccess !== summaryStates.revoked,
+        ), // Only collaborations that are mutually approved can be mutually revoked.
       };
-      // editStatusOne: get(
-      //   member1,
-      //   'editState',
-      // ),
-      // editStatusTwo: get(
-      //   member2,
-      //   'editState',
-      // ),
     });
   }
   const tableFriendlyData = tranformDataForCollabTable(inputData);
@@ -104,34 +108,20 @@ export default function UserManagersCollaborationEditTable({
       labelId: 'USER_ONE',
     },
     {
-      name: 'viewStatusOne',
-      align: 'left',
-      labelId: 'USER_ONE_VIEW_STATUS',
-      options: {
-        customBodyRender: viewStatusOne => (
-          <Text variant="body2">{viewStatusOne}</Text>
-        ),
-      },
-    }, //     ), //       <Text variant="body2">{editStatusOne}</Text> //     customBodyRender: editStatusOne => ( //   options: { //   label: intl.formatMessage({ id: 'USER_ONE_EDIT_STATUS' }), //   name: 'editStatusOne', // {
-    //   },
-    // },
-    {
       name: 'userTwo',
       align: 'left',
       labelId: 'USER_TWO',
     },
     {
-      name: 'viewStatusTwo',
+      name: 'currentAccess',
       align: 'left',
-      labelId: 'USER_TWO_VIEW_STATUS',
-      options: {
-        customBodyRender: viewStatusTwo => (
-          <Text variant="body2">{viewStatusTwo}</Text>
-        ),
-      },
-    }, //     ), //       <Text variant="body2">{editStatusTwo}</Text> //     customBodyRender: editStatusTwo => ( //   options: { //   label: intl.formatMessage({ id: 'USER_TWO_EDIT_STATUS' }), //   name: 'editStatusTwo', // {
-    //   },
-    // },
+      labelId: 'COLLABORATION_CURRENT_ACCESS',
+    },
+    {
+      name: 'requestedAccess',
+      align: 'left',
+      labelId: 'COLLABORATION_REQUESTED_ACCESS',
+    },
     {
       name: 'actions',
       align: 'right',

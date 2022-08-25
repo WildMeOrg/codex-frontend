@@ -1016,11 +1016,9 @@
   "USER_MANAGEMENT_COLLABORATIONS": "Collaborations",
   "USER_ONE": "User 1",
   "USER_TWO": "User 2",
+  "COLLABORATION_CURRENT_ACCESS": "Current access",
+  "COLLABORATION_REQUESTED_ACCESS": "Requested access",
   "COLLABORATION_STATUS": "Status",
-  "USER_ONE_VIEW_STATUS": "User 1 Status",
-  "USER_TWO_VIEW_STATUS": "User 2 Status",
-  "USER_ONE_EDIT_STATUS": "User 1 Edit",
-  "USER_TWO_EDIT_STATUS": "User 2 Edit",
   "COLLABORATION_ALREADY_EXISTS": "A collaboration between these two users has already been created",
   "SIGHTING_ON_MAP": "Sighting",
   "COLLABORATION_DATA_ERROR": "Error fetching collaboration data",
@@ -1187,5 +1185,8 @@
   "INDIVIDUAL_GALLERY_IMAGE_ALT": "{annotationCount} {annotationCount, plural, one {annotation} other {annotations}} with {assetClassCount, plural, one {class} other {classes}} {assetClassesList}",
   "INDIVIDUAL_GALLERY_UNABLE_TO_DISPLAY_ANNOTATIONS": "We are currently unable to show annotations for uploaded images with either a width or a height of 4,096 pixels or more.",
   "INDIVIDUAL_BACK_TO_PROFILE": "Return to {name}'s profile",
-  "ERROR_FETCHING_IMAGE": "Error fetching image"
+  "ERROR_FETCHING_IMAGE": "Error fetching image",
+  "COLLABORATION_STATE_VIEW": "View",
+  "COLLABORATION_STATE_EDIT": "Edit",
+  "COLLABORATION_STATE_REVOKED": "Revoked"
 }
