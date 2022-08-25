@@ -12,6 +12,19 @@ import useGetMe from '../../models/users/useGetMe';
 
 const revokedPermission = 'revoked';
 
+function Actions({ datum: collaborationRow, handleRevoke }) {
+  const isRevoked =
+    get(collaborationRow, 'viewStatusOne') === revokedPermission ||
+    get(collaborationRow, 'viewStatusTwo') === revokedPermission;
+
+  return isRevoked ? null : (
+    <ActionIcon
+      variant="revoke"
+      onClick={() => handleRevoke(collaborationRow)}
+    />
+  );
+}
+
 export default function UserManagersCollaborationEditTable({
   inputData,
   collaborationLoading,
@@ -128,19 +141,9 @@ export default function UserManagersCollaborationEditTable({
       labelId: 'ACTIONS',
       options: {
         displayInFilter: false,
-        customBodyRender: (_, collaboration) => {
-          const isRevoked =
-            get(collaboration, 'viewStatusOne') ===
-              revokedPermission ||
-            get(collaboration, 'viewStatusTwo') === revokedPermission;
-          return (
-            !isRevoked && (
-              <ActionIcon
-                variant="revoke"
-                onClick={() => processRevoke(collaboration)}
-              />
-            )
-          );
+        customBodyComponent: Actions,
+        cellRendererProps: {
+          handleRevoke: processRevoke,
         },
       },
     },
