@@ -100,58 +100,59 @@ export default function Notifications() {
                 const createdDate = notification?.created;
                 const timeSince =
                   calculatePrettyTimeElapsedSince(createdDate);
-                const notificationText = (
-                  <Text
-                    key={notification?.guid}
-                    style={{
-                      color: read
-                        ? theme.palette.text.secondary
-                        : theme.palette.text.primary,
-                    }}
-                    variant="body2"
-                  >
-                    {intl.formatMessage(
-                      {
-                        id: currentNotificationSchema?.notificationMessage,
-                      },
-                      {
-                        userName: (
-                          <span>
-                            <Link
-                              newTab
-                              href={`/users/${userNameGuid}`}
-                            >
-                              {userName}
-                            </Link>
-                          </span>
-                        ),
-                        user1Name,
-                        user2Name,
-                        yourIndividualName: (
-                          <span>
-                            <Link
-                              newTab
-                              href={`/individuals/${yourIndividualGuid}`}
-                            >
-                              {yourIndName}
-                            </Link>
-                          </span>
-                        ),
-                        theirIndividualName: (
-                          <span>
-                            <Link
-                              newTab
-                              href={`/individuals/${theirIndividualGuid}`}
-                            >
-                              {theirIndividualName}
-                            </Link>
-                          </span>
-                        ),
-                        formattedDeadline,
-                      },
-                    )}
-                  </Text>
-                );
+                const notificationText =
+                  currentNotificationSchema?.notificationMessage ? (
+                    <Text
+                      key={notification?.guid}
+                      style={{
+                        color: read
+                          ? theme.palette.text.secondary
+                          : theme.palette.text.primary,
+                      }}
+                      variant="body2"
+                    >
+                      {intl.formatMessage(
+                        {
+                          id: currentNotificationSchema.notificationMessage,
+                        },
+                        {
+                          userName: (
+                            <span>
+                              <Link
+                                newTab
+                                href={`/users/${userNameGuid}`}
+                              >
+                                {userName}
+                              </Link>
+                            </span>
+                          ),
+                          user1Name,
+                          user2Name,
+                          yourIndividualName: (
+                            <span>
+                              <Link
+                                newTab
+                                href={`/individuals/${yourIndividualGuid}`}
+                              >
+                                {yourIndName}
+                              </Link>
+                            </span>
+                          ),
+                          theirIndividualName: (
+                            <span>
+                              <Link
+                                newTab
+                                href={`/individuals/${theirIndividualGuid}`}
+                              >
+                                {theirIndividualName}
+                              </Link>
+                            </span>
+                          ),
+                          formattedDeadline,
+                        },
+                      )}
+                    </Text>
+                  ) : null;
                 const howLongAgoText = (
                   <Text
                     style={{
