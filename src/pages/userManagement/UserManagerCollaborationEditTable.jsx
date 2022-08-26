@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useIntl } from 'react-intl';
 import { get } from 'lodash-es';
 
-import { collaborationLabels } from './constants/collaboration';
+import { collaborationLabelIds } from './constants/collaboration';
 import { formatUserMessage } from './utils';
 import EditCollaborationDialog from './components/EditCollaborationDialog';
 import CustomAlert from '../../components/Alert';
@@ -26,7 +26,7 @@ function Actions({ onRevoke, ...actionGroupRendererProps }) {
     <ActionGroupRenderer {...actionGroupRendererProps}>
       <ActionIcon
         variant="revoke"
-        disabled={!collaborationRow.isRevocable}
+        disabled={!collaborationRow?.isRevocable}
         onClick={() => onRevoke(collaborationRow?.guid)}
       />
     </ActionGroupRenderer>
@@ -84,9 +84,10 @@ export default function UserManagersCollaborationEditTable({
 
       // Note: the collaboration API call returned a members OBJECT instead of array of objects, which made some tranformation gymnastics here necessary
       const currentAccess = getSummaryState(collaboration);
-      const currentAccessLabel = collaborationLabels[currentAccess];
-      const requestedAccessLabel =
-        collaborationLabels[getRequestedState(collaboration)];
+      const currentAccessLabelId =
+        collaborationLabelIds[currentAccess];
+      const requestedAccessLabelId =
+        collaborationLabelIds[getRequestedState(collaboration)];
 
       return {
         guid: get(collaboration, 'guid'),
@@ -100,11 +101,11 @@ export default function UserManagersCollaborationEditTable({
           intl,
         ),
         userTwoGuid: get(member2, 'guid'),
-        currentAccess: currentAccessLabel
-          ? intl.formatMessage({ id: currentAccessLabel })
+        currentAccess: currentAccessLabelId
+          ? intl.formatMessage({ id: currentAccessLabelId })
           : '',
-        requestedAccess: requestedAccessLabel
-          ? intl.formatMessage({ id: requestedAccessLabel })
+        requestedAccess: requestedAccessLabelId
+          ? intl.formatMessage({ id: requestedAccessLabelId })
           : '',
         isRevocable: Boolean(
           currentAccess && currentAccess !== summaryStates.revoked,

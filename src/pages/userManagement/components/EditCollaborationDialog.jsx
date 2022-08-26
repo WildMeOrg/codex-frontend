@@ -31,6 +31,14 @@ const coreStateChoices = [
   },
 ];
 
+const fullStateChoices = [
+  ...coreStateChoices,
+  {
+    value: 'revoked',
+    labelId: 'COLLABORATION_STATE_REVOKED',
+  },
+];
+
 function FormattedUserName({ name }) {
   return name || <FormattedMessage id="UNNAMED_USER" />;
 }
@@ -111,13 +119,7 @@ export default function EditCollaborationDialog({
 
   const stateChoices =
     isViewApproved(collaboration) || isViewRevoked(collaboration)
-      ? [
-          ...coreStateChoices,
-          {
-            value: 'revoked',
-            labelId: 'COLLABORATION_STATE_REVOKED',
-          },
-        ]
+      ? fullStateChoices
       : coreStateChoices;
 
   function handleClose() {
