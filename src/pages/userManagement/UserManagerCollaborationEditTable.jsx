@@ -27,7 +27,7 @@ function Actions({ onRevoke, ...actionGroupRendererProps }) {
       <ActionIcon
         variant="revoke"
         disabled={!collaborationRow.isRevocable}
-        onClick={() => onRevoke(collaborationRow)}
+        onClick={() => onRevoke(collaborationRow?.guid)}
       />
     </ActionGroupRenderer>
   );
@@ -57,21 +57,14 @@ export default function UserManagersCollaborationEditTable({
 
   const isLoading = revokeLoading || collaborationLoading;
 
-  function processRevoke(collaborationRow) {
-    const {
-      guid: collaborationGuid,
-      userOneGuid,
-      userTwoGuid,
-    } = collaborationRow || {};
-
-    const operations = [userOneGuid, userTwoGuid].map(userGuid => ({
-      op: 'replace',
-      path: '/managed_view_permission',
-      value: {
-        user_guid: userGuid,
-        permission: 'revoked',
+  function processRevoke(collaborationGuid) {
+    const operations = [
+      {
+        op: 'replace',
+        path: '/managed_view_permission',
+        value: { permission: 'revoked' },
       },
-    }));
+    ];
 
     revokeCollab({ collaborationGuid, operations });
   }
