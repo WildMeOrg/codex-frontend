@@ -125,11 +125,8 @@ export default function EditCollaborationDialog({
       : coreStateChoices;
 
   function handleClose() {
-    // cleanup
     setCollaborationState('');
     clearError();
-
-    // close
     onClose();
   }
 
@@ -142,34 +139,35 @@ export default function EditCollaborationDialog({
     >
       <DialogContent>
         <dl style={{ display: 'flex', flexWrap: 'wrap', gap: 24 }}>
-          {members.map((member, index) => {
-            const style = { flexGrow: 1 };
-            // The maxWidth aligns the user information with selection input
-            if (index === 1) style.maxWidth = 280;
-
-            return (
-              <div key={member?.guid} style={style}>
+          {members.map((member, index) => (
+            <div
+              key={member?.guid}
+              style={{
+                flexGrow: 1,
+                // The maxWidth aligns the user information with selection input
+                maxWidth: index === 1 ? 280 : 'unset',
+              }}
+            >
+              <Text
+                component="dt"
+                variant="h6"
+                id="USER_X"
+                values={{ userNumber: index + 1 }}
+              />
+              <Text component="dd" style={{ margin: 0 }}>
+                <FormattedUserName name={member?.full_name} />
+              </Text>
+              {member?.email && (
                 <Text
-                  component="dt"
-                  variant="h6"
-                  id="USER_X"
-                  values={{ userNumber: index + 1 }}
-                />
-                <Text component="dd" style={{ margin: 0 }}>
-                  <FormattedUserName name={member?.full_name} />
+                  component="dd"
+                  variant="caption"
+                  style={{ margin: 0 }}
+                >
+                  {member.email}
                 </Text>
-                {member?.email && (
-                  <Text
-                    component="dd"
-                    variant="caption"
-                    style={{ margin: 0 }}
-                  >
-                    {member.email}
-                  </Text>
-                )}
-              </div>
-            );
-          })}
+              )}
+            </div>
+          ))}
         </dl>
         <InputRow
           schema={{
