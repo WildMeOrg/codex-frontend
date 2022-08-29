@@ -15,7 +15,7 @@ import {
   getRequestedState,
   getSummaryState,
   summaryStates,
-} from '../../models/collaboration/model';
+} from '../../utils/collaborationUtils';
 
 const ActionGroupRenderer = cellRenderers.actionGroup;
 

@@ -1,4 +1,4 @@
-import { summaryStates } from '../../../models/collaboration/model';
+import { summaryStates } from '../../../utils/collaborationUtils';
 
 export const collaborationLabelIds = {
   [summaryStates.view]: 'COLLABORATION_STATE_VIEW',

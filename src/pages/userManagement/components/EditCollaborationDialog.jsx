@@ -18,7 +18,7 @@ import {
   isViewRevoked,
   states as collaborationStates,
   summaryStates,
-} from '../../../models/collaboration/model';
+} from '../../../utils/collaborationUtils';
 
 const coreStateChoices = [
   {
