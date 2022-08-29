@@ -11,6 +11,7 @@ import {
   mutuallyRevokedCollabExists,
   collaborationAlreadyExists,
 } from '../../utils/formatters';
+import { formatUserMessage } from '../userManagement/utils';
 
 export default function CollaborationManagementForm({
   userData,
@@ -51,25 +52,12 @@ export default function CollaborationManagementForm({
                 )
               : []
           }
-          getOptionLabel={option => {
-            const name = get(option, 'full_name', null);
-            const email = get(option, 'email', null);
-            const nameLabel = email
-              ? name + ' (' + email + ')'
-              : name;
-            if (name) return nameLabel;
-            const unnamedUserLabel = email
-              ? intl.formatMessage({
-                  id: 'UNNAMED_USER',
-                }) +
-                ' (' +
-                email +
-                ')'
-              : intl.formatMessage({
-                  id: 'UNNAMED_USER',
-                });
-            return unnamedUserLabel;
-          }}
+          getOptionLabel={option =>
+            formatUserMessage(
+              { fullName: option?.full_name, email: option?.email },
+              intl,
+            )
+          }
           getOptionSelected={(option, val) =>
             option.guid ? option.guid === val.guid : false
           }
@@ -95,25 +83,12 @@ export default function CollaborationManagementForm({
                 )
               : []
           }
-          getOptionLabel={option => {
-            const name = get(option, 'full_name', 'guid');
-            const email = get(option, 'email', null);
-            const nameLabel = email
-              ? name + ' (' + email + ')'
-              : name;
-            if (name) return nameLabel;
-            const unnamedUserLabel = email
-              ? intl.formatMessage({
-                  id: 'UNNAMED_USER',
-                }) +
-                ' (' +
-                email +
-                ')'
-              : intl.formatMessage({
-                  id: 'UNNAMED_USER',
-                });
-            return unnamedUserLabel;
-          }}
+          getOptionLabel={option =>
+            formatUserMessage(
+              { fullName: option?.full_name, email: option?.email },
+              intl,
+            )
+          }
           getOptionSelected={(option, val) =>
             option.guid ? option.guid === val.guid : false
           }
