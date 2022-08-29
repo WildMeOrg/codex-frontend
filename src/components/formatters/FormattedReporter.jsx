@@ -1,7 +1,7 @@
 import React from 'react';
 
-import Link from '../../../components/Link';
-import Text from '../../../components/Text';
+import Link from '../Link';
+import Text from '../Text';
 
 export default function FormattedReporter({
   reporter,
