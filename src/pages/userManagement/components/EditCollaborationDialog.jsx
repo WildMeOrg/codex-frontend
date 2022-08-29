@@ -47,53 +47,55 @@ function getPatchCollaborationOperations(
   newSummaryState,
   collaboration,
 ) {
-  switch (newSummaryState) {
-    case summaryStates.revoked:
-      return [
-        {
-          op: 'replace',
-          path: '/managed_view_permission',
-          value: {
-            permission: collaborationStates.revoked,
-          },
+  if (newSummaryState === summaryStates.revoked) {
+    return [
+      {
+        op: 'replace',
+        path: '/managed_view_permission',
+        value: {
+          permission: collaborationStates.revoked,
         },
-      ];
-    case summaryStates.edit:
-      return [
-        {
-          op: 'replace',
-          path: '/managed_edit_permission',
-          value: {
-            permission: collaborationStates.approved,
-          },
-        },
-      ];
-    case summaryStates.view: {
-      const operations = [
-        {
-          op: 'replace',
-          path: '/managed_view_permission',
-          value: {
-            permission: collaborationStates.approved,
-          },
-        },
-      ];
-
-      if (isEditApproved(collaboration)) {
-        operations.push({
-          op: 'replace',
-          path: '/managed_edit_permission',
-          value: {
-            permission: collaborationStates.revoked,
-          },
-        });
-      }
-
-      return operations;
-    }
-    default:
-      return [];
+      },
+    ];
   }
+
+  if (newSummaryState === summaryStates.edit) {
+    return [
+      {
+        op: 'replace',
+        path: '/managed_edit_permission',
+        value: {
+          permission: collaborationStates.approved,
+        },
+      },
+    ];
+  }
+
+  if (newSummaryState === summaryStates.view) {
+    const operations = [
+      {
+        op: 'replace',
+        path: '/managed_view_permission',
+        value: {
+          permission: collaborationStates.approved,
+        },
+      },
+    ];
+
+    if (isEditApproved(collaboration)) {
+      operations.push({
+        op: 'replace',
+        path: '/managed_edit_permission',
+        value: {
+          permission: collaborationStates.revoked,
+        },
+      });
+    }
+
+    return operations;
+  }
+
+  return [];
 }
 
 export default function EditCollaborationDialog({
