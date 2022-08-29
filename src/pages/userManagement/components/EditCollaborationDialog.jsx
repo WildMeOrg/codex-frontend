@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { useIntl } from 'react-intl';
 
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -11,6 +11,7 @@ import SelectionEditor from '../../../components/fields/edit/SelectionEditor';
 import StandardDialog from '../../../components/StandardDialog';
 import Text from '../../../components/Text';
 import usePatchCollaboration from '../../../models/collaboration/usePatchCollaboration';
+import { formatUserMessage } from '../../../utils/formatters';
 import {
   getSummaryState,
   isEditApproved,
@@ -38,10 +39,6 @@ const fullStateChoices = [
     labelId: 'COLLABORATION_STATE_REVOKED',
   },
 ];
-
-function FormattedUserName({ name }) {
-  return name || <FormattedMessage id="UNNAMED_USER" />;
-}
 
 function getPatchCollaborationOperations(
   newSummaryState,
@@ -103,6 +100,7 @@ export default function EditCollaborationDialog({
   open,
   onClose,
 }) {
+  const intl = useIntl();
   const [collaborationState, setCollaborationState] = useState(
     getSummaryState(collaboration),
   );
@@ -155,7 +153,10 @@ export default function EditCollaborationDialog({
                 values={{ userNumber: index + 1 }}
               />
               <Text component="dd" style={{ margin: 0 }}>
-                <FormattedUserName name={member?.full_name} />
+                {formatUserMessage(
+                  { fullName: member?.full_name },
+                  intl,
+                )}
               </Text>
               {member?.email && (
                 <Text

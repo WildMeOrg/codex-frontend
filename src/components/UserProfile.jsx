@@ -6,7 +6,7 @@ import { getHighestRoleLabelId } from '../utils/roleUtils';
 import useUserMetadataSchemas from '../models/users/useUserMetadataSchemas';
 import useGetUserSightings from '../models/users/useGetUserSightings';
 import useGetUserUnprocessedAssetGroupSightings from '../models/users/useGetUserUnproccessedAssetGroupSightings';
-import { formatDate } from '../utils/formatters';
+import { formatDate, formatUserMessage } from '../utils/formatters';
 import EntityHeader from './EntityHeader';
 import BigAvatar from './profilePhotos/BigAvatar';
 import MainColumn from './MainColumn';
@@ -50,12 +50,10 @@ export default function UserProfile({
 
   const imageSrc = get(userData, ['profile_fileupload', 'src']);
   const imageGuid = get(userData, ['profile_fileupload', 'guid']);
-  let name = get(
-    userData,
-    'full_name',
-    intl.formatMessage({ id: 'UNNAMED_USER' }),
+  const name = formatUserMessage(
+    { fullName: userData?.full_name },
+    intl,
   );
-  if (name === '') name = intl.formatMessage({ id: 'UNNAMED_USER' });
   const dateCreated = formatDate(get(userData, 'created'), true);
 
   const highestRoleLabelId = getHighestRoleLabelId(userData);
