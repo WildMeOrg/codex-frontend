@@ -7,7 +7,7 @@ import CustomAlert from '../../components/Alert';
 import Button from '../../components/Button';
 import Text from '../../components/Text';
 import useSiteSettings from '../../models/site/useSiteSettings';
-import usePutSiteSettings from '../../models/site/usePutSiteSettings';
+import usePutSiteSetting from '../../models/site/usePutSiteSetting';
 import LabeledInput from '../../components/LabeledInput';
 
 const newSettingFields = [
@@ -33,14 +33,15 @@ export default function SiteSetupForm({ primaryButtonId }) {
     dataUpdatedAt: siteSettingsTimestamp,
   } = useSiteSettings();
   const {
-    mutate: putSiteSettings,
-    error,
-    setError,
+    mutate: putSiteSetting,
+    error: putSiteSettingError,
+    clearError: clearPutSiteSettingError,
     success,
-    setSuccess,
-  } = usePutSiteSettings();
+    clearSuccess,
+  } = usePutSiteSetting();
 
   const [currentValues, setCurrentValues] = useState(null);
+  const [formErrorId, setFormErrorId] = useState(null);
 
   useEffect(() => {
     const edmValues = newSettingFields.map(fieldKey =>
@@ -156,18 +157,26 @@ export default function SiteSetupForm({ primaryButtonId }) {
           marginTop: 28,
         }}
       >
-        {Boolean(error) && (
+        {Boolean(putSiteSettingError) && (
           <CustomAlert
-            onClose={() => setError(null)}
+            onClose={clearPutSiteSettingError}
             severity="error"
             titleId="SUBMISSION_ERROR"
           >
-            {error}
+            {putSiteSettingError}
           </CustomAlert>
+        )}
+        {Boolean(formErrorId) && (
+          <CustomAlert
+            onClose={() => setFormErrorId(null)}
+            severity="error"
+            titleId="SUBMISSION_ERROR"
+            descriptionId={formErrorId}
+          />
         )}
         {success && (
           <CustomAlert
-            onClose={() => setSuccess(false)}
+            onClose={clearSuccess}
             severity="success"
             titleId="SUCCESS"
             descriptionId="CHANGES_SAVED"
@@ -175,10 +184,15 @@ export default function SiteSetupForm({ primaryButtonId }) {
         )}
         <Button
           onClick={() => {
+            setFormErrorId(null);
+            clearPutSiteSettingError();
+            clearSuccess();
+
             if (currentValues['site.name'] === '') {
-              setError('Site name is required.');
+              setFormErrorId('SITE_NAME_IS_REQUIRED');
             } else {
-              putSiteSettings({
+              putSiteSetting({
+                property: '',
                 data: {
                   ...currentValues,
                   'site.needsSetup': false,

@@ -5,7 +5,6 @@ import Grid from '@material-ui/core/Grid';
 
 import useSiteSettings from '../../models/site/useSiteSettings';
 import usePutSiteSetting from '../../models/site/usePutSiteSetting';
-import usePutSiteSettings from '../../models/site/usePutSiteSettings';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import CustomAlert from '../../components/Alert';
 import MainColumn from '../../components/MainColumn';
@@ -37,26 +36,13 @@ export default function SplashSettings() {
     mutate: putSiteSetting,
     error: putSiteSettingError,
     loading: putSiteSettingLoading,
+    success: putSiteSettingSuccess,
     clearSuccess: clearPutSiteSettingSuccess,
   } = usePutSiteSetting();
-
-  const {
-    mutate: putSiteSettings,
-    loading: formPostLoading,
-    error: putSiteSettingsError,
-    success: formPostSuccess,
-    clearSuccess: clearFormPostSuccess,
-  } = usePutSiteSettings();
 
   useDocumentTitle('FRONT_PAGE');
 
   const [currentValues, setCurrentValues] = useState(null);
-  const [splashVideoPostData, setSplashVideoPostData] =
-    useState(null);
-  const [splashImagePostData, setSplashImagePostData] =
-    useState(null);
-  const [customCardImagePostData, setCustomCardImagePostData] =
-    useState(null);
 
   useEffect(() => {
     const edmValues = newSettingFields.map(fieldKey =>
@@ -71,9 +57,9 @@ export default function SplashSettings() {
     'value',
   ]);
 
-  const loading = putSiteSettingLoading || formPostLoading;
-  const error = putSiteSettingsError || putSiteSettingError;
-  const success = formPostSuccess && !error && !loading;
+  function handleFileChange(settingKey, data) {
+    setCurrentValues(prev => ({ ...prev, [settingKey]: data }));
+  }
 
   return (
     <MainColumn>
@@ -109,7 +95,9 @@ export default function SplashSettings() {
           changeId="CHANGE_IMAGE"
           allowedFileTypes={['.jpg', '.jpeg', '.png']}
           settingName="splashImage"
-          onSetPostData={setSplashImagePostData}
+          onSetPostData={data =>
+            handleFileChange('splashImage', data)
+          }
         />
         <SettingsFileUpload
           labelId="SPLASH_VIDEO"
@@ -117,7 +105,9 @@ export default function SplashSettings() {
           changeId="CHANGE_VIDEO"
           allowedFileTypes={['.webm', '.mp4']}
           settingName="splashVideo"
-          onSetPostData={setSplashVideoPostData}
+          onSetPostData={data =>
+            handleFileChange('splashVideo', data)
+          }
           variant="video"
         />
         <DividerTitle
@@ -130,7 +120,9 @@ export default function SplashSettings() {
           changeId="CHANGE_IMAGE"
           allowedFileTypes={['.jpg', '.jpeg', '.png']}
           settingName="customCardImage"
-          onSetPostData={setCustomCardImagePostData}
+          onSetPostData={data =>
+            handleFileChange('customCardImage', data)
+          }
         />
         <SettingsTextInput
           settingKey="site.general.customCardLine1"
@@ -191,19 +183,16 @@ export default function SplashSettings() {
             marginTop: 28,
           }}
         >
-          {Boolean(error) && (
+          {Boolean(putSiteSettingError) && (
             <CustomAlert
               severity="error"
               titleId="SUBMISSION_ERROR"
-              description={error}
+              description={putSiteSettingError}
             />
           )}
-          {success && (
+          {putSiteSettingSuccess && (
             <CustomAlert
-              onClose={() => {
-                clearFormPostSuccess();
-                clearPutSiteSettingSuccess();
-              }}
+              onClose={clearPutSiteSettingSuccess}
               severity="success"
               titleId="SUCCESS"
               descriptionId="CHANGES_SAVED"
@@ -211,7 +200,7 @@ export default function SplashSettings() {
               <ButtonLink
                 style={{ marginTop: 12 }}
                 display="panel"
-                loading={loading}
+                loading={putSiteSettingLoading}
                 id="PREVIEW_CHANGES"
                 newTab
                 external
@@ -222,26 +211,11 @@ export default function SplashSettings() {
 
           <Button
             onClick={() => {
-              putSiteSettings({ data: currentValues });
-              if (splashVideoPostData)
-                putSiteSetting({
-                  property: 'splashVideo',
-                  data: splashVideoPostData,
-                });
-              if (splashImagePostData)
-                putSiteSetting({
-                  property: 'splashImage',
-                  data: splashImagePostData,
-                });
-              if (customCardImagePostData)
-                putSiteSetting({
-                  property: 'customCardImage',
-                  data: customCardImagePostData,
-                });
+              putSiteSetting({ property: '', data: currentValues });
             }}
             style={{ marginTop: 12 }}
             display="primary"
-            loading={loading}
+            loading={putSiteSettingLoading}
             id="SAVE_CHANGES"
           />
         </Grid>
