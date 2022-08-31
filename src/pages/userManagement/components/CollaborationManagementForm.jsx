@@ -4,14 +4,14 @@ import { get } from 'lodash-es';
 import { TextField } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
 
-import Button from '../../components/Button';
-import CustomAlert from '../../components/Alert';
-import useEstablishCollaborationAsUserManager from '../../models/collaboration/useEstablishCollaborationAsUserManager';
+import Button from '../../../components/Button';
+import CustomAlert from '../../../components/Alert';
+import useEstablishCollaborationAsUserManager from '../../../models/collaboration/useEstablishCollaborationAsUserManager';
 import {
   mutuallyRevokedCollabExists,
   collaborationAlreadyExists,
-} from '../../utils/formatters';
-import { formatUserMessage } from '../userManagement/utils';
+} from '../../../utils/formatters';
+import { formatUserMessage } from '../utils';
 
 export default function CollaborationManagementForm({
   userData,

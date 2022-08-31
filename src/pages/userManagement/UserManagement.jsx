@@ -22,7 +22,7 @@ import usePostUser from '../../models/users/usePostUser';
 import useGetUsers from '../../models/users/useGetUsers';
 import UserEditTable from './UserEditTable';
 import roleSchema from './constants/roleSchema';
-import CollaborationManagementForm from '../collaborations/collaborationManagementForm';
+import CollaborationManagementForm from './components/CollaborationManagementForm';
 import useGetAllCollaborations from '../../models/collaboration/useGetAllCollaborations';
 import UserManagersCollaborationEditTable from './UserManagerCollaborationEditTable';
 
