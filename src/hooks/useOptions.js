@@ -5,12 +5,7 @@ import { flattenTree } from '../utils/treeUtils';
 import useSiteSettings from '../models/site/useSiteSettings';
 
 export default function useOptions() {
-  const {
-    data,
-    loading,
-    error,
-    dataUpdatedAt: siteSettingsTimestamp,
-  } = useSiteSettings();
+  const { data, loading, error } = useSiteSettings();
 
   return useMemo(() => {
     if (loading || error)
@@ -47,5 +42,5 @@ export default function useOptions() {
       .filter(o => o);
 
     return { regionOptions, speciesOptions };
-  }, [loading, error, siteSettingsTimestamp]);
+  }, [loading, error, data]);
 }

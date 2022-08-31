@@ -57,8 +57,7 @@ const allSettingsFields = [
 ];
 
 export default function GeneralSettings() {
-  const siteSettings = useSiteSettings();
-  const { dataUpdatedAt: siteSettingsTimestamp } = siteSettings;
+  const { data: siteSettings } = useSiteSettings();
 
   const [currentValues, setCurrentValues] = useState(null);
   const [
@@ -96,11 +95,11 @@ export default function GeneralSettings() {
   }, [twitterTestResults, twitterStatusCode]);
 
   useEffect(() => {
-    const edmValues = allSettingsFields.map(fieldKey =>
-      get(siteSettings, ['data', fieldKey, 'value']),
+    const fieldValues = allSettingsFields.map(fieldKey =>
+      get(siteSettings, [fieldKey, 'value']),
     );
-    setCurrentValues(zipObject(allSettingsFields, edmValues));
-  }, [siteSettingsTimestamp, allSettingsFields]);
+    setCurrentValues(zipObject(allSettingsFields, fieldValues));
+  }, [siteSettings]);
 
   return (
     <MainColumn>
