@@ -10,6 +10,19 @@ import Button from '../../Button';
 import StandardDialog from '../../StandardDialog';
 import useDescription from '../../../hooks/useDescription';
 
+const actionTypes = {
+  inputLatitude: 'input-latitude',
+  inputLongitude: 'input-longitude',
+  selectMapCoordinates: 'select-map-coordinates',
+  confirmMapCoordinates: 'confirm-map-coordinates',
+  updateCoordinatesExternally: 'update-coordinates-externally',
+};
+
+const setterTypes = {
+  internal: 'internal',
+  external: 'external',
+};
+
 function getNumberString(n) {
   if (n === 0) return '0';
   return n ? n.toString() : '';
@@ -20,35 +33,35 @@ function calculateInitialState(coordinates) {
     latitude: getNumberString(get(coordinates, '0', '')),
     longitude: getNumberString(get(coordinates, '1', '')),
     mapCoordinates: null,
-    setterType: 'external',
+    setterType: setterTypes.external,
   };
 }
 
 function reducer(state, action) {
   switch (action.type) {
-    case 'input-latitude':
+    case actionTypes.inputLatitude:
       return {
         ...state,
         latitude: action.payload,
-        setterType: 'internal',
+        setterType: setterTypes.internal,
       };
-    case 'input-longitude':
+    case actionTypes.inputLongitude:
       return {
         ...state,
         longitude: action.payload,
-        setterType: 'internal',
+        setterType: setterTypes.internal,
       };
-    case 'select-map-coordinates':
+    case actionTypes.selectMapCoordinates:
       return { ...state, mapCoordinates: action.payload };
-    case 'confirm-map-coordinates':
+    case actionTypes.confirmMapCoordinates:
       return {
         ...state,
         latitude: getNumberString(state.mapCoordinates?.[0]),
         longitude: getNumberString(state.mapCoordinates?.[1]),
         mapCoordinates: null,
-        setterType: 'internal',
+        setterType: setterTypes.internal,
       };
-    case 'update-coordinates-externally': {
+    case actionTypes.updateCoordinatesExternally: {
       const latitudeString = getNumberString(
         get(action.payload, '0', ''),
       );
@@ -70,7 +83,7 @@ function reducer(state, action) {
         ...state,
         latitude: latitudeString,
         longitude: longitudeString,
-        setterType: 'external',
+        setterType: setterTypes.external,
       };
     }
     default:
@@ -109,13 +122,13 @@ export default function LatLongEditor({
 
   useEffect(() => {
     dispatch({
-      type: 'update-coordinates-externally',
+      type: actionTypes.updateCoordinatesExternally,
       payload: value,
     });
   }, [value]);
 
   useEffect(() => {
-    if (setterType === 'internal') {
+    if (setterType === setterTypes.internal) {
       const latitude =
         latitudeString === '' ? null : parseFloat(latitudeString);
       const longitude =
@@ -125,7 +138,10 @@ export default function LatLongEditor({
   }, [latitudeString, longitudeString, setterType]); // onChange is intentionally excluded.
 
   const onClose = () => {
-    dispatch({ type: 'select-map-coordinates', payload: null });
+    dispatch({
+      type: actionTypes.selectMapCoordinates,
+      payload: null,
+    });
     setModalOpen(false);
   };
 
@@ -142,7 +158,7 @@ export default function LatLongEditor({
           type="number"
           onChange={e => {
             dispatch({
-              type: 'input-latitude',
+              type: actionTypes.inputLatitude,
               payload: e.target.value,
             });
           }}
@@ -155,7 +171,7 @@ export default function LatLongEditor({
           type="number"
           onChange={e => {
             dispatch({
-              type: 'input-longitude',
+              type: actionTypes.inputLongitude,
               payload: e.target.value,
             });
           }}
@@ -182,7 +198,7 @@ export default function LatLongEditor({
           <LatLngMap
             onChange={clickedPoint => {
               dispatch({
-                type: 'select-map-coordinates',
+                type: actionTypes.selectMapCoordinates,
                 payload: clickedPoint,
               });
             }}
@@ -193,7 +209,7 @@ export default function LatLongEditor({
           <Button
             display="primary"
             onClick={() => {
-              dispatch({ type: 'confirm-map-coordinates' });
+              dispatch({ type: actionTypes.confirmMapCoordinates });
               onClose();
             }}
             id="CONFIRM"
