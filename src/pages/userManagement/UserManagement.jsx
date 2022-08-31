@@ -22,7 +22,7 @@ import usePostUser from '../../models/users/usePostUser';
 import useGetUsers from '../../models/users/useGetUsers';
 import UserEditTable from './UserEditTable';
 import roleSchema from './constants/roleSchema';
-import CollaborationManagementForm from '../collaborations/collaborationManagementForm';
+import CollaborationManagementForm from './components/CollaborationManagementForm';
 import useGetAllCollaborations from '../../models/collaboration/useGetAllCollaborations';
 import UserManagersCollaborationEditTable from './UserManagerCollaborationEditTable';
 
@@ -242,7 +242,7 @@ export default function UserManagement() {
           <Text
             variant="h6"
             style={{ marginTop: 20, marginLeft: 12 }}
-            id="EDIT_COLLABORATIONS"
+            id="USER_MANAGEMENT_COLLABORATIONS"
           />
           <Paper
             elevation={2}

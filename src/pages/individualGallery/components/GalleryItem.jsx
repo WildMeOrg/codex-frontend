@@ -4,7 +4,7 @@ import { get, omit } from 'lodash-es';
 import DerivedAnnotatedPhotograph from './DerivedAnnotatedPhotograph';
 import FormattedComplexDateTime from './FormattedComplexDateTime';
 import FormattedLocationWithDialog from './FormattedLocationWithDialog';
-import FormattedReporter from './FormattedReporter';
+import FormattedReporter from '../../../components/formatters/FormattedReporter';
 import Text from '../../../components/Text';
 
 export default function GalleryItem({
