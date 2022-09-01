@@ -13,12 +13,7 @@ import {
 
 export default function useSightingFieldSchemas() {
   const intl = useIntl();
-  const {
-    data,
-    loading,
-    error,
-    dataUpdatedAt: siteSettingsTimestamp,
-  } = useSiteSettings();
+  const { data, loading, error } = useSiteSettings();
 
   const encounterFieldSchemas = useMemo(() => {
     if (loading || error) return [];
@@ -99,6 +94,6 @@ export default function useSightingFieldSchemas() {
       }),
       ...customFieldSchemas,
     ];
-  }, [intl, loading, error, siteSettingsTimestamp]);
+  }, [intl, loading, error, data]);
   return encounterFieldSchemas;
 }

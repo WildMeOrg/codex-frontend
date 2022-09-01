@@ -15,7 +15,7 @@ import ForumIdViewer from '../../components/fields/view/ForumIdViewer';
 
 export default function useUserMetadataSchemas(displayedUserId) {
   const { data: currentUserData, loading, error } = useGetMe();
-  const siteSettings = useSiteSettings();
+  const { data: siteSettings } = useSiteSettings();
 
   const isAdmin = get(currentUserData, 'is_admin', false);
   const isCurrentUser =
@@ -41,7 +41,6 @@ export default function useUserMetadataSchemas(displayedUserId) {
           'enablingField',
         ]);
         const isEnabled = get(siteSettings, [
-          'data',
           currentPlatformEnablingField,
           'value',
         ]);
@@ -84,7 +83,7 @@ export default function useUserMetadataSchemas(displayedUserId) {
       }),
       ...intelligentAgentFields,
     ];
-  }, [isAdmin, includeEmail, siteSettings]);
+  }, [includeEmail, siteSettings]);
 
   if (loading || error) return null;
   return userMetadataSchemas;

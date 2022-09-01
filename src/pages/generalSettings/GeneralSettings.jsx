@@ -5,7 +5,6 @@ import Grid from '@material-ui/core/Grid';
 
 import useSiteSettings from '../../models/site/useSiteSettings';
 import usePutSiteSetting from '../../models/site/usePutSiteSetting';
-import usePutSiteSettings from '../../models/site/usePutSiteSettings';
 
 import CustomAlert from '../../components/Alert';
 import Button from '../../components/Button';
@@ -58,11 +57,9 @@ const allSettingsFields = [
 ];
 
 export default function GeneralSettings() {
-  const siteSettings = useSiteSettings();
-  const { dataUpdatedAt: siteSettingsTimestamp } = siteSettings;
+  const { data: siteSettings } = useSiteSettings();
 
   const [currentValues, setCurrentValues] = useState(null);
-  const [logoPostData, setLogoPostData] = useState(null);
   const [
     intelligentAgentFieldsValid,
     setIntelligentAgentFieldsValid,
@@ -75,16 +72,9 @@ export default function GeneralSettings() {
     mutate: putSiteSetting,
     error: putSiteSettingError,
     loading: putSiteSettingLoading,
+    success: putSiteSettingSuccess,
     clearSuccess: clearPutSiteSettingSuccess,
   } = usePutSiteSetting();
-
-  const {
-    mutate: putSiteSettings,
-    error: putSiteSettingsError,
-    loading: putSiteSettingsLoading,
-    success: putSiteSettingsSuccess,
-    clearSuccess: clearPostSuccess,
-  } = usePutSiteSettings();
 
   const {
     data: twitterTestResults,
@@ -105,15 +95,11 @@ export default function GeneralSettings() {
   }, [twitterTestResults, twitterStatusCode]);
 
   useEffect(() => {
-    const edmValues = allSettingsFields.map(fieldKey =>
-      get(siteSettings, ['data', fieldKey, 'value']),
+    const fieldValues = allSettingsFields.map(fieldKey =>
+      get(siteSettings, [fieldKey, 'value']),
     );
-    setCurrentValues(zipObject(allSettingsFields, edmValues));
-  }, [siteSettingsTimestamp, allSettingsFields]);
-
-  const loading = putSiteSettingLoading || putSiteSettingsLoading;
-  const error = putSiteSettingsError || putSiteSettingError;
-  const success = putSiteSettingsSuccess && !error && !loading;
+    setCurrentValues(zipObject(allSettingsFields, fieldValues));
+  }, [siteSettings]);
 
   return (
     <MainColumn>
@@ -167,7 +153,12 @@ export default function GeneralSettings() {
           changeId="CHANGE_LOGO"
           allowedFileTypes={['.jpg', '.jpeg', '.png']}
           settingName="logo"
-          onSetPostData={setLogoPostData}
+          onSetPostData={fileUploadData => {
+            setCurrentValues(prev => ({
+              ...prev,
+              logo: fileUploadData,
+            }));
+          }}
         />
         <SettingsTextInput
           settingKey="site.look.logoIncludesSiteName"
@@ -251,13 +242,13 @@ export default function GeneralSettings() {
             marginTop: 28,
           }}
         >
-          {error && (
+          {putSiteSettingError && (
             <CustomAlert
               severity="error"
               titleId="SUBMISSION_ERROR"
               style={{ marginBottom: 16 }}
             >
-              {error}
+              {putSiteSettingError}
             </CustomAlert>
           )}
           {twitterTestError && isTwitterEnabled && (
@@ -267,12 +258,9 @@ export default function GeneralSettings() {
               style={{ marginBottom: 16 }}
             />
           )}
-          {success && (
+          {putSiteSettingSuccess && (
             <CustomAlert
-              onClose={() => {
-                clearPutSiteSettingSuccess();
-                clearPostSuccess();
-              }}
+              onClose={clearPutSiteSettingSuccess}
               severity="success"
               titleId="SUCCESS"
               descriptionId="CHANGES_SAVED"
@@ -292,16 +280,11 @@ export default function GeneralSettings() {
           )}
           <Button
             onClick={() => {
-              putSiteSettings({ data: currentValues });
-              if (logoPostData)
-                putSiteSetting({
-                  property: 'logo',
-                  data: logoPostData,
-                });
+              putSiteSetting({ property: '', data: currentValues });
             }}
             style={{ marginTop: 12 }}
             display="primary"
-            loading={loading}
+            loading={putSiteSettingLoading}
             disabled={!intelligentAgentFieldsValid}
             id="SAVE_CHANGES"
           />
