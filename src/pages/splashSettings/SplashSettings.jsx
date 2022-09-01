@@ -29,8 +29,7 @@ const newSettingFields = [
 ];
 
 export default function SplashSettings() {
-  const siteSettings = useSiteSettings();
-  const { dataUpdatedAt: siteSettingsTimestamp } = siteSettings;
+  const { data: siteSettings } = useSiteSettings();
 
   const {
     mutate: putSiteSetting,
@@ -45,17 +44,11 @@ export default function SplashSettings() {
   const [currentValues, setCurrentValues] = useState(null);
 
   useEffect(() => {
-    const edmValues = newSettingFields.map(fieldKey =>
-      get(siteSettings, ['data', fieldKey, 'value']),
+    const fieldValues = newSettingFields.map(fieldKey =>
+      get(siteSettings, [fieldKey, 'value']),
     );
-    setCurrentValues(zipObject(newSettingFields, edmValues));
-  }, [siteSettingsTimestamp]);
-
-  const customFieldCategories = get(siteSettings, [
-    'data',
-    'site.custom.customFieldCategories',
-    'value',
-  ]);
+    setCurrentValues(zipObject(newSettingFields, fieldValues));
+  }, [siteSettings]);
 
   function handleFileChange(settingKey, data) {
     setCurrentValues(prev => ({ ...prev, [settingKey]: data }));
@@ -77,14 +70,12 @@ export default function SplashSettings() {
         <DividerTitle titleId="HERO_AREA" />
         <SettingsTextInput
           settingKey="site.general.tagline"
-          customFieldCategories={customFieldCategories}
           currentValues={currentValues}
           setCurrentValues={setCurrentValues}
           siteSettings={siteSettings}
         />
         <SettingsTextInput
           settingKey="site.general.taglineSubtitle"
-          customFieldCategories={customFieldCategories}
           currentValues={currentValues}
           setCurrentValues={setCurrentValues}
           siteSettings={siteSettings}
@@ -126,28 +117,24 @@ export default function SplashSettings() {
         />
         <SettingsTextInput
           settingKey="site.general.customCardLine1"
-          customFieldCategories={customFieldCategories}
           currentValues={currentValues}
           setCurrentValues={setCurrentValues}
           siteSettings={siteSettings}
         />
         <SettingsTextInput
           settingKey="site.general.customCardLine2"
-          customFieldCategories={customFieldCategories}
           currentValues={currentValues}
           setCurrentValues={setCurrentValues}
           siteSettings={siteSettings}
         />
         <SettingsTextInput
           settingKey="site.general.customCardButtonText"
-          customFieldCategories={customFieldCategories}
           currentValues={currentValues}
           setCurrentValues={setCurrentValues}
           siteSettings={siteSettings}
         />
         <SettingsTextInput
           settingKey="site.general.customCardButtonUrl"
-          customFieldCategories={customFieldCategories}
           currentValues={currentValues}
           setCurrentValues={setCurrentValues}
           siteSettings={siteSettings}
@@ -155,21 +142,18 @@ export default function SplashSettings() {
         <DividerTitle titleId="MISC" style={{ marginTop: 32 }} />
         <SettingsTextInput
           settingKey="site.general.description"
-          customFieldCategories={customFieldCategories}
           currentValues={currentValues}
           setCurrentValues={setCurrentValues}
           siteSettings={siteSettings}
         />
         <SettingsTextInput
           settingKey="site.general.helpDescription"
-          customFieldCategories={customFieldCategories}
           currentValues={currentValues}
           setCurrentValues={setCurrentValues}
           siteSettings={siteSettings}
         />
         <SettingsTextInput
           settingKey="site.general.donationButtonUrl"
-          customFieldCategories={customFieldCategories}
           currentValues={currentValues}
           setCurrentValues={setCurrentValues}
           siteSettings={siteSettings}
