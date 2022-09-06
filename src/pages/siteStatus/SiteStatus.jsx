@@ -96,9 +96,7 @@ export default function SiteStatus() {
 
   const houstonVersion = get(siteInfo, ['houston', 'version']);
   const sageVersion = get(siteInfo, ['sage', 'version']);
-  const edmBuildDate = get(siteInfo, ['edm', 'built']);
   const houstonHash = get(siteInfo, ['houston', 'git_version']);
-  const edmHash = get(siteInfo, ['edm', 'hash']);
 
   return (
     <MainColumn>
@@ -186,31 +184,6 @@ export default function SiteStatus() {
             },
           ]}
         />
-        <SuperText
-          loading={siteInfoLoading}
-          data={[
-            {
-              type: superTextTypes.text,
-              id: 'COMPONENT_BUILD_DATE',
-              values: { component: 'EDM' },
-            },
-            {
-              key: 'only-spacer',
-              type: superTextTypes.spacer,
-            },
-            {
-              key: 'build-date',
-              types: superTextTypes.text,
-              children: edmBuildDate,
-              hide: !edmBuildDate,
-            },
-            {
-              types: superTextTypes.text,
-              id: 'UNKNOWN',
-              hide: Boolean(edmBuildDate),
-            },
-          ]}
-        />
         <Text
           variant="h5"
           id="COMMIT_HASHES"
@@ -263,31 +236,6 @@ export default function SiteStatus() {
               types: superTextTypes.text,
               id: 'UNKNOWN',
               hide: Boolean(houstonHash),
-            },
-          ]}
-        />
-        <SuperText
-          loading={siteInfoLoading}
-          data={[
-            {
-              type: superTextTypes.text,
-              id: 'COMPONENT_COMMIT_HASH',
-              values: { component: 'EDM' },
-            },
-            {
-              key: 'only-spacer',
-              type: superTextTypes.spacer,
-            },
-            {
-              key: 'commit-hash',
-              types: superTextTypes.text,
-              children: edmHash,
-              hide: !edmHash,
-            },
-            {
-              types: superTextTypes.text,
-              id: 'UNKNOWN',
-              hide: Boolean(edmHash),
             },
           ]}
         />
