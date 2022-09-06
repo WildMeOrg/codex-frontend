@@ -7,23 +7,14 @@ import Skeleton from '@material-ui/lab/Skeleton';
 import Text from '../Text';
 import LabeledInput from '../LabeledInput';
 
-const SettingInput = function ({
-  customFieldCategories,
-  schema,
-  ...rest
-}) {
-  return <LabeledInput schema={schema} {...rest} />;
-};
-
 export default function SettingsTextInput({
   siteSettings,
   currentValues,
   setCurrentValues,
-  customFieldCategories,
   settingKey,
   skipDescription = false,
 }) {
-  const matchingSetting = get(siteSettings, ['data', settingKey]);
+  const matchingSetting = get(siteSettings, [settingKey]);
   const matchingSettingSchema = get(matchingSetting, 'schema', {});
   const valueIsDefined =
     get(currentValues, settingKey, undefined) !== undefined;
@@ -85,8 +76,7 @@ export default function SettingsTextInput({
         }}
       >
         {matchingSetting && valueIsDefined ? (
-          <SettingInput
-            customFieldCategories={customFieldCategories}
+          <LabeledInput
             schema={{
               ...matchingSettingSchema,
               labelId: matchingSetting.labelId,

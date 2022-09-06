@@ -21,12 +21,7 @@ function getCustomFields(siteSettings, property) {
 }
 
 export default function FieldManagement() {
-  const {
-    data: siteSettings,
-    loading,
-    error,
-    siteSettingsVersion,
-  } = useSiteSettings();
+  const { data: siteSettings, loading, error } = useSiteSettings();
 
   useDocumentTitle('MANAGE_FIELDS');
 
@@ -77,10 +72,7 @@ export default function FieldManagement() {
         spacing={3}
         style={{ padding: 20 }}
       >
-        <DefaultFieldTable
-          siteSettings={siteSettings}
-          siteSettingsVersion={siteSettingsVersion}
-        />
+        <DefaultFieldTable siteSettings={siteSettings} />
         <CategoryTable />
         <CustomFieldTable
           categories={customIndividualCategories}

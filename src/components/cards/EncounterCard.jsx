@@ -1,4 +1,5 @@
-import React, { useMemo } from 'react';
+import React from 'react';
+import { useIntl } from 'react-intl';
 import { get } from 'lodash-es';
 
 import Paper from '@material-ui/core/Paper';
@@ -6,8 +7,6 @@ import Skeleton from '@material-ui/lab/Skeleton';
 
 import defaultSightingSrc from '../../assets/defaultSighting.png';
 import useEncounter from '../../models/encounter/useEncounter';
-import useSiteSettings from '../../models/site/useSiteSettings';
-import LocationIdViewer from '../fields/view/LocationIdViewer';
 import Text from '../Text';
 import Link from '../Link';
 import {
@@ -16,19 +15,7 @@ import {
 } from '../../utils/formatters';
 
 export default function EncounterCard({ encounterGuid }) {
-  const { data: siteSettings, siteSettingsVersion } =
-    useSiteSettings();
-
-  const regionChoices = useMemo(
-    () =>
-      get(
-        siteSettings,
-        ['site.custom.regions', 'value', 'locationID'],
-        [],
-      ),
-    [siteSettingsVersion, siteSettings],
-  );
-
+  const intl = useIntl();
   const { data, loading, error } = useEncounter(encounterGuid);
 
   const sightingOwner = get(
@@ -77,12 +64,11 @@ export default function EncounterCard({ encounterGuid }) {
                 variant="body2"
                 id="ENTITY_HEADER_REGION"
                 values={{
-                  region: (
-                    <LocationIdViewer
-                      value={data?.locationId}
-                      choices={regionChoices}
-                    />
-                  ),
+                  region: data?.locationId_value
+                    ? data.locationId_value
+                    : intl.formatMessage({
+                        id: 'REGION_LABEL_NOT_FOUND',
+                      }),
                 }}
               />
               <Text

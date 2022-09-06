@@ -436,6 +436,7 @@
   "PRIVATE_SITE": "Private",
   "PRIVATE_SITE_DESCRIPTION": "Future versions of Codex will support public sites.",
   "SITE_NAME": "Site name",
+  "SITE_NAME_IS_REQUIRED": "Site name is required.",
   "SITE_NAME_DESCRIPTION": "The name of this site, excluding domain name suffix (ie. PandaMatcher, NOT pandamatcher.org)",
   "FEET": "feet",
   "SITE_SETTINGS": "Site configuration",

@@ -56,8 +56,7 @@ export default function ReportForm({
 }) {
   const intl = useIntl();
   const history = useHistory();
-  const { data: siteSettingsData, siteSettingsVersion } =
-    useSiteSettings();
+  const { data: siteSettingsData } = useSiteSettings();
   const recaptchaPublicKey = get(siteSettingsData, [
     'recaptchaPublicKey',
     'value',
@@ -81,7 +80,7 @@ export default function ReportForm({
         customEncounterCategories: _customEncounterCategories,
         customSightingCategories: _customSightingCategories,
       };
-    }, [siteSettingsData, siteSettingsVersion]);
+    }, [siteSettingsData]);
 
   const sightingFieldSchemas = useSightingFieldSchemas();
   const encounterFieldSchemas = useEncounterFieldSchemas();

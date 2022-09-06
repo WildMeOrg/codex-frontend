@@ -5,7 +5,7 @@ import { useTheme } from '@material-ui/core/styles';
 import ActionIcon from '../ActionIcon';
 import ConfirmDelete from '../ConfirmDelete';
 import CustomAlert from '../Alert';
-import useDeleteSiteSettingsMedia from '../../models/site/useDeleteSiteSettingsMedia';
+import useDeleteSiteSetting from '../../models/site/useDeleteSiteSetting';
 
 export default function MediaDeleteButton({
   includeDeleteButton = false,
@@ -24,15 +24,17 @@ export default function MediaDeleteButton({
     setShouldOpenConfirmDeleteDialog,
   ] = useState(false);
   const theme = useTheme();
+
   const {
-    deleteSettingsAsset,
+    mutate: deleteSiteSetting,
     error,
-    setError,
+    clearError,
     success: localSuccess,
-  } = useDeleteSiteSettingsMedia();
+  } = useDeleteSiteSetting();
+
   const [dismissed, setDismissed] = useState(false);
   function onCloseConfirmDelete() {
-    setError(null);
+    clearError();
     setShouldOpenConfirmDeleteDialog(false);
   }
   if (dismissed) {
@@ -77,16 +79,17 @@ export default function MediaDeleteButton({
           messageId="CONFIRM_DELETE_FILE"
           onClose={onCloseConfirmDelete}
           error={error}
-          onDelete={() => {
+          onDelete={async () => {
             if (shouldTryDelete) {
-              deleteSettingsAsset(settingKey).then(isOk => {
-                if (isOk) {
-                  setPreviewUrl(null);
-                  setPreviewText(null);
-                  onSetPostData(null);
-                  onCloseConfirmDelete();
-                }
+              const result = await deleteSiteSetting({
+                property: settingKey,
               });
+              if (result?.status === 204) {
+                setPreviewUrl(null);
+                setPreviewText(null);
+                onSetPostData(null);
+                onCloseConfirmDelete();
+              }
             } else {
               setPreviewUrl(null);
               setPreviewText(null);

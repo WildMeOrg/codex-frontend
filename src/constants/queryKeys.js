@@ -4,7 +4,6 @@ function sortIfArray(value) {
 
 export default {
   me: 'me',
-  settingsConfig: 'settingsConfig',
   settingsSchema: 'settingsSchema',
   siteInfo: 'siteInfo',
   detectionConfig: 'detectionConfig',
