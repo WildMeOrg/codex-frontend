@@ -1193,5 +1193,6 @@
   "COLLABORATION_STATE_REVOKED": "Revoked",
   "EDIT_COLLABORATION": "Edit collaboration",
   "EDIT_COLLABORATION_CURRENT_STATE_LABEL": "Current state",
-  "EDIT_COLLABORATION_CURRENT_STATE_DESCRIPTION": "Changing the state will cancel any pending requests."
+  "EDIT_COLLABORATION_CURRENT_STATE_DESCRIPTION": "Changing the state will cancel any pending requests.",
+  "URLS_MUST_INCLUDE_HTTPS": "All URLs must include https:// to be valid"
 }

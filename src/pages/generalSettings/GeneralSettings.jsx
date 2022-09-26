@@ -114,6 +114,11 @@ export default function GeneralSettings() {
         direction="column"
         style={{ marginTop: 20, padding: 20 }}
       >
+        <CustomAlert
+          severity="info"
+          titleId="URLS_MUST_INCLUDE_HTTPS"
+        />
+
         <DividerTitle titleId="SITE_CONFIGURATION" />
         <SettingsTextInput
           settingKey="site.name"
