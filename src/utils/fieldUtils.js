@@ -114,7 +114,7 @@ const componentMap = {
     filterComponent: null,
   },
   [fieldTypes.select]: {
-    defaultValue: '',
+    defaultValue: [],
     fieldType: fieldTypes.select,
     viewComponent: SelectViewer,
     editComponent: SelectionEditor,

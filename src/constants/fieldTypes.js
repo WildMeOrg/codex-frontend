@@ -138,7 +138,7 @@ export const fieldTypeChoices = [
   {
     labelId: 'DROPDOWN',
     value: fieldTypes.select,
-    defaultValue: '',
+    defaultValue: [],
     backendType: backendTypes.string,
     backendMultiple: false,
     configuration: [
