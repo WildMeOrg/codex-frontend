@@ -18,8 +18,13 @@ export default function CollaborationsDialog({
   open,
   onClose,
   activeCollaboration,
+  isUserManager,
+  someoneElse,
   setCollabDialogButtonClickLoading = null,
 }) {
+
+  const isUserManagerViewingOtherUser = isUserManager && someoneElse;
+
   const {
     mutate: requestEditAccess,
     loading: requestLoading,
@@ -32,6 +37,8 @@ export default function CollaborationsDialog({
     isLoading: patchLoading,
     error: patchError,
   } = usePatchCollaboration();
+
+
 
   const loading = requestLoading || patchLoading;
   const error = requestError || patchError;
@@ -110,15 +117,38 @@ export default function CollaborationsDialog({
               if (setCollabDialogButtonClickLoading)
                 setCollabDialogButtonClickLoading(true);
               let requestSuccessful;
+              const deleteMeActionPatch = request.actionPatch;
+              console.log('deleteMe deleteMeActionPatch is: ');
+              console.log(deleteMeActionPatch);
+              const managerPatch = {...get(request.actionPatch,0)}; // @TODO fix/improve
+              managerPatch['op'] ='replace'
+              managerPatch['path'] = get(request.actionPatch,0)?.path?.startsWith('/view') ? '/managed_view_permission' : '/managed_edit_permission';
+              managerPatch['value'] = { permission: get(request.actionPatch,0)?.value?.startsWith('revoked') ? 'revoked' : 'approved'}
+              console.log('deleteMe managerPatch is: ');
+              console.log(managerPatch);
               if (request.sendEditRequest) {
-                const response = await requestEditAccess({
+                const response = await isUserManagerViewingOtherUser ? patchCollaboration({
+                  collaborationGuid: activeCollaboration.guid,
+                  operations: [managerPatch],
+                }) : requestEditAccess({
                   collaborationGuid: activeCollaboration.guid,
                 });
+                console.log('deleteMe response is: ');
+                console.log(response);
+                // @TODO LEFT OFF HERE figuring out why this doesn't get dismissed when the user manager does it
                 requestSuccessful = response?.status === 200;
               } else {
+                // const deleteMeActionPatch = request.actionPatch;
+                // console.log('deleteMe deleteMeActionPatch is: ');
+                // console.log(deleteMeActionPatch);
+                // const managerPatch = {...get(request.actionPatch,0)};
+                // managerPatch['path'] = get(request.actionPatch,0)?.path?.startsWith('/view') ? '/managed_view_permission' : '/managed_edit_permission';
+                // managerPatch['value'] = { permission: get(request.actionPatch,0)?.value?.startsWith('revoked') ? 'revoked' : 'approved'}
+                // console.log('deleteMe managerPatch is: ');
+                // console.log(managerPatch);
                 const response = await patchCollaboration({
                   collaborationGuid: activeCollaboration.guid,
-                  operations: request.actionPatch,
+                  operations: isUserManagerViewingOtherUser ? [managerPatch] : request.actionPatch,
                 });
                 requestSuccessful = response?.status === 200;
               }

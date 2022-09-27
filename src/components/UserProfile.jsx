@@ -169,6 +169,8 @@ export default function UserProfile({
           />
           {(!someoneElse || isUserManager) && (
             <CollaborationsCard
+              isUserManager={isUserManager}
+              someoneElse={someoneElse}
               title={
               someoneElse
                 ? intl.formatMessage(
