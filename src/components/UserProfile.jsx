@@ -5,6 +5,7 @@ import { get } from 'lodash-es';
 import { getHighestRoleLabelId } from '../utils/roleUtils';
 import useUserMetadataSchemas from '../models/users/useUserMetadataSchemas';
 import useGetUserSightings from '../models/users/useGetUserSightings';
+import useGetMe from '../models/users/useGetMe';
 import useGetUserUnprocessedAssetGroupSightings from '../models/users/useGetUserUnproccessedAssetGroupSightings';
 import { formatDate, formatUserMessage } from '../utils/formatters';
 import EntityHeader from './EntityHeader';
@@ -35,7 +36,8 @@ export default function UserProfile({
   const metadataSchemas = useUserMetadataSchemas(userId);
   const { data: agsData, loading: agsLoading } =
     useGetUserUnprocessedAssetGroupSightings(userId);
-
+  const { data: currentUserData } = useGetMe();  
+  const isUserManager = get(currentUserData, 'is_user_manager', false);
   const metadata = useMemo(() => {
     if (!userData || !metadataSchemas) return [];
     return metadataSchemas
@@ -46,7 +48,7 @@ export default function UserProfile({
         ...schema,
         value: schema?.getValue(schema, userData),
       }));
-  }, [userData, metadataSchemas]);
+  }, [userData, metadataSchemas, someoneElse]);
 
   const imageSrc = get(userData, ['profile_fileupload', 'src']);
   const imageGuid = get(userData, ['profile_fileupload', 'guid']);
@@ -165,10 +167,23 @@ export default function UserProfile({
               someoneElse ? 'NO_SIGHTINGS_NON_SELF' : 'NO_SIGHTINGS'
             }
           />
-          {!someoneElse && (
+          {(!someoneElse || isUserManager) && (
             <CollaborationsCard
+              title={
+              someoneElse
+                ? intl.formatMessage(
+                    { id: 'USERS_COLLABORATIONS' },
+                    { name },
+                  )
+                : intl.formatMessage({ id: 'COLLABORATIONS' })
+            }
               htmlId="collab-card"
               userId={userId}
+              noCollaborationsMsg={
+              someoneElse
+                ? 'NO_COLLABORATIONS_SOMEONE_ELSE'
+                : 'NO_COLLABORATIONS'
+            }
             />
           )}
         </CardContainer>
