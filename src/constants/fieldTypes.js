@@ -138,7 +138,7 @@ export const fieldTypeChoices = [
   {
     labelId: 'DROPDOWN',
     value: fieldTypes.select,
-    defaultValue: '',
+    defaultValue: null,
     backendType: backendTypes.string,
     backendMultiple: false,
     configuration: [
@@ -147,7 +147,7 @@ export const fieldTypeChoices = [
         descriptionId: 'DROPDOWN_CHOICE_HELPER_TEXT',
         value: 'choices',
         type: fieldTypes.optioneditor,
-        defaultValue: [],
+        defaultValue: null,
       },
     ],
   },
