@@ -231,7 +231,7 @@ export default function SaveField() {
                   <Switch disabled={disableForm} name="required" />
                 }
                 label={<FormattedMessage id="REQUIRED" />}
-                value={get(formData, 'required', false)}
+                checked={get(formData, 'required', false)}
                 onChange={e =>
                   setFormData({
                     ...formData,
