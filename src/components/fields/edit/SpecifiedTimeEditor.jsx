@@ -54,7 +54,7 @@ export default function SpecifiedTimeEditor(props) {
    * which messes up display if this component is a flex child. */
   return (
     <div>
-      <FormCore schema={{ ...schema, required: false }} width={width}>
+      <FormCore schema={schema} width={width}>
         <InputLabel>
           {intl.formatMessage({ id: 'SIGHTING_TIME_SPECIFICITY' })}
         </InputLabel>
@@ -120,6 +120,7 @@ export default function SpecifiedTimeEditor(props) {
               'aria-label': intl.formatMessage({ id: 'CHANGE_DATE' }),
             }}
             views={dateInputViews}
+            required={get(schema, 'required', false)}
             {...rest}
           />
         </div>
