@@ -4,8 +4,7 @@ import { get, reduce, zipObject } from 'lodash-es';
 import Grid from '@material-ui/core/Grid';
 
 import useSiteSettings from '../../models/site/useSiteSettings';
-import usePutSiteSettings from '../../models/site/usePutSiteSettings';
-import usePostSettingsAsset from '../../models/site/usePostSettingsAsset';
+import usePutSiteSetting from '../../models/site/usePutSiteSetting';
 
 import CustomAlert from '../../components/Alert';
 import Button from '../../components/Button';
@@ -19,12 +18,6 @@ import SettingsFileUpload from '../../components/settings/SettingsFileUpload';
 import SettingsTextInput from '../../components/settings/SettingsTextInput';
 import IntelligentAgentSettings from './IntelligentAgentSettings';
 import { intelligentAgentSchema } from '../../constants/intelligentAgentSchema';
-
-const customFields = {
-  sighting: 'site.custom.customFields.Occurrence',
-  encounter: 'site.custom.customFields.Encounter',
-  individual: 'site.custom.customFields.MarkedIndividual',
-};
 
 const generalSettingsFields = [
   'site.name',
@@ -64,10 +57,9 @@ const allSettingsFields = [
 ];
 
 export default function GeneralSettings() {
-  const siteSettings = useSiteSettings();
+  const { data: siteSettings } = useSiteSettings();
 
   const [currentValues, setCurrentValues] = useState(null);
-  const [logoPostData, setLogoPostData] = useState(null);
   const [
     intelligentAgentFieldsValid,
     setIntelligentAgentFieldsValid,
@@ -77,19 +69,12 @@ export default function GeneralSettings() {
   );
 
   const {
-    mutate: putSiteSettings,
-    error: putSiteSettingsError,
-    loading: formPostLoading,
-    success: formPostSuccess,
-    clearSuccess: setClearPostSuccess,
-  } = usePutSiteSettings();
-
-  const {
-    mutate: postSettingsAsset,
-    loading: assetPostLoading,
-    error: settingsAssetPostError,
-    clearSuccess: setClearAssetPostSuccess,
-  } = usePostSettingsAsset();
+    mutate: putSiteSetting,
+    error: putSiteSettingError,
+    loading: putSiteSettingLoading,
+    success: putSiteSettingSuccess,
+    clearSuccess: clearPutSiteSettingSuccess,
+  } = usePutSiteSetting();
 
   const {
     data: twitterTestResults,
@@ -110,15 +95,11 @@ export default function GeneralSettings() {
   }, [twitterTestResults, twitterStatusCode]);
 
   useEffect(() => {
-    const edmValues = allSettingsFields.map(fieldKey =>
-      get(siteSettings, ['data', fieldKey, 'value']),
+    const fieldValues = allSettingsFields.map(fieldKey =>
+      get(siteSettings, [fieldKey, 'value']),
     );
-    setCurrentValues(zipObject(allSettingsFields, edmValues));
-  }, [siteSettings, allSettingsFields]);
-
-  const loading = assetPostLoading || formPostLoading;
-  const error = putSiteSettingsError || settingsAssetPostError;
-  const success = formPostSuccess && !error && !loading;
+    setCurrentValues(zipObject(allSettingsFields, fieldValues));
+  }, [siteSettings]);
 
   return (
     <MainColumn>
@@ -172,7 +153,12 @@ export default function GeneralSettings() {
           changeId="CHANGE_LOGO"
           allowedFileTypes={['.jpg', '.jpeg', '.png']}
           settingName="logo"
-          onSetPostData={setLogoPostData}
+          onSetPostData={fileUploadData => {
+            setCurrentValues(prev => ({
+              ...prev,
+              logo: fileUploadData,
+            }));
+          }}
         />
         <SettingsTextInput
           settingKey="site.look.logoIncludesSiteName"
@@ -256,13 +242,13 @@ export default function GeneralSettings() {
             marginTop: 28,
           }}
         >
-          {error && (
+          {putSiteSettingError && (
             <CustomAlert
               severity="error"
               titleId="SUBMISSION_ERROR"
               style={{ marginBottom: 16 }}
             >
-              {error}
+              {putSiteSettingError}
             </CustomAlert>
           )}
           {twitterTestError && isTwitterEnabled && (
@@ -272,12 +258,9 @@ export default function GeneralSettings() {
               style={{ marginBottom: 16 }}
             />
           )}
-          {success && (
+          {putSiteSettingSuccess && (
             <CustomAlert
-              onClose={() => {
-                setClearPostSuccess();
-                setClearAssetPostSuccess();
-              }}
+              onClose={clearPutSiteSettingSuccess}
               severity="success"
               titleId="SUCCESS"
               descriptionId="CHANGES_SAVED"
@@ -297,41 +280,11 @@ export default function GeneralSettings() {
           )}
           <Button
             onClick={() => {
-              /* Prepare custom fields objects to send to backend */
-              Object.values(customFields).forEach(customFieldKey => {
-                const fields = currentValues[customFieldKey];
-                if (!fields) {
-                  currentValues[customFieldKey] = {
-                    definitions: [],
-                  };
-                } else {
-                  const newFields = get(
-                    fields,
-                    'definitions',
-                    [],
-                  ).map(field => {
-                    const choices = get(field, ['schema', 'choices']);
-                    if (!choices) return field;
-                    return {
-                      ...field,
-                      options: choices.map(choice => choice.label),
-                    };
-                  });
-
-                  currentValues[customFieldKey] = {
-                    definitions: newFields,
-                  };
-                }
-              });
-              putSiteSettings({ data: currentValues });
-              if (logoPostData)
-                postSettingsAsset({
-                  data: logoPostData,
-                });
+              putSiteSetting({ property: '', data: currentValues });
             }}
             style={{ marginTop: 12 }}
             display="primary"
-            loading={loading}
+            loading={putSiteSettingLoading}
             disabled={!intelligentAgentFieldsValid}
             id="SAVE_CHANGES"
           />

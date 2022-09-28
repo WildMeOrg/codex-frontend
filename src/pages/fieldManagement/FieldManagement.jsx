@@ -21,12 +21,7 @@ function getCustomFields(siteSettings, property) {
 }
 
 export default function FieldManagement() {
-  const {
-    data: siteSettings,
-    loading,
-    error,
-    siteSettingsVersion,
-  } = useSiteSettings();
+  const { data: siteSettings, loading, error } = useSiteSettings();
 
   useDocumentTitle('MANAGE_FIELDS');
 
@@ -41,11 +36,11 @@ export default function FieldManagement() {
   );
   const customIndividualFields = getCustomFields(
     siteSettings,
-    'MarkedIndividual',
+    'Individual',
   );
   const customSightingFields = getCustomFields(
     siteSettings,
-    'Occurrence',
+    'Sighting',
   );
 
   if (loading || error) return null;
@@ -77,17 +72,14 @@ export default function FieldManagement() {
         spacing={3}
         style={{ padding: 20 }}
       >
-        <DefaultFieldTable
-          siteSettings={siteSettings}
-          siteSettingsVersion={siteSettingsVersion}
-        />
+        <DefaultFieldTable siteSettings={siteSettings} />
         <CategoryTable />
         <CustomFieldTable
           categories={customIndividualCategories}
           fields={customIndividualFields}
           titleId="CUSTOM_INDIVIDUAL_FIELDS"
           descriptionId="CUSTOM_INDIVIDUAL_FIELDS_DESCRIPTION"
-          settingName="site.custom.customFields.MarkedIndividual"
+          settingName="site.custom.customFields.Individual"
           noFieldsTextId="NO_CUSTOM_INDIVIDUAL_FIELDS_MESSAGE"
         />
         <CustomFieldTable
@@ -95,7 +87,7 @@ export default function FieldManagement() {
           fields={customSightingFields}
           titleId="CUSTOM_SIGHTING_FIELDS"
           descriptionId="CUSTOM_SIGHTING_FIELDS_DESCRIPTION"
-          settingName="site.custom.customFields.Occurrence"
+          settingName="site.custom.customFields.Sighting"
           noFieldsTextId="NO_CUSTOM_SIGHTING_FIELDS_MESSAGE"
         />
         <CustomFieldTable

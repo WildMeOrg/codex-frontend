@@ -12,14 +12,14 @@ export default function RelationshipDisplay({
     {
       reference: 'nonSelfFirstName',
       name: 'nonSelfFirstName',
-      labelId: 'Individual',
+      labelId: 'INDIVIDUAL',
     },
-    { reference: 'type', name: 'type', labelId: 'Type' },
-    { reference: 'role', name: 'role', labelId: 'Role' },
+    { reference: 'type', name: 'type', labelId: 'TYPE' },
+    { reference: 'role', name: 'role', labelId: 'ROLE' },
     {
       reference: 'actions',
       name: 'guid',
-      labelId: 'Actions',
+      labelId: 'ACTIONS',
       options: {
         customBodyRender: (_, relationship) => [
           <ActionIcon
@@ -43,10 +43,12 @@ export default function RelationshipDisplay({
 
   return (
     <DataDisplay
+      idKey="guid"
       tableSize="medium"
       columns={relationshipCols}
       data={data}
       loading={loading}
+      tableContainerStyles={{ maxHeight: 400 }}
     />
   );
 }

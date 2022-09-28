@@ -32,7 +32,7 @@ export default function InputRow({
         padding: 12,
         marginTop: 20,
         width: '100%',
-        containerStyles,
+        ...containerStyles,
       }}
       {...containerProps}
     >

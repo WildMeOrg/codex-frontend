@@ -15,10 +15,13 @@ import ControlPanel from './pages/controlPanel/ControlPanel';
 import AssignEncounters from './pages/assignEncounters/AssignEncounters';
 import CreateIndividual from './pages/createIndividual/CreateIndividual';
 import Individual from './pages/individual/Individual';
+import IndividualGallery from './pages/individualGallery/IndividualGallery';
 // import PictureBook from './pages/individual/PictureBook';
 import Sighting from './pages/sighting/Sighting';
 import AssetGroupSighting from './pages/sighting/AssetGroupSighting';
 import Splash from './pages/splash/Splash';
+import SocialGroups from './pages/socialGroups/SocialGroups';
+import SocialGroup from './pages/socialGroups/SocialGroup';
 import AssetGroup from './pages/assetGroup/AssetGroup';
 import PendingCitizenScienceSightings from './pages/pendingCitizenScienceSightings/PendingCitizenScienceSightings';
 import User from './pages/user/User';
@@ -39,7 +42,7 @@ import AuditLog from './pages/devTools/AuditLog';
 import Welcome from './pages/auth/Welcome';
 import EmailVerified from './pages/auth/EmailVerified';
 import Home from './pages/home/Home';
-import Settings from './pages/settings/Settings';
+import Preferences from './pages/preferences/Preferences';
 import ResendVerificationEmail from './pages/auth/ResendVerificationEmail';
 import Footer from './components/Footer';
 import { defaultCrossfadeDuration } from './constants/defaults';
@@ -94,35 +97,41 @@ export default function AuthenticatedSwitch({
                     <SiteSetup />
                   ) : (
                     <Switch location={location}>
-                      <Route path="/admin/front-page" exact>
+                      <Route path="/settings/front-page" exact>
                         <SplashSettings />
                       </Route>
-                      <Route path="/admin/front-page/preview">
+                      <Route path="/settings/front-page/preview">
                         <Splash />
                       </Route>
-                      <Route path="/admin/status">
+                      <Route path="/settings/status">
                         <SiteStatus />
                       </Route>
-                      <Route path="/admin/users">
+                      <Route path="/settings/users">
                         <UserManagement />
                       </Route>
-                      <Route path="/admin/actions">
+                      <Route path="/settings/actions">
                         <AdminActions />
                       </Route>
-                      <Route path="/admin/fields/save-custom-field/:type?/:id?">
+                      <Route path="/settings/fields/save-custom-field/:type?/:id?">
                         <SaveCustomField />
                       </Route>
-                      <Route path="/admin/fields">
+                      <Route path="/settings/fields">
                         <FieldManagement />
                       </Route>
-                      <Route path="/admin/settings">
+                      <Route path="/settings/general">
                         <GeneralSettings />
+                      </Route>
+                      <Route path="/settings/social-groups">
+                        <SocialGroups />
+                      </Route>
+                      <Route path="/settings/preferences">
+                        <Preferences />
+                      </Route>
+                      <Route path="/settings">
+                        <ControlPanel />
                       </Route>
                       <Route path="/email_verified">
                         <EmailVerified />
-                      </Route>
-                      <Route path="/admin">
-                        <ControlPanel />
                       </Route>
                       <Route path="/create-individual">
                         <CreateIndividual />
@@ -133,6 +142,9 @@ export default function AuthenticatedSwitch({
                       {/* <Route path="/individuals/picturebook">
                         <PictureBook />
                       </Route> */}
+                      <Route path="/individuals/:guid/gallery">
+                        <IndividualGallery />
+                      </Route>
                       <Route path="/individuals/:id">
                         <Individual />
                       </Route>
@@ -172,8 +184,8 @@ export default function AuthenticatedSwitch({
                       <Route path="/users">
                         <Users />
                       </Route>
-                      <Route path="/settings">
-                        <Settings />
+                      <Route path="/social-groups/:guid">
+                        <SocialGroup />
                       </Route>
                       <Route path="/bulk-import/success/:id">
                         <BulkImportSuccess />

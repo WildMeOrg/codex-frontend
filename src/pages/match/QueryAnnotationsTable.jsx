@@ -55,6 +55,7 @@ export default function QueryAnnotationsTable({
           setSelectedQueryAnnotation(nextSelection);
         }
       }}
+      tableContainerStyles={{ maxHeight: 300 }}
     />
   );
 }

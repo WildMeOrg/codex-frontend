@@ -12,19 +12,14 @@ import { defaultIndividualCategories } from '../../constants/fieldCategories';
 import { deriveIndividualName } from '../../utils/nameUtils';
 
 export default function useIndividualFieldSchemas() {
-  const { data, loading, error, siteSettingsVersion } =
-    useSiteSettings();
+  const { data, loading, error } = useSiteSettings();
 
   const individualFieldSchemas = useMemo(() => {
     if (loading || error) return [];
 
     const customFields = get(
       data,
-      [
-        'site.custom.customFields.MarkedIndividual',
-        'value',
-        'definitions',
-      ],
+      ['site.custom.customFields.Individual', 'value', 'definitions'],
       [],
     );
     const customFieldSchemas = customFields.map(
@@ -61,7 +56,7 @@ export default function useIndividualFieldSchemas() {
       }),
       ...customFieldSchemas,
     ];
-  }, [data, siteSettingsVersion, loading, error]);
+  }, [data, loading, error]);
 
   return individualFieldSchemas;
 }

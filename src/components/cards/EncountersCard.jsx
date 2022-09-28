@@ -162,6 +162,7 @@ export default function EncountersCard({
           columns={filteredColumns}
           data={encountersWithLocationData}
           tableStyles={{ tableLayout: 'fixed' }}
+          tableContainerStyles={{ maxHeight: 600 }}
         />
       )}
       {!noEncounters && showMapView && <div>Map goes here</div>}

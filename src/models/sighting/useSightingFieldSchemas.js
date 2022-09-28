@@ -18,7 +18,6 @@ export default function useSightingFieldSchemas() {
     data,
     loading: siteSettingsLoading,
     error: siteSettingsError,
-    siteSettingsVersion,
   } = useSiteSettings();
 
   const {
@@ -74,7 +73,7 @@ export default function useSightingFieldSchemas() {
 
     const customFields = get(
       data,
-      ['site.custom.customFields.Occurrence', 'value', 'definitions'],
+      ['site.custom.customFields.Sighting', 'value', 'definitions'],
       [],
     );
     const customFieldSchemas = customFields.map(
@@ -144,14 +143,7 @@ export default function useSightingFieldSchemas() {
       }),
       ...customFieldSchemas,
     ];
-  }, [
-    intl,
-    data,
-    detectionConfig,
-    siteSettingsVersion,
-    loading,
-    error,
-  ]);
+  }, [intl, data, detectionConfig, loading, error]);
 
   return sightingFieldSchemas;
 }

@@ -1,17 +1,37 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useIntl } from 'react-intl';
 import { get } from 'lodash-es';
 
-import Grid from '@material-ui/core/Grid';
-
+import { collaborationLabelIds } from './constants/collaboration';
+import { formatUserMessage } from './utils';
+import EditCollaborationDialog from './components/EditCollaborationDialog';
 import CustomAlert from '../../components/Alert';
 import Text from '../../components/Text';
 import DataDisplay from '../../components/dataDisplays/DataDisplay';
 import ActionIcon from '../../components/ActionIcon';
+import { cellRenderers } from '../../components/dataDisplays/cellRenderers';
 import usePatchCollaboration from '../../models/collaboration/usePatchCollaboration';
-import useGetMe from '../../models/users/useGetMe';
+import {
+  getRequestedState,
+  getSummaryState,
+  summaryStates,
+} from '../../utils/collaborationUtils';
 
-const revokedPermission = 'revoked';
+const ActionGroupRenderer = cellRenderers.actionGroup;
+
+function Actions({ onRevoke, ...actionGroupRendererProps }) {
+  const collaborationRow = actionGroupRendererProps.datum;
+
+  return (
+    <ActionGroupRenderer {...actionGroupRendererProps}>
+      <ActionIcon
+        variant="revoke"
+        disabled={!collaborationRow?.isRevocable}
+        onClick={() => onRevoke(collaborationRow?.guid)}
+      />
+    </ActionGroupRenderer>
+  );
+}
 
 export default function UserManagersCollaborationEditTable({
   inputData,
@@ -19,9 +39,12 @@ export default function UserManagersCollaborationEditTable({
   collaborationError,
 }) {
   const intl = useIntl();
+  const [activeCollaborationGuid, setActiveCollaborationGuid] =
+    useState(null);
 
-  const { data: currentUserData, loading: userDataLoading } =
-    useGetMe();
+  const activeCollaboration = inputData?.find(
+    collaboration => collaboration?.guid === activeCollaborationGuid,
+  );
 
   const {
     mutate: revokeCollab,
@@ -32,53 +55,22 @@ export default function UserManagersCollaborationEditTable({
     clearError: onClearRevokeError,
   } = usePatchCollaboration();
 
-  const {
-    mutate: restoreCollab,
-    success: restoreSuccess,
-    loading: restoreLoading,
-    clearSuccess: clearRestoreSuccess,
-    error: restoreError,
-    clearError: onClearRestoreError,
-  } = usePatchCollaboration();
+  const isLoading = revokeLoading || collaborationLoading;
 
-  const isLoading =
-    userDataLoading ||
-    revokeLoading ||
-    restoreLoading ||
-    collaborationLoading;
-
-  function processRevoke(collaboration) {
+  function processRevoke(collaborationGuid) {
     const operations = [
       {
         op: 'replace',
         path: '/managed_view_permission',
-        value: {
-          user_guid: get(currentUserData, 'guid'),
-          permission: 'revoked',
-        },
+        value: { permission: 'revoked' },
       },
     ];
-    revokeCollab({
-      collaborationGuid: collaboration?.guid,
-      operations,
-    });
+
+    revokeCollab({ collaborationGuid, operations });
   }
 
-  function processRestore(collaboration) {
-    const operations = [
-      {
-        op: 'replace',
-        path: '/managed_view_permission',
-        value: {
-          user_guid: get(currentUserData, 'guid'),
-          permission: 'approved',
-        },
-      },
-    ];
-    restoreCollab({
-      collaborationGuid: collaboration?.guid,
-      operations,
-    });
+  function handleEditCollaboration(_, collaborationRow) {
+    setActiveCollaborationGuid(collaborationRow?.guid);
   }
 
   function tranformDataForCollabTable(originalData) {
@@ -91,23 +83,34 @@ export default function UserManagersCollaborationEditTable({
       const member2 = get(collaborators, 1, {});
 
       // Note: the collaboration API call returned a members OBJECT instead of array of objects, which made some tranformation gymnastics here necessary
+      const currentAccess = getSummaryState(collaboration);
+      const currentAccessLabelId =
+        collaborationLabelIds[currentAccess];
+      const requestedAccessLabelId =
+        collaborationLabelIds[getRequestedState(collaboration)];
+
       return {
         guid: get(collaboration, 'guid'),
-        userOne: get(member1, 'full_name', get(member1, 'email')),
+        userOne: formatUserMessage(
+          { fullName: member1?.full_name, email: member1?.email },
+          intl,
+        ),
         userOneGuid: get(member1, 'guid'),
-        userTwo: get(member2, 'full_name', get(member2, 'email')),
+        userTwo: formatUserMessage(
+          { fullName: member2?.full_name, email: member2?.email },
+          intl,
+        ),
         userTwoGuid: get(member2, 'guid'),
-        viewStatusOne: get(member1, 'viewState'),
-        viewStatusTwo: get(member2, 'viewState'),
+        currentAccess: currentAccessLabelId
+          ? intl.formatMessage({ id: currentAccessLabelId })
+          : '',
+        requestedAccess: requestedAccessLabelId
+          ? intl.formatMessage({ id: requestedAccessLabelId })
+          : '',
+        isRevocable: Boolean(
+          currentAccess && currentAccess !== summaryStates.revoked,
+        ), // Only collaborations that are mutually approved can be mutually revoked.
       };
-      // editStatusOne: get(
-      //   member1,
-      //   'editState',
-      // ),
-      // editStatusTwo: get(
-      //   member2,
-      //   'editState',
-      // ),
     });
   }
   const tableFriendlyData = tranformDataForCollabTable(inputData);
@@ -116,89 +119,53 @@ export default function UserManagersCollaborationEditTable({
       name: 'userOne',
       align: 'left',
       labelId: 'USER_ONE',
-      options: {
-        customBodyRender: userOne => (
-          <Text variant="body2">{userOne}</Text>
-        ),
-      },
     },
-    {
-      name: 'viewStatusOne',
-      align: 'left',
-      labelId: 'USER_ONE_VIEW_STATUS',
-      options: {
-        customBodyRender: viewStatusOne => (
-          <Text variant="body2">{viewStatusOne}</Text>
-        ),
-      },
-    }, //     ), //       <Text variant="body2">{editStatusOne}</Text> //     customBodyRender: editStatusOne => ( //   options: { //   label: intl.formatMessage({ id: 'USER_ONE_EDIT_STATUS' }), //   name: 'editStatusOne', // {
-    //   },
-    // },
     {
       name: 'userTwo',
       align: 'left',
       labelId: 'USER_TWO',
-      options: {
-        customBodyRender: userTwo => (
-          <Text variant="body2">{userTwo}</Text>
-        ),
-      },
     },
     {
-      name: 'viewStatusTwo',
+      name: 'currentAccess',
       align: 'left',
-      labelId: 'USER_TWO_VIEW_STATUS',
-      options: {
-        customBodyRender: viewStatusTwo => (
-          <Text variant="body2">{viewStatusTwo}</Text>
-        ),
-      },
-    }, //     ), //       <Text variant="body2">{editStatusTwo}</Text> //     customBodyRender: editStatusTwo => ( //   options: { //   label: intl.formatMessage({ id: 'USER_TWO_EDIT_STATUS' }), //   name: 'editStatusTwo', // {
-    //   },
-    // },
+      labelId: 'COLLABORATION_CURRENT_ACCESS',
+    },
+    {
+      name: 'requestedAccess',
+      align: 'left',
+      labelId: 'COLLABORATION_REQUESTED_ACCESS',
+    },
     {
       name: 'actions',
       align: 'right',
       labelId: 'ACTIONS',
       options: {
         displayInFilter: false,
-        customBodyRender: (_, collaboration) => {
-          const isRevoked =
-            get(collaboration, 'viewStatusOne') ===
-              revokedPermission ||
-            get(collaboration, 'viewStatusTwo') === revokedPermission;
-          return (
-            <div
-              style={{ display: 'flex', justifyContent: 'flex-end' }}
-            >
-              {isRevoked ? (
-                <ActionIcon
-                  variant="restore"
-                  onClick={() => processRestore(collaboration)}
-                />
-              ) : (
-                <ActionIcon
-                  variant="revoke"
-                  onClick={() => processRevoke(collaboration)}
-                />
-              )}
-            </div>
-          );
+        customBodyComponent: Actions,
+        cellRendererProps: {
+          onRevoke: processRevoke,
+          onEdit: handleEditCollaboration,
         },
       },
     },
   ];
-  return [
-    <Grid item>
+  return (
+    <>
+      <EditCollaborationDialog
+        open={Boolean(activeCollaborationGuid)}
+        onClose={() => setActiveCollaborationGuid(null)}
+        collaboration={activeCollaboration}
+      />
       <DataDisplay
         idKey="guid"
         loading={isLoading}
-        titleId="EDIT_COLLABORATIONS"
+        titleId="USER_MANAGEMENT_COLLABORATIONS"
         style={{ marginTop: 8 }}
         variant="secondary"
         columns={tableColumns}
         data={tableFriendlyData || []}
         noResultsTextId="NO_COLLABORATIONS_MESSAGE"
+        tableContainerStyles={{ maxHeight: 500 }}
       />
       {collaborationError ? (
         <Text
@@ -213,27 +180,9 @@ export default function UserManagersCollaborationEditTable({
           severity="error"
           titleId="COLLABORATION_REVOKE_ERROR"
           onClose={onClearRevokeError}
-        >
-          {revokeError +
-            '. ' +
-            intl.formatMessage({
-              id: 'COLLAB_REVOKE_ERROR_SUPPLEMENTAL',
-            })}
-        </CustomAlert>
-      )}
-      {restoreError && (
-        <CustomAlert
-          style={{ marginTop: 16 }}
-          severity="error"
-          titleId="COLLABORATION_RESTORE_ERROR"
-          onClose={onClearRestoreError}
-        >
-          {restoreError +
-            '. ' +
-            intl.formatMessage({
-              id: 'COLLAB_RESTORE_ERROR_SUPPLEMENTAL',
-            })}
-        </CustomAlert>
+          descriptionId="COLLAB_REVOKE_ERROR_SUPPLEMENTAL"
+          descriptionValues={{ error: revokeError }}
+        />
       )}
       {revokeSuccess && (
         <CustomAlert
@@ -243,14 +192,6 @@ export default function UserManagersCollaborationEditTable({
           onClose={clearRevokeSuccess}
         />
       )}
-      {restoreSuccess && (
-        <CustomAlert
-          style={{ marginTop: 16 }}
-          severity="success"
-          titleId="COLLABORATION_RESTORE_SUCCESS"
-          onClose={clearRestoreSuccess}
-        />
-      )}
-    </Grid>,
-  ];
+    </>
+  );
 }

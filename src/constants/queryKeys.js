@@ -1,6 +1,9 @@
+function sortIfArray(value) {
+  return Array.isArray(value) ? value.sort() : value;
+}
+
 export default {
   me: 'me',
-  settingsConfig: 'settingsConfig',
   settingsSchema: 'settingsSchema',
   siteInfo: 'siteInfo',
   detectionConfig: 'detectionConfig',
@@ -12,6 +15,7 @@ export default {
   unreadNotifications: 'unreadNotifications',
   twitterBotTestResults: 'twitterBotTestResults',
   publicData: 'publicData',
+  socialGroups: 'socialGroups',
   publicAssetGroupSightings: 'publicAssetGroupSightings',
   sageJobs: ['sage', 'jobs'],
 };
@@ -72,8 +76,16 @@ export function getIndividualTermQueryKey(searchTerm) {
   return ['individualQuickSearch', searchTerm];
 }
 
+export function getIndividualsByGuidsQueryKey(individualGuids) {
+  return ['individualQuickSearch', sortIfArray(individualGuids)];
+}
+
 export function getSightingTermQueryKey(searchTerm) {
   return ['sightingQuickSearch', searchTerm];
+}
+
+export function getSocialGroupQueryKey(guid) {
+  return ['socialGroup', guid];
 }
 
 export function getIndividualFilterQueryKey(

@@ -55,7 +55,12 @@ export default function CollapsibleRow({
             c,
             'options.customBodyRender',
           );
+          const CustomBodyComponent = get(
+            c,
+            'options.customBodyComponent',
+          );
           const RequestedCellRenderer =
+            CustomBodyComponent ||
             cellRenderers[requestedCellRenderer];
           return (
             <TableCell

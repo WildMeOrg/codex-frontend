@@ -35,6 +35,7 @@ import MetadataCard from '../../components/cards/MetadataCard';
 import GalleryCard from '../../components/cards/GalleryCard';
 import ConfirmDelete from '../../components/ConfirmDelete';
 import RelationshipsCard from '../../components/cards/RelationshipsCard';
+import SocialGroupsCard from '../../components/cards/SocialGroupsCard';
 // import CooccurrenceCard from '../../components/cards/CooccurrenceCard';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import EditIndividualMetadata from './EditIndividualMetadata';
@@ -290,6 +291,7 @@ export default function Individual() {
               { id: 'PHOTOS_OF' },
               { name: firstName },
             )}
+            individualGuid={id}
             assets={assetSources}
           />
           <MetadataCard
@@ -317,7 +319,13 @@ export default function Individual() {
             individualGuid={id}
             loading={loading}
             titleId="RELATIONSHIPS"
-          />{' '}
+          />
+          <SocialGroupsCard
+            socialGroups={get(individualData, 'social_groups', [])}
+            individualGuid={id}
+            loading={loading}
+            titleId="SOCIAL_GROUPS"
+          />
           {/* <CooccurrenceCard data={fakeCoocs} /> */}
         </CardContainer>
       </div>

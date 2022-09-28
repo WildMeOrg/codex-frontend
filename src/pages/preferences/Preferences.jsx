@@ -6,9 +6,9 @@ import Paper from '@material-ui/core/Paper';
 
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import MainColumn from '../../components/MainColumn';
-import ButtonLink from '../../components/ButtonLink';
 import UserDeleteDialog from '../../components/dialogs/UserDeleteDialog';
 import Button from '../../components/Button';
+import SettingsBreadcrumbs from '../../components/SettingsBreadcrumbs';
 import InputRow from '../../components/fields/edit/InputRow';
 import Text from '../../components/Text';
 import ErrorDialog from '../../components/dialogs/ErrorDialog';
@@ -26,8 +26,8 @@ function getInitialFormValues(schemas, data) {
   }, {});
 }
 
-export default function Settings() {
-  useDocumentTitle('SETTINGS_AND_PRIVACY');
+export default function Preferences() {
+  useDocumentTitle('PREFERENCES');
 
   const { data } = useGetMe();
 
@@ -44,8 +44,12 @@ export default function Settings() {
   const [formValues, setFormValues] = useState({});
   useEffect(() => {
     const initialValues = getInitialFormValues(schemas, data);
-    setFormValues({ ...initialValues, ...formValues });
-  }, [formValues, schemas, data]);
+
+    setFormValues(prevFormValues => ({
+      ...initialValues,
+      ...prevFormValues,
+    }));
+  }, [schemas, data]);
 
   const backendValues = useMemo(
     () => getInitialFormValues(schemas, data),
@@ -73,14 +77,9 @@ export default function Settings() {
         variant="h3"
         component="h3"
         style={{ padding: '16px 0 16px 16px' }}
-        id="SETTINGS_AND_PRIVACY"
+        id="PREFERENCES"
       />
-      <ButtonLink
-        href="/"
-        style={{ marginTop: 8, width: 'fit-content' }}
-        display="back"
-        id="RETURN_HOME"
-      />
+      <SettingsBreadcrumbs currentPageTextId="PREFERENCES" />
       <Grid
         container
         direction="column"

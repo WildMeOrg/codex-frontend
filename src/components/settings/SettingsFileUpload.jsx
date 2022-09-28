@@ -55,7 +55,6 @@ export default function SettingsFileUpload({
       const uploadObject = get(uppyState, 'successful.0');
       if (uploadObject) {
         onSetPostData({
-          key: settingName,
           transactionId: assetSubmissionId,
           transactionPath: get(uploadObject, ['meta', 'name']),
         });
@@ -110,7 +109,7 @@ export default function SettingsFileUpload({
       </div>
       <div
         style={{
-          marginTop: 24,
+          marginTop: 32,
           marginLeft: 80,
           width: 400,
           minWidth: 400,

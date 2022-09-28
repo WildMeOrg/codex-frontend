@@ -4,20 +4,20 @@ import { get } from 'lodash-es';
 import { TextField } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
 
-import Button from '../../components/Button';
-import CustomAlert from '../../components/Alert';
-import useEstablishCollaborationAsUserManager from '../../models/collaboration/useEstablishCollaborationAsUserManager';
+import Button from '../../../components/Button';
+import CustomAlert from '../../../components/Alert';
+import useEstablishCollaborationAsUserManager from '../../../models/collaboration/useEstablishCollaborationAsUserManager';
 import {
   mutuallyRevokedCollabExists,
   collaborationAlreadyExists,
-} from '../../utils/formatters';
+} from '../../../utils/formatters';
+import { formatUserMessage } from '../utils';
 
 export default function CollaborationManagementForm({
   userData,
   existingCollaborations,
 }) {
   const intl = useIntl();
-  const [shouldDisplay, setShouldDisplay] = useState(false);
   const [user1, setUser1] = useState(null);
   const [user2, setUser2] = useState(null);
   const [formError, setFormError] = useState(null);
@@ -25,7 +25,9 @@ export default function CollaborationManagementForm({
     mutate: establishCollaboration,
     loading,
     error: establishCollaborationError,
+    clearError: clearEstablishCollaborationError,
     success,
+    clearSuccess,
   } = useEstablishCollaborationAsUserManager();
 
   const error = establishCollaborationError || formError;
@@ -50,27 +52,14 @@ export default function CollaborationManagementForm({
                 )
               : []
           }
-          getOptionLabel={option => {
-            const name = get(option, 'full_name', null);
-            const email = get(option, 'email', null);
-            const nameLabel = email
-              ? name + ' (' + email + ')'
-              : name;
-            if (name) return nameLabel;
-            const unnamedUserLabel = email
-              ? intl.formatMessage({
-                  id: 'UNNAMED_USER',
-                }) +
-                ' (' +
-                email +
-                ')'
-              : intl.formatMessage({
-                  id: 'UNNAMED_USER',
-                });
-            return unnamedUserLabel;
-          }}
+          getOptionLabel={option =>
+            formatUserMessage(
+              { fullName: option?.full_name, email: option?.email },
+              intl,
+            )
+          }
           getOptionSelected={(option, val) =>
-            option.id ? option.id === val : false
+            option.guid ? option.guid === val.guid : false
           }
           renderInput={params => (
             <TextField
@@ -94,27 +83,14 @@ export default function CollaborationManagementForm({
                 )
               : []
           }
-          getOptionLabel={option => {
-            const name = get(option, 'full_name', 'guid');
-            const email = get(option, 'email', null);
-            const nameLabel = email
-              ? name + ' (' + email + ')'
-              : name;
-            if (name) return nameLabel;
-            const unnamedUserLabel = email
-              ? intl.formatMessage({
-                  id: 'UNNAMED_USER',
-                }) +
-                ' (' +
-                email +
-                ')'
-              : intl.formatMessage({
-                  id: 'UNNAMED_USER',
-                });
-            return unnamedUserLabel;
-          }}
+          getOptionLabel={option =>
+            formatUserMessage(
+              { fullName: option?.full_name, email: option?.email },
+              intl,
+            )
+          }
           getOptionSelected={(option, val) =>
-            option.id ? option.id === val : false
+            option.guid ? option.guid === val.guid : false
           }
           renderInput={params => (
             <TextField
@@ -136,6 +112,10 @@ export default function CollaborationManagementForm({
           loading={loading}
           id="CREATE_COLLABORATION"
           onClick={async () => {
+            clearSuccess();
+            clearEstablishCollaborationError();
+            setFormError(null);
+
             if (
               mutuallyRevokedCollabExists(
                 existingCollaborations,
@@ -166,31 +146,26 @@ export default function CollaborationManagementForm({
                 }),
               );
             }
-            setShouldDisplay(true);
           }}
         />
       </div>
-      {success && shouldDisplay && (
+      {success && (
         <CustomAlert
-          style={{ margin: '0px 24px 20px 24px' }}
           titleId="COLLABORATION_CREATED"
           severity="success"
-          onClose={() => {
-            setShouldDisplay(false);
-          }}
+          onClose={clearSuccess}
         />
       )}
-      {error && shouldDisplay && (
+      {error && (
         <CustomAlert
-          style={{ margin: '20px 0', width: '100%' }}
           severity="error"
           titleId="SERVER_ERROR"
+          description={error}
           onClose={() => {
-            setShouldDisplay(false);
+            clearEstablishCollaborationError();
+            setFormError(null);
           }}
-        >
-          {error}
-        </CustomAlert>
+        />
       )}
     </div>
   );
