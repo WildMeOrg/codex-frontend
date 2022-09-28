@@ -316,11 +316,16 @@ export default function ReportForm({
                 'time',
               ]);
 
+              const isTimeSpecificityDefault =
+                formTimeSpecificity === defaultTimeSpecificity;
+
+              const isTimeDefault = formTime === defaultTime;
+
               if (
                 !formTimeSpecificity ||
+                isTimeSpecificityDefault ||
                 !formTime ||
-                formTimeSpecificity === defaultTimeSpecificity ||
-                formTime === defaultTime
+                isTimeDefault
               ) {
                 nextFormErrorId = 'INCOMPLETE_TIME_SPECIFICITY';
               }
