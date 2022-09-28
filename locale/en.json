@@ -1194,7 +1194,5 @@
   "EDIT_COLLABORATION": "Edit collaboration",
   "EDIT_COLLABORATION_CURRENT_STATE_LABEL": "Current state",
   "EDIT_COLLABORATION_CURRENT_STATE_DESCRIPTION": "Changing the state will cancel any pending requests.",
-  "USERS_COLLABORATIONS": "{name}'s collaborations",
-  "COLLABORATIONS": "Collaborations",
-  "NO_COLLABORATIONS_SOMEONE_ELSE": "User has no collaborations."
+  "COLLABORATIONS": "Collaborations"
 }

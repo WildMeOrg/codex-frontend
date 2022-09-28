@@ -38,7 +38,11 @@ export default function UserProfile({
   const metadataSchemas = useUserMetadataSchemas(userId);
   const { data: agsData, loading: agsLoading } =
     useGetUserUnprocessedAssetGroupSightings(userId);
-  const { data: currentUserData } = useGetMe();
+  const {
+    data: currentUserData,
+    loading: currentUserDataLoading,
+    error: currentUserDataError,
+  } = useGetMe();
   const isUserManager = get(
     currentUserData,
     'is_user_manager',
@@ -190,14 +194,18 @@ export default function UserProfile({
               title={intl.formatMessage({ id: 'COLLABORATIONS' })}
               htmlId="collab-card"
               userId={userId}
-              noCollaborationsMsg={'NO_COLLABORATIONS'}
+              noCollaborationsMsg="NO_COLLABORATIONS"
             />
           )}
           {someoneElse && isUserManager && (
             <UserManagersCollaborationEditTable
               inputData={nonSelfCollabData}
-              collaborationLoading={nonSelfUserDataLoading}
-              collaborationError={nonSelfUserDataError}
+              collaborationLoading={
+                nonSelfUserDataLoading || currentUserDataLoading
+              }
+              collaborationError={
+                nonSelfUserDataError || currentUserDataError
+              }
             />
           )}
         </CardContainer>
