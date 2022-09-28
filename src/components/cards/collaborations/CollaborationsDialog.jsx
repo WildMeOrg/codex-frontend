@@ -22,7 +22,6 @@ export default function CollaborationsDialog({
   someoneElse,
   setCollabDialogButtonClickLoading = null,
 }) {
-
   const isUserManagerViewingOtherUser = isUserManager && someoneElse;
 
   const {
@@ -37,8 +36,6 @@ export default function CollaborationsDialog({
     isLoading: patchLoading,
     error: patchError,
   } = usePatchCollaboration();
-
-
 
   const loading = requestLoading || patchLoading;
   const error = requestError || patchError;
@@ -117,38 +114,46 @@ export default function CollaborationsDialog({
               if (setCollabDialogButtonClickLoading)
                 setCollabDialogButtonClickLoading(true);
               let requestSuccessful;
+              console.log('deleteMe request is: ');
+              console.log(request);
               const deleteMeActionPatch = request.actionPatch;
               console.log('deleteMe deleteMeActionPatch is: ');
               console.log(deleteMeActionPatch);
-              const managerPatch = {...get(request.actionPatch,0)}; // @TODO fix/improve
-              managerPatch['op'] ='replace'
-              managerPatch['path'] = get(request.actionPatch,0)?.path?.startsWith('/view') ? '/managed_view_permission' : '/managed_edit_permission';
-              managerPatch['value'] = { permission: get(request.actionPatch,0)?.value?.startsWith('revoked') ? 'revoked' : 'approved'}
-              console.log('deleteMe managerPatch is: ');
-              console.log(managerPatch);
+              const managerPatch = {
+                op: 'replace',
+                path: get(request.actionPatch, 0)?.path?.startsWith(
+                  '/view',
+                )
+                  ? '/managed_view_permission'
+                  : '/managed_edit_permission',
+                value: {
+                  permission: get(
+                    request.actionPatch,
+                    0,
+                  )?.value?.startsWith('revoked')
+                    ? 'revoked'
+                    : 'approved',
+                },
+              };
               if (request.sendEditRequest) {
-                const response = await isUserManagerViewingOtherUser ? patchCollaboration({
-                  collaborationGuid: activeCollaboration.guid,
-                  operations: [managerPatch],
-                }) : requestEditAccess({
-                  collaborationGuid: activeCollaboration.guid,
-                });
+                const response = (await isUserManagerViewingOtherUser)
+                  ? patchCollaboration({
+                      collaborationGuid: activeCollaboration.guid,
+                      operations: [managerPatch],
+                    })
+                  : requestEditAccess({
+                      collaborationGuid: activeCollaboration.guid,
+                    });
                 console.log('deleteMe response is: ');
-                console.log(response);
-                // @TODO LEFT OFF HERE figuring out why this doesn't get dismissed when the user manager does it
+                console.log(response?.status);
+                // @TODO LEFT OFF HERE I don't understand why response is behaving differently here than it is below in the other patchCollaboration call. Response seems to be coming back from useMutate AFTER it comes back here??
                 requestSuccessful = response?.status === 200;
               } else {
-                // const deleteMeActionPatch = request.actionPatch;
-                // console.log('deleteMe deleteMeActionPatch is: ');
-                // console.log(deleteMeActionPatch);
-                // const managerPatch = {...get(request.actionPatch,0)};
-                // managerPatch['path'] = get(request.actionPatch,0)?.path?.startsWith('/view') ? '/managed_view_permission' : '/managed_edit_permission';
-                // managerPatch['value'] = { permission: get(request.actionPatch,0)?.value?.startsWith('revoked') ? 'revoked' : 'approved'}
-                // console.log('deleteMe managerPatch is: ');
-                // console.log(managerPatch);
                 const response = await patchCollaboration({
                   collaborationGuid: activeCollaboration.guid,
-                  operations: isUserManagerViewingOtherUser ? [managerPatch] : request.actionPatch,
+                  operations: isUserManagerViewingOtherUser
+                    ? [managerPatch]
+                    : request.actionPatch,
                 });
                 requestSuccessful = response?.status === 200;
               }
