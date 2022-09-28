@@ -18,12 +18,8 @@ export default function CollaborationsDialog({
   open,
   onClose,
   activeCollaboration,
-  isUserManager,
-  someoneElse,
   setCollabDialogButtonClickLoading = null,
 }) {
-  const isUserManagerViewingOtherUser = isUserManager && someoneElse;
-
   const {
     mutate: requestEditAccess,
     loading: requestLoading,
@@ -114,38 +110,15 @@ export default function CollaborationsDialog({
               if (setCollabDialogButtonClickLoading)
                 setCollabDialogButtonClickLoading(true);
               let requestSuccessful;
-              const managerPatch = {
-                op: 'replace',
-                path: get(request.actionPatch, 0)?.path?.startsWith(
-                  '/view',
-                )
-                  ? '/managed_view_permission'
-                  : '/managed_edit_permission',
-                value: {
-                  permission: get(
-                    request.actionPatch,
-                    0,
-                  )?.value?.startsWith('revoked')
-                    ? 'revoked'
-                    : 'approved',
-                },
-              };
               if (request.sendEditRequest) {
-                const response = await (isUserManagerViewingOtherUser
-                  ? patchCollaboration({
-                      collaborationGuid: activeCollaboration.guid,
-                      operations: [managerPatch],
-                    })
-                  : requestEditAccess({
-                      collaborationGuid: activeCollaboration.guid,
-                    }));
+                const response = await requestEditAccess({
+                  collaborationGuid: activeCollaboration.guid,
+                });
                 requestSuccessful = response?.status === 200;
               } else {
                 const response = await patchCollaboration({
                   collaborationGuid: activeCollaboration.guid,
-                  operations: isUserManagerViewingOtherUser
-                    ? [managerPatch]
-                    : request.actionPatch,
+                  operations: request.actionPatch,
                 });
                 requestSuccessful = response?.status === 200;
               }

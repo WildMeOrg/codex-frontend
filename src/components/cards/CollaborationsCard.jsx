@@ -13,10 +13,8 @@ import CollaborationsDialog from './collaborations/CollaborationsDialog';
 export default function CollaborationsCard({
   title,
   userId,
-  isUserManager,
-  someoneElse,
   htmlId = null,
-  noCollaborationsMsg
+  noCollaborationsMsg,
 }) {
   const intl = useIntl();
   const [activeCollaboration, setActiveCollaboration] =
@@ -128,8 +126,6 @@ export default function CollaborationsCard({
   return (
     <Card title={title} htmlId={htmlId}>
       <CollaborationsDialog
-        isUserManager={isUserManager}
-        someoneElse={someoneElse}
         open={Boolean(activeCollaboration)}
         onClose={() => setActiveCollaboration(null)}
         activeCollaboration={activeCollaboration}

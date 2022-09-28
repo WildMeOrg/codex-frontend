@@ -43,7 +43,7 @@ export default {
         get(collaboration, ['otherUserData', testKey]),
       ),
     currentStateMessage:
-      'Access revoked. Only the collaboration partner or a data manager can restore access.',
+      'Access revoked. Only the collaboration partner or a user manager can restore access.',
   },
   blocking: {
     viewDisablesEdit: true,

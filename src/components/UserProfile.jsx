@@ -19,6 +19,8 @@ import MetadataCard from './cards/MetadataCard';
 import SightingsCard from './cards/SightingsCard';
 import CollaborationsCard from './cards/CollaborationsCard';
 import CardContainer from './cards/CardContainer';
+import UserManagersCollaborationEditTable from '../pages/userManagement/UserManagerCollaborationEditTable';
+import useGetUser from '../models/users/useGetUser';
 
 export default function UserProfile({
   children,
@@ -36,8 +38,24 @@ export default function UserProfile({
   const metadataSchemas = useUserMetadataSchemas(userId);
   const { data: agsData, loading: agsLoading } =
     useGetUserUnprocessedAssetGroupSightings(userId);
-  const { data: currentUserData } = useGetMe();  
-  const isUserManager = get(currentUserData, 'is_user_manager', false);
+  const { data: currentUserData } = useGetMe();
+  const isUserManager = get(
+    currentUserData,
+    'is_user_manager',
+    false,
+  );
+  const {
+    data: nonSelfUserData,
+    loading: nonSelfUserDataLoading,
+    error: nonSelfUserDataError,
+  } = useGetUser(userId);
+
+  const nonSelfCollabData = get(
+    nonSelfUserData,
+    ['collaborations'],
+    [],
+  ); // deleteMe this seems like too small a calculation to memoize
+
   const metadata = useMemo(() => {
     if (!userData || !metadataSchemas) return [];
     return metadataSchemas
@@ -167,25 +185,19 @@ export default function UserProfile({
               someoneElse ? 'NO_SIGHTINGS_NON_SELF' : 'NO_SIGHTINGS'
             }
           />
-          {(!someoneElse || isUserManager) && (
+          {!someoneElse && (
             <CollaborationsCard
-              isUserManager={isUserManager}
-              someoneElse={someoneElse}
-              title={
-              someoneElse
-                ? intl.formatMessage(
-                    { id: 'USERS_COLLABORATIONS' },
-                    { name },
-                  )
-                : intl.formatMessage({ id: 'COLLABORATIONS' })
-            }
+              title={intl.formatMessage({ id: 'COLLABORATIONS' })}
               htmlId="collab-card"
               userId={userId}
-              noCollaborationsMsg={
-              someoneElse
-                ? 'NO_COLLABORATIONS_SOMEONE_ELSE'
-                : 'NO_COLLABORATIONS'
-            }
+              noCollaborationsMsg={'NO_COLLABORATIONS'}
+            />
+          )}
+          {someoneElse && isUserManager && (
+            <UserManagersCollaborationEditTable
+              inputData={nonSelfCollabData}
+              collaborationLoading={nonSelfUserDataLoading}
+              collaborationError={nonSelfUserDataError}
             />
           )}
         </CardContainer>
