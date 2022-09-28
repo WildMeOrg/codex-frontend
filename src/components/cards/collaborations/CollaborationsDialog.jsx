@@ -114,11 +114,6 @@ export default function CollaborationsDialog({
               if (setCollabDialogButtonClickLoading)
                 setCollabDialogButtonClickLoading(true);
               let requestSuccessful;
-              console.log('deleteMe request is: ');
-              console.log(request);
-              const deleteMeActionPatch = request.actionPatch;
-              console.log('deleteMe deleteMeActionPatch is: ');
-              console.log(deleteMeActionPatch);
               const managerPatch = {
                 op: 'replace',
                 path: get(request.actionPatch, 0)?.path?.startsWith(
@@ -136,17 +131,14 @@ export default function CollaborationsDialog({
                 },
               };
               if (request.sendEditRequest) {
-                const response = (await isUserManagerViewingOtherUser)
+                const response = await (isUserManagerViewingOtherUser
                   ? patchCollaboration({
                       collaborationGuid: activeCollaboration.guid,
                       operations: [managerPatch],
                     })
                   : requestEditAccess({
                       collaborationGuid: activeCollaboration.guid,
-                    });
-                console.log('deleteMe response is: ');
-                console.log(response?.status);
-                // @TODO LEFT OFF HERE I don't understand why response is behaving differently here than it is below in the other patchCollaboration call. Response seems to be coming back from useMutate AFTER it comes back here??
+                    }));
                 requestSuccessful = response?.status === 200;
               } else {
                 const response = await patchCollaboration({

@@ -58,8 +58,6 @@ export default function useMutate({
         data: data || deriveData(mutationArgs),
         params: params || deriveParams(mutationArgs),
       });
-      console.log('deleteMe response in the useMutate call is: ');
-      console.log(response);
 
       const status = response?.status;
       setStatusCode(status);
