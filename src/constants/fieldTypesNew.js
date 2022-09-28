@@ -123,7 +123,7 @@ export const fieldTypeInfo = {
     backendType: backendTypes.string,
     backendMultiple: false,
     canProvideDefaultValue: true,
-    initialDefaultValue: '',
+    initialDefaultValue: null,
     exampleValue: 'Value appears here',
   },
   [fieldTypes.multiselect]: {
