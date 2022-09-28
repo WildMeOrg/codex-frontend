@@ -47,7 +47,14 @@ export function prepareBasicReport(
         time: sightingTime,
         timeSpecificity: sightingTimeSpecifity,
       },
-      {},
+      {
+        decimalLatitude: sightingData.gps[0],
+        decimalLongitude: sightingData.gps[1],
+        locationId: sightingData.locationId,
+        verbatimLocality: sightingData.verbatimLocality,
+        time: sightingTime,
+        timeSpecificity: sightingTimeSpecifity,
+      },
     ],
     customFields: customSightingDictionary,
   };
