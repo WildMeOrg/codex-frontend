@@ -147,7 +147,7 @@ export const fieldTypeChoices = [
         descriptionId: 'DROPDOWN_CHOICE_HELPER_TEXT',
         value: 'choices',
         type: fieldTypes.optioneditor,
-        defaultValue: null,
+        defaultValue: [],
       },
     ],
   },
