@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
 import { get } from 'lodash-es';
 
-import Paper from '@material-ui/core/Paper';
+import Card from '@material-ui/core/Card';
 
 import { getHighestRoleLabelId } from '../utils/roleUtils';
 import useUserMetadataSchemas from '../models/users/useUserMetadataSchemas';
@@ -188,7 +188,7 @@ export default function UserProfile({
             />
           )}
           {someoneElse && isUserManager && (
-            <Paper
+            <Card
               elevation={2}
               style={{
                 marginLeft: 8,
@@ -202,7 +202,7 @@ export default function UserProfile({
                 collaborationLoading={currentUserDataLoading}
                 collaborationError={currentUserDataError}
               />
-            </Paper>
+            </Card>
           )}
         </CardContainer>
       </div>

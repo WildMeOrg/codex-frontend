@@ -122,10 +122,7 @@ export default function CollaborationsCard({
   ];
 
   return (
-    <Card
-      title={intl.formatMessage({ id: 'COLLABORATIONS' })}
-      htmlId={htmlId}
-    >
+    <Card titleId="COLLABORATIONS" htmlId={htmlId}>
       <CollaborationsDialog
         open={Boolean(activeCollaboration)}
         onClose={() => setActiveCollaboration(null)}
