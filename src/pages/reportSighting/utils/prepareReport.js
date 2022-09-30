@@ -26,6 +26,15 @@ export function prepareBasicReport(
     'timeSpecificity',
   ]);
 
+  const encounter = {
+    decimalLatitude: sightingData.gps[0],
+    decimalLongitude: sightingData.gps[1],
+    locationId: sightingData.locationId,
+    verbatimLocality: sightingData.verbatimLocality,
+    time: sightingTime,
+    timeSpecificity: sightingTimeSpecifity,
+  };
+
   const report = {
     ...sightingData,
     speciesDetectionModel: [
@@ -40,20 +49,10 @@ export function prepareBasicReport(
     timeSpecificity: sightingTimeSpecifity,
     encounters: [
       {
-        decimalLatitude: sightingData.gps[0],
-        decimalLongitude: sightingData.gps[1],
-        locationId: sightingData.locationId,
-        verbatimLocality: sightingData.verbatimLocality,
-        time: sightingTime,
-        timeSpecificity: sightingTimeSpecifity,
+        ...encounter,
       },
       {
-        decimalLatitude: sightingData.gps[0],
-        decimalLongitude: sightingData.gps[1],
-        locationId: sightingData.locationId,
-        verbatimLocality: sightingData.verbatimLocality,
-        time: sightingTime,
-        timeSpecificity: sightingTimeSpecifity,
+        ...encounter,
       },
     ],
     customFields: customSightingDictionary,
