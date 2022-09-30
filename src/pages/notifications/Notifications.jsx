@@ -45,6 +45,8 @@ export default function Notifications() {
   ] = useState(null);
 
   const safeNotifications = notifications || [];
+  console.log('deleteMe safeNotifications are: ');
+  console.log(safeNotifications);
 
   if (notificationsLoading) return <LoadingScreen />;
 

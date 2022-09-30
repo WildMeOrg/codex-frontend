@@ -45,16 +45,26 @@ export function deriveNotificationPreferences(backendData, formData) {
     //     false,
     //   ),
     // },
-    individual_merge_request: {
+    individual_merge_all: {
       restAPI: deriveValue(
-        'notification_preferences.individual_merge_request.restAPI',
+        'notification_preferences.individual_merge_all.restAPI',
         true,
       ),
       email: deriveValue(
-        'notification_preferences.individual_merge_request.email',
+        'notification_preferences.individual_merge_all.email',
         false,
       ),
     },
+    // individual_merge_request: {
+    //   restAPI: deriveValue(
+    //     'notification_preferences.individual_merge_request.restAPI',
+    //     true,
+    //   ),
+    //   email: deriveValue(
+    //     'notification_preferences.individual_merge_request.email',
+    //     false,
+    //   ),
+    // },
     // raw: {
     //   restAPI: deriveValue(
     //     'notification_preferences.raw.restAPI',
