@@ -2,20 +2,20 @@ import React, { useState } from 'react';
 import { useIntl } from 'react-intl';
 import { get } from 'lodash-es';
 
-import { collaborationLabelIds } from './constants/collaboration';
-import { formatUserMessage } from './utils';
-import EditCollaborationDialog from './components/EditCollaborationDialog';
-import CustomAlert from '../../components/Alert';
-import Text from '../../components/Text';
-import DataDisplay from '../../components/dataDisplays/DataDisplay';
-import ActionIcon from '../../components/ActionIcon';
-import { cellRenderers } from '../../components/dataDisplays/cellRenderers';
-import usePatchCollaboration from '../../models/collaboration/usePatchCollaboration';
+import { collaborationLabelIds } from '../pages/userManagement/constants/collaboration';
+import { formatUserMessage } from '../pages/userManagement/utils';
+import EditCollaborationDialog from '../pages/userManagement/components/EditCollaborationDialog';
+import CustomAlert from './Alert';
+import Text from './Text';
+import DataDisplay from './dataDisplays/DataDisplay';
+import ActionIcon from './ActionIcon';
+import { cellRenderers } from './dataDisplays/cellRenderers';
+import usePatchCollaboration from '../models/collaboration/usePatchCollaboration';
 import {
   getRequestedState,
   getSummaryState,
   summaryStates,
-} from '../../utils/collaborationUtils';
+} from '../utils/collaborationUtils';
 
 const ActionGroupRenderer = cellRenderers.actionGroup;
 
@@ -33,7 +33,7 @@ function Actions({ onRevoke, ...actionGroupRendererProps }) {
   );
 }
 
-export default function UserManagersCollaborationEditTable({
+export default function UserManagerCollaborationEditTable({
   inputData,
   collaborationLoading,
   collaborationError,

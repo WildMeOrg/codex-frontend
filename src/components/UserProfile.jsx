@@ -2,6 +2,8 @@ import React, { useState, useMemo } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
 import { get } from 'lodash-es';
 
+import Paper from '@material-ui/core/Paper';
+
 import { getHighestRoleLabelId } from '../utils/roleUtils';
 import useUserMetadataSchemas from '../models/users/useUserMetadataSchemas';
 import useGetUserSightings from '../models/users/useGetUserSightings';
@@ -19,8 +21,7 @@ import MetadataCard from './cards/MetadataCard';
 import SightingsCard from './cards/SightingsCard';
 import CollaborationsCard from './cards/CollaborationsCard';
 import CardContainer from './cards/CardContainer';
-import UserManagersCollaborationEditTable from '../pages/userManagement/UserManagerCollaborationEditTable';
-import useGetUser from '../models/users/useGetUser';
+import UserManagerCollaborationEditTable from './UserManagerCollaborationEditTable';
 
 export default function UserProfile({
   children,
@@ -48,17 +49,8 @@ export default function UserProfile({
     'is_user_manager',
     false,
   );
-  const {
-    data: nonSelfUserData,
-    loading: nonSelfUserDataLoading,
-    error: nonSelfUserDataError,
-  } = useGetUser(userId);
 
-  const nonSelfCollabData = get(
-    nonSelfUserData,
-    ['collaborations'],
-    [],
-  ); // deleteMe this seems like too small a calculation to memoize
+  const nonSelfCollabData = get(userData, ['collaborations'], []);
 
   const metadata = useMemo(() => {
     if (!userData || !metadataSchemas) return [];
@@ -191,22 +183,26 @@ export default function UserProfile({
           />
           {!someoneElse && (
             <CollaborationsCard
-              title={intl.formatMessage({ id: 'COLLABORATIONS' })}
               htmlId="collab-card"
               userId={userId}
-              noCollaborationsMsg="NO_COLLABORATIONS"
             />
           )}
           {someoneElse && isUserManager && (
-            <UserManagersCollaborationEditTable
-              inputData={nonSelfCollabData}
-              collaborationLoading={
-                nonSelfUserDataLoading || currentUserDataLoading
-              }
-              collaborationError={
-                nonSelfUserDataError || currentUserDataError
-              }
-            />
+            <Paper
+              elevation={2}
+              style={{
+                marginLeft: 8,
+                marginTop: 20,
+                marginBottom: 12,
+                padding: 18,
+              }}
+            >
+              <UserManagerCollaborationEditTable
+                inputData={nonSelfCollabData}
+                collaborationLoading={currentUserDataLoading}
+                collaborationError={currentUserDataError}
+              />
+            </Paper>
           )}
         </CardContainer>
       </div>

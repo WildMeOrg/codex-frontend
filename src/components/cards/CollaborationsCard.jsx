@@ -11,10 +11,8 @@ import DataDisplay from '../dataDisplays/DataDisplay';
 import CollaborationsDialog from './collaborations/CollaborationsDialog';
 
 export default function CollaborationsCard({
-  title,
   userId,
   htmlId = null,
-  noCollaborationsMsg,
 }) {
   const intl = useIntl();
   const [activeCollaboration, setActiveCollaboration] =
@@ -124,7 +122,10 @@ export default function CollaborationsCard({
   ];
 
   return (
-    <Card title={title} htmlId={htmlId}>
+    <Card
+      title={intl.formatMessage({ id: 'COLLABORATIONS' })}
+      htmlId={htmlId}
+    >
       <CollaborationsDialog
         open={Boolean(activeCollaboration)}
         onClose={() => setActiveCollaboration(null)}
@@ -135,7 +136,7 @@ export default function CollaborationsCard({
       />
       <DataDisplay
         loading={loading || collabDialogButtonClickLoading}
-        noResultsTextId={noCollaborationsMsg}
+        noResultsTextId="NO_COLLABORATIONS"
         style={{ marginTop: 12 }}
         noTitleBar
         columns={columns}
