@@ -613,6 +613,7 @@
   "BACK_TO_PHOTOS": "Back to photographs",
   "BACK_TO_SELECTION": "Back to selection",
   "INCOMPLETE_FIELD": "{fieldName} is a required field.",
+  "INCOMPLETE_TIME_SPECIFICITY": "Enter the Year information as well as the Time Specificity.",
   "CONTINUE_WITHOUT_PHOTOGRAPHS": "Continue without photographs",
   "LAST_SIGHTING_DATE_RANGE": "Last sighting date",
   "LAST_SIGHTING_DATE_RANGE_DESCRIPTION": "Date of this individual's most recent sighting.",
@@ -1194,5 +1195,6 @@
   "EDIT_COLLABORATION": "Edit collaboration",
   "EDIT_COLLABORATION_CURRENT_STATE_LABEL": "Current state",
   "EDIT_COLLABORATION_CURRENT_STATE_DESCRIPTION": "Changing the state will cancel any pending requests.",
-  "COLLABORATIONS": "Collaborations"
+  "COLLABORATIONS": "Collaborations",
+  "URLS_MUST_INCLUDE_HTTPS": "All URLs must include https:// to be valid"
 }

@@ -67,6 +67,10 @@ export default function SplashSettings() {
         direction="column"
         style={{ marginTop: 20, padding: 20 }}
       >
+        <CustomAlert
+          severity="info"
+          titleId="URLS_MUST_INCLUDE_HTTPS"
+        />
         <DividerTitle titleId="HERO_AREA" />
         <SettingsTextInput
           settingKey="site.general.tagline"
