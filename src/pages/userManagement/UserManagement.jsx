@@ -24,7 +24,7 @@ import UserEditTable from './UserEditTable';
 import roleSchema from './constants/roleSchema';
 import CollaborationManagementForm from './components/CollaborationManagementForm';
 import useGetAllCollaborations from '../../models/collaboration/useGetAllCollaborations';
-import UserManagersCollaborationEditTable from './UserManagerCollaborationEditTable';
+import UserManagerCollaborationEditTable from '../../components/UserManagerCollaborationEditTable';
 
 const validRoles = roleSchema.filter(role => role.id !== 'is_staff');
 
@@ -254,7 +254,7 @@ export default function UserManagement() {
               flexDirection: 'column',
             }}
           >
-            <UserManagersCollaborationEditTable
+            <UserManagerCollaborationEditTable
               inputData={allCollaborationData}
               collaborationLoading={allCollaborationsLoading}
               collaborationError={allCollaborationsError}

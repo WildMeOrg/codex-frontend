@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useIntl } from 'react-intl';
 import { get, partition } from 'lodash-es';
 
-import useGetMe from '../../models/users/useGetMe';
+import useGetUser from '../../models/users/useGetUser';
 import Card from './Card';
 import ActionIcon from '../ActionIcon';
 import Text from '../Text';
@@ -22,7 +22,7 @@ export default function CollaborationsCard({
     setCollabDialogButtonClickLoading,
   ] = useState(false);
 
-  const { data, loading } = useGetMe();
+  const { data, loading } = useGetUser(userId);
 
   useEffect(() => {
     setCollabDialogButtonClickLoading(false);
@@ -122,7 +122,7 @@ export default function CollaborationsCard({
   ];
 
   return (
-    <Card title="Collaborations" htmlId={htmlId}>
+    <Card titleId="COLLABORATIONS" htmlId={htmlId}>
       <CollaborationsDialog
         open={Boolean(activeCollaboration)}
         onClose={() => setActiveCollaboration(null)}
