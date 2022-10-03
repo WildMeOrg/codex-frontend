@@ -3,11 +3,13 @@ import { useIntl } from 'react-intl';
 import { get, partition } from 'lodash-es';
 
 import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 
 import { cellRendererTypes } from '../dataDisplays/cellRenderers';
 import Text from '../Text';
 import DataDisplay from '../dataDisplays/DataDisplay';
+import AddCollaboratorButton from './collaborations/AddCollaboratorButton';
 import CollaborationsDialog from './collaborations/CollaborationsDialog';
 
 export default function MyCollaborationsCard({ userData }) {
@@ -139,6 +141,9 @@ export default function MyCollaborationsCard({ userData }) {
             tableContainerStyles={{ maxHeight: 600 }}
           />
         </CardContent>
+        <CardActions>
+          <AddCollaboratorButton />
+        </CardActions>
       </Card>
     </>
   );

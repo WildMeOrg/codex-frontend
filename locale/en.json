@@ -1196,5 +1196,6 @@
   "EDIT_COLLABORATION_CURRENT_STATE_LABEL": "Current state",
   "EDIT_COLLABORATION_CURRENT_STATE_DESCRIPTION": "Changing the state will cancel any pending requests.",
   "COLLABORATIONS": "Collaborations",
-  "URLS_MUST_INCLUDE_HTTPS": "All URLs must include https:// to be valid"
+  "URLS_MUST_INCLUDE_HTTPS": "All URLs must include https:// to be valid",
+  "ADD_COLLABORATION": "Add collaboration"
 }
