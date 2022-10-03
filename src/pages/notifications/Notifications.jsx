@@ -85,6 +85,10 @@ export default function Notifications() {
                   notificationSchema,
                   notificationType,
                 );
+                // console.log(
+                //   'deleteMe currentNotificationSchema is: ',
+                // );
+                // console.log(currentNotificationSchema);
                 const read = get(notification, 'is_read', false);
                 const {
                   userName,
@@ -97,6 +101,10 @@ export default function Notifications() {
                   theirIndividualGuid,
                   formattedDeadline,
                 } = getNotificationProps(intl, notification);
+                console.log(
+                  'deleteMe getNotificationProps(intl, notification) are: ',
+                );
+                console.log(getNotificationProps(intl, notification));
                 const createdDate = notification?.created;
                 const timeSince =
                   calculatePrettyTimeElapsedSince(createdDate);

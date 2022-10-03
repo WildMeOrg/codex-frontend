@@ -11,9 +11,72 @@ export const notificationTypeNames = {
   individual_merge_request: 'individual_merge_request',
   individual_merge_complete: 'individual_merge_complete',
   individual_merge_blocked: 'individual_merge_blocked',
+
+  collaboration_manager_edit_approved:
+    'collaboration_manager_edit_approved',
+  collaboration_manager_edit_revoke:
+    'collaboration_manager_edit_revoke',
+  collaboration_edit_denied: 'collaboration_edit_denied',
+  collaboration_manager_denied: 'collaboration_manager_denied',
+  collaboration_manager_edit_denied:
+    'collaboration_manager_edit_denied',
 };
 
 const notificationSchemaPlaceholder = {};
+
+notificationSchemaPlaceholder[
+  notificationTypeNames.collaboration_manager_edit_approved
+] = {
+  titleId: 'EDIT_COLLABORATION_DENIED_BY_USER_MANAGER',
+  notificationMessage:
+    'EDIT_COLLABORATION_DENIED_BY_USER_MANAGER_MESSAGE',
+  moreDetailedDescription:
+    'EDIT_COLLABORATION_DENIED_BY_USER_MANAGER_MESSAGE',
+  showNotificationDialog: false,
+  buttonPath: '/#collab-card',
+};
+
+notificationSchemaPlaceholder[
+  notificationTypeNames.collaboration_manager_edit_approved
+] = {
+  titleId: 'EDIT_COLLABORATION_APPROVED_BY_USER_MANAGER',
+  notificationMessage:
+    'EDIT_COLLABORATION_WAS_APPROVED_BY_YOUR_USER_MANAGER',
+  moreDetailedDescription:
+    'EDIT_COLLABORATION_WAS_APPROVED_BY_YOUR_USER_MANAGER',
+  showNotificationDialog: false,
+  buttonPath: '/#collab-card',
+};
+notificationSchemaPlaceholder[
+  notificationTypeNames.collaboration_manager_denied
+] = {
+  titleId: 'COLLABORATION_DENIED_BY_USER_MANAGER',
+  notificationMessage: 'COLLABORATION_DENIED_BY_USER_MANAGER_MESSAGE',
+  moreDetailedDescription:
+    'COLLABORATION_DENIED_BY_USER_MANAGER_MESSAGE',
+  showNotificationDialog: false,
+  buttonPath: '/#collab-card',
+};
+notificationSchemaPlaceholder[
+  notificationTypeNames.collaboration_edit_denied
+] = {
+  titleId: 'COLLABORATION_EDIT_DENIED',
+  notificationMessage: 'EDIT_COLLABORATION_DENIED_MESSAGE',
+  moreDetailedDescription: 'EDIT_COLLABORATION_DENIED_MESSAGE',
+  showNotificationDialog: false,
+  buttonPath: '/#collab-card',
+};
+notificationSchemaPlaceholder[
+  notificationTypeNames.collaboration_manager_edit_revoke
+] = {
+  titleId: 'EDIT_COLLABORATION_REVOKED_BY_USER_MANAGER',
+  notificationMessage:
+    'EDIT_COLLABORATION_WAS_REVOKED_BY_YOUR_USER_MANAGER',
+  moreDetailedDescription:
+    'EDIT_COLLABORATION_WAS_REVOKED_BY_YOUR_USER_MANAGER',
+  showNotificationDialog: false,
+  buttonPath: '/#collab-card',
+};
 notificationSchemaPlaceholder[
   notificationTypeNames.collaboration_manager_create
 ] = {

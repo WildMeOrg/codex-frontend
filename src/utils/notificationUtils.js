@@ -3,6 +3,8 @@ import { get } from 'lodash-es';
 import { formatDateCustom } from './formatters';
 
 export const getNotificationProps = (intl, notification) => {
+  console.log('deleteMe notification in notificationUtils is: ');
+  console.log(notification);
   const userName = notification?.sender_name || 'Unnamed User';
   const userNameGuid = notification?.sender_guid;
   const user1Name =

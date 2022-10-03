@@ -1196,5 +1196,15 @@
   "EDIT_COLLABORATION_CURRENT_STATE_LABEL": "Current state",
   "EDIT_COLLABORATION_CURRENT_STATE_DESCRIPTION": "Changing the state will cancel any pending requests.",
   "COLLABORATIONS": "Collaborations",
-  "URLS_MUST_INCLUDE_HTTPS": "All URLs must include https:// to be valid"
+  "URLS_MUST_INCLUDE_HTTPS": "All URLs must include https:// to be valid",
+  "EDIT_COLLABORATION_REVOKED_BY_USER_MANAGER": "Edit collaboration revoked by your user manager",
+  "EDIT_COLLABORATION_WAS_REVOKED_BY_YOUR_USER_MANAGER": "An edit-level collaboration with {userName} was revoked by your user manager.",
+  "COLLABORATION_EDIT_DENIED": "Collaboration edit denied",
+  "EDIT_COLLABORATION_DENIED_MESSAGE": "{userName} denied your collaboration edit request",
+  "COLLABORATION_DENIED_BY_USER_MANAGER": "Collaboration denied by your user manager",
+  "COLLABORATION_DENIED_BY_USER_MANAGER_MESSAGE": "Your collaboration with {userName} was denied by your user manager.",
+  "EDIT_COLLABORATION_DENIED_BY_USER_MANAGER": "Edit-level collaboration denied by your user manager",
+  "EDIT_COLLABORATION_DENIED_BY_USER_MANAGER_MESSAGE": "An edit-level collaboration with {userName} was denied by your user manager.",
+  "EDIT_COLLABORATION_APPROVED_BY_USER_MANAGER": "Edit collaboration approved by your user manager",
+  "EDIT_COLLABORATION_WAS_APPROVED_BY_YOUR_USER_MANAGER": "An edit-level collaboration with {userName} was approved by your user manager."
 }

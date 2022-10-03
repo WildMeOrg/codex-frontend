@@ -57,8 +57,6 @@ export default function useIdConfigSchemas() {
      * for a given algorithm and modify choices contextually.
      * Just this for now though... */
     const uniqAlgorithms = uniqBy(allAlgorithms, 'value');
-    console.log('deleteMe uniqAlgorithms is: ');
-    console.log(uniqAlgorithms);
 
     return [
       createFieldSchema(fieldTypes.multiselect, {
