@@ -35,16 +35,6 @@ export function deriveNotificationPreferences(backendData, formData) {
         false,
       ),
     },
-    // merge_request: { /* This one needs to be fixed in Houston */
-    //   restAPI: deriveValue(
-    //     'notification_preferences.merge_request.restAPI',
-    //     true,
-    //   ),
-    //   email: deriveValue(
-    //     'notification_preferences.merge_request.email',
-    //     false,
-    //   ),
-    // },
     individual_merge_all: {
       restAPI: deriveValue(
         'notification_preferences.individual_merge_all.restAPI',

@@ -23,11 +23,6 @@ const notificationSettings = [
     labelId: 'MERGE_OF_INDIVIDUAL',
     descriptionId: 'MERGE_OF_INDIVIDUAL_DESCRIPTION',
   }),
-  // createFieldSchema(fieldTypes.boolean, {
-  //   name: 'notification_preferences.merge_request.email',
-  //   labelId: 'INDIVIDUAL_MERGE_REQUESTS',
-  //   descriptionId: 'INDIVIDUAL_MERGE_REQUESTS_DESCRIPTION',
-  // }),
 ];
 
 export function useNotificationSettingsSchemas() {
