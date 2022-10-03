@@ -2,18 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { useIntl } from 'react-intl';
 import { get, partition } from 'lodash-es';
 
-import useGetUser from '../../models/users/useGetUser';
-import Card from './Card';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+
 import ActionIcon from '../ActionIcon';
 import Text from '../Text';
 import Link from '../Link';
 import DataDisplay from '../dataDisplays/DataDisplay';
 import CollaborationsDialog from './collaborations/CollaborationsDialog';
 
-export default function CollaborationsCard({
-  userId,
-  htmlId = null,
-}) {
+export default function MyCollaborationsCard({ userData }) {
   const intl = useIntl();
   const [activeCollaboration, setActiveCollaboration] =
     useState(null);
@@ -22,13 +20,11 @@ export default function CollaborationsCard({
     setCollabDialogButtonClickLoading,
   ] = useState(false);
 
-  const { data, loading } = useGetUser(userId);
-
   useEffect(() => {
     setCollabDialogButtonClickLoading(false);
-  }, [data]);
+  }, [userData]);
 
-  const collaborations = get(data, ['collaborations'], []);
+  const collaborations = get(userData, ['collaborations'], []);
   const tableData = collaborations.map(collaboration => {
     const collaborationMembers = Object.values(
       get(collaboration, 'members', []),
@@ -40,7 +36,7 @@ export default function CollaborationsCard({
     );
     const [thisUserDataArray, otherUserDataArray] = partition(
       filteredCollaborationMembers,
-      member => member.guid === userId,
+      member => member.guid === userData?.guid,
     );
 
     const thisUserData = get(thisUserDataArray, '0', {});
@@ -122,7 +118,7 @@ export default function CollaborationsCard({
   ];
 
   return (
-    <Card titleId="COLLABORATIONS" htmlId={htmlId}>
+    <>
       <CollaborationsDialog
         open={Boolean(activeCollaboration)}
         onClose={() => setActiveCollaboration(null)}
@@ -131,16 +127,21 @@ export default function CollaborationsCard({
           setCollabDialogButtonClickLoading
         }
       />
-      <DataDisplay
-        loading={loading || collabDialogButtonClickLoading}
-        noResultsTextId="NO_COLLABORATIONS"
-        style={{ marginTop: 12 }}
-        noTitleBar
-        columns={columns}
-        data={tableData}
-        idKey="guid"
-        tableContainerStyles={{ maxHeight: 600 }}
-      />
-    </Card>
+      <Card>
+        <CardContent>
+          <Text id="COLLABORATIONS" style={{ fontWeight: 'bold' }} />
+          <DataDisplay
+            loading={collabDialogButtonClickLoading}
+            noResultsTextId="NO_COLLABORATIONS"
+            style={{ marginTop: 12 }}
+            noTitleBar
+            columns={columns}
+            data={tableData}
+            idKey="guid"
+            tableContainerStyles={{ maxHeight: 600 }}
+          />
+        </CardContent>
+      </Card>
+    </>
   );
 }

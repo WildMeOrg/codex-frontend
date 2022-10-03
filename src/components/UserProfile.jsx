@@ -2,12 +2,11 @@ import React, { useState, useMemo } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
 import { get } from 'lodash-es';
 
-import Card from '@material-ui/core/Card';
+import Grid from '@material-ui/core/Grid';
 
 import { getHighestRoleLabelId } from '../utils/roleUtils';
 import useUserMetadataSchemas from '../models/users/useUserMetadataSchemas';
 import useGetUserSightings from '../models/users/useGetUserSightings';
-import useGetMe from '../models/users/useGetMe';
 import useGetUserUnprocessedAssetGroupSightings from '../models/users/useGetUserUnproccessedAssetGroupSightings';
 import { formatDate, formatUserMessage } from '../utils/formatters';
 import EntityHeader from './EntityHeader';
@@ -19,9 +18,9 @@ import Text from './Text';
 import RequestCollaborationButton from './RequestCollaborationButton';
 import MetadataCard from './cards/MetadataCard';
 import SightingsCard from './cards/SightingsCard';
-import CollaborationsCard from './cards/CollaborationsCard';
+import MyCollaborationsCard from './cards/MyCollaborationsCard';
+import UserManagerCollaborationsCard from './cards/UserManagerCollaborationsCard';
 import CardContainer from './cards/CardContainer';
-import UserManagerCollaborationEditTable from './UserManagerCollaborationEditTable';
 
 export default function UserProfile({
   children,
@@ -30,6 +29,7 @@ export default function UserProfile({
   userDataLoading,
   refreshUserData,
   someoneElse,
+  viewerIsUserManager,
   noCollaborate = false,
 }) {
   const { data: sightingsData, loading: sightingsLoading } =
@@ -39,18 +39,6 @@ export default function UserProfile({
   const metadataSchemas = useUserMetadataSchemas(userId);
   const { data: agsData, loading: agsLoading } =
     useGetUserUnprocessedAssetGroupSightings(userId);
-  const {
-    data: currentUserData,
-    loading: currentUserDataLoading,
-    error: currentUserDataError,
-  } = useGetMe();
-  const isUserManager = get(
-    currentUserData,
-    'is_user_manager',
-    false,
-  );
-
-  const nonSelfCollabData = get(userData, ['collaborations'], []);
 
   const metadata = useMemo(() => {
     if (!userData || !metadataSchemas) return [];
@@ -182,27 +170,14 @@ export default function UserProfile({
             }
           />
           {!someoneElse && (
-            <CollaborationsCard
-              htmlId="collab-card"
-              userId={userId}
-            />
+            <Grid item xs={12} id='collab-card'>
+              <MyCollaborationsCard userData={userData} />
+            </Grid>
           )}
-          {someoneElse && isUserManager && (
-            <Card
-              elevation={2}
-              style={{
-                marginLeft: 8,
-                marginTop: 20,
-                marginBottom: 12,
-                padding: 18,
-              }}
-            >
-              <UserManagerCollaborationEditTable
-                inputData={nonSelfCollabData}
-                collaborationLoading={currentUserDataLoading}
-                collaborationError={currentUserDataError}
-              />
-            </Card>
+          {someoneElse && viewerIsUserManager && (
+            <Grid item xs={12} id='collab-card'>
+              <UserManagerCollaborationsCard userData={userData} />
+            </Grid>
           )}
         </CardContainer>
       </div>
