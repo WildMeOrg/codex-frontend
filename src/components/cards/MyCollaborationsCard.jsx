@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useIntl } from 'react-intl';
 import { get, partition } from 'lodash-es';
 
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 
-import ActionIcon from '../ActionIcon';
+import { cellRendererTypes } from '../dataDisplays/cellRenderers';
 import Text from '../Text';
-import Link from '../Link';
 import DataDisplay from '../dataDisplays/DataDisplay';
 import CollaborationsDialog from './collaborations/CollaborationsDialog';
 
@@ -19,6 +18,10 @@ export default function MyCollaborationsCard({ userData }) {
     collabDialogButtonClickLoading,
     setCollabDialogButtonClickLoading,
   ] = useState(false);
+
+  const handleEdit = useCallback((_, collaboration) => {
+    setActiveCollaboration(collaboration);
+  }, []);
 
   useEffect(() => {
     setCollabDialogButtonClickLoading(false);
@@ -87,11 +90,11 @@ export default function MyCollaborationsCard({ userData }) {
       name: 'otherUserName',
       label: intl.formatMessage({ id: 'NAME' }),
       options: {
-        customBodyRender: (otherUserName, datum) => (
-          <Link to={`/users/${get(datum, 'otherUserId')}`}>
-            <Text variant="body2">{otherUserName}</Text>
-          </Link>
-        ),
+        cellRenderer: cellRendererTypes.user,
+        cellRendererProps: {
+          guidProperty: 'otherUserId',
+          nameProperty: 'otherUserName',
+        },
       },
     },
     {
@@ -106,13 +109,8 @@ export default function MyCollaborationsCard({ userData }) {
       name: 'actions',
       label: intl.formatMessage({ id: 'ACTIONS' }),
       options: {
-        customBodyRender: (_, collaboration) => (
-          <ActionIcon
-            labelId="EDIT"
-            variant="edit"
-            onClick={() => setActiveCollaboration(collaboration)}
-          />
-        ),
+        cellRenderer: cellRendererTypes.actionGroup,
+        cellRendererProps: { onEdit: handleEdit },
       },
     },
   ];
