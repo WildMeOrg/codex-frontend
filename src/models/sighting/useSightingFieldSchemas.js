@@ -70,6 +70,8 @@ export default function useSightingFieldSchemas() {
         id: 'DO_NOT_DETECT_AUTOMATICALLY',
       }),
     });
+    console.log('deleteMe modelChoices are: ');
+    console.log(modelChoices);
 
     const customFields = get(
       data,
