@@ -33,7 +33,7 @@ export const getNotificationProps = (
     'other_individuals',
     '0',
     'primaryName',
-  ]); // @TODO perhaps implement currentUserGuid for this and the below related?
+  ]);
   const theirIndividualGuid = get(notification, [
     'message_values',
     'other_individuals',

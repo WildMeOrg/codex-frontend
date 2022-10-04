@@ -106,16 +106,6 @@ export default function Notifications() {
                   notification,
                   currentUserData?.guid,
                 );
-                console.log(
-                  'deteleMe getNotificationProps (intl,notification,currentUserData?.guid,) are: ',
-                );
-                console.log(
-                  getNotificationProps(
-                    intl,
-                    notification,
-                    currentUserData?.guid,
-                  ),
-                );
                 const createdDate = notification?.created;
                 const timeSince =
                   calculatePrettyTimeElapsedSince(createdDate);
