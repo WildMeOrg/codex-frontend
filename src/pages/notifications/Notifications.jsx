@@ -87,10 +87,6 @@ export default function Notifications() {
                   notificationSchema,
                   notificationType,
                 );
-                // console.log(
-                //   'deleteMe currentNotificationSchema is: ',
-                // );
-                // console.log(currentNotificationSchema);
                 const read = get(notification, 'is_read', false);
                 const {
                   userName,

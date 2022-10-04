@@ -7,14 +7,16 @@ export const getNotificationProps = (
   notification,
   currentUserGuid,
 ) => {
-  console.log('deleteMe notification in notificationUtils is: ');
-  console.log(notification);
-  const userName = notification?.sender_name || 'Unnamed User';
+  const userName =
+    notification?.sender_name ||
+    intl.formatMessage({ id: 'Unnamed User' });
   const userNameGuid = notification?.sender_guid;
   const user1Name =
-    notification?.message_values?.user1_name || 'Unnamed User';
+    notification?.message_values?.user1_name ||
+    intl.formatMessage({ id: 'Unnamed User' });
   const user2Name =
-    notification?.message_values?.user2_name || 'Unnamed User';
+    notification?.message_values?.user2_name ||
+    intl.formatMessage({ id: 'Unnamed User' });
   const user1Guid = notification?.message_values?.user1_guid || '';
   const user2Guid = notification?.message_values?.user2_guid || '';
   const otherUserGuidForManagerNotifications =
@@ -26,16 +28,6 @@ export const getNotificationProps = (
   const managerName =
     notification?.message_values?.manager_name ||
     intl.formatMessage({ id: 'UNNAMED_MANAGER' });
-  console.log(
-    'deleteMe otherUserGuidForManagerNotifications is: ' +
-      otherUserGuidForManagerNotifications,
-  );
-  console.log(
-    'deleteMe otherUserNameForManagerNotifications is: ' +
-      otherUserNameForManagerNotifications,
-  );
-  console.log('deleteMe managerName is: ' + managerName);
-
   const theirIndividualName = get(notification, [
     'message_values',
     'other_individuals',
