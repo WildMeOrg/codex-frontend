@@ -26,6 +26,7 @@ import { notificationSchema } from '../../constants/notificationSchema';
 import { notificationTypes } from '../../components/dialogs/notificationDialogUtils';
 import queryKeys from '../../constants/queryKeys';
 import { getNotificationProps } from '../../utils/notificationUtils';
+import useGetMe from '../../models/users/useGetMe';
 
 export default function Notifications() {
   const intl = useIntl();
@@ -36,6 +37,7 @@ export default function Notifications() {
 
   const { data: notifications, loading: notificationsLoading } =
     useNotifications(true);
+  const { data: currentUserData } = useGetMe();
 
   const { markRead } = usePatchNotification();
 
@@ -100,11 +102,24 @@ export default function Notifications() {
                   theirIndividualName,
                   theirIndividualGuid,
                   formattedDeadline,
-                } = getNotificationProps(intl, notification);
-                console.log(
-                  'deleteMe getNotificationProps(intl, notification) are: ',
+                  otherUserGuidForManagerNotifications,
+                  otherUserNameForManagerNotifications,
+                  managerName,
+                } = getNotificationProps(
+                  intl,
+                  notification,
+                  currentUserData?.guid,
                 );
-                console.log(getNotificationProps(intl, notification));
+                console.log(
+                  'deteleMe getNotificationProps (intl,notification,currentUserData?.guid,) are: ',
+                );
+                console.log(
+                  getNotificationProps(
+                    intl,
+                    notification,
+                    currentUserData?.guid,
+                  ),
+                );
                 const createdDate = notification?.created;
                 const timeSince =
                   calculatePrettyTimeElapsedSince(createdDate);
@@ -157,6 +172,17 @@ export default function Notifications() {
                             </span>
                           ),
                           formattedDeadline,
+                          otherUserNameForManagerNotifications: (
+                            <span>
+                              <Link
+                                newTab
+                                href={`/users/${otherUserGuidForManagerNotifications}`}
+                              >
+                                {otherUserNameForManagerNotifications}
+                              </Link>
+                            </span>
+                          ),
+                          managerName,
                         },
                       )}
                     </Text>
