@@ -1200,5 +1200,6 @@
   "COLLABORATIONS": "Collaborations",
   "URLS_MUST_INCLUDE_HTTPS": "All URLs must include https:// to be valid",
   "ADD_COLLABORATION": "Add collaboration",
-  "EMAIL": "Email"
+  "EMAIL": "Email",
+  "ERROR_FORMATTING_JSON": "Error could not be formatted as JSON"
 }

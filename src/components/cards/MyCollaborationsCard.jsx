@@ -8,30 +8,19 @@ import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 
-import {
-  handleAxiosError,
-  prefixApiURL,
-} from '../../utils/axiosUtils';
+import { prefixApiURL } from '../../utils/axiosUtils';
 import { cellRendererTypes } from '../dataDisplays/cellRenderers';
 import Text from '../Text';
 import DataDisplay from '../dataDisplays/DataDisplay';
 import AddCollaboratorButton from './collaborations/AddCollaboratorButton';
 import CollaborationsDialog from './collaborations/CollaborationsDialog';
 import queryKeys from '../../constants/queryKeys';
-
-async function addCollaboratorMutationFn({ userGuid }) {
-  return axios
-    .request({
-      url: prefixApiURL('/collaborations/'),
-      method: 'POST',
-      data: { user_guid: userGuid },
-    })
-    .catch(handleAxiosError);
-}
+import useHandleAxiosError from '../../hooks/useHandleAxiosError';
 
 export default function MyCollaborationsCard({ userData }) {
   const intl = useIntl();
   const queryClient = useQueryClient();
+  const handleAxiosError = useHandleAxiosError();
 
   const [activeCollaboration, setActiveCollaboration] =
     useState(null);
@@ -43,6 +32,16 @@ export default function MyCollaborationsCard({ userData }) {
   const handleEdit = useCallback((_, collaboration) => {
     setActiveCollaboration(collaboration);
   }, []);
+
+  async function addCollaboratorMutationFn({ userGuid }) {
+    return axios
+      .request({
+        url: prefixApiURL('/collaborations/'),
+        method: 'POST',
+        data: { user_guid: userGuid },
+      })
+      .catch(handleAxiosError);
+  }
 
   const mutation = useMutation(addCollaboratorMutationFn, {
     onSuccess: async () =>

@@ -7,17 +7,16 @@ import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 
-import {
-  handleAxiosError,
-  prefixApiURL,
-} from '../../utils/axiosUtils';
+import { prefixApiURL } from '../../utils/axiosUtils';
 import { getUserQueryKey } from '../../constants/queryKeys';
 import AddCollaboratorButton from './collaborations/AddCollaboratorButton';
 import UserManagerCollaborationEditTable from '../UserManagerCollaborationEditTable';
+import useHandleAxiosError from '../../hooks/useHandleAxiosError';
 
 export default function UserManagerCollaborationsCard({ userData }) {
   const queryClient = useQueryClient();
   const collaborations = get(userData, ['collaborations'], []);
+  const handleAxiosError = useHandleAxiosError();
 
   const userGuid = userData?.guid;
 
