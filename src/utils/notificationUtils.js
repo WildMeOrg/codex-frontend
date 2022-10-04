@@ -9,14 +9,14 @@ export const getNotificationProps = (
 ) => {
   const userName =
     notification?.sender_name ||
-    intl.formatMessage({ id: 'Unnamed User' });
+    intl.formatMessage({ id: 'UNNAMED_USER' });
   const userNameGuid = notification?.sender_guid;
   const user1Name =
     notification?.message_values?.user1_name ||
-    intl.formatMessage({ id: 'Unnamed User' });
+    intl.formatMessage({ id: 'UNNAMED_USER' });
   const user2Name =
     notification?.message_values?.user2_name ||
-    intl.formatMessage({ id: 'Unnamed User' });
+    intl.formatMessage({ id: 'UNNAMED_USER' });
   const user1Guid = notification?.message_values?.user1_guid || '';
   const user2Guid = notification?.message_values?.user2_guid || '';
   const otherUserGuidForManagerNotifications =
