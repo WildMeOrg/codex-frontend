@@ -1,19 +1,38 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useIntl } from 'react-intl';
+import axios from 'axios';
 import { get, partition } from 'lodash-es';
+import { useIntl } from 'react-intl';
+import { useMutation, useQueryClient } from 'react-query';
 
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 
+import {
+  handleAxiosError,
+  prefixApiURL,
+} from '../../utils/axiosUtils';
 import { cellRendererTypes } from '../dataDisplays/cellRenderers';
 import Text from '../Text';
 import DataDisplay from '../dataDisplays/DataDisplay';
 import AddCollaboratorButton from './collaborations/AddCollaboratorButton';
 import CollaborationsDialog from './collaborations/CollaborationsDialog';
+import queryKeys from '../../constants/queryKeys';
+
+async function addCollaboratorMutationFn({ userGuid }) {
+  return axios
+    .request({
+      url: prefixApiURL('/collaborations/'),
+      method: 'POST',
+      data: { user_guid: userGuid },
+    })
+    .catch(handleAxiosError);
+}
 
 export default function MyCollaborationsCard({ userData }) {
   const intl = useIntl();
+  const queryClient = useQueryClient();
+
   const [activeCollaboration, setActiveCollaboration] =
     useState(null);
   const [
@@ -24,6 +43,11 @@ export default function MyCollaborationsCard({ userData }) {
   const handleEdit = useCallback((_, collaboration) => {
     setActiveCollaboration(collaboration);
   }, []);
+
+  const mutation = useMutation(addCollaboratorMutationFn, {
+    onSuccess: async () =>
+      queryClient.invalidateQueries(queryKeys.me),
+  });
 
   useEffect(() => {
     setCollabDialogButtonClickLoading(false);
@@ -142,7 +166,10 @@ export default function MyCollaborationsCard({ userData }) {
           />
         </CardContent>
         <CardActions>
-          <AddCollaboratorButton />
+          <AddCollaboratorButton
+            userData={userData}
+            mutation={mutation}
+          />
         </CardActions>
       </Card>
     </>

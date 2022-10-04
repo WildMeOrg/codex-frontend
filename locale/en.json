@@ -200,6 +200,7 @@
   "SEARCH_ITIS_SPECIES": "Search ITIS species",
   "SEARCH_INDIVIDUALS_INSTRUCTION": "Search for an individual by name or guid",
   "SEARCH_SIGHTINGS_INSTRUCTION": "Search for a sighting by location, owner or guid",
+  "SEARCH_USER_INSTRUCTION": "Search for a user by name or email",
   "PRAIRIE": "Prairie",
   "EDIT_USER_METADATA": "Edit user metadata",
   "EDIT_SIGHTING_METADATA": "Edit sighting metadata",
@@ -987,6 +988,7 @@
   "COMPONENT_COMMIT_HASH": "{component} commit hash: ",
   "INDIVIDUAL_SEARCH_NO_RESULTS": "Your search \"{searchTerm}\" did not match any individuals.",
   "SIGHTING_SEARCH_NO_RESULTS": "Your search \"{searchTerm}\" did not match any sightings.",
+  "POTENTIAL_COLLABORATOR_SEARCH_NO_RESULTS": "Your search \"{searchTerm}\" did not match any potential collaborators.",
   "SEARCH_SERVER_ERROR": "A server error occurred while attempting to search.",
   "CONFIGURATION_SITE_NAME_LABEL": "Site name",
   "CONFIGURATION_SITE_NAME_DESCRIPTION": "The name of this site, excluding domain name suffix (ie. PandaMatcher, NOT pandamatcher.org).",
@@ -1197,5 +1199,6 @@
   "EDIT_COLLABORATION_CURRENT_STATE_DESCRIPTION": "Changing the state will cancel any pending requests.",
   "COLLABORATIONS": "Collaborations",
   "URLS_MUST_INCLUDE_HTTPS": "All URLs must include https:// to be valid",
-  "ADD_COLLABORATION": "Add collaboration"
+  "ADD_COLLABORATION": "Add collaboration",
+  "EMAIL": "Email"
 }
