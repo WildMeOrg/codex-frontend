@@ -1051,7 +1051,7 @@
   "INDIVIDUALS_MERGE_PENDING_TITLE": "Merge pending",
   "INDIVIDUALS_MERGE_PENDING_DESCRIPTION": "Your merge could not be completed immediately because you do not have edit access to all of the sightings associated with these individuals. A notification has been sent to the researchers who own these sightings so they can approve or block the merge. They must respond by {deadlineDate} to block the merge or it will proceed.",
   "DATE_MISSING": "DATE MISSING",
-  "COLLABORATION_ESTABLISHED_BY_USER_MANAGER": "Collaboration established by your user manager",
+  "COLLABORATION_ESTABLISHED_BY_USER_MANAGER": "Collaboration established by a user manager",
   "COLLABORATION_REVOKE_TITLE": "Revoke collaboration",
   "COLLABORATION_EDIT_REQUEST_TITLE": "Edit collaboration request",
   "COLLABORATION_EDIT_APPROVED_TITLE": "Collaboration edit approved",
@@ -1196,5 +1196,16 @@
   "EDIT_COLLABORATION_CURRENT_STATE_LABEL": "Current state",
   "EDIT_COLLABORATION_CURRENT_STATE_DESCRIPTION": "Changing the state will cancel any pending requests.",
   "COLLABORATIONS": "Collaborations",
-  "URLS_MUST_INCLUDE_HTTPS": "All URLs must include https:// to be valid"
+  "URLS_MUST_INCLUDE_HTTPS": "All URLs must include https:// to be valid",
+  "EDIT_COLLABORATION_REVOKED_BY_USER_MANAGER": "Edit collaboration revoked by a user manager.",
+  "EDIT_COLLABORATION_WAS_REVOKED_BY_A_USER_MANAGER": "An edit-level collaboration with {otherUserNameForManagerNotifications} was revoked by a user manager {managerName}.",
+  "COLLABORATION_EDIT_DENIED": "Collaboration edit denied",
+  "EDIT_COLLABORATION_DENIED_MESSAGE": "{userName} denied your collaboration edit request",
+  "COLLABORATION_DENIED_BY_USER_MANAGER": "Collaboration denied by a user manager",
+  "COLLABORATION_DENIED_BY_USER_MANAGER_MESSAGE": "Your collaboration with {otherUserNameForManagerNotifications} was denied by a user manager {managerName}.",
+  "EDIT_COLLABORATION_DENIED_BY_USER_MANAGER": "Edit-level collaboration denied by a user manager",
+  "EDIT_COLLABORATION_DENIED_BY_USER_MANAGER_MESSAGE": "An edit-level collaboration with {otherUserNameForManagerNotifications} was denied by a user manager {managerName}.",
+  "EDIT_COLLABORATION_APPROVED_BY_USER_MANAGER": "Edit collaboration approved by a user manager",
+  "EDIT_COLLABORATION_WAS_APPROVED_BY_A_USER_MANAGER": "An edit-level collaboration with {otherUserNameForManagerNotifications} was approved by a user manager {managerName}.",
+  "UNNAMED_MANAGER": "Unnamed manager"
 }

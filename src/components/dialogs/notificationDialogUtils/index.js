@@ -10,6 +10,12 @@ import NotificationCollaborationManagerRevokeDialog from './NotificationCollabor
 import NotificationIndividualMergeRequestDialog from './NotificationIndividualMergeRequestDialog';
 import NotificationIndividualMergeCompleteDialog from './NotificationIndividualMergeCompleteDialog';
 import NotificationIndividualMergeBlockDialog from './NotificationIndividualMergeBlockDialog';
+import NotificationCollaborationManagerEditApprovedDialog from './NotificationCollaborationManagerEditApprovedDialog';
+import NotificationCollaborationManagerEditRevokeDialog from './NotificationCollaborationManagerEditRevokeDialog';
+import NotificationCollaborationEditDeniedDialog from './NotificationCollaborationEditDeniedDialog';
+import NotificationCollaborationManagerDeniedDialog from './NotificationCollaborationManagerDeniedDialog';
+import NotificationCollaborationManagerEditDeniedDialog from './NotificationCollaborationManagerEditDeniedDialog';
+
 import { notificationTypeNames } from '../../../constants/notificationSchema';
 
 export const notificationTypes = {
@@ -37,4 +43,14 @@ export const notificationTypes = {
     NotificationIndividualMergeCompleteDialog,
   [notificationTypeNames.individual_merge_blocked]:
     NotificationIndividualMergeBlockDialog,
+  [notificationTypeNames.collaboration_manager_edit_approved]:
+    NotificationCollaborationManagerEditApprovedDialog,
+  [notificationTypeNames.collaboration_manager_edit_revoke]:
+    NotificationCollaborationManagerEditRevokeDialog,
+  [notificationTypeNames.collaboration_edit_denied]:
+    NotificationCollaborationEditDeniedDialog,
+  [notificationTypeNames.collaboration_manager_denied]:
+    NotificationCollaborationManagerDeniedDialog,
+  [notificationTypeNames.collaboration_manager_edit_denied]:
+    NotificationCollaborationManagerEditDeniedDialog,
 };

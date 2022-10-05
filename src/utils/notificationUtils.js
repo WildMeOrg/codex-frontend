@@ -2,14 +2,29 @@ import { get } from 'lodash-es';
 
 import { formatDateCustom } from './formatters';
 
-export const getNotificationProps = (intl, notification) => {
-  const userName = notification?.sender_name || 'Unnamed User';
+export const getNotificationProps = (
+  intl,
+  notification,
+  currentUserGuid,
+) => {
+  const unnamedUser = intl.formatMessage({ id: 'UNNAMED_USER' });
+  const userName = notification?.sender_name || unnamedUser;
   const userNameGuid = notification?.sender_guid;
   const user1Name =
-    notification?.message_values?.user1_name || 'Unnamed User';
+    notification?.message_values?.user1_name || unnamedUser;
   const user2Name =
-    notification?.message_values?.user2_name || 'Unnamed User';
-
+    notification?.message_values?.user2_name || unnamedUser;
+  const user1Guid = notification?.message_values?.user1_guid || '';
+  const user2Guid = notification?.message_values?.user2_guid || '';
+  const otherUserGuidForManagerNotifications =
+    currentUserGuid === user1Guid ? user2Guid : user1Guid;
+  const otherUserNameForManagerNotifications =
+    otherUserGuidForManagerNotifications === user1Guid
+      ? user1Name
+      : user2Name;
+  const managerName =
+    notification?.message_values?.manager_name ||
+    intl.formatMessage({ id: 'UNNAMED_MANAGER' });
   const theirIndividualName = get(notification, [
     'message_values',
     'other_individuals',
@@ -42,5 +57,8 @@ export const getNotificationProps = (intl, notification) => {
     theirIndividualName,
     theirIndividualGuid,
     formattedDeadline,
+    otherUserGuidForManagerNotifications,
+    otherUserNameForManagerNotifications,
+    managerName,
   };
 };

@@ -142,6 +142,7 @@ export default function AppHeader() {
             refreshNotifications={refreshNotifications}
             shouldOpen={shouldOpenNotificationPane}
             setShouldOpen={setShouldOpenNotificationPane}
+            currentUserGuid={meData?.guid}
           />
           <HeaderButton
             onClick={e => setUserMenuAnchorEl(e.currentTarget)}
