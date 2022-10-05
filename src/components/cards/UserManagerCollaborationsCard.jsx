@@ -7,7 +7,7 @@ import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 
-import { prefixApiURL } from '../../utils/axiosUtils';
+import { prefixApiUrl } from '../../utils/axiosUtils';
 import { getUserQueryKey } from '../../constants/queryKeys';
 import AddCollaboratorButton from './collaborations/AddCollaboratorButton';
 import UserManagerCollaborationEditTable from '../UserManagerCollaborationEditTable';
@@ -23,7 +23,7 @@ export default function UserManagerCollaborationsCard({ userData }) {
   async function mutationFn({ userGuid: secondUserGuid }) {
     try {
       const result = await axios.request({
-        url: prefixApiURL('/collaborations/'),
+        url: prefixApiUrl('/collaborations/'),
         method: 'POST',
         data: {
           user_guid: userGuid,

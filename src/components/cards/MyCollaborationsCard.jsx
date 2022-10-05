@@ -8,7 +8,7 @@ import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 
-import { prefixApiURL } from '../../utils/axiosUtils';
+import { prefixApiUrl } from '../../utils/axiosUtils';
 import { cellRendererTypes } from '../dataDisplays/cellRenderers';
 import Text from '../Text';
 import DataDisplay from '../dataDisplays/DataDisplay';
@@ -36,7 +36,7 @@ export default function MyCollaborationsCard({ userData }) {
   async function addCollaboratorMutationFn({ userGuid }) {
     try {
       const result = await axios.request({
-        url: prefixApiURL('/collaborations/'),
+        url: prefixApiUrl('/collaborations/'),
         method: 'POST',
         data: { user_guid: userGuid },
       });
