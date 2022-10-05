@@ -11,12 +11,12 @@ import { prefixApiUrl } from '../../utils/axiosUtils';
 import { getUserQueryKey } from '../../constants/queryKeys';
 import AddCollaboratorButton from './collaborations/AddCollaboratorButton';
 import UserManagerCollaborationEditTable from '../UserManagerCollaborationEditTable';
-import useHandleAxiosError from '../../hooks/useHandleAxiosError';
+import useHandleRequestError from '../../hooks/useHandleRequestError';
 
 export default function UserManagerCollaborationsCard({ userData }) {
   const queryClient = useQueryClient();
   const collaborations = get(userData, ['collaborations'], []);
-  const handleAxiosError = useHandleAxiosError();
+  const handleRequestError = useHandleRequestError();
 
   const userGuid = userData?.guid;
 
@@ -32,7 +32,7 @@ export default function UserManagerCollaborationsCard({ userData }) {
       });
       return result;
     } catch (error) {
-      return handleAxiosError(error);
+      return handleRequestError(error);
     }
   }
 

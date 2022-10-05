@@ -15,12 +15,12 @@ import DataDisplay from '../dataDisplays/DataDisplay';
 import AddCollaboratorButton from './collaborations/AddCollaboratorButton';
 import CollaborationsDialog from './collaborations/CollaborationsDialog';
 import queryKeys from '../../constants/queryKeys';
-import useHandleAxiosError from '../../hooks/useHandleAxiosError';
+import useHandleRequestError from '../../hooks/useHandleRequestError';
 
 export default function MyCollaborationsCard({ userData }) {
   const intl = useIntl();
   const queryClient = useQueryClient();
-  const handleAxiosError = useHandleAxiosError();
+  const handleRequestError = useHandleRequestError();
 
   const [activeCollaboration, setActiveCollaboration] =
     useState(null);
@@ -42,7 +42,7 @@ export default function MyCollaborationsCard({ userData }) {
       });
       return result;
     } catch (error) {
-      return handleAxiosError(error);
+      return handleRequestError(error);
     }
   }
 
