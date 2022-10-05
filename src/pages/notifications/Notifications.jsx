@@ -37,7 +37,11 @@ export default function Notifications() {
 
   const { data: notifications, loading: notificationsLoading } =
     useNotifications(true);
-  const { data: currentUserData } = useGetMe();
+  const {
+    data: currentUserData,
+    loading: currentUserLoading,
+    error: currentUserError,
+  } = useGetMe();
 
   const { markRead } = usePatchNotification();
 
@@ -88,6 +92,14 @@ export default function Notifications() {
                   notificationType,
                 );
                 const read = get(notification, 'is_read', false);
+                const props =
+                  currentUserLoading || currentUserError
+                    ? {}
+                    : getNotificationProps(
+                        intl,
+                        notification,
+                        currentUserData?.guid,
+                      );
                 const {
                   userName,
                   userNameGuid,
@@ -101,11 +113,7 @@ export default function Notifications() {
                   otherUserGuidForManagerNotifications,
                   otherUserNameForManagerNotifications,
                   managerName,
-                } = getNotificationProps(
-                  intl,
-                  notification,
-                  currentUserData?.guid,
-                );
+                } = props;
                 const createdDate = notification?.created;
                 const timeSince =
                   calculatePrettyTimeElapsedSince(createdDate);

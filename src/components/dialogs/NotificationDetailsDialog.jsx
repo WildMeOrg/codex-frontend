@@ -28,7 +28,20 @@ export default function NotificationDetailsDialog({
   const onCloseDialog = () => {
     onClose();
   };
-  const { data: currentUserData } = useGetMe();
+  const {
+    data: currentUserData,
+    loading: currentUserLoading,
+    error: currentUserError,
+  } = useGetMe();
+
+  const props =
+    currentUserLoading || currentUserError
+      ? {}
+      : getNotificationProps(
+          intl,
+          notification,
+          currentUserData?.guid,
+        );
 
   const {
     userName,
@@ -43,7 +56,7 @@ export default function NotificationDetailsDialog({
     otherUserGuidForManagerNotifications,
     otherUserNameForManagerNotifications,
     managerName,
-  } = getNotificationProps(intl, notification, currentUserData?.guid);
+  } = props;
 
   return (
     <StandardDialog

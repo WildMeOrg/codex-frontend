@@ -1198,7 +1198,7 @@
   "COLLABORATIONS": "Collaborations",
   "URLS_MUST_INCLUDE_HTTPS": "All URLs must include https:// to be valid",
   "EDIT_COLLABORATION_REVOKED_BY_USER_MANAGER": "Edit collaboration revoked by a user manager.",
-  "EDIT_COLLABORATION_WAS_REVOKED_BY_YOUR_USER_MANAGER": "An edit-level collaboration with {otherUserNameForManagerNotifications} was revoked by a user manager {managerName}.",
+  "EDIT_COLLABORATION_WAS_REVOKED_BY_A_USER_MANAGER": "An edit-level collaboration with {otherUserNameForManagerNotifications} was revoked by a user manager {managerName}.",
   "COLLABORATION_EDIT_DENIED": "Collaboration edit denied",
   "EDIT_COLLABORATION_DENIED_MESSAGE": "{userName} denied your collaboration edit request",
   "COLLABORATION_DENIED_BY_USER_MANAGER": "Collaboration denied by a user manager",
@@ -1206,6 +1206,6 @@
   "EDIT_COLLABORATION_DENIED_BY_USER_MANAGER": "Edit-level collaboration denied by a user manager",
   "EDIT_COLLABORATION_DENIED_BY_USER_MANAGER_MESSAGE": "An edit-level collaboration with {otherUserNameForManagerNotifications} was denied by a user manager {managerName}.",
   "EDIT_COLLABORATION_APPROVED_BY_USER_MANAGER": "Edit collaboration approved by a user manager",
-  "EDIT_COLLABORATION_WAS_APPROVED_BY_YOUR_USER_MANAGER": "An edit-level collaboration with {otherUserNameForManagerNotifications} was approved by a user manager {managerName}.",
+  "EDIT_COLLABORATION_WAS_APPROVED_BY_A_USER_MANAGER": "An edit-level collaboration with {otherUserNameForManagerNotifications} was approved by a user manager {managerName}.",
   "UNNAMED_MANAGER": "Unnamed manager"
 }

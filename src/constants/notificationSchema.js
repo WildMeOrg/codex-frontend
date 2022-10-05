@@ -25,7 +25,7 @@ export const notificationTypeNames = {
 const notificationSchemaPlaceholder = {};
 
 notificationSchemaPlaceholder[
-  notificationTypeNames.collaboration_manager_edit_approved
+  notificationTypeNames.collaboration_manager_edit_denied
 ] = {
   titleId: 'EDIT_COLLABORATION_DENIED_BY_USER_MANAGER',
   notificationMessage:
@@ -41,9 +41,9 @@ notificationSchemaPlaceholder[
 ] = {
   titleId: 'EDIT_COLLABORATION_APPROVED_BY_USER_MANAGER',
   notificationMessage:
-    'EDIT_COLLABORATION_WAS_APPROVED_BY_YOUR_USER_MANAGER',
+    'EDIT_COLLABORATION_WAS_APPROVED_BY_A_USER_MANAGER',
   moreDetailedDescription:
-    'EDIT_COLLABORATION_WAS_APPROVED_BY_YOUR_USER_MANAGER',
+    'EDIT_COLLABORATION_WAS_APPROVED_BY_A_USER_MANAGER',
   showNotificationDialog: false,
   buttonPath: '/#collab-card',
 };
@@ -71,9 +71,9 @@ notificationSchemaPlaceholder[
 ] = {
   titleId: 'EDIT_COLLABORATION_REVOKED_BY_USER_MANAGER',
   notificationMessage:
-    'EDIT_COLLABORATION_WAS_REVOKED_BY_YOUR_USER_MANAGER',
+    'EDIT_COLLABORATION_WAS_REVOKED_BY_A_USER_MANAGER',
   moreDetailedDescription:
-    'EDIT_COLLABORATION_WAS_REVOKED_BY_YOUR_USER_MANAGER',
+    'EDIT_COLLABORATION_WAS_REVOKED_BY_A_USER_MANAGER',
   showNotificationDialog: false,
   buttonPath: '/#collab-card',
 };
