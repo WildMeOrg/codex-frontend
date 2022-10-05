@@ -95,13 +95,6 @@ export default function AddCollaboratorButton({
     setSelectedUserGuid(null);
   }
 
-  function handleSubmitCollaborator() {
-    addCollaboration(
-      { userGuid: selectedUserGuid },
-      { onSuccess: handleCloseDialog },
-    );
-  }
-
   const currentCollaboratorGuids = (
     userData?.collaborations || []
   ).map(collaboration => {
@@ -215,7 +208,12 @@ export default function AddCollaboratorButton({
             display="primary"
             loading={isAddCollaborationLoading}
             disabled={!selectedUserGuid || isAddCollaborationLoading}
-            onClick={handleSubmitCollaborator}
+            onClick={() => {
+              addCollaboration(
+                { userGuid: selectedUserGuid },
+                { onSuccess: handleCloseDialog },
+              );
+            }}
           />
         </DialogActions>
       </StandardDialog>
