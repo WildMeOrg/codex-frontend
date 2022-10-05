@@ -9,7 +9,7 @@ export default function useHandleAxiosError() {
   return function handleAxiosError(axiosError) {
     let error = defaultError;
 
-    if (axiosError.response.data?.message) {
+    if (axiosError.response?.data?.message) {
       error = axiosError.response.data.message;
     } else if (axiosError.toJSON) {
       error = axiosError.toJSON().message;

@@ -21,16 +21,19 @@ export default function UserManagerCollaborationsCard({ userData }) {
   const userGuid = userData?.guid;
 
   async function mutationFn({ userGuid: secondUserGuid }) {
-    return axios
-      .request({
+    try {
+      const result = await axios.request({
         url: prefixApiURL('/collaborations/'),
         method: 'POST',
         data: {
           user_guid: userGuid,
           second_user_guid: secondUserGuid,
         },
-      })
-      .catch(handleAxiosError);
+      });
+      return result;
+    } catch (error) {
+      return handleAxiosError(error);
+    }
   }
 
   const mutation = useMutation(mutationFn, {

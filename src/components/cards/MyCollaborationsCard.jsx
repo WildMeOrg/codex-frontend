@@ -34,13 +34,16 @@ export default function MyCollaborationsCard({ userData }) {
   }, []);
 
   async function addCollaboratorMutationFn({ userGuid }) {
-    return axios
-      .request({
+    try {
+      const result = await axios.request({
         url: prefixApiURL('/collaborations/'),
         method: 'POST',
         data: { user_guid: userGuid },
-      })
-      .catch(handleAxiosError);
+      });
+      return result;
+    } catch (error) {
+      return handleAxiosError(error);
+    }
   }
 
   const mutation = useMutation(addCollaboratorMutationFn, {
