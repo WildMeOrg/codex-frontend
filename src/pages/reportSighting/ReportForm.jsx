@@ -56,8 +56,7 @@ export default function ReportForm({
 }) {
   const intl = useIntl();
   const history = useHistory();
-  const { data: siteSettingsData, siteSettingsVersion } =
-    useSiteSettings();
+  const { data: siteSettingsData } = useSiteSettings();
   const recaptchaPublicKey = get(siteSettingsData, [
     'recaptchaPublicKey',
     'value',
@@ -81,7 +80,7 @@ export default function ReportForm({
         customEncounterCategories: _customEncounterCategories,
         customSightingCategories: _customSightingCategories,
       };
-    }, [siteSettingsData, siteSettingsVersion]);
+    }, [siteSettingsData]);
 
   const sightingFieldSchemas = useSightingFieldSchemas();
   const encounterFieldSchemas = useEncounterFieldSchemas();
@@ -124,6 +123,7 @@ export default function ReportForm({
   const [dialogOpen, setDialogOpen] = useState(false);
   const [incompleteFields, setIncompleteFields] = useState([]);
   const [termsError, setTermsError] = useState(false);
+  const [formErrorId, setFormErrorId] = useState(null);
 
   const [sightingFormValues, setSightingFormValues] = useState({});
   const [customSightingFormValues, setCustomSightingFormValues] =
@@ -170,7 +170,10 @@ export default function ReportForm({
   } = usePostAssetGroup();
 
   const showErrorAlertBox =
-    incompleteFields.length > 0 || termsError || postAssetGroupError;
+    incompleteFields.length > 0 ||
+    termsError ||
+    postAssetGroupError ||
+    formErrorId;
 
   const hasSightingTypeAndNotAuthenticated =
     sightingType && !authenticated;
@@ -247,21 +250,18 @@ export default function ReportForm({
               <Text variant="body2">{postAssetGroupError}</Text>
             )}
             {termsError && <Text variant="body2" id="TERMS_ERROR" />}
+            {formErrorId && <Text variant="body2" id={formErrorId} />}
             {incompleteFields.map(incompleteField => (
-              <p
-                style={{ margin: '4px 0' }}
+              <Text
                 key={incompleteField.name}
-              >
-                <Text
-                  variant="body2"
-                  id="INCOMPLETE_FIELD"
-                  values={{
-                    fieldName: intl.formatMessage({
-                      id: incompleteField.labelId,
-                    }),
-                  }}
-                />
-              </p>
+                variant="body2"
+                id="INCOMPLETE_FIELD"
+                values={{
+                  fieldName: intl.formatMessage({
+                    id: incompleteField.labelId,
+                  }),
+                }}
+              />
             ))}
           </CustomAlert>
         </Grid>
@@ -277,21 +277,68 @@ export default function ReportForm({
         >
           <Button
             onClick={async () => {
-              // check that required fields are complete
+              // check that required fields are complete.
+              // specifiedTime field is required, but the logic and message
+              // are different from the other fields
               const nextIncompleteFields =
                 defaultSightingSchemas.filter(
                   field =>
                     field.required &&
                     field.defaultValue ===
-                      sightingFormValues[field.name],
+                      sightingFormValues[field.name] &&
+                    field.name !== 'specifiedTime',
                 );
               setIncompleteFields(nextIncompleteFields);
+
+              // check that specifiedTime fields are complete
+              let nextFormErrorId = null;
+              const formTimeSpecificity = get(sightingFormValues, [
+                'specifiedTime',
+                'timeSpecificity',
+              ]);
+              const formTime = get(sightingFormValues, [
+                'specifiedTime',
+                'time',
+              ]);
+
+              const specifiedTimeField =
+                defaultSightingSchemas.find(
+                  field => field.name === 'specifiedTime',
+                ) || {};
+
+              const defaultTimeSpecificity = get(specifiedTimeField, [
+                'defaultValue',
+                'timeSpecificity',
+              ]);
+
+              const defaultTime = get(specifiedTimeField, [
+                'defaultValue',
+                'time',
+              ]);
+
+              const isTimeSpecificityDefault =
+                formTimeSpecificity === defaultTimeSpecificity;
+
+              const isTimeDefault = formTime === defaultTime;
+
+              if (
+                !formTimeSpecificity ||
+                isTimeSpecificityDefault ||
+                !formTime ||
+                isTimeDefault
+              ) {
+                nextFormErrorId = 'INCOMPLETE_TIME_SPECIFICITY';
+              }
+
+              setFormErrorId(nextFormErrorId);
 
               // check that terms and conditions were accepted
               setTermsError(!acceptedTerms);
 
               const formValid =
-                nextIncompleteFields.length === 0 && acceptedTerms;
+                nextIncompleteFields.length === 0 &&
+                acceptedTerms &&
+                !nextFormErrorId;
 
               if (formValid) {
                 const report =

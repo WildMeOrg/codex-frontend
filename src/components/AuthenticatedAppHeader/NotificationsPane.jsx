@@ -28,6 +28,7 @@ export default function NotificationsPane({
   refreshNotifications,
   shouldOpen,
   setShouldOpen,
+  currentUserGuid,
 }) {
   const intl = useIntl();
   const queryClient = useQueryClient();
@@ -85,7 +86,14 @@ export default function NotificationsPane({
                 theirIndividualName,
                 theirIndividualGuid,
                 formattedDeadline,
-              } = getNotificationProps(intl, notification);
+                otherUserGuidForManagerNotifications,
+                otherUserNameForManagerNotifications,
+                managerName,
+              } = getNotificationProps(
+                intl,
+                notification,
+                currentUserGuid,
+              );
               const deriveButtonPath = get(
                 currentNotificationSchema,
                 'deriveButtonPath',
@@ -130,6 +138,13 @@ export default function NotificationsPane({
                         theirIndividualName={theirIndividualName}
                         theirIndividualGuid={theirIndividualGuid}
                         formattedDeadline={formattedDeadline}
+                        otherUserGuidForManagerNotifications={
+                          otherUserGuidForManagerNotifications
+                        }
+                        otherUserNameForManagerNotifications={
+                          otherUserNameForManagerNotifications
+                        }
+                        managerName={managerName}
                         timeSince={timeSince}
                       />
                     </div>

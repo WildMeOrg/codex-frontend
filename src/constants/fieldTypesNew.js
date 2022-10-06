@@ -15,7 +15,6 @@ const fieldTypes = {
   boolean: 'boolean',
   locationId: 'locationID', // nested array
   individual: 'individual', // string (individual ID)
-  relationships: 'relationships', // { targetIndividualId: string, direction: enum, type: enum, id: int }
 };
 
 const backendTypes = {
@@ -83,14 +82,6 @@ export const fieldTypeInfo = {
     canProvideDefaultValue: false,
     exampleValue: null,
   },
-  [fieldTypes.relationships]: {
-    labelId: 'RELATIONSHIPS_SELECTOR',
-    value: fieldTypes.relationships,
-    backendType: backendTypes.string,
-    backendMultiple: true,
-    canProvideDefaultValue: false,
-    exampleValue: null,
-  },
   [fieldTypes.integer]: {
     labelId: 'INTEGER_LABEL',
     value: fieldTypes.integer,
@@ -100,14 +91,6 @@ export const fieldTypeInfo = {
     initialDefaultValue: null,
     exampleValue: 12,
   },
-  // [fieldTypes.file]: {
-  //   labelId: 'FILE_UPLOADER',
-  //   value: fieldTypes.file,
-  //   backendType: backendTypes.string,
-  //   backendMultiple: false,
-  //   canProvideDefaultValue: false,
-  //   exampleValue: null,
-  // },
   [fieldTypes.latlong]: {
     labelId: 'LAT_LONG_SELECTOR',
     value: fieldTypes.latlong,
@@ -140,7 +123,7 @@ export const fieldTypeInfo = {
     backendType: backendTypes.string,
     backendMultiple: false,
     canProvideDefaultValue: true,
-    initialDefaultValue: '',
+    initialDefaultValue: null,
     exampleValue: 'Value appears here',
   },
   [fieldTypes.multiselect]: {

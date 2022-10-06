@@ -285,3 +285,8 @@ export const formatLocationFromSighting = (
 };
 
 export const sanitizeTwitterHandle = value => value.replace(/^@/, '');
+
+export function formatUserMessage(user, intl) {
+  const { fullName } = user || {};
+  return fullName || intl.formatMessage({ id: 'UNNAMED_USER' });
+}

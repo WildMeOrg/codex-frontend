@@ -1,14 +1,17 @@
 import { usePost } from '../../hooks/useMutate';
 import queryKeys from '../../constants/queryKeys';
 
+/**
+ * To POST multiple site settings, pass a property of ''
+ */
 export default function usePutSiteSetting() {
   return usePost({
-    deriveUrl: ({ property }) => `/site-settings/main/${property}`,
+    deriveUrl: ({ property }) => `/site-settings/data/${property}`,
     deriveData: ({ data }) => ({
-      _value: data,
+      value: data,
     }),
     fetchKeys: [
-      queryKeys.settingsConfig,
+      queryKeys.settingsSchema,
       queryKeys.twitterBotTestResults,
     ],
   });

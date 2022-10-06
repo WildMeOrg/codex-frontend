@@ -7,9 +7,8 @@ import DoneIcon from '@material-ui/icons/Done';
 import Skeleton from '@material-ui/lab/Skeleton';
 
 import ReviewSightingDialog from '../../components/dialogs/ReviewSightingDialog';
-import Link from '../../components/Link';
+import FormattedReporter from '../../components/formatters/FormattedReporter';
 import Tabs from '../../components/Tabs';
-import Text from '../../components/Text';
 import MoreMenu from '../../components/MoreMenu';
 import EntityHeader from '../../components/EntityHeader';
 import FeaturedPhoto from '../../components/FeaturedPhoto';
@@ -80,10 +79,6 @@ export default function SightingEntityHeader({
   );
 
   const sightingCreator = data?.creator;
-  const creatorName =
-    sightingCreator?.full_name ||
-    intl.formatMessage({ id: 'UNNAMED_USER' });
-  const creatorUrl = `/users/${sightingCreator?.guid}`;
 
   return (
     <>
@@ -161,10 +156,13 @@ export default function SightingEntityHeader({
         }
       >
         {sightingCreator && (
-          <Text variant="body2">
-            {intl.formatMessage({ id: 'REPORTED_BY' })}
-            <Link to={creatorUrl}>{creatorName}</Link>
-          </Text>
+          <FormattedReporter
+            variant="body2"
+            reporter={{
+              guid: sightingCreator.guid,
+              fullName: sightingCreator.full_name,
+            }}
+          />
         )}
         {sightingIsReviewed && (
           <Chip

@@ -61,7 +61,28 @@ export default function SocialGroupRole({
       </Alert>
     );
   return (
-    <div style={{ marginLeft: 32, marginTop: 10 }}>
+    <div style={{ display: 'flex', alignItems: 'center' }}>
+      <TextInput
+        width={240}
+        schema={{ labelId: 'ROLE' }}
+        style={{ marginRight: 24 }}
+        onChange={newLabel => {
+          onChange(updateRoleLabel(roles, roleGuid, newLabel));
+        }}
+        value={roleLabel}
+        autoFocus
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position="end">
+              <DeleteButton
+                onClick={() => {
+                  onChange(deleteRole(roles, roleGuid));
+                }}
+              />
+            </InputAdornment>
+          ),
+        }}
+      />
       <FormGroup>
         <FormControlLabel
           control={
@@ -83,26 +104,6 @@ export default function SocialGroupRole({
           })}
         />
       </FormGroup>
-      <TextInput
-        width={240}
-        schema={{ labelId: 'ROLE' }}
-        onChange={newLabel => {
-          onChange(updateRoleLabel(roles, roleGuid, newLabel));
-        }}
-        value={roleLabel}
-        autoFocus
-        InputProps={{
-          endAdornment: (
-            <InputAdornment position="end">
-              <DeleteButton
-                onClick={() => {
-                  onChange(deleteRole(roles, roleGuid));
-                }}
-              />
-            </InputAdornment>
-          ),
-        }}
-      />
     </div>
   );
 }

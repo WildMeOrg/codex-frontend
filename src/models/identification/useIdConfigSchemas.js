@@ -11,7 +11,6 @@ export default function useIdConfigSchemas() {
     data,
     loading: siteSettingsLoading,
     error: siteSettingsError,
-    siteSettingsVersion,
   } = useSiteSettings();
 
   const {
@@ -78,7 +77,7 @@ export default function useIdConfigSchemas() {
         },
       }),
     ];
-  }, [data, siteSettingsVersion, detectionConfig, loading, error]);
+  }, [data, detectionConfig, loading, error]);
 
   return sightingFieldSchemas;
 }

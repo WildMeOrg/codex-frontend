@@ -26,6 +26,7 @@ import { notificationSchema } from '../../constants/notificationSchema';
 import { notificationTypes } from '../../components/dialogs/notificationDialogUtils';
 import queryKeys from '../../constants/queryKeys';
 import { getNotificationProps } from '../../utils/notificationUtils';
+import useGetMe from '../../models/users/useGetMe';
 
 export default function Notifications() {
   const intl = useIntl();
@@ -36,6 +37,11 @@ export default function Notifications() {
 
   const { data: notifications, loading: notificationsLoading } =
     useNotifications(true);
+  const {
+    data: currentUserData,
+    loading: currentUserLoading,
+    error: currentUserError,
+  } = useGetMe();
 
   const { markRead } = usePatchNotification();
 
@@ -86,6 +92,14 @@ export default function Notifications() {
                   notificationType,
                 );
                 const read = get(notification, 'is_read', false);
+                const props =
+                  currentUserLoading || currentUserError
+                    ? {}
+                    : getNotificationProps(
+                        intl,
+                        notification,
+                        currentUserData?.guid,
+                      );
                 const {
                   userName,
                   userNameGuid,
@@ -96,62 +110,77 @@ export default function Notifications() {
                   theirIndividualName,
                   theirIndividualGuid,
                   formattedDeadline,
-                } = getNotificationProps(intl, notification);
+                  otherUserGuidForManagerNotifications,
+                  otherUserNameForManagerNotifications,
+                  managerName,
+                } = props;
                 const createdDate = notification?.created;
                 const timeSince =
                   calculatePrettyTimeElapsedSince(createdDate);
-                const notificationText = (
-                  <Text
-                    key={notification?.guid}
-                    style={{
-                      color: read
-                        ? theme.palette.text.secondary
-                        : theme.palette.text.primary,
-                    }}
-                    variant="body2"
-                  >
-                    {intl.formatMessage(
-                      {
-                        id: currentNotificationSchema?.notificationMessage,
-                      },
-                      {
-                        userName: (
-                          <span>
-                            <Link
-                              newTab
-                              href={`/users/${userNameGuid}`}
-                            >
-                              {userName}
-                            </Link>
-                          </span>
-                        ),
-                        user1Name,
-                        user2Name,
-                        yourIndividualName: (
-                          <span>
-                            <Link
-                              newTab
-                              href={`/individuals/${yourIndividualGuid}`}
-                            >
-                              {yourIndName}
-                            </Link>
-                          </span>
-                        ),
-                        theirIndividualName: (
-                          <span>
-                            <Link
-                              newTab
-                              href={`/individuals/${theirIndividualGuid}`}
-                            >
-                              {theirIndividualName}
-                            </Link>
-                          </span>
-                        ),
-                        formattedDeadline,
-                      },
-                    )}
-                  </Text>
-                );
+                const notificationText =
+                  currentNotificationSchema?.notificationMessage ? (
+                    <Text
+                      key={notification?.guid}
+                      style={{
+                        color: read
+                          ? theme.palette.text.secondary
+                          : theme.palette.text.primary,
+                      }}
+                      variant="body2"
+                    >
+                      {intl.formatMessage(
+                        {
+                          id: currentNotificationSchema.notificationMessage,
+                        },
+                        {
+                          userName: (
+                            <span>
+                              <Link
+                                newTab
+                                href={`/users/${userNameGuid}`}
+                              >
+                                {userName}
+                              </Link>
+                            </span>
+                          ),
+                          user1Name,
+                          user2Name,
+                          yourIndividualName: (
+                            <span>
+                              <Link
+                                newTab
+                                href={`/individuals/${yourIndividualGuid}`}
+                              >
+                                {yourIndName}
+                              </Link>
+                            </span>
+                          ),
+                          theirIndividualName: (
+                            <span>
+                              <Link
+                                newTab
+                                href={`/individuals/${theirIndividualGuid}`}
+                              >
+                                {theirIndividualName}
+                              </Link>
+                            </span>
+                          ),
+                          formattedDeadline,
+                          otherUserNameForManagerNotifications: (
+                            <span>
+                              <Link
+                                newTab
+                                href={`/users/${otherUserGuidForManagerNotifications}`}
+                              >
+                                {otherUserNameForManagerNotifications}
+                              </Link>
+                            </span>
+                          ),
+                          managerName,
+                        },
+                      )}
+                    </Text>
+                  ) : null;
                 const howLongAgoText = (
                   <Text
                     style={{

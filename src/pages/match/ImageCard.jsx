@@ -11,20 +11,16 @@ import LocationIdViewer from '../../components/fields/view/LocationIdViewer';
 import DataLineItem from './DataLineItem';
 
 export default function ImageCard({ titleId, annotation }) {
-  const {
-    data: siteSettings,
-    loading,
-    siteSettingsVersion,
-  } = useSiteSettings();
+  const { data: siteSettings, loading } = useSiteSettings();
 
   const regionChoices = useMemo(
     () =>
-      get(
-        siteSettings,
-        ['site.custom.regions', 'value', 'locationID'],
-        [],
-      ),
-    [siteSettingsVersion, siteSettings],
+      get(siteSettings, [
+        'site.custom.regions',
+        'value',
+        'locationID',
+      ]),
+    [siteSettings],
   );
 
   const lineItemsBlank = !annotation;

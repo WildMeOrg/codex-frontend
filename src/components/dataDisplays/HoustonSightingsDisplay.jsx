@@ -1,7 +1,7 @@
 import React from 'react';
 
 import ActionIcon from '../ActionIcon';
-import { cellRendererTypes } from '../dataDisplays/cellRenderers';
+import { cellRendererTypes } from './cellRenderers';
 import DataDisplay from './DataDisplay';
 
 export default function HoustonSightingsDisplay({

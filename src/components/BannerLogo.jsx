@@ -41,11 +41,13 @@ export default function BannerLogo({
     >
       <div style={{ display: 'flex', alignItems: 'center' }}>
         {logo ? (
-          <img
-            alt={`Logo for ${siteName}`}
-            src={logo}
-            style={{ height: 52, flexShrink: 0 }}
-          />
+          <div>
+            <img
+              alt={`Logo for ${siteName}`}
+              src={logo}
+              style={{ height: 52, flexShrink: 0 }}
+            />
+          </div>
         ) : (
           <InstanceLogo
             style={{

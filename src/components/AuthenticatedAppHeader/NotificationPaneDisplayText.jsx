@@ -15,6 +15,9 @@ export default function NotificationPaneDisplayText({
   theirIndividualName,
   theirIndividualGuid,
   formattedDeadline,
+  otherUserGuidForManagerNotifications,
+  otherUserNameForManagerNotifications,
+  managerName,
   timeSince,
 }) {
   const theme = useTheme();
@@ -54,6 +57,17 @@ export default function NotificationPaneDisplayText({
             </span>
           ),
           formattedDeadline,
+          otherUserNameForManagerNotifications: (
+            <span>
+              <Link
+                newTab
+                href={`/users/${otherUserGuidForManagerNotifications}`}
+              >
+                {otherUserNameForManagerNotifications}
+              </Link>
+            </span>
+          ),
+          managerName,
         }}
       />
       <Text

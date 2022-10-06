@@ -22,6 +22,20 @@ All displayed text must support translation - for this we use `react-intl`. Tran
 
 If you want to help translate the project, that is very much appreciated and needed, but please don't do it by manually editing files in `/locale`. Your changes will wind up getting overwritten by Lokalise.
 
+## Lodash
+
+We frequently use a utility library called [lodash](https://lodash.com/docs/). When importing a utility function, be sure to use named imports rather than importing the entire library to reduce our bundle size. One incorrect import will cause the entire library to be bundled with the application.
+
+```
+import _ from 'lodash-es'; // incorrect, please don't do this
+_.random(10);
+
+import { random } from 'lodash-es'; // correct!
+random(10);
+```
+
+In situations where a lodash utility and a native utility exist, we should use the native utility unless there is a reason to use lodash (eg. native JS `map` instead of `_.map()`).
+
 ## Conventions
 
 - Any file with a React component should have the suffix `.jsx`

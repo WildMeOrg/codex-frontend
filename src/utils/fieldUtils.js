@@ -19,7 +19,6 @@ import DateRangeEditor from '../components/fields/edit/DateRangeEditor';
 import BooleanEditor from '../components/fields/edit/BooleanEditor';
 import LocationIdEditor from '../components/fields/edit/LocationIdEditor';
 import IndividualEditor from '../components/fields/edit/IndividualEditor';
-import RelationshipsEditor from '../components/fields/edit/RelationshipsEditor';
 import FeetMetersEditor from '../components/fields/edit/FeetMetersEditor';
 import SpecifiedTimeEditor from '../components/fields/edit/SpecifiedTimeEditor';
 
@@ -115,7 +114,7 @@ const componentMap = {
     filterComponent: null,
   },
   [fieldTypes.select]: {
-    defaultValue: '',
+    defaultValue: null,
     fieldType: fieldTypes.select,
     viewComponent: SelectViewer,
     editComponent: SelectionEditor,
@@ -152,13 +151,6 @@ const componentMap = {
     fieldType: fieldTypes.individual,
     viewComponent: DefaultViewer,
     editComponent: IndividualEditor,
-    filterComponent: null,
-  },
-  [fieldTypes.relationships]: {
-    defaultValue: [],
-    fieldType: fieldTypes.relationships,
-    viewComponent: DefaultViewer,
-    editComponent: RelationshipsEditor,
     filterComponent: null,
   },
 };

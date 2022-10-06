@@ -2,11 +2,13 @@ import React, { useState, useMemo } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
 import { get } from 'lodash-es';
 
+import Grid from '@material-ui/core/Grid';
+
 import { getHighestRoleLabelId } from '../utils/roleUtils';
 import useUserMetadataSchemas from '../models/users/useUserMetadataSchemas';
 import useGetUserSightings from '../models/users/useGetUserSightings';
 import useGetUserUnprocessedAssetGroupSightings from '../models/users/useGetUserUnproccessedAssetGroupSightings';
-import { formatDate } from '../utils/formatters';
+import { formatDate, formatUserMessage } from '../utils/formatters';
 import EntityHeader from './EntityHeader';
 import BigAvatar from './profilePhotos/BigAvatar';
 import MainColumn from './MainColumn';
@@ -16,7 +18,8 @@ import Text from './Text';
 import RequestCollaborationButton from './RequestCollaborationButton';
 import MetadataCard from './cards/MetadataCard';
 import SightingsCard from './cards/SightingsCard';
-import CollaborationsCard from './cards/CollaborationsCard';
+import MyCollaborationsCard from './cards/MyCollaborationsCard';
+import UserManagerCollaborationsCard from './cards/UserManagerCollaborationsCard';
 import CardContainer from './cards/CardContainer';
 
 export default function UserProfile({
@@ -26,6 +29,7 @@ export default function UserProfile({
   userDataLoading,
   refreshUserData,
   someoneElse,
+  viewerIsUserManager,
   noCollaborate = false,
 }) {
   const { data: sightingsData, loading: sightingsLoading } =
@@ -46,16 +50,14 @@ export default function UserProfile({
         ...schema,
         value: schema?.getValue(schema, userData),
       }));
-  }, [userData, metadataSchemas]);
+  }, [userData, metadataSchemas, someoneElse]);
 
   const imageSrc = get(userData, ['profile_fileupload', 'src']);
   const imageGuid = get(userData, ['profile_fileupload', 'guid']);
-  let name = get(
-    userData,
-    'full_name',
-    intl.formatMessage({ id: 'UNNAMED_USER' }),
+  const name = formatUserMessage(
+    { fullName: userData?.full_name },
+    intl,
   );
-  if (name === '') name = intl.formatMessage({ id: 'UNNAMED_USER' });
   const dateCreated = formatDate(get(userData, 'created'), true);
 
   const highestRoleLabelId = getHighestRoleLabelId(userData);
@@ -168,10 +170,14 @@ export default function UserProfile({
             }
           />
           {!someoneElse && (
-            <CollaborationsCard
-              htmlId="collab-card"
-              userId={userId}
-            />
+            <Grid item xs={12} id='collab-card'>
+              <MyCollaborationsCard userData={userData} />
+            </Grid>
+          )}
+          {someoneElse && viewerIsUserManager && (
+            <Grid item xs={12} id='collab-card'>
+              <UserManagerCollaborationsCard userData={userData} />
+            </Grid>
           )}
         </CardContainer>
       </div>

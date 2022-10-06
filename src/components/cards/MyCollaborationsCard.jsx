@@ -1,38 +1,61 @@
-import React, { useState, useEffect } from 'react';
-import { useIntl } from 'react-intl';
+import React, { useState, useEffect, useCallback } from 'react';
+import axios from 'axios';
 import { get, partition } from 'lodash-es';
+import { useIntl } from 'react-intl';
+import { useMutation, useQueryClient } from 'react-query';
 
-import useGetMe from '../../models/users/useGetMe';
-import Card from './Card';
-import ActionIcon from '../ActionIcon';
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+
+import { withApiPrefix } from '../../utils/requestUtils';
+import { cellRendererTypes } from '../dataDisplays/cellRenderers';
 import Text from '../Text';
-import Link from '../Link';
 import DataDisplay from '../dataDisplays/DataDisplay';
+import AddCollaboratorButton from './collaborations/AddCollaboratorButton';
 import CollaborationsDialog from './collaborations/CollaborationsDialog';
+import queryKeys from '../../constants/queryKeys';
+import useHandleRequestError from '../../hooks/useHandleRequestError';
 
-export default function CollaborationsCard({
-  userId,
-  htmlId = null,
-}) {
+export default function MyCollaborationsCard({ userData }) {
   const intl = useIntl();
-  const [activeCollaboration, setActiveCollaboration] = useState(
-    null,
-  );
+  const queryClient = useQueryClient();
+  const handleRequestError = useHandleRequestError();
+
+  const [activeCollaboration, setActiveCollaboration] =
+    useState(null);
   const [
     collabDialogButtonClickLoading,
     setCollabDialogButtonClickLoading,
   ] = useState(false);
 
-  const { data, loading } = useGetMe();
+  const handleEdit = useCallback((_, collaboration) => {
+    setActiveCollaboration(collaboration);
+  }, []);
 
-  useEffect(
-    () => {
-      setCollabDialogButtonClickLoading(false);
-    },
-    [data],
-  );
+  async function addCollaboratorMutationFn({ userGuid }) {
+    try {
+      const result = await axios.request({
+        url: withApiPrefix('/collaborations/'),
+        method: 'POST',
+        data: { user_guid: userGuid },
+      });
+      return result;
+    } catch (error) {
+      return handleRequestError(error);
+    }
+  }
 
-  const collaborations = get(data, ['collaborations'], []);
+  const mutation = useMutation(addCollaboratorMutationFn, {
+    onSuccess: async () =>
+      queryClient.invalidateQueries(queryKeys.me),
+  });
+
+  useEffect(() => {
+    setCollabDialogButtonClickLoading(false);
+  }, [userData]);
+
+  const collaborations = get(userData, ['collaborations'], []);
   const tableData = collaborations.map(collaboration => {
     const collaborationMembers = Object.values(
       get(collaboration, 'members', []),
@@ -44,7 +67,7 @@ export default function CollaborationsCard({
     );
     const [thisUserDataArray, otherUserDataArray] = partition(
       filteredCollaborationMembers,
-      member => member.guid === userId,
+      member => member.guid === userData?.guid,
     );
 
     const thisUserData = get(thisUserDataArray, '0', {});
@@ -95,11 +118,11 @@ export default function CollaborationsCard({
       name: 'otherUserName',
       label: intl.formatMessage({ id: 'NAME' }),
       options: {
-        customBodyRender: (otherUserName, datum) => (
-          <Link to={`/users/${get(datum, 'otherUserId')}`}>
-            <Text variant="body2">{otherUserName}</Text>
-          </Link>
-        ),
+        cellRenderer: cellRendererTypes.user,
+        cellRendererProps: {
+          guidProperty: 'otherUserId',
+          nameProperty: 'otherUserName',
+        },
       },
     },
     {
@@ -114,19 +137,14 @@ export default function CollaborationsCard({
       name: 'actions',
       label: intl.formatMessage({ id: 'ACTIONS' }),
       options: {
-        customBodyRender: (_, collaboration) => (
-          <ActionIcon
-            labelId="EDIT"
-            variant="edit"
-            onClick={() => setActiveCollaboration(collaboration)}
-          />
-        ),
+        cellRenderer: cellRendererTypes.actionGroup,
+        cellRendererProps: { onEdit: handleEdit },
       },
     },
   ];
 
   return (
-    <Card title="Collaborations" htmlId={htmlId}>
+    <>
       <CollaborationsDialog
         open={Boolean(activeCollaboration)}
         onClose={() => setActiveCollaboration(null)}
@@ -135,16 +153,27 @@ export default function CollaborationsCard({
           setCollabDialogButtonClickLoading
         }
       />
-      <DataDisplay
-        loading={loading || collabDialogButtonClickLoading}
-        noResultsTextId="NO_COLLABORATIONS"
-        style={{ marginTop: 12 }}
-        noTitleBar
-        columns={columns}
-        data={tableData}
-        idKey="guid"
-        tableContainerStyles={{ maxHeight: 600 }}
-      />
-    </Card>
+      <Card>
+        <CardContent>
+          <Text id="COLLABORATIONS" style={{ fontWeight: 'bold' }} />
+          <DataDisplay
+            loading={collabDialogButtonClickLoading}
+            noResultsTextId="NO_COLLABORATIONS"
+            style={{ marginTop: 12 }}
+            noTitleBar
+            columns={columns}
+            data={tableData}
+            idKey="guid"
+            tableContainerStyles={{ maxHeight: 600 }}
+          />
+        </CardContent>
+        <CardActions>
+          <AddCollaboratorButton
+            userData={userData}
+            mutation={mutation}
+          />
+        </CardActions>
+      </Card>
+    </>
   );
 }

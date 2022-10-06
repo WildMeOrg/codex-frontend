@@ -23,7 +23,7 @@ export default function SettingsBreadcrumbs({
       <Link href="/" style={linkStyles}>
         <Text id="HOME" />
       </Link>
-      <Link href="/admin" style={linkStyles}>
+      <Link href="/settings" style={linkStyles}>
         <Text id="CONTROL_PANEL" />
       </Link>
       <Text id={currentPageTextId}>{currentPageText}</Text>

@@ -56,22 +56,33 @@ export default function EditSightingMetadata({
   const [customFieldValues, setCustomFieldValues] = useState({});
 
   useEffect(() => {
-    const defaultFieldMetadata = metadata.filter(
-      field => !field.customField,
-    );
-    const customFieldMetadata = metadata.filter(
-      field => field.customField,
-    );
-    setDefaultFieldValues(
-      getInitialFormValues(defaultFieldMetadata, 'name'),
-    );
-    setCustomFieldValues(
-      getInitialFormValues(customFieldMetadata, 'id'),
-    );
-  }, [metadata, metadata?.length]);
+    // Only populate the form with the initial metadata values.
+    if (open) {
+      const defaultFieldMetadata = metadata.filter(
+        field => !field.customField,
+      );
+      const customFieldMetadata = metadata.filter(
+        field => field.customField,
+      );
+
+      setDefaultFieldValues(prev =>
+        metadata.length > 0 && isEmpty(prev)
+          ? getInitialFormValues(defaultFieldMetadata, 'name')
+          : prev,
+      );
+
+      setCustomFieldValues(prev =>
+        metadata.length > 0 && isEmpty(prev)
+          ? getInitialFormValues(customFieldMetadata, 'id')
+          : prev,
+      );
+    }
+  }, [open, metadata]);
 
   function handleClose() {
     clearError();
+    setDefaultFieldValues({});
+    setCustomFieldValues({});
     onClose();
   }
 
@@ -102,17 +113,15 @@ export default function EditSightingMetadata({
                 minimalLabels
                 onChange={newValue => {
                   if (field.customField) {
-                    const newFormValues = {
-                      ...customFieldValues,
+                    setCustomFieldValues(prev => ({
+                      ...prev,
                       [field.id]: newValue,
-                    };
-                    setCustomFieldValues(newFormValues);
+                    }));
                   } else {
-                    const newFormValues = {
-                      ...defaultFieldValues,
+                    setDefaultFieldValues(prev => ({
+                      ...prev,
                       [field.name]: newValue,
-                    };
-                    setDefaultFieldValues(newFormValues);
+                    }));
                   }
                 }}
               />

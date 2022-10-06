@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useReducer } from 'react';
 import { useIntl } from 'react-intl';
 import { get } from 'lodash-es';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -10,19 +10,89 @@ import Button from '../../Button';
 import StandardDialog from '../../StandardDialog';
 import useDescription from '../../../hooks/useDescription';
 
+const actionTypes = {
+  inputLatitude: 'input-latitude',
+  inputLongitude: 'input-longitude',
+  selectMapCoordinates: 'select-map-coordinates',
+  confirmMapCoordinates: 'confirm-map-coordinates',
+  updateCoordinatesExternally: 'update-coordinates-externally',
+};
+
+const setterTypes = {
+  internal: 'internal',
+  external: 'external',
+};
+
 function getNumberString(n) {
   if (n === 0) return '0';
   return n ? n.toString() : '';
 }
 
-function deriveGpsStringsFromValue(value) {
-  const currentLatitude = get(value, '0', null);
-  const currentLongitude = get(value, '1', null);
-
+function calculateInitialState(coordinates) {
   return {
-    latitudeString: getNumberString(currentLatitude),
-    longitudeString: getNumberString(currentLongitude),
+    latitude: getNumberString(get(coordinates, '0', '')),
+    longitude: getNumberString(get(coordinates, '1', '')),
+    mapCoordinates: null,
+    setterType: setterTypes.external,
   };
+}
+
+function reducer(state, action) {
+  switch (action.type) {
+    case actionTypes.inputLatitude:
+      return {
+        ...state,
+        latitude: action.payload,
+        setterType: setterTypes.internal,
+      };
+    case actionTypes.inputLongitude:
+      return {
+        ...state,
+        longitude: action.payload,
+        setterType: setterTypes.internal,
+      };
+    case actionTypes.selectMapCoordinates:
+      return { ...state, mapCoordinates: action.payload };
+    case actionTypes.confirmMapCoordinates:
+      return {
+        ...state,
+        latitude: getNumberString(state.mapCoordinates?.[0]),
+        longitude: getNumberString(state.mapCoordinates?.[1]),
+        mapCoordinates: null,
+        setterType: setterTypes.internal,
+      };
+    case actionTypes.updateCoordinatesExternally: {
+      const latitudeString = getNumberString(
+        get(action.payload, '0', ''),
+      );
+      const longitudeString = getNumberString(
+        get(action.payload, '1', ''),
+      );
+
+      if (
+        latitudeString === state.latitude &&
+        longitudeString === state.longitude
+      ) {
+        // The external update was likely caused as a result of this
+        // component's onChange, so bail out of the dispatch by
+        // returning the same state.
+        return state;
+      }
+
+      return {
+        ...state,
+        latitude: latitudeString,
+        longitude: longitudeString,
+        setterType: setterTypes.external,
+      };
+    }
+    default:
+      // eslint-disable-next-line no-console
+      console.error(
+        `unsupported action type, ${action.type}, provided to reducer`,
+      );
+      return state;
+  }
 }
 
 export default function LatLongEditor({
@@ -37,34 +107,44 @@ export default function LatLongEditor({
   const description = useDescription(schema);
 
   const [modalOpen, setModalOpen] = useState(false);
-  const [mapLatLng, setMapLatLng] = useState(null);
-  const [savedMapLatLng, setSavedMapLatLng] = useState(null);
+
+  const [state, dispatch] = useReducer(
+    reducer,
+    value,
+    calculateInitialState,
+  );
 
   const {
-    latitudeString: initialLatitudeString,
-    longitudeString: initialLongitudeString,
-  } = useMemo(() => deriveGpsStringsFromValue(value));
-
-  const [currentLatitudeString, setCurrentLatitudeString] = useState(
-    initialLatitudeString,
-  );
-  const [currentLongitudeString, setCurrentLongitudeString] =
-    useState(initialLongitudeString);
+    longitude: longitudeString,
+    latitude: latitudeString,
+    setterType,
+  } = state;
 
   useEffect(() => {
-    if (savedMapLatLng) {
-      const { latitudeString, longitudeString } =
-        deriveGpsStringsFromValue(savedMapLatLng);
+    dispatch({
+      type: actionTypes.updateCoordinatesExternally,
+      payload: value,
+    });
+  }, [value]);
 
-      setCurrentLatitudeString(latitudeString);
-      setCurrentLongitudeString(longitudeString);
+  useEffect(() => {
+    if (setterType === setterTypes.internal) {
+      const latitude =
+        latitudeString === '' ? null : parseFloat(latitudeString);
+      const longitude =
+        longitudeString === '' ? null : parseFloat(longitudeString);
+      onChange([latitude, longitude]);
     }
-  }, [get(savedMapLatLng, '0'), get(savedMapLatLng, '1')]);
+  }, [latitudeString, longitudeString, setterType]); // onChange is intentionally excluded.
 
-  const currentLatitude = get(value, '0', null);
-  const currentLongitude = get(value, '1', null);
+  const onClose = () => {
+    dispatch({
+      type: actionTypes.selectMapCoordinates,
+      payload: null,
+    });
+    setModalOpen(false);
+  };
 
-  const onClose = () => setModalOpen(false);
   const showDescription = !minimalLabels && description;
 
   return (
@@ -74,26 +154,26 @@ export default function LatLongEditor({
           style={{ width }}
           id="gps-latitude"
           label={intl.formatMessage({ id: 'DECIMAL_LATITUDE' })}
-          value={currentLatitudeString}
+          value={latitudeString}
           type="number"
           onChange={e => {
-            const inputValue = e.target.value;
-            const floatValue = parseFloat(inputValue);
-            onChange([floatValue, currentLongitude]);
-            setCurrentLatitudeString(inputValue);
+            dispatch({
+              type: actionTypes.inputLatitude,
+              payload: e.target.value,
+            });
           }}
         />
         <TextField
           style={{ width, margin: '8px 0' }}
           id="gps-longitude"
           label={intl.formatMessage({ id: 'DECIMAL_LONGITUDE' })}
-          value={currentLongitudeString}
+          value={longitudeString}
           type="number"
           onChange={e => {
-            const inputValue = e.target.value;
-            const floatValue = parseFloat(inputValue);
-            onChange([currentLatitude, floatValue]);
-            setCurrentLongitudeString(inputValue);
+            dispatch({
+              type: actionTypes.inputLongitude,
+              payload: e.target.value,
+            });
           }}
         />
       </div>
@@ -116,7 +196,12 @@ export default function LatLongEditor({
       >
         <DialogContent style={{ marginBottom: 24 }}>
           <LatLngMap
-            onChange={clickedPoint => setMapLatLng(clickedPoint)}
+            onChange={clickedPoint => {
+              dispatch({
+                type: actionTypes.selectMapCoordinates,
+                payload: clickedPoint,
+              });
+            }}
           />
         </DialogContent>
         <DialogActions style={{ padding: '0px 24px 24px 24px' }}>
@@ -124,8 +209,7 @@ export default function LatLongEditor({
           <Button
             display="primary"
             onClick={() => {
-              setSavedMapLatLng(mapLatLng);
-              onChange(mapLatLng);
+              dispatch({ type: actionTypes.confirmMapCoordinates });
               onClose();
             }}
             id="CONFIRM"

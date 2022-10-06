@@ -98,7 +98,7 @@ export default function SocialGroupsEditor({
         style={{
           display: 'flex',
           flexDirection: 'column',
-          padding: 20,
+          padding: '20px 0',
         }}
       >
         {map(safeRoles, role => (
