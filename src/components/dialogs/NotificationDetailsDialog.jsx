@@ -12,6 +12,7 @@ import ButtonLink from '../ButtonLink';
 import Button from '../Button';
 import CustomAlert from '../Alert';
 import { getNotificationProps } from '../../utils/notificationUtils';
+import useGetMe from '../../models/users/useGetMe';
 
 export default function NotificationDetailsDialog({
   open,
@@ -27,6 +28,20 @@ export default function NotificationDetailsDialog({
   const onCloseDialog = () => {
     onClose();
   };
+  const {
+    data: currentUserData,
+    loading: currentUserLoading,
+    error: currentUserError,
+  } = useGetMe();
+
+  const props =
+    currentUserLoading || currentUserError
+      ? {}
+      : getNotificationProps(
+          intl,
+          notification,
+          currentUserData?.guid,
+        );
 
   const {
     userName,
@@ -38,7 +53,10 @@ export default function NotificationDetailsDialog({
     theirIndividualName,
     theirIndividualGuid,
     formattedDeadline,
-  } = getNotificationProps(intl, notification);
+    otherUserGuidForManagerNotifications,
+    otherUserNameForManagerNotifications,
+    managerName,
+  } = props;
 
   return (
     <StandardDialog
@@ -81,6 +99,17 @@ export default function NotificationDetailsDialog({
               </span>
             ),
             formattedDeadline,
+            otherUserNameForManagerNotifications: (
+              <span>
+                <Link
+                  newTab
+                  href={`/users/${otherUserGuidForManagerNotifications}`}
+                >
+                  {otherUserNameForManagerNotifications}
+                </Link>
+              </span>
+            ),
+            managerName,
           }}
         />
       </DialogContent>
