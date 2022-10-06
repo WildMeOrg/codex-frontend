@@ -81,8 +81,9 @@ export default function DataDisplay({
   );
   const [filter, setFilter] = useState('');
   const [internalSortColumn, setInternalSortColumn] = useState(null);
-  const [internalSortDirection, setInternalSortDirection] =
-    useState(null);
+  const [internalSortDirection, setInternalSortDirection] = useState(
+    null,
+  );
   const [anchorEl, setAnchorEl] = useState(null);
   const filterPopperOpen = Boolean(anchorEl);
 
