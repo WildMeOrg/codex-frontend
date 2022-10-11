@@ -71,12 +71,12 @@ jobs:
         run: echo ${{ steps.buildx.outputs.platforms }}
 
       - uses: actions/download-artifact@v2
-        id: download
         with:
           name: codex-frontend
 
-      - name: 'Echo download path'
-        run: echo ${{steps.download.outputs.download-path}}
+      - name: Extract the build
+        run: |
+          tar -xzvf codex-frontend.tar.gz
 
       # Build images
       - name: Build Codex
