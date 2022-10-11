@@ -91,6 +91,8 @@ export default function CommitDialog({ agsGuid, open, onClose }) {
           display="primary"
           onClick={async () => {
             let idConfigPatchValue = [idConfig];
+            console.log('deleteMe idConfigPatchValue is: ');
+            console.log(idConfigPatchValue);
             if (mode === jobModes.default) {
               idConfigPatchValue = [
                 {

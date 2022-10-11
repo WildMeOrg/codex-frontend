@@ -1211,5 +1211,9 @@
   "EDIT_COLLABORATION_DENIED_BY_USER_MANAGER_MESSAGE": "An edit-level collaboration with {otherUserNameForManagerNotifications} was denied by a user manager {managerName}.",
   "EDIT_COLLABORATION_APPROVED_BY_USER_MANAGER": "Edit collaboration approved by a user manager",
   "EDIT_COLLABORATION_WAS_APPROVED_BY_A_USER_MANAGER": "An edit-level collaboration with {otherUserNameForManagerNotifications} was approved by a user manager {managerName}.",
-  "UNNAMED_MANAGER": "Unnamed manager"
+  "UNNAMED_MANAGER": "Unnamed manager",
+  "UNKNOWN_COMMON_NAME": "Unknown common name",
+  "UNKNOWN_SCIENTIFIC_NAME": "Unknown scientific name",
+  "UNKNOWN_ALGORITHM": "Unknown algorithm",
+  "UNKNOWN_ALGORITHM_DESCRIPTION": "Unknown algorithm"
 }
