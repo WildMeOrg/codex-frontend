@@ -17,8 +17,6 @@ export default function CustomMatchingSetForm({
     const algorithmsObject = idConfigSchemas.find(
       schema => schema.name === 'algorithms',
     );
-    console.log('deleteMe algorithmsObject is: ');
-    console.log(algorithmsObject);
     const regionsObject = idConfigSchemas.find(
       schema => schema.name === 'locationId',
     );

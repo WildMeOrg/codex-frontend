@@ -195,14 +195,6 @@ export function createCustomFieldSchema(houstonSchema) {
 export function createFieldSchema(fieldType, properties) {
   const fieldTypeProperties = get(componentMap, fieldType, {});
 
-  const deleteMeReturnVal = {
-    ...prototypeFieldSchema,
-    ...fieldTypeProperties,
-    ...properties,
-  };
-  console.log('deleteMe deleteMeReturnVal is: ');
-  console.log(deleteMeReturnVal);
-
   return {
     ...prototypeFieldSchema,
     ...fieldTypeProperties,

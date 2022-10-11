@@ -15,8 +15,6 @@ import fieldTypes from '../../constants/fieldTypesNew';
 import { createFieldSchema } from '../../utils/fieldUtils';
 
 export default function useIdConfigSchemas() {
-  // const onlyUnique = (value, index, self) =>
-  //   self.indexOf(value) === index;
   const intl = useIntl();
   const {
     data,
@@ -42,22 +40,12 @@ export default function useIdConfigSchemas() {
       [],
     );
 
-    // const siteSpecies = get(data, ['site.species', 'value'], []);
-    // const siteItisIds = siteSpecies.map(species => species.itisTsn);
-
     const allAlgorithms = reduce(
       Object.values(detectionConfig),
       (memo, model) => {
         const supportedSpecies = model?.supported_species;
-        // const algos = [];
         const speciesMap = {};
         const idAlgos = flatMap(supportedSpecies, singleSpecies => {
-          const commonName =
-            singleSpecies?.common_name ||
-            intl.formatMessage({ id: 'UNKNOWN_COMMON_NAME' });
-          const speciesName =
-            singleSpecies?.scientific_name ||
-            intl.formatMessage({ id: 'UNKNOWN_SCIENTIFIC_NAME' });
           const algoChoices = map(
             singleSpecies?.id_algos,
             (idAlgo, key) => {
@@ -72,30 +60,30 @@ export default function useIdConfigSchemas() {
               };
             },
           );
+
+          // populate the species map with species name arrays keyed by algorithm key so that they can later be joined in the final label
+          const commonName =
+            singleSpecies?.common_name ||
+            intl.formatMessage({ id: 'UNKNOWN_COMMON_NAME' });
+          const speciesName =
+            singleSpecies?.scientific_name ||
+            intl.formatMessage({ id: 'UNKNOWN_SCIENTIFIC_NAME' });
           forEach(Object.keys(singleSpecies?.id_algos), algoKey => {
             const currentSpecies = get(speciesMap, algoKey, []);
             if (currentSpecies.length > 0) {
               speciesMap[algoKey].push(
-                commonName + '(' + speciesName + ')',
+                commonName + ' (' + speciesName + ')',
               );
             } else {
               speciesMap[algoKey] = [
-                commonName + '(' + speciesName + ')',
+                commonName + ' (' + speciesName + ')',
               ];
             }
           });
-          // const idAlgoKeys = uniq(
-          //   Object.keys(singleSpecies?.id_algos),
-          // );
 
-          // const idAlgoDescriptions = uniq(
-          //   map(singleSpecies?.id_algos, algo => algo?.description),
-          // );
-
-          return uniqBy(algoChoices, 'value');
+          return algoChoices;
         });
-        console.log('deleteMe idAlgos are: ');
-        console.log(idAlgos);
+
         const idAlgosWithImprovedLabels = map(idAlgos, idAlgo => {
           const baseLabel = get(idAlgo, 'label', '');
           const labelsToAdd = get(speciesMap, [idAlgo?.value], '');
