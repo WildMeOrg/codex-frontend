@@ -1,12 +1,5 @@
 import { useMemo } from 'react';
-import {
-  get,
-  map,
-  uniqBy,
-  flatMap,
-  reduce,
-  forEach,
-} from 'lodash-es';
+import { get, map, uniqBy, flatMap, reduce } from 'lodash-es';
 import { useIntl } from 'react-intl';
 
 import useDetectionConfig from '../site/useDetectionConfig';
@@ -40,15 +33,40 @@ export default function useIdConfigSchemas() {
       [],
     );
 
+    const siteSpecies = get(data, ['site.species', 'value'], []);
+    const siteItisIds = siteSpecies.map(species => species.itisTsn);
+
     const allAlgorithms = reduce(
       Object.values(detectionConfig),
       (memo, model) => {
         const supportedSpecies = model?.supported_species;
         const speciesMap = {};
         const idAlgos = flatMap(supportedSpecies, singleSpecies => {
+          const commonName =
+            singleSpecies?.common_name ||
+            intl.formatMessage({ id: 'UNKNOWN_COMMON_NAME' });
+          const speciesName =
+            singleSpecies?.scientific_name ||
+            intl.formatMessage({ id: 'UNKNOWN_SCIENTIFIC_NAME' });
+          if (!siteItisIds.includes(singleSpecies?.itis_id))
+            return [];
+          const safeSingleSpeciesIdAlgos =
+            singleSpecies?.id_algos || [];
           const algoChoices = map(
-            singleSpecies?.id_algos,
+            safeSingleSpeciesIdAlgos,
             (idAlgo, key) => {
+              // populate the species map with species name arrays keyed by algorithm key so that they can later be joined and added to the final label
+              const currentSpecies = get(speciesMap, key, []);
+              if (currentSpecies.length > 0) {
+                speciesMap[key].push(
+                  commonName + ' (' + speciesName + ')',
+                );
+              } else {
+                speciesMap[key] = [
+                  commonName + ' (' + speciesName + ')',
+                ];
+              }
+
               const algoDescription =
                 idAlgo?.description ||
                 intl.formatMessage({
@@ -60,26 +78,6 @@ export default function useIdConfigSchemas() {
               };
             },
           );
-
-          // populate the species map with species name arrays keyed by algorithm key so that they can later be joined in the final label
-          const commonName =
-            singleSpecies?.common_name ||
-            intl.formatMessage({ id: 'UNKNOWN_COMMON_NAME' });
-          const speciesName =
-            singleSpecies?.scientific_name ||
-            intl.formatMessage({ id: 'UNKNOWN_SCIENTIFIC_NAME' });
-          forEach(Object.keys(singleSpecies?.id_algos), algoKey => {
-            const currentSpecies = get(speciesMap, algoKey, []);
-            if (currentSpecies.length > 0) {
-              speciesMap[algoKey].push(
-                commonName + ' (' + speciesName + ')',
-              );
-            } else {
-              speciesMap[algoKey] = [
-                commonName + ' (' + speciesName + ')',
-              ];
-            }
-          });
 
           return algoChoices;
         });
@@ -121,7 +119,7 @@ export default function useIdConfigSchemas() {
         },
       }),
     ];
-  }, [data, detectionConfig, loading, error]);
+  }, [data, detectionConfig, loading, error, intl]);
 
   return sightingFieldSchemas;
 }
