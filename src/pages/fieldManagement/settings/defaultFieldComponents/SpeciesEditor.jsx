@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { get } from 'lodash-es';
 import { useIntl, FormattedMessage } from 'react-intl';
 
@@ -30,12 +30,43 @@ export default function SpeciesEditor({
   const intl = useIntl();
   const [searchInput, setSearchInput] = useState('');
   const [searchTerm, setSearchTerm] = useState(null);
+  const [stillGeneratingDisplay, setStillGeneratingDisplay] =
+    useState(false);
   const {
     data: searchResults,
     loading: searchResultsLoading,
     error: searchResultsError,
+    setError,
+    setLoading,
   } = useItisSearch(searchTerm);
 
+  // const [searchResultsLoading, setSearchResultsLoading] =
+  //   useState(true);
+
+  let timer;
+  useEffect(() => {
+    console.log(
+      'deleteMe searchResultsLoading is: ' + searchResultsLoading,
+    );
+    console.log(
+      'deleteMe searchResultsError is: ' + searchResultsError,
+    );
+    if (searchResultsLoading && !searchResultsError) {
+      timer = setTimeout(() => {
+        setStillGeneratingDisplay(true);
+      }, '5000');
+    }
+    if (!searchResultsLoading) {
+      console.log('deleteMe should be clearing the timer now...');
+      setStillGeneratingDisplay(false);
+      clearTimeout(timer);
+    }
+    if (searchResultsError) {
+      setStillGeneratingDisplay(false);
+      clearTimeout(timer);
+      setLoading(false);
+    }
+  }, [searchResultsError, searchResultsLoading]);
   const currentSpecies = get(formSettings, 'species', []);
   const suggestedValues = get(
     siteSettings,
@@ -151,7 +182,10 @@ export default function SpeciesEditor({
             style={{ width: '100%' }}
           />
           <Button
-            onClick={() => setSearchTerm(searchInput)}
+            onClick={() => {
+              setError(null);
+              setSearchTerm(searchInput);
+            }}
             display="primary"
             loading={searchResultsLoading}
             style={{ marginLeft: 12 }}
@@ -160,9 +194,21 @@ export default function SpeciesEditor({
             <FormattedMessage id="SEARCH" />
           </Button>
         </form>
+        {stillGeneratingDisplay && !searchResultsError && (
+          <Text
+            component="p"
+            variant="caption"
+            style={{ margin: '8px 4px' }}
+            id="STILL_GENERATING_LIST"
+          />
+        )}
         {searchResultsError && (
-          <CustomAlert severity="error">
-            {searchResultsError}
+          <CustomAlert
+            style={{ marginTop: 12 }}
+            severity="error"
+            titleId="SEARCH_TIMED_OUT_WHILE_TRYING_TO_CONNECT_TO_ITIS"
+          >
+            {/* {searchResultsError} */}
           </CustomAlert>
         )}
         <DataDisplay

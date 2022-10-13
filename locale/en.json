@@ -1211,5 +1211,7 @@
   "EDIT_COLLABORATION_DENIED_BY_USER_MANAGER_MESSAGE": "An edit-level collaboration with {otherUserNameForManagerNotifications} was denied by a user manager {managerName}.",
   "EDIT_COLLABORATION_APPROVED_BY_USER_MANAGER": "Edit collaboration approved by a user manager",
   "EDIT_COLLABORATION_WAS_APPROVED_BY_A_USER_MANAGER": "An edit-level collaboration with {otherUserNameForManagerNotifications} was approved by a user manager {managerName}.",
-  "UNNAMED_MANAGER": "Unnamed manager"
+  "UNNAMED_MANAGER": "Unnamed manager",
+  "STILL_GENERATING_LIST": "Still generating list; this can take up to one minute.",
+  "SEARCH_TIMED_OUT_WHILE_TRYING_TO_CONNECT_TO_ITIS": "Search timed out while trying to connect to ITIS database. Try again later."
 }

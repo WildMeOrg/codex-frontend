@@ -59,5 +59,5 @@ export default function useItisSearch(searchKey, maxResults = 50) {
     if (searchKey) fetchData();
   }, [searchKey, maxResults]);
 
-  return { data, loading, error };
+  return { data, loading, error, setError, setLoading };
 }
