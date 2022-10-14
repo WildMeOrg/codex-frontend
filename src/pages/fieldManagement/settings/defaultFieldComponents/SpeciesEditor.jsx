@@ -197,9 +197,7 @@ export default function SpeciesEditor({
             style={{ marginTop: 12 }}
             severity="error"
             titleId="SEARCH_TIMED_OUT_WHILE_TRYING_TO_CONNECT_TO_ITIS"
-          >
-            {/* {searchResultsError} */}
-          </CustomAlert>
+          />
         )}
         <DataDisplay
           cellStyles={{ padding: '0 8px 0 12px' }}
