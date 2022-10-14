@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { get } from 'lodash-es';
 import { useIntl, FormattedMessage } from 'react-intl';
 
@@ -40,33 +40,23 @@ export default function SpeciesEditor({
     setLoading,
   } = useItisSearch(searchTerm);
 
-  // const [searchResultsLoading, setSearchResultsLoading] =
-  //   useState(true);
-
-  let timer;
+  const timerRef = useRef(null);
   useEffect(() => {
-    console.log(
-      'deleteMe searchResultsLoading is: ' + searchResultsLoading,
-    );
-    console.log(
-      'deleteMe searchResultsError is: ' + searchResultsError,
-    );
     if (searchResultsLoading && !searchResultsError) {
-      timer = setTimeout(() => {
+      timerRef.current = setTimeout(() => {
         setStillGeneratingDisplay(true);
       }, '5000');
     }
     if (!searchResultsLoading) {
-      console.log('deleteMe should be clearing the timer now...');
       setStillGeneratingDisplay(false);
-      clearTimeout(timer);
+      clearTimeout(timerRef.current);
     }
     if (searchResultsError) {
       setStillGeneratingDisplay(false);
-      clearTimeout(timer);
+      clearTimeout(timerRef.current);
       setLoading(false);
     }
-  }, [searchResultsError, searchResultsLoading]);
+  }, [searchResultsError, searchResultsLoading, setLoading]);
   const currentSpecies = get(formSettings, 'species', []);
   const suggestedValues = get(
     siteSettings,
