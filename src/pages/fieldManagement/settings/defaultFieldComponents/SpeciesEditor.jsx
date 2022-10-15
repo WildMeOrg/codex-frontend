@@ -64,6 +64,12 @@ export default function SpeciesEditor({
     [],
   );
 
+  const isTimeoutError =
+    searchResultsError && searchResultsError?.indexOf('Timeout') > -1;
+  const isNonTimeoutError =
+    searchResultsError &&
+    searchResultsError?.indexOf('Timeout') === -1;
+
   const tableColumns = [
     {
       name: 'scientificName',
@@ -192,12 +198,17 @@ export default function SpeciesEditor({
             id="STILL_GENERATING_LIST"
           />
         )}
-        {searchResultsError && (
+        {isTimeoutError && (
           <CustomAlert
             style={{ marginTop: 12 }}
             severity="error"
             titleId="SEARCH_TIMED_OUT_WHILE_TRYING_TO_CONNECT_TO_ITIS"
           />
+        )}
+        {isNonTimeoutError && (
+          <CustomAlert style={{ marginTop: 12 }} severity="error">
+            {searchResultsError}
+          </CustomAlert>
         )}
         <DataDisplay
           cellStyles={{ padding: '0 8px 0 12px' }}

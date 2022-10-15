@@ -20,7 +20,7 @@ export default function useItisSearch(searchKey, maxResults = 50) {
             param: 'jsonp',
           },
           (err, response) => {
-            if (err) setError(err);
+            if (err) setError(formatError(err));
 
             const results = get(response, 'anyMatchList');
             const formattedResults = results.map(result => {
