@@ -1,5 +1,12 @@
 import { useMemo } from 'react';
-import { get, map, uniqBy, flatMap, reduce } from 'lodash-es';
+import {
+  get,
+  map,
+  uniqBy,
+  flatMap,
+  reduce,
+  reverse,
+} from 'lodash-es';
 import { useIntl } from 'react-intl';
 
 import useDetectionConfig from '../site/useDetectionConfig';
@@ -35,12 +42,12 @@ export default function useIdConfigSchemas() {
 
     const siteSpecies = get(data, ['site.species', 'value'], []);
     const siteItisIds = siteSpecies.map(species => species.itisTsn);
+    const speciesMap = {};
 
     const allAlgorithms = reduce(
       Object.values(detectionConfig),
       (memo, model) => {
         const supportedSpecies = model?.supported_species;
-        const speciesMap = {};
         const idAlgos = flatMap(supportedSpecies, singleSpecies => {
           const commonName =
             singleSpecies?.common_name ||
@@ -59,11 +66,25 @@ export default function useIdConfigSchemas() {
               const currentSpecies = get(speciesMap, key, []);
               if (currentSpecies.length > 0) {
                 speciesMap[key].push(
-                  commonName + ' (' + speciesName + ')',
+                  commonName +
+                    intl.formatMessage({
+                      id: 'OPEN_PARENTHESES',
+                    }) +
+                    speciesName +
+                    intl.formatMessage({
+                      id: 'CLOSED_PARENTHESES',
+                    }),
                 );
               } else {
                 speciesMap[key] = [
-                  commonName + ' (' + speciesName + ')',
+                  commonName +
+                    intl.formatMessage({
+                      id: 'OPEN_PARENTHESES',
+                    }) +
+                    speciesName +
+                    intl.formatMessage({
+                      id: 'CLOSED_PARENTHESES',
+                    }),
                 ];
               }
 
@@ -74,7 +95,11 @@ export default function useIdConfigSchemas() {
                 });
               return {
                 value: key,
-                label: algoDescription + ' for: ',
+                label:
+                  algoDescription +
+                  intl.formatMessage({
+                    id: 'FOR_COLON',
+                  }),
               };
             },
           );
@@ -87,7 +112,12 @@ export default function useIdConfigSchemas() {
           const labelsToAdd = get(speciesMap, [idAlgo?.value], '');
           return {
             ...idAlgo,
-            label: baseLabel + labelsToAdd.join(', '),
+            label: [
+              baseLabel,
+              ...intl.formatList(labelsToAdd, {
+                type: 'conjunction',
+              }),
+            ].join(''),
           };
         });
         return [...memo, ...idAlgosWithImprovedLabels];
@@ -98,7 +128,7 @@ export default function useIdConfigSchemas() {
     /* Would be great to maintain the list of all possible taxonomies
      * for a given algorithm and modify choices contextually.
      * Just this for now though... */
-    const uniqAlgorithms = uniqBy(allAlgorithms, 'value');
+    const uniqAlgorithms = uniqBy(reverse(allAlgorithms), 'value');
 
     return [
       createFieldSchema(fieldTypes.multiselect, {
