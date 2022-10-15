@@ -66,25 +66,21 @@ export default function useIdConfigSchemas() {
               const currentSpecies = get(speciesMap, key, []);
               if (currentSpecies.length > 0) {
                 speciesMap[key].push(
-                  commonName +
-                    intl.formatMessage({
-                      id: 'OPEN_PARENTHESES',
-                    }) +
-                    speciesName +
-                    intl.formatMessage({
-                      id: 'CLOSED_PARENTHESES',
-                    }),
+                  intl.formatMessage(
+                    {
+                      id: 'COMMON_NAME_PLUS_SCIENTIFIC_NAME',
+                    },
+                    { commonName, speciesName },
+                  ),
                 );
               } else {
                 speciesMap[key] = [
-                  commonName +
-                    intl.formatMessage({
-                      id: 'OPEN_PARENTHESES',
-                    }) +
-                    speciesName +
-                    intl.formatMessage({
-                      id: 'CLOSED_PARENTHESES',
-                    }),
+                  intl.formatMessage(
+                    {
+                      id: 'COMMON_NAME_PLUS_SCIENTIFIC_NAME',
+                    },
+                    { commonName, speciesName },
+                  ),
                 ];
               }
 
