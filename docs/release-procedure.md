@@ -19,7 +19,7 @@ First, resolve any potential merge conflicts with main on the develop branch
 5. `git merge develop` (there should be no merge conflicts)
 6. Update the version in package.json.
 
-Then, issue a pull request for merging the develop branch into the main branch. Await approval and then merge using the "squash and merge" method.
+Then, issue a pull request for merging the develop branch into the main branch. Await approval and then merge. Note: do NOT use the "squash and merge" method; it will make subsequent merges with the develop branch more difficult. Instead, use the "Create a merge commit" option.
 
 Note: if you encounter merge conflicts when merging develop into main, something went wrong. Investigate what happened thoroughly before continuing.
 
