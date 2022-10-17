@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { get } from 'lodash-es';
 import { useIntl, FormattedMessage } from 'react-intl';
 
@@ -30,18 +30,41 @@ export default function SpeciesEditor({
   const intl = useIntl();
   const [searchInput, setSearchInput] = useState('');
   const [searchTerm, setSearchTerm] = useState(null);
+  const [stillGeneratingDisplay, setStillGeneratingDisplay] =
+    useState(false);
   const {
     data: searchResults,
     loading: searchResultsLoading,
     error: searchResultsError,
+    setError,
   } = useItisSearch(searchTerm);
 
+  const timerRef = useRef(null);
+  useEffect(() => {
+    if (searchResultsLoading) {
+      timerRef.current = setTimeout(() => {
+        setStillGeneratingDisplay(true);
+      }, '5000');
+    } else {
+      setStillGeneratingDisplay(false);
+      clearTimeout(timerRef.current);
+    }
+    return () => {
+      clearTimeout(timerRef.current);
+    };
+  }, [searchResultsLoading]);
   const currentSpecies = get(formSettings, 'species', []);
   const suggestedValues = get(
     siteSettings,
     ['site.species', 'suggestedValues'],
     [],
   );
+
+  const isTimeoutError =
+    searchResultsError && searchResultsError?.indexOf('Timeout') > -1;
+  const isNonTimeoutError =
+    searchResultsError &&
+    searchResultsError?.indexOf('Timeout') === -1;
 
   const tableColumns = [
     {
@@ -139,6 +162,7 @@ export default function SpeciesEditor({
           onSubmit={e => {
             setSearchTerm(searchInput);
             e.preventDefault();
+            setError(null);
           }}
           style={{ display: 'flex', alignItems: 'center' }}
         >
@@ -151,7 +175,9 @@ export default function SpeciesEditor({
             style={{ width: '100%' }}
           />
           <Button
-            onClick={() => setSearchTerm(searchInput)}
+            onClick={() => {
+              setSearchTerm(searchInput);
+            }}
             display="primary"
             loading={searchResultsLoading}
             style={{ marginLeft: 12 }}
@@ -160,8 +186,23 @@ export default function SpeciesEditor({
             <FormattedMessage id="SEARCH" />
           </Button>
         </form>
-        {searchResultsError && (
-          <CustomAlert severity="error">
+        {stillGeneratingDisplay && !searchResultsError && (
+          <Text
+            component="p"
+            variant="caption"
+            style={{ margin: '8px 4px' }}
+            id="STILL_GENERATING_LIST"
+          />
+        )}
+        {isTimeoutError && (
+          <CustomAlert
+            style={{ marginTop: 12 }}
+            severity="error"
+            titleId="SEARCH_TIMED_OUT_WHILE_TRYING_TO_CONNECT_TO_ITIS"
+          />
+        )}
+        {isNonTimeoutError && (
+          <CustomAlert style={{ marginTop: 12 }} severity="error">
             {searchResultsError}
           </CustomAlert>
         )}
