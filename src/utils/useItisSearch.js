@@ -16,7 +16,7 @@ export default function useItisSearch(searchKey, maxResults = 50) {
         jsonp(
           `https://www.itis.gov/ITISWebService/jsonservice/searchForAnyMatchPaged?srchKey=${searchKey}&pageSize=${maxResults}&pageNum=1&ascend=true`,
           {
-            timeout: 25000,
+            timeout: 60000,
             param: 'jsonp',
           },
           (err, response) => {

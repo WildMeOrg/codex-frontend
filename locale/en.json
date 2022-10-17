@@ -1213,5 +1213,11 @@
   "EDIT_COLLABORATION_WAS_APPROVED_BY_A_USER_MANAGER": "An edit-level collaboration with {otherUserNameForManagerNotifications} was approved by a user manager {managerName}.",
   "UNNAMED_MANAGER": "Unnamed manager",
   "STILL_GENERATING_LIST": "Still generating list; this can take up to one minute.",
-  "SEARCH_TIMED_OUT_WHILE_TRYING_TO_CONNECT_TO_ITIS": "Search timed out while trying to connect to ITIS database. Try again later."
+  "SEARCH_TIMED_OUT_WHILE_TRYING_TO_CONNECT_TO_ITIS": "Search timed out while trying to connect to ITIS database. Try again later.",
+  "UNKNOWN_COMMON_NAME": "Unknown common name",
+  "UNKNOWN_SCIENTIFIC_NAME": "Unknown scientific name",
+  "UNKNOWN_ALGORITHM": "Unknown algorithm",
+  "UNKNOWN_ALGORITHM_DESCRIPTION": "Unknown algorithm description",
+  "FOR_COLON": " for: ",
+  "COMMON_NAME_PLUS_SCIENTIFIC_NAME": "{commonName} ({speciesName})"
 }
