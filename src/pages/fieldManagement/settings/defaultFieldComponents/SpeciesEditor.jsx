@@ -37,7 +37,6 @@ export default function SpeciesEditor({
     loading: searchResultsLoading,
     error: searchResultsError,
     setError,
-    setLoading,
   } = useItisSearch(searchTerm);
 
   const timerRef = useRef(null);
@@ -54,9 +53,8 @@ export default function SpeciesEditor({
     if (searchResultsError) {
       setStillGeneratingDisplay(false);
       clearTimeout(timerRef.current);
-      setLoading(false);
     }
-  }, [searchResultsError, searchResultsLoading, setLoading]);
+  }, [searchResultsLoading]);
   const currentSpecies = get(formSettings, 'species', []);
   const suggestedValues = get(
     siteSettings,
@@ -166,6 +164,7 @@ export default function SpeciesEditor({
           onSubmit={e => {
             setSearchTerm(searchInput);
             e.preventDefault();
+            setError(null);
           }}
           style={{ display: 'flex', alignItems: 'center' }}
         >
@@ -179,7 +178,6 @@ export default function SpeciesEditor({
           />
           <Button
             onClick={() => {
-              setError(null);
               setSearchTerm(searchInput);
             }}
             display="primary"
