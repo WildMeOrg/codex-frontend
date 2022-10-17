@@ -41,16 +41,11 @@ export default function SpeciesEditor({
 
   const timerRef = useRef(null);
   useEffect(() => {
-    if (searchResultsLoading && !searchResultsError) {
+    if (searchResultsLoading) {
       timerRef.current = setTimeout(() => {
         setStillGeneratingDisplay(true);
       }, '5000');
-    }
-    if (!searchResultsLoading) {
-      setStillGeneratingDisplay(false);
-      clearTimeout(timerRef.current);
-    }
-    if (searchResultsError) {
+    } else {
       setStillGeneratingDisplay(false);
       clearTimeout(timerRef.current);
     }
