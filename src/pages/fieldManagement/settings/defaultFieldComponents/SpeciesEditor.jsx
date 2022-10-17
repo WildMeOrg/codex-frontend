@@ -49,6 +49,9 @@ export default function SpeciesEditor({
       setStillGeneratingDisplay(false);
       clearTimeout(timerRef.current);
     }
+    return () => {
+      clearTimeout(timerRef.current);
+    };
   }, [searchResultsLoading]);
   const currentSpecies = get(formSettings, 'species', []);
   const suggestedValues = get(
