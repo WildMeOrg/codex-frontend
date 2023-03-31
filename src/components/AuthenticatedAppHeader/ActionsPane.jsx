@@ -49,6 +49,27 @@ export default function NotificationsPane({
   const name = get(userData, 'full_name') || 'Unnamed user';
   const profileSrc = get(userData, ['profile_fileupload', 'src']);
 
+  const logout = async (event) => {
+    event.preventDefault();
+    let is_authenticated = true;
+    await fetch('/api/v1/users/me')
+    .then(response => {      
+      if(response.status == 401) {
+        is_authenticated = false;
+      }
+    })
+    .catch(error => {
+      console.log(error);
+    });
+
+    if(is_authenticated) {
+      document.getElementById("logoutForm").submit();
+    }else {
+      window.location.href = '/';      
+    }
+    setAnchorEl(null);
+  };  
+
   return (
     <Popover
       open={Boolean(anchorEl)}
@@ -115,12 +136,13 @@ export default function NotificationsPane({
         })}
         <Divider style={{ margin: '8px 16px' }} />
         <form
+          id="logoutForm"
           action={`${__houston_url__}/logout?next=/`}
           method="POST"
         >
           <button
             type="submit"
-            onClick={closePopover}
+            onClick={logout}
             style={{
               backgroundColor: 'unset',
               width: '100%',
