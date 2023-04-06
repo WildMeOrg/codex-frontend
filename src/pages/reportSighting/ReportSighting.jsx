@@ -91,6 +91,7 @@ export default function ReportSighting({ authenticated }) {
                 <Link
                   external
                   href="https://docs.wildme.org/product-docs/en/codex/data/optimizing-photographs/"
+                  target="_blank"
                 >
                   <FormattedMessage id="PHOTO_OPTIMIZE_2" />
                 </Link>
