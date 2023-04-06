@@ -90,7 +90,7 @@ export default function ReportSighting({ authenticated }) {
                 <FormattedMessage id="PHOTO_OPTIMIZE_1" />
                 <Link
                   external
-                  href="https://docs.wildme.org/docs/researchers/photography_guidelines"
+                  href="https://docs.wildme.org/product-docs/en/codex/data/optimizing-photographs/"
                 >
                   <FormattedMessage id="PHOTO_OPTIMIZE_2" />
                 </Link>
