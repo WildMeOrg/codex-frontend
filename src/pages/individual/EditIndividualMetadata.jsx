@@ -226,7 +226,7 @@ export default function EditIndividualMetadata({
               });
             }
 
-            const properties = { sex: defaultFieldValues.sex, names };
+            const properties = { sex: defaultFieldValues.sex, names, taxonomy:defaultFieldValues.taxonomy };
 
             if (!isEmpty(customFieldValues)) {
               properties.customFields = customFieldValues;
