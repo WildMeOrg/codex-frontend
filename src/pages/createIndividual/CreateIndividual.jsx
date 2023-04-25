@@ -1,6 +1,7 @@
 import React, { useMemo, useEffect, useState } from 'react';
 import { useLocation } from 'react-router';
 import { set, get } from 'lodash-es';
+import { useIntl } from 'react-intl';
 
 import Grid from '@material-ui/core/Grid';
 
@@ -34,6 +35,7 @@ export default function CreateIndividual() {
     loading: createIndividualLoading,
     error: createIndividualError,
   } = usePostIndividual();
+  const intl = useIntl();
 
   const fieldSchemas = useIndividualFieldSchemas();
 
@@ -43,6 +45,10 @@ export default function CreateIndividual() {
   );
 
   const [formState, setFormState] = useState({});
+  const [formErrors, setFormErrors] = useState([]);
+
+    const showErrorAlert =
+    createIndividualError || formErrors.length > 0;
 
   useEffect(() => {
     const initialState = calculateInitialState(createFieldSchemas);
@@ -50,6 +56,30 @@ export default function CreateIndividual() {
   }, [createFieldSchemas]);
 
   async function postIndividual() {
+
+    const requiredFieldErrors = createFieldSchemas.reduce((acc, cur) => {
+      if(!cur?.required) return acc;
+      
+      const isFieldEmpty = !formState[cur.name];
+      if(isFieldEmpty) {
+        const fieldName = cur.labelId ? intl.formatMessage({id : cur.labelId}) : cur.label;
+        acc.push(
+          intl.formatMessage(
+            { id: 'INCOMPLETE_FIELD' },
+            { fieldName },
+          ),
+        );
+      }
+
+      return acc;
+    }, [])
+    
+    setFormErrors(requiredFieldErrors);    
+    if(requiredFieldErrors.length > 0) {
+      return;
+    }
+
+
     const firstName = formState?.firstName;
     const adoptionName = formState?.adoptionName;
     const names = [
@@ -66,6 +96,7 @@ export default function CreateIndividual() {
     const individualData = {
       names,
       sex: formState?.sex,
+      taxonomy: formState?.taxonomy
     };
     await createIndividual({
       individualData,
@@ -138,13 +169,18 @@ export default function CreateIndividual() {
           </Grid>
         </Grid>
         <Grid item style={{ marginTop: 16 }}>
-          {createIndividualError && (
+          {showErrorAlert && (
             <Alert
-              titleId="SERVER_ERROR"
+              titleId="SUBMISSION_ERROR"
               style={{ marginTop: 12, marginBottom: 12 }}
               severity="error"
             >
-              {createIndividualError}
+              {formErrors.length > 0 &&
+              formErrors.map(formError => (
+                <Text key={formError} variant="body2">
+                  {formError}
+                </Text>
+              ))}
             </Alert>
           )}
           <Button
