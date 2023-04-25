@@ -181,6 +181,7 @@ export default function CreateIndividual() {
                   {formError}
                 </Text>
               ))}
+              {createIndividualError}
             </Alert>
           )}
           <Button
