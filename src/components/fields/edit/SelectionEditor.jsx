@@ -43,7 +43,7 @@ const SelectionEditor = function (props) {
     return get(object, 'label', 'Missing label');
   }
 
-  const editLabel = useEditLabel(schema);
+  const editLabel = useEditLabel(schema, true);
   const description = useDescription(schema);
   const showDescription = !minimalLabels && description;
 
