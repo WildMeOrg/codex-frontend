@@ -41,6 +41,23 @@ export default function useOptions() {
       }))
       .filter(o => o);
 
-    return { regionOptions, speciesOptions };
+      const pipelineStateOptions = [{label:"preparation", value: "preparation"},
+      {label: "detection", value: "detection"},
+      {label: "curation", value: "curation"},
+      {label: "identification", value: "identification"},
+    ];
+
+    const stageOptions = [{label:"un_reviewed", value: "un_reviewed"},
+      {label: "processed", value: "processed"},
+      {label: "failed", value: "failed"},
+      {label: "identification", value: "identification"},
+    ]; 
+
+    const booleanChoices = [
+      {label:"true", value: "true"},
+      {label: "false", value: "false"}
+    ];
+
+    return { regionOptions, speciesOptions, pipelineStateOptions, stageOptions, booleanChoices };  
   }, [loading, error, data]);
 }

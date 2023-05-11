@@ -40,8 +40,10 @@ export default function PointDistanceFilter({
   const onClose = () => setModalOpen(false);
 
   const translatedLabel = labelId
-    ? intl.formatMessage({ id: labelId })
-    : label;
+    ?   (intl.messages[labelId]
+      ? intl.formatMessage({ id: labelId })
+      : labelId )
+    : label; 
 
   return (
     <div

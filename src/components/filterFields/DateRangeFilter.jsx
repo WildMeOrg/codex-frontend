@@ -87,8 +87,10 @@ export default function DateRangeFilter({
     typeof endDate === 'string' ? parseISO(endDate) : endDate;
 
   const translatedLabel = labelId
-    ? intl.formatMessage({ id: labelId })
-    : label;
+    ?   (intl.messages[labelId]
+      ? intl.formatMessage({ id: labelId })
+      : labelId )
+    : label; 
 
   /* Note: the wrapper div is there because MuiPicker creates two child elements,
    * which messes up display if this component is a flex child. */
