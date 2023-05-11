@@ -1,10 +1,64 @@
 import useOptions from '../../hooks/useOptions';
 import OptionTermFilter from '../../components/filterFields/OptionTermFilter';
+import PointDistanceFilter from '../../components/filterFields/PointDistanceFilter';
+import FloatFilter from '../../components/filterFields/FloatFilter';
+import MultiSelectFilter from '../../components/filterFields/MultiSelectFilter';
 import SubstringFilter from '../../components/filterFields/SubstringFilter';
 import DateRangeFilter from '../../components/filterFields/DateRangeFilter';
+import useSiteSettings from '../../models/site/useSiteSettings';
+import IntegerFilter from '../../components/filterFields/IntegerFilter';
 
 export default function useSightingSearchSchemas() {
-  const { regionOptions } = useOptions();
+  const { regionOptions, speciesOptions, pipelineStateOptions, stageOptions, booleanChoices } = useOptions();
+  const { data: siteSettings } = useSiteSettings();
+  const customSightingFields = siteSettings['site.custom.customFields.Sighting'].value.definitions;
+  let filterComponent1;
+  const customFields = customSightingFields.map(data => {
+    switch (data.schema.displayType) {
+      case "select":
+        filterComponent1 = OptionTermFilter;
+        break;
+      case "string":
+        filterComponent1 = SubstringFilter;
+        break;
+      case "integer":
+        filterComponent1 = IntegerFilter;
+        break;
+      case "float":
+        filterComponent1 = FloatFilter;
+        break;
+      case "multiselect":
+        filterComponent1 = MultiSelectFilter;
+        break; 
+      case "daterange":
+        filterComponent1 = DateRangeFilter;
+        break;  
+      case "boolean":
+        filterComponent1 = OptionTermFilter;
+        break; 
+      case "latlong":
+        filterComponent1 = PointDistanceFilter;
+        break;  
+      case "longstring":
+        filterComponent1 = SubstringFilter;
+        break;     
+      default:
+        filterComponent1 = SubstringFilter;
+        break;
+    }
+    return {
+      id: data.name,
+      labelId: data.schema.label,
+      FilterComponent: filterComponent1,
+      filterComponentProps: {
+        filterId: data.name,
+        queryTerm: `customFields.${data.id}`,
+        queryTerms: [`customFields.${data.id}`],
+        choices: data.schema.choices? data.schema.choices : booleanChoices,
+    },
+    };
+  })
+
   return [
     {
       id: 'owner',
@@ -20,8 +74,8 @@ export default function useSightingSearchSchemas() {
       labelId: 'REGION',
       FilterComponent: OptionTermFilter,
       filterComponentProps: {
-        queryTerm: 'locationId_id',
-        filterId: 'locationId_id',
+        queryTerm: 'locationId',
+        filterId: 'locationId',
         choices: regionOptions,
       },
     },
@@ -49,5 +103,63 @@ export default function useSightingSearchSchemas() {
       FilterComponent: DateRangeFilter,
       filterComponentProps: { queryTerm: 'time', filterId: 'time' },
     },
+    {
+      id: 'species',
+      labelId: 'SPECIES',
+      FilterComponent: OptionTermFilter,
+      filterComponentProps: {
+      filterId: 'species',
+      queryTerm: 'taxonomy_guids',
+      choices: speciesOptions,
+      },
+    },
+    {
+      id: 'pipelineState',
+      labelId: 'PIPELINE_STATE',
+      FilterComponent: OptionTermFilter,
+      filterComponentProps: {
+      filterId: 'pipelineState',
+      queryTerm: 'pipelineState',
+      choices: pipelineStateOptions,
+      },
+    },
+    {
+      id: 'numberEncounters',
+      labelId: 'NUMBER_ENCOUNTERS',
+      FilterComponent: IntegerFilter,
+      filterComponentProps: {
+        filterId: 'numberEncounters',
+        queryTerm: 'numberEncounters',
+      },
+    },
+    {
+      id: 'numberImages',
+      labelId: 'NUMBER_IMAGES',
+      FilterComponent: IntegerFilter,
+      filterComponentProps: {
+        filterId: 'numberImages',
+        queryTerm: 'numberImages',
+      },
+    },
+    {
+      id: 'numberAnnotations',
+      labelId: 'NUMBER_ANNOTATIONS',
+      FilterComponent: IntegerFilter,
+      filterComponentProps: {
+        filterId: 'numberAnnotations',
+        queryTerm: 'numberAnnotations',
+      },
+    },
+    {
+      id: 'stage',
+      labelId: 'SIGHTING_STATE',
+      FilterComponent: OptionTermFilter,
+      filterComponentProps: {
+        filterId: 'Stage',
+        queryTerm: 'stage',
+        choices: stageOptions,
+      },
+    },
+    ...customFields
   ];
 }

@@ -38,7 +38,7 @@ const comparators = [
   },
 ];
 
-export default function IntegerFilter({
+export default function FloatFilter({
   label,
   labelId,
   description,
@@ -55,17 +55,17 @@ export default function IntegerFilter({
          : labelId )
     : label; 
 
-  const [integerInput, setIntegerInput] = useState('');
+  const [floatInput, setFloatInput] = useState('');
   const [comparator, setComparator] = useState('gt');
 
   const inputId = `${fieldLabel}-number-input`;
 
   function updateFilter() {
-    const integerValue = parseInt(integerInput, 10);
+    const floatValue = parseFloat(floatInput);
     const comparatorObject = comparators.find(
       c => c.value === comparator,
     );
-    const descriptor = comparatorObject.getDescriptor(integerValue);
+    const descriptor = comparatorObject.getDescriptor(floatValue);
     onChange({
       filterId,
       descriptor,
@@ -73,7 +73,7 @@ export default function IntegerFilter({
       query: {
         range: {
           [queryTerm]: {
-            [comparator]: integerValue,
+            [comparator]: floatValue,
           },
         },
       },
@@ -115,15 +115,17 @@ export default function IntegerFilter({
           id={inputId}
           placeholder="Count"
           size="small"
-          value={integerInput}
+          value={floatInput}
           onChange={e => {
             const inputValue = e.target.value;
-            const isPositiveInteger = /^[0-9]*[1-9][0-9]*$/.test(
+            console.log("inputValue",inputValue);
+            const isPositiveFloat = /^[+]?\d*\.?\d*$/.test(
               inputValue,
             );
-            if (isPositiveInteger || inputValue === '') {
-              setIntegerInput(e.target.value);
+            if (isPositiveFloat || inputValue === '') {
+              setFloatInput(e.target.value);
             }
+            console.log("e.target.value",e.target.value);
           }}
           style={{
             width: 148,

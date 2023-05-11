@@ -10,7 +10,7 @@ import FormControl from '@material-ui/core/FormControl';
 
 import Text from '../Text';
 
-const OptionTermFilter = function (props) {
+const MultiSelectFilter = function (props) {
   const {
     label,
     labelId,
@@ -20,7 +20,7 @@ const OptionTermFilter = function (props) {
     onChange,
     onClearFilter,
     queryTerm,
-    queryType = 'match',
+    queryType = 'terms',
     choices,
     width,
     minimalLabels = false,
@@ -30,10 +30,10 @@ const OptionTermFilter = function (props) {
   } = props;
   const intl = useIntl();
 
-  const [value, setValue] = useState('');
+  const [values, setValues] = useState([]);
 
   function getLabel(object) {
-    if (object.labelId)
+    if (object?.labelId)
       return intl.formatMessage({ id: object.labelId });
     return get(object, 'label', 'Missing label');
   }
@@ -55,38 +55,40 @@ const OptionTermFilter = function (props) {
       <Select
         labelId={`${queryTerm}-selector-label`}
         id={`${queryTerm}-selector`}
+        multiple
         onChange={e => {
-          const selectedValue = e.target.value;
-          const selectedChoice = safeChoices.find(
-            c => c.value === selectedValue,
+          const selectedValues = e.target.value;
+          console.log("selectedValues",selectedValues);          
+          const selectedChoices = safeChoices.filter(option =>
+            selectedValues.includes(option.value)
           );
-          const choiceLabel = getLabel(selectedChoice);
-          const choiceValue = get(
-            selectedChoice,
-            'queryValue',
-            selectedValue,
+          const choiceLabels = selectedChoices.map(getLabel);
+          const choiceValues = selectedChoices.map(selectedChoice =>
+            get(selectedChoice, 'queryValue', selectedChoice.value)
           );
-          setValue(selectedValue);
-          if (selectedValue === '') {
+
+          console.log("choiceValues",choiceValues);    
+          setValues(selectedValues);
+          if (selectedValues.length === 0) {
             onClearFilter(filterId);
           } else {
             onChange({
               filterId,
               nested,
-              clause: get(selectedChoice, 'clause', 'filter'),
-              descriptor: `${translatedLabel}: ${choiceLabel}`,
+              clause: 'filter',
+              descriptor: `${translatedLabel}: ${choiceLabels.join(', ')}`,
               query: {
-                [queryType]: { [queryTerm]: choiceValue },
+                [queryType]: { [queryTerm]: choiceValues.map(data => data.toLowerCase()) },
               },
             });
           }
-        }}
-        value={value}
+        }}        
+        value={values}
         renderValue={currentValue => {
-          const selectedChoice = safeChoices.find(
+          const selectedChoices = safeChoices.find(
             c => c.value === currentValue,
           );
-          return getLabel(selectedChoice);
+          return getLabel(selectedChoices) || '';
         }}
         {...rest}
       >
@@ -116,4 +118,4 @@ const OptionTermFilter = function (props) {
   );
 };
 
-export default memo(OptionTermFilter);
+export default memo(MultiSelectFilter);

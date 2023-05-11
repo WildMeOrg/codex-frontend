@@ -30,8 +30,10 @@ export default function SubstringFilter(props) {
 
   const [value, setValue] = useState('');
   const translatedLabel = labelId
-    ? intl.formatMessage({ id: labelId })
-    : label;
+    ?   (intl.messages[labelId]
+      ? intl.formatMessage({ id: labelId })
+      : labelId )
+    : label; 
 
   return (
     <div

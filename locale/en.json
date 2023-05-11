@@ -1219,5 +1219,10 @@
   "UNKNOWN_ALGORITHM": "Unknown algorithm",
   "UNKNOWN_ALGORITHM_DESCRIPTION": "Unknown algorithm description",
   "FOR_COLON": " for: ",
-  "COMMON_NAME_PLUS_SCIENTIFIC_NAME": "{commonName} ({speciesName})"
+  "COMMON_NAME_PLUS_SCIENTIFIC_NAME": "{commonName} ({speciesName})",
+  "NUMBER_ENCOUNTERS":"Number of encounters/animals",
+  "NUMBER_IMAGES":"Number of images",
+  "NUMBER_ANNOTATIONS":"Number of annotations",
+  "PIPELINE_STATE":"Pipeline state",
+  "SIGHTING_STATE" : "Sighting state"
 }
