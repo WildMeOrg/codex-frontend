@@ -15,9 +15,11 @@ export default function SettingsTextInput({
   skipDescription = false,
 }) {
   const matchingSetting = get(siteSettings, [settingKey]);
+  // console.log('matchingSetting', matchingSetting);
   const matchingSettingSchema = get(matchingSetting, 'schema', {});
   const valueIsDefined =
     get(currentValues, settingKey, undefined) !== undefined;
+  // console.log('get(currentValues, settingKey, undefined)', get(currentValues, settingKey, undefined));
 
   return (
     <Grid
