@@ -139,12 +139,12 @@ export default function PointDistanceFilter({
                 nested,
                 clause,
                 query: {
-                  geo_distance: {
-                    distance: `${distance}km`,
-                    [queryTerm]: [
-                      parseFloat(latitude),
-                      parseFloat(longitude),
-                    ],
+                  'geo_distance': {
+                    'distance': `${distance}km`,
+                    [queryTerm]: {
+                      'lat' : parseFloat(latitude),
+                      'lon' :parseFloat(longitude),
+                    },
                   },
                 },
               });
