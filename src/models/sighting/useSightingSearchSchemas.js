@@ -16,7 +16,7 @@ export default function useSightingSearchSchemas() {
   let isMultiple = false;
   let isFloat = false;
   console.log('customSightingFields',customSightingFields)
-  const excludedFieldTypes = ['individual', 'feetmeters', "latlong"]
+  const excludedFieldTypes = ['individual', 'feetmeters'];
   const customFields = customSightingFields.filter(data => 
     !excludedFieldTypes.includes(data.schema.displayType))
     .map(data => {
@@ -169,6 +169,15 @@ export default function useSightingSearchSchemas() {
         filterId: 'Stage',
         queryTerm: 'stage',
         choices: stageOptions,
+      },
+    },
+    {
+      id: 'latlong',
+      labelId: 'EXACT_LOCATION',
+      FilterComponent: PointDistanceFilter,
+      filterComponentProps: {
+        filterId: 'latlong',
+        queryTerm: 'location_geo_point',
       },
     },
     ...customFields
