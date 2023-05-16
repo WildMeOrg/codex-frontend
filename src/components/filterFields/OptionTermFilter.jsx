@@ -26,11 +26,14 @@ const OptionTermFilter = function (props) {
     minimalLabels = false,
     nested = false,
     style,
+    isMultiple,
     ...rest
   } = props;
   const intl = useIntl();
 
   const [value, setValue] = useState('');
+
+  const [values, setValues] = useState([]);
 
   function getLabel(object) {
     if (object.labelId)
@@ -49,7 +52,75 @@ const OptionTermFilter = function (props) {
 
   const safeChoices = choices || [];
 
-  return (
+  return isMultiple ? (
+    <FormControl style={style}>
+      <InputLabel>{translatedLabel}</InputLabel>
+      <Select
+        labelId={`${queryTerm}-selector-label`}
+        id={`${queryTerm}-selector`}
+        multiple
+        onChange={e => {
+          const selectedValues = e.target.value;
+          const selectedChoices = safeChoices.filter(option =>
+            selectedValues.includes(option.value)
+          );
+          const choiceLabels = selectedChoices.map(getLabel);
+          const choiceValues = selectedChoices.map(selectedChoice =>
+            get(selectedChoice, 'queryValue', selectedChoice.value)
+          );
+
+          setValues(selectedValues);
+          if (selectedValues.length === 0) {
+            onClearFilter(filterId);
+          } else {
+            onChange({
+              filterId,
+              nested,
+              clause: 'filter',
+              descriptor: `${translatedLabel}: ${choiceLabels.join(', ')}`,
+              query: {
+                'terms': { [queryTerm]: choiceValues.map(data => data.toLowerCase()) },
+              },
+            });
+          }
+        }}        
+        value={values}
+        renderValue={currentValue => {
+        if (!currentValue) {
+            return '';
+            }    
+        const selectedChoices = safeChoices.filter(
+            c => currentValue.includes(c.value),
+        );
+        const choiceLabels = selectedChoices.map(getLabel)
+          return choiceLabels.join(', ');
+        }}
+        {...rest}
+      >
+        {safeChoices.map(option => (
+          <MenuItem
+            value={option.value}
+            key={option.value}
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'flex-start',
+            }}
+          >
+            <Text component="span">{getLabel(option)}</Text>
+            {option.description ? (
+              <Text component="span" variant="caption">
+                {option.description}
+              </Text>
+            ) : undefined}
+          </MenuItem>
+        ))}
+      </Select>
+      {showDescription ? (
+        <FormHelperText>{description}</FormHelperText>
+      ) : null}
+    </FormControl>
+  ) : (
     <FormControl style={style}>
       <InputLabel>{translatedLabel}</InputLabel>
       <Select
