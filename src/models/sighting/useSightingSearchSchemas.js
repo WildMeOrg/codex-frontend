@@ -12,44 +12,44 @@ export default function useSightingSearchSchemas() {
   const { regionOptions, speciesOptions, pipelineStateOptions, stageOptions, booleanChoices } = useOptions();
   const { data: siteSettings } = useSiteSettings();
   const customSightingFields = siteSettings['site.custom.customFields.Sighting'].value.definitions;
-  let filterComponent1;
+  let customFilter;
   const customFields = customSightingFields.map(data => {
     switch (data.schema.displayType) {
       case "select":
-        filterComponent1 = OptionTermFilter;
+        customFilter = OptionTermFilter;
         break;
       case "string":
-        filterComponent1 = SubstringFilter;
+        customFilter = SubstringFilter;
         break;
       case "integer":
-        filterComponent1 = IntegerFilter;
+        customFilter = IntegerFilter;
         break;
       case "float":
-        filterComponent1 = FloatFilter;
+        customFilter = FloatFilter;
         break;
       case "multiselect":
-        filterComponent1 = MultiSelectFilter;
+        customFilter = MultiSelectFilter;
         break; 
       case "daterange":
-        filterComponent1 = DateRangeFilter;
+        customFilter = DateRangeFilter;
         break;  
       case "boolean":
-        filterComponent1 = OptionTermFilter;
+        customFilter = OptionTermFilter;
         break; 
       case "latlong":
-        filterComponent1 = PointDistanceFilter;
+        customFilter = PointDistanceFilter;
         break;  
       case "longstring":
-        filterComponent1 = SubstringFilter;
+        customFilter = SubstringFilter;
         break;     
       default:
-        filterComponent1 = SubstringFilter;
+        customFilter = SubstringFilter;
         break;
     }
     return {
       id: data.name,
       labelId: data.schema.label,
-      FilterComponent: filterComponent1,
+      FilterComponent: customFilter,
       filterComponentProps: {
         filterId: data.name,
         queryTerm: `customFields.${data.id}`,

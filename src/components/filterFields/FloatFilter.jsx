@@ -118,14 +118,12 @@ export default function FloatFilter({
           value={floatInput}
           onChange={e => {
             const inputValue = e.target.value;
-            console.log("inputValue",inputValue);
             const isPositiveFloat = /^[+]?\d*\.?\d*$/.test(
               inputValue,
             );
             if (isPositiveFloat || inputValue === '') {
               setFloatInput(e.target.value);
             }
-            console.log("e.target.value",e.target.value);
           }}
           style={{
             width: 148,

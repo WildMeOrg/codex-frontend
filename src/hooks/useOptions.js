@@ -54,10 +54,25 @@ export default function useOptions() {
     ]; 
 
     const booleanChoices = [
-      {label:"true", value: "true"},
-      {label: "false", value: "false"}
+      {label:"true", value: true},
+      {label: "false", value: false}
     ];
 
-    return { regionOptions, speciesOptions, pipelineStateOptions, stageOptions, booleanChoices };  
+    const socialGroupRolesOptions = data['social_group_roles'].value.map(o => {
+      return {
+        label: o.label,
+        value: o.guid
+      }
+    });
+
+    const relationshipOptions = Object.values(data['relationship_type_roles'].value).map(o => {
+      return {
+        label: o.label,
+        value: o.guid,
+        roles: o.roles
+      }
+    });
+
+    return { regionOptions, speciesOptions, pipelineStateOptions, stageOptions, booleanChoices, socialGroupRolesOptions, relationshipOptions };  
   }, [loading, error, data]);
 }

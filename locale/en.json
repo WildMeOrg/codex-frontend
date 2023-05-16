@@ -1224,5 +1224,7 @@
   "NUMBER_IMAGES":"Number of images",
   "NUMBER_ANNOTATIONS":"Number of annotations",
   "PIPELINE_STATE":"Pipeline state",
-  "SIGHTING_STATE" : "Sighting state"
+  "SIGHTING_STATE" : "Sighting state",
+  "SOCIAL_GROUP_ROLES": "Social group roles",
+  "RELATIONSHIP_ROLES": "Relationship roles"
 }
