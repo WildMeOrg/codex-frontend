@@ -14,6 +14,7 @@ export default function useSightingSearchSchemas() {
   const customSightingFields = siteSettings['site.custom.customFields.Sighting'].value.definitions;
   let customFilter;
   let isMultiple = false;
+  let isFloat = false;
   console.log('customSightingFields',customSightingFields)
   const excludedFieldTypes = ['individual', 'feetmeters', "latlong"]
   const customFields = customSightingFields.filter(data => 
@@ -32,6 +33,7 @@ export default function useSightingSearchSchemas() {
         break;
       case "float":
         customFilter = FloatFilter;
+        isFloat = true;
         break;
       case "multiselect":
         customFilter = OptionTermFilter;
@@ -62,7 +64,8 @@ export default function useSightingSearchSchemas() {
         queryTerm: `customFields.${data.id}`,
         queryTerms: [`customFields.${data.id}`],
         choices: data.schema.choices? data.schema.choices : booleanChoices,
-        isMultiple
+        isMultiple,
+        isFloat
     },
     };
   })
