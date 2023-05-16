@@ -13,7 +13,12 @@ export default function useSightingSearchSchemas() {
   const { data: siteSettings } = useSiteSettings();
   const customSightingFields = siteSettings['site.custom.customFields.Sighting'].value.definitions;
   let customFilter;
-  const customFields = customSightingFields.map(data => {
+  console.log('customSightingFields',customSightingFields)
+  const excludedFieldTypes = ['individual', 'feetmeters', "latlong"]
+  const customFields = customSightingFields.filter(data => 
+    !excludedFieldTypes.includes(data.schema.displayType))
+    .map(data => {
+    // console.log('data.schema.displayType',data.schema.displayType);
     switch (data.schema.displayType) {
       case "select":
         customFilter = OptionTermFilter;
