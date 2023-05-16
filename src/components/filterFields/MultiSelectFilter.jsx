@@ -58,7 +58,6 @@ const MultiSelectFilter = function (props) {
         multiple
         onChange={e => {
           const selectedValues = e.target.value;
-          console.log("selectedValues",selectedValues);          
           const selectedChoices = safeChoices.filter(option =>
             selectedValues.includes(option.value)
           );
@@ -66,8 +65,7 @@ const MultiSelectFilter = function (props) {
           const choiceValues = selectedChoices.map(selectedChoice =>
             get(selectedChoice, 'queryValue', selectedChoice.value)
           );
-
-          console.log("choiceValues",choiceValues);    
+          
           setValues(selectedValues);
           if (selectedValues.length === 0) {
             onClearFilter(filterId);
