@@ -13,7 +13,6 @@ export default function useSightingSearchSchemas() {
   let customFilter;
   let isMultiple = false;
   let isFloat = false;
-  console.log('customSightingFields',customSightingFields)
   const excludedFieldTypes = ['individual', 'feetmeters'];
   const customFields = customSightingFields.filter(data => 
     !excludedFieldTypes.includes(data.schema.displayType))
