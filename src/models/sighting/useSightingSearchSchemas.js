@@ -19,7 +19,6 @@ export default function useSightingSearchSchemas() {
   const customFields = customSightingFields.filter(data => 
     !excludedFieldTypes.includes(data.schema.displayType))
     .map(data => {
-    // console.log('data.schema.displayType',data.schema.displayType);
     switch (data.schema.displayType) {
       case "select":
         customFilter = OptionTermFilter;
