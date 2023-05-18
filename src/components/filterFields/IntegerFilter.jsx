@@ -133,7 +133,8 @@ export default function IntegerFilter({
             );
 
             if (isPositive || inputValue === '') {              
-              isFloat ? setFloatInput(e.target.value) : setIntegerInput(e.target.value);
+              setFloatInput(e.target.value);
+              setIntegerInput(e.target.value);
             }
             
           }}
