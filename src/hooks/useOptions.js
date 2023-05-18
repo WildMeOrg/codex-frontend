@@ -54,8 +54,21 @@ export default function useOptions() {
     ]; 
 
     const booleanChoices = [
-      {label:"true", value: true},
-      {label: "false", value: false}
+      {
+        label: 'Yes',
+        value: 'yes',
+        queryValue: true,
+      },
+      {
+        label: 'No',
+        value: 'no',
+        queryValue: true,
+        clause: 'must_not',
+      },
+      {
+        label: 'Either',
+        value: '',
+      },
     ];
 
     const socialGroupRolesOptions = data['social_group_roles'].value.map(o => {
