@@ -1,8 +1,6 @@
 import useOptions from '../../hooks/useOptions';
 import OptionTermFilter from '../../components/filterFields/OptionTermFilter';
 import PointDistanceFilter from '../../components/filterFields/PointDistanceFilter';
-import FloatFilter from '../../components/filterFields/FloatFilter';
-import MultiSelectFilter from '../../components/filterFields/MultiSelectFilter';
 import SubstringFilter from '../../components/filterFields/SubstringFilter';
 import DateRangeFilter from '../../components/filterFields/DateRangeFilter';
 import useSiteSettings from '../../models/site/useSiteSettings';
@@ -32,7 +30,7 @@ export default function useSightingSearchSchemas() {
         customFilter = IntegerFilter;
         break;
       case "float":
-        customFilter = FloatFilter;
+        customFilter = IntegerFilter;
         isFloat = true;
         break;
       case "multiselect":
