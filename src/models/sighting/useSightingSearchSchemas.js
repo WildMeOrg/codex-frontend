@@ -5,6 +5,8 @@ import SubstringFilter from '../../components/filterFields/SubstringFilter';
 import DateRangeFilter from '../../components/filterFields/DateRangeFilter';
 import useSiteSettings from '../../models/site/useSiteSettings';
 import IntegerFilter from '../../components/filterFields/IntegerFilter';
+import FloatFilter from '../../components/filterFields/FloatFilter';
+import MultiSelectFilter from '../../components/filterFields/MultiSelectFilter';
 
 export default function useSightingSearchSchemas() {
   const { regionOptions, speciesOptions, pipelineStateOptions, stageOptions, booleanChoices } = useOptions();
@@ -29,12 +31,10 @@ export default function useSightingSearchSchemas() {
         customFilter = IntegerFilter;
         break;
       case "float":
-        customFilter = IntegerFilter;
-        isFloat = true;
+        customFilter = FloatFilter;
         break;
       case "multiselect":
-        customFilter = OptionTermFilter;
-        isMultiple = true;
+        customFilter = MultiSelectFilter;
         break; 
       case "daterange":
         customFilter = DateRangeFilter;
@@ -61,8 +61,6 @@ export default function useSightingSearchSchemas() {
         queryTerm: `customFields.${data.id}`,
         queryTerms: [`customFields.${data.id}`],
         choices: data.schema.choices? data.schema.choices : booleanChoices,
-        isMultiple,
-        isFloat
     },
     };
   })
