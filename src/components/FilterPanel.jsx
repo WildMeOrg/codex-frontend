@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment, useState } from 'react';
 
 import Text from './Text';
 
@@ -20,7 +20,14 @@ export default function FilterPanel({
   formFilters,
   setFormFilters,
 }) {
+  const [selectedChoices, setSelectedChoices] = useState({});
   const handleFilterChange = filter => {
+    if(filter.selectedChoice) {
+      setSelectedChoices({
+        ...selectedChoices,
+        [filter.filterId]: filter.selectedChoice,
+      });
+    }
     setFilter(filter, formFilters, setFormFilters);
   };
   const clearFilter = filterId => {
@@ -45,16 +52,50 @@ export default function FilterPanel({
           flexDirection: 'column',
           padding: '8px 16px 16px',
         }}
-      >
-        {safeSchemas.map(schema => (
-          <schema.FilterComponent
-            key={schema.id}
-            labelId={schema.labelId}
-            onChange={handleFilterChange}
-            onClearFilter={clearFilter}
-            {...schema.filterComponentProps}
-          />
-        ))}
+        >        
+        {safeSchemas.map(schema => {
+          if(schema.dependency) {
+
+            const dependencyChioce = selectedChoices[schema.dependency];
+            if(dependencyChioce) {
+              let choices = [];
+              switch(schema.id) {
+                case 'relationshipRoles':
+                  choices = dependencyChioce.roles?.map(data => {
+                    return {
+                      label: data.label,
+                      value: data.guid
+                    }
+                  }) || [];
+                  break;
+              }
+              const componentProps = {
+                ...schema.filterComponentProps,
+                choices,
+              };
+              return (
+                <schema.FilterComponent
+                    key={`${schema.id}-${selectedChoices[schema.dependency]?.value || ''}`}
+                    labelId={schema.labelId}
+                    onChange={handleFilterChange}
+                    onClearFilter={clearFilter}
+                    {...componentProps}
+                  />                
+              )
+            } else {
+              return <Fragment key={`${schema.id}-${selectedChoices[schema.dependency]?.value || ''}`} />;
+            }
+          }
+          return (
+            <schema.FilterComponent
+              key={schema.id}
+              labelId={schema.labelId}
+              onChange={handleFilterChange}
+              onClearFilter={clearFilter}
+              {...schema.filterComponentProps}
+            />
+          );
+        })}
       </div>
     </div>
   );
