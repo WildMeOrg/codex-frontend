@@ -13,6 +13,11 @@ const columns = [
     },
   },
   {
+    name: 'individual_first_name',
+    labelId: 'INDIVIDUAL_NAME',
+    align: 'left',
+  },
+  {
     name: 'asset_filename',
     labelId: 'FILENAME',
     align: 'left',
