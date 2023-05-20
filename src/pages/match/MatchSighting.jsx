@@ -88,7 +88,7 @@ export default function MatchSighting() {
   const matchCandidates = useMemo(() => {
     const hotspotterAnnotationScores = get(
       selectedQueryAnnotation,
-      ['algorithms', 'hotspotter_nosv', 'scores_by_annotation'],
+      ['algorithms', 'hotspotter_nosv', 'scores_by_individual'],
       [],
     );
 
