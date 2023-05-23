@@ -60,11 +60,15 @@ export default function MatchCandidatesTable({
   selectedMatchCandidate,
   setSelectedMatchCandidate,
 }) {
+  const processedCandidates = matchCandidates.map(data => ({
+    ...data,
+    individual_first_name : data.individual_first_name || 'Unassigned'
+  }))
   return (
     <DataDisplay
       idKey="guid"
       titleId="CANDIDATE_ANNOTATIONS"
-      data={matchCandidates}
+      data={processedCandidates}
       columns={columns}
       // variant="secondary"
       noResultsTextId="NO_MATCH_CANDIDATES"
