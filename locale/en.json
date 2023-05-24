@@ -1226,5 +1226,13 @@
   "PIPELINE_STATE":"Pipeline state",
   "SIGHTING_STATE" : "Sighting state",
   "SOCIAL_GROUP_ROLES": "Social group roles",
-  "RELATIONSHIP_ROLES": "Relationship roles"
+  "RELATIONSHIP_ROLES": "Relationship roles",
+  "Site_Configuration": "Site Configuration",  
+  "Hero_Area": "Hero Area",
+  "Site_Theme": "Site Theme",
+  "Custom_Card_Area": "Custom Card Area",
+  "Email_Settings": "Email Settings",
+  "Social_Media_Settings": "Social Media Settings",
+  "Twitter_Configuration": "Twitter Configuration",
+  "Muscellaneous": "Muscellaneous"
 }
