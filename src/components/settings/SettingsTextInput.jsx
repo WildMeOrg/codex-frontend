@@ -20,7 +20,9 @@ export default function SettingsTextInput({
   const valueIsDefined =
     get(currentValues, settingKey, undefined) !== undefined;
   // console.log('get(currentValues, settingKey, undefined)', get(currentValues, settingKey, undefined));
-
+  // console.log('settingKey',settingKey);
+  // console.log('currentValues[settingKey]',currentValues[settingKey]);
+  
   return (
     <Grid
       item
