@@ -24,14 +24,6 @@ const columns = [
       cellRenderer: cellRendererTypes.viewpoint,
     },
   },
-  {
-    name: 'topScore',
-    labelId: 'SCORE',
-    align: 'left',
-    options: {
-      cellRenderer: cellRendererTypes.float,
-    },
-  },
 ];
 
 export default function QueryAnnotationsTable({
