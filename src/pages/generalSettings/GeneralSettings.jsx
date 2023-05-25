@@ -519,7 +519,7 @@ export default function GeneralSettings() {
                     alignItems: 'center',
                     marginTop: 28,
               }}
-            >              
+                >              
               {putSiteSettingError && (
                 <CustomAlert
                   severity="error"
@@ -539,7 +539,19 @@ export default function GeneralSettings() {
                   style={{ marginBottom: 16 }}
                 />
               )}
-                        
+
+            <Grid container alignItems="center" justify="space-between" style={{ marginTop: 28 }}>
+              <Grid item>
+                <Button style={{ marginTop: 12 }} display="primary">
+                  Previous
+                </Button>
+              </Grid>
+              <Grid item>
+                <Button style={{ marginTop: 12 }} display="primary">
+                  Next
+                </Button>
+              </Grid>
+            </Grid>         
               <Button
                 onClick={() => {
                   putSiteSetting({ property: '', data: currentValues });
@@ -547,7 +559,7 @@ export default function GeneralSettings() {
                 style={{ marginTop: 12 }}
                 display="primary"
                 loading={putSiteSettingLoading}
-                // disabled={!intelligentAgentFieldsValid}
+                disabled={!intelligentAgentFieldsValid}
                 id="SAVE_CHANGES"
               />
             </Grid>
