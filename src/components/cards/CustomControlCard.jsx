@@ -11,6 +11,7 @@ import Text from '../Text';
 import Card from './Card';
 import Grid from '@material-ui/core/Grid';
 import { Paper, Link, Typography, Box } from '@material-ui/core';
+import { useIntl } from 'react-intl';
 
 
 export default function CustomControlCard({
@@ -20,16 +21,18 @@ export default function CustomControlCard({
   handleClick,
 }) {
   let count = 0;
+  const intl = useIntl();
+  const newTitle = intl.formatMessage({ id: titleId });
 
   return (
     
       <Grid item xs={12} sm={6} md={4}>
-      <Paper style={{margin: "20px, 20px, 20px", padding:20, minHeight: 700}}>
+      <Paper style={{margin: "20px, 20px, 20px", padding:20, minHeight: 700, borderRadius: 16}}>
       <Typography 
                 style={{
                   marginBottom: 20 }} 
                 >
-                Customization Control Center
+                {newTitle}
                 </Typography>  
                 {
                   allSettings.map(data => {
@@ -56,7 +59,7 @@ export default function CustomControlCard({
                               height: '20px',
                               borderRadius: '50%',
                               backgroundColor: '#7562C6',
-                              backgroundColor: '#F3F1FE',
+                              // backgroundColor: '#F3F1FE',
                               color: 'white',
                               marginBottom: '5px',
                               marginRight: '10px'
