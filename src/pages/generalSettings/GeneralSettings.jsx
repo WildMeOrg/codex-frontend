@@ -73,7 +73,7 @@ export default function GeneralSettings() {
     'Email Settings',
     'Social Media Settings',
     'Twitter Configuration',
-    'Muscellaneous'
+    'Miscellaneous'
   ];  
 
   
@@ -133,7 +133,7 @@ export default function GeneralSettings() {
   const [ EmailSettings, setEmailSettings ] = useState(false);
   const [ SocialMediaSettings, setSocialMediaSettings ] = useState(false);
   const [ TwitterConfiguration, setTwitterConfiguration ] = useState(false);
-  const [ Muscellaneous, setMuscellaneous ] = useState(false);
+  const [ Miscellaneous, setMiscellaneous ] = useState(false);
 
   const [selectedLink, setSelectedLink ] = useState('site_configuration');
 
@@ -146,7 +146,7 @@ export default function GeneralSettings() {
     setEmailSettings(data === 'email_settings');
     setSocialMediaSettings(data === 'social_media_settings');
     setTwitterConfiguration(data === 'twitter_configuration');
-    setMuscellaneous(data === 'muscellaneous');
+    setMiscellaneous(data === 'miscellaneous');
   }
 
   let count = 0;
@@ -155,12 +155,12 @@ export default function GeneralSettings() {
       <Grid
       container
       direction="row"
-      spacing={2}
+      spacing={1}
       style={{ marginTop: 100, padding: '20px 6vw' }}
       >
       
-      <Grid item xs={12} sm={6} md={4}>
-        <Paper style={{margin: "20px, 20px, 20px", padding:20, minHeight: 700, borderRadius: 16}}>
+      <Grid item xs={12} sm={6} md={3}>
+        <Paper style={{padding:20, minHeight: 700, maxWidth: 335, borderRadius: 16}}>
             <Typography 
                 style={{
                   marginBottom: 20,
@@ -192,14 +192,14 @@ export default function GeneralSettings() {
                               justifyContent: 'center',
                               alignItems: 'center',
                               pointer: 'cursor',
-                              width: '20px',
-                              height: '20px',
+                              width: '30px',
+                              height: '30px',
                               borderRadius: '50%',
                               backgroundColor: selectedLink == setting ? '#7562C6' : '#F3F1FE',
                               color: selectedLink == setting ?'white' : '#2B2351',
                               marginBottom: '5px',
                               marginRight: '10px',
-                              fontSize: '12px',
+                              fontSize: '16px',
                             }
                           }>{count}</Box>
                           <Typography variant='body1' style={{color: '#2B2351'}} >{data}</Typography>                          
@@ -212,12 +212,13 @@ export default function GeneralSettings() {
       </Paper>
       </Grid>
       
-      <Grid item xs={12} sm={6} md={8}>
+      <Grid item xs={12} sm={6} md={9}>
       <Paper style={{
         padding:20, 
         overflow:"auto", 
         minHeight: 700, 
         minWidth: 500,
+        maxWidth: 900,
         borderRadius: 16}}>
       {
               SiteConfiguration && 
@@ -458,6 +459,17 @@ export default function GeneralSettings() {
                 severity="info"
                 titleId="URLS_MUST_INCLUDE_HTTPS"
               />
+               <IntelligentAgentSettings
+                  intelligentAgentSettingsFields={
+                    intelligentAgentSettingsFields
+                  }
+                  currentValues={currentValues}
+                  setCurrentValues={setCurrentValues}
+                  siteSettings={siteSettings}
+                  setIntelligentAgentFieldsValid={
+                    setIntelligentAgentFieldsValid
+                  }
+        />
               {twitterTestError && isTwitterEnabled && (
                 <CustomAlert
                   severity="warning"
@@ -465,6 +477,7 @@ export default function GeneralSettings() {
                   style={{ marginBottom: 16 }}
                 />
               )}
+             
               {showTwitterSuccess && (
                 <CustomAlert
                   onClose={() => {
@@ -480,12 +493,24 @@ export default function GeneralSettings() {
               </>
              }
              {
-              Muscellaneous && <>
+              Miscellaneous && <>
               <SettingsBreadcrumbs currentPageTextId="MUSCELLANEOUS" />
               <br/>
               <CustomAlert
                 severity="info"
                 titleId="URLS_MUST_INCLUDE_HTTPS"
+              />
+              <SettingsTextInput
+                settingKey="site.general.helpDescription"
+                currentValues={currentValues}
+                setCurrentValues={setCurrentValues}
+                siteSettings={siteSettings}
+              />
+              <SettingsTextInput
+                settingKey="site.general.donationButtonUrl"
+                currentValues={currentValues}
+                setCurrentValues={setCurrentValues}
+                siteSettings={siteSettings}
               />
                 <Grid item
                   style={{
@@ -494,18 +519,7 @@ export default function GeneralSettings() {
                     alignItems: 'center',
                     marginTop: 28,
               }}
-            >
-              <IntelligentAgentSettings
-                  intelligentAgentSettingsFields={
-                    intelligentAgentSettingsFields
-                  }
-                  currentValues={currentValues}
-                  setCurrentValues={setCurrentValues}
-                  siteSettings={siteSettings}
-                  setIntelligentAgentFieldsValid={
-                    setIntelligentAgentFieldsValid
-                  }
-        />
+            >              
               {putSiteSettingError && (
                 <CustomAlert
                   severity="error"
