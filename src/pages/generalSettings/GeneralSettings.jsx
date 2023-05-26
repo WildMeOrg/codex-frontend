@@ -68,9 +68,6 @@ const allSettingsFields = [
 
 export default function GeneralSettings() {
   const theme = useTheme();
-  const linkStyles = {
-    color: theme.palette.text.secondary,
-  };
   const allSettings = [
     'Site Configuration',
     'Hero Area',
@@ -88,7 +85,8 @@ export default function GeneralSettings() {
   const [
     intelligentAgentFieldsValid,
     setIntelligentAgentFieldsValid,
-  ] = useState(false);
+  ] = useState(true);
+
   const isTwitterEnabled = Boolean(
     get(currentValues, 'intelligent_agent_twitterbot_enabled'),
   );
@@ -169,6 +167,7 @@ export default function GeneralSettings() {
   function goBack() {
     showContent(currentIndex-1);
   }
+  
   return (    
       <Grid
       container
