@@ -16,6 +16,8 @@ import SettingsTextInput from '../../components/settings/SettingsTextInput';
 import IntelligentAgentSettings from './IntelligentAgentSettings';
 import { intelligentAgentSchema } from '../../constants/intelligentAgentSchema';
 import { Paper, Link, Typography, Box } from '@material-ui/core';
+import { useTheme } from '@material-ui/core/styles';
+import { set } from 'date-fns';
 
 
 const generalSettingsFields = [
@@ -65,6 +67,7 @@ const allSettingsFields = [
 ];
 
 export default function GeneralSettings() {
+  const theme = useTheme();
   const allSettings = [
     'Site Configuration',
     'Hero Area',
@@ -75,8 +78,6 @@ export default function GeneralSettings() {
     'Twitter Configuration',
     'Miscellaneous'
   ];  
-
-  
 
   const { data: siteSettings } = useSiteSettings();
   const [currentValues, setCurrentValues] = useState(null);
@@ -150,7 +151,33 @@ export default function GeneralSettings() {
   }
 
   let count = 0;
+  let currentIndex = 0
 
+  function showContent(index) {
+    // 更新当前索引
+    // currentIndex = index;
+
+    // 获取显示内容的div元素
+    // var contentDiv = document.getElementById("content");
+
+    // 设置div的内容为对应索引的内容
+    // contentDiv.innerHTML = contents[index];
+  }
+
+  function goForward(selectedLink) {
+    const currentIndex = allSettings.findIndex((item) => item.toLocaleLowerCase().replace(/\s/g, '_') === selectedLink);
+    eval(`set${allSettings[currentIndex].replace(/\s/g, '')}(false)`);
+    eval(`set${allSettings[currentIndex + 1].replace(/\s/g, '')}(true)`);
+    setSelectedLink(allSettings[currentIndex + 1].toLocaleLowerCase().replace(/\s/g, '_'));
+    // }
+  }
+
+  function goBack(selectedLink) {
+    const currentIndex = allSettings.findIndex((item) => item.toLocaleLowerCase().replace(/\s/g, '_') === selectedLink);
+    eval(`set${allSettings[currentIndex].replace(/\s/g, '')}(false)`);
+    eval(`set${allSettings[currentIndex - 1].replace(/\s/g, '')}(true)`);
+    setSelectedLink(allSettings[currentIndex - 1].toLocaleLowerCase().replace(/\s/g, '_'));
+  }
   return (    
       <Grid
       container
@@ -186,6 +213,8 @@ export default function GeneralSettings() {
                             marginBottom: '10%',
                             textDecoration: 'none', 
                             }}>
+
+                             
                           <Box style={
                             {
                               display: 'flex',
@@ -195,7 +224,8 @@ export default function GeneralSettings() {
                               width: '30px',
                               height: '30px',
                               borderRadius: '50%',
-                              backgroundColor: selectedLink == setting ? '#7562C6' : '#F3F1FE',
+                              // backgroundColor: selectedLink == setting ? '#7562C6' : '#F3F1FE',
+                              backgroundColor: selectedLink == setting ? theme.palette.primary.main : `${theme.palette.primary.main}36`,
                               color: selectedLink == setting ?'white' : '#2B2351',
                               marginBottom: '5px',
                               marginRight: '10px',
@@ -214,7 +244,7 @@ export default function GeneralSettings() {
       
       <Grid item xs={12} sm={6} md={9}>
       <Paper style={{
-        padding:20, 
+        padding:'20px 120px 20px 20px', 
         overflow:"auto", 
         minHeight: 700, 
         minWidth: 500,
@@ -539,32 +569,60 @@ export default function GeneralSettings() {
                   style={{ marginBottom: 16 }}
                 />
               )}
-
-            <Grid container alignItems="center" justify="space-between" style={{ marginTop: 28 }}>
-              <Grid item>
-                <Button style={{ marginTop: 12 }} display="primary">
-                  Previous
-                </Button>
+              {
+                <Grid container alignItems="center" justifyContent="space-between" style={{ marginTop: 28 }}>
+                <Grid item>
+                  {<Button 
+                    style={{ marginTop: 12 }} 
+                    display="primary"
+                    onClick={() => {goBack(selectedLink)}}
+                    >
+                    Previous
+                  </Button>
+                  }
+                </Grid>
+                <Grid item> 
+                  <Button
+                    onClick={() => {
+                      putSiteSetting({ property: '', data: currentValues });
+                    }}
+                    style={{ marginTop: 12 }}
+                    display="primary"
+                    loading={putSiteSettingLoading}
+                    disabled={!intelligentAgentFieldsValid}
+                    id="SAVE_CHANGES"
+                  />
               </Grid>
-              <Grid item>
-                <Button style={{ marginTop: 12 }} display="primary">
-                  Next
-                </Button>
-              </Grid>
-            </Grid>         
-              <Button
-                onClick={() => {
-                  putSiteSetting({ property: '', data: currentValues });
-                }}
-                style={{ marginTop: 12 }}
-                display="primary"
-                loading={putSiteSettingLoading}
-                disabled={!intelligentAgentFieldsValid}
-                id="SAVE_CHANGES"
-              />
+                
+              </Grid>  
+              }           
+              
+              
             </Grid>
               </>
              }
+             {!Miscellaneous&&<Grid container alignItems="center" justifyContent="space-between" style={{ marginTop: 28 }}>
+              <Grid item>
+                {!SiteConfiguration&&<Button style={{ marginTop: 12 }} 
+                    display="primary"
+                    onClick = {() => goBack(selectedLink)}
+                    >
+                  Previous
+                </Button>
+                }
+              </Grid>
+              <Grid item>
+                {!Miscellaneous&&<Button style={{ marginTop: 12 }} 
+                    display="primary"
+                    onClick = {() => goForward(selectedLink)}
+                    >
+                  Next
+                </Button>
+                }
+              </Grid>
+              
+            </Grid>  
+             } 
       </Paper>
       </Grid>
       </Grid>
