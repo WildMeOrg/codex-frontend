@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { get, reduce, zipObject } from 'lodash-es';
 
 import Grid from '@material-ui/core/Grid';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 import useSiteSettings from '../../models/site/useSiteSettings';
 import usePutSiteSetting from '../../models/site/usePutSiteSetting';
@@ -17,8 +18,7 @@ import IntelligentAgentSettings from './IntelligentAgentSettings';
 import { intelligentAgentSchema } from '../../constants/intelligentAgentSchema';
 import { Paper, Link, Typography, Box } from '@material-ui/core';
 import { useTheme } from '@material-ui/core/styles';
-import { set } from 'date-fns';
-
+import Text from '../../components/Text';
 
 const generalSettingsFields = [
   'site.name',
@@ -68,6 +68,9 @@ const allSettingsFields = [
 
 export default function GeneralSettings() {
   const theme = useTheme();
+  const linkStyles = {
+    color: theme.palette.text.secondary,
+  };
   const allSettings = [
     'Site Configuration',
     'Hero Area',
@@ -89,7 +92,7 @@ export default function GeneralSettings() {
   const isTwitterEnabled = Boolean(
     get(currentValues, 'intelligent_agent_twitterbot_enabled'),
   );
-
+ 
   const {
     mutate: putSiteSetting,
     error: putSiteSettingError,
@@ -151,32 +154,20 @@ export default function GeneralSettings() {
   }
 
   let count = 0;
-  let currentIndex = 0
+  const currentIndex = allSettings.findIndex((item) => item.toLocaleLowerCase().replace(/\s/g, '_') === selectedLink);
 
-  function showContent(index) {
-    // 更新当前索引
-    // currentIndex = index;
-
-    // 获取显示内容的div元素
-    // var contentDiv = document.getElementById("content");
-
-    // 设置div的内容为对应索引的内容
-    // contentDiv.innerHTML = contents[index];
+  function showContent(newIndex) {    
+    eval(`set${allSettings[currentIndex].replace(/\s/g, '')}(false)`);
+    eval(`set${allSettings[newIndex].replace(/\s/g, '')}(true)`);
+    setSelectedLink(allSettings[newIndex].toLocaleLowerCase().replace(/\s/g, '_'));    
   }
 
-  function goForward(selectedLink) {
-    const currentIndex = allSettings.findIndex((item) => item.toLocaleLowerCase().replace(/\s/g, '_') === selectedLink);
-    eval(`set${allSettings[currentIndex].replace(/\s/g, '')}(false)`);
-    eval(`set${allSettings[currentIndex + 1].replace(/\s/g, '')}(true)`);
-    setSelectedLink(allSettings[currentIndex + 1].toLocaleLowerCase().replace(/\s/g, '_'));
-    // }
+  function goForward() {
+    showContent(currentIndex+1);
   }
 
-  function goBack(selectedLink) {
-    const currentIndex = allSettings.findIndex((item) => item.toLocaleLowerCase().replace(/\s/g, '_') === selectedLink);
-    eval(`set${allSettings[currentIndex].replace(/\s/g, '')}(false)`);
-    eval(`set${allSettings[currentIndex - 1].replace(/\s/g, '')}(true)`);
-    setSelectedLink(allSettings[currentIndex - 1].toLocaleLowerCase().replace(/\s/g, '_'));
+  function goBack() {
+    showContent(currentIndex-1);
   }
   return (    
       <Grid
@@ -191,8 +182,9 @@ export default function GeneralSettings() {
             <Typography 
                 style={{
                   marginBottom: 20,
+                  fontWeight: 'bold',
+                  fontSize: 16,
                 }} 
-                variant="h6"
                 >
                 {'Customization Control Center'}
             </Typography>  
@@ -207,24 +199,21 @@ export default function GeneralSettings() {
                         }}
                         >
                         <Link                           
-                          href = "#" 
+                          // href = "#" 
                           style={{ 
                             display: 'flex', 
                             marginBottom: '10%',
                             textDecoration: 'none', 
-                            }}>
-
-                             
+                            cursor:'pointer',
+                            }}>                             
                           <Box style={
                             {
                               display: 'flex',
                               justifyContent: 'center',
-                              alignItems: 'center',
-                              pointer: 'cursor',
+                              alignItems: 'center',                              
                               width: '30px',
                               height: '30px',
                               borderRadius: '50%',
-                              // backgroundColor: selectedLink == setting ? '#7562C6' : '#F3F1FE',
                               backgroundColor: selectedLink == setting ? theme.palette.primary.main : `${theme.palette.primary.main}36`,
                               color: selectedLink == setting ?'white' : '#2B2351',
                               marginBottom: '5px',
@@ -250,7 +239,24 @@ export default function GeneralSettings() {
         minWidth: 500,
         maxWidth: 900,
         borderRadius: 16}}>
-      {
+          <Link href="/settings"                   
+            style={{
+              display:'flex',
+              alignItems:'center',
+              color: theme.palette.text.primary,
+              fontSize: 22,
+              fontWeight: 'bold',
+              textDecoration: 'none',
+            }}
+            >  
+              <ArrowBackIcon />
+              {selectedLink.split('_')
+                           .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                           .join(' ')}  
+          </Link>  
+          <div style = {{padding: 25}}>
+          
+            {
               SiteConfiguration && 
               <>
               <SettingsBreadcrumbs currentPageTextId="SITE_CONFIGURATION" />
@@ -590,7 +596,7 @@ export default function GeneralSettings() {
                     display="primary"
                     loading={putSiteSettingLoading}
                     disabled={!intelligentAgentFieldsValid}
-                    id="SAVE_CHANGES"
+                    id="DONE"
                   />
               </Grid>
                 
@@ -623,10 +629,10 @@ export default function GeneralSettings() {
               
             </Grid>  
              } 
+             </div>
       </Paper>
       </Grid>
       </Grid>
-    // </MainColumn>
     
   );
 }
