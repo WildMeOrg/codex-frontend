@@ -22,17 +22,17 @@ const adminPages = [
   {
     icon: SiteSettingsIcon,
     name: 'general_settings',
-    labelId: 'GENERAL_SETTINGS',
+    labelId: 'CUSTOMIZATION_CONTORL_CENTER',
     href: '/settings/general',
     roles: ['is_admin'],
   },
-  {
-    icon: SplashSettingsIcon,
-    name: 'front-page-config',
-    labelId: 'FRONT_PAGE',
-    href: '/settings/front-page',
-    roles: ['is_admin'],
-  },
+  // {
+  //   icon: SplashSettingsIcon,
+  //   name: 'front-page-config',
+  //   labelId: 'FRONT_PAGE',
+  //   href: '/settings/front-page',
+  //   roles: ['is_admin'],
+  // },
   {
     icon: CustomFieldsIcon,
     name: 'field-management',
