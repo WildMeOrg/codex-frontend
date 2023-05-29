@@ -38,6 +38,13 @@ const propertyMap = {
         value: name,
       })),
   },
+  species: {
+    labelId: 'taxonomy',
+    getProperty: individualData =>
+      deriveIndividualName(individualData, 'taxonomy'),
+      deriveChoices: species =>
+      validSexOptions.filter(o => species.includes(o.value)),
+  },
 };
 
 export default function ResolutionSelector({
