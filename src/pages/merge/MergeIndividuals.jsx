@@ -40,6 +40,7 @@ export default function MergeIndividuals() {
   const [formData, setFormData] = useState({});
 
   const showSexInput = Boolean(mergeConflicts?.sex);
+  const showSpeciesInput = Boolean(mergeConflicts?.taxonomy);
   const nameContexts = mergeConflicts?.name_contexts || [];
   const showFirstNameInput = nameContexts.includes('FirstName');
   const showAdoptionNameInput = nameContexts.includes('AdoptionName');
@@ -51,6 +52,7 @@ export default function MergeIndividuals() {
     showSexInput,
     showFirstNameInput,
     showAdoptionNameInput,
+    showSpeciesInput,
   );
 
   if (fetchConflictsError)
@@ -135,6 +137,16 @@ export default function MergeIndividuals() {
                 individualData={individuals}
               />
             )}
+            {(
+              <ResolutionSelector
+                value={formData?.taxomomy}
+                onChange={newSpecies =>
+                  setFormData({ ...formData, taxomomy: newSpecies })
+                }
+                fieldType="species"
+                individualData={individuals}
+              />
+            )}
           </Grid>
         )}
         <Grid item style={{ marginTop: 16 }}>
@@ -158,6 +170,7 @@ export default function MergeIndividuals() {
                 showSexInput,
                 showFirstNameInput,
                 showAdoptionNameInput,
+                showSpeciesInput,
               );
 
               mergeIndividuals({
