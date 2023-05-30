@@ -29,6 +29,10 @@ export default function MergeIndividuals() {
   const { data: mergeConflicts, fetchConflictsError } =
     useFetchMergeConflicts(individualGuids);
 
+  console.log('searchParams',searchParams);
+  console.log('individualGuids',individualGuids);
+  console.log('mergeConflicts',mergeConflicts);
+
   const {
     mutate: mergeIndividuals,
     loading,
