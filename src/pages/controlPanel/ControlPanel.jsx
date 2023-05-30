@@ -22,7 +22,7 @@ const adminPages = [
   {
     icon: SiteSettingsIcon,
     name: 'general_settings',
-    labelId: 'CUSTOMIZATION_CONTORL_CENTER',
+    labelId: 'CUSTOMIZATION_CONTROL_CENTER',
     href: '/settings/general',
     roles: ['is_admin'],
   },
