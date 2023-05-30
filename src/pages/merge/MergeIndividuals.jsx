@@ -28,9 +28,6 @@ export default function MergeIndividuals() {
 
   const { data: mergeConflicts, fetchConflictsError } =
     useFetchMergeConflicts(individualGuids);
-
-  console.log('searchParams',searchParams);
-  console.log('individualGuids',individualGuids);
   console.log('mergeConflicts',mergeConflicts);
 
   const {
@@ -44,7 +41,7 @@ export default function MergeIndividuals() {
   const [formData, setFormData] = useState({});
 
   const showSexInput = Boolean(mergeConflicts?.sex);
-  const showSpeciesInput = Boolean(mergeConflicts?.taxonomy);
+  const showSpeciesInput = true;
   const nameContexts = mergeConflicts?.name_contexts || [];
   const showFirstNameInput = nameContexts.includes('FirstName');
   const showAdoptionNameInput = nameContexts.includes('AdoptionName');
@@ -56,7 +53,7 @@ export default function MergeIndividuals() {
     showSexInput,
     showFirstNameInput,
     showAdoptionNameInput,
-    showSpeciesInput,
+    
   );
 
   if (fetchConflictsError)
@@ -66,6 +63,8 @@ export default function MergeIndividuals() {
         subtitleId="DATA_UNAVAILABLE"
       />
     );
+
+  console.log("individuals",  individuals);
 
   return (
     <MainColumn
@@ -143,11 +142,11 @@ export default function MergeIndividuals() {
             )}
             {(
               <ResolutionSelector
-                value={formData?.taxomomy}
+                value={formData?.taxonomy}
                 onChange={newSpecies =>
-                  setFormData({ ...formData, taxomomy: newSpecies })
+                  setFormData({ ...formData, taxonomy: newSpecies })
                 }
-                fieldType="species"
+                fieldType="taxonomy"
                 individualData={individuals}
               />
             )}
@@ -176,12 +175,17 @@ export default function MergeIndividuals() {
                 showAdoptionNameInput,
                 showSpeciesInput,
               );
-
-              mergeIndividuals({
-                targetIndividualGuid: individualGuids?.[0],
-                fromIndividualGuids: [individualGuids?.[1]],
-                propertyOverrides,
-              });
+              console.log('propertyOverrides',propertyOverrides);
+              // mergeIndividuals({
+              //   targetIndividualGuid: individualGuids?.[0],
+              //   fromIndividualGuids: [individualGuids?.[1]],
+              //   propertyOverrides,
+              // });
+              // console.log('mergeIndividuals',mergeIndividuals({
+              //   targetIndividualGuid: individualGuids?.[0],
+              //   fromIndividualGuids: [individualGuids?.[1]],
+              //   propertyOverrides,
+              // }));
             }}
           />
         </Grid>
