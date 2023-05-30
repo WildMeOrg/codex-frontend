@@ -1001,7 +1001,7 @@
   "CONFIGURATION_SITE_GENERAL_HELPDESCRIPTION_LABEL": "Call to Action",
   "CONFIGURATION_SITE_GENERAL_HELPDESCRIPTION_DESCRIPTION": "The text displayed above the Donation Button URL. Use this to encourage users to donate.",
   "CONFIGURATION_SITE_GENERAL_DONATIONBUTTONURL_LABEL": "Donation button URL",
-  "CONFIGURATION_SITE_GENERAL_DONATIONBUTTONURL_DESCRIPTION": "If present, a link to your donation page will appear in the help section.",
+  "CONFIGURATION_SITE_GENERAL_DONATIONBUTTONURL_DESCRIPTION": "Add a link to your donation page.",
   "CONFIGURATION_SITE_LOOK_THEMECOLOR_DESCRIPTION": "Choose the theme to customize your site.",
   "CONFIGURATION_SITE_GENERAL_TAGLINE_DESCRIPTION": "Displayed at the front and center of your page. (Recommendation: Less than 4-word count).",
   "GPS_TITLE": "Sighting Location",
