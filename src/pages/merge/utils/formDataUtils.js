@@ -37,6 +37,6 @@ export function isFormComplete(
   if (showSexInput && !formData?.sex) return false;
   if (showFirstNameInput && !formData?.firstName) return false;
   if (showAdoptionNameInput && !formData?.adoptionName) return false;
-  if (showSpeciesInput && !formData?.taxonomy) return false;
+  if (!formData?.taxonomy_guid) return false;
   return true;
 }
