@@ -44,7 +44,7 @@ export default function ResolutionSelector({
       "guid": "4050f325-caa5-4f60-bcd1-7700b65ee245",
       "hasView": true,
       "updated": "2023-06-01T17:12:58.128646+00:00",
-      "taxonomy": null,    
+      "taxonomy": null, 
       "created": "2023-05-22T19:30:09.771763+00:00"
   }
 ,
@@ -122,8 +122,9 @@ export default function ResolutionSelector({
       getProperty: individualData => individualData?.taxonomy,
       deriveChoices: species => {
         const validSpecies = species.filter(data => data!== null && data !== undefined);
-        if(validSpecies.length === 0) return speciesOptions;
-        return validSpecies.map(data => {
+        const uniqueSpecies = [...new Set(validSpecies)];
+        if(uniqueSpecies.length === 0) return speciesOptions;
+        return uniqueSpecies.map(data => {
           const speciesLabel = speciesOptions.find(data1 => data1.value === data);
           return ({
             label: speciesLabel ? speciesLabel.label : 'Label not found',
