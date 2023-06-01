@@ -61,13 +61,18 @@ export default function ResolutionSelector({
         })),
     },
     taxonomy: {
-      labelId: 'taxonomy',
+      labelId: 'SPECIES',
       getProperty: individualData => individualData?.taxonomy,
-      deriveChoices: species =>
-        species.map(data => ({
-          label: speciesOptions.map(data1 => data1.value === data ? data1.label : ''),
-          value: data,
-        })),
+      deriveChoices: species => {
+        if(species.length === 0) return speciesOptions;
+        return species.map(data => {
+          const speciesLabel = speciesOptions.find(data1 => data1.value === data);
+          return ({
+            label: speciesLabel ? speciesLabel.label : 'Label not found',
+            value: data,
+          })
+        })
+      }
     },
   };
   const selectorSchema = propertyMap[fieldType];

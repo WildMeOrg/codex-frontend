@@ -5,7 +5,6 @@ export function derivePropertyOverrides(
   showSexInput,
   showFirstNameInput,
   showAdoptionNameInput,
-  showSpeciesInput,
 ) {
   const overrides = {};
   if (showSexInput) overrides.sex = formData?.sex;
@@ -23,7 +22,8 @@ export function derivePropertyOverrides(
       formData?.adoptionName,
     );
   }
-  if (showSpeciesInput) overrides.taxonomy = formData?.taxonomy;
+  overrides.taxonomy_guid = formData?.taxonomy_guid;
+  console.log('overrides',  overrides);
   return overrides;
 }
 
