@@ -41,7 +41,7 @@ export default function MergeIndividuals() {
   const [formData, setFormData] = useState({});
 
   const showSexInput = Boolean(mergeConflicts?.sex);
-  const showSpeciesInput = true;
+  const showSpeciesInput = Boolean(mergeConflicts?.taxonomy_guid);
   const nameContexts = mergeConflicts?.name_contexts || [];
   const showFirstNameInput = nameContexts.includes('FirstName');
   const showAdoptionNameInput = nameContexts.includes('AdoptionName');
@@ -142,9 +142,11 @@ export default function MergeIndividuals() {
             )}
             {(
               <ResolutionSelector
-                value={formData?.taxonomy}
-                onChange={newSpecies =>
-                  setFormData({ ...formData, taxonomy: newSpecies })
+                value={formData?.taxonomy_guid}
+                onChange={newSpecies => {
+                  console.log('newSpecies',newSpecies);
+                  setFormData({ ...formData, taxonomy_guid: newSpecies })
+                  }                  
                 }
                 fieldType="taxonomy"
                 individualData={individuals}
