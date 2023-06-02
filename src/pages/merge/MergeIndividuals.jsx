@@ -28,7 +28,6 @@ export default function MergeIndividuals() {
 
   const { data: mergeConflicts, fetchConflictsError } =
     useFetchMergeConflicts(individualGuids);
-  console.log('mergeConflicts',mergeConflicts);
 
   const {
     mutate: mergeIndividuals,
@@ -41,19 +40,19 @@ export default function MergeIndividuals() {
   const [formData, setFormData] = useState({});
 
   const showSexInput = Boolean(mergeConflicts?.sex);
-  const showSpeciesInput = Boolean(mergeConflicts?.taxonomy_guid);
+  const speciesConflict = Boolean(mergeConflicts?.taxonomy_guid);
   const nameContexts = mergeConflicts?.name_contexts || [];
   const showFirstNameInput = nameContexts.includes('FirstName');
   const showAdoptionNameInput = nameContexts.includes('AdoptionName');
-  const showResolveFields =
-    showSexInput || showFirstNameInput || showAdoptionNameInput;
+  //resolveFields will show up anyway, if every field has no conflicts, 
+  //the dropdown will be autopopulated and cannot be adjusted.
+  const showResolveFields = true;
 
   const formComplete = isFormComplete(
     formData,
     showSexInput,
     showFirstNameInput,
-    showAdoptionNameInput,
-    
+    showAdoptionNameInput,    
   );
 
   if (fetchConflictsError)
@@ -63,8 +62,6 @@ export default function MergeIndividuals() {
         subtitleId="DATA_UNAVAILABLE"
       />
     );
-
-  console.log("individuals",  individuals);
 
   return (
     <MainColumn
@@ -139,12 +136,12 @@ export default function MergeIndividuals() {
                 fieldType="sex"
                 individualData={individuals}
               />
-            )}
-            {(
-              <ResolutionSelector
+            )}            
+            {
+            //taxonomy_guid is a required field, so it will always show up
+            (<ResolutionSelector
                 value={formData?.taxonomy_guid}
                 onChange={newSpecies => {
-                  console.log('newSpecies',newSpecies);
                   setFormData({ ...formData, taxonomy_guid: newSpecies })
                   }                  
                 }
@@ -175,19 +172,12 @@ export default function MergeIndividuals() {
                 showSexInput,
                 showFirstNameInput,
                 showAdoptionNameInput,
-                showSpeciesInput,
               );
-              console.log('propertyOverrides',propertyOverrides);
               // mergeIndividuals({
               //   targetIndividualGuid: individualGuids?.[0],
               //   fromIndividualGuids: [individualGuids?.[1]],
               //   propertyOverrides,
-              // });
-              // console.log('mergeIndividuals',mergeIndividuals({
-              //   targetIndividualGuid: individualGuids?.[0],
-              //   fromIndividualGuids: [individualGuids?.[1]],
-              //   propertyOverrides,
-              // }));
+              // });                
             }}
           />
         </Grid>
