@@ -173,11 +173,11 @@ export default function MergeIndividuals() {
                 showFirstNameInput,
                 showAdoptionNameInput,
               );
-              // mergeIndividuals({
-              //   targetIndividualGuid: individualGuids?.[0],
-              //   fromIndividualGuids: [individualGuids?.[1]],
-              //   propertyOverrides,
-              // });                
+              mergeIndividuals({
+                targetIndividualGuid: individualGuids?.[0],
+                fromIndividualGuids: [individualGuids?.[1]],
+                propertyOverrides,
+              });                
             }}
           />
         </Grid>

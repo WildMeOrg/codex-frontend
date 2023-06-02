@@ -23,7 +23,6 @@ export function derivePropertyOverrides(
     );
   }
   overrides.taxonomy_guid = formData?.taxonomy_guid;
-  console.log('overrides',  overrides);
   return overrides;
 }
 
@@ -32,7 +31,6 @@ export function isFormComplete(
   showSexInput,
   showFirstNameInput,
   showAdoptionNameInput,
-  showSpeciesInput
 ) {
   if (showSexInput && !formData?.sex) return false;
   if (showFirstNameInput && !formData?.firstName) return false;
