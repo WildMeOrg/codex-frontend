@@ -1230,5 +1230,9 @@
   "SOCIAL_MEDIA_SETTINGS": "Social Media Settings",
   "TWITTER_CONFIGURATION": "Twitter Configuration",
   "MUSCELLANEOUS": "Muscellaneous",
-  "CUSTOMIZATION_CONTROL_CENTER" : "Customization Control Center"
+  "CUSTOMIZATION_CONTROL_CENTER" : "Customization Control Center",
+  "TERMS_INTRO": "By setting up your profile, you agree to our",
+  "TEMRS_AND_CONDITIONS": "Terms and Conditions",
+  "AND_OUR": "and our",
+  "DATA_USAGE_POLICY": "Data Usage Policy"
 }
