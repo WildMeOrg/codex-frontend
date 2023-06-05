@@ -165,6 +165,7 @@ export default function GeneralSettings() {
   }
 
   function goForward() {
+    putSiteSetting({ property: '', data: currentValues });
     showContent(currentIndex+1);
   }
 
@@ -624,6 +625,7 @@ export default function GeneralSettings() {
                 {!Miscellaneous&&<Button style={{ marginTop: 12 }} 
                     display="primary"
                     onClick = {() => goForward(selectedLink)}
+                    disabled={!intelligentAgentFieldsValid && TwitterConfiguration}
                     >
                   Next
                 </Button>
