@@ -15,7 +15,8 @@ import Button from '../../components/Button';
 import BaoWaving from '../../components/svg/BaoWaving';
 import SimpleFormPage from '../../components/SimpleFormPage';
 import { Checkbox, FormControlLabel, Link, Typography } from '@material-ui/core';
-
+import terms_and_conditions from '../../assets/terms_and_conditions.pdf';
+import { Document, Page } from 'react-pdf';
 const buttonId = 'saveProfile';
 
 export default function ProfileSetup({ userData }) {
@@ -49,6 +50,10 @@ export default function ProfileSetup({ userData }) {
   }
 
   useOnEnter(saveProfile);
+
+  const termsPage = () => {
+    window.open(terms_and_conditions, '_blank');
+  };
 
   return (
     <SimpleFormPage
@@ -100,7 +105,21 @@ export default function ProfileSetup({ userData }) {
                   style={{ fontSize: '0.8rem', marginTop: '14px',color:"#6D6B7B" }}
                 >
                   {'By setting up your profile, you agree to our'}{' '}
-                  <Link href="/" style={{color:'#1400FF'}}>terms and condition</Link>{' '}
+                  {/* <Document 
+                    href = {terms_and_conditions}
+                    style={{color:'#1400FF'}}
+                    // onClick = {termsPage}
+                    >terms and condition</Document> */}
+                    <Document
+                      file="/assets/terms_and_conditions.pdf" // 替换为您的PDF文件路径
+                      onLoadSuccess={this.onDocumentLoadSuccess}
+                    >
+                      <Page pageNumber={pageNumber} />
+                    </Document>
+                    <p>
+                      Page {pageNumber} of {numPages}
+                    </p>
+                    {' '}
                   {'and our '}
                   <Link href="/" style={{color:'#1400FF'}}>data usage policy.</Link>
                 </Typography>
