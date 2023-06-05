@@ -14,12 +14,14 @@ import Text from '../../components/Text';
 import Button from '../../components/Button';
 import BaoWaving from '../../components/svg/BaoWaving';
 import SimpleFormPage from '../../components/SimpleFormPage';
+import { Checkbox, FormControlLabel, Link, Typography } from '@material-ui/core';
 
 const buttonId = 'saveProfile';
 
 export default function ProfileSetup({ userData }) {
   const [noNameError, setNoNameError] = useState(false);
   const [name, setName] = useState('');
+  const [ policyConfirmation, setPolicyConfirmation ] = useState(false);
 
   const {
     mutate: replaceUserProperties,
@@ -85,6 +87,26 @@ export default function ProfileSetup({ userData }) {
               variant="caption"
               id="FULL_NAME_DESCRIPTION"
             />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={policyConfirmation}
+                  onChange={(e) => setPolicyConfirmation(e.target.checked)}
+                />
+              }
+              label={
+                <Typography
+                  // variant= "caption"
+                  style={{ fontSize: '0.8rem', marginTop: '14px',color:"#6D6B7B" }}
+                >
+                  {'By setting up your profile, you agree to our'}{' '}
+                  <Link href="/" style={{color:'#1400FF'}}>terms and condition</Link>{' '}
+                  {'and our '}
+                  <Link href="/" style={{color:'#1400FF'}}>data usage policy.</Link>
+                </Typography>
+              }
+            />
+          
           </FormControl>
         </Grid>
         {replaceError && (
@@ -97,7 +119,7 @@ export default function ProfileSetup({ userData }) {
             onClick={saveProfile}
             display="primary"
             id="SAVE_PROFILE"
-            disabled={replaceLoading || name === ''}
+            disabled={!policyConfirmation || replaceLoading || name.trim() === ''}
           />
         </Grid>
       </Grid>
