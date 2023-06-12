@@ -1231,8 +1231,9 @@
   "TWITTER_CONFIGURATION": "Twitter Configuration",
   "MUSCELLANEOUS": "Muscellaneous",
   "CUSTOMIZATION_CONTROL_CENTER" : "Customization Control Center",
-  "TERMS_INTRO": "By setting up your profile, you agree to our",
-  "TEMRS_AND_CONDITIONS": "Terms and Conditions",
-  "AND_OUR": "and our",
-  "DATA_USAGE_POLICY": "Data Usage Policy"
+  "TERMS_INTRO_1": "By setting up your profile, you agree to our",
+  "TERMS_INTRO_2": "Terms and Conditions",
+  "TERMS_INTRO_3": "and our",
+  "TERMS_INTRO_4": "Data Usage Policy",
+  "SKIP" : "Skip"
 }

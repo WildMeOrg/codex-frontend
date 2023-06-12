@@ -15,6 +15,11 @@ import Button from '../../components/Button';
 import UppyDashboard from '../../components/UppyDashboard';
 import ReportForm from './ReportForm';
 import useGetMe from '../../models/users/useGetMe';
+import ReportSightingBreadcrumbs from './ReportSightingBreadcrumbs';
+import StandardDialog from '../../components/StandardDialog';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogActions from '@material-ui/core/DialogActions';
+import { set } from 'date-fns';
 
 export default function ReportSighting({ authenticated }) {
   const intl = useIntl();
@@ -28,25 +33,33 @@ export default function ReportSighting({ authenticated }) {
   const noImages = files.length === 0;
   const isResearcher = currentUserData?.is_researcher;
   const shouldDisableContinue =
-    (!isResearcher && noImages) || uploadInProgress;
+      noImages || (!isResearcher && noImages) || uploadInProgress;
   const reportInProgress = files.length > 0;
   useReloadWarning(reportInProgress);
 
   const onBack = () => {
     window.scrollTo(0, 0);
     setReporting(false);
+    setCurrentPage('Upload Image');
   };
+  const handleClick = async () => {
+    window.scrollTo(0, 0);
+    setReporting(true);
+    setCurrentPage('Enter Data');
+  }
 
   let continueButtonText = 'CONTINUE';
-  if (noImages && isResearcher)
-    continueButtonText = 'CONTINUE_WITHOUT_PHOTOGRAPHS';
+  // if (noImages && isResearcher)
+  const  skipButtonText = 'SKIP';
   if (uploadInProgress) continueButtonText = 'UPLOAD_IN_PROGRESS';
-
+  const [ currentPage, setCurrentPage ] = useState('Upload Image');
   return (
     <ReportSightingsPage
       titleId="REPORT_A_SIGHTING"
       authenticated={authenticated}
     >
+      <ReportSightingBreadcrumbs
+        currentPageText={currentPage} />
       <Prompt
         when={reportInProgress}
         message={location => {
@@ -76,8 +89,11 @@ export default function ReportSighting({ authenticated }) {
         />
       ) : (
         <>
-          <Grid item style={{ marginTop: 20 }}>
-            <UppyDashboard uppyInstance={uppy} />
+        <div style={{
+                      maxWidth: 750,
+                     }}>
+        <DialogContent>  
+            <UppyDashboard style={{ width: '100%' }} uppyInstance={uppy} />
             <div
               style={{
                 display: 'flex',
@@ -98,19 +114,28 @@ export default function ReportSighting({ authenticated }) {
                 <FormattedMessage id="PHOTO_OPTIMIZE_3" />
               </Text>
             </div>
-          </Grid>
-          <Grid item>
-            <Button
-              id={continueButtonText}
-              display="primary"
-              disabled={shouldDisableContinue}
-              onClick={async () => {
-                window.scrollTo(0, 0);
-                setReporting(true);
-              }}
-              style={{ marginTop: 16 }}
-            />
-          </Grid>
+
+          </DialogContent>  
+          </div>  
+            <DialogActions style={{ padding: '0px 24px 24px 24px', maxWidth: 750}}>
+              {noImages && isResearcher && <Button
+                id={skipButtonText}
+                display="basic"
+                onClick={async () => {
+                  window.scrollTo(0, 0);
+                  setReporting(true);
+                  setCurrentPage('Enter Data');
+                }}
+                style={{ marginTop: 16 }}
+              />}
+              <Button
+                id={continueButtonText}
+                disabled={shouldDisableContinue}
+                display="primary"
+                onClick={handleClick}
+                style={{ marginTop: 16 }}
+              />
+            </DialogActions>          
         </>
       )}
     </ReportSightingsPage>
