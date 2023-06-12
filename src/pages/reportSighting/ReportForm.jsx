@@ -62,7 +62,7 @@ export default function ReportForm({
     'value',
   ]);
 
-  const [sightingType, setSightingType] = useState(null);
+  const [sightingType, setSightingType] = useState('one');
 
   const { customEncounterCategories, customSightingCategories } =
     useMemo(() => {

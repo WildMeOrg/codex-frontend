@@ -3,8 +3,8 @@ import React from 'react';
 import { useTheme } from '@material-ui/core/styles';
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 
-import Link from './Link';
-import Text from './Text';
+import Link from '../../components/Link';
+import Text from '../../components/Text';
 
 export default function ReportSightingBreadcrumbs({
   currentPageText,
@@ -24,10 +24,7 @@ export default function ReportSightingBreadcrumbs({
         <Text id="HOME" />
       </Link>
       <Link href="/report" style={linkStyles}>
-        <Text id="CONTROL_PANEL" />
-      </Link>
-      <Link href="/report" style={linkStyles}>
-        <Text id="CONTROL_PANEL" />
+        <Text id="REPORT_A_SIGHTING" />
       </Link>
       <Text id={currentPageTextId}>{currentPageText}</Text>
     </Breadcrumbs>
