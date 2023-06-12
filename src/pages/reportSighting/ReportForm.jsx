@@ -206,7 +206,7 @@ export default function ReportForm({
           />
         </>
       )}
-      {sightingType === 'one' && (
+      {/* {sightingType === 'one' && (
         <>
           <FieldCollections
             formValues={encounterFormValues}
@@ -415,7 +415,7 @@ export default function ReportForm({
             id="REPORT_SIGHTING"
           />
         </Grid>
-      ) : null}
+      ) : null} */}
     </>
   );
 }
