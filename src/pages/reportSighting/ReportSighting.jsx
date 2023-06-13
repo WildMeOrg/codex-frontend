@@ -87,6 +87,8 @@ export default function ReportSighting({ authenticated }) {
         <ReportForm
           authenticated={authenticated}
           assetReferences={files}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
         />
       ) : (
         <>
