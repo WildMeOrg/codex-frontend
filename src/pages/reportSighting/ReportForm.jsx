@@ -93,11 +93,10 @@ export default function ReportForm({
   } = useMemo(() => {
     const _defaultSightingSchemas = sightingFieldSchemas.filter(
       schema => !schema.customField,
-    );
+    );    
     const _customSightingSchemas = sightingFieldSchemas.filter(
-      schema => schema.customField,
-    );
-
+      schema => schema.customField
+    );    
     const visibleEncounterFieldSchemas = encounterFieldSchemas.filter(
       schema => !schema.hideOnBasicReport,
     );
@@ -158,6 +157,15 @@ export default function ReportForm({
     encounterFieldSchemas,
   ]);
 
+  const requiredDefaultSightingSchemas = defaultSightingSchemas.filter(data => data.required);
+  const optionalDefaultSightingSchemas = defaultSightingSchemas.filter(data => !data.required); 
+  const requiredCustomSightingSchemas = customSightingSchemas.filter(data => data.required);
+  const optionalCustomSightingSchemas = customSightingSchemas.filter(data => !data.required);
+  // const requiredDefaultEncounterSchemas = defaultEncounterSchemas.filter(data => data.required);
+  // const optionalDefaultEncounterSchemas = defaultEncounterSchemas.filter(data => !data.required);
+
+  const [optional, setOptional] = useState(false);
+
   // const locationSuggestion = useMemo(
   //   () => getLocationSuggestion(exifData),
   //   [exifData],
@@ -184,29 +192,49 @@ export default function ReportForm({
         visible={dialogOpen}
         onClose={() => setDialogOpen(false)}
       />
-      <RadioChoice
-        titleId="SIGHTING_RADIO_QUESTION"
-        value={sightingType}
-        onChange={setSightingType}
-        choices={radioChoices}
-      />
-      {sightingType && (
+      {
+        !optional && (
+          <RadioChoice
+            titleId="SIGHTING_RADIO_QUESTION"
+            value={sightingType}
+            onChange={setSightingType}
+            choices={radioChoices}
+          />
+        )
+      }
+      {!optional && sightingType && (
         <>
           <FieldCollections
             formValues={sightingFormValues}
             setFormValues={setSightingFormValues}
             categories={defaultSightingCategories}
-            fieldSchema={defaultSightingSchemas}
+            fieldSchema={requiredDefaultSightingSchemas}
           />
           <FieldCollections
             formValues={customSightingFormValues}
             setFormValues={setCustomSightingFormValues}
             categories={customSightingCategories}
-            fieldSchema={customSightingSchemas}
+            fieldSchema={requiredCustomSightingSchemas}
           />
         </>
       )}
-      {/* {sightingType === 'one' && (
+      {/* {optional && (
+        <>
+          <FieldCollections
+            formValues={sightingFormValues}
+            setFormValues={setSightingFormValues}
+            categories={defaultSightingCategories}
+            fieldSchema={optionalDefaultSightingSchemas}
+          />
+          <FieldCollections
+            formValues={customSightingFormValues}
+            setFormValues={setCustomSightingFormValues}
+            categories={customSightingCategories}
+            fieldSchema={optionalCustomSightingSchemas}
+          />
+        </>
+      )} */}
+      {optional && sightingType === 'one' && (
         <>
           <FieldCollections
             formValues={encounterFormValues}
@@ -257,16 +285,15 @@ export default function ReportForm({
                 variant="body2"
                 id="INCOMPLETE_FIELD"
                 values={{
-                  fieldName: intl.formatMessage({
-                    id: incompleteField.labelId,
-                  }),
+                  fieldName: intl.messages[incompleteField.labelId] ? intl.formatMessage({ id: incompleteField.labelId }) : incompleteField.labelId,
                 }}
               />
             ))}
           </CustomAlert>
         </Grid>
       )}
-      {sightingType ? (
+
+      {!optional && sightingType ? (
         <Grid
           item
           style={{
@@ -277,6 +304,98 @@ export default function ReportForm({
         >
           <Button
             onClick={async () => {
+              const requiredCustomFields = sightingFieldSchemas
+              .filter(
+                schema => schema.customField && schema.required && !customSightingFormValues[schema.name],
+                )
+              .map(data => ({ ...data, labelId: data.label }));  
+              const nextIncompleteFields =
+                defaultSightingSchemas.filter(
+                  field =>
+                    field.required &&
+                    field.defaultValue ===
+                      sightingFormValues[field.name] &&
+                    field.name !== 'specifiedTime',
+                ).concat(requiredCustomFields);              
+                
+              setIncompleteFields(nextIncompleteFields);
+
+              // check that specifiedTime fields are complete
+              let nextFormErrorId = null;
+              const formTimeSpecificity = get(sightingFormValues, [
+                'specifiedTime',
+                'timeSpecificity',
+              ]);
+              const formTime = get(sightingFormValues, [
+                'specifiedTime',
+                'time',
+              ]);
+
+              const specifiedTimeField =
+                defaultSightingSchemas.find(
+                  field => field.name === 'specifiedTime',
+                ) || {};
+
+              const defaultTimeSpecificity = get(specifiedTimeField, [
+                'defaultValue',
+                'timeSpecificity',
+              ]);
+
+              const defaultTime = get(specifiedTimeField, [
+                'defaultValue',
+                'time',
+              ]);
+
+              const isTimeSpecificityDefault =
+                formTimeSpecificity === defaultTimeSpecificity;
+
+              const isTimeDefault = formTime === defaultTime;
+
+              if (
+                !formTimeSpecificity ||
+                isTimeSpecificityDefault ||
+                !formTime ||
+                isTimeDefault
+              ) {
+                nextFormErrorId = 'INCOMPLETE_TIME_SPECIFICITY';
+              }
+
+              setFormErrorId(nextFormErrorId);
+
+              // check that terms and conditions were accepted
+              setTermsError(!acceptedTerms);
+
+              const formValid =
+                nextIncompleteFields.length === 0 &&
+                acceptedTerms &&
+                !nextFormErrorId;        
+              if(formValid) setOptional(true);     
+            }}
+            style={{ width: 320, marginBottom: 8 }}
+            loading={postAssetGroupLoading}
+            display="primary"
+            // id="REPORT_SIGHTING"
+            id="CONTINUE"
+          />
+        </Grid>
+      ) : null}
+    {optional && sightingType ? (
+        <Grid
+          item
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            marginTop: 12,
+          }}
+        >
+          <Button
+            onClick={async () => {
+              const requiredCustomFields = sightingFieldSchemas
+              .filter(
+                schema => schema.customField && schema.required,
+                )
+              .map(data => ({ ...data, labelId: data.label }));  
+              console.log('requiredCustomFields',requiredCustomFields);
               // check that required fields are complete.
               // specifiedTime field is required, but the logic and message
               // are different from the other fields
@@ -287,7 +406,8 @@ export default function ReportForm({
                     field.defaultValue ===
                       sightingFormValues[field.name] &&
                     field.name !== 'specifiedTime',
-                );
+                ).concat(requiredCustomFields);              
+                
               setIncompleteFields(nextIncompleteFields);
 
               // check that specifiedTime fields are complete
@@ -415,7 +535,7 @@ export default function ReportForm({
             id="REPORT_SIGHTING"
           />
         </Grid>
-      ) : null} */}
+      ) : null}  
     </>
   );
 }
