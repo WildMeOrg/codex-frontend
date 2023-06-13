@@ -52,6 +52,8 @@ const radioChoices = [
 export default function ReportForm({
   authenticated,
   assetReferences,
+  currentPage,
+  setCurrentPage,
   // exifData,
 }) {
   const intl = useIntl();
@@ -218,7 +220,7 @@ export default function ReportForm({
           />
         </>
       )}
-      {/* {optional && (
+      {optional && (
         <>
           <FieldCollections
             formValues={sightingFormValues}
@@ -233,7 +235,7 @@ export default function ReportForm({
             fieldSchema={optionalCustomSightingSchemas}
           />
         </>
-      )} */}
+      )}
       {optional && sightingType === 'one' && (
         <>
           <FieldCollections
@@ -369,7 +371,10 @@ export default function ReportForm({
                 nextIncompleteFields.length === 0 &&
                 acceptedTerms &&
                 !nextFormErrorId;        
-              if(formValid) setOptional(true);     
+              if(formValid) {
+                setOptional(true);
+                setCurrentPage('Optional Data');
+              };     
             }}
             style={{ width: 320, marginBottom: 8 }}
             loading={postAssetGroupLoading}
@@ -392,7 +397,7 @@ export default function ReportForm({
             onClick={async () => {
               const requiredCustomFields = sightingFieldSchemas
               .filter(
-                schema => schema.customField && schema.required,
+                schema => schema.customField && schema.required && !customSightingFormValues[schema.name],
                 )
               .map(data => ({ ...data, labelId: data.label }));  
               console.log('requiredCustomFields',requiredCustomFields);
