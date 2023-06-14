@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { FormattedMessage } from 'react-intl';
 import { get } from 'lodash-es';
@@ -10,6 +10,8 @@ import Text from '../Text';
 import ButtonLink from '../ButtonLink';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import useSiteSettings from '../../models/site/useSiteSettings';
+import Login from '../../pages/auth/Login';
+import StandardDialog from '../../components/StandardDialog';
 
 export default function ReportSightingsPage({
   titleId,
@@ -34,15 +36,28 @@ export default function ReportSightingsPage({
       document.head.appendChild(recaptchaScript);
     }
   }, [recaptchaPublicKey]);
-
+  
+  const [openModal, setOpenModal] = useState(false);
+  const onClose = () => {
+    setOpenModal(false);
+  }
   return (
+    <>
+    <StandardDialog
+      PaperProps={{ style: { width: 800, height: 500 } }}
+      maxWidth="lg"
+      open={openModal}
+      onClose={onClose}
+    >      
+      <Login nextLocation={'/report'}/>
+    </StandardDialog>
     <MainColumn
       style={{
         display: 'flex',
         justifyContent: 'center',
         maxWidth: 1000,
       }}
-    >
+    >      
       <Grid
         container
         direction="column"
@@ -62,9 +77,26 @@ export default function ReportSightingsPage({
                 <ButtonLink
                   style={{ flexShrink: 0, marginRight: 8 }}
                   display="panel"
-                  href="/login"
+                  href="#"
+                  onClick={(event) => {
+                    event.preventDefault();
+                    setOpenModal(true);
+                    setTimeout(() => {
+                      const dialogTitleElement = document.querySelector('.MuiDialogTitle-root');
+                      // console.log('dialogTitleElement',dialogTitleElement);
+                      if (dialogTitleElement) {
+                        const nextSiblingDiv = dialogTitleElement.nextElementSibling;
+                        // console.log('nextSiblingDiv',nextSiblingDiv);
+                        if (nextSiblingDiv && nextSiblingDiv.tagName === 'DIV') {
+                          nextSiblingDiv.style.paddingTop = '20px';
+                          nextSiblingDiv.style.minHeight = '400px';
+                        }
+                      }
+                    }, 0);
+                  }}
                 >
-                  <FormattedMessage id="LOG_IN" />
+                  <FormattedMessage id="LOG_IN" 
+                  />
                 </ButtonLink>
               }
             />
@@ -75,5 +107,6 @@ export default function ReportSightingsPage({
         </Grid>
       </Grid>
     </MainColumn>
+    </>
   );
 }

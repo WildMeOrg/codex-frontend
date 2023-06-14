@@ -29,7 +29,6 @@ import {
 } from './utils/prepareReport';
 import { deriveCustomFieldCategories } from './utils/customFieldUtils';
 import FieldCollections from './FieldCollections';
-import { sub } from 'date-fns';
 
 function getInitialFormValues(schema) {
   return schema.reduce((memo, field) => {
@@ -53,7 +52,6 @@ const radioChoices = [
 export default function ReportForm({
   authenticated,
   assetReferences,
-  currentPage,
   setCurrentPage,
   setStartForm,
   // exifData,
@@ -120,8 +118,7 @@ export default function ReportForm({
       customEncounterSchemas: _customEncounterSchemas,
     };
   }, [sightingFieldSchemas, encounterFieldSchemas]);
-
-  const [acceptedTerms, setAcceptedTerms] = useState(authenticated);
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
   // const [exifButtonClicked, setExifButtonClicked] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [incompleteFields, setIncompleteFields] = useState([]);
@@ -335,7 +332,7 @@ export default function ReportForm({
       <TermsAndConditionsDialog
         visible={dialogOpen}
         onClose={() => setDialogOpen(false)}
-      />
+      />      
       {
         !optional && (
           <RadioChoice
@@ -362,8 +359,42 @@ export default function ReportForm({
           />
         </>
       )}
+
+{optional && (
+        <>
+          <FieldCollections
+            formValues={sightingFormValues}
+            setFormValues={setSightingFormValues}
+            categories={defaultSightingCategories}
+            fieldSchema={optionalDefaultSightingSchemas}
+          />
+          <FieldCollections
+            formValues={customSightingFormValues}
+            setFormValues={setCustomSightingFormValues}
+            categories={customSightingCategories}
+            fieldSchema={optionalCustomSightingSchemas}
+          />
+        </>
+      )}
+
+      {optional && sightingType === 'one' && (
+        <>
+          <FieldCollections
+            formValues={encounterFormValues}
+            setFormValues={setEncounterFormValues}
+            categories={defaultEncounterCategories}
+            fieldSchema={defaultEncounterSchemas}
+          />
+          <FieldCollections
+            formValues={customEncounterFormValues}
+            setFormValues={setCustomEncounterFormValues}
+            categories={customEncounterCategories}
+            fieldSchema={customEncounterSchemas}
+          />
+        </>
+      )}  
       
-      {hasSightingTypeAndNotAuthenticated && (
+      {!optional && hasSightingTypeAndNotAuthenticated && (
         <Grid item style={{ marginBottom: 12 }}>
           <FormControlLabel
             control={
@@ -448,38 +479,7 @@ export default function ReportForm({
         </Grid>
       ) : null}
 
-      {optional && (
-        <>
-          <FieldCollections
-            formValues={sightingFormValues}
-            setFormValues={setSightingFormValues}
-            categories={defaultSightingCategories}
-            fieldSchema={optionalDefaultSightingSchemas}
-          />
-          <FieldCollections
-            formValues={customSightingFormValues}
-            setFormValues={setCustomSightingFormValues}
-            categories={customSightingCategories}
-            fieldSchema={optionalCustomSightingSchemas}
-          />
-        </>
-      )}
-      {optional && sightingType === 'one' && (
-        <>
-          <FieldCollections
-            formValues={encounterFormValues}
-            setFormValues={setEncounterFormValues}
-            categories={defaultEncounterCategories}
-            fieldSchema={defaultEncounterSchemas}
-          />
-          <FieldCollections
-            formValues={customEncounterFormValues}
-            setFormValues={setCustomEncounterFormValues}
-            categories={customEncounterCategories}
-            fieldSchema={customEncounterSchemas}
-          />
-        </>
-      )}  
+      
 
     {optional && sightingType ? (
         <Grid
