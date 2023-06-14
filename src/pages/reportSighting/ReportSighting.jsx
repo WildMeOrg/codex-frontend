@@ -24,8 +24,7 @@ import { set } from 'date-fns';
 export default function ReportSighting({ authenticated }) {
   const intl = useIntl();
   const { data: currentUserData } = useGetMe();
-  const [enterData, setEnterData] = useState(false);
-  const [optionalData, setOpionalData] = useState(false);
+  const [startForm, setStartForm] = useState(false);
 
   const { uppy, uploadInProgress, files } = useReportUppyInstance(
     'Report sightings image upload',
@@ -40,12 +39,12 @@ export default function ReportSighting({ authenticated }) {
 
   const onBack = () => {
     window.scrollTo(0, 0);
-    setEnterData(false);
+    setStartForm(false);
     setCurrentPage('Upload Image');
   };
   const handleClick = async () => {
     window.scrollTo(0, 0);
-    setEnterData(true);
+    setStartForm(true);
     setCurrentPage('Enter Data');
   }
 
@@ -75,7 +74,7 @@ export default function ReportSighting({ authenticated }) {
           });
         }}
       />
-      {/* {enterData ? (
+      {/* {startForm ? (
         <Button
           onClick={onBack}
           style={{ marginTop: 8, width: 'fit-content' }}
@@ -83,12 +82,13 @@ export default function ReportSighting({ authenticated }) {
           id="BACK_TO_PHOTOS"
         />
       ) : null} */}
-      {enterData ? (
+      {startForm ? (
         <ReportForm
           authenticated={authenticated}
           assetReferences={files}
           currentPage={currentPage}
           setCurrentPage={setCurrentPage}
+          setStartForm={setStartForm}
         />
       ) : (
         <>
@@ -126,7 +126,7 @@ export default function ReportSighting({ authenticated }) {
                 display="basic"
                 onClick={async () => {
                   window.scrollTo(0, 0);
-                  setEnterData(true);
+                  setStartForm(true);
                   setCurrentPage('Enter Data');
                 }}
                 style={{ marginTop: 16 }}
