@@ -29,6 +29,7 @@ import {
 } from './utils/prepareReport';
 import { deriveCustomFieldCategories } from './utils/customFieldUtils';
 import FieldCollections from './FieldCollections';
+import { sub } from 'date-fns';
 
 function getInitialFormValues(schema) {
   return schema.reduce((memo, field) => {
@@ -54,6 +55,7 @@ export default function ReportForm({
   assetReferences,
   currentPage,
   setCurrentPage,
+  setStartForm,
   // exifData,
 }) {
   const intl = useIntl();
@@ -163,244 +165,14 @@ export default function ReportForm({
   const optionalDefaultSightingSchemas = defaultSightingSchemas.filter(data => !data.required); 
   const requiredCustomSightingSchemas = customSightingSchemas.filter(data => data.required);
   const optionalCustomSightingSchemas = customSightingSchemas.filter(data => !data.required);
-  // const requiredDefaultEncounterSchemas = defaultEncounterSchemas.filter(data => data.required);
-  // const optionalDefaultEncounterSchemas = defaultEncounterSchemas.filter(data => !data.required);
-
   const [optional, setOptional] = useState(false);
-
-  // const locationSuggestion = useMemo(
-  //   () => getLocationSuggestion(exifData),
-  //   [exifData],
-  // );
-
-  const {
-    postAssetGroup,
-    loading: postAssetGroupLoading,
-    error: postAssetGroupError,
-  } = usePostAssetGroup();
-
-  const showErrorAlertBox =
-    incompleteFields.length > 0 ||
-    termsError ||
-    postAssetGroupError ||
-    formErrorId;
-
-  const hasSightingTypeAndNotAuthenticated =
-    sightingType && !authenticated;
-
-  return (
-    <>
-      <TermsAndConditionsDialog
-        visible={dialogOpen}
-        onClose={() => setDialogOpen(false)}
-      />
-      {
-        !optional && (
-          <RadioChoice
-            titleId="SIGHTING_RADIO_QUESTION"
-            value={sightingType}
-            onChange={setSightingType}
-            choices={radioChoices}
-          />
-        )
-      }
-      {!optional && sightingType && (
-        <>
-          <FieldCollections
-            formValues={sightingFormValues}
-            setFormValues={setSightingFormValues}
-            categories={defaultSightingCategories}
-            fieldSchema={requiredDefaultSightingSchemas}
-          />
-          <FieldCollections
-            formValues={customSightingFormValues}
-            setFormValues={setCustomSightingFormValues}
-            categories={customSightingCategories}
-            fieldSchema={requiredCustomSightingSchemas}
-          />
-        </>
-      )}
-      {optional && (
-        <>
-          <FieldCollections
-            formValues={sightingFormValues}
-            setFormValues={setSightingFormValues}
-            categories={defaultSightingCategories}
-            fieldSchema={optionalDefaultSightingSchemas}
-          />
-          <FieldCollections
-            formValues={customSightingFormValues}
-            setFormValues={setCustomSightingFormValues}
-            categories={customSightingCategories}
-            fieldSchema={optionalCustomSightingSchemas}
-          />
-        </>
-      )}
-      {optional && sightingType === 'one' && (
-        <>
-          <FieldCollections
-            formValues={encounterFormValues}
-            setFormValues={setEncounterFormValues}
-            categories={defaultEncounterCategories}
-            fieldSchema={defaultEncounterSchemas}
-          />
-          <FieldCollections
-            formValues={customEncounterFormValues}
-            setFormValues={setCustomEncounterFormValues}
-            categories={customEncounterCategories}
-            fieldSchema={customEncounterSchemas}
-          />
-        </>
-      )}
-      {hasSightingTypeAndNotAuthenticated && (
-        <Grid item style={{ marginBottom: 12 }}>
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={acceptedTerms}
-                onChange={() => setAcceptedTerms(!acceptedTerms)}
-              />
-            }
-            label={
-              <span>
-                <Text component="span" id="TERMS_CHECKBOX_1" />
-                <InlineButton onClick={() => setDialogOpen(true)}>
-                  <Text component="span" id="TERMS_CHECKBOX_2" />
-                </InlineButton>
-                <Text component="span" id="END_OF_SENTENCE" />
-              </span>
-            }
-          />
-        </Grid>
-      )}
-      {showErrorAlertBox && (
-        <Grid item style={{ marginBottom: 12 }}>
-          <CustomAlert severity="error" titleId="SUBMISSION_ERROR">
-            {postAssetGroupError && (
-              <Text variant="body2">{postAssetGroupError}</Text>
-            )}
-            {termsError && <Text variant="body2" id="TERMS_ERROR" />}
-            {formErrorId && <Text variant="body2" id={formErrorId} />}
-            {incompleteFields.map(incompleteField => (
-              <Text
-                key={incompleteField.name}
-                variant="body2"
-                id="INCOMPLETE_FIELD"
-                values={{
-                  fieldName: intl.messages[incompleteField.labelId] ? intl.formatMessage({ id: incompleteField.labelId }) : incompleteField.labelId,
-                }}
-              />
-            ))}
-          </CustomAlert>
-        </Grid>
-      )}
-
-      {!optional && sightingType ? (
-        <Grid
-          item
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            marginTop: 12,
-          }}
-        >
-          <Button
-            onClick={async () => {
-              const requiredCustomFields = sightingFieldSchemas
+  let formValid = false;
+  const checkRequired = () => {
+    const requiredCustomFields = sightingFieldSchemas
               .filter(
                 schema => schema.customField && schema.required && !customSightingFormValues[schema.name],
                 )
               .map(data => ({ ...data, labelId: data.label }));  
-              const nextIncompleteFields =
-                defaultSightingSchemas.filter(
-                  field =>
-                    field.required &&
-                    field.defaultValue ===
-                      sightingFormValues[field.name] &&
-                    field.name !== 'specifiedTime',
-                ).concat(requiredCustomFields);              
-                
-              setIncompleteFields(nextIncompleteFields);
-
-              // check that specifiedTime fields are complete
-              let nextFormErrorId = null;
-              const formTimeSpecificity = get(sightingFormValues, [
-                'specifiedTime',
-                'timeSpecificity',
-              ]);
-              const formTime = get(sightingFormValues, [
-                'specifiedTime',
-                'time',
-              ]);
-
-              const specifiedTimeField =
-                defaultSightingSchemas.find(
-                  field => field.name === 'specifiedTime',
-                ) || {};
-
-              const defaultTimeSpecificity = get(specifiedTimeField, [
-                'defaultValue',
-                'timeSpecificity',
-              ]);
-
-              const defaultTime = get(specifiedTimeField, [
-                'defaultValue',
-                'time',
-              ]);
-
-              const isTimeSpecificityDefault =
-                formTimeSpecificity === defaultTimeSpecificity;
-
-              const isTimeDefault = formTime === defaultTime;
-
-              if (
-                !formTimeSpecificity ||
-                isTimeSpecificityDefault ||
-                !formTime ||
-                isTimeDefault
-              ) {
-                nextFormErrorId = 'INCOMPLETE_TIME_SPECIFICITY';
-              }
-
-              setFormErrorId(nextFormErrorId);
-
-              // check that terms and conditions were accepted
-              setTermsError(!acceptedTerms);
-
-              const formValid =
-                nextIncompleteFields.length === 0 &&
-                acceptedTerms &&
-                !nextFormErrorId;        
-              if(formValid) {
-                setOptional(true);
-                setCurrentPage('Optional Data');
-              };     
-            }}
-            style={{ width: 320, marginBottom: 8 }}
-            loading={postAssetGroupLoading}
-            display="primary"
-            // id="REPORT_SIGHTING"
-            id="CONTINUE"
-          />
-        </Grid>
-      ) : null}
-    {optional && sightingType ? (
-        <Grid
-          item
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            marginTop: 12,
-          }}
-        >
-          <Button
-            onClick={async () => {
-              const requiredCustomFields = sightingFieldSchemas
-              .filter(
-                schema => schema.customField && schema.required && !customSightingFormValues[schema.name],
-                )
-              .map(data => ({ ...data, labelId: data.label }));  
-              console.log('requiredCustomFields',requiredCustomFields);
               // check that required fields are complete.
               // specifiedTime field is required, but the logic and message
               // are different from the other fields
@@ -411,7 +183,7 @@ export default function ReportForm({
                     field.defaultValue ===
                       sightingFormValues[field.name] &&
                     field.name !== 'specifiedTime',
-                ).concat(requiredCustomFields);              
+                ).concat(requiredCustomFields);        
                 
               setIncompleteFields(nextIncompleteFields);
 
@@ -459,12 +231,14 @@ export default function ReportForm({
 
               // check that terms and conditions were accepted
               setTermsError(!acceptedTerms);
-
-              const formValid =
+              formValid =
                 nextIncompleteFields.length === 0 &&
                 acceptedTerms &&
                 !nextFormErrorId;
 
+  }
+  const submitReport = async () => {    
+              checkRequired();
               if (formValid) {
                 const report =
                   sightingType === 'one'
@@ -533,7 +307,200 @@ export default function ReportForm({
                   history.push(relativeUrl);
                 }
               }
+          
+  }
+
+  // const locationSuggestion = useMemo(
+  //   () => getLocationSuggestion(exifData),
+  //   [exifData],
+  // );
+
+  const {
+    postAssetGroup,
+    loading: postAssetGroupLoading,
+    error: postAssetGroupError,
+  } = usePostAssetGroup();
+
+  const showErrorAlertBox =
+    incompleteFields.length > 0 ||
+    termsError ||
+    postAssetGroupError ||
+    formErrorId;
+
+  const hasSightingTypeAndNotAuthenticated =
+    sightingType && !authenticated;
+
+  return (
+    <>
+      <TermsAndConditionsDialog
+        visible={dialogOpen}
+        onClose={() => setDialogOpen(false)}
+      />
+      {
+        !optional && (
+          <RadioChoice
+            titleId="SIGHTING_RADIO_QUESTION"
+            value={sightingType}
+            onChange={setSightingType}
+            choices={radioChoices}
+          />
+        )
+      }
+      {!optional && sightingType && (
+        <>
+          <FieldCollections
+            formValues={sightingFormValues}
+            setFormValues={setSightingFormValues}
+            categories={defaultSightingCategories}
+            fieldSchema={requiredDefaultSightingSchemas}
+          />
+          <FieldCollections
+            formValues={customSightingFormValues}
+            setFormValues={setCustomSightingFormValues}
+            categories={customSightingCategories}
+            fieldSchema={requiredCustomSightingSchemas}
+          />
+        </>
+      )}
+      
+      {hasSightingTypeAndNotAuthenticated && (
+        <Grid item style={{ marginBottom: 12 }}>
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={acceptedTerms}
+                onChange={() => setAcceptedTerms(!acceptedTerms)}
+              />
+            }
+            label={
+              <span>
+                <Text component="span" id="TERMS_CHECKBOX_1" />
+                <InlineButton onClick={() => setDialogOpen(true)}>
+                  <Text component="span" id="TERMS_CHECKBOX_2" />
+                </InlineButton>
+                <Text component="span" id="END_OF_SENTENCE" />
+              </span>
+            }
+          />
+        </Grid>
+      )}
+      {showErrorAlertBox && (
+        <Grid item style={{ marginBottom: 12 }}>
+          <CustomAlert severity="error" titleId="SUBMISSION_ERROR">
+            {postAssetGroupError && (
+              <Text variant="body2">{postAssetGroupError}</Text>
+            )}
+            {termsError && <Text variant="body2" id="TERMS_ERROR" />}
+            {formErrorId && <Text variant="body2" id={formErrorId} />}
+            {incompleteFields.map(incompleteField => (
+              <Text
+                key={incompleteField.name}
+                variant="body2"
+                id="INCOMPLETE_FIELD"
+                values={{
+                  fieldName: intl.messages[incompleteField.labelId] ? intl.formatMessage({ id: incompleteField.labelId }) : incompleteField.labelId,
+                }}
+              />
+            ))}
+          </CustomAlert>
+        </Grid>
+      )}
+
+      {!optional && sightingType ? (
+        <Grid
+          item
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            marginTop: 12,
+          }}
+        >
+          <Button
+            id={'BACK'}
+            display="basic"
+            onClick={() => {
+              setStartForm(false);
+              setCurrentPage('Upload Image');
             }}
+          />
+          <Button
+            onClick={async () => {
+              checkRequired();      
+              if(formValid) {
+                setOptional(true);
+                setCurrentPage('Optional Data');
+              };     
+            }}
+            // style={{ marginTop: 16 }}
+            display="primary"
+            // id="REPORT_SIGHTING"
+            id={'CONTINUE'}
+          />
+          <Button
+            onClick={async () => {
+              submitReport();     
+            }}
+            // style={{ marginTop: 16 }}
+            display="primary"
+            // id="REPORT_SIGHTING"
+            id={'SKIP AND SUBMIT'}
+          />
+        </Grid>
+      ) : null}
+
+      {optional && (
+        <>
+          <FieldCollections
+            formValues={sightingFormValues}
+            setFormValues={setSightingFormValues}
+            categories={defaultSightingCategories}
+            fieldSchema={optionalDefaultSightingSchemas}
+          />
+          <FieldCollections
+            formValues={customSightingFormValues}
+            setFormValues={setCustomSightingFormValues}
+            categories={customSightingCategories}
+            fieldSchema={optionalCustomSightingSchemas}
+          />
+        </>
+      )}
+      {optional && sightingType === 'one' && (
+        <>
+          <FieldCollections
+            formValues={encounterFormValues}
+            setFormValues={setEncounterFormValues}
+            categories={defaultEncounterCategories}
+            fieldSchema={defaultEncounterSchemas}
+          />
+          <FieldCollections
+            formValues={customEncounterFormValues}
+            setFormValues={setCustomEncounterFormValues}
+            categories={customEncounterCategories}
+            fieldSchema={customEncounterSchemas}
+          />
+        </>
+      )}  
+
+    {optional && sightingType ? (
+        <Grid
+          item
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            marginTop: 12,
+          }}
+        >
+          <Button
+            id = {'BACK'}
+            display="basic"
+            onClick={() => {
+              setOptional(false);
+              setCurrentPage("Enter Data");
+            }}
+
+            />
+          <Button
+            onClick={submitReport}              
             style={{ width: 320, marginBottom: 8 }}
             loading={postAssetGroupLoading}
             display="primary"
