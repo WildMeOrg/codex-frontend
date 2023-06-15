@@ -1235,5 +1235,6 @@
   "TERMS_INTRO_2": "Terms and Conditions",
   "TERMS_INTRO_3": "and our",
   "TERMS_INTRO_4": "Data Usage Policy",
-  "SKIP" : "Skip"
+  "SKIP" : "Skip",
+  "SKIP_AND_SUBMIT" : "Skip and submit"
 }
