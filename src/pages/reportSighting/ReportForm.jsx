@@ -118,7 +118,7 @@ export default function ReportForm({
       customEncounterSchemas: _customEncounterSchemas,
     };
   }, [sightingFieldSchemas, encounterFieldSchemas]);
-  const [acceptedTerms, setAcceptedTerms] = useState(false);
+  const [acceptedTerms, setAcceptedTerms] = useState(authenticated === "undefined" ? false : authenticated);
   // const [exifButtonClicked, setExifButtonClicked] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [incompleteFields, setIncompleteFields] = useState([]);
@@ -271,7 +271,7 @@ export default function ReportForm({
                   ]),
                   sightings: [report],
                 };
-
+                console.log("window.grecaptcha ", window.grecaptcha);
                 if (window.grecaptcha) {
                   const grecaptchaReady = new Promise(resolve => {
                     window.grecaptcha.ready(() => {
@@ -446,39 +446,47 @@ export default function ReportForm({
             marginTop: 12,
           }}
         >
-          <Button
-            id={'BACK'}
-            display="basic"
-            onClick={() => {
-              setStartForm(false);
-              setCurrentPage('Upload Image');
-            }}
-          />
-          <Button
-            onClick={async () => {
-              checkRequired();      
-              if(formValid) {
-                setOptional(true);
-                setCurrentPage('Optional Data');
-              };     
-            }}
-            // style={{ marginTop: 16 }}
-            display="primary"
-            // id="REPORT_SIGHTING"
-            id={'CONTINUE'}
-          />
-          <Button
-            onClick={async () => {
-              submitReport();     
-            }}
-            // style={{ marginTop: 16 }}
-            display="primary"
-            // id="REPORT_SIGHTING"
-            id={'SKIP AND SUBMIT'}
-          />
+          
+          <div style={{
+              width:'100%', 
+              display: 'flex', 
+              flexDirection: "row",
+              justifyContent: "space-between",
+            }}>
+            
+              <Button
+                id={'BACK'}
+                display="basic"
+                onClick={() => {
+                  setStartForm(false);
+                  setCurrentPage('Upload Image');
+                }}
+              />
+         
+            <div >
+              <Button
+                onClick={async () => {
+                  checkRequired();      
+                  if(formValid) {
+                    setOptional(true);
+                    setCurrentPage('Optional Data');
+                  };     
+                }}
+                display="primary"
+                id={'CONTINUE'}
+                style={{ marginRight: 8 }}
+              />
+              <Button
+                onClick={async () => {
+                  submitReport();     
+                }}
+                display="primary"
+                id={'SKIP_AND_SUBMIT'}
+              />
+            </div>
+          </div>
         </Grid>
       ) : null}
-
       
 
     {optional && sightingType ? (
@@ -487,9 +495,11 @@ export default function ReportForm({
           style={{
             display: 'flex',
             flexDirection: 'row',
+            justifyContent: 'space-between',
             marginTop: 12,
           }}
         >
+
           <Button
             id = {'BACK'}
             display="basic"

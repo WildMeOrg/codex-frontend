@@ -13,6 +13,8 @@ import useSiteSettings from '../../models/site/useSiteSettings';
 import Login from '../../pages/auth/Login';
 import StandardDialog from '../../components/StandardDialog';
 
+
+
 export default function ReportSightingsPage({
   titleId,
   authenticated = false,
@@ -20,10 +22,12 @@ export default function ReportSightingsPage({
 }) {
   useDocumentTitle(titleId);
   const { data: siteSettingsData } = useSiteSettings();
-  const recaptchaPublicKey = get(siteSettingsData, [
-    'recaptchaPublicKey',
-    'value',
-  ]);
+  const recaptchaPublicKey = 'your_recaptcha_public_key'
+  // get(siteSettingsData, [
+  //   'recaptchaPublicKey',
+  //   'value',
+  // ]);
+
   useEffect(() => {
     if (
       recaptchaPublicKey &&
@@ -49,7 +53,7 @@ export default function ReportSightingsPage({
       open={openModal}
       onClose={onClose}
     >      
-      <Login nextLocation={'/report'}/>
+      <Login />
     </StandardDialog>
     <MainColumn
       style={{
@@ -83,10 +87,8 @@ export default function ReportSightingsPage({
                     setOpenModal(true);
                     setTimeout(() => {
                       const dialogTitleElement = document.querySelector('.MuiDialogTitle-root');
-                      // console.log('dialogTitleElement',dialogTitleElement);
                       if (dialogTitleElement) {
                         const nextSiblingDiv = dialogTitleElement.nextElementSibling;
-                        // console.log('nextSiblingDiv',nextSiblingDiv);
                         if (nextSiblingDiv && nextSiblingDiv.tagName === 'DIV') {
                           nextSiblingDiv.style.paddingTop = '20px';
                           nextSiblingDiv.style.minHeight = '400px';
@@ -105,6 +107,7 @@ export default function ReportSightingsPage({
         <Grid item container direction="column">
           {children}
         </Grid>
+
       </Grid>
     </MainColumn>
     </>

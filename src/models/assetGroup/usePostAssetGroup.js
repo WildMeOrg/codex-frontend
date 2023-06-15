@@ -9,6 +9,7 @@ export default function usePostAssetGroup() {
   const [success, setSuccess] = useState(false);
 
   const postAssetGroup = async data => {
+    console.log('data', data);
     try {
       setLoading(true);
       setError(null);
