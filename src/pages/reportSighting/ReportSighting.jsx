@@ -3,7 +3,6 @@ import { useIntl, FormattedMessage } from 'react-intl';
 import { Prompt } from 'react-router';
 import { get, startsWith } from 'lodash-es';
 
-import Grid from '@material-ui/core/Grid';
 import InfoIcon from '@material-ui/icons/InfoOutlined';
 
 import useReportUppyInstance from '../../hooks/useReportUppyInstance';
@@ -15,11 +14,16 @@ import Button from '../../components/Button';
 import UppyDashboard from '../../components/UppyDashboard';
 import ReportForm from './ReportForm';
 import useGetMe from '../../models/users/useGetMe';
-import ReportSightingBreadcrumbs from './ReportSightingBreadcrumbs';
 import StandardDialog from '../../components/StandardDialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
-import { set } from 'date-fns';
+import ImageIcon from '@material-ui/icons/Image';
+import EditIcon from '@material-ui/icons/Edit';
+import WarningIcon from '@material-ui/icons/Warning';
+import FlagIcon from '@material-ui/icons/Flag';
+import LinearProgress from '@material-ui/core/LinearProgress';
+import Avatar from '@material-ui/core/Avatar';
+import Icon from '@material-ui/core/Icon';
 
 export default function ReportSighting({ authenticated }) {
   const intl = useIntl();
@@ -45,21 +49,60 @@ export default function ReportSighting({ authenticated }) {
   const handleClick = async () => {
     window.scrollTo(0, 0);
     setStartForm(true);
+    setCurrentIndex(currentIndex + 1);
     setCurrentPage('Enter Data');
   }
-
+  const progressArray = ['Upload Image', 'Enter Data', 'Enter Optional Data'];
   let continueButtonText = 'CONTINUE';
   // if (noImages && isResearcher)
   const  skipButtonText = 'SKIP';
   if (uploadInProgress) continueButtonText = 'UPLOAD_IN_PROGRESS';
-  const [ currentPage, setCurrentPage ] = useState('Upload Image');
+  const [ currentPage, setCurrentPage ] = useState(progressArray[0]);
+  const [ currentIndex, setCurrentIndex ] = useState(1);
+  // const avatarStyle1 = {backgroundColor: '#6D6B7B',}
+  // const avatarStyle2 = {backgroundColor: '#9D9CAC',}
+  // const avatarStyle3 = {backgroundColor: '#D2D2D2',}
+  const avatarStyle1 = {backgroundColor: 'black',}
+  const avatarStyle2 = {backgroundColor: 'red',}
+  const avatarStyle3 = {backgroundColor: 'blue',}
+  const finalStyle = (index) => {
+    if (index === currentIndex) {
+      return avatarStyle2;
+    } else if (index < currentIndex) {
+      return avatarStyle1;
+    } else if (index > currentIndex) {
+      return avatarStyle3;
+    }
+  };
+  console.log('currentIndex', currentIndex);
+  console.log(finalStyle(2));
   return (
     <ReportSightingsPage
       titleId="REPORT_A_SIGHTING"
       authenticated={authenticated}
+      currentPage={currentPage}
     >
-      <ReportSightingBreadcrumbs
-        currentPageText={currentPage} />
+      <div style= {{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginBottom: '-22px',
+        zIndex: 2}}>
+        <Avatar alt="Progress" style={avatarStyle1}>
+          <Icon><FlagIcon /></Icon>
+        </Avatar>
+        <Avatar alt="Progress" style={finalStyle(1)}>
+          <Icon><ImageIcon/></Icon>
+        </Avatar>
+        <Avatar alt="Progress" style = {finalStyle(2)}>
+          <Icon><WarningIcon/></Icon>
+        </Avatar>
+        <Avatar alt="Progress" style = {finalStyle(3)}>
+          <Icon><EditIcon/></Icon>
+        </Avatar>
+      </div>
+      <LinearProgress variant="determinate" value={currentIndex*100/3} style={{marginBottom: 20,}}/>
+      
       <Prompt
         when={reportInProgress}
         message={location => {
@@ -74,14 +117,6 @@ export default function ReportSighting({ authenticated }) {
           });
         }}
       />
-      {/* {startForm ? (
-        <Button
-          onClick={onBack}
-          style={{ marginTop: 8, width: 'fit-content' }}
-          display="back"
-          id="BACK_TO_PHOTOS"
-        />
-      ) : null} */}
       {startForm ? (
         <ReportForm
           authenticated={authenticated}
@@ -89,6 +124,8 @@ export default function ReportSighting({ authenticated }) {
           currentPage={currentPage}
           setCurrentPage={setCurrentPage}
           setStartForm={setStartForm}
+          currentIndex={currentIndex}
+          setCurrentIndex={setCurrentIndex}
         />
       ) : (
         <>
@@ -127,6 +164,7 @@ export default function ReportSighting({ authenticated }) {
                 onClick={async () => {
                   window.scrollTo(0, 0);
                   setStartForm(true);
+                  setCurrentIndex(currentIndex + 1);
                   setCurrentPage('Enter Data');
                 }}
                 style={{ marginTop: 16 }}

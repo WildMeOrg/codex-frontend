@@ -54,6 +54,8 @@ export default function ReportForm({
   assetReferences,
   setCurrentPage,
   setStartForm,
+  currentIndex,
+  setCurrentIndex,
   // exifData,
 }) {
   const intl = useIntl();
@@ -460,6 +462,7 @@ export default function ReportForm({
                 onClick={() => {
                   setStartForm(false);
                   setCurrentPage('Upload Image');
+                  setCurrentIndex(currentIndex - 1);
                 }}
               />
          
@@ -470,6 +473,7 @@ export default function ReportForm({
                   if(formValid) {
                     setOptional(true);
                     setCurrentPage('Optional Data');
+                    setCurrentIndex(currentIndex + 1);
                   };     
                 }}
                 display="primary"
@@ -506,6 +510,7 @@ export default function ReportForm({
             onClick={() => {
               setOptional(false);
               setCurrentPage("Enter Data");
+              setCurrentIndex(currentIndex - 1);
             }}
 
             />
@@ -515,6 +520,7 @@ export default function ReportForm({
             loading={postAssetGroupLoading}
             display="primary"
             id="REPORT_SIGHTING"
+            
           />
         </Grid>
       ) : null}  

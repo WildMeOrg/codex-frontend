@@ -12,21 +12,21 @@ import useDocumentTitle from '../../hooks/useDocumentTitle';
 import useSiteSettings from '../../models/site/useSiteSettings';
 import Login from '../../pages/auth/Login';
 import StandardDialog from '../../components/StandardDialog';
-
+import ReportSightingBreadcrumbs from '../../pages/reportSighting/ReportSightingBreadcrumbs';
 
 
 export default function ReportSightingsPage({
   titleId,
   authenticated = false,
   children,
+  currentPage,
 }) {
   useDocumentTitle(titleId);
   const { data: siteSettingsData } = useSiteSettings();
-  const recaptchaPublicKey = 'your_recaptcha_public_key'
-  // get(siteSettingsData, [
-  //   'recaptchaPublicKey',
-  //   'value',
-  // ]);
+  const recaptchaPublicKey = get(siteSettingsData, [
+    'recaptchaPublicKey',
+    'value',
+  ]);
 
   useEffect(() => {
     if (
@@ -71,6 +71,8 @@ export default function ReportSightingsPage({
         <Grid item>
           <Text variant="h3" id={titleId} />
         </Grid>
+        <ReportSightingBreadcrumbs
+        currentPageText={currentPage} />
         {!authenticated && (
           <Grid item style={{ marginTop: 16 }}>
             <CustomAlert
