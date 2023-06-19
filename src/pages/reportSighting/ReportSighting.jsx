@@ -30,7 +30,6 @@ export default function ReportSighting({ authenticated }) {
   const intl = useIntl();
   const { data: siteSettings } = useSiteSettings();
   const photoGuidelinesUrl = get(siteSettings, ['site.general.photoGuidelinesUrl', 'value']);
-  console.log('photoGuidelinesUrl',photoGuidelinesUrl);
   const { data: currentUserData } = useGetMe();
   const [startForm, setStartForm] = useState(false);
 
