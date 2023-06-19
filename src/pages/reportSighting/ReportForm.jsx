@@ -273,7 +273,6 @@ export default function ReportForm({
                   ]),
                   sightings: [report],
                 };
-                console.log("window.grecaptcha ", window.grecaptcha);
                 if (window.grecaptcha) {
                   const grecaptchaReady = new Promise(resolve => {
                     window.grecaptcha.ready(() => {

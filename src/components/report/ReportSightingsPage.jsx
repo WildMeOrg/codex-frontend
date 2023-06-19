@@ -72,7 +72,9 @@ export default function ReportSightingsPage({
           <Text variant="h3" id={titleId} />
         </Grid>
         <ReportSightingBreadcrumbs
-        currentPageText={currentPage} />
+        currentPageText={currentPage} 
+        />
+        <br/>
         {!authenticated && (
           <Grid item style={{ marginTop: 16 }}>
             <CustomAlert
