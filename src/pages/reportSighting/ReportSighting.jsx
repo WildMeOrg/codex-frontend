@@ -24,9 +24,13 @@ import FlagIcon from '@material-ui/icons/Flag';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Avatar from '@material-ui/core/Avatar';
 import Icon from '@material-ui/core/Icon';
+import useSiteSettings from '../../models/site/useSiteSettings';
 
 export default function ReportSighting({ authenticated }) {
   const intl = useIntl();
+  const { data: siteSettings } = useSiteSettings();
+  const photoGuidelinesUrl = get(siteSettings, ['site.general.photoGuidelinesUrl', 'value']);
+  console.log('photoGuidelinesUrl',photoGuidelinesUrl);
   const { data: currentUserData } = useGetMe();
   const [startForm, setStartForm] = useState(false);
 
@@ -62,7 +66,6 @@ export default function ReportSighting({ authenticated }) {
   const avatarStyle1 = {backgroundColor: '#6D6B7B',}
   const avatarStyle2 = {backgroundColor: '#9D9CAC',}
   const avatarStyle3 = {backgroundColor: '#D2D2D2',}
-
   const finalStyle = (index) => {
     if (index === currentIndex) {
       return avatarStyle2;
@@ -72,8 +75,6 @@ export default function ReportSighting({ authenticated }) {
       return avatarStyle3;
     }
   };
-  console.log('currentIndex', currentIndex);
-  console.log(finalStyle(2));
   return (
     <ReportSightingsPage
       titleId="REPORT_A_SIGHTING"
@@ -119,7 +120,6 @@ export default function ReportSighting({ authenticated }) {
             return true;
           if (startsWith(newLocation, '/pending-sightings/'))
             return true;
-
           return intl.formatMessage({
             id: 'UNSAVED_CHANGES_WARNING',
           });
@@ -154,7 +154,8 @@ export default function ReportSighting({ authenticated }) {
                 <FormattedMessage id="PHOTO_OPTIMIZE_1" />
                 <Link
                   external
-                  href="https://docs.wildme.org/product-docs/en/codex/data/optimizing-photographs/"
+                  // href="https://docs.wildme.org/product-docs/en/codex/data/optimizing-photographs/"
+                  href={photoGuidelinesUrl}
                   target="_blank"
                 >
                   <FormattedMessage id="PHOTO_OPTIMIZE_2" />
