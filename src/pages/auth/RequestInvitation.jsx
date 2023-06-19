@@ -7,8 +7,14 @@ import ButtonLink from '../../components/ButtonLink';
 import Button from '../../components/Button';
 import SimpleFormPage from '../../components/SimpleFormPage';
 import BaoLetter from '../../components/svg/BaoLetter';
+import usePostRequestInvitation from '../../models/users/usePostRequestInvitation';
 
 export default function RequestInvitation() {
+  const {
+    mutate: postRequestInvitation,
+    error: errorRequest,
+    loading: loadingRequest,
+  } = usePostRequestInvitation();
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [message, setMessage] = useState('');
@@ -58,6 +64,7 @@ export default function RequestInvitation() {
             value={email}
             onChange={newEmail => setEmail(newEmail)}
             variant="outlined"
+            required
           />
         </Grid>
         <Grid item>
@@ -66,6 +73,7 @@ export default function RequestInvitation() {
             value={name}
             onChange={newName => setName(newName)}
             variant="outlined"
+            required
           />
         </Grid>
         <Grid item>
@@ -81,19 +89,32 @@ export default function RequestInvitation() {
         </Grid>
         <Grid item style={{ position: 'relative' }}>
           <Button
-            onClick={() => {
+            onClick={async () => {
               setLoading(true);
-              setTimeout(() => {
-                setLoading(false);
-                setRequestSent(true);
-              }, 1000);
+              const response = await postRequestInvitation({email, name, message});
+              if (response?.status === 200){
+                setTimeout(() => {
+                  setLoading(false);
+                  setRequestSent(true);
+                }, 1000);
+              }              
             }}
+            disabled={!email.trim() || !name.trim() }  
             style={{ width: '100%' }}
             display="primary"
             loading={loading}
             id="SEND_REQUEST"
           />
         </Grid>
+        {/* {errorRequest && (
+          <Text
+            variant="caption"
+            color="error"
+            style={{ paddingLeft: 8 }}
+          >
+            {errorRequest}
+          </Text>
+        )} */}
       </Grid>
     </SimpleFormPage>
   );

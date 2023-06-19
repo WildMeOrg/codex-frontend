@@ -82,6 +82,7 @@ export default function GeneralSettings() {
   const { data: siteSettings } = useSiteSettings();
   const [currentValues, setCurrentValues] = useState(null);
 
+
   //Due to page layout change, twitter configuration won't be displayed on page, 
   //and intelligentAgentFieldsValid won't be true until user clicks on twitter configuration
   //So we need to set intelligentAgentFieldsValid to true by default, and when user clicks on twitter configuration, 
