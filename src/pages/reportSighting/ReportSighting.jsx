@@ -59,12 +59,10 @@ export default function ReportSighting({ authenticated }) {
   if (uploadInProgress) continueButtonText = 'UPLOAD_IN_PROGRESS';
   const [ currentPage, setCurrentPage ] = useState(progressArray[0]);
   const [ currentIndex, setCurrentIndex ] = useState(1);
-  // const avatarStyle1 = {backgroundColor: '#6D6B7B',}
-  // const avatarStyle2 = {backgroundColor: '#9D9CAC',}
-  // const avatarStyle3 = {backgroundColor: '#D2D2D2',}
-  const avatarStyle1 = {backgroundColor: 'black',}
-  const avatarStyle2 = {backgroundColor: 'red',}
-  const avatarStyle3 = {backgroundColor: 'blue',}
+  const avatarStyle1 = {backgroundColor: '#6D6B7B',}
+  const avatarStyle2 = {backgroundColor: '#9D9CAC',}
+  const avatarStyle3 = {backgroundColor: '#D2D2D2',}
+
   const finalStyle = (index) => {
     if (index === currentIndex) {
       return avatarStyle2;
@@ -88,20 +86,30 @@ export default function ReportSighting({ authenticated }) {
         justifyContent: 'space-between',
         marginBottom: '-22px',
         zIndex: 2}}>
-        <Avatar alt="Progress" style={avatarStyle1}>
-          <Icon><FlagIcon /></Icon>
-        </Avatar>
-        <Avatar alt="Progress" style={finalStyle(1)}>
-          <Icon><ImageIcon/></Icon>
-        </Avatar>
-        <Avatar alt="Progress" style = {finalStyle(2)}>
-          <Icon><WarningIcon/></Icon>
-        </Avatar>
-        <Avatar alt="Progress" style = {finalStyle(3)}>
-          <Icon><EditIcon/></Icon>
-        </Avatar>
+          <Avatar alt="Progress" style={avatarStyle1}>
+            <Icon><FlagIcon /></Icon>          
+          </Avatar>
+          <Avatar alt="Progress" style={finalStyle(1)}>
+            <Icon><ImageIcon/></Icon>
+          </Avatar>
+          <Avatar alt="Progress" style = {finalStyle(2)}>
+            <Icon><WarningIcon/></Icon>
+          </Avatar>
+          <Avatar alt="Progress" style = {finalStyle(3)}>
+            <Icon><EditIcon/></Icon>
+          </Avatar>
       </div>
       <LinearProgress variant="determinate" value={currentIndex*100/3} style={{marginBottom: 20,}}/>
+      <div style= {{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        }}>
+          <p style={{width: 130}}>Start</p>
+          <p style={{width: 125}}>Upload Image</p>
+          <p style={{width: 125, textAlign:'center'}}>Enter Data</p>
+          <p style={{width: 125}}>Enter Optional Data</p>
+        </div>
       
       <Prompt
         when={reportInProgress}
