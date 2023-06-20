@@ -15,19 +15,6 @@ export default function Requests() {
         error,
       } = useGetRequests();
     const requests = data || [];
-    // const requests = [{
-    //     id: 1,
-    //     name: 'John Doe',
-    //     email: '123@456.com',
-    //     message: 'I want to join this site',
-    // },
-    // {
-    //     id: 2,
-    //     name: 'Jane Doe',
-    //     email: '456@789.com',
-    //     message: 'I want to join this site too!'}
-    // ]
-
 
     const columns = [
         {
@@ -57,7 +44,7 @@ export default function Requests() {
           <Text id="INVITATION_REQUESTS" style={{ fontWeight: 'bold' }} />
           <DataDisplay
             idKey={'guid'}
-            tableContainerStyles={{ maxHeight: 660, minWidth:700 }}
+            tableContainerStyles={{ minWidth:700, maxWidth: 750 }}
             style={{ marginTop: 12 }}
             noTitleBar
             variant="secondary"
