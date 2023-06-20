@@ -24,6 +24,7 @@ export default function RequestInvitation() {
     'recaptchaPublicKey',
     'value',
   ]);
+  
   useEffect(() => {
     if (
       recaptchaPublicKey &&

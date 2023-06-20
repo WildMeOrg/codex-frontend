@@ -14,8 +14,8 @@ export default function Requests() {
         isLoading,
         error,
       } = useGetRequests();
+      
     const requests = data || [];
-
     const columns = [
         {
           name: 'name',
@@ -50,7 +50,17 @@ export default function Requests() {
             variant="secondary"
             columns={columns}
             data={requests}
+            loading={isLoading}
           />
+          {error && (
+          <Text
+            variant="caption"
+            color="error"
+            style={{ paddingLeft: 8 }}
+          >
+            {error}
+          </Text>
+        )}
         </CardContent>
       </Card>
     </MainColumn>
