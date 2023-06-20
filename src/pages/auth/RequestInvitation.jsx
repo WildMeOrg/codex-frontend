@@ -8,6 +8,10 @@ import Button from '../../components/Button';
 import SimpleFormPage from '../../components/SimpleFormPage';
 import BaoLetter from '../../components/svg/BaoLetter';
 import usePostRequestInvitation from '../../models/users/usePostRequestInvitation';
+import useSiteSettings from '../../models/site/useSiteSettings';
+import get from 'lodash/get';
+import { useEffect } from 'react';
+import Text from '../../components/Text';
 
 export default function RequestInvitation() {
   const {
@@ -15,6 +19,24 @@ export default function RequestInvitation() {
     error: errorRequest,
     loading: loadingRequest,
   } = usePostRequestInvitation();
+  const { data: siteSettingsData } = useSiteSettings();
+  const recaptchaPublicKey = get(siteSettingsData, [
+    'recaptchaPublicKey',
+    'value',
+  ]);
+  useEffect(() => {
+    if (
+      recaptchaPublicKey &&
+      !document.getElementById('recaptcha-script')
+    ) {
+      const recaptchaApiUrl = `https://www.google.com/recaptcha/api.js?render=${recaptchaPublicKey}`;
+      const recaptchaScript = document.createElement('script');
+      recaptchaScript.src = recaptchaApiUrl;
+      recaptchaScript.id = 'recaptcha-script';
+      document.head.appendChild(recaptchaScript);
+    }
+  }, [recaptchaPublicKey]);
+
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [message, setMessage] = useState('');
@@ -91,13 +113,29 @@ export default function RequestInvitation() {
           <Button
             onClick={async () => {
               setLoading(true);
-              const response = await postRequestInvitation({email, name, message});
+              let token = null;
+              if (window.grecaptcha) {
+                const grecaptchaReady = new Promise(resolve => {
+                  window.grecaptcha.ready(() => {
+                    resolve();
+                  });
+                });
+
+                await grecaptchaReady;
+
+                token = await window.grecaptcha.execute(
+                  recaptchaPublicKey,
+                  { action: 'submit' },
+                );
+                
+              }
+              const response = await postRequestInvitation({email, name, message, token});
               if (response?.status === 200){
                 setTimeout(() => {
                   setLoading(false);
                   setRequestSent(true);
                 }, 1000);
-              }              
+              }            
             }}
             disabled={!email.trim() || !name.trim() }  
             style={{ width: '100%' }}
@@ -106,7 +144,8 @@ export default function RequestInvitation() {
             id="SEND_REQUEST"
           />
         </Grid>
-        {/* {errorRequest && (
+        <Grid item>
+          {errorRequest && (
           <Text
             variant="caption"
             color="error"
@@ -114,7 +153,9 @@ export default function RequestInvitation() {
           >
             {errorRequest}
           </Text>
-        )} */}
+        )}
+        </Grid>
+        
       </Grid>
     </SimpleFormPage>
   );
