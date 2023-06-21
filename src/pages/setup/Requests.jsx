@@ -7,6 +7,7 @@ import DataDisplay from '../../components/dataDisplays/DataDisplay';
 import useGetRequests from '../../models/users/useGetRequests';
 import { useIntl } from 'react-intl';
 import SadScreen from '../../components/SadScreen';
+import LoadingScreen from '../../components/LoadingScreen';
 
 export default function Requests() {
     const intl = useIntl();
@@ -36,11 +37,10 @@ export default function Requests() {
           label: intl.formatMessage({ id: 'MESSAGE' }),
         }        
       ];
+  if(isLoading) return <LoadingScreen />    
 
-      console.log(statusCode);
   if(error) return <SadScreen
       statusCode={statusCode}
-      // variant={errorTypes.genericError}
 />
   return (
     <MainColumn style={{
@@ -61,7 +61,7 @@ export default function Requests() {
             variant="secondary"
             columns={columns}
             data={requests}
-            // loading={isLoading}
+            loading={isLoading}
           />
         </CardContent>
       </Card>
