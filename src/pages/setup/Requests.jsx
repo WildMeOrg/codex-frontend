@@ -6,6 +6,7 @@ import Text from '../../components/Text';
 import DataDisplay from '../../components/dataDisplays/DataDisplay';
 import useGetRequests from '../../models/users/useGetRequests';
 import { useIntl } from 'react-intl';
+import SadScreen from '../../components/SadScreen';
 
 export default function Requests() {
     const intl = useIntl();
@@ -13,10 +14,15 @@ export default function Requests() {
         data,
         isLoading,
         error,
+        statusCode
       } = useGetRequests();
       
     const requests = data || [];
     const columns = [
+        {
+          name: 'created',
+          label: intl.formatMessage({ id: 'CREATED' }),
+        },
         {
           name: 'name',
           label: intl.formatMessage({ id: 'NAME' }),
@@ -28,9 +34,14 @@ export default function Requests() {
         {
           name: 'message',
           label: intl.formatMessage({ id: 'MESSAGE' }),
-        },
+        }        
       ];
 
+      console.log(statusCode);
+  if(error) return <SadScreen
+      statusCode={statusCode}
+      // variant={errorTypes.genericError}
+/>
   return (
     <MainColumn style={{
         display: 'flex', 
@@ -50,19 +61,11 @@ export default function Requests() {
             variant="secondary"
             columns={columns}
             data={requests}
-            loading={isLoading}
+            // loading={isLoading}
           />
-          {error && (
-          <Text
-            variant="caption"
-            color="error"
-            style={{ paddingLeft: 8 }}
-          >
-            {error}
-          </Text>
-        )}
         </CardContent>
       </Card>
-    </MainColumn>
+    </MainColumn> 
+    
   );
 }
