@@ -19,8 +19,11 @@ export default function Requests() {
       } = useGetRequests();
       
     let requests = data || [];
-    requests = requests.map((request) => {
-      request.created = new Date(request.created).toLocaleString(); return request;})
+    requests = requests
+      .map((request) => {
+        request.created = new Date(request.created).toLocaleString(); return request;})
+      .sort((a, b) => new Date(b.created) - new Date(a.created));
+
     const columns = [
         {
           name: 'created',
@@ -58,7 +61,7 @@ export default function Requests() {
           <DataDisplay
             idKey={'guid'}
             tableContainerStyles={{ minWidth:700, maxWidth: 750 }}
-            cellStyles = {{overflow: 'auto', maxWidth: 300}}
+            cellStyles = {{overflow: 'wrap', maxWidth: 300}}
             style={{ marginTop: 12 }}
             noTitleBar
             variant="secondary"
