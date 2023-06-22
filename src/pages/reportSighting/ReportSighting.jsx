@@ -53,15 +53,15 @@ export default function ReportSighting({ authenticated }) {
     window.scrollTo(0, 0);
     setStartForm(true);
     setCurrentIndex(currentIndex + 1);
-    setCurrentPage('Enter Data');
+    setCurrentPage('Enter Required Data');
   }
-  const progressArray = ['Upload Image', 'Enter Data', 'Enter Optional Data'];
+  const progressArray = ['Upload Image', 'Enter Required Data', 'Enter Optional Data'];
   let continueButtonText = 'CONTINUE';
   // if (noImages && isResearcher)
   const  skipButtonText = 'SKIP';
   if (uploadInProgress) continueButtonText = 'UPLOAD_IN_PROGRESS';
   const [ currentPage, setCurrentPage ] = useState(progressArray[0]);
-  const [ currentIndex, setCurrentIndex ] = useState(1);
+  const [ currentIndex, setCurrentIndex ] = useState(0);
   const avatarStyle1 = {backgroundColor: '#6D6B7B',}
   const avatarStyle2 = {backgroundColor: '#9D9CAC',}
   const avatarStyle3 = {backgroundColor: '#D2D2D2',}
@@ -86,29 +86,26 @@ export default function ReportSighting({ authenticated }) {
         justifyContent: 'space-between',
         marginBottom: '-22px',
         zIndex: 2}}>
-          <Avatar alt="Progress" style={avatarStyle1}>
-            <Icon><FlagIcon /></Icon>          
-          </Avatar>
-          <Avatar alt="Progress" style={finalStyle(1)}>
+          <Avatar alt="Progress" style={finalStyle(0)}>
             <Icon><ImageIcon/></Icon>
           </Avatar>
-          <Avatar alt="Progress" style = {finalStyle(2)}>
+          <Avatar alt="Progress" style = {finalStyle(1)}>
             <Icon><WarningIcon/></Icon>
           </Avatar>
-          <Avatar alt="Progress" style = {finalStyle(3)}>
+          <Avatar alt="Progress" style = {finalStyle(2)}>
             <Icon><EditIcon/></Icon>
           </Avatar>
       </div>
-      <LinearProgress variant="determinate" value={currentIndex*100/3} style={{marginBottom: 20,}}/>
+      <LinearProgress variant="determinate" value={currentIndex*100/2} style={{marginBottom: 20,}}/>
       <div style= {{
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
         }}>
-          <p style={{width: 130}}>Start</p>
-          <p style={{width: 125}}>Upload Image</p>
-          <p style={{width: 125, textAlign:'center'}}>Enter Data</p>
-          <p style={{width: 125}}>Enter Optional Data</p>
+          <p style={{width: 145}}>Upload Image</p>
+          <p style={{width: 145, textAlign: "center"}}>Enter Required Data</p>
+          <p style={{width: 145, textAlign: 'right'}}>Enter Optional Data</p>
+          {/* {progressArray.map((item) => (<p style={{width: 145}}>{item}</p>))}           */}
         </div>
       
       <Prompt
@@ -173,7 +170,7 @@ export default function ReportSighting({ authenticated }) {
                   window.scrollTo(0, 0);
                   setStartForm(true);
                   setCurrentIndex(currentIndex + 1);
-                  setCurrentPage('Enter Data');
+                  setCurrentPage('Enter Required Data');
                 }}
                 style={{ marginTop: 16 }}
               />}
