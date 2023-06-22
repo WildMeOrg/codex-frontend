@@ -508,7 +508,7 @@ export default function ReportForm({
             display="basic"
             onClick={() => {
               setOptional(false);
-              setCurrentPage("Enter Data");
+              setCurrentPage("Enter Required Data");
               setCurrentIndex(currentIndex - 1);
             }}
 
