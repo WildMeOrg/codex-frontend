@@ -18,7 +18,9 @@ export default function Requests() {
         statusCode
       } = useGetRequests();
       
-    const requests = data || [];
+    let requests = data || [];
+    requests = requests.map((request) => {
+      request.created = new Date(request.created).toLocaleString(); return request;})
     const columns = [
         {
           name: 'created',
@@ -56,6 +58,7 @@ export default function Requests() {
           <DataDisplay
             idKey={'guid'}
             tableContainerStyles={{ minWidth:700, maxWidth: 750 }}
+            cellStyles = {{overflow: 'auto', maxWidth: 300}}
             style={{ marginTop: 12 }}
             noTitleBar
             variant="secondary"
