@@ -61,22 +61,21 @@ export default function usePatchIndividual() {
     const newCustomFields = {}
     for(const key in customFields) {
       const value = customFields[key];
-      if(typeof value === 'string' && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/.test(value)) {
+      console.log('value', JSON.stringify(value));
+      console.log('type of value',typeof value);
+      // console.log(/^(\d{4}-\d{2}-\d{2})/.test("2023-06-15T00:23:00.000Z"));
+      if( value && /"(\d{4}-\d{2}-\d{2})/.test(JSON.stringify(value))) {
         console.log('=============');
         const utcTimestamp = value;
         const date = new Date(utcTimestamp);
+        console.log('date',date);
         const timezoneOffset = date.getTimezoneOffset();
         const offsetHours = Math.floor(Math.abs(timezoneOffset) / 60);
         const offsetMinutes = Math.abs(timezoneOffset) % 60;
         const offsetSign = timezoneOffset < 0 ? "+" : "-";
         const offsetFormatted = `${offsetSign}${String(offsetHours).padStart(2, "0")}:${String(offsetMinutes).padStart(2, "0")}`;
         const adjustedTimestampWithoutZ = new Date(date.getTime() - timezoneOffset * 60 * 1000).toISOString().slice(0, -1);
-
         const adjustedTimestampWithOffset = `${adjustedTimestampWithoutZ}${offsetFormatted}`;
-
-console.log(adjustedTimestampWithOffset);
-
-
         newCustomFields[key] = adjustedTimestampWithOffset;
       }else {
         console.log('>>>>>>>>>>>>>');
@@ -84,12 +83,13 @@ console.log(adjustedTimestampWithOffset);
       }
     }
     dictionary['customFields'] = newCustomFields;
-    console.log('newCustomFields', newCustomFields);
-    console.log('new dictionary', dictionary);
+    // for(const data in newCustomFields) {
+    //   console.log('data',data);
+    //   console.log('type of fields', typeof data);
+    // }
+    // console.log('newCustomFields', newCustomFields);
+    // console.log('new dictionary', dictionary);
     const { names = [], ...dictionaryWithoutNames } = dictionary;
-    const date = new Date();
-    console.log('date', date);
-    console.log('date to UTC', date.toLocaleString());
 
     let operations = Object.keys(dictionaryWithoutNames).map(
       propertyKey => ({
@@ -107,9 +107,6 @@ console.log(adjustedTimestampWithOffset);
       }));
       operations = [...operations, ...nameOperations];
     }
-
-    console.log('operations',operations);
-
     return patchIndividual(individualId, operations);
   };
 
