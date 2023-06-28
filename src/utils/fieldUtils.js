@@ -194,7 +194,7 @@ export function createCustomFieldSchema(houstonSchema) {
 
 export function createFieldSchema(fieldType, properties) {
   const fieldTypeProperties = get(componentMap, fieldType, {});
-
+  console.log('fieldTypeProperties', fieldTypeProperties);
   return {
     ...prototypeFieldSchema,
     ...fieldTypeProperties,

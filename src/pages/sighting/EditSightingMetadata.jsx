@@ -37,6 +37,8 @@ export default function EditSightingMetadata({
     clearError: clearSightingError,
   } = usePatchSighting();
 
+  console.log('sighting error',sightingError);
+
   const {
     mutate: updateAgsProperties,
     loading: agsLoading,
@@ -149,7 +151,7 @@ export default function EditSightingMetadata({
               sightingGuid: pending ? undefined : sightingId,
               properties,
             });
-            if (response.status === 200) onClose();
+            if (response?.status === 200) onClose();
           }}
           id="SAVE"
         />
