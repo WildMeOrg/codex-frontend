@@ -88,6 +88,7 @@ export default function useMutate({
 
       return response;
     } catch (error) {
+      console.log('error', error);
       setStatusCode(error?.response?.status);
       setDisplayedError(formatError(error));
       return error?.response;

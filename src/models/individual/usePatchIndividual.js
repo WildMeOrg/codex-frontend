@@ -50,25 +50,47 @@ export default function usePatchIndividual() {
     }
   };
 
+  //this is a function that takes in an individualId and a dictionary of properties to update
+
   const updateIndividualProperties = async (
     individualId,
     dictionary,
   ) => {
     // names must be handled separately because (1) multiple request with the path /names could be
     // required, and (2) a name may need to be added or replaced.
-    console.log('dictionary',dictionary);
     const customFields = dictionary['customFields'];
-    const newCustomFields = {}
+    const newCustomFields = {};
     for(const key in customFields) {
+      console.log(typeof customFields[key]);
+      if(typeof customFields[key] === 'array') {
+        const value = customFields[key];
+        const newValue = [];
+        for(const item of value) {
+          if( item && /"(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2})/.test(JSON.stringify(item))) {
+            console.log('1111111111');
+            const utcTimestamp = item;
+            const date = new Date(utcTimestamp);
+            const timezoneOffset = date.getTimezoneOffset();
+            const offsetHours = Math.floor(Math.abs(timezoneOffset) / 60);
+            const offsetMinutes = Math.abs(timezoneOffset) % 60;
+            const offsetSign = timezoneOffset < 0 ? "+" : "-";
+            const offsetFormatted = `${offsetSign}${String(offsetHours).padStart(2, "0")}:${String(offsetMinutes).padStart(2, "0")}`;
+            const adjustedTimestampWithoutZ = new Date(date.getTime() - timezoneOffset * 60 * 1000).toISOString().slice(0, -1);
+            const adjustedTimestampWithOffset = `${adjustedTimestampWithoutZ}${offsetFormatted}`;
+            newValue.push(adjustedTimestampWithOffset);
+          }else {
+            console.log('22222222222');
+            newValue.push(item);
+          }
+        }
+        newCustomFields[key] = newValue;
+      }
       const value = customFields[key];
-      console.log('value', JSON.stringify(value));
-      console.log('type of value',typeof value);
-      // console.log(/^(\d{4}-\d{2}-\d{2})/.test("2023-06-15T00:23:00.000Z"));
-      if( value && /"(\d{4}-\d{2}-\d{2})/.test(JSON.stringify(value))) {
+      // if( value && /"(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z")$/.test(JSON.stringify(value))) {
+      if( value && /"(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2})/.test(JSON.stringify(value))) {
         console.log('=============');
         const utcTimestamp = value;
         const date = new Date(utcTimestamp);
-        console.log('date',date);
         const timezoneOffset = date.getTimezoneOffset();
         const offsetHours = Math.floor(Math.abs(timezoneOffset) / 60);
         const offsetMinutes = Math.abs(timezoneOffset) % 60;
@@ -83,12 +105,7 @@ export default function usePatchIndividual() {
       }
     }
     dictionary['customFields'] = newCustomFields;
-    // for(const data in newCustomFields) {
-    //   console.log('data',data);
-    //   console.log('type of fields', typeof data);
-    // }
-    // console.log('newCustomFields', newCustomFields);
-    // console.log('new dictionary', dictionary);
+    
     const { names = [], ...dictionaryWithoutNames } = dictionary;
 
     let operations = Object.keys(dictionaryWithoutNames).map(
