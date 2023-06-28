@@ -37,7 +37,7 @@ export default function EditSightingMetadata({
     clearError: clearSightingError,
   } = usePatchSighting();
 
-  console.log('sighting error',sightingError);
+  // console.log('sighting error',sightingError);
 
   const {
     mutate: updateAgsProperties,

@@ -61,8 +61,7 @@ export default function usePatchIndividual() {
     const customFields = dictionary['customFields'];
     const newCustomFields = {};
     for(const key in customFields) {
-      console.log(typeof customFields[key]);
-      if(typeof customFields[key] === 'array') {
+      if(Array.isArray(customFields[key])) {
         const value = customFields[key];
         const newValue = [];
         for(const item of value) {
@@ -84,6 +83,7 @@ export default function usePatchIndividual() {
           }
         }
         newCustomFields[key] = newValue;
+        console.log('newCustomFields', newCustomFields);
       }
       const value = customFields[key];
       // if( value && /"(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z")$/.test(JSON.stringify(value))) {
