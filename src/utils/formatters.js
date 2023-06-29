@@ -171,8 +171,8 @@ export const formatHoustonTime = possibleTimeObject => {
   }
 };
 
-export const formatUTCTimeToLocalTimeWithTimezone = item => {
-  const utcTimestamp = item;
+export const formatUTCTimeToLocalTimeWithTimezone = (TimeObject) => {
+  const utcTimestamp = TimeObject;
   const date = new Date(utcTimestamp);
   const timezoneOffset = date.getTimezoneOffset();
   const offsetHours = Math.floor(Math.abs(timezoneOffset) / 60);
@@ -182,6 +182,35 @@ export const formatUTCTimeToLocalTimeWithTimezone = item => {
   const adjustedTimestampWithoutZ = new Date(date.getTime() - timezoneOffset * 60 * 1000).toISOString().slice(0, -1);
   const adjustedTimestampWithOffset = `${adjustedTimestampWithoutZ}${offsetFormatted}`;
   return adjustedTimestampWithOffset;
+}
+
+export const formatCustomFields = (customFields) => {
+  const regex = /"(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2})/;
+  const newCustomFields = {};
+  for(const key in customFields) {
+    const value = customFields[key];
+    if(Array.isArray(customFields[key])) {
+      const newValue = [];
+      for(const item of value) {
+        if( item && regex.test(JSON.stringify(item))) {
+          const adjustedTimestampWithOffset = formatUTCTimeToLocalTimeWithTimezone(item);
+          newValue.push(adjustedTimestampWithOffset);
+        }else {
+          newValue.push(item);
+        }
+      }
+      newCustomFields[key] = newValue;
+    } else {
+      if( value && regex.test(JSON.stringify(value))) {
+        const adjustedTimestampWithOffset = formatUTCTimeToLocalTimeWithTimezone(value);
+        newCustomFields[key] = adjustedTimestampWithOffset;
+      }else {
+        newCustomFields[key] = value;
+      }
+    } 
+  }
+
+  return newCustomFields;
 }
 
 export const getNumDescendents = targetChoice => {
