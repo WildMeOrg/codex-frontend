@@ -171,6 +171,19 @@ export const formatHoustonTime = possibleTimeObject => {
   }
 };
 
+export const formatUTCTimeToLocalTimeWithTimezone = item => {
+  const utcTimestamp = item;
+  const date = new Date(utcTimestamp);
+  const timezoneOffset = date.getTimezoneOffset();
+  const offsetHours = Math.floor(Math.abs(timezoneOffset) / 60);
+  const offsetMinutes = Math.abs(timezoneOffset) % 60;
+  const offsetSign = timezoneOffset < 0 ? "+" : "-";
+  const offsetFormatted = `${offsetSign}${String(offsetHours).padStart(2, "0")}:${String(offsetMinutes).padStart(2, "0")}`;
+  const adjustedTimestampWithoutZ = new Date(date.getTime() - timezoneOffset * 60 * 1000).toISOString().slice(0, -1);
+  const adjustedTimestampWithOffset = `${adjustedTimestampWithoutZ}${offsetFormatted}`;
+  return adjustedTimestampWithOffset;
+}
+
 export const getNumDescendents = targetChoice => {
   let result = 0;
   if (!targetChoice.locationID) return result;

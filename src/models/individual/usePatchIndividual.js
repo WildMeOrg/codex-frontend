@@ -2,6 +2,7 @@ import { useState } from 'react';
 import axios from 'axios';
 import { get } from 'lodash-es';
 import { formatError } from '../../utils/formatters';
+import { formatUTCTimeToLocalTimeWithTimezone } from '../../utils/formatters';
 
 export default function usePatchIndividual() {
   const [loading, setLoading] = useState(false);
@@ -12,7 +13,6 @@ export default function usePatchIndividual() {
     try {
       setLoading(true);
       setError(null);
-      console.log('operations in patch', operations);
       const patchResponse = await axios({
         url: `${__houston_url__}/api/v1/individuals/${individualId}`,
         withCredentials: true,
@@ -55,57 +55,33 @@ export default function usePatchIndividual() {
   const updateIndividualProperties = async (
     individualId,
     dictionary,
-  ) => {
-    // names must be handled separately because (1) multiple request with the path /names could be
-    // required, and (2) a name may need to be added or replaced.
+  ) => {    
+    const regex = /"(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2})/;
     const customFields = dictionary['customFields'];
     const newCustomFields = {};
     for(const key in customFields) {
+      const value = customFields[key];
       if(Array.isArray(customFields[key])) {
-        const value = customFields[key];
         const newValue = [];
         for(const item of value) {
-          if( item && /"(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2})/.test(JSON.stringify(item))) {
-            console.log('1111111111');
-            const utcTimestamp = item;
-            const date = new Date(utcTimestamp);
-            const timezoneOffset = date.getTimezoneOffset();
-            const offsetHours = Math.floor(Math.abs(timezoneOffset) / 60);
-            const offsetMinutes = Math.abs(timezoneOffset) % 60;
-            const offsetSign = timezoneOffset < 0 ? "+" : "-";
-            const offsetFormatted = `${offsetSign}${String(offsetHours).padStart(2, "0")}:${String(offsetMinutes).padStart(2, "0")}`;
-            const adjustedTimestampWithoutZ = new Date(date.getTime() - timezoneOffset * 60 * 1000).toISOString().slice(0, -1);
-            const adjustedTimestampWithOffset = `${adjustedTimestampWithoutZ}${offsetFormatted}`;
+          if( item && regex.test(JSON.stringify(item))) {
+            const adjustedTimestampWithOffset = formatUTCTimeToLocalTimeWithTimezone(item);
             newValue.push(adjustedTimestampWithOffset);
           }else {
-            console.log('22222222222');
             newValue.push(item);
           }
         }
         newCustomFields[key] = newValue;
-        console.log('newCustomFields', newCustomFields);
-      }
-      const value = customFields[key];
-      // if( value && /"(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z")$/.test(JSON.stringify(value))) {
-      if( value && /"(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2})/.test(JSON.stringify(value))) {
-        console.log('=============');
-        const utcTimestamp = value;
-        const date = new Date(utcTimestamp);
-        const timezoneOffset = date.getTimezoneOffset();
-        const offsetHours = Math.floor(Math.abs(timezoneOffset) / 60);
-        const offsetMinutes = Math.abs(timezoneOffset) % 60;
-        const offsetSign = timezoneOffset < 0 ? "+" : "-";
-        const offsetFormatted = `${offsetSign}${String(offsetHours).padStart(2, "0")}:${String(offsetMinutes).padStart(2, "0")}`;
-        const adjustedTimestampWithoutZ = new Date(date.getTime() - timezoneOffset * 60 * 1000).toISOString().slice(0, -1);
-        const adjustedTimestampWithOffset = `${adjustedTimestampWithoutZ}${offsetFormatted}`;
-        newCustomFields[key] = adjustedTimestampWithOffset;
-      }else {
-        console.log('>>>>>>>>>>>>>');
-        newCustomFields[key] = value;
-      }
+      } else {
+        if( value && regex.test(JSON.stringify(value))) {
+          const adjustedTimestampWithOffset = formatUTCTimeToLocalTimeWithTimezone(value);
+          newCustomFields[key] = adjustedTimestampWithOffset;
+        }else {
+          newCustomFields[key] = value;
+        }
+      } 
     }
     dictionary['customFields'] = newCustomFields;
-    
     const { names = [], ...dictionaryWithoutNames } = dictionary;
 
     let operations = Object.keys(dictionaryWithoutNames).map(
@@ -115,7 +91,9 @@ export default function usePatchIndividual() {
         value: dictionaryWithoutNames[propertyKey],
       }),
     );
-
+    
+    // names must be handled separately because (1) multiple request with the path /names could be
+    // required, and (2) a name may need to be added or replaced.    
     if (names.length > 0) {
       const nameOperations = names.map(({ op, ...value }) => ({
         op,
