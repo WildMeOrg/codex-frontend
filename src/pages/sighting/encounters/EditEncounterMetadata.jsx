@@ -183,6 +183,8 @@ export default function EditEncounterMetadata({
               customFields: customFieldValues,
             };
 
+            console.log('properties', properties);
+            
             if (pending) {
               successfulUpdate = await updateAgsProperties(
                 sightingId,
