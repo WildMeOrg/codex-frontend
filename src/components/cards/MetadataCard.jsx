@@ -45,7 +45,6 @@ export default function MetadataCard({
         JSON.stringify(field?.defaultValue);
     return valid && passedDefaultValueCheck;
   });
-
   const showEditButton = metadataToDisplay.length === 0 && editable;
   const showEditIcon = editable && !showEditButton;
 
@@ -70,7 +69,6 @@ export default function MetadataCard({
           ? metadataToDisplay.map(field => {
               const viewComponentProps =
                 field?.viewComponentProps || {};
-
               return (
                 <ListItem key={field?.id || field?.name}>
                   {field?.icon && (

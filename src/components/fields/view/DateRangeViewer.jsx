@@ -8,7 +8,7 @@ export default function DateRangeViewer({
   defaultLabel = 'Date range not set',
 }) {
   const startDate = get(value, 0);
-  const endDate = get(value, 0);
+  const endDate = get(value, 1);
 
   let printableValue;
   if (!startDate && !endDate) {
@@ -18,8 +18,8 @@ export default function DateRangeViewer({
   } else if (!endDate) {
     printableValue = `${formatDate(startDate)} -`;
   } else {
-    printableValue = `${formatDate(startDate)} - ${formatDate(
-      endDate,
+    printableValue = `${formatDate(startDate, true)} - ${formatDate(
+      endDate, true
     )}`;
   }
 
