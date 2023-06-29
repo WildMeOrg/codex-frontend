@@ -2,7 +2,7 @@ import { useState } from 'react';
 import axios from 'axios';
 import { get } from 'lodash-es';
 import { formatError } from '../../utils/formatters';
-import { formatUTCTimeToLocalTimeWithTimezone } from '../../utils/formatters';
+import { formatCustomFields } from '../../utils/formatters';
 
 export default function usePatchIndividual() {
   const [loading, setLoading] = useState(false);
@@ -58,29 +58,7 @@ export default function usePatchIndividual() {
   ) => {    
     const regex = /"(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2})/;
     const customFields = dictionary['customFields'];
-    const newCustomFields = {};
-    for(const key in customFields) {
-      const value = customFields[key];
-      if(Array.isArray(customFields[key])) {
-        const newValue = [];
-        for(const item of value) {
-          if( item && regex.test(JSON.stringify(item))) {
-            const adjustedTimestampWithOffset = formatUTCTimeToLocalTimeWithTimezone(item);
-            newValue.push(adjustedTimestampWithOffset);
-          }else {
-            newValue.push(item);
-          }
-        }
-        newCustomFields[key] = newValue;
-      } else {
-        if( value && regex.test(JSON.stringify(value))) {
-          const adjustedTimestampWithOffset = formatUTCTimeToLocalTimeWithTimezone(value);
-          newCustomFields[key] = adjustedTimestampWithOffset;
-        }else {
-          newCustomFields[key] = value;
-        }
-      } 
-    }
+    const newCustomFields = formatCustomFields(customFields);
     dictionary['customFields'] = newCustomFields;
     const { names = [], ...dictionaryWithoutNames } = dictionary;
 
