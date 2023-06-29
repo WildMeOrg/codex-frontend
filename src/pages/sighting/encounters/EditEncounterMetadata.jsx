@@ -12,6 +12,7 @@ import InputRow from '../../../components/fields/edit/InputRow';
 import Button from '../../../components/Button';
 import StandardDialog from '../../../components/StandardDialog';
 import Text from '../../../components/Text';
+import { formatUTCTimeToLocalTimeWithTimezone } from '../../../utils/formatters';
 
 function getInitialFormValues(schema, fieldKey) {
   return schema.reduce((memo, field) => {
@@ -184,6 +185,34 @@ export default function EditEncounterMetadata({
             };
 
             console.log('properties', properties);
+
+            const customFields = properties['customFields'];
+            const regex = /"(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2})/;
+
+      const newCustomFields = {};
+      for(const key in customFields) {
+        const value = customFields[key];
+        if(Array.isArray(customFields[key])) {
+          const newValue = [];
+          for(const item of value) {
+            if( item && regex.test(JSON.stringify(item))) {
+              const adjustedTimestampWithOffset = formatUTCTimeToLocalTimeWithTimezone(item);
+              newValue.push(adjustedTimestampWithOffset);
+            }else {
+              newValue.push(item);
+            }
+          }
+          newCustomFields[key] = newValue;
+        } else {
+          if( value && regex.test(JSON.stringify(value))) {
+            const adjustedTimestampWithOffset = formatUTCTimeToLocalTimeWithTimezone(value);
+            newCustomFields[key] = adjustedTimestampWithOffset;
+          }else {
+            newCustomFields[key] = value;
+          }
+        } 
+      }
+      properties['customFields'] = newCustomFields;
             
             if (pending) {
               successfulUpdate = await updateAgsProperties(
