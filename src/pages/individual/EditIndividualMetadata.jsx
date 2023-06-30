@@ -11,7 +11,8 @@ import InputRow from '../../components/fields/edit/InputRow';
 import Button from '../../components/Button';
 import StandardDialog from '../../components/StandardDialog';
 import Text from '../../components/Text';
-
+import CheckDateRangeIntegrity from '../../pages/fieldManagement/settings/saveField/CheckDateRangeIntegrity';
+ 
 function deriveNameGuid(metadata, schemaName) {
   const foundSchema = metadata.find(
     schema => schema.name === schemaName,
@@ -68,10 +69,12 @@ export default function EditIndividualMetadata({
     getInitialFormValues(getCustomFieldMetadata(metadata), 'id'),
   );
 
-  const [formErrors, setFormErrors] = useState([]);
+  const [formErrors, setFormErrors] = useState([]);  
+  const [ incompleteDateRangeError, setIncompleteDateRangeError ] = useState(false);
+
 
   const showErrorAlert =
-    patchIndividualError || formErrors.length > 0;
+    patchIndividualError || formErrors.length > 0 || incompleteDateRangeError;
 
   const handleClose = useCallback(() => {
     setDefaultFieldValues(
@@ -144,6 +147,7 @@ export default function EditIndividualMetadata({
             {patchIndividualError && (
               <Text variant="body2">{patchIndividualError}</Text>
             )}
+             {incompleteDateRangeError && intl.formatMessage({id : 'INCOMPLETE_DATE_RANGE_ERROR'}) }
           </CustomAlert>
         )}
       </DialogContent>
@@ -231,6 +235,13 @@ export default function EditIndividualMetadata({
             if (!isEmpty(customFieldValues)) {
               properties.customFields = customFieldValues;
             }
+
+            const dateRangeIntegrity = CheckDateRangeIntegrity(properties['customFields']);
+              if(dateRangeIntegrity) {
+                const dateRangeIntegrityMessage = intl.formatMessage({id : 'INCOMPLETE_DATE_RANGE_ERROR'});
+                setIncompleteDateRangeError(dateRangeIntegrityMessage);
+                return;
+              }   
 
             const successfulUpdate = await updateIndividualProperties(
               individualId,
