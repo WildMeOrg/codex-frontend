@@ -71,7 +71,7 @@ export default function SaveField() {
           displayType: fieldTypeInfo.string.value,
           label: 'Field label',
           description: 'Field description',
-          category: null,
+          category: '',
         },
       });
     } else {
@@ -341,13 +341,10 @@ export default function SaveField() {
                 }}
                 value={get(formData, ['schema', 'defaultValue'])}
                 onChange={nextDefaultValue => {
-                  console.log('nextDefaultValue', nextDefaultValue);
                   setFormData({
                     ...formData,
-                    // default: nextDefaultValue,
                     schema: {...formData['schema'], defaultValue: nextDefaultValue },
                   });
-                  console.log(  'formData', formData);
                 }}
                 disabled={disableForm}
                 choices={get(
