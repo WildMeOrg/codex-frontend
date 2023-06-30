@@ -13,6 +13,7 @@ import Button from '../../../components/Button';
 import StandardDialog from '../../../components/StandardDialog';
 import Text from '../../../components/Text';
 import { formatCustomFields } from '../../../utils/formatters';
+import CheckDateRangeIntegrity from '../../../pages/fieldManagement/settings/saveField/CheckDateRangeIntegrity';
 
 function getInitialFormValues(schema, fieldKey) {
   return schema.reduce((memo, field) => {
@@ -58,6 +59,7 @@ export default function EditEncounterMetadata({
   const [defaultFieldValues, setDefaultFieldValues] = useState({});
   const [customFieldValues, setCustomFieldValues] = useState({});
   const [formErrors, setFormErrors] = useState([]);
+  const [incompleteDateRangeError, setIncompleteDateRangeError] = useState(false);
 
   useEffect(() => {
     const defaultFieldMetadata = metadata.filter(
@@ -74,7 +76,7 @@ export default function EditEncounterMetadata({
     );
   }, [metadata?.length]);
 
-  const showErrorAlert = patchError || formErrors.length > 0;
+  const showErrorAlert = patchError || formErrors.length > 0 || incompleteDateRangeError;
 
   return (
     <StandardDialog
@@ -130,6 +132,7 @@ export default function EditEncounterMetadata({
                 </Text>
               ))}
             {patchError && <Text variant="body2">{patchError}</Text>}
+            {incompleteDateRangeError && intl.formatMessage({id : 'INCOMPLETE_DATE_RANGE_ERROR'}) }
           </CustomAlert>
         )}
       </DialogContent>
@@ -187,6 +190,13 @@ export default function EditEncounterMetadata({
             const customFields = properties['customFields'];
             const newCustomFields = formatCustomFields(customFields);
             properties['customFields'] = newCustomFields;
+
+            const dateRangeIntegrity = CheckDateRangeIntegrity(properties['customFields']);
+              if(dateRangeIntegrity) {
+                const dateRangeIntegrityMessage = intl.formatMessage({id : 'INCOMPLETE_DATE_RANGE_ERROR'});
+                setIncompleteDateRangeError(dateRangeIntegrityMessage);
+                return;
+              }  
             
             if (pending) {
               successfulUpdate = await updateAgsProperties(

@@ -11,6 +11,8 @@ import InputRow from '../../components/fields/edit/InputRow';
 import Button from '../../components/Button';
 import StandardDialog from '../../components/StandardDialog';
 import { useIntl } from 'react-intl';
+import { set } from 'date-fns';
+import CheckDateRangeIntegrity from '../../pages/fieldManagement/settings/saveField/CheckDateRangeIntegrity';
 
 function getInitialFormValues(schema, fieldKey) {
   return schema.reduce((memo, field) => {
@@ -137,7 +139,8 @@ export default function EditSightingMetadata({
 
         {(incompleteDateRangeError ||error) && (
           <CustomAlert severity="error" titleId="SUBMISSION_ERROR">
-            {incompleteDateRangeError ? intl.formatMessage({id : 'INCOMPLETE_DATE_RANGE_ERROR'}) : error}
+            {incompleteDateRangeError && intl.formatMessage({id : 'INCOMPLETE_DATE_RANGE_ERROR'}) }
+            {error}
           </CustomAlert>
         )}
       </DialogContent>
@@ -150,26 +153,13 @@ export default function EditSightingMetadata({
             const properties = { ...defaultFieldValues };
             if (!isEmpty(customFieldValues))
               properties.customFields = customFieldValues;
-            console.log('properties.customFields', properties.customFields);
-            const regex = /"(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2})/;
-            // Check if the date range is complete
-            for(const value of Object.values(properties['customFields'])) {
-              console.log('value', value);
-              console.log(1);
-              if(Array.isArray(value)) {
-                console.log(2);
-                console.log('value[0]', value[0]);
-                console.log(regex.test(value[0]));
-                const noStartDate = !regex.test(JSON.stringify(value[0])) && regex.test(JSON.stringify(value[1]));
-                const noEndDate = regex.test(JSON.stringify(value[0])) && !regex.test(JSON.stringify(value[1]));
-                if(value.length === 2 && (noStartDate || noEndDate)) {
-                  console.log(3);
-                  setIncompleteDateRangeError(true);
-                  return;
-                } 
-              }
-            }
-            const response = await updateProperties({
+              const dateRangeIntegrity = CheckDateRangeIntegrity(properties['customFields']);
+              if(dateRangeIntegrity) {
+                const dateRangeIntegrityMessage = intl.formatMessage({id : 'INCOMPLETE_DATE_RANGE_ERROR'});
+                setIncompleteDateRangeError(dateRangeIntegrityMessage);
+                return;
+              }              
+              const response = await updateProperties({
               agsGuid: pending ? sightingId : undefined,
               sightingGuid: pending ? undefined : sightingId,
               properties,
