@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { get, isEmpty } from 'lodash-es';
+import { get, isEmpty, truncate } from 'lodash-es';
 
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -10,6 +10,7 @@ import usePatchAGS from '../../models/assetGroupSighting/usePatchAGS';
 import InputRow from '../../components/fields/edit/InputRow';
 import Button from '../../components/Button';
 import StandardDialog from '../../components/StandardDialog';
+import { useIntl } from 'react-intl';
 
 function getInitialFormValues(schema, fieldKey) {
   return schema.reduce((memo, field) => {
@@ -36,6 +37,8 @@ export default function EditSightingMetadata({
     error: sightingError,
     clearError: clearSightingError,
   } = usePatchSighting();
+  
+  const intl = useIntl();
 
   const {
     mutate: updateAgsProperties,
@@ -54,6 +57,8 @@ export default function EditSightingMetadata({
   const [defaultFieldValues, setDefaultFieldValues] = useState({});
 
   const [customFieldValues, setCustomFieldValues] = useState({});
+
+  const [ incompleteDateRangeError, setIncompleteDateRangeError ] = useState(false);
 
   useEffect(() => {
     // Only populate the form with the initial metadata values.
@@ -81,6 +86,7 @@ export default function EditSightingMetadata({
 
   function handleClose() {
     clearError();
+    setIncompleteDateRangeError(false);
     setDefaultFieldValues({});
     setCustomFieldValues({});
     onClose();
@@ -129,9 +135,9 @@ export default function EditSightingMetadata({
           );
         })}
 
-        {error && (
+        {(incompleteDateRangeError ||error) && (
           <CustomAlert severity="error" titleId="SUBMISSION_ERROR">
-            {error}
+            {incompleteDateRangeError ? intl.formatMessage({id : 'INCOMPLETE_DATE_RANGE_ERROR'}) : error}
           </CustomAlert>
         )}
       </DialogContent>
@@ -144,6 +150,25 @@ export default function EditSightingMetadata({
             const properties = { ...defaultFieldValues };
             if (!isEmpty(customFieldValues))
               properties.customFields = customFieldValues;
+            console.log('properties.customFields', properties.customFields);
+            const regex = /"(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2})/;
+            // Check if the date range is complete
+            for(const value of Object.values(properties['customFields'])) {
+              console.log('value', value);
+              console.log(1);
+              if(Array.isArray(value)) {
+                console.log(2);
+                console.log('value[0]', value[0]);
+                console.log(regex.test(value[0]));
+                const noStartDate = !regex.test(JSON.stringify(value[0])) && regex.test(JSON.stringify(value[1]));
+                const noEndDate = regex.test(JSON.stringify(value[0])) && !regex.test(JSON.stringify(value[1]));
+                if(value.length === 2 && (noStartDate || noEndDate)) {
+                  console.log(3);
+                  setIncompleteDateRangeError(true);
+                  return;
+                } 
+              }
+            }
             const response = await updateProperties({
               agsGuid: pending ? sightingId : undefined,
               sightingGuid: pending ? undefined : sightingId,
