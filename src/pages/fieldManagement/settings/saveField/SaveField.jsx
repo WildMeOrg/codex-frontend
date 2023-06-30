@@ -341,10 +341,13 @@ export default function SaveField() {
                 }}
                 value={get(formData, ['schema', 'defaultValue'])}
                 onChange={nextDefaultValue => {
+                  console.log('nextDefaultValue', nextDefaultValue);
                   setFormData({
                     ...formData,
-                    default: nextDefaultValue,
+                    // default: nextDefaultValue,
+                    schema: {...formData['schema'], defaultValue: nextDefaultValue },
                   });
+                  console.log(  'formData', formData);
                 }}
                 disabled={disableForm}
                 choices={get(
