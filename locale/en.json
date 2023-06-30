@@ -1236,5 +1236,6 @@
   "TERMS_INTRO_3": "and our",
   "TERMS_INTRO_4": "Data Usage Policy",
   "SKIP" : "Skip",
-  "SKIP_AND_SUBMIT" : "Skip and submit"
+  "SKIP_AND_SUBMIT" : "Skip and submit",
+  "INCOMPLETE_DATE_RANGE_ERROR" : "Please enter a complete date range."
 }
