@@ -22,6 +22,9 @@ import Text from '../../components/Text';
 import QueryAnnotationsTable from './QueryAnnotationsTable';
 import MatchCandidatesTable from './MatchCandidatesTable';
 import ImageCard from './ImageCard';
+import { FormControlLabel } from '@material-ui/core';
+import { Switch } from '@material-ui/core';
+
 
 const spaceBetweenColumns = 16;
 
@@ -214,12 +217,15 @@ export default function MatchSighting() {
             />
           )}
         </div>
+        <div style={{display: "flex", flexDirection: 'row'}}>
+        <FormControlLabel control={<Switch defaultChecked />} label="Inspect match area" />
         <ButtonMenu
           buttonId="match-actions"
           style={{ marginTop: 44 }}
           actions={buttonActions}
           id="ACTIONS"
         />
+        </div>
       </div>
       <div style={{ display: 'flex' }}>
         <div
