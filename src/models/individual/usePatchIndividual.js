@@ -50,13 +50,10 @@ export default function usePatchIndividual() {
     }
   };
 
-  //this is a function that takes in an individualId and a dictionary of properties to update
-
   const updateIndividualProperties = async (
     individualId,
     dictionary,
   ) => {    
-    const regex = /"(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2})/;
     const customFields = dictionary['customFields'];
     const newCustomFields = formatCustomFields(customFields);
     dictionary['customFields'] = newCustomFields;
