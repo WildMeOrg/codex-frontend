@@ -55,6 +55,8 @@ export default function MatchSighting() {
   const [selectedMatchCandidate, setSelectedMatchCandidate] =
     useState(null);
 
+  const [ checked, setChecked ] = useState(false);
+
   const [reviewDialogOpen, setReviewDialogOpen] = useState(false);
 
   const queryAnnotations = useMemo(() => {
@@ -178,6 +180,12 @@ export default function MatchSighting() {
   const matchPossible =
     selectedMatchCandidate && selectedQueryAnnotation;
 
+  const handleChange = () => {
+    console.log(checked);
+    setChecked(!checked);
+    
+  }
+
   return (
     <MainColumn
       fullWidth
@@ -218,7 +226,12 @@ export default function MatchSighting() {
           )}
         </div>
         <div style={{display: "flex", flexDirection: 'row'}}>
-        <FormControlLabel control={<Switch defaultChecked />} label="Inspect match area" />
+        <FormControlLabel 
+          control={<Switch 
+                      checked={checked} 
+                      onChange = {() => handleChange()}
+          />} 
+          label="Inspect match area" />
         <ButtonMenu
           buttonId="match-actions"
           style={{ marginTop: 44 }}
