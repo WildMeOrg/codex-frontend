@@ -28,6 +28,7 @@ export default function useFetch({
   prependHoustonApiUrl = true,
   queryOptions = {},
 }) {
+  // console.log('queryKey', queryKey);
   const [displayedError, setDisplayedError] = useState(null);
   const [displayedLoading, setDisplayedLoading] = useState(
     !queryOptions.disabled, // should this use enabled instead of disabled? I couldn't find anything in the react-query documentation about disabled.
@@ -78,6 +79,8 @@ export default function useFetch({
     statusCode,
     displayedError,
   ]);
+
+  // console.log('useFetch result', result, statusCode, displayedError);
 
   return {
     ...result,

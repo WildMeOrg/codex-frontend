@@ -2,6 +2,7 @@ import { getEncounterQueryKey } from '../../constants/queryKeys';
 import useFetch from '../../hooks/useFetch';
 
 export default function useEncounter(encounterGuid) {
+  console.log('getEncounterQueryKey(encounterGuid)',  getEncounterQueryKey(encounterGuid));
   return useFetch({
     queryKey: getEncounterQueryKey(encounterGuid),
     url: `/encounters/${encounterGuid}`,
