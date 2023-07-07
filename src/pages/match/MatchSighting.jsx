@@ -24,6 +24,7 @@ import MatchCandidatesTable from './MatchCandidatesTable';
 import ImageCard from './ImageCard';
 import { FormControlLabel } from '@material-ui/core';
 import { Switch } from '@material-ui/core';
+import useCheckHeatMap from '../../models/matching/useCheckHeatmap';
 
 
 const spaceBetweenColumns = 16;
@@ -36,7 +37,10 @@ function deriveIndividualGuid(annotation) {
 
 export default function MatchSighting() {
   const { sightingGuid } = useParams();
-
+  
+  const status = useCheckHeatMap("http://frontend.scribble.com/");
+  console.log(status);
+  const heatmap = status === 200 ? true : false;
   const {
     data: sightingData,
     loading: sightingDataLoading,
@@ -182,9 +186,10 @@ export default function MatchSighting() {
 
   const handleChange = () => {
     console.log(checked);
-    setChecked(!checked);
-    
+    setChecked(!checked);    
   }
+
+  console.log('matchResults', matchResults);
 
   return (
     <MainColumn
@@ -247,7 +252,7 @@ export default function MatchSighting() {
             paddingRight: 0.5 * spaceBetweenColumns,
           }}
         >
-          <ImageCard
+          {heatmap && <div><ImageCard
             titleId="SELECTED_QUERY_ANNOTATION"
             annotation={selectedQueryAnnotation}
           />
@@ -255,7 +260,7 @@ export default function MatchSighting() {
             queryAnnotations={queryAnnotations}
             selectedQueryAnnotation={selectedQueryAnnotation}
             setSelectedQueryAnnotation={setSelectedQueryAnnotation}
-          />
+          /></div>}
         </div>
         <div
           style={{
