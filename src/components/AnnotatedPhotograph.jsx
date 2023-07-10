@@ -14,7 +14,10 @@ export default function AnnotatedPhotograph({
   selectable = false,
   selected = false,
   onClick,
+  heatmapon,
+  left
 }) {
+  console.log("left",left);
   const theme = useTheme();
 
   const alt = get(assetMetadata, 'alt');
@@ -23,6 +26,11 @@ export default function AnnotatedPhotograph({
   const imageHeight = get(assetMetadata, ['dimensions', 'height']);
 
   const showSelectableIcon = selectable && !selected;
+
+  const img = new Image();
+  img.src = url;
+  const width1 = img.naturalWidth;
+  const height1 = img.naturalHeight;
 
   return (
     /* eslint-disable */
@@ -79,7 +87,32 @@ export default function AnnotatedPhotograph({
         preserveAspectRatio="xMidYMid meet"
         width={width}
       >
-        <image
+        
+        {
+          heatmapon ? (
+            left ? (
+              <image
+                alt={alt}
+                href={src}
+                x={0}
+                y={0}
+                height="100%"
+                width="200%"
+        />
+            ) : (
+              <image
+                alt={alt}
+                href={src}
+                x={'-100%'}
+                y={0}
+                height="100%"
+                width="200%"
+        />
+            )
+            
+          )
+          : (
+            <image
           alt={alt}
           href={src}
           x={0}
@@ -87,6 +120,8 @@ export default function AnnotatedPhotograph({
           height="100%"
           width="100%"
         />
+          )
+        }
         {annotations.map(annotation => {
           const x = get(annotation, ['bounds', 'rect', '0']);
           const y = get(annotation, ['bounds', 'rect', '1']);

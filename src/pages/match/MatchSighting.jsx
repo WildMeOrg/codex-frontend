@@ -39,7 +39,7 @@ export default function MatchSighting() {
   const { sightingGuid } = useParams();
   
   const status = useCheckHeatMap("http://frontend.scribble.com/");
-  console.log(status);
+  // console.log(status);
   const heatmap = status === 200 ? true : false;
   const {
     data: sightingData,
@@ -62,6 +62,8 @@ export default function MatchSighting() {
   const [ checked, setChecked ] = useState(false);
 
   const [reviewDialogOpen, setReviewDialogOpen] = useState(false);
+
+  const [ heatMapUrl, setHeatMapUrl ] = useState(null);
 
   const queryAnnotations = useMemo(() => {
     const annotationData = get(matchResults, 'annotation_data', {});
@@ -130,6 +132,17 @@ export default function MatchSighting() {
     );
     const encounterGuid1 = selectedQueryAnnotation?.encounter_guid;
     const encounterGuid2 = selectedMatchCandidate?.encounter_guid;
+
+    const selectedMatchCandidateGuid = selectedMatchCandidate?.guid;  
+    // console.log('selectedMatchCandidateGuid',selectedMatchCandidateGuid);
+    const scoresByIndividual = get(selectedQueryAnnotation,
+      ['algorithms', 'hotspotter_nosv', 'scores_by_individual'], [] );
+    // console.log('scoresByIndividual', scoresByIndividual);
+    const annotation = scoresByIndividual.find((score) => score.guid === selectedMatchCandidateGuid);    
+    const heatmapUrl = annotation?.heatmap_src;
+    console.log(heatmapUrl);
+    setHeatMapUrl(heatmapUrl);
+  
     if (individualGuid1 && individualGuid2) {
       return `/merge?i=${individualGuid1}&i=${individualGuid2}`;
     } else if (individualGuid1 || individualGuid2) {
@@ -183,13 +196,20 @@ export default function MatchSighting() {
   const sightingIsReviewed = Boolean(sightingData?.review_time);
   const matchPossible =
     selectedMatchCandidate && selectedQueryAnnotation;
-
+ 
   const handleChange = () => {
+    let heatmapOn = false;
+    if(heatMapUrl) {
+      
+    }
     console.log(checked);
     setChecked(!checked);    
   }
 
-  console.log('matchResults', matchResults);
+  // console.log('selectedQueryAnnotation',  selectedQueryAnnotation);
+  // console.log('selectedMatchCandidate',  selectedMatchCandidate);
+
+  // console.log('matchResults', matchResults);
 
   return (
     <MainColumn
@@ -252,15 +272,18 @@ export default function MatchSighting() {
             paddingRight: 0.5 * spaceBetweenColumns,
           }}
         >
-          {heatmap && <div><ImageCard
+          <ImageCard
             titleId="SELECTED_QUERY_ANNOTATION"
             annotation={selectedQueryAnnotation}
+            heatmapon={checked}
+            heatmapurl={heatMapUrl}
+            left={true}
           />
           <QueryAnnotationsTable
             queryAnnotations={queryAnnotations}
             selectedQueryAnnotation={selectedQueryAnnotation}
             setSelectedQueryAnnotation={setSelectedQueryAnnotation}
-          /></div>}
+          />
         </div>
         <div
           style={{
@@ -268,10 +291,20 @@ export default function MatchSighting() {
             paddingLeft: 0.5 * spaceBetweenColumns,
           }}
         >
+          {/* <ImageCard
+            titleId="SELECTED_MATCH_CANDIDATE"
+            annotation={selectedMatchCandidate}
+          /> */}
           <ImageCard
             titleId="SELECTED_MATCH_CANDIDATE"
             annotation={selectedMatchCandidate}
+            heatmapon={checked}
+            heatmapurl={heatMapUrl}
           />
+          {/* <ImageCard
+            titleId="SELECTED_MATCH_CANDIDATE"
+            annotation={selectedMatchCandidate}
+          /> */}
           <MatchCandidatesTable
             matchCandidates={matchCandidates}
             selectedMatchCandidate={selectedMatchCandidate}
