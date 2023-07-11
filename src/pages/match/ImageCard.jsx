@@ -9,11 +9,10 @@ import Link from '../../components/Link';
 import Card from '../../components/cards/Card';
 import LocationIdViewer from '../../components/fields/view/LocationIdViewer';
 import DataLineItem from './DataLineItem';
-import { he } from 'date-fns/locale';
 
 export default function ImageCard({ titleId, annotation, heatmapon, heatmapurl, left }) {
   const { data: siteSettings, loading } = useSiteSettings();
-  console.log(heatmapon, heatmapurl);
+  // console.log(heatmapon, heatmapurl);
 
   const regionChoices = useMemo(
     () =>

@@ -24,8 +24,7 @@ import MatchCandidatesTable from './MatchCandidatesTable';
 import ImageCard from './ImageCard';
 import { FormControlLabel } from '@material-ui/core';
 import { Switch } from '@material-ui/core';
-import useCheckHeatMap from '../../models/matching/useCheckHeatmap';
-
+import { set } from 'date-fns';
 
 const spaceBetweenColumns = 16;
 
@@ -37,10 +36,6 @@ function deriveIndividualGuid(annotation) {
 
 export default function MatchSighting() {
   const { sightingGuid } = useParams();
-  
-  const status = useCheckHeatMap("http://frontend.scribble.com/");
-  // console.log(status);
-  const heatmap = status === 200 ? true : false;
   const {
     data: sightingData,
     loading: sightingDataLoading,
@@ -64,6 +59,7 @@ export default function MatchSighting() {
   const [reviewDialogOpen, setReviewDialogOpen] = useState(false);
 
   const [ heatMapUrl, setHeatMapUrl ] = useState(null);
+  const [ urlOK, setUrlOK ] = useState(false);
 
   const queryAnnotations = useMemo(() => {
     const annotationData = get(matchResults, 'annotation_data', {});
@@ -140,8 +136,21 @@ export default function MatchSighting() {
     // console.log('scoresByIndividual', scoresByIndividual);
     const annotation = scoresByIndividual.find((score) => score.guid === selectedMatchCandidateGuid);    
     const heatmapUrl = annotation?.heatmap_src;
-    console.log(heatmapUrl);
+        console.log(heatmapUrl);
     setHeatMapUrl(heatmapUrl);
+    // const checkHeatMap = async () => {
+    //   try {
+    //     const response = await fetch(heatMapUrl);
+    //     if (response.ok) {
+    //       setUrlOK(true);
+    //       } else {
+    //         setUrlOK(false);
+    //     }
+    //   } catch (error) {
+    //     setUrlOK(false);
+    //   }
+    // }
+    // checkHeatMap();
   
     if (individualGuid1 && individualGuid2) {
       return `/merge?i=${individualGuid1}&i=${individualGuid2}`;
@@ -155,6 +164,9 @@ export default function MatchSighting() {
       return `/create-individual?e=${encounterGuid1}&e=${encounterGuid2}`;
     }
   }, [selectedQueryAnnotation, selectedMatchCandidate]);
+
+  // const status = useCheckHeatMap(heatMapUrl?.slice(7,));
+  // console.log(status);
 
   useEffect(() => {
     if (!selectedQueryAnnotation)
@@ -198,18 +210,8 @@ export default function MatchSighting() {
     selectedMatchCandidate && selectedQueryAnnotation;
  
   const handleChange = () => {
-    let heatmapOn = false;
-    if(heatMapUrl) {
-      
-    }
-    console.log(checked);
     setChecked(!checked);    
   }
-
-  // console.log('selectedQueryAnnotation',  selectedQueryAnnotation);
-  // console.log('selectedMatchCandidate',  selectedMatchCandidate);
-
-  // console.log('matchResults', matchResults);
 
   return (
     <MainColumn

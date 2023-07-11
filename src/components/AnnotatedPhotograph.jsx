@@ -17,20 +17,50 @@ export default function AnnotatedPhotograph({
   heatmapon,
   left
 }) {
-  console.log("left",left);
+
   const theme = useTheme();
 
   const alt = get(assetMetadata, 'alt');
   const src = get(assetMetadata, 'src');
-  const imageWidth = get(assetMetadata, ['dimensions', 'width']);
-  const imageHeight = get(assetMetadata, ['dimensions', 'height']);
+  let imageWidth = get(assetMetadata, ['dimensions', 'width']);
+  let imageHeight = get(assetMetadata, ['dimensions', 'height']);
+  // console.log(imageWidth, imageHeight);
+  // const img = new Image();
+  // img.src = src;
+  // if(heatmapon && img.naturalHeight>0){
+  //   imageWidth = img.naturalWidth;
+  //   imageHeight = img.naturalHeight;
+  // }
+
+  // console.log(imageWidth, imageHeight);
+  // var imagePieces = [];
+  // var image = new Image();
+  // image.src = src;
+  // image.onload = cutImageUp;
+  
+  
+  // function cutImageUp() {      
+  //     for(var x = 0; x < 2; ++x) {
+  //         for(var y = 0; y < 2; ++y) {
+  //             var canvas = document.createElement('canvas');
+  //             const widthOfOnePiece = image.width/2;
+  //             const heightOfOnePiece = image.height;
+  //             canvas.width = widthOfOnePiece;
+  //             canvas.height = heightOfOnePiece;
+  //             var context = canvas.getContext('2d');
+  //             context.drawImage(image, x * widthOfOnePiece, y * heightOfOnePiece, widthOfOnePiece, heightOfOnePiece, 0, 0, canvas.width, canvas.height);
+  //             imagePieces.push(canvas.toDataURL());
+  //         }
+  //     }
+  //     console.log(imagePieces);
+  //     // imagePieces now contains data urls of all the pieces of the image
+
+  //     // load one piece onto the page
+  //     // var anImageElement = document.getElementById('myImageElementInTheDom');
+  //     // anImageElement.src = imagePieces[0];
+  // }
 
   const showSelectableIcon = selectable && !selected;
-
-  const img = new Image();
-  img.src = url;
-  const width1 = img.naturalWidth;
-  const height1 = img.naturalHeight;
 
   return (
     /* eslint-disable */
@@ -83,7 +113,8 @@ export default function AnnotatedPhotograph({
             : undefined,
           display: 'block',
         }}
-        viewBox={`0 0 ${imageWidth} ${imageHeight}`}
+        // viewBox={`0 0 ${imageWidth} ${imageHeight}`}
+        // viewBox={`0 0 50 50`}
         preserveAspectRatio="xMidYMid meet"
         width={width}
       >
@@ -96,8 +127,8 @@ export default function AnnotatedPhotograph({
                 href={src}
                 x={0}
                 y={0}
-                height="100%"
-                width="200%"
+                height={"100%"}
+                width={"200%"}
         />
             ) : (
               <image
@@ -105,8 +136,8 @@ export default function AnnotatedPhotograph({
                 href={src}
                 x={'-100%'}
                 y={0}
-                height="100%"
-                width="200%"
+                height={"100%"}
+                width={"200%"}
         />
             )
             
