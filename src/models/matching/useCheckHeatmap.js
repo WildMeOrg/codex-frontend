@@ -4,7 +4,7 @@ export default function useCheckHeatmap(
   url,  
 ) {
   return useFetch({
-    // queryKey: getAssetGroupQueryKey(assetGroupId),
-    url: {url},
+    queryKey: 'checkHeatmap',
+    url: url,
   });
 }
