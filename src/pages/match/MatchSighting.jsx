@@ -130,27 +130,24 @@ export default function MatchSighting() {
     const encounterGuid2 = selectedMatchCandidate?.encounter_guid;
 
     const selectedMatchCandidateGuid = selectedMatchCandidate?.guid;  
-    // console.log('selectedMatchCandidateGuid',selectedMatchCandidateGuid);
     const scoresByIndividual = get(selectedQueryAnnotation,
       ['algorithms', 'hotspotter_nosv', 'scores_by_individual'], [] );
-    // console.log('scoresByIndividual', scoresByIndividual);
     const annotation = scoresByIndividual.find((score) => score.guid === selectedMatchCandidateGuid);    
     const heatmapUrl = annotation?.heatmap_src;
-        console.log(heatmapUrl);
     setHeatMapUrl(heatmapUrl);
-    // const checkHeatMap = async () => {
-    //   try {
-    //     const response = await fetch(heatMapUrl);
-    //     if (response.ok) {
-    //       setUrlOK(true);
-    //       } else {
-    //         setUrlOK(false);
-    //     }
-    //   } catch (error) {
-    //     setUrlOK(false);
-    //   }
-    // }
-    // checkHeatMap();
+    const checkHeatMap = async () => {
+      try {
+        const response = await fetch(heatMapUrl);
+        if (response.ok) {
+          setUrlOK(true);
+          } else {
+            setUrlOK(false);
+        }
+      } catch (error) {
+        setUrlOK(false);
+      }
+    }
+    checkHeatMap();
   
     if (individualGuid1 && individualGuid2) {
       return `/merge?i=${individualGuid1}&i=${individualGuid2}`;
@@ -164,9 +161,6 @@ export default function MatchSighting() {
       return `/create-individual?e=${encounterGuid1}&e=${encounterGuid2}`;
     }
   }, [selectedQueryAnnotation, selectedMatchCandidate]);
-
-  // const status = useCheckHeatMap(heatMapUrl?.slice(7,));
-  // console.log(status);
 
   useEffect(() => {
     if (!selectedQueryAnnotation)
@@ -257,6 +251,7 @@ export default function MatchSighting() {
           control={<Switch 
                       checked={checked} 
                       onChange = {() => handleChange()}
+                      disabled={!urlOK || !heatMapUrl}
           />} 
           label="Inspect match area" />
         <ButtonMenu
