@@ -68,6 +68,7 @@ export default function Requests() {
             columns={columns}
             data={requests}
             loading={isLoading}
+            noResultsTextId="NO_INVITATION_REQUESTS"
           />
         </CardContent>
       </Card>
