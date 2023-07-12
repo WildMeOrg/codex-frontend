@@ -24,7 +24,6 @@ import MatchCandidatesTable from './MatchCandidatesTable';
 import ImageCard from './ImageCard';
 import { FormControlLabel } from '@material-ui/core';
 import { Switch } from '@material-ui/core';
-import { set } from 'date-fns';
 
 const spaceBetweenColumns = 16;
 
@@ -134,6 +133,7 @@ export default function MatchSighting() {
       ['algorithms', 'hotspotter_nosv', 'scores_by_individual'], [] );
     const annotation = scoresByIndividual.find((score) => score.guid === selectedMatchCandidateGuid);    
     const heatmapUrl = annotation?.heatmap_src;
+    console.log(heatmapUrl);
     setHeatMapUrl(heatmapUrl);
     const checkHeatMap = async () => {
       try {

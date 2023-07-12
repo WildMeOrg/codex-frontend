@@ -12,7 +12,6 @@ import DataLineItem from './DataLineItem';
 
 export default function ImageCard({ titleId, annotation, heatmapon, heatmapurl, left }) {
   const { data: siteSettings, loading } = useSiteSettings();
-  // console.log(heatmapon, heatmapurl);
 
   const regionChoices = useMemo(
     () =>

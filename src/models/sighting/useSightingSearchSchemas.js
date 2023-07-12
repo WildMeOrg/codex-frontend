@@ -11,9 +11,7 @@ import MultiSelectFilter from '../../components/filterFields/MultiSelectFilter';
 export default function useSightingSearchSchemas() {
   const { regionOptions, speciesOptions, pipelineStateOptions, stageOptions, booleanChoices } = useOptions();
   const { data: siteSettings } = useSiteSettings();
-  const customSightingFields = siteSettings['site.custom.customFields.Sighting'].value.definitions 
-                                  ? siteSettings['site.custom.customFields.Sighting'].value.definitions 
-                                  : [];
+  const customSightingFields = siteSettings['site.custom.customFields.Sighting'].value.definitions || [];
   let customFilter;
   let isMultiple = false;
   let isFloat = false;
