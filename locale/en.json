@@ -1238,5 +1238,7 @@
   "SKIP" : "Skip",
   "SKIP_AND_SUBMIT" : "Skip and submit",
   "INCOMPLETE_DATE_RANGE_ERROR" : "Please enter a complete date range.",
-  "INSPECT_MATCH_AREA" : "Inspect match area"
+  "INSPECT_MATCH_AREA" : "Inspect match area",  
+  "MESSAGE" : "Message",
+  "NO_INVITATION_REQUESTS" : "Currently there is no request from invitation page"
 }
