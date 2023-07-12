@@ -46,6 +46,7 @@ import Preferences from './pages/preferences/Preferences';
 import ResendVerificationEmail from './pages/auth/ResendVerificationEmail';
 import Footer from './components/Footer';
 import { defaultCrossfadeDuration } from './constants/defaults';
+import Requests from './pages/setup/Requests';
 
 export default function AuthenticatedSwitch({
   emailNeedsVerification,
@@ -183,6 +184,9 @@ export default function AuthenticatedSwitch({
                       </Route>
                       <Route path="/users">
                         <Users />
+                      </Route>
+                      <Route path="/requests">
+                        <Requests />
                       </Route>
                       <Route path="/social-groups/:guid">
                         <SocialGroup />
