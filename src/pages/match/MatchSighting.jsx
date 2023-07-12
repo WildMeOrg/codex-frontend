@@ -22,8 +22,8 @@ import Text from '../../components/Text';
 import QueryAnnotationsTable from './QueryAnnotationsTable';
 import MatchCandidatesTable from './MatchCandidatesTable';
 import ImageCard from './ImageCard';
-import { FormControlLabel } from '@material-ui/core';
 import { Switch } from '@material-ui/core';
+import { useIntl } from 'react-intl';
 
 const spaceBetweenColumns = 16;
 
@@ -35,6 +35,8 @@ function deriveIndividualGuid(annotation) {
 
 export default function MatchSighting() {
   const { sightingGuid } = useParams();
+  const intl = useIntl();
+  const label = intl.formatMessage({ id: 'INSPECT_MATCH_AREA'});
   const {
     data: sightingData,
     loading: sightingDataLoading,
@@ -238,8 +240,7 @@ export default function MatchSighting() {
             style={{ padding: '2px 0 0 2px' }}
           />
           {sightingIsReviewed && (
-            <Chip
-              icon={<DoneIcon />}
+            <Chip              icon={<DoneIcon />}
               variant="outlined"
               label="Reviewed"
               style={{ marginTop: 8 }}
@@ -252,7 +253,7 @@ export default function MatchSighting() {
                       onChange = {() => handleChange()}
                       disabled={!urlOK || !heatMapUrl}
           />
-          <span style={{marginBottom: 10, marginRight: 10}}> Inspect match area </span>
+          <span style={{marginBottom: 10, marginRight: 10}}> {label} </span>
         <ButtonMenu
           buttonId="match-actions"
           style={{ marginTop: 44 }}
