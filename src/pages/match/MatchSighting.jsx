@@ -288,20 +288,12 @@ export default function MatchSighting() {
             paddingLeft: 0.5 * spaceBetweenColumns,
           }}
         >
-          {/* <ImageCard
-            titleId="SELECTED_MATCH_CANDIDATE"
-            annotation={selectedMatchCandidate}
-          /> */}
           <ImageCard
             titleId="SELECTED_MATCH_CANDIDATE"
             annotation={selectedMatchCandidate}
             heatmapon={checked}
             heatmapurl={heatMapUrl}
           />
-          {/* <ImageCard
-            titleId="SELECTED_MATCH_CANDIDATE"
-            annotation={selectedMatchCandidate}
-          /> */}
           <MatchCandidatesTable
             matchCandidates={matchCandidates}
             selectedMatchCandidate={selectedMatchCandidate}
