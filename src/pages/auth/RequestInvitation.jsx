@@ -40,7 +40,6 @@ export default function RequestInvitation() {
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [message, setMessage] = useState('');
-  const [loading, setLoading] = useState(false);
   const [requestSent, setRequestSent] = useState(false);
 
   useDocumentTitle('REQUEST_INVITE');
@@ -112,7 +111,6 @@ export default function RequestInvitation() {
         <Grid item style={{ position: 'relative' }}>
           <Button
             onClick={async () => {
-              setLoading(true);
               let token = null;
               if (window.grecaptcha) {
                 const grecaptchaReady = new Promise(resolve => {
@@ -132,7 +130,6 @@ export default function RequestInvitation() {
               const response = await postRequestInvitation({email, name, message, token});
               if (response?.status === 200){
                 setTimeout(() => {
-                  setLoading(false);
                   setRequestSent(true);
                 }, 1000);
               }            
@@ -140,7 +137,7 @@ export default function RequestInvitation() {
             disabled={!email.trim() || !name.trim() }  
             style={{ width: '100%' }}
             display="primary"
-            loading={loading}
+            loading={loadingRequest}
             id="SEND_REQUEST"
           />
         </Grid>
