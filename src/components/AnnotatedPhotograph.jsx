@@ -22,8 +22,8 @@ export default function AnnotatedPhotograph({
 
   const alt = get(assetMetadata, 'alt');
   const src = get(assetMetadata, 'src');
-  let imageWidth = get(assetMetadata, ['dimensions', 'width']);
-  let imageHeight = get(assetMetadata, ['dimensions', 'height']);
+  const imageWidth = get(assetMetadata, ['dimensions', 'width']);
+  const imageHeight = get(assetMetadata, ['dimensions', 'height']);
 
   const showSelectableIcon = selectable && !selected;
 

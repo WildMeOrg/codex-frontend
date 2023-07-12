@@ -79,8 +79,6 @@ export default function useFetch({
     displayedError,
   ]);
 
-  // console.log('useFetch result', result, statusCode, displayedError);
-
   return {
     ...result,
     statusCode,
