@@ -246,14 +246,13 @@ export default function MatchSighting() {
             />
           )}
         </div>
-        <div style={{display: "flex", flexDirection: 'row'}}>
-        <FormControlLabel 
-          control={<Switch 
+        <div style={{display: "flex", flexDirection: 'row', alignItems: 'flex-end'}}>
+          <Switch 
                       checked={checked} 
                       onChange = {() => handleChange()}
                       disabled={!urlOK || !heatMapUrl}
-          />} 
-          label="Inspect match area" />
+          />
+          <span style={{marginBottom: 10, marginRight: 10}}> Inspect match area </span>
         <ButtonMenu
           buttonId="match-actions"
           style={{ marginTop: 44 }}
