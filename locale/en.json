@@ -1240,5 +1240,6 @@
   "INCOMPLETE_DATE_RANGE_ERROR" : "Please enter a complete date range.",
   "INSPECT_MATCH_AREA" : "Inspect match area",  
   "MESSAGE" : "Message",
+  "INVITATION_REQUESTS" : "Invitation Requests",
   "NO_INVITATION_REQUESTS" : "Currently there is no request from invitation page"
 }
