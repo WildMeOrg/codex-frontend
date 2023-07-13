@@ -164,14 +164,24 @@ export default function ReportForm({
   const optionalDefaultSightingSchemas = defaultSightingSchemas.filter(data => !data.required); 
   const requiredCustomSightingSchemas = customSightingSchemas.filter(data => data.required);
   const optionalCustomSightingSchemas = customSightingSchemas.filter(data => !data.required);
+  const requiredDefaultEncounterFieldSchemas = defaultEncounterSchemas.filter(data => data.required);
+  const optionalDefaultEncounterFieldSchemas = defaultEncounterSchemas.filter(data => !data.required);
+  const requiredCustomEncounterFieldSchemas = customEncounterSchemas.filter(data => data.required);
+  const optionalCustomEncounterFieldSchemas = customEncounterSchemas.filter(data => !data.required);
   const [optional, setOptional] = useState(false);
   let formValid = false;
   const checkRequired = () => {
-    const requiredCustomFields = sightingFieldSchemas
-              .filter(
-                schema => schema.customField && schema.required && !customSightingFormValues[schema.name],
-                )
-              .map(data => ({ ...data, labelId: data.label }));  
+    const sightingsRequired = sightingFieldSchemas
+    .filter(
+      schema => schema.customField && schema.required && !customSightingFormValues[schema.name],
+      )
+    .map(data => ({ ...data, labelId: data.label }));  
+    const encountersRequired = encounterFieldSchemas
+    .filter(
+      schema => schema.customField && schema.required && !customEncounterFormValues[schema.name],
+      )
+    .map(data => ({ ...data, labelId: data.label })); 
+    const requiredCustomFields = sightingsRequired.concat(encountersRequired);
               // check that required fields are complete.
               // specifiedTime field is required, but the logic and message
               // are different from the other fields
@@ -358,25 +368,37 @@ export default function ReportForm({
             categories={customSightingCategories}
             fieldSchema={requiredCustomSightingSchemas}
           />
+          <FieldCollections
+            formValues={encounterFormValues}
+            setFormValues={setEncounterFormValues}
+            categories={defaultEncounterCategories}
+            fieldSchema={requiredDefaultEncounterFieldSchemas}
+          />
+          <FieldCollections
+            formValues={customEncounterFormValues}
+            setFormValues={setCustomEncounterFormValues}
+            categories={customEncounterCategories}
+            fieldSchema={requiredCustomEncounterFieldSchemas}
+          />
         </>
       )}
 
-{optional && (
-        <>
-          <FieldCollections
-            formValues={sightingFormValues}
-            setFormValues={setSightingFormValues}
-            categories={defaultSightingCategories}
-            fieldSchema={optionalDefaultSightingSchemas}
-          />
-          <FieldCollections
-            formValues={customSightingFormValues}
-            setFormValues={setCustomSightingFormValues}
-            categories={customSightingCategories}
-            fieldSchema={optionalCustomSightingSchemas}
-          />
-        </>
-      )}
+      {optional && (
+              <>
+                <FieldCollections
+                  formValues={sightingFormValues}
+                  setFormValues={setSightingFormValues}
+                  categories={defaultSightingCategories}
+                  fieldSchema={optionalDefaultSightingSchemas}
+                />
+                <FieldCollections
+                  formValues={customSightingFormValues}
+                  setFormValues={setCustomSightingFormValues}
+                  categories={customSightingCategories}
+                  fieldSchema={optionalCustomSightingSchemas}
+                />          
+              </>
+            )}
 
       {optional && sightingType === 'one' && (
         <>
@@ -384,13 +406,13 @@ export default function ReportForm({
             formValues={encounterFormValues}
             setFormValues={setEncounterFormValues}
             categories={defaultEncounterCategories}
-            fieldSchema={defaultEncounterSchemas}
+            fieldSchema={optionalDefaultEncounterFieldSchemas}
           />
           <FieldCollections
             formValues={customEncounterFormValues}
             setFormValues={setCustomEncounterFormValues}
             categories={customEncounterCategories}
-            fieldSchema={customEncounterSchemas}
+            fieldSchema={optionalCustomEncounterFieldSchemas}
           />
         </>
       )}  
