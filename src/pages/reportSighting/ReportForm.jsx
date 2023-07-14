@@ -178,9 +178,10 @@ export default function ReportForm({
     .map(data => ({ ...data, labelId: data.label }));  
     const encountersRequired = encounterFieldSchemas
     .filter(
-      schema => schema.customField && schema.required && !customEncounterFormValues[schema.name],
+      schema => sightingType === 'one' && schema.customField && schema.required && !customEncounterFormValues[schema.name],
       )
     .map(data => ({ ...data, labelId: data.label })); 
+    console.log(sightingsRequired, encountersRequired);
     const requiredCustomFields = sightingsRequired.concat(encountersRequired);
               // check that required fields are complete.
               // specifiedTime field is required, but the logic and message
@@ -368,20 +369,26 @@ export default function ReportForm({
             categories={customSightingCategories}
             fieldSchema={requiredCustomSightingSchemas}
           />
-          <FieldCollections
-            formValues={encounterFormValues}
-            setFormValues={setEncounterFormValues}
-            categories={defaultEncounterCategories}
-            fieldSchema={requiredDefaultEncounterFieldSchemas}
-          />
-          <FieldCollections
-            formValues={customEncounterFormValues}
-            setFormValues={setCustomEncounterFormValues}
-            categories={customEncounterCategories}
-            fieldSchema={requiredCustomEncounterFieldSchemas}
-          />
         </>
       )}
+      {
+        !optional && sightingType === 'one' && (
+          <>            
+            <FieldCollections
+              formValues={encounterFormValues}
+              setFormValues={setEncounterFormValues}
+              categories={defaultEncounterCategories}
+              fieldSchema={requiredDefaultEncounterFieldSchemas}
+            />
+            <FieldCollections
+              formValues={customEncounterFormValues}
+              setFormValues={setCustomEncounterFormValues}
+              categories={customEncounterCategories}
+              fieldSchema={requiredCustomEncounterFieldSchemas}
+            />
+          </>
+        )
+      }
 
       {optional && (
               <>
