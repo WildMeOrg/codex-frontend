@@ -178,7 +178,7 @@ export default function ReportForm({
     .map(data => ({ ...data, labelId: data.label }));  
     const encountersRequired = encounterFieldSchemas
     .filter(
-      schema => schema.customField && schema.required && !customEncounterFormValues[schema.name],
+      schema => sightingType === 'one' && schema.customField && schema.required && !customEncounterFormValues[schema.name],
       )
     .map(data => ({ ...data, labelId: data.label })); 
     const requiredCustomFields = sightingsRequired.concat(encountersRequired);
@@ -368,20 +368,26 @@ export default function ReportForm({
             categories={customSightingCategories}
             fieldSchema={requiredCustomSightingSchemas}
           />
-          <FieldCollections
-            formValues={encounterFormValues}
-            setFormValues={setEncounterFormValues}
-            categories={defaultEncounterCategories}
-            fieldSchema={requiredDefaultEncounterFieldSchemas}
-          />
-          <FieldCollections
-            formValues={customEncounterFormValues}
-            setFormValues={setCustomEncounterFormValues}
-            categories={customEncounterCategories}
-            fieldSchema={requiredCustomEncounterFieldSchemas}
-          />
         </>
       )}
+      {
+        !optional && sightingType === 'one' && (
+          <>            
+            <FieldCollections
+              formValues={encounterFormValues}
+              setFormValues={setEncounterFormValues}
+              categories={defaultEncounterCategories}
+              fieldSchema={requiredDefaultEncounterFieldSchemas}
+            />
+            <FieldCollections
+              formValues={customEncounterFormValues}
+              setFormValues={setCustomEncounterFormValues}
+              categories={customEncounterCategories}
+              fieldSchema={requiredCustomEncounterFieldSchemas}
+            />
+          </>
+        )
+      }
 
       {optional && (
               <>
