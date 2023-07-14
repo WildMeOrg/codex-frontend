@@ -181,7 +181,6 @@ export default function ReportForm({
       schema => sightingType === 'one' && schema.customField && schema.required && !customEncounterFormValues[schema.name],
       )
     .map(data => ({ ...data, labelId: data.label })); 
-    console.log(sightingsRequired, encountersRequired);
     const requiredCustomFields = sightingsRequired.concat(encountersRequired);
               // check that required fields are complete.
               // specifiedTime field is required, but the logic and message
