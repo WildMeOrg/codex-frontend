@@ -6,8 +6,6 @@ export DOCKER_BUILDKIT=1
 
 export DOCKER_CLI_EXPERIMENTAL=enabled
 
-export NODE_OPTIONS="--openssl-legacy-provider"
-
 usage () {
     echo "Usage: $0 [-t <tag>] [-r <registry-url>] [<image> ...]";
 }
