@@ -1,4 +1,4 @@
-FROM node:19.8.1 as org.wildme.codex.frontend.build
+FROM node:16.20.1 as org.wildme.codex.frontend.build
 
 COPY . /code 
 
