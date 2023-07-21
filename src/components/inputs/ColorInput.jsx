@@ -9,30 +9,26 @@ import InputLabel from '@material-ui/core/InputLabel';
 
 const colors = [
   {
-    hex: '#D1FD7E',
-    labelId: 'LIME',
-  },
-  {
-    hex: '#8CFD8D',
+      hex: '#71AC8F',
     labelId: 'FOREST',
   },
   {
-    hex: '#68F6E5',
+    hex: '#53BAC5',
     labelId: 'AQUA',
-  },
+  },  
   {
-    hex: '#87F0FE',
-    labelId: 'SKY',
-  },
-  {
-    hex: '#CDABFD',
+    hex: '#8176B1',
     labelId: 'LAVENDER',
   },
   {
-    hex: '#FECA75',
+    hex: '#E9AD60',
     labelId: 'PRAIRIE',
   },
-];
+  {
+    hex: '#B95E9D',
+    labelId: 'ROSE',
+  }
+  ];
 
 const Core = function ({ children, required, width, style = {} }) {
   return (

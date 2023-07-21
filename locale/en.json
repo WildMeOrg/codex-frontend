@@ -1241,5 +1241,6 @@
   "INSPECT_MATCH_AREA" : "Inspect match area",  
   "MESSAGE" : "Message",
   "INVITATION_REQUESTS" : "Invitation Requests",
-  "NO_INVITATION_REQUESTS" : "Currently there is no request from invitation page"
+  "NO_INVITATION_REQUESTS" : "Currently there is no request from invitation page",
+  "ROSE":"Rose"
 }
