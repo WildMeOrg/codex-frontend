@@ -47,7 +47,11 @@ function AppWithQueryClient() {
   const { data, error } = useSiteSettings();
 
   const adminUserInitialized = get(data, 'site.adminUserInitialized');
-  const primaryColor = get(data, ['site.look.themeColor', 'value']);
+  let primaryColor = get(data, ['site.look.themeColor', 'value']);
+  const primaryColorArray = ['#71AC8F', '#53BAC5', '#8176B1', '#E9AD60', '#B95E9D']
+  if(!primaryColorArray.includes(primaryColor)) {
+    primaryColor = '#8176B1';
+  }
 
   if (error) {
     document.title = 'Server Unavailable';
