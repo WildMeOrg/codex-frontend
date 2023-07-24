@@ -69,7 +69,7 @@ export default primaryColor => {
           fontWeight: 500,
         },
         root: {
-          borderRadius: 10000,
+          // borderRadius: 10000,
           padding: '6px 20px',
           fontWeight: 600,
         },
