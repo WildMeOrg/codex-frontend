@@ -48,7 +48,7 @@ function AppWithQueryClient() {
 
   const adminUserInitialized = get(data, 'site.adminUserInitialized');
   let primaryColor = get(data, ['site.look.themeColor', 'value']);
-  const primaryColorArray = ['#71AC8F', '#53BAC5', '#8176B1', '#E9AD60', '#B95E9D']
+  const primaryColorArray = ['#487A63', '#8176B1', '#2E818A', '#C24E14', '#B35196']
   if(!primaryColorArray.includes(primaryColor)) {
     primaryColor = '#8176B1';
   }
