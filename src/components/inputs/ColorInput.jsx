@@ -9,11 +9,11 @@ import InputLabel from '@material-ui/core/InputLabel';
 
 const colors = [
   {
-      hex: '#71AC8F',
+      hex: '#487A63',
     labelId: 'FOREST',
   },
   {
-    hex: '#53BAC5',
+    hex: '#2E818A',
     labelId: 'AQUA',
   },  
   {
@@ -21,11 +21,11 @@ const colors = [
     labelId: 'LAVENDER',
   },
   {
-    hex: '#E9AD60',
+    hex: '#C24E14',
     labelId: 'PRAIRIE',
   },
   {
-    hex: '#B95E9D',
+    hex: '#B35196',
     labelId: 'ROSE',
   }
   ];
