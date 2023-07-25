@@ -14,6 +14,7 @@ import { RegionEditor } from './defaultFieldComponents/Editors';
 import RelationshipEditor from './defaultFieldComponents/RelationshipEditor';
 import SocialGroupsEditor from './defaultFieldComponents/SocialGroupsEditor';
 import SpeciesEditor from './defaultFieldComponents/SpeciesEditor';
+import newSpeciesEditor from './defaultFieldComponents/newSpeciesEditor';
 import { cellRendererTypes } from '../../../components/dataDisplays/cellRenderers';
 
 const configurableFields = [
@@ -22,29 +23,30 @@ const configurableFields = [
     backendPath: 'site.species',
     labelId: 'SPECIES',
     type: categoryTypes.sighting,
-    Editor: SpeciesEditor,
+    // Editor: SpeciesEditor,
+    Editor: newSpeciesEditor,
   },
-  {
-    id: 'region',
-    backendPath: 'site.custom.regions',
-    labelId: 'REGION',
-    type: categoryTypes.sighting,
-    Editor: RegionEditor,
-  },
-  {
-    id: 'relationship',
-    backendPath: 'relationship_type_roles',
-    labelId: 'RELATIONSHIP',
-    type: categoryTypes.individual,
-    Editor: RelationshipEditor,
-  },
-  {
-    id: 'socialGroups',
-    backendPath: 'social_group_roles',
-    labelId: 'SOCIAL_GROUPS',
-    type: categoryTypes.individual,
-    Editor: SocialGroupsEditor,
-  },
+  // {
+  //   id: 'region',
+  //   backendPath: 'site.custom.regions',
+  //   labelId: 'REGION',
+  //   type: categoryTypes.sighting,
+  //   Editor: RegionEditor,
+  // },
+  // {
+  //   id: 'relationship',
+  //   backendPath: 'relationship_type_roles',
+  //   labelId: 'RELATIONSHIP',
+  //   type: categoryTypes.individual,
+  //   Editor: RelationshipEditor,
+  // },
+  // {
+  //   id: 'socialGroups',
+  //   backendPath: 'social_group_roles',
+  //   labelId: 'SOCIAL_GROUPS',
+  //   type: categoryTypes.individual,
+  //   Editor: SocialGroupsEditor,
+  // },
 ];
 
 function getInitialFormState(siteSettings) {
@@ -68,7 +70,7 @@ function getInitialFormState(siteSettings) {
   return { regions, species, relationships, socialGroups };
 }
 
-export default function DefaultFieldTable({ siteSettings }) {
+export default function DefaultFieldTable({ siteSettings, setSpecies }) {
   const intl = useIntl();
   const [formSettings, setFormSettings] = useState(null);
   const [editField, setEditField] = useState(null);
@@ -106,7 +108,13 @@ export default function DefaultFieldTable({ siteSettings }) {
           <ActionIcon
             variant="edit"
             onClick={() => {
-              setEditField(field);
+              console.log('===========>>>>>>>>>>>>>',field);
+              if(field.id === 'species'){
+                setSpecies(true);
+              }else {
+                setEditField(field);
+              }
+              
             }}
           />
         ),

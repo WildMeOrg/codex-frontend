@@ -1,4 +1,5 @@
 import React from 'react';
+import { useState } from 'react';
 import { get } from 'lodash-es';
 import Grid from '@material-ui/core/Grid';
 
@@ -22,6 +23,7 @@ function getCustomFields(siteSettings, property) {
 
 export default function FieldManagement() {
   const { data: siteSettings, loading, error } = useSiteSettings();
+  const [ species, setSpecies ] = useState(false);
 
   useDocumentTitle('MANAGE_FIELDS');
 
@@ -57,7 +59,14 @@ export default function FieldManagement() {
     c => c.type === categoryTypes.encounter,
   );
 
-  return (
+  if(species) {
+    return  (
+    <MainColumn>
+      <SettingsBreadcrumbs />
+    </MainColumn>
+    )
+  }
+  else return (
     <MainColumn>
       <Text
         variant="h3"
@@ -72,8 +81,8 @@ export default function FieldManagement() {
         spacing={3}
         style={{ padding: 20 }}
       >
-        <DefaultFieldTable siteSettings={siteSettings} />
-        <CategoryTable />
+        <DefaultFieldTable siteSettings={siteSettings} setSpecies={setSpecies} />
+        {/* <CategoryTable />
         <CustomFieldTable
           categories={customIndividualCategories}
           fields={customIndividualFields}
@@ -97,7 +106,7 @@ export default function FieldManagement() {
           descriptionId="CUSTOM_ENCOUNTER_FIELDS_DESCRIPTION"
           settingName="site.custom.customFields.Encounter"
           noFieldsTextId="NO_CUSTOM_ENCOUNTER_FIELDS_MESSAGE"
-        />
+        /> */}
       </Grid>
     </MainColumn>
   );
