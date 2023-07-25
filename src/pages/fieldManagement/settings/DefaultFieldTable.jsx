@@ -24,7 +24,7 @@ const configurableFields = [
     labelId: 'SPECIES',
     type: categoryTypes.sighting,
     // Editor: SpeciesEditor,
-    Editor: newSpeciesEditor,
+    // Editor: newSpeciesEditor,
   },
   // {
   //   id: 'region',
@@ -108,7 +108,6 @@ export default function DefaultFieldTable({ siteSettings, setSpecies }) {
           <ActionIcon
             variant="edit"
             onClick={() => {
-              console.log('===========>>>>>>>>>>>>>',field);
               if(field.id === 'species'){
                 setSpecies(true);
               }else {

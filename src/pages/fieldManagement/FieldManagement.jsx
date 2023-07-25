@@ -12,6 +12,9 @@ import categoryTypes from '../../constants/categoryTypes';
 import CategoryTable from './settings/CategoryTable';
 import CustomFieldTable from './settings/CustomFieldTable';
 import DefaultFieldTable from './settings/DefaultFieldTable';
+import { useIntl } from 'react-intl';
+import DataDisplay from '../../components/dataDisplays/DataDisplay';
+import Button from '../../components/Button';
 
 function getCustomFields(siteSettings, property) {
   return get(
@@ -24,6 +27,7 @@ function getCustomFields(siteSettings, property) {
 export default function FieldManagement() {
   const { data: siteSettings, loading, error } = useSiteSettings();
   const [ species, setSpecies ] = useState(false);
+  const intl = useIntl();
 
   useDocumentTitle('MANAGE_FIELDS');
 
@@ -59,10 +63,71 @@ export default function FieldManagement() {
     c => c.type === categoryTypes.encounter,
   );
 
+  const speciesTableColumns = [
+    {
+      name: 'Species',
+      label: intl.formatMessage({ id: 'SPECIES' }),      
+    },
+    {
+      name: 'prefix',
+      label: intl.formatMessage({ id: 'ID_PREFIX' }),
+      align: 'left',
+    },
+    {
+      name: 'Count',
+      label: intl.formatMessage({ id: 'COUNT' }),      
+    },
+    {
+      name: 'Actions',
+      label: intl.formatMessage({ id: 'ACTIONS' }),      
+    },
+  ];
+
+  const speciesTableData = get(siteSettings, ['site.species', 'value'], []);
+  console.log(speciesTableData);
+  const speciesTableRows = speciesTableData.map((species) => {
+    return {
+      Species: `${species.scientificName} (${species.commonNames[0]})`,
+      prefix: 'ABC',
+      Count: 124,
+      Actions: <Button
+        variant="outlined"
+        color="primary"
+        onClick={() => {
+          console.log("action button clicked")
+        }}
+      >
+        {intl.formatMessage({ id: 'EDIT' })}
+      </Button>
+    }
+  })
+  console.log(speciesTableRows);
+
   if(species) {
     return  (
-    <MainColumn>
-      <SettingsBreadcrumbs />
+      <MainColumn>
+      <Text
+        variant="h3"
+        component="h3"
+        style={{ padding: '16px 0 16px 16px' }}
+        id="MANAGE_SPECIES"
+      />
+      <SettingsBreadcrumbs currentPageTextId="MANAGE_SPECIES" />
+      <Grid
+        container
+        direction="column"
+        spacing={3}
+        style={{ padding: 20 }}
+      >
+      <CustomFieldTable
+        categories={customIndividualCategories}
+        fields={customIndividualFields}
+        titleId="CUSTOM_INDIVIDUAL_FIELDS"
+        descriptionId="CUSTOM_INDIVIDUAL_FIELDS_DESCRIPTION"
+        settingName="site.custom.customFields.Individual"
+        noFieldsTextId="NO_CUSTOM_INDIVIDUAL_FIELDS_MESSAGE"
+      />
+      </Grid>
     </MainColumn>
     )
   }
@@ -82,7 +147,7 @@ export default function FieldManagement() {
         style={{ padding: 20 }}
       >
         <DefaultFieldTable siteSettings={siteSettings} setSpecies={setSpecies} />
-        {/* <CategoryTable />
+        <CategoryTable />
         <CustomFieldTable
           categories={customIndividualCategories}
           fields={customIndividualFields}
@@ -106,7 +171,7 @@ export default function FieldManagement() {
           descriptionId="CUSTOM_ENCOUNTER_FIELDS_DESCRIPTION"
           settingName="site.custom.customFields.Encounter"
           noFieldsTextId="NO_CUSTOM_ENCOUNTER_FIELDS_MESSAGE"
-        /> */}
+        />
       </Grid>
     </MainColumn>
   );
