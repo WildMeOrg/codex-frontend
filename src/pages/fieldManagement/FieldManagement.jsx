@@ -12,9 +12,13 @@ import categoryTypes from '../../constants/categoryTypes';
 import CategoryTable from './settings/CategoryTable';
 import CustomFieldTable from './settings/CustomFieldTable';
 import DefaultFieldTable from './settings/DefaultFieldTable';
-import { useIntl } from 'react-intl';
+import { useIntl, FormattedMessage } from 'react-intl';
 import DataDisplay from '../../components/dataDisplays/DataDisplay';
 import Button from '../../components/Button';
+import { cellRendererTypes } from '../../components/dataDisplays/cellRenderers';
+import ActionIcon from '../../components/ActionIcon';
+import newSpeciesEditor from './settings/defaultFieldComponents/newSpeciesEditor';
+import SpeciesEditor from './settings/defaultFieldComponents/SpeciesEditor';
 
 function getCustomFields(siteSettings, property) {
   return get(
@@ -28,6 +32,7 @@ export default function FieldManagement() {
   const { data: siteSettings, loading, error } = useSiteSettings();
   const [ species, setSpecies ] = useState(false);
   const intl = useIntl();
+  const [editField, setEditField] = useState(null);
 
   useDocumentTitle('MANAGE_FIELDS');
 
@@ -63,30 +68,100 @@ export default function FieldManagement() {
     c => c.type === categoryTypes.encounter,
   );
 
-  const speciesTableColumns = [
+  const tableColumns = [
     {
-      name: 'Species',
-      label: intl.formatMessage({ id: 'SPECIES' }),      
+      name: 'labelId',
+      label: intl.formatMessage({ id: 'SPECIES' }),
+      options: {
+        customBodyRender: labelId => (
+          <FormattedMessage id={labelId} />
+        ),
+      },
     },
     {
       name: 'prefix',
-      label: intl.formatMessage({ id: 'ID_PREFIX' }),
-      align: 'left',
+      label: intl.formatMessage({ id: 'PREFIX' }),
+      options: {
+        customBodyRender: labelId => (
+          <FormattedMessage id={labelId} />
+        ),
+      },
     },
     {
-      name: 'Count',
-      label: intl.formatMessage({ id: 'COUNT' }),      
-    },
+      name: 'count',
+      label: intl.formatMessage({ id: 'COUNT' }),
+      options: {
+        customBodyRender: labelId => (
+          <FormattedMessage id={labelId} />
+        ),
+      },
+    }
+    // {
+    //   name: 'prefix',
+    //   label: intl.formatMessage({ id: 'PREFIX' }),
+    //   options: { cellRenderer: cellRendererTypes.capitalizedString },
+    // },
+    // {
+    //   name: 'count',
+    //   label: intl.formatMessage({ id: 'COUNT' }),
+    //   options: { cellRenderer: cellRendererTypes.capitalizedString },
+    // },
+    // {
+    //   name: 'actions',
+    //   label: intl.formatMessage({ id: 'ACTIONS' }),
+    //   options: {
+    //     customBodyRender: (_, field) => (
+    //       <ActionIcon
+    //         variant="edit"
+    //         onClick={() => {              
+    //             setEditField(field);             
+              
+    //         }}
+    //       />
+    //     ),
+    //   },
+    // },
+  ];
+
+  const configurableFields = [
     {
-      name: 'Actions',
-      label: intl.formatMessage({ id: 'ACTIONS' }),      
+      id: 'zebra1',
+      backendPath: 'site.species',
+      labelId: 'ZEBRA1',
+      // type: categoryTypes.sighting,
+      prefix: 'ABC',
+      count: 124,
+      Editor: SpeciesEditor,
     },
+    // {
+    //   id: 'prefix',
+    //   backendPath: 'site.custom.regions',
+    //   labelId: 'REGION',
+    //   type: categoryTypes.sighting,
+    //   Editor: SpeciesEditor,
+    // },
+    // {
+    //   id: 'count',
+    //   backendPath: 'relationship_type_roles',
+    //   labelId: 'RELATIONSHIP',
+    //   type: categoryTypes.individual,
+    //   Editor: SpeciesEditor,
+    // },
+    // {
+    //   id: 'actions',
+    //   backendPath: 'social_group_roles',
+    //   labelId: 'SOCIAL_GROUPS',
+    //   type: categoryTypes.individual,
+    //   Editor: SpeciesEditor,
+    // },
   ];
 
   const speciesTableData = get(siteSettings, ['site.species', 'value'], []);
   console.log(speciesTableData);
   const speciesTableRows = speciesTableData.map((species) => {
     return {
+      id: species.id,
+      labelId: species.id,
       Species: `${species.scientificName} (${species.commonNames[0]})`,
       prefix: 'ABC',
       Count: 124,
@@ -106,6 +181,55 @@ export default function FieldManagement() {
   if(species) {
     return  (
       <MainColumn>
+        {editField && (
+        <editField.Editor
+          // siteSettings={siteSettings}
+          // formSettings={formSettings}
+          // setFormSettings={setFormSettings}
+          onClose={() => {
+            setFormSettings(getInitialFormState(siteSettings));
+            onCloseEditor();
+          }}
+          // onSubmit={async () => {
+          //   if (editField?.id === 'region') {
+          //     const response = await putSiteSetting({
+          //       property: editField.backendPath,
+          //       data: formSettings.regions,
+          //     });
+          //     if (response?.status === 200) onCloseEditor();
+          //   }
+          //   if (editField?.id === 'species') {
+          //     const response = await putSiteSetting({
+          //       property: editField.backendPath,
+          //       data: formSettings.species,
+          //     });
+          //     if (response?.status === 200) onCloseEditor();
+          //   }
+          //   if (editField?.id === 'relationship') {
+          //     const response = await putSiteSetting({
+          //       property: editField.backendPath,
+          //       data: formSettings.relationships,
+          //     });
+          //     if (response?.status === 200) onCloseEditor();
+          //   }
+          //   if (editField?.id === 'socialGroups') {
+          //     const response = await putSiteSetting({
+          //       property: editField.backendPath,
+          //       data: formSettings.socialGroups,
+          //     });
+          //     if (response?.status === 200) onCloseEditor();
+          //   }
+          // }}
+        >
+          {error ? (
+            <CustomAlert
+              style={{ margin: '20px 0 12px 0', maxWidth: 600 }}
+              severity="error"
+              description={error}
+            />
+          ) : null}
+        </editField.Editor>
+      )}
       <Text
         variant="h3"
         component="h3"
@@ -119,13 +243,13 @@ export default function FieldManagement() {
         spacing={3}
         style={{ padding: 20 }}
       >
-      <CustomFieldTable
-        categories={customIndividualCategories}
-        fields={customIndividualFields}
-        titleId="CUSTOM_INDIVIDUAL_FIELDS"
-        descriptionId="CUSTOM_INDIVIDUAL_FIELDS_DESCRIPTION"
-        settingName="site.custom.customFields.Individual"
-        noFieldsTextId="NO_CUSTOM_INDIVIDUAL_FIELDS_MESSAGE"
+      <DataDisplay
+        style={{ marginTop: 8 }}
+        noTitleBar
+        variant="secondary"
+        columns={tableColumns}
+        data={configurableFields}
+        tableContainerStyles={{ maxHeight: 300 }}
       />
       </Grid>
     </MainColumn>
