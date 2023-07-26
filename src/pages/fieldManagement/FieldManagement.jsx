@@ -17,8 +17,8 @@ import DataDisplay from '../../components/dataDisplays/DataDisplay';
 import Button from '../../components/Button';
 import { cellRendererTypes } from '../../components/dataDisplays/cellRenderers';
 import ActionIcon from '../../components/ActionIcon';
-import newSpeciesEditor from './settings/defaultFieldComponents/newSpeciesEditor';
 import SpeciesEditor from './settings/defaultFieldComponents/SpeciesEditor';
+import AddIcon from '@material-ui/icons/Add';
 
 function getCustomFields(siteSettings, property) {
   return get(
@@ -95,131 +95,52 @@ export default function FieldManagement() {
           <FormattedMessage id={labelId} />
         ),
       },
-    }
-    // {
-    //   name: 'prefix',
-    //   label: intl.formatMessage({ id: 'PREFIX' }),
-    //   options: { cellRenderer: cellRendererTypes.capitalizedString },
-    // },
-    // {
-    //   name: 'count',
-    //   label: intl.formatMessage({ id: 'COUNT' }),
-    //   options: { cellRenderer: cellRendererTypes.capitalizedString },
-    // },
-    // {
-    //   name: 'actions',
-    //   label: intl.formatMessage({ id: 'ACTIONS' }),
-    //   options: {
-    //     customBodyRender: (_, field) => (
-    //       <ActionIcon
-    //         variant="edit"
-    //         onClick={() => {              
-    //             setEditField(field);             
-              
-    //         }}
-    //       />
-    //     ),
-    //   },
-    // },
-  ];
-
-  const configurableFields = [
-    {
-      id: 'zebra1',
-      backendPath: 'site.species',
-      labelId: 'ZEBRA1',
-      // type: categoryTypes.sighting,
-      prefix: 'ABC',
-      count: 124,
-      Editor: SpeciesEditor,
     },
-    // {
-    //   id: 'prefix',
-    //   backendPath: 'site.custom.regions',
-    //   labelId: 'REGION',
-    //   type: categoryTypes.sighting,
-    //   Editor: SpeciesEditor,
-    // },
-    // {
-    //   id: 'count',
-    //   backendPath: 'relationship_type_roles',
-    //   labelId: 'RELATIONSHIP',
-    //   type: categoryTypes.individual,
-    //   Editor: SpeciesEditor,
-    // },
-    // {
-    //   id: 'actions',
-    //   backendPath: 'social_group_roles',
-    //   labelId: 'SOCIAL_GROUPS',
-    //   type: categoryTypes.individual,
-    //   Editor: SpeciesEditor,
-    // },
+    
+    {
+      name: 'actions',
+      label: intl.formatMessage({ id: 'ACTIONS' }),
+      options: {
+        customBodyRender: (_, field) => (
+          <ActionIcon
+            variant="edit"
+            onClick={() => {              
+                setEditField(field);           
+              
+            }}
+          />
+        ),
+      },
+    },
   ];
-
+  
   const speciesTableData = get(siteSettings, ['site.species', 'value'], []);
-  console.log(speciesTableData);
+  const withSpeciesId = (WrappedComponent, speciesId) => {
+    return (props) => <WrappedComponent {...props} speciesId={speciesId} />;
+  };
+  let EditorWithSpeciesId = null;
   const speciesTableRows = speciesTableData.map((species) => {
+    EditorWithSpeciesId = withSpeciesId(SpeciesEditor, species.id);
     return {
-      id: species.id,
-      labelId: species.id,
-      Species: `${species.scientificName} (${species.commonNames[0]})`,
+      id: species.id,      
+      labelId: `${species.scientificName}(${species.commonNames[0]})`,
       prefix: 'ABC',
-      Count: 124,
-      Actions: <Button
-        variant="outlined"
-        color="primary"
-        onClick={() => {
-          console.log("action button clicked")
-        }}
-      >
-        {intl.formatMessage({ id: 'EDIT' })}
-      </Button>
+      count: '123',
+      Editor: EditorWithSpeciesId
     }
   })
-  console.log(speciesTableRows);
-
+    
   if(species) {
     return  (
-      <MainColumn>
+      <MainColumn>        
         {editField && (
-        <editField.Editor
-          // siteSettings={siteSettings}
-          // formSettings={formSettings}
-          // setFormSettings={setFormSettings}
+        <EditorWithSpeciesId          
           onClose={() => {
-            setFormSettings(getInitialFormState(siteSettings));
             onCloseEditor();
           }}
-          // onSubmit={async () => {
-          //   if (editField?.id === 'region') {
-          //     const response = await putSiteSetting({
-          //       property: editField.backendPath,
-          //       data: formSettings.regions,
-          //     });
-          //     if (response?.status === 200) onCloseEditor();
-          //   }
-          //   if (editField?.id === 'species') {
-          //     const response = await putSiteSetting({
-          //       property: editField.backendPath,
-          //       data: formSettings.species,
-          //     });
-          //     if (response?.status === 200) onCloseEditor();
-          //   }
-          //   if (editField?.id === 'relationship') {
-          //     const response = await putSiteSetting({
-          //       property: editField.backendPath,
-          //       data: formSettings.relationships,
-          //     });
-          //     if (response?.status === 200) onCloseEditor();
-          //   }
-          //   if (editField?.id === 'socialGroups') {
-          //     const response = await putSiteSetting({
-          //       property: editField.backendPath,
-          //       data: formSettings.socialGroups,
-          //     });
-          //     if (response?.status === 200) onCloseEditor();
-          //   }
-          // }}
+          onSubmit={async () => {
+            
+          }}
         >
           {error ? (
             <CustomAlert
@@ -228,7 +149,7 @@ export default function FieldManagement() {
               description={error}
             />
           ) : null}
-        </editField.Editor>
+        </EditorWithSpeciesId>
       )}
       <Text
         variant="h3"
@@ -243,12 +164,29 @@ export default function FieldManagement() {
         spacing={3}
         style={{ padding: 20 }}
       >
+        <div style={{
+          display: 'flex',
+          justifyContent: 'flex-end',
+          alignItems: 'center',
+          marginTop: 12,
+          marginBottom: 12,
+        }}>
+          <Button  
+                id = "ADD_SPECIES"            
+                size="small"
+                display="panel"
+                startIcon={<AddIcon />}   
+                onClick={() => {
+
+                }}
+              />
+        </div>
       <DataDisplay
         style={{ marginTop: 8 }}
         noTitleBar
         variant="secondary"
         columns={tableColumns}
-        data={configurableFields}
+        data={speciesTableRows}
         tableContainerStyles={{ maxHeight: 300 }}
       />
       </Grid>

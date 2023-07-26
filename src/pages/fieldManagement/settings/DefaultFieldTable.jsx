@@ -14,7 +14,6 @@ import { RegionEditor } from './defaultFieldComponents/Editors';
 import RelationshipEditor from './defaultFieldComponents/RelationshipEditor';
 import SocialGroupsEditor from './defaultFieldComponents/SocialGroupsEditor';
 import SpeciesEditor from './defaultFieldComponents/SpeciesEditor';
-import newSpeciesEditor from './defaultFieldComponents/newSpeciesEditor';
 import { cellRendererTypes } from '../../../components/dataDisplays/cellRenderers';
 
 const configurableFields = [
@@ -24,29 +23,28 @@ const configurableFields = [
     labelId: 'SPECIES',
     type: categoryTypes.sighting,
     // Editor: SpeciesEditor,
-    // Editor: newSpeciesEditor,
   },
-  // {
-  //   id: 'region',
-  //   backendPath: 'site.custom.regions',
-  //   labelId: 'REGION',
-  //   type: categoryTypes.sighting,
-  //   Editor: RegionEditor,
-  // },
-  // {
-  //   id: 'relationship',
-  //   backendPath: 'relationship_type_roles',
-  //   labelId: 'RELATIONSHIP',
-  //   type: categoryTypes.individual,
-  //   Editor: RelationshipEditor,
-  // },
-  // {
-  //   id: 'socialGroups',
-  //   backendPath: 'social_group_roles',
-  //   labelId: 'SOCIAL_GROUPS',
-  //   type: categoryTypes.individual,
-  //   Editor: SocialGroupsEditor,
-  // },
+  {
+    id: 'region',
+    backendPath: 'site.custom.regions',
+    labelId: 'REGION',
+    type: categoryTypes.sighting,
+    Editor: RegionEditor,
+  },
+  {
+    id: 'relationship',
+    backendPath: 'relationship_type_roles',
+    labelId: 'RELATIONSHIP',
+    type: categoryTypes.individual,
+    Editor: RelationshipEditor,
+  },
+  {
+    id: 'socialGroups',
+    backendPath: 'social_group_roles',
+    labelId: 'SOCIAL_GROUPS',
+    type: categoryTypes.individual,
+    Editor: SocialGroupsEditor,
+  },
 ];
 
 function getInitialFormState(siteSettings) {

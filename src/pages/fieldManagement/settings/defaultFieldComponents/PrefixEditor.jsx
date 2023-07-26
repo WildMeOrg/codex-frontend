@@ -20,7 +20,7 @@ import Button from '../../../../components/Button';
 import Text from '../../../../components/Text';
 import StandardDialog from '../../../../components/StandardDialog';
 
-export default function SpeciesEditor(  
+export default function PrefixEditor(  
   props
 ) {
   console.log('species ID',props);
