@@ -21,22 +21,25 @@ import Text from '../../../../components/Text';
 import StandardDialog from '../../../../components/StandardDialog';
 
 export default function PrefixEditor(  
-  props
+  {onClose}
 ) {
-  console.log('species ID',props);
-  const intl = useIntl();
-  
+ 
+  const intl = useIntl(); 
 
   return (
-    <StandardDialog open titleId="EDIT_SPECIES">
-    <DialogContent style={{ minWidth: 200 }}>      
-      
+    <StandardDialog open onClose={onClose} titleId="EDIT_SPECIES">
+    <DialogContent style={{ minWidth: 200 }}>       
+        <Text
+                variant="caption"
+                style={{ marginBottom: 12 }}
+                id="EDIT_SPECIES_PREFIX_DESCRIPTION"
+        />     
         <TextField
           // value={searchInput}
           // onChange={e => setSearchInput(e.target.value)}
           label={intl.formatMessage({ id: 'SEARCH_ITIS_SPECIES' })}
           variant="outlined"          
-          style={{ width: '100%' }}
+          style={{ width: '100%', marginTop: 12 }}
         />        
      
       {/* {stillGeneratingDisplay && !searchResultsError && (

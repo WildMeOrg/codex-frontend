@@ -1246,5 +1246,7 @@
   "COUNT" : "Count",
   "MANAGE_SPECIES" : "Manage Species",
   "PREFIX" : "Prefix",
-  "ADD_SPECIES" : "Add Species"
+  "ADD_SPECIES" : "Add Species",
+  "ADD_SPECIES_DESCRIPTION" : "Each species has a catalogue reference called a Codex ID (e.g, ZEB-001). Provide a unique prefix of 3 to 5 characters for this species.",
+  "EDIT_SPECIES_PREFIX_DESCRIPTION" : "Changes to the prefix will apply to all Codex IDs for the given the species."
 }

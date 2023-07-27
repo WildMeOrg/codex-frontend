@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { get } from 'lodash-es';
+import { get, startCase } from 'lodash-es';
 import { useIntl, FormattedMessage } from 'react-intl';
 
 import DialogContent from '@material-ui/core/DialogContent';
@@ -19,24 +19,47 @@ import DataDisplay from '../../../../components/dataDisplays/DataDisplay';
 import Button from '../../../../components/Button';
 import Text from '../../../../components/Text';
 import StandardDialog from '../../../../components/StandardDialog';
+import SelectionEditor from '../../../../components/fields/edit/SelectionEditor';
 
-export default function SpeciesEditor(  
-  props
-) {
-  console.log('species ID',props);
-  const intl = useIntl();
-  
+export default function SpeciesEditor(props) {
+  const intl = useIntl(); 
+  const species = get(props.data, ['site.species', 'value'], []);
+  const speciesOptions = species.map(s => {
+    const mainCommonName = startCase(get(s, ['commonNames', 0]));
+    const speciesLabel = mainCommonName
+      ? `${mainCommonName} (${s.scientificName})`
+      : s.scientificName;
+    return {
+      label: speciesLabel,
+      value: s.id,
+    };
+  }); 
 
   return (
-    <StandardDialog open titleId="EDIT_SPECIES">
-    <DialogContent style={{ minWidth: 200 }}>      
-      
+    <StandardDialog open onClose = {props.onClose} titleId="ADD_SPECIES">
+    <DialogContent style={{ minWidth: 200 }}>            
+        <Text
+            variant="caption"
+            style={{ marginBottom: 12 }}
+            id="ADD_SPECIES_DESCRIPTION"
+          />
+        <SelectionEditor 
+          schema={{
+            labelId: 'SPECIES',
+            choices: speciesOptions
+          }}
+          // value={dialogData.type || ''}
+          // onChange={newType =>
+          //   setDialogData({ ...dialogData, type: newType })
+          // }
+        />
+        
         <TextField
           // value={searchInput}
           // onChange={e => setSearchInput(e.target.value)}
           label={intl.formatMessage({ id: 'SEARCH_ITIS_SPECIES' })}
           variant="outlined"          
-          style={{ width: '100%' }}
+          style={{ width: '100%', marginTop: 12 }}
         />        
      
       {/* {stillGeneratingDisplay && !searchResultsError && (

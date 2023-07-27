@@ -19,6 +19,7 @@ import { cellRendererTypes } from '../../components/dataDisplays/cellRenderers';
 import ActionIcon from '../../components/ActionIcon';
 import SpeciesEditor from './settings/defaultFieldComponents/SpeciesEditor';
 import AddIcon from '@material-ui/icons/Add';
+import PrefixEditor from './settings/defaultFieldComponents/PrefixEditor';
 
 function getCustomFields(siteSettings, property) {
   return get(
@@ -33,6 +34,7 @@ export default function FieldManagement() {
   const [ species, setSpecies ] = useState(false);
   const intl = useIntl();
   const [editField, setEditField] = useState(null);
+  const [addSpecies, setAddSpecies] = useState(false);
 
   useDocumentTitle('MANAGE_FIELDS');
 
@@ -120,7 +122,7 @@ export default function FieldManagement() {
   };
   let EditorWithSpeciesId = null;
   const speciesTableRows = speciesTableData.map((species) => {
-    EditorWithSpeciesId = withSpeciesId(SpeciesEditor, species.id);
+    EditorWithSpeciesId = withSpeciesId(PrefixEditor, species.id);
     return {
       id: species.id,      
       labelId: `${species.scientificName}(${species.commonNames[0]})`,
@@ -132,11 +134,19 @@ export default function FieldManagement() {
     
   if(species) {
     return  (
-      <MainColumn>        
+      <MainColumn>     
+        {addSpecies && (
+          <SpeciesEditor 
+            onClose={() => {
+              setAddSpecies(false);            
+          }}
+            data={siteSettings}
+            />
+        )}   
         {editField && (
         <EditorWithSpeciesId          
           onClose={() => {
-            onCloseEditor();
+            setEditField(null);
           }}
           onSubmit={async () => {
             
@@ -177,7 +187,7 @@ export default function FieldManagement() {
                 display="panel"
                 startIcon={<AddIcon />}   
                 onClick={() => {
-
+                  setAddSpecies(true);
                 }}
               />
         </div>
