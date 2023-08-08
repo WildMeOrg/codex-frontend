@@ -37,7 +37,7 @@ export default function PrefixEditor(
         <TextField
           // value={searchInput}
           // onChange={e => setSearchInput(e.target.value)}
-          label={intl.formatMessage({ id: 'SEARCH_ITIS_SPECIES' })}
+          label={intl.formatMessage({ id: 'SPECIES_PREFIX' })}
           variant="outlined"          
           style={{ width: '100%', marginTop: 12 }}
         />        

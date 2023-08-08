@@ -43,24 +43,26 @@ export default function SpeciesEditor(props) {
             style={{ marginBottom: 12 }}
             id="ADD_SPECIES_DESCRIPTION"
           />
-        <SelectionEditor 
-          schema={{
-            labelId: 'SPECIES',
-            choices: speciesOptions
-          }}
-          // value={dialogData.type || ''}
-          // onChange={newType =>
-          //   setDialogData({ ...dialogData, type: newType })
-          // }
-        />
-        
-        <TextField
-          // value={searchInput}
-          // onChange={e => setSearchInput(e.target.value)}
-          label={intl.formatMessage({ id: 'SEARCH_ITIS_SPECIES' })}
-          variant="outlined"          
-          style={{ width: '100%', marginTop: 12 }}
-        />        
+        <div style={{display: 'flex', justifyContent: 'space-between'}}>
+          <SelectionEditor 
+            schema={{
+              labelId: 'SPECIES',
+              choices: speciesOptions
+            }}
+            // value={dialogData.type || ''}
+            // onChange={newType =>
+            //   setDialogData({ ...dialogData, type: newType })
+            // }
+          />
+          
+          <TextField
+            // value={searchInput}
+            // onChange={e => setSearchInput(e.target.value)}
+            label={intl.formatMessage({ id: 'PREFIX' })}
+            variant="outlined"          
+            style={{ width: 200, marginTop: 12, marginBottom: 12 }}
+          />      
+        </div>  
      
       {/* {stillGeneratingDisplay && !searchResultsError && (
         <Text
