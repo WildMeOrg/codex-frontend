@@ -38,6 +38,8 @@ export default function FieldManagement() {
 
   useDocumentTitle('MANAGE_FIELDS');
 
+  console.log('siteSettings', siteSettings);
+
   const customFieldCategories = get(
     siteSettings,
     ['site.custom.customFieldCategories', 'value'],

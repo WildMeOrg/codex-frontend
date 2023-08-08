@@ -25,6 +25,7 @@ export default function PrefixEditor(
 ) {
  
   const intl = useIntl(); 
+  const [prefixInput, setPrefixInput] = useState('');
 
   return (
     <StandardDialog open onClose={onClose} titleId="EDIT_SPECIES">
@@ -35,8 +36,8 @@ export default function PrefixEditor(
                 id="EDIT_SPECIES_PREFIX_DESCRIPTION"
         />     
         <TextField
-          // value={searchInput}
-          // onChange={e => setSearchInput(e.target.value)}
+          value={prefixInput}
+          onChange={e => setPrefixInput(e.target.value)}
           label={intl.formatMessage({ id: 'SPECIES_PREFIX' })}
           variant="outlined"          
           style={{ width: '100%', marginTop: 12 }}
@@ -65,10 +66,15 @@ export default function PrefixEditor(
       
     </DialogContent>
     <DialogActions style={{ padding: '0px 24px 24px 24px' }}>
-      <Button display="primary" >
+      <Button 
+        display="primary"
+        onClick={() => {console.log('prefix input',prefixInput)}} >
         <FormattedMessage id="FINISH" />
       </Button>
-      <Button display="primary" >
+      <Button 
+        display="primary"
+        onClick={onClose}
+        >
         <FormattedMessage id="CANCEL" />
       </Button>
     </DialogActions>

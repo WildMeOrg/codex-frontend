@@ -23,7 +23,7 @@ import SelectionEditor from '../../../../components/fields/edit/SelectionEditor'
 
 export default function SpeciesEditor(props) {
   const intl = useIntl(); 
-  const species = get(props.data, ['site.species', 'value'], []);
+  const species = get(props.data, ['site.species', 'suggestedValues'], []);
   const speciesOptions = species.map(s => {
     const mainCommonName = startCase(get(s, ['commonNames', 0]));
     const speciesLabel = mainCommonName
@@ -31,9 +31,11 @@ export default function SpeciesEditor(props) {
       : s.scientificName;
     return {
       label: speciesLabel,
-      value: s.id,
+      value: s.itisTsn,
     };
   }); 
+
+  const [ selectedSpecies, setSelectedSpecies ] = useState(speciesOptions[0].value);
 
   return (
     <StandardDialog open onClose = {props.onClose} titleId="ADD_SPECIES">
@@ -49,10 +51,13 @@ export default function SpeciesEditor(props) {
               labelId: 'SPECIES',
               choices: speciesOptions
             }}
-            // value={dialogData.type || ''}
-            // onChange={newType =>
-            //   setDialogData({ ...dialogData, type: newType })
-            // }
+            value={selectedSpecies}
+            onChange={(e) => {
+              console.log("selected species", e);
+              setSelectedSpecies(e);
+              }
+              
+            }
           />
           
           <TextField
@@ -87,10 +92,14 @@ export default function SpeciesEditor(props) {
       
     </DialogContent>
     <DialogActions style={{ padding: '0px 24px 24px 24px' }}>
-      <Button display="primary" >
+      <Button 
+        display="primary"
+        onClick={ () => {console.log("submitting", selectedSpecies)}} >
         <FormattedMessage id="FINISH" />
       </Button>
-      <Button display="primary" >
+      <Button 
+        display="primary"
+        onClick={props.onClose} >
         <FormattedMessage id="CANCEL" />
       </Button>
     </DialogActions>
