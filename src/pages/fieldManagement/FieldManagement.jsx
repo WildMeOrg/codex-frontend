@@ -35,6 +35,7 @@ export default function FieldManagement() {
   const intl = useIntl();
   const [editField, setEditField] = useState(null);
   const [addSpecies, setAddSpecies] = useState(false);
+  const [formSettings, setFormSettings] = useState(null);
 
   useDocumentTitle('MANAGE_FIELDS');
 
@@ -143,6 +144,7 @@ export default function FieldManagement() {
               setAddSpecies(false);            
           }}
             data={siteSettings}
+            siteSettings={siteSettings}
             />
         )}   
         {editField && (
