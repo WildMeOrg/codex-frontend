@@ -143,13 +143,13 @@ export default function DefaultFieldTable({ siteSettings, setSpecies }) {
               });
               if (response?.status === 200) onCloseEditor();
             }
-            if (editField?.id === 'species') {
-              const response = await putSiteSetting({
-                property: editField.backendPath,
-                data: formSettings.species,
-              });
-              if (response?.status === 200) onCloseEditor();
-            }
+            // if (editField?.id === 'species') {
+            //   const response = await putSiteSetting({
+            //     property: editField.backendPath,
+            //     data: formSettings.species,
+            //   });
+            //   if (response?.status === 200) onCloseEditor();
+            // }
             if (editField?.id === 'relationship') {
               const response = await putSiteSetting({
                 property: editField.backendPath,

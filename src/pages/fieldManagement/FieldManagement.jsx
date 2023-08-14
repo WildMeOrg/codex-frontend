@@ -35,7 +35,6 @@ export default function FieldManagement() {
   const intl = useIntl();
   const [editField, setEditField] = useState(null);
   const [addSpecies, setAddSpecies] = useState(false);
-  const [formSettings, setFormSettings] = useState(null);
 
   useDocumentTitle('MANAGE_FIELDS');
 
@@ -106,11 +105,12 @@ export default function FieldManagement() {
       name: 'actions',
       label: intl.formatMessage({ id: 'ACTIONS' }),
       options: {
-        customBodyRender: (_, field) => (
+        customBodyRender: (_, species) => (
           <ActionIcon
             variant="edit"
             onClick={() => {              
-                setEditField(field);           
+              console.log('species~~~~~~~~~~',species);  
+              setEditField(species);           
               
             }}
           />
@@ -120,20 +120,26 @@ export default function FieldManagement() {
   ];
   
   const speciesTableData = get(siteSettings, ['site.species', 'value'], []);
-  const withSpeciesId = (WrappedComponent, speciesId) => {
-    return (props) => <WrappedComponent {...props} speciesId={speciesId} />;
-  };
-  let EditorWithSpeciesId = null;
-  const speciesTableRows = speciesTableData.map((species) => {
-    EditorWithSpeciesId = withSpeciesId(PrefixEditor, species.id);
+  // const withSpeciesId = (WrappedComponent, s) => {
+  //   console.log('s==============>>>>>>>>>>>>>>>>>',s);
+  //   return (props) => <WrappedComponent {...props} species1={s} />;
+  // };
+  // let EditorWithSpeciesId = null;
+  const speciesTableRows = speciesTableData.map((s) => {
+    // console.log('s',s);
+    // EditorWithSpeciesId = withSpeciesId(PrefixEditor, s);
     return {
-      id: species.id,      
-      labelId: `${species.scientificName}(${species.commonNames[0]})`,
+      id: s.id,      
+      labelId: `${s.scientificName}(${s.commonNames[0]})`,
       prefix: 'ABC',
       count: '123',
-      Editor: EditorWithSpeciesId
+      // Editor: EditorWithSpeciesId
+      Editor: () => <PrefixEditor species1={s} {...props} />
     }
   })
+
+  console.log('speciesTableData',speciesTableData);
+  console.log('speciesTableRows',speciesTableRows);
     
   if(species) {
     return  (
@@ -148,23 +154,21 @@ export default function FieldManagement() {
             />
         )}   
         {editField && (
-        <EditorWithSpeciesId          
+        <PrefixEditor          
           onClose={() => {
             setEditField(null);
-          }}
-          onSubmit={async () => {
-            
-          }}
-        >
-          {error ? (
+          }}          
+          siteSettings={siteSettings}
+          species1={editField}         
+        />
+      )}
+      {/* {error ? (
             <CustomAlert
               style={{ margin: '20px 0 12px 0', maxWidth: 600 }}
               severity="error"
               description={error}
             />
-          ) : null}
-        </EditorWithSpeciesId>
-      )}
+          ) : null} */}
       <Text
         variant="h3"
         component="h3"

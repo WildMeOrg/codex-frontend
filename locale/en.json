@@ -1248,8 +1248,8 @@
   "PREFIX" : "Prefix",
   "ADD_SPECIES" : "Add Species",
   "ADD_SPECIES_DESCRIPTION" : "Each species has a catalogue reference called a Codex ID (e.g, ZEB-001). Provide a unique prefix of 3 to 5 characters for this species.",
-  "EDIT_SPECIES_PREFIX_DESCRIPTION" : "Changes to the prefix will apply to all Codex IDs for the given the species.",
+  "EDIT_SPECIES_PREFIX_DESCRIPTION" : "Changes to the prefix will apply to all Codex IDs for the species ",
   "SPECIES_PREFIX" : "Species Prefix*",
-  "PREFIX_INVALID" : "Prefix must be 3 to 5 characters long and contain only letters and numbers.",
+  "PREFIX_INVALID" : "Please provide a unique prefix of 3 to 5 characters for this species.",
   "SPECIES_ERROR" : "Please select a species."
 }
