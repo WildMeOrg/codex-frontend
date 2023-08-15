@@ -50,6 +50,7 @@ export default function PrefixEditor(
     mutate: putSiteSetting,
     error,
     clearError,
+    loading,
   } = usePutSiteSetting();
 
   const checkPrefixValid = (prefix) => {
@@ -84,15 +85,22 @@ export default function PrefixEditor(
           titleId="PREFIX_INVALID"
         />
       )}
+        {error && (
+          <CustomAlert
+          style={{ marginTop: 12 }}
+          severity="error">
+            {error}
+          </CustomAlert>      
+        )}
      
     </DialogContent>
     <DialogActions style={{ padding: '0px 24px 24px 24px' }}>
       <Button 
         display="primary"
-        onClick={async() => {
-          setTimeout(async () => {
+        loading={loading}
+        onClick={async() => {          
             setShowPrefixError(!prefixValid);
-            if(prefixValid) {
+            if(prefixValid && !error) {
               const response = await putSiteSetting({
                 property: 'site.species',
                 data: result,
@@ -101,8 +109,7 @@ export default function PrefixEditor(
                 clearError();
                 onClose();
               }
-            }
-          }, 200);
+            }        
         }} >
         <FormattedMessage id="FINISH" />
       </Button>

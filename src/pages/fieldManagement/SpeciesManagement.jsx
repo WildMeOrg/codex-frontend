@@ -18,7 +18,6 @@ import PrefixEditor from './settings/defaultFieldComponents/PrefixEditor';
 
 export default function SpeciesManagement() {
   const { data: siteSettings, loading, error } = useSiteSettings();
-  const [ species, setSpecies ] = useState(false);
   const intl = useIntl();
   const [editField, setEditField] = useState(null);
   const [addSpecies, setAddSpecies] = useState(false);
@@ -105,14 +104,7 @@ export default function SpeciesManagement() {
           siteSettings={siteSettings}
           species1={editField}         
         />
-      )}
-      {/* {error ? (
-            <CustomAlert
-              style={{ margin: '20px 0 12px 0', maxWidth: 600 }}
-              severity="error"
-              description={error}
-            />
-          ) : null} */}
+      )}      
       <Text
         variant="h3"
         component="h3"

@@ -4,30 +4,17 @@ import { useIntl, FormattedMessage } from 'react-intl';
 
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
-import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
-import Chip from '@material-ui/core/Chip';
-import Tooltip from '@material-ui/core/Tooltip';
-import SearchIcon from '@material-ui/icons/Search';
-import AddIcon from '@material-ui/icons/AddCircle';
-import CheckIcon from '@material-ui/icons/Check';
-import StarIcon from '@material-ui/icons/Star';
 import CustomAlert from '../../../../components/Alert';
-
-import useItisSearch from '../../../../utils/useItisSearch';
-import DataDisplay from '../../../../components/dataDisplays/DataDisplay';
 import Button from '../../../../components/Button';
 import Text from '../../../../components/Text';
 import StandardDialog from '../../../../components/StandardDialog';
 import SelectionEditor from '../../../../components/fields/edit/SelectionEditor';
-import { set } from 'date-fns';
 import usePutSiteSetting from '../../../../models/site/usePutSiteSetting';
-import { is } from 'date-fns/esm/locale';
 
 export default function SpeciesEditor(
   {
     onClose,
-    onSubmit,
     siteSettings,
   }
 ) {
@@ -159,7 +146,7 @@ export default function SpeciesEditor(
         <CustomAlert
         style={{ marginTop: 12 }}
         severity="error">
-          {error.message}
+          {error}
         </CustomAlert>      
       )}
       
@@ -172,7 +159,7 @@ export default function SpeciesEditor(
           {            
             setShowPrefixError(!prefixValid);
             setShowSpeciesError(!isSelectionEditorValid);
-            if(isSelectionEditorValid && prefixValid) {
+            if(isSelectionEditorValid && prefixValid && !error) {
               const response = await putSiteSetting({
                 property: 'site.species',
                 data: result,

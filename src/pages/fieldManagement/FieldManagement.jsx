@@ -71,7 +71,7 @@ export default function FieldManagement() {
         spacing={3}
         style={{ padding: 20 }}
       >
-        <DefaultFieldTable siteSettings={siteSettings} setSpecies={setSpecies} />
+        <DefaultFieldTable siteSettings={siteSettings} />
         <CategoryTable />
         <CustomFieldTable
           categories={customIndividualCategories}
