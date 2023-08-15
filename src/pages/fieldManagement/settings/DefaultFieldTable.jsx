@@ -68,7 +68,7 @@ function getInitialFormState(siteSettings) {
   return { regions, species, relationships, socialGroups };
 }
 
-export default function DefaultFieldTable({ siteSettings, setSpecies }) {
+export default function DefaultFieldTable({ siteSettings }) {
   const intl = useIntl();
   const [formSettings, setFormSettings] = useState(null);
   const [editField, setEditField] = useState(null);
