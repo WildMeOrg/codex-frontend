@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { useIntl, FormattedMessage } from 'react-intl';
 import { get } from 'lodash-es';
 
@@ -13,7 +14,6 @@ import categoryTypes from '../../../constants/categoryTypes';
 import { RegionEditor } from './defaultFieldComponents/Editors';
 import RelationshipEditor from './defaultFieldComponents/RelationshipEditor';
 import SocialGroupsEditor from './defaultFieldComponents/SocialGroupsEditor';
-import SpeciesEditor from './defaultFieldComponents/SpeciesEditor';
 import { cellRendererTypes } from '../../../components/dataDisplays/cellRenderers';
 
 const configurableFields = [
@@ -72,6 +72,7 @@ export default function DefaultFieldTable({ siteSettings, setSpecies }) {
   const intl = useIntl();
   const [formSettings, setFormSettings] = useState(null);
   const [editField, setEditField] = useState(null);
+  const history = useHistory();
   const {
     mutate: putSiteSetting,
     error,
@@ -107,11 +108,10 @@ export default function DefaultFieldTable({ siteSettings, setSpecies }) {
             variant="edit"
             onClick={() => {
               if(field.id === 'species'){
-                setSpecies(true);
+                history.push('/settings/fields/species');
               }else {
                 setEditField(field);
-              }
-              
+              }              
             }}
           />
         ),
@@ -143,13 +143,6 @@ export default function DefaultFieldTable({ siteSettings, setSpecies }) {
               });
               if (response?.status === 200) onCloseEditor();
             }
-            // if (editField?.id === 'species') {
-            //   const response = await putSiteSetting({
-            //     property: editField.backendPath,
-            //     data: formSettings.species,
-            //   });
-            //   if (response?.status === 200) onCloseEditor();
-            // }
             if (editField?.id === 'relationship') {
               const response = await putSiteSetting({
                 property: editField.backendPath,

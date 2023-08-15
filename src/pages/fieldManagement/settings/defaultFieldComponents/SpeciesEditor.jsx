@@ -66,6 +66,7 @@ export default function SpeciesEditor(
     mutate: putSiteSetting,
     error,
     clearError,
+    loading
   } = usePutSiteSetting();
 
   const checkPrefixValid = (prefix) => {
@@ -139,7 +140,7 @@ export default function SpeciesEditor(
               setPrefixInput(e.target.value);                
               setPrefixValid(checkPrefixValid(e.target.value));}
             }
-            label={intl.formatMessage({ id: 'PREFIX' })}
+            label={intl.formatMessage({ id: 'ID_PREFIX' })}
             variant="outlined"          
             style={{ width: 200, marginTop: 12, marginBottom: 12 }}
           />      
@@ -159,35 +160,34 @@ export default function SpeciesEditor(
         titleId="SPECIES_ERROR"
       />
       )}
-      {/* {error && (
+      {error && (
         <CustomAlert
         style={{ marginTop: 12 }}
-        severity="error"
-        titleId="SPECIES_ERROR">
+        severity="error">
           {error.message}
         </CustomAlert>      
-      )} */}
+      )}
       
     </DialogContent>
     <DialogActions style={{ padding: '0px 24px 24px 24px' }}>
       <Button 
         display="primary"
+        loading={loading}
         onClick={async () =>
           {            
             setShowPrefixError(!prefixValid);
             setShowSpeciesError(!isSelectionEditorValid);
-            setTimeout(async () => {
-              if(isSelectionEditorValid && prefixValid) {
-                const response = await putSiteSetting({
-                  property: 'site.species',
-                  data: result,
-                  });
-                if (response?.status === 200) {
-                  clearError();
-                  onClose();
-                }
+            if(isSelectionEditorValid && prefixValid) {
+              const response = await putSiteSetting({
+                property: 'site.species',
+                data: result,
+                });
+              if (response?.status === 200) {
+                setSelectedSpecies('');
+                clearError();
+                onClose();     
               }
-            }, 200);
+            }           
           }          
         }
         >
@@ -202,216 +202,3 @@ export default function SpeciesEditor(
   </StandardDialog>
   );
 }
-
-
-// export function oldSpeciesEditor({
-//   onClose,
-//   onSubmit,
-//   formSettings,
-//   siteSettings,
-//   setFormSettings,
-// }) {
-//   const intl = useIntl();
-//   const [searchInput, setSearchInput] = useState('');
-//   const [searchTerm, setSearchTerm] = useState(null);
-//   const [stillGeneratingDisplay, setStillGeneratingDisplay] =
-//     useState(false);
-//   const {
-//     data: searchResults,
-//     loading: searchResultsLoading,
-//     error: searchResultsError,
-//     setError,
-//   } = useItisSearch(searchTerm);
-
-//   const timerRef = useRef(null);
-//   useEffect(() => {
-//     if (searchResultsLoading) {
-//       timerRef.current = setTimeout(() => {
-//         setStillGeneratingDisplay(true);
-//       }, '5000');
-//     } else {
-//       setStillGeneratingDisplay(false);
-//       clearTimeout(timerRef.current);
-//     }
-//     return () => {
-//       clearTimeout(timerRef.current);
-//     };
-//   }, [searchResultsLoading]);
-//   const currentSpecies = get(formSettings, 'species', []);
-//   const suggestedValues = get(
-//     siteSettings,
-//     ['site.species', 'suggestedValues'],
-//     [],
-//   );
-
-//   const isTimeoutError =
-//     searchResultsError && searchResultsError?.indexOf('Timeout') > -1;
-//   const isNonTimeoutError =
-//     searchResultsError &&
-//     searchResultsError?.indexOf('Timeout') === -1;
-
-//   const tableColumns = [
-//     {
-//       name: 'scientificName',
-//       label: intl.formatMessage({ id: 'SCIENTIFIC_NAME' }),
-//       options: {
-//         customBodyRender: (scientificName, species) => {
-//           const suggested = suggestedValues.find(
-//             suggestedValue =>
-//               suggestedValue.itisTsn === species.itisTsn,
-//           );
-
-//           return (
-//             <Text
-//               variant="body2"
-//               style={{
-//                 fontStyle: 'italic',
-//                 display: 'flex',
-//                 alignItems: 'center',
-//               }}
-//             >
-//               {suggested && <StarIcon style={{ marginRight: 4 }} />}
-//               {scientificName}
-//             </Text>
-//           );
-//         },
-//       },
-//     },
-//     {
-//       name: 'commonNames',
-//       label: intl.formatMessage({ id: 'COMMON_NAMES' }),
-//       align: 'left',
-//       options: {
-//         customBodyRender: commonNames => commonNames.join(', '),
-//       },
-//     },
-//     {
-//       name: 'action',
-//       label: intl.formatMessage({ id: 'ADD' }),
-//       options: {
-//         customBodyRender: (_, species) => {
-//           if (
-//             currentSpecies.find(s => s.itisTsn === species.itisTsn)
-//           ) {
-//             return (
-//               <div style={{ padding: 12 }}>
-//                 <CheckIcon />
-//               </div>
-//             );
-//           }
-//           return (
-//             <IconButton
-//               onClick={() =>
-//                 setFormSettings({
-//                   ...formSettings,
-//                   species: [...currentSpecies, species],
-//                 })
-//               }
-//             >
-//               <AddIcon />
-//             </IconButton>
-//           );
-//         },
-//       },
-//     },
-//   ];
-
-//   return (
-//     <StandardDialog open onClose={onClose} titleId="EDIT_SPECIES">
-//       <DialogContent style={{ minWidth: 200 }}>
-//         <div style={{ marginBottom: 24 }}>
-//           {currentSpecies.map(s => (
-//             <Tooltip
-//               key={s.itisTsn}
-//               title={get(s, 'commonNames', []).join(', ')}
-//             >
-//               <Chip
-//                 style={{ marginRight: 4, marginBottom: 8 }}
-//                 label={s.scientificName}
-//                 onDelete={() => {
-//                   const newSpecies = currentSpecies.filter(
-//                     c => c.itisTsn !== s.itisTsn,
-//                   );
-
-//                   setFormSettings({
-//                     ...formSettings,
-//                     species: newSpecies,
-//                   });
-//                 }}
-//               />
-//             </Tooltip>
-//           ))}
-//         </div>
-//         <form
-//           onSubmit={e => {
-//             setSearchTerm(searchInput);
-//             e.preventDefault();
-//             setError(null);
-//           }}
-//           style={{ display: 'flex', alignItems: 'center' }}
-//         >
-//           <TextField
-//             value={searchInput}
-//             onChange={e => setSearchInput(e.target.value)}
-//             label={intl.formatMessage({ id: 'SEARCH_ITIS_SPECIES' })}
-//             variant="outlined"
-//             InputProps={{ startAdornment: <SearchIcon /> }}
-//             style={{ width: '100%' }}
-//           />
-//           <Button
-//             onClick={() => {
-//               setSearchTerm(searchInput);
-//             }}
-//             display="primary"
-//             loading={searchResultsLoading}
-//             style={{ marginLeft: 12 }}
-//             type="submit"
-//           >
-//             <FormattedMessage id="SEARCH" />
-//           </Button>
-//         </form>
-//         {stillGeneratingDisplay && !searchResultsError && (
-//           <Text
-//             component="p"
-//             variant="caption"
-//             style={{ margin: '8px 4px' }}
-//             id="STILL_GENERATING_LIST"
-//           />
-//         )}
-//         {isTimeoutError && (
-//           <CustomAlert
-//             style={{ marginTop: 12 }}
-//             severity="error"
-//             titleId="SEARCH_TIMED_OUT_WHILE_TRYING_TO_CONNECT_TO_ITIS"
-//           />
-//         )}
-//         {isNonTimeoutError && (
-//           <CustomAlert style={{ marginTop: 12 }} severity="error">
-//             {searchResultsError}
-//           </CustomAlert>
-//         )}
-//         <DataDisplay
-//           cellStyles={{ padding: '0 8px 0 12px' }}
-//           style={{ marginTop: 12 }}
-//           noTitleBar
-//           variant="secondary"
-//           columns={tableColumns}
-//           data={searchResults || suggestedValues}
-//           idKey="itisTsn"
-//           tableContainerStyles={{ maxHeight: 300 }}
-//         />
-//         <Text
-//           component="p"
-//           variant="caption"
-//           style={{ margin: '8px 4px' }}
-//           id="STAR_EXPLANATION"
-//         />
-//       </DialogContent>
-//       <DialogActions style={{ padding: '0px 24px 24px 24px' }}>
-//         <Button display="primary" onClick={onSubmit}>
-//           <FormattedMessage id="FINISH" />
-//         </Button>
-//       </DialogActions>
-//     </StandardDialog>
-//   );
-// }
