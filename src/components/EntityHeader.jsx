@@ -2,6 +2,8 @@ import React from 'react';
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import Text from './Text';
+import Chip from '@material-ui/core/Chip';
+import { useTheme } from '@material-ui/core/styles';
 
 export default function EntityHeader({
   name,
@@ -10,7 +12,9 @@ export default function EntityHeader({
   renderOptions,
   renderAvatar,
   renderTabs,
+  codexID,
 }) {
+  const theme = useTheme();
   return (
     <>
       <Grid container justifyContent="center">
@@ -53,13 +57,28 @@ export default function EntityHeader({
               }}
             >
               {name}
-            </Text>
+            </Text>                          
             <div>{renderOptions}</div>
-          </div>
+          </div> 
+          {codexID && (
+            <div style={{ marginTop: 4 }}>
+            <Chip
+              // key={value}
+              label={codexID}
+              style={{
+                marginTop: 4,
+                marginRight: 4,
+                color: theme.palette.common.white,
+                backgroundColor: theme.palette.primary.main,
+              }}
+            />
+          </div> 
+          )}                   
           <div style={{ marginLeft: 4, marginTop: 4 }}>
             {children}
           </div>
-          <div style={{ marginTop: 20 }}>{renderTabs}</div>
+          <div style={{ marginTop: 20 }}>{renderTabs}</div>          
+         
         </Grid>
       </Grid>
       <Divider style={{ marginBottom: 12 }} />
