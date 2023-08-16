@@ -16,7 +16,6 @@ import SpeciesEditor from './settings/defaultFieldComponents/SpeciesEditor';
 import AddIcon from '@material-ui/icons/Add';
 import PrefixEditor from './settings/defaultFieldComponents/PrefixEditor';
 import Switch from '@material-ui/core/Switch';
-import { set } from 'date-fns';
 
 export default function SpeciesManagement() {
   const { data: siteSettings, loading, error } = useSiteSettings();
@@ -83,7 +82,7 @@ export default function SpeciesManagement() {
     const count = auto_names?.next_value || '-';
     return {
       id: s.id,      
-      labelId: `${s.scientificName} (${s.commonNames[0]})`,
+      labelId: `${s.scientificName}\u00A0\u00A0\u00A0(${s.commonNames[0]})`,
       prefix: prefix,
       count: count,
     }
