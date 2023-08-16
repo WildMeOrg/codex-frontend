@@ -1252,5 +1252,6 @@
   "EDIT_SPECIES_PREFIX_DESCRIPTION" : "Changes to the prefix will apply to all Codex IDs for the species ",
   "SPECIES_PREFIX" : "Species Prefix*",
   "PREFIX_INVALID" : "Please provide a unique prefix of 3 to 5 characters for this species.",
-  "SPECIES_ERROR" : "Please select a species."
+  "SPECIES_ERROR" : "Please select a species.",
+  "CODEX_ID" : "Codex ID"
 }
