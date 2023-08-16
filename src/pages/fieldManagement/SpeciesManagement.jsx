@@ -54,7 +54,7 @@ export default function SpeciesManagement() {
       label: intl.formatMessage({ id: 'COUNT' }),
       options: {
         customBodyRender: count => (
-          <FormattedMessage id={count} defaultMessage={count}/>
+          <FormattedMessage id={count} defaultMessage={count.toString()}/>
         ),
       },
     },
@@ -125,18 +125,18 @@ export default function SpeciesManagement() {
       >
         <div style={{
           display: 'flex',
-          justifyContent: 'space-between',
+          justifyContent: 'flex-end',
           alignItems: 'center',
           marginTop: 12,
           marginBottom: 12,
         }}>
-          <div>
+          {/* <div>
             <span style={{marginRight: 10, fontWeight:'bold'}}> {intl.formatMessage({ id: 'CODEX_ID' })} </span>
             <Switch 
                     checked = {codexIdEnabled}                
                     disabled
             />  
-          </div>
+          </div> */}
           <Button  
             id = "ADD_SPECIES"            
             size="small"
