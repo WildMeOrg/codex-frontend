@@ -1242,5 +1242,15 @@
   "MESSAGE" : "Message",
   "INVITATION_REQUESTS" : "Invitation Requests",
   "NO_INVITATION_REQUESTS" : "Currently there is no request from invitation page",
-  "ROSE":"Rose"
+  "ROSE":"Rose",
+  "ID_PREFIX" : "ID Prefix",
+  "PREFIX": "Prefix",
+  "COUNT" : "Count",
+  "MANAGE_SPECIES" : "Manage Species",
+  "ADD_SPECIES" : "Add Species",
+  "ADD_SPECIES_DESCRIPTION" : "Each species has a catalogue reference called a Codex ID (e.g, ZEB-001). Provide a unique prefix of 3 to 5 characters for this species.",
+  "EDIT_SPECIES_PREFIX_DESCRIPTION" : "Changes to the prefix will apply to all Codex IDs for the species ",
+  "SPECIES_PREFIX" : "Species Prefix*",
+  "PREFIX_INVALID" : "Please provide a unique prefix of 3 to 5 characters for this species.",
+  "SPECIES_ERROR" : "Please select a species."
 }
