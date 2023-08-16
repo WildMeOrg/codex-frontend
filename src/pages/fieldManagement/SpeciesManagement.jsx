@@ -127,7 +127,7 @@ export default function SpeciesManagement() {
           marginBottom: 12,
         }}>
           <div>
-            <span style={{marginRight: 10, fontWeight:'bold'}}> {'Codex ID'} </span>
+            <span style={{marginRight: 10, fontWeight:'bold'}}> {intl.formatMessage({ id: 'CODEX_ID' })} </span>
             <Switch 
                     checked                
                     disabled
@@ -149,7 +149,7 @@ export default function SpeciesManagement() {
         variant="secondary"
         columns={tableColumns}
         data={speciesTableRows}
-        tableContainerStyles={{ maxHeight: 300 }}
+        tableContainerStyles={{ maxHeight: 1300 }}
       />
       </Grid>
     </MainColumn>
