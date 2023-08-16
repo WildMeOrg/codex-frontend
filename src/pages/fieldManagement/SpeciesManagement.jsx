@@ -16,12 +16,15 @@ import SpeciesEditor from './settings/defaultFieldComponents/SpeciesEditor';
 import AddIcon from '@material-ui/icons/Add';
 import PrefixEditor from './settings/defaultFieldComponents/PrefixEditor';
 import Switch from '@material-ui/core/Switch';
+import { set } from 'date-fns';
 
 export default function SpeciesManagement() {
   const { data: siteSettings, loading, error } = useSiteSettings();
   const intl = useIntl();
   const [editField, setEditField] = useState(null);
   const [addSpecies, setAddSpecies] = useState(false);
+
+  const [codexIdEnabled, setCodexIdEnabled] = useState(true);
 
   useDocumentTitle('MANAGE_FIELDS');
 
@@ -90,6 +93,7 @@ export default function SpeciesManagement() {
       <MainColumn>     
         {addSpecies && (
           <SpeciesEditor 
+            codexIdEnabled={codexIdEnabled}
             onClose={() => {
               setAddSpecies(false);                          
           }}
@@ -129,7 +133,7 @@ export default function SpeciesManagement() {
           <div>
             <span style={{marginRight: 10, fontWeight:'bold'}}> {intl.formatMessage({ id: 'CODEX_ID' })} </span>
             <Switch 
-                    checked                
+                    checked = {codexIdEnabled}                
                     disabled
             />  
           </div>
