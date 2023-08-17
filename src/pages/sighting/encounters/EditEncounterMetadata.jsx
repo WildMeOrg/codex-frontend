@@ -191,7 +191,7 @@ export default function EditEncounterMetadata({
             const newCustomFields = formatCustomFields(customFields);
             properties['customFields'] = newCustomFields;
 
-            const dateRangeIntegrityError = CheckDateRangeIntegrity(properties['customFields']);
+            const dateRangeIntegrityError = CheckDateRangeIntegrity(properties['customFields'] || []);
               if(dateRangeIntegrityError) {
                 setIncompleteDateRangeError(dateRangeIntegrityError);
                 return;

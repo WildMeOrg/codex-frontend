@@ -236,9 +236,7 @@ export default function EditIndividualMetadata({
               properties.customFields = customFieldValues;
             }
 
-
-
-            const dateRangeIntegrityError = CheckDateRangeIntegrity(properties['customFields']);
+            const dateRangeIntegrityError = CheckDateRangeIntegrity(properties['customFields'] || []);
               if(dateRangeIntegrityError) {
                 setIncompleteDateRangeError(dateRangeIntegrityError);
                 return;
