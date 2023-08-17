@@ -153,7 +153,7 @@ export default function EditSightingMetadata({
             const properties = { ...defaultFieldValues };
             if (!isEmpty(customFieldValues))
               properties.customFields = customFieldValues;
-              const dateRangeIntegrityError = CheckDateRangeIntegrity(properties['customFields']);
+              const dateRangeIntegrityError = CheckDateRangeIntegrity(properties['customFields'] || []);
               if(dateRangeIntegrityError) {
                 setIncompleteDateRangeError(dateRangeIntegrityError);
                 return;
