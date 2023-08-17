@@ -1253,5 +1253,7 @@
   "SPECIES_PREFIX" : "Species Prefix*",
   "PREFIX_INVALID" : "Please provide a unique prefix of 3 to 5 characters for this species.",
   "SPECIES_ERROR" : "Please select a species.",
-  "CODEX_ID" : "Codex ID"
+  "CODEX_ID" : "Codex ID",
+  "CODEX_ID_CREATION" : "Codex ID Creation",
+  "CODEX_ID_CREATION_DESCRIPTION" : "Codex ID will be assigned based on the species."
 }
