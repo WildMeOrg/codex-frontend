@@ -1,10 +1,11 @@
-import { set } from 'lodash-es';
+import { over, set } from 'lodash-es';
 
 export function derivePropertyOverrides(
   formData,
   showSexInput,
   showFirstNameInput,
   showAdoptionNameInput,
+  showAutogenNameInput,
 ) {
   const overrides = {};
   if (showSexInput) overrides.sex = formData?.sex;
@@ -22,7 +23,20 @@ export function derivePropertyOverrides(
       formData?.adoptionName,
     );
   }
+  if (showAutogenNameInput) {
+    for (const key in formData) {
+        if (key.startsWith("autogen")) {
+          set(
+            overrides,
+            ['name_context', key],
+            formData[key],
+          );
+            console.log("key: " + key + " value: " + formData[key]);
+        }
+    }
+}
   overrides.taxonomy_guid = formData?.taxonomy_guid;
+  console.log('overrides',overrides);
   return overrides;
 }
 
