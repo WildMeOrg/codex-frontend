@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router';
 
 import Grid from '@material-ui/core/Grid';
@@ -19,6 +19,7 @@ import {
 } from './utils/formDataUtils';
 import ResolutionSelector from './ResolutionSelector';
 import { deriveConflictIndividualAutogenNames } from '../../utils/nameUtils';
+import useIndividual from '../../models/individual/useIndividual';
 
 export default function MergeIndividuals() {
   const { search } = useLocation();
@@ -26,6 +27,14 @@ export default function MergeIndividuals() {
 
   const searchParams = new URLSearchParams(search);
   const individualGuids = searchParams.getAll('i') || [];
+  
+  const { data : data0, error: error0, isLoading: isLoading0 } = useIndividual(individualGuids[0]);
+  const { data : data1, error : error1, isLoading : isLoading1 } = useIndividual(individualGuids[1]);
+
+  const [individuals, setIndividuals] = useState([data0, data1]);  
+  useEffect(() => {
+    setIndividuals([data0, data1]);
+  }, [data0, data1]);
 
   const { data: mergeConflicts, fetchConflictsError } =
     useFetchMergeConflicts(individualGuids);
@@ -36,7 +45,6 @@ export default function MergeIndividuals() {
     error: mergeError,
   } = useMergeIndividuals();
 
-  const [individuals, setIndividuals] = useState({});
   console.log("individuals", individuals);
 
   const [formData, setFormData] = useState({});
@@ -57,7 +65,9 @@ export default function MergeIndividuals() {
     showAdoptionNameInput,    
   );
 
-  if (fetchConflictsError)
+  if(isLoading0 || isLoading1) return null;
+
+  if (fetchConflictsError || error0 || error1)
     return (
       <SadScreen
         variant={errorTypes.genericError}
@@ -91,12 +101,12 @@ export default function MergeIndividuals() {
               key={individualGuid}
               individualGuid={individualGuid}
               showSex={mergeConflicts?.sex}
-              setIndividualData={individualData =>
-                setIndividuals({
-                  ...individuals,
-                  [individualGuid]: individualData,
-                })
-              }
+              // setIndividualData={individualData =>
+              //   setIndividuals({
+              //     ...individuals,
+              //     [individualGuid]: individualData,
+              //   })
+              // }
             />
           ))}
         </Grid>
