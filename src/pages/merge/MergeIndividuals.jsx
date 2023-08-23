@@ -16,10 +16,12 @@ import useFetchMergeConflicts from '../../models/individual/useFetchMergeConflic
 import {
   derivePropertyOverrides,
   isFormComplete,
+  formDataConsistent,
 } from './utils/formDataUtils';
 import ResolutionSelector from './ResolutionSelector';
 import { deriveConflictIndividualAutogenNames } from '../../utils/nameUtils';
 import useIndividual from '../../models/individual/useIndividual';
+import { useIntl, FormattedMessage } from 'react-intl';
 
 export default function MergeIndividuals() {
   const { search } = useLocation();
@@ -57,12 +59,13 @@ export default function MergeIndividuals() {
   //resolveFields will show up anyway, if every field has no conflicts, 
   //the dropdown will be autopopulated and cannot be adjusted.
   const showResolveFields = true;
+  const [consistentError, setConsistentError] = useState(false);
 
   const formComplete = isFormComplete(
     formData,
     showSexInput,
     showFirstNameInput,
-    showAdoptionNameInput,    
+    showAdoptionNameInput,
   );
 
   if(isLoading0 || isLoading1) return null;
@@ -74,6 +77,7 @@ export default function MergeIndividuals() {
         subtitleId="DATA_UNAVAILABLE"
       />
     );
+
   const matchingKeys = Object.keys(formData).filter(key => key.startsWith('autogen-'));
   const matchingValue = matchingKeys.length > 0 ? formData[matchingKeys[0]] : null;  
   const autogen = matchingValue ?? ""; 
@@ -197,11 +201,20 @@ export default function MergeIndividuals() {
               {mergeError}
             </Alert>
           )}
+          {consistentError && (
+            <Alert
+            titleId="SERVER_ERROR"
+            style={{ marginTop: 12, marginBottom: 12 }}
+            severity="error"
+          >
+            {<FormattedMessage id="CONSISTENT_ERROR" />}
+          </Alert>
+          )}
           <Button
             display="primary"
             id="MERGE_INDIVIDUALS"
             loading={loading}
-            disabled={loading || !formComplete}
+            disabled={loading || !formComplete || autogen === ""}
             onClick={() => {
               const propertyOverrides = derivePropertyOverrides(
                 formData,
@@ -211,11 +224,17 @@ export default function MergeIndividuals() {
                 showAutogenNameInput,
               );
               console.log("propertyOverrides",propertyOverrides);
-              mergeIndividuals({
+              if(
+              formDataConsistent(individuals, formData?.taxonomy_guid, autogen)) {
+                mergeIndividuals({
                 targetIndividualGuid: individualGuids?.[0],
                 fromIndividualGuids: [individualGuids?.[1]],
                 propertyOverrides,
-              });                
+              });
+              }else {
+                setConsistentError(true);
+              }
+                              
             }}
           />
         </Grid>
