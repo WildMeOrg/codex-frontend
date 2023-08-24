@@ -29,16 +29,6 @@ export default function MergeIndividuals() {
 
   const searchParams = new URLSearchParams(search);
   const individualGuids = searchParams.getAll('i') || [];
-
-  // const individuals1 = [];
-  // const isLoading = [];
-  // const error = [];
-  // individualGuids.map(data => {
-  //   const { data : ind, error : err, isLoading : load } = useIndividual(data);
-  //   individuals1.push(ind);
-  //   load && isLoading.push(load);
-  //   err && error.push(err);
-  // });
   
   const { data : ind0, error: error0, isLoading: isLoading0 } = useIndividual(individualGuids[0]);
   const { data : ind1, error : error1, isLoading : isLoading1 } = useIndividual(individualGuids[1]);
@@ -47,26 +37,6 @@ export default function MergeIndividuals() {
   useEffect(() => {
     setIndividuals([ind0, ind1]);
   }, [ind0, ind1]);
-
-  // const individualsData = {};  
-
-  // individualGuids.forEach((guid, index) => {
-  //   const { data, error, isLoading } = useIndividual(guid);
-  //   individualsData[index] = {
-  //     data,
-  //     error,
-  //     isLoading
-  //   };
-  // });
-
-  // const [ individuals2, setIndividuals2 ] = useState([]);
-  // const individuals1 = Object.values(individualsData);  
-
-  // useEffect(() => {
-  //   setIndividuals2(Object.values(individuals1));
-  // }, [individuals1]); 
-
-  // console.log("individuals2", individuals2);
 
   const { data: mergeConflicts, fetchConflictsError } =
     useFetchMergeConflicts(individualGuids);
@@ -203,7 +173,7 @@ export default function MergeIndividuals() {
             value={autogen}
             onChange={newAutogenName => {   
               const autogenNames = deriveConflictIndividualAutogenNames(individuals);         
-              const context = autogenNames.find(autogen => autogen.guid === newAutogenName).context;       
+              const context = autogenNames?.find(autogen => autogen.guid === newAutogenName)?.context;       
               Object.keys(formData).forEach(key => {
                 if (key.startsWith("autogen")) {
                   delete formData[key];
