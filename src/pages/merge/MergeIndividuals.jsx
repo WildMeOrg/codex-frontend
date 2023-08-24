@@ -29,14 +29,44 @@ export default function MergeIndividuals() {
 
   const searchParams = new URLSearchParams(search);
   const individualGuids = searchParams.getAll('i') || [];
-  
-  const { data : data0, error: error0, isLoading: isLoading0 } = useIndividual(individualGuids[0]);
-  const { data : data1, error : error1, isLoading : isLoading1 } = useIndividual(individualGuids[1]);
 
-  const [individuals, setIndividuals] = useState([data0, data1]);  
+  // const individuals1 = [];
+  // const isLoading = [];
+  // const error = [];
+  // individualGuids.map(data => {
+  //   const { data : ind, error : err, isLoading : load } = useIndividual(data);
+  //   individuals1.push(ind);
+  //   load && isLoading.push(load);
+  //   err && error.push(err);
+  // });
+  
+  const { data : ind0, error: error0, isLoading: isLoading0 } = useIndividual(individualGuids[0]);
+  const { data : ind1, error : error1, isLoading : isLoading1 } = useIndividual(individualGuids[1]);
+
+  const [individuals, setIndividuals] = useState([ind0, ind1]);  
   useEffect(() => {
-    setIndividuals([data0, data1]);
-  }, [data0, data1]);
+    setIndividuals([ind0, ind1]);
+  }, [ind0, ind1]);
+
+  // const individualsData = {};  
+
+  // individualGuids.forEach((guid, index) => {
+  //   const { data, error, isLoading } = useIndividual(guid);
+  //   individualsData[index] = {
+  //     data,
+  //     error,
+  //     isLoading
+  //   };
+  // });
+
+  // const [ individuals2, setIndividuals2 ] = useState([]);
+  // const individuals1 = Object.values(individualsData);  
+
+  // useEffect(() => {
+  //   setIndividuals2(Object.values(individuals1));
+  // }, [individuals1]); 
+
+  // console.log("individuals2", individuals2);
 
   const { data: mergeConflicts, fetchConflictsError } =
     useFetchMergeConflicts(individualGuids);
