@@ -1254,5 +1254,5 @@
   "PREFIX_INVALID" : "Please provide a unique prefix of 3 to 5 characters for this species.",
   "SPECIES_ERROR" : "Please select a species.",
   "CODEX_ID" : "Codex ID",
-  "CONSISTENT_ERROR" : "Selected Codex ID is incompitable with the species."
+  "CONSISTENT_ERROR" : "Selected Codex ID does not match the species."
 }

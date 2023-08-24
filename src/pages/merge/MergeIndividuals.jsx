@@ -207,7 +207,7 @@ export default function MergeIndividuals() {
             style={{ marginTop: 12, marginBottom: 12 }}
             severity="error"
           >
-            {<FormattedMessage id="CONSISTENT_ERROR" />}
+            {<FormattedMessage id="SPECIES_CONSISTENT_ERROR" />}
           </Alert>
           )}
           <Button
