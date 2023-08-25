@@ -308,6 +308,7 @@ export default function MatchSighting() {
             bottom: 16,
             right: 40,
             zIndex: 1,
+            borderRadius: 4,
           }}
           color="primary"
           variant="extended"
