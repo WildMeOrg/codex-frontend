@@ -14,6 +14,7 @@ import Alert from '../../components/Alert';
 import EncounterCard from '../../components/cards/EncounterCard';
 import useIndividualFieldSchemas from '../../models/individual/useIndividualFieldSchemas';
 import usePostIndividual from '../../models/individual/usePostIndividual';
+import CustomAlert from '../../components/Alert';
 
 function calculateInitialState(schemas) {
   if (!schemas) return {};
@@ -138,6 +139,13 @@ export default function CreateIndividual() {
             />
           ))}
         </Grid>
+        <Grid item style={{ marginTop: 16 }}>
+            <CustomAlert
+              severity="info"
+              titleId="CODEX_ID_CREATION"
+              descriptionId="CODEX_ID_CREATION_DESCRIPTION"             
+            />
+          </Grid>
         <Grid
           item
           style={{ display: 'flex', flexDirection: 'column' }}
