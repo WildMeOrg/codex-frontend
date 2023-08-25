@@ -23,9 +23,7 @@ export default function SpeciesManagement() {
   const [editField, setEditField] = useState(null);
   const [addSpecies, setAddSpecies] = useState(false);
 
-  // const [codexIdEnabled, setCodexIdEnabled] = useState(true);
-
-  const codexIdEnabled = true;
+  const [codexIdEnabled, setCodexIdEnabled] = useState(true);
 
   useDocumentTitle('MANAGE_FIELDS');
 

@@ -21,7 +21,6 @@ export default function ResolutionSelector({
   fieldType,
   individualData,
 }) {
-  console.log('individualData', individualData);
   const { data, loading, error } = useSiteSettings();
   const species = get(data, ['site.species', 'value'], []);
   const speciesOptions = species.map(s => {
@@ -36,7 +35,6 @@ export default function ResolutionSelector({
   }); 
 
   const autogenNames = deriveConflictIndividualAutogenNames(individualData);                           
-  console.log('autogenNames', autogenNames);
   const propertyMap = {
     sex: {
       labelId: 'SEX',
@@ -96,7 +94,6 @@ export default function ResolutionSelector({
     return selectorSchema.deriveChoices(individualProperties);
   }, [selectorSchema, individualProperties]);
 
-  console.log('choices', choices);
   return (
     <FormControl style={{ width: 320, marginTop: 12 }}>
       <InputLabel>
