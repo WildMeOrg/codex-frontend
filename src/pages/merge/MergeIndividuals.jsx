@@ -21,7 +21,7 @@ import {
 import ResolutionSelector from './ResolutionSelector';
 import { deriveConflictIndividualAutogenNames } from '../../utils/nameUtils';
 import useIndividual from '../../models/individual/useIndividual';
-import { useIntl, FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
 export default function MergeIndividuals() {
   const { search } = useLocation();
@@ -46,8 +46,6 @@ export default function MergeIndividuals() {
     loading,
     error: mergeError,
   } = useMergeIndividuals();
-
-  console.log("individuals", individuals);
 
   const [formData, setFormData] = useState({});
 
@@ -223,7 +221,6 @@ export default function MergeIndividuals() {
                 showAdoptionNameInput,
                 showAutogenNameInput,
               );
-              console.log("propertyOverrides",propertyOverrides);
               if(
               formDataConsistent(individuals, formData?.taxonomy_guid, autogen)) {
                 mergeIndividuals({
