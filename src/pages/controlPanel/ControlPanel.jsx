@@ -11,6 +11,7 @@ import SiteStatusIcon from '@material-ui/icons/Speed';
 import UserManagementIcon from '@material-ui/icons/People';
 import AdministrationIcon from '@material-ui/icons/Gavel';
 import GroupWorkIcon from '@material-ui/icons/GroupWork';
+import AssignmentOutlinedIcon from '@material-ui/icons/AssignmentOutlined';
 
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import useGetMe from '../../models/users/useGetMe';
@@ -78,6 +79,21 @@ const adminPages = [
     name: 'preferences',
     labelId: 'PREFERENCES',
     href: '/settings/preferences',
+    roles: [
+      'is_admin',
+      'is_exporter',
+      'is_internal',
+      'is_staff',
+      'is_user_manager',
+      'is_researcher',
+      'is_contributor',
+    ],
+  },
+  {
+    icon: AssignmentOutlinedIcon,
+    name: 'change-log',
+    labelId: 'CHANGE_LOG',
+    href: '/settings/change-log',
     roles: [
       'is_admin',
       'is_exporter',
