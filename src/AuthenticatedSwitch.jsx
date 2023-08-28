@@ -48,6 +48,7 @@ import Footer from './components/Footer';
 import { defaultCrossfadeDuration } from './constants/defaults';
 import Requests from './pages/setup/Requests';
 import SpeciesManagement from './pages/fieldManagement/SpeciesManagement';
+import ChangeLog from './pages/changeLog/ChangeLog';
 
 export default function AuthenticatedSwitch({
   emailNeedsVerification,
@@ -131,6 +132,9 @@ export default function AuthenticatedSwitch({
                       </Route>
                       <Route path="/settings/preferences">
                         <Preferences />
+                      </Route>
+                      <Route path="/settings/change-log">
+                        <ChangeLog />
                       </Route>
                       <Route path="/settings">
                         <ControlPanel />

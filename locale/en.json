@@ -1256,5 +1256,6 @@
   "CODEX_ID" : "Codex ID",
   "SPECIES_CONSISTENT_ERROR" : "Selected Codex ID does not match the species.",
   "CODEX_ID_CREATION" : "Codex ID Creation",
-  "CODEX_ID_CREATION_DESCRIPTION" : "Codex ID will be assigned based on the species."
+  "CODEX_ID_CREATION_DESCRIPTION" : "Codex ID will be assigned based on the species.",
+  "CHANGE_LOG" : "Change Log"
 }
