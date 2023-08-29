@@ -12,12 +12,34 @@ import Text from '../../components/Text';
 import Link from '../../components/Link';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import useTheme from '@material-ui/core/styles/useTheme';
-
+import { useIntl, FormattedMessage } from 'react-intl';
+import DataDisplay from '../../components/dataDisplays/DataDisplay';
+import SearchIcon from '@material-ui/icons/Search';
 
 export default function ChangeLog() {
     
   useDocumentTitle('CHANGE_LOG');
   const theme = useTheme();  
+  const intl = useIntl();
+
+  
+  const tableColumns = [
+    {
+      name: 'labelId',
+      label: intl.formatMessage({ id: 'TIME_CHANGE_OCCURRED' }),
+      options: {
+        customBodyRender: labelId => (
+          <FormattedMessage id={labelId} />
+        ),
+      },
+    },
+    {
+      name: 'type',
+      label: intl.formatMessage({ id: 'MESSAGE' }),
+    //   options: { cellRenderer: cellRendererTypes.capitalizedString },
+    },    
+  ];
+  
 
   return (
     <MainColumn>
@@ -26,14 +48,14 @@ export default function ChangeLog() {
             display:'flex',
             alignItems:'center',
             color: theme.palette.text.primary,
-            fontSize: 32,
+            fontSize: 22,
             fontWeight: 'bold',
             textDecoration: 'none',
-            marginTop: 500,
+            marginTop: 80,
             }}
             >  
             <ArrowBackIcon />
-            {'Change Log'}  
+            {<FormattedMessage id={'CHANGE_LOG'}/>}  
         </Link> 
       
       {/* <Text
@@ -43,6 +65,35 @@ export default function ChangeLog() {
         id="CHANGE_LOG"
       /> */}
       <SettingsBreadcrumbs currentPageTextId="CHANGE_LOG" />
+      
+      <Grid item>   
+        <div
+            style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginTop: 12,
+            }}
+        >  
+            <Text
+                variant="h5"
+                component="h5"
+                id="CHANGE_LOG"
+            />
+            <Button
+                startIcon={<SearchIcon />}
+                display="secondary"     
+            />
+        </div>
+      <DataDisplay
+        style={{ marginTop: 8 }}
+        noTitleBar
+        variant="secondary"
+        columns={tableColumns}
+        // data={configurableFields}
+        tableContainerStyles={{ maxHeight: 300 }}
+      />
+    </Grid>
     </MainColumn>
   );
 }
