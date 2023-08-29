@@ -12,6 +12,7 @@ import UserManagementIcon from '@material-ui/icons/People';
 import AdministrationIcon from '@material-ui/icons/Gavel';
 import GroupWorkIcon from '@material-ui/icons/GroupWork';
 import AssignmentOutlinedIcon from '@material-ui/icons/AssignmentOutlined';
+import ListAltIcon from '@material-ui/icons/ListAlt';
 
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import useGetMe from '../../models/users/useGetMe';
@@ -90,7 +91,7 @@ const adminPages = [
     ],
   },
   {
-    icon: AssignmentOutlinedIcon,
+    icon: ListAltIcon,
     name: 'change-log',
     labelId: 'CHANGE_LOG',
     href: '/settings/change-log',

@@ -2,7 +2,6 @@ import React, { useEffect, useState, useMemo } from 'react';
 import { get, has } from 'lodash-es';
 
 import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
 
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import MainColumn from '../../components/MainColumn';
@@ -15,6 +14,8 @@ import useTheme from '@material-ui/core/styles/useTheme';
 import { useIntl, FormattedMessage } from 'react-intl';
 import DataDisplay from '../../components/dataDisplays/DataDisplay';
 import SearchIcon from '@material-ui/icons/Search';
+import { useGetAllAuditLogs } from '../../models/auditLogs/useGetAuditLogs';
+import Paginator from '../../components/dataDisplays/Paginator';
 
 export default function ChangeLog() {
     
@@ -22,19 +23,42 @@ export default function ChangeLog() {
   const theme = useTheme();  
   const intl = useIntl();
 
+  const { data, isLoading, error } = useGetAllAuditLogs();
+  console.log('data', data);
+
+  const [searchParams, setSearchParams] = useState({
+    limit: 20,
+    offset: 0,
+    sort: 'time',
+    reverse: true,
+  });
+
+  const tableRows = data?.map((row) => {
+    
+    return {
+      id: row.guid,
+      time: row.created,
+      message: `MODULE NAME: ${row.module_name}, ITEM GUID: ${row.item_guid}, AUDIT TYPE:  ${row.audit_type},  DETAILS: ${row.message}`,
+    }
+
+  })
+
+  // module_name + item_guid + audit_type + message
+
+  console.log('tableRows', tableRows);
   
   const tableColumns = [
     {
-      name: 'labelId',
+      name: 'time',
       label: intl.formatMessage({ id: 'TIME_CHANGE_OCCURRED' }),
       options: {
         customBodyRender: labelId => (
-          <FormattedMessage id={labelId} />
+          <FormattedMessage id={labelId} defaultMessage={labelId}/>
         ),
       },
     },
     {
-      name: 'type',
+      name: 'message',
       label: intl.formatMessage({ id: 'MESSAGE' }),
     //   options: { cellRenderer: cellRendererTypes.capitalizedString },
     },    
@@ -57,13 +81,7 @@ export default function ChangeLog() {
             <ArrowBackIcon />
             {<FormattedMessage id={'CHANGE_LOG'}/>}  
         </Link> 
-      
-      {/* <Text
-        variant="h3"
-        component="h3"
-        style={{ padding: '16px 0 16px 16px' }}
-        id="CHANGE_LOG"
-      /> */}
+
       <SettingsBreadcrumbs currentPageTextId="CHANGE_LOG" />
       
       <Grid item>   
@@ -82,7 +100,7 @@ export default function ChangeLog() {
             />
             <Button
                 startIcon={<SearchIcon />}
-                display="secondary"     
+                display="tertiary"     
             />
         </div>
       <DataDisplay
@@ -90,8 +108,15 @@ export default function ChangeLog() {
         noTitleBar
         variant="secondary"
         columns={tableColumns}
-        // data={configurableFields}
-        tableContainerStyles={{ maxHeight: 300 }}
+        data={tableRows}
+        tableContainerStyles={{ maxHeight: 700 }}
+        searchParams={searchParams}
+        setSearchParams={setSearchParams}
+      />
+      <Paginator
+        searchParams={searchParams}
+        setSearchParams={setSearchParams}
+        count={200}
       />
     </Grid>
     </MainColumn>

@@ -11,3 +11,13 @@ export default function useGetAuditLogs(entity_guid) {
     },
   });
 }
+
+export function useGetAllAuditLogs() {
+  return useFetch({
+    queryKey: getAuditLogQueryKey(),
+    url: '/audit_logs',
+    queryOptions: {
+      retry: 1,
+    },
+  });
+}
