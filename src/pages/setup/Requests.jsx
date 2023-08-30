@@ -54,7 +54,7 @@ export default function Requests() {
         justifyContent:'center',
         alignItems: 'center',
         }}>
-      <h1>Manage Requests</h1>
+      <Text variant="h4" style={{ marginBottom: 24 }} id="MANAGE_REQUESTS" />
       <Card>
         <CardContent>
           <Text id="INVITATION_REQUESTS" style={{ fontWeight: 'bold' }} />

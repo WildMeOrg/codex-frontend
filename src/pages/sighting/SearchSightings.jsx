@@ -8,7 +8,7 @@ import SearchFilterList from '../../components/SearchFilterList';
 import ElasticsearchSightingsDisplay from '../../components/dataDisplays/ElasticsearchSightingsDisplay';
 import Paginator from '../../components/dataDisplays/Paginator';
 
-const rowsPerPage = 100;
+const rowsPerPage = 10;
 
 export default function SearchSightings() {
   const [formFilters, setFormFilters] = useState([]);

@@ -14,8 +14,9 @@ import useTheme from '@material-ui/core/styles/useTheme';
 import { useIntl, FormattedMessage } from 'react-intl';
 import DataDisplay from '../../components/dataDisplays/DataDisplay';
 import SearchIcon from '@material-ui/icons/Search';
-import { useGetAllAuditLogs } from '../../models/auditLogs/useGetAuditLogs';
+import useGetAuditLogs, { useGetAllAuditLogs } from '../../models/auditLogs/useGetAuditLogs';
 import Paginator from '../../components/dataDisplays/Paginator';
+import TextField from '@material-ui/core/TextField';
 
 export default function ChangeLog() {
     
@@ -23,29 +24,40 @@ export default function ChangeLog() {
   const theme = useTheme();  
   const intl = useIntl();
 
-  const { data, isLoading, error } = useGetAllAuditLogs();
-  console.log('data', data);
+  const [inputValue, setInputValue] = useState('');
+  const [auditLogId, setAuditLogId] = useState(undefined);
 
   const [searchParams, setSearchParams] = useState({
     limit: 20,
     offset: 0,
     sort: 'time',
     reverse: true,
-  });
+  });  
+  console.log(auditLogId);
 
-  const tableRows = data?.map((row) => {
-    
+  const { data, isLoading, error } = useGetAllAuditLogs();
+  const { data: searchedData, isLoading: isSearchedLoading, error: searchedError } = useGetAuditLogs(auditLogId);
+  // const { data, isLoading, error } = useGetAuditLogs(auditLogId);
+  console.log('isSearchedLoading',isSearchedLoading);
+  console.log('searchedError',searchedError);
+  console.log('searchedData',searchedData);
+  
+  const searchedTableRows = (searchedData?.map((row) => {
     return {
       id: row.guid,
       time: row.created,
       message: `MODULE NAME: ${row.module_name}, ITEM GUID: ${row.item_guid}, AUDIT TYPE:  ${row.audit_type},  DETAILS: ${row.message}`,
     }
+  }) || [])?.sort((a, b) => new Date(b.created) - new Date(a.created));
 
-  })
-
-  // module_name + item_guid + audit_type + message
-
-  console.log('tableRows', tableRows);
+  
+ const tableRows = (data?.map((row) => {
+      return {
+        id: row.guid,
+        time: row.created,
+        message: `MODULE NAME: ${row.module_name}, ITEM GUID: ${row.item_guid}, AUDIT TYPE:  ${row.audit_type},  DETAILS: ${row.message}`,
+      }
+    }) || [])?.sort((a, b) => new Date(b.created) - new Date(a.created));
   
   const tableColumns = [
     {
@@ -62,8 +74,7 @@ export default function ChangeLog() {
       label: intl.formatMessage({ id: 'MESSAGE' }),
     //   options: { cellRenderer: cellRendererTypes.capitalizedString },
     },    
-  ];
-  
+  ];  
 
   return (
     <MainColumn>
@@ -98,17 +109,46 @@ export default function ChangeLog() {
                 component="h5"
                 id="CHANGE_LOG"
             />
-            <Button
+
+            <div
+              style={{
+                marginTop: 20,
+                display: 'flex',
+                alignItems: 'flex-end',
+                marginBottom: 12, 
+              }}
+            >
+              <Button
+                // display="tertiary"                
                 startIcon={<SearchIcon />}
-                display="tertiary"     
-            />
+                loading={isLoading}
+                onClick={() => setAuditLogId(inputValue)}
+                style={{ height: 30, border: 'none' }}
+              >
+                
+              </Button>
+              <TextField
+                id="entity-guid-input"
+                label="Entity GUID"
+                value={inputValue}
+                onChange={e => setInputValue(e.target.value)}
+                onKeyDown={event => {
+                  if (event.key === 'Enter') {
+                    setAuditLogId(inputValue);
+                  }
+                }}
+                style={{ width: 420 }}
+              />
+              
+            </div>
+            
         </div>
       <DataDisplay
         style={{ marginTop: 8 }}
         noTitleBar
         variant="secondary"
         columns={tableColumns}
-        data={tableRows}
+        data={searchedTableRows}
         tableContainerStyles={{ maxHeight: 700 }}
         searchParams={searchParams}
         setSearchParams={setSearchParams}
