@@ -4,7 +4,7 @@ import Paper from '@material-ui/core/Paper';
 
 import Button from '../../components/Button';
 import Text from '../../components/Text';
-import { useGetAuditLogs } from '../../models/auditLogs/useGetAuditLogs';
+import useGetAuditLogs from '../../models/auditLogs/useGetAuditLogs';
 
 export default function AuditLog() {
   const [inputValue, setInputValue] = useState('');
