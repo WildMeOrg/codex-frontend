@@ -97,12 +97,6 @@ const adminPages = [
     href: '/settings/change-log',
     roles: [
       'is_admin',
-      'is_exporter',
-      'is_internal',
-      'is_staff',
-      'is_user_manager',
-      'is_researcher',
-      'is_contributor',
     ],
   },
 ];

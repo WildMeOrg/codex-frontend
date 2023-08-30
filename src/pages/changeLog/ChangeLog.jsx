@@ -1,6 +1,4 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import { get, has } from 'lodash-es';
-
 import Grid from '@material-ui/core/Grid';
 
 import useDocumentTitle from '../../hooks/useDocumentTitle';
@@ -33,32 +31,22 @@ export default function ChangeLog() {
     sort: 'time',
     reverse: true,
   });  
-  console.log(auditLogId);
 
-  const { data, isLoading, error } = useGetAllAuditLogs();
-  const { data: searchedData, isLoading: isSearchedLoading, error: searchedError } = useGetAuditLogs(auditLogId);
-  // const { data, isLoading, error } = useGetAuditLogs(auditLogId);
-  console.log('isSearchedLoading',isSearchedLoading);
-  console.log('searchedError',searchedError);
-  console.log('searchedData',searchedData);
-  
-  const searchedTableRows = (searchedData?.map((row) => {
-    return {
-      id: row.guid,
-      time: row.created,
-      message: `MODULE NAME: ${row.module_name}, ITEM GUID: ${row.item_guid}, AUDIT TYPE:  ${row.audit_type},  DETAILS: ${row.message}`,
-    }
-  }) || [])?.sort((a, b) => new Date(b.created) - new Date(a.created));
-
-  
- const tableRows = (data?.map((row) => {
+  const buildAndSortTableRows = (data) => {
+    return data?.map((row) => {
       return {
         id: row.guid,
         time: row.created,
         message: `MODULE NAME: ${row.module_name}, ITEM GUID: ${row.item_guid}, AUDIT TYPE:  ${row.audit_type},  DETAILS: ${row.message}`,
       }
-    }) || [])?.sort((a, b) => new Date(b.created) - new Date(a.created));
+    })?.sort((a, b) => new Date(b.created) - new Date(a.created));
+  }
+
+  const { data, isLoading, error } = useGetAllAuditLogs();
+  const { data: searchedData, isLoading: isSearchedLoading, error: searchedError } = useGetAuditLogs(auditLogId);  
   
+  const searchedTableRows = searchedError ? [] : buildAndSortTableRows(searchedData);  
+  const tableRows = buildAndSortTableRows(data);  
   const tableColumns = [
     {
       name: 'time',
@@ -121,7 +109,7 @@ export default function ChangeLog() {
               <Button
                 // display="tertiary"                
                 startIcon={<SearchIcon />}
-                loading={isLoading}
+                loading={isSearchedLoading}
                 onClick={() => setAuditLogId(inputValue)}
                 style={{ height: 30, border: 'none' }}
               >
@@ -148,10 +136,11 @@ export default function ChangeLog() {
         noTitleBar
         variant="secondary"
         columns={tableColumns}
-        data={searchedTableRows || tableRows}
+        data={searchedTableRows || tableRows }
         tableContainerStyles={{ maxHeight: 700 }}
         searchParams={searchParams}
         setSearchParams={setSearchParams}
+        noResultsTextId="NO_SEARCH_RESULT"
       />
       <Paginator
         searchParams={searchParams}

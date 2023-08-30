@@ -17,6 +17,7 @@ export function useGetAllAuditLogs() {
     queryKey: getAuditLogQueryKey(),
     url: '/audit_logs',
     queryOptions: {
+      enabled: true,
       retry: 1,
     },
   });
