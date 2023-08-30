@@ -1259,5 +1259,6 @@
   "CODEX_ID_CREATION_DESCRIPTION" : "Codex ID will be assigned based on the species.",
   "CHANGE_LOG" : "Change Log",
   "TIME_CHANGE_OCCURRED" : "Time Change occurred",
-  "MANAGE_REQUESTS" : "Manage Requests"
+  "MANAGE_REQUESTS" : "Manage Requests",
+  "NO_SEARCH_RESULT" : "Your search did not match any records."
 }
