@@ -25,7 +25,7 @@ export default function ChangeLog() {
   const intl = useIntl();
 
   const [inputValue, setInputValue] = useState('');
-  const [auditLogId, setAuditLogId] = useState(undefined);
+  const [auditLogId, setAuditLogId] = useState(null);
 
   const [searchParams, setSearchParams] = useState({
     limit: 20,
@@ -148,7 +148,7 @@ export default function ChangeLog() {
         noTitleBar
         variant="secondary"
         columns={tableColumns}
-        data={searchedTableRows}
+        data={searchedTableRows || tableRows}
         tableContainerStyles={{ maxHeight: 700 }}
         searchParams={searchParams}
         setSearchParams={setSearchParams}
