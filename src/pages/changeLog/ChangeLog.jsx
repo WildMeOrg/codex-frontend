@@ -15,6 +15,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import useGetAuditLogs, { useGetAllAuditLogs } from '../../models/auditLogs/useGetAuditLogs';
 import Paginator from '../../components/dataDisplays/Paginator';
 import TextField from '@material-ui/core/TextField';
+import SadScreen from '../../components/SadScreen';
 
 export default function ChangeLog() {
     
@@ -42,8 +43,12 @@ export default function ChangeLog() {
     })?.sort((a, b) => new Date(b.created) - new Date(a.created));
   }
 
-  const { data, isLoading, error } = useGetAllAuditLogs();
+  const { data, isLoading, error, statusCode } = useGetAllAuditLogs();
   const { data: searchedData, isLoading: isSearchedLoading, error: searchedError } = useGetAuditLogs(auditLogId);  
+
+  console.log('error', error);
+  console.log('searchedError', searchedError);
+  // console.log('...rest', rest);
   
   const searchedTableRows = searchedError ? [] : buildAndSortTableRows(searchedData);  
   const tableRows = buildAndSortTableRows(data);  
@@ -63,6 +68,10 @@ export default function ChangeLog() {
     //   options: { cellRenderer: cellRendererTypes.capitalizedString },
     },    
   ];  
+
+  if(statusCode === 403) return <SadScreen
+    statusCode={statusCode}
+/>
 
   return (
     <MainColumn>
