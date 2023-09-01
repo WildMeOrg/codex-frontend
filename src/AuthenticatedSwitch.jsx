@@ -133,7 +133,7 @@ export default function AuthenticatedSwitch({
                       <Route path="/settings/preferences">
                         <Preferences />
                       </Route>
-                      <Route path="/settings/change-log">
+                      <Route path="/settings/changelog">
                         <ChangeLog />
                       </Route>
                       <Route path="/settings">

@@ -94,7 +94,7 @@ const adminPages = [
     icon: ListAltIcon,
     name: 'change-log',
     labelId: 'CHANGE_LOG',
-    href: '/settings/change-log',
+    href: '/settings/changelog',
     roles: [
       'is_admin',
     ],
