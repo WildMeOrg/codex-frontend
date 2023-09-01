@@ -13,6 +13,7 @@ import { useIntl, FormattedMessage } from 'react-intl';
 import DataDisplay from '../../components/dataDisplays/DataDisplay';
 import SearchIcon from '@material-ui/icons/Search';
 import useGetAuditLogs, { useGetAllAuditLogs } from '../../models/auditLogs/useGetAuditLogs';
+import useFilterAuditLogs from '../../models/auditLogs/useFilterAuditLogs';
 import Paginator from '../../components/dataDisplays/Paginator';
 import TextField from '@material-ui/core/TextField';
 import SadScreen from '../../components/SadScreen';
@@ -24,10 +25,10 @@ export default function ChangeLog() {
   const intl = useIntl();
 
   const [inputValue, setInputValue] = useState('');
-  const [auditLogId, setAuditLogId] = useState(null);
 
+  const rowsPerPage = 100;  
   const [searchParams, setSearchParams] = useState({
-    limit: 20,
+    limit: rowsPerPage,
     offset: 0,
     sort: 'time',
     reverse: true,
@@ -40,17 +41,27 @@ export default function ChangeLog() {
         time: row.created,
         message: `MODULE NAME: ${row.module_name}, ITEM GUID: ${row.item_guid}, AUDIT TYPE:  ${row.audit_type},  DETAILS: ${row.message}`,
       }
-    })?.sort((a, b) => new Date(b.created) - new Date(a.created));
+    })?.sort((a, b) => new Date(b.time) - new Date(a.time));
   }
 
-  const { data, isLoading, error, statusCode } = useGetAllAuditLogs();
-  const { data: searchedData, isLoading: isSearchedLoading, error: searchedError } = useGetAuditLogs(auditLogId);  
+  const [ formFilters, setFormFilters ] = useState(
+    {
+      "bool" : {
+          "filter" : [],
+      }
+    }
+  ); 
 
-  console.log('error', error);
-  console.log('searchedError', searchedError);
-  // console.log('...rest', rest);
-  
-  const searchedTableRows = searchedError ? [] : buildAndSortTableRows(searchedData);  
+  const { data, isLoading, error, statusCode } = useGetAllAuditLogs();
+  // const { data: searchedData, isLoading: isSearchedLoading, error: searchedError } = useGetAuditLogs(auditLogId);  
+  const { data : searchedData, loading } = useFilterAuditLogs({
+    queries: formFilters,
+    params: searchParams,
+  });
+
+  console.log('searchedData', searchedData);
+  // const searchedTableRows = searchedError ? [] : buildAndSortTableRows(searchedData);  
+  const searchedTableRows = buildAndSortTableRows(searchedData?.results);  
   const tableRows = buildAndSortTableRows(data);  
   const tableColumns = [
     {
@@ -69,7 +80,35 @@ export default function ChangeLog() {
     },    
   ];  
 
-  if(statusCode === 403) return <SadScreen
+  const buildFilters = (inputValue) => {
+    if(inputValue.trim() !== '') {
+      setFormFilters(
+        {
+          "bool" : {
+             "filter" : [
+                {
+                       "match": {
+                               "item_guid": inputValue
+                       }
+                }
+             ]
+          }
+       }
+    )
+    } else {
+      setFormFilters(
+        {
+          "bool" : {
+             "filter" : []
+          }
+       }
+    )
+
+    } 
+
+  }
+
+  if(searchedData?.statusCode === 403) return <SadScreen
     statusCode={statusCode}
 />
 
@@ -116,10 +155,9 @@ export default function ChangeLog() {
               }}
             >
               <Button
-                // display="tertiary"                
                 startIcon={<SearchIcon />}
-                loading={isSearchedLoading}
-                onClick={() => setAuditLogId(inputValue)}
+                // loading={isSearchedLoading}
+                onClick = { () => buildFilters(inputValue)}
                 style={{ height: 30, border: 'none' }}
               >
                 
@@ -131,7 +169,7 @@ export default function ChangeLog() {
                 onChange={e => setInputValue(e.target.value)}
                 onKeyDown={event => {
                   if (event.key === 'Enter') {
-                    setAuditLogId(inputValue);
+                    buildFilters(inputValue)
                   }
                 }}
                 style={{ width: 420 }}
@@ -146,7 +184,7 @@ export default function ChangeLog() {
         variant="secondary"
         columns={tableColumns}
         data={searchedTableRows || tableRows }
-        tableContainerStyles={{ maxHeight: 700 }}
+        tableContainerStyles={{ maxHeight: 1000 }}
         searchParams={searchParams}
         setSearchParams={setSearchParams}
         noResultsTextId="NO_SEARCH_RESULT"
@@ -154,7 +192,7 @@ export default function ChangeLog() {
       <Paginator
         searchParams={searchParams}
         setSearchParams={setSearchParams}
-        count={200}
+        count={searchedData?.resultCount}
       />
     </Grid>
     </MainColumn>
