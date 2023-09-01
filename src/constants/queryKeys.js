@@ -20,10 +20,6 @@ export default {
   sageJobs: ['sage', 'jobs'],
 };
 
-export function getAuditLogQueryKey(guid) {
-  return ['auditLog', guid];
-}
-
 export function getEncounterQueryKey(guid) {
   return ['encounter', guid];
 }
@@ -102,4 +98,12 @@ export function getSightingFilterQueryKey(
   rowsPerPage,
 ) {
   return ['sightingFilterSearch', filters, page, rowsPerPage];
+}
+
+export function getAuditLogQueryKey(
+  filters,
+  page,
+  rowsPerPage,
+) {
+  return ['auditLogFilterSearch', filters, page, rowsPerPage];
 }
