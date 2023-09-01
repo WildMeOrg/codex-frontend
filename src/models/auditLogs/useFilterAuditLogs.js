@@ -18,7 +18,6 @@ export default function useFilterAuditLogs({ queries, params = {} }) {
       ...params,
     },
     dataAccessor: result => {
-        console.log('result', result);
       const resultCountString = get(result, [
         'data',
         'headers',
