@@ -30,7 +30,7 @@ export default function ChangeLog() {
   const [searchParams, setSearchParams] = useState({
     limit: rowsPerPage,
     offset: 0,
-    sort: 'time',
+    sort: 'created',
     reverse: true,
   });  
 
@@ -159,7 +159,7 @@ export default function ChangeLog() {
               </Button>
               <TextField
                 id="entity-guid-input"
-                label="Entity GUID"
+                label="ITEM GUID"
                 value={inputValue}
                 onChange={e => setInputValue(e.target.value)}
                 onKeyDown={event => {
