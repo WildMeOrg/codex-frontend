@@ -12,11 +12,11 @@ import useTheme from '@material-ui/core/styles/useTheme';
 import { useIntl, FormattedMessage } from 'react-intl';
 import DataDisplay from '../../components/dataDisplays/DataDisplay';
 import SearchIcon from '@material-ui/icons/Search';
-import useGetAuditLogs, { useGetAllAuditLogs } from '../../models/auditLogs/useGetAuditLogs';
 import useFilterAuditLogs from '../../models/auditLogs/useFilterAuditLogs';
 import Paginator from '../../components/dataDisplays/Paginator';
 import TextField from '@material-ui/core/TextField';
 import SadScreen from '../../components/SadScreen';
+import LoadingScreen from '../../components/LoadingScreen';
 
 export default function ChangeLog() {
     
@@ -24,8 +24,8 @@ export default function ChangeLog() {
   const theme = useTheme();  
   const intl = useIntl();
 
-  const [inputValue, setInputValue] = useState('');
-
+  const [inputValue, setInputValue] = useState('');  
+  
   const rowsPerPage = 100;  
   const [searchParams, setSearchParams] = useState({
     limit: rowsPerPage,
@@ -34,16 +34,6 @@ export default function ChangeLog() {
     reverse: true,
   });  
 
-  const buildAndSortTableRows = (data) => {
-    return data?.map((row) => {
-      return {
-        id: row.guid,
-        time: row.created,
-        message: `MODULE NAME: ${row.module_name}, ITEM GUID: ${row.item_guid}, AUDIT TYPE:  ${row.audit_type},  DETAILS: ${row.message}`,
-      }
-    })?.sort((a, b) => new Date(b.time) - new Date(a.time));
-  }
-
   const [ formFilters, setFormFilters ] = useState(
     {
       "bool" : {
@@ -51,34 +41,6 @@ export default function ChangeLog() {
       }
     }
   ); 
-
-  const { data, isLoading, error, statusCode } = useGetAllAuditLogs();
-  // const { data: searchedData, isLoading: isSearchedLoading, error: searchedError } = useGetAuditLogs(auditLogId);  
-  const { data : searchedData, loading } = useFilterAuditLogs({
-    queries: formFilters,
-    params: searchParams,
-  });
-
-  console.log('searchedData', searchedData);
-  // const searchedTableRows = searchedError ? [] : buildAndSortTableRows(searchedData);  
-  const searchedTableRows = buildAndSortTableRows(searchedData?.results);  
-  const tableRows = buildAndSortTableRows(data);  
-  const tableColumns = [
-    {
-      name: 'time',
-      label: intl.formatMessage({ id: 'TIME_CHANGE_OCCURRED' }),
-      options: {
-        customBodyRender: labelId => (
-          <FormattedMessage id={labelId} defaultMessage={labelId}/>
-        ),
-      },
-    },
-    {
-      name: 'message',
-      label: intl.formatMessage({ id: 'MESSAGE' }),
-    //   options: { cellRenderer: cellRendererTypes.capitalizedString },
-    },    
-  ];  
 
   const buildFilters = (inputValue) => {
     if(inputValue.trim() !== '') {
@@ -103,13 +65,46 @@ export default function ChangeLog() {
           }
        }
     )
-
     } 
-
   }
 
+  const { data : searchedData, loading } = useFilterAuditLogs({
+    queries: formFilters,
+    params: searchParams,
+  });
+
+  const buildAndSortTableRows = (data) => {
+    return data?.map((row) => {
+      return {
+        id: row.guid,
+        time: row.created,
+        message: `MODULE NAME: ${row.module_name}, ITEM GUID: ${row.item_guid}, AUDIT TYPE:  ${row.audit_type},  DETAILS: ${row.message}`,
+      }
+    })?.sort((a, b) => new Date(b.time) - new Date(a.time));
+  }  
+
+  const searchedTableRows = buildAndSortTableRows(searchedData?.results);  
+  const tableColumns = [
+    {
+      name: 'time',
+      label: intl.formatMessage({ id: 'TIME_CHANGE_OCCURRED' }),
+      options: {
+        customBodyRender: labelId => (
+          <FormattedMessage id={labelId} defaultMessage={labelId}/>
+        ),
+      },
+    },
+    {
+      name: 'message',
+      label: intl.formatMessage({ id: 'MESSAGE' }),
+    //   options: { cellRenderer: cellRendererTypes.capitalizedString },
+    },    
+  ];  
+
+  
+  if(loading) return <LoadingScreen />  
   if(searchedData?.statusCode === 403) return <SadScreen
-    statusCode={statusCode}
+    statusCode={searchedData?.statusCode}
 />
 
   return (
@@ -156,7 +151,7 @@ export default function ChangeLog() {
             >
               <Button
                 startIcon={<SearchIcon />}
-                // loading={isSearchedLoading}
+                loading={loading}
                 onClick = { () => buildFilters(inputValue)}
                 style={{ height: 30, border: 'none' }}
               >
@@ -183,7 +178,7 @@ export default function ChangeLog() {
         noTitleBar
         variant="secondary"
         columns={tableColumns}
-        data={searchedTableRows || tableRows }
+        data={searchedTableRows}
         tableContainerStyles={{ maxHeight: 1000 }}
         searchParams={searchParams}
         setSearchParams={setSearchParams}
