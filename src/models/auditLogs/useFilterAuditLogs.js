@@ -27,7 +27,7 @@ export default function useFilterAuditLogs({ queries, params = {} }) {
       return {
         resultCount: parseInt(resultCountString, 10),
         results: get(result, ['data', 'data']),
-        statusCode: get(result, ['data', 'status']),
+        statusCode: get(result, ['error', 'response', 'data', 'status']),
       };
     },
     queryOptions: {
