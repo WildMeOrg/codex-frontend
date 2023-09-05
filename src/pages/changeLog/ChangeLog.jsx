@@ -50,7 +50,7 @@ export default function ChangeLog() {
              "filter" : [
                 {
                        "match": {
-                               "item_guid": inputValue
+                               "item_guid": inputValue.trim()
                        }
                 }
              ]
