@@ -135,7 +135,6 @@ export default function MatchSighting() {
       ['algorithms', 'hotspotter_nosv', 'scores_by_individual'], [] );
     const annotation = scoresByIndividual.find((score) => score.guid === selectedMatchCandidateGuid);    
     const heatmapUrl = annotation?.heatmap_src;
-    console.log(heatmapUrl);
     setHeatMapUrl(heatmapUrl);
     const checkHeatMap = async () => {
       try {

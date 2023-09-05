@@ -77,7 +77,7 @@ export default function ChangeLog() {
     return data?.map((row) => {
       return {
         id: row.guid,
-        time: row.created,
+        time: new Date(row.created).toLocaleString(),
         message: `MODULE NAME: ${row.module_name}, ITEM GUID: ${row.item_guid}, AUDIT TYPE:  ${row.audit_type},  DETAILS: ${row.message}`,
       }
     })?.sort((a, b) => new Date(b.time) - new Date(a.time));
