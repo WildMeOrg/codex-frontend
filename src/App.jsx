@@ -20,6 +20,7 @@ import messagesEs from '../locale/es.json';
 import FrontDesk from './FrontDesk';
 import SadScreen from './components/SadScreen';
 import ErrorBoundary from './ErrorBoundary';
+import LoadingScreen from './components/LoadingScreen';
 
 // polyfill to enable formatting of a number using the unit prop
 if (typeof Intl.NumberFormat.__addLocaleData === 'function') {
@@ -44,7 +45,7 @@ const ScrollToTop = function () {
 
 function AppWithQueryClient() {
   const locale = 'en';
-  const { data, error } = useSiteSettings();
+  const { data, error, isLoading } = useSiteSettings();
 
   const adminUserInitialized = get(data, 'site.adminUserInitialized');
   let primaryColor = get(data, ['site.look.themeColor', 'value']);
@@ -52,6 +53,8 @@ function AppWithQueryClient() {
   if(!primaryColorArray.includes(primaryColor)) {
     primaryColor = '#8176B1';
   }
+
+  if(isLoading) return <LoadingScreen />;
 
   if (error) {
     document.title = 'Server Unavailable';
