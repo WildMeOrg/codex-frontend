@@ -99,7 +99,7 @@ export default function ProfileSetup({ userData }) {
                   style={{ fontSize: '0.8rem', marginTop: '14px',color:"#6D6B7B" }}
                 >
                   <FormattedMessage id="TERMS_INTRO_1"/>{' '}
-                  <Link href="../../src/assets/TOU_for_Codex.pdf" target="blank" style={{color:'#1400FF'}}>                    
+                  <Link href="/TOU_for_Codex.pdf" target="blank" style={{color:'#1400FF'}}>                    
                     <FormattedMessage id="TERMS_INTRO_2"/>  {' '}                  
                     <span style={{color:'#6D6B7B'}}><FormattedMessage id="TERMS_INTRO_3" />{' '}</span>                  
                     <FormattedMessage id="TERMS_INTRO_4"/>.
