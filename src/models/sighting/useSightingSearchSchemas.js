@@ -66,6 +66,15 @@ export default function useSightingSearchSchemas() {
 
   return [
     {
+      id: 'codexId',
+      labelId: 'CODEX_ID',
+      FilterComponent: SubstringFilter,
+      filterComponentProps: {
+        filterId: 'codexId',
+        queryTerms: ['individualNamesWithContexts.autogen-*'],
+      },
+    },
+    {
       id: 'owner',
       labelId: 'OWNER',
       FilterComponent: SubstringFilter,

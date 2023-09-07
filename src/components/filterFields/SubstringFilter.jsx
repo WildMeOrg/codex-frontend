@@ -63,6 +63,7 @@ export default function SubstringFilter(props) {
             query: {
               query_string: {
                 query: `*${value.toLowerCase()}*`,
+                // query: `*${value}*`,
                 fields: queryTerms,
                 default_operator,
               },
