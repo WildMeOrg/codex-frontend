@@ -14,8 +14,6 @@ export default function useSightingSearchSchemas() {
   const { data: siteSettings } = useSiteSettings();
   const customSightingFields = siteSettings['site.custom.customFields.Sighting'].value.definitions || [];
   let customFilter;
-  let isMultiple = false;
-  let isFloat = false;
   const excludedFieldTypes = ['individual', 'feetmeters'];
   const customFields = customSightingFields.filter(data => 
     !excludedFieldTypes.includes(data.schema.displayType))
