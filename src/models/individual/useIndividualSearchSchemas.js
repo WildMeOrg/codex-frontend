@@ -38,7 +38,6 @@ export default function useIndividualSearchSchemas() {
   const { speciesOptions, socialGroupRolesOptions, relationshipOptions, booleanChoices } = useOptions();
   const { data: socialGroups } = useSocialGroups();
   const { data: siteSettings } = useSiteSettings();
-  console.log(siteSettings);
   const customIndividualFields = siteSettings['site.custom.customFields.Individual'].value.definitions || [];
   const socialGroupOptions = socialGroups?.map(data => {
     return {

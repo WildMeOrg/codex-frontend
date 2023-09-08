@@ -74,7 +74,6 @@ export default function SubstringFilter(props) {
                   }                  
           })
         }
-
         size="small"
         style={{ marginLeft: 8, minWidth: 48, height: 36 }}
       />

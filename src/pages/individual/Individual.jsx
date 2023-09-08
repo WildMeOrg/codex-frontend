@@ -55,7 +55,6 @@ export default function Individual() {
     loading,
     error: individualDataError,
   } = useIndividual(id);
-  console.log(individualData);
   const history = useHistory();
   const fieldSchemas = useIndividualFieldSchemas();
 
