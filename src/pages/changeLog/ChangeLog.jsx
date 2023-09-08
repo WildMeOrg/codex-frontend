@@ -175,7 +175,6 @@ export default function ChangeLog() {
         </div>
       <DataDisplay
         style={{ marginTop: 8 }}
-        cellStyles = {{overflow: 'wrap', maxWidth: 300}}
         noTitleBar
         variant="secondary"
         columns={tableColumns}
