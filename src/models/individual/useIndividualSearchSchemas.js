@@ -6,6 +6,7 @@ import PointDistanceFilter from '../../components/filterFields/PointDistanceFilt
 import IntegerFilter from '../../components/filterFields/IntegerFilter';
 import FloatFilter from '../../components/filterFields/FloatFilter';
 import MultiSelectFilter from '../../components/filterFields/MultiSelectFilter';
+import autogenNameFilter from '../../components/filterFields/autogenNameFilter';
 import sexOptions from '../../constants/sexOptions';
 import useSocialGroups from '../../models/socialGroups/useSocialGroups';
 import useSiteSettings from '../../models/site/useSiteSettings';
@@ -105,10 +106,10 @@ export default function useIndividualSearchSchemas() {
     {
       id: 'codexId',
       labelId: 'CODEX_ID',
-      FilterComponent: SubstringFilter,
+      FilterComponent: autogenNameFilter,
       filterComponentProps: {
         filterId: 'codexId',
-        queryTerms: ['namesWithContexts.autogen-*'],
+        queryTerms: ['namesWithContexts'],
       },
     },
     {

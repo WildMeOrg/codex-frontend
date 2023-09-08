@@ -7,6 +7,7 @@ import useSiteSettings from '../../models/site/useSiteSettings';
 import IntegerFilter from '../../components/filterFields/IntegerFilter';
 import FloatFilter from '../../components/filterFields/FloatFilter';
 import MultiSelectFilter from '../../components/filterFields/MultiSelectFilter';
+import autogenNameFilter from '../../components/filterFields/autogenNameFilter';
 
 export default function useSightingSearchSchemas() {
   const { regionOptions, speciesOptions, pipelineStateOptions, stageOptions, booleanChoices } = useOptions();
@@ -68,10 +69,10 @@ export default function useSightingSearchSchemas() {
     {
       id: 'codexId',
       labelId: 'CODEX_ID',
-      FilterComponent: SubstringFilter,
+      FilterComponent: autogenNameFilter,
       filterComponentProps: {
         filterId: 'codexId',
-        queryTerms: ['individualNamesWithContexts.autogen-*'],
+        queryTerms: ['individualNamesWithContexts'],
       },
     },
     {
