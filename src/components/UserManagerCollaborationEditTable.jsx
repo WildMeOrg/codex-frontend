@@ -159,6 +159,7 @@ export default function UserManagerCollaborationEditTable({
       <DataDisplay
         idKey="guid"
         loading={isLoading}
+        cellStyles = {{overflow: 'wrap', maxWidth: 300}}
         titleId="USER_MANAGEMENT_COLLABORATIONS"
         style={{ marginTop: 8 }}
         variant="secondary"
