@@ -177,6 +177,7 @@ const tableColumns = [
       <DataDisplay
         style={{ marginTop: 8 }}
         noTitleBar
+        cellStyles = {{overflow: 'wrap', maxWidth: 300}}
         variant="secondary"
         columns={tableColumns}
         data={searchedTableRows}
