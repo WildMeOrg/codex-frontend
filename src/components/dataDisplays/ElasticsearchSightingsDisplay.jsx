@@ -10,6 +10,7 @@ export default function ElasticsearchSightingsDisplay({
   sightings,
   loading,
   dataCount,
+  formFilters,
   ...rest
 }) {
   const title = `${dataCount || sightings.length} matching sightings`;
@@ -100,6 +101,7 @@ export default function ElasticsearchSightingsDisplay({
       title={title}
       loading={loading}
       showNoResultsBao
+      formFilters={formFilters}
       // renderExpandedRow={expandedSighting => (
       //   <div style={{ display: 'flex' }}>
       //     <img
