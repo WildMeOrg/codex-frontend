@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import Grid from '@material-ui/core/Grid';
 
 import useDocumentTitle from '../../hooks/useDocumentTitle';
@@ -24,7 +24,8 @@ export default function ChangeLog() {
   const theme = useTheme();  
   const intl = useIntl();
 
-  const [inputValue, setInputValue] = useState('');  
+  const [inputValue, setInputValue] = useState(''); 
+
   
   const rowsPerPage = 100;  
   const [searchParams, setSearchParams] = useState({
@@ -42,7 +43,7 @@ export default function ChangeLog() {
     }
   ); 
 
-  const buildFilters = (inputValue) => {
+  const buildFilters = () => {
     if(inputValue.trim() !== '') {
       setFormFilters(
         {
@@ -83,25 +84,25 @@ export default function ChangeLog() {
     })?.sort((a, b) => new Date(b.time) - new Date(a.time));
   }  
 
-  const searchedTableRows = buildAndSortTableRows(searchedData?.results);  
-  const tableColumns = [
-    {
-      name: 'time',
-      label: intl.formatMessage({ id: 'TIME_CHANGE_OCCURRED' }),
-      options: {
-        customBodyRender: labelId => (
-          <FormattedMessage id={labelId} defaultMessage={labelId}/>
-        ),
-      },
-    },
-    {
-      name: 'message',
-      label: intl.formatMessage({ id: 'MESSAGE' }),
-    //   options: { cellRenderer: cellRendererTypes.capitalizedString },
-    },    
-  ];  
-
   
+const tableColumns = [
+  {
+    name: 'time',
+    label: intl.formatMessage({ id: 'TIME_CHANGE_OCCURRED' }),
+    options: {
+      customBodyRender: labelId => (
+        <FormattedMessage id={labelId} defaultMessage={labelId}/>
+      ),
+    },
+  },
+  {
+    name: 'message',
+    label: intl.formatMessage({ id: 'MESSAGE' }),
+  //   options: { cellRenderer: cellRendererTypes.capitalizedString },
+  },    
+]; 
+  const searchedTableRows = buildAndSortTableRows(searchedData?.results);  
+    
   if(loading) return <LoadingScreen />  
   if(searchedData?.statusCode === 403) return <SadScreen
     statusCode={searchedData?.statusCode}
@@ -182,6 +183,7 @@ export default function ChangeLog() {
         tableContainerStyles={{ maxHeight: 1000 }}
         searchParams={searchParams}
         setSearchParams={setSearchParams}
+        
         noResultsTextId="NO_SEARCH_RESULT"
       />
       <Paginator

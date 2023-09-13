@@ -27,7 +27,11 @@ import BaoDetective from '../svg/BaoDetective';
 import FilterBar from '../FilterBar';
 import Text from '../Text';
 import CollapsibleRow from './CollapsibleRow';
-import sendCsv from './sendCsv';
+import sendCsv, { downloadFileFromBackend } from './sendCsv';
+
+import useExportSightings from '../../models/sighting/useExportSightings';
+import useExportIndividuals from '../../models/individual/useExportIndividuals';
+import useGetMe from '../../models/users/useGetMe';
 
 function getCellAlignment(cellIndex, columnDefinition) {
   if (columnDefinition.align) return columnDefinition.align;
@@ -65,11 +69,37 @@ export default function DataDisplay({
   cellStyles = {},
   stickyHeader = true,
   tableContainerStyles = {},
+  formFilters,
   ...rest
 }) {
   const intl = useIntl();
   const theme = useTheme();
   const themeColor = theme.palette.primary.main;
+
+  const {
+    data: currentUserData,
+    loading: userDataLoading,
+    isFetching: userDataFetching,
+  } = useGetMe();
+
+  const isAdmin = get(currentUserData, 'is_admin', false);
+  const isExporter = get(currentUserData, 'is_exporter', false);  
+  const [sightings, setSightings] = useState(false);
+    
+  const { data: sightingsData, loading: sightingsIsLoading, refetch: sightingsRefetch } = useExportSightings({
+    queries: formFilters,
+    params: searchParams,
+    startDownload: sightings,
+    enabled: false,
+  });
+
+  const { data: individualsData, loading: individualsIsLoading, refetch: individualsRefetch } = useExportIndividuals({
+    queries: formFilters,
+    params: searchParams,
+    startDownload: sightings,
+    enabled: false,
+  });
+
 
   const initialColumnNames = columns
     .filter(c => get(c, 'options.display', true))
@@ -232,9 +262,21 @@ export default function DataDisplay({
             </Text>
           </Grid>
           <Grid item>
-            {variant === 'primary' && !hideDownloadCsv && (
-              <IconButton
-                onClick={() => sendCsv(visibleColumns, visibleData)}
+            {variant === 'primary' && !hideDownloadCsv && (isAdmin || isExporter) && (
+              <IconButton                
+                onClick = {() => {
+                  if(title.split(" ")[2] === "sightings") {
+                    sightingsRefetch();   
+                    if(sightingsData.results && !sightingsIsLoading) {
+                      console.log(111111);
+                      downloadFileFromBackend(sightingsData.results, 'sightings');  
+                    }           
+                      
+                  }else if(title.split(" ")[2] === "individuals") {
+                    individualsRefetch();   
+                    downloadFileFromBackend(sightingsData.results, 'individuals');
+                  }else sendCsv(visibleColumns, visibleData);                                
+                }}
                 size="small"
               >
                 <CloudDownload style={{ marginRight: 4 }} />

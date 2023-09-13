@@ -54,6 +54,7 @@ export default function SearchSightings() {
         searchParams={searchParams}
         setSearchParams={setSearchParams}
         dataCount={resultCount}
+        formFilters={formFilters}
       />
       <Paginator
         searchParams={searchParams}
