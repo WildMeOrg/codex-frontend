@@ -3,12 +3,10 @@ name: Build
 on:
   pull_request:
     branches:
-      - main
-      - develop
+      - dockerbuild-fix
   push:
     branches:
-      - main
-      - develop
+      - dockerbuild-fix
     tags:
       - v*
   schedule:
@@ -105,14 +103,14 @@ jobs:
 
       # Push stable image (main tag) to registries
       - name: Stable Docker Hub
-        if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/dockerbuild-fix'
         run: |
-          ./scripts/buildx.docker.sh -t main
+          ./scripts/buildx.docker.sh -t dockerbuild-fix
 
       - name: Stable GHCR
-        if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/dockerbuild-fix'
         run: |
-          ./scripts/buildx.docker.sh -t main -r ghcr.io/wildmeorg/codex-frontend
+          ./scripts/buildx.docker.sh -t dockerbuild-fix -r ghcr.io/wildmeorg/codex-frontend
 
       # Push bleeding-edge image (develop tag) to registries
       - name: Bleeding Edge Docker Hub
@@ -149,7 +147,7 @@ jobs:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
 
       - name: Slack Notification
-        if: ${{ failure() && github.ref == 'refs/heads/main' }}
+        if: ${{ failure() && github.ref == 'refs/heads/dockerbuild-fix' }}
         uses: rtCamp/action-slack-notify@master
         env:
           SLACK_CHANNEL: dev-houston
