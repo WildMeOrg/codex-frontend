@@ -2,6 +2,7 @@ import Papa from 'papaparse';
 import { get } from 'lodash-es';
 
 export function downloadFileFromBackend(excelData, filename) {
+  console.log('excelData', excelData);
   const blob = new Blob([excelData], { type: 'application/vnd.ms-excel' });
   const url = window.URL.createObjectURL(blob);
   const link = document.createElement('a');

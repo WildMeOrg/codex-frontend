@@ -86,7 +86,7 @@ export default function DataDisplay({
   const isExporter = get(currentUserData, 'is_exporter', false);  
   const [sightings, setSightings] = useState(false);
     
-  const { data: sightingsData, loading: sightingsIsLoading, refetch: sightingsRefetch } = useExportSightings({
+  const { data: sightingsData, loading: sightingsIsLoading, error,  refetch: sightingsRefetch } = useExportSightings({
     queries: formFilters,
     params: searchParams,
     startDownload: sightings,
@@ -264,16 +264,22 @@ export default function DataDisplay({
           <Grid item>
             {variant === 'primary' && !hideDownloadCsv && (isAdmin || isExporter) && (
               <IconButton                
-                onClick = {() => {
+                onClick = {async() => {
                   if(title.split(" ")[2] === "sightings") {
-                    sightingsRefetch();   
-                    if(sightingsData.results && !sightingsIsLoading) {
-                      console.log(111111);
-                      downloadFileFromBackend(sightingsData.results, 'sightings');  
-                    }           
-                      
+                    // queryClient.invalidateQueries('yourQueryKey');
+                    await sightingsRefetch({ force: true, queryParams: { timestamp: Date.now() } });
+                    // await sightingsRefetch({ force: true, queryParams: { timestamp: Date.now() } });
+                    console.log("sightingsIsLoading",sightingsIsLoading);
+                    console.log("sightingsData",sightingsData);
+                    console.log("error", error);
+                    console.log("sightingsData.results",sightingsData.results);
+
+                    setTimeout(() => {
+                      downloadFileFromBackend(sightingsData.results, 'sightings'); 
+                    },2000) 
+                            
                   }else if(title.split(" ")[2] === "individuals") {
-                    individualsRefetch();   
+                    await individualsRefetch({ force: true });   
                     downloadFileFromBackend(sightingsData.results, 'individuals');
                   }else sendCsv(visibleColumns, visibleData);                                
                 }}
