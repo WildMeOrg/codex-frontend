@@ -63,6 +63,7 @@ export default function useFetch({
     },
   );
 
+  console.log('result', result);
   const error = formatError(result);
   const statusCodeFromError = result?.error?.response?.status;
   useEffect(() => {
