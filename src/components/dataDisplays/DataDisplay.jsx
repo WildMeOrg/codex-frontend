@@ -23,6 +23,7 @@ import Print from '@material-ui/icons/Print';
 import FilterList from '@material-ui/icons/FilterList';
 import CloudDownload from '@material-ui/icons/CloudDownload';
 
+import axios from 'axios';
 import BaoDetective from '../svg/BaoDetective';
 import FilterBar from '../FilterBar';
 import Text from '../Text';
@@ -30,7 +31,6 @@ import CollapsibleRow from './CollapsibleRow';
 import sendCsv, { downloadFileFromBackend } from './sendCsv';
 
 import useGetMe from '../../models/users/useGetMe';
-import axios from 'axios';
 import buildSightingsQuery from './buildSightingsQuery';
 import buildIndividualsQuery from './buildIndividualsQuery';
 
@@ -77,12 +77,10 @@ export default function DataDisplay({
   const theme = useTheme();
   const themeColor = theme.palette.primary.main;
 
-  const {
-    data: currentUserData,
-  } = useGetMe();
+  const { data: currentUserData } = useGetMe();
 
   const isAdmin = get(currentUserData, 'is_admin', false);
-  const isExporter = get(currentUserData, 'is_exporter', false);  
+  const isExporter = get(currentUserData, 'is_exporter', false);
 
   const initialColumnNames = columns
     .filter(c => get(c, 'options.display', true))
@@ -94,16 +92,15 @@ export default function DataDisplay({
   );
   const [filter, setFilter] = useState('');
   const [internalSortColumn, setInternalSortColumn] = useState(null);
-  const [internalSortDirection, setInternalSortDirection] = useState(
-    null,
-  );
+  const [internalSortDirection, setInternalSortDirection] =
+    useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
   const filterPopperOpen = Boolean(anchorEl);
 
   const selectedRow = selectionControlled
     ? selectedRowFromProps
     : internalSelectedRow;
-    
+
   const visibleData = data?.filter(datum => {
     let match = false;
     columns.forEach(c => {
@@ -245,38 +242,52 @@ export default function DataDisplay({
             </Text>
           </Grid>
           <Grid item>
-            {variant === 'primary' && !hideDownloadCsv && (isAdmin || isExporter) && (
-              <IconButton                
-                onClick = {async() => {
-                  const formTitle = title.split(" ")[2];
-                  const url = `${__houston_url__}/api/v1/${formTitle}/export`;
-                  if(formTitle === "sightings" || formTitle === "individuals") {   
-                    let compositeQuery = {};
+            {variant === 'primary' &&
+              !hideDownloadCsv &&
+              (isAdmin || isExporter) && (
+                <IconButton
+                  onClick={async () => {
+                    const formTitle = title.split(' ')[2];
+                    const url = `${__houston_url__}/api/v1/${formTitle}/export`;
+                    if (
+                      formTitle === 'sightings' ||
+                      formTitle === 'individuals'
+                    ) {
+                      let compositeQuery = {};
 
-                    if(formTitle === "sightings") {                                           
-                      compositeQuery = buildSightingsQuery(formFilters);
-                    }else {
-                      compositeQuery = buildIndividualsQuery(formFilters);
-                    }
-                   
-                    const response = await axios.request({
-                      url: url,
-                      method : 'post',
-                      data : compositeQuery,
-                      params : searchParams,
-                      responseType: 'blob',
-                    });
-                    const status = response?.status;
-                    if(status === 200) {
-                      downloadFileFromBackend(response.data, formTitle); 
-                    }else  sendCsv(visibleColumns, visibleData);   
-                  }else sendCsv(visibleColumns, visibleData);                             
-                }}
-                size="small"
-              >
-                <CloudDownload style={{ marginRight: 4 }} />
-              </IconButton>
-            )}
+                      if (formTitle === 'sightings') {
+                        compositeQuery =
+                          buildSightingsQuery(formFilters);
+                      } else {
+                        compositeQuery =
+                          buildIndividualsQuery(formFilters);
+                      }
+                      try {
+                        const response = await axios.request({
+                          url,
+                          method: 'post',
+                          data: compositeQuery,
+                          params: searchParams,
+                          responseType: 'blob',
+                        });
+                        const status = response?.status;
+                        if (status === 200) {
+                          downloadFileFromBackend(
+                            response.data,
+                            formTitle,
+                          );
+                        }
+                      } catch (e) {
+                        console.log('Error in downloading file');
+                        sendCsv(visibleColumns, visibleData);
+                      }
+                    } else sendCsv(visibleColumns, visibleData);
+                  }}
+                  size="small"
+                >
+                  <CloudDownload style={{ marginRight: 4 }} />
+                </IconButton>
+              )}
             {onPrint && (
               <IconButton onClick={onPrint} size="small">
                 <Print style={{ marginRight: 4 }} />
