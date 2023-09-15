@@ -100,18 +100,6 @@ export function getSightingFilterQueryKey(
   return ['sightingFilterSearch', filters, page, rowsPerPage];
 }
 
-export function getSightingExportQueryKey(
-  filters,
-  page,
-  rowsPerPage,
-) {
-  return ['sightingExportSearch', filters, page, rowsPerPage];
-}
-
-export function getAuditLogQueryKey(
-  filters,
-  page,
-  rowsPerPage,
-) {
+export function getAuditLogQueryKey(filters, page, rowsPerPage) {
   return ['auditLogFilterSearch', filters, page, rowsPerPage];
 }
