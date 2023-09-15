@@ -3,65 +3,92 @@ import OptionTermFilter from '../../components/filterFields/OptionTermFilter';
 import PointDistanceFilter from '../../components/filterFields/PointDistanceFilter';
 import SubstringFilter from '../../components/filterFields/SubstringFilter';
 import DateRangeFilter from '../../components/filterFields/DateRangeFilter';
-import useSiteSettings from '../../models/site/useSiteSettings';
+import useSiteSettings from '../site/useSiteSettings';
 import IntegerFilter from '../../components/filterFields/IntegerFilter';
 import FloatFilter from '../../components/filterFields/FloatFilter';
 import MultiSelectFilter from '../../components/filterFields/MultiSelectFilter';
 import autogenNameFilter from '../../components/filterFields/autogenNameFilter';
 
 export default function useSightingSearchSchemas() {
-  const { regionOptions, speciesOptions, pipelineStateOptions, stageOptions, booleanChoices } = useOptions();
+  const {
+    regionOptions,
+    speciesOptions,
+    pipelineStateOptions,
+    stageOptions,
+    booleanChoices,
+  } = useOptions();
   const { data: siteSettings } = useSiteSettings();
-  const customSightingFields = siteSettings['site.custom.customFields.Sighting'].value.definitions || [];
+  const customSightingFields =
+    siteSettings['site.custom.customFields.Sighting'].value
+      .definitions || [];
+  console.log('custom sightings fields', customSightingFields);
+  const customEncounterFields =
+    siteSettings['site.custom.customFields.Encounter'].value
+      .definitions || [];
   let customFilter;
-  const excludedFieldTypes = ['individual', 'feetmeters'];
-  const customFields = customSightingFields.filter(data => 
-    !excludedFieldTypes.includes(data.schema.displayType))
-    .map(data => {
-    switch (data.schema.displayType) {
-      case "select":
-        customFilter = OptionTermFilter;
-        break;
-      case "string":
-        customFilter = SubstringFilter;
-        break;
-      case "integer":
-        customFilter = IntegerFilter;
-        break;
-      case "float":
-        customFilter = FloatFilter;
-        break;
-      case "multiselect":
-        customFilter = MultiSelectFilter;
-        break; 
-      case "daterange":
-        customFilter = DateRangeFilter;
-        break;  
-      case "boolean":
-        customFilter = OptionTermFilter;
-        break; 
-      case "latlong":
-        customFilter = PointDistanceFilter;
-        break;  
-      case "longstring":
-        customFilter = SubstringFilter;
-        break;     
-      default:
-        customFilter = SubstringFilter;
-        break;
-    }
-    return {
-      id: data.name,
-      labelId: data.schema.label,
-      FilterComponent: customFilter,
-      filterComponentProps: {
-        filterId: data.name,
-        queryTerm: `customFields.${data.id}`,
-        queryTerms: [`customFields.${data.id}`],
-        choices: data.schema.choices? data.schema.choices : booleanChoices,
-    },
-    };
-  })
+  const excludedFieldTypes = [
+    'individual',
+    'feetmeters',
+    'datepicker',
+    'daterange',
+  ];
+
+  const filterFields = fields =>
+    fields
+      .filter(
+        data => !excludedFieldTypes.includes(data.schema.displayType),
+      )
+      .map(data => {
+        switch (data.schema.displayType) {
+          case 'select':
+            customFilter = OptionTermFilter;
+            break;
+          case 'string':
+            customFilter = SubstringFilter;
+            break;
+          case 'integer':
+            customFilter = IntegerFilter;
+            break;
+          case 'float':
+            customFilter = FloatFilter;
+            break;
+          case 'multiselect':
+            customFilter = MultiSelectFilter;
+            break;
+          case 'daterange':
+            customFilter = DateRangeFilter;
+            break;
+          case 'boolean':
+            customFilter = OptionTermFilter;
+            break;
+          case 'latlong':
+            customFilter = PointDistanceFilter;
+            break;
+          case 'longstring':
+            customFilter = SubstringFilter;
+            break;
+          default:
+            customFilter = SubstringFilter;
+            break;
+        }
+        return {
+          id: data.name,
+          labelId: data.schema.label,
+          FilterComponent: customFilter,
+          filterComponentProps: {
+            filterId: data.name,
+            queryTerm: `encounters.customField.${data.id}`,
+            queryTerms: [`encounters.customField.${data.id}`],
+            choices: data.schema.choices
+              ? data.schema.choices
+              : booleanChoices,
+          },
+        };
+      });
+
+  const sightingsField = filterFields(customSightingFields);
+  console.log(sightingsField);
+  const encountersField = filterFields(customEncounterFields);
 
   return [
     {
@@ -121,9 +148,9 @@ export default function useSightingSearchSchemas() {
       labelId: 'SPECIES',
       FilterComponent: OptionTermFilter,
       filterComponentProps: {
-      filterId: 'species',
-      queryTerm: 'taxonomy_guids',
-      choices: speciesOptions,
+        filterId: 'species',
+        queryTerm: 'taxonomy_guids',
+        choices: speciesOptions,
       },
     },
     {
@@ -131,9 +158,9 @@ export default function useSightingSearchSchemas() {
       labelId: 'PIPELINE_STATE',
       FilterComponent: OptionTermFilter,
       filterComponentProps: {
-      filterId: 'pipelineState',
-      queryTerm: 'pipelineState',
-      choices: pipelineStateOptions,
+        filterId: 'pipelineState',
+        queryTerm: 'pipelineState',
+        choices: pipelineStateOptions,
       },
     },
     {
@@ -182,6 +209,7 @@ export default function useSightingSearchSchemas() {
         queryTerm: 'location_geo_point',
       },
     },
-    ...customFields
+    ...sightingsField,
+    ...encountersField,
   ];
 }
