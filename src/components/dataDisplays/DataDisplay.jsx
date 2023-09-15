@@ -29,9 +29,10 @@ import Text from '../Text';
 import CollapsibleRow from './CollapsibleRow';
 import sendCsv, { downloadFileFromBackend } from './sendCsv';
 
-import useExportSightings from '../../models/sighting/useExportSightings';
-import useExportIndividuals from '../../models/individual/useExportIndividuals';
 import useGetMe from '../../models/users/useGetMe';
+import axios from 'axios';
+import buildSightingsQuery from './buildSightingsQuery';
+import buildIndividualsQuery from './buildIndividualsQuery';
 
 function getCellAlignment(cellIndex, columnDefinition) {
   if (columnDefinition.align) return columnDefinition.align;
@@ -78,28 +79,10 @@ export default function DataDisplay({
 
   const {
     data: currentUserData,
-    loading: userDataLoading,
-    isFetching: userDataFetching,
   } = useGetMe();
 
   const isAdmin = get(currentUserData, 'is_admin', false);
   const isExporter = get(currentUserData, 'is_exporter', false);  
-  const [sightings, setSightings] = useState(false);
-    
-  const { data: sightingsData, loading: sightingsIsLoading, error,  refetch: sightingsRefetch } = useExportSightings({
-    queries: formFilters,
-    params: searchParams,
-    startDownload: sightings,
-    enabled: false,
-  });
-
-  const { data: individualsData, loading: individualsIsLoading, refetch: individualsRefetch } = useExportIndividuals({
-    queries: formFilters,
-    params: searchParams,
-    startDownload: sightings,
-    enabled: false,
-  });
-
 
   const initialColumnNames = columns
     .filter(c => get(c, 'options.display', true))
@@ -120,7 +103,7 @@ export default function DataDisplay({
   const selectedRow = selectionControlled
     ? selectedRowFromProps
     : internalSelectedRow;
-
+    
   const visibleData = data?.filter(datum => {
     let match = false;
     columns.forEach(c => {
@@ -265,23 +248,29 @@ export default function DataDisplay({
             {variant === 'primary' && !hideDownloadCsv && (isAdmin || isExporter) && (
               <IconButton                
                 onClick = {async() => {
-                  if(title.split(" ")[2] === "sightings") {
-                    // queryClient.invalidateQueries('yourQueryKey');
-                    await sightingsRefetch({ force: true, queryParams: { timestamp: Date.now() } });
-                    // await sightingsRefetch({ force: true, queryParams: { timestamp: Date.now() } });
-                    console.log("sightingsIsLoading",sightingsIsLoading);
-                    console.log("sightingsData",sightingsData);
-                    console.log("error", error);
-                    console.log("sightingsData.results",sightingsData.results);
+                  const formTitle = title.split(" ")[2];
+                  const url = `${__houston_url__}/api/v1/${formTitle}/export`;
+                  if(formTitle === "sightings" || formTitle === "individuals") {   
+                    let compositeQuery = {};
 
-                    setTimeout(() => {
-                      downloadFileFromBackend(sightingsData.results, 'sightings'); 
-                    },2000) 
-                            
-                  }else if(title.split(" ")[2] === "individuals") {
-                    await individualsRefetch({ force: true });   
-                    downloadFileFromBackend(sightingsData.results, 'individuals');
-                  }else sendCsv(visibleColumns, visibleData);                                
+                    if(formTitle === "sightings") {                                           
+                      compositeQuery = buildSightingsQuery(formFilters);
+                    }else {
+                      compositeQuery = buildIndividualsQuery(formFilters);
+                    }
+                   
+                    const response = await axios.request({
+                      url: url,
+                      method : 'post',
+                      data : compositeQuery,
+                      params : searchParams,
+                      responseType: 'blob',
+                    });
+                    const status = response?.status;
+                    if(status === 200) {
+                      downloadFileFromBackend(response.data, formTitle); 
+                    }else  sendCsv(visibleColumns, visibleData);   
+                  }else sendCsv(visibleColumns, visibleData);                             
                 }}
                 size="small"
               >

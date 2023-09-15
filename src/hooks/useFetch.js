@@ -29,6 +29,7 @@ export default function useFetch({
   queryOptions = {},
   responseType = 'json',
 }) {
+  // console.log('data',data);
   const [displayedError, setDisplayedError] = useState(null);
   const [displayedLoading, setDisplayedLoading] = useState(
     !queryOptions.disabled, // should this use enabled instead of disabled? I couldn't find anything in the react-query documentation about disabled.
@@ -39,6 +40,7 @@ export default function useFetch({
   const apiUrl = prependHoustonApiUrl
     ? `${__houston_url__}/api/v1${url}`
     : url;
+
   const result = useQuery(
     queryKey,
     async () => {
@@ -50,20 +52,20 @@ export default function useFetch({
         responseType: responseType,
       });
       const status = response?.status;
-
       setStatusCode(status);
-      if (status === 200) onSuccess(response);
+      if (status === 200) {
+        onSuccess(response);
+      }
       return response;
     },
-    {
-      staleTime: Infinity,
-      cacheTime: Infinity,
-      refetchOnMount: 'always',
+    {          
       ...queryOptions,
+      staleTime: Infinity,
+      cacheTime: Infinity,  
+      refetchOnMount: 'always',
     },
   );
 
-  console.log('result', result);
   const error = formatError(result);
   const statusCodeFromError = result?.error?.response?.status;
   useEffect(() => {
