@@ -13,6 +13,7 @@ export default function IndividualsDisplay({
   dataCount,
   addColumns = [],
   removeColumns = [],
+  formFilters,
   ...rest
 }) {
   const title = dataCount
@@ -91,6 +92,7 @@ export default function IndividualsDisplay({
       data={individuals}
       title={title}
       loading={loading}
+      formFilters={formFilters}
       // onPrint={() => {
       //   window.open('/individuals/picturebook', '_blank');
       // }}
