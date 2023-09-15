@@ -278,7 +278,10 @@ export default function DataDisplay({
                           );
                         }
                       } catch (e) {
-                        console.log('Error in downloading file');
+                        console.log(
+                          'Error in downloading file : ',
+                          e,
+                        );
                         sendCsv(visibleColumns, visibleData);
                       }
                     } else sendCsv(visibleColumns, visibleData);
