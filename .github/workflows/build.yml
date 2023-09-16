@@ -28,6 +28,11 @@ jobs:
       - name: Install dependencies and compile
         run: ./scripts/build.npm.sh
 
+      - name: Set Swap Space
+        uses: pierotofy/set-swap-space@master
+        with:
+          swap-size-gb: 10
+          
       - name: Package the build
         run: |
           mv dist codex-frontend
