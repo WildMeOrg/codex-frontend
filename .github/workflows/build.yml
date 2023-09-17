@@ -108,9 +108,9 @@ jobs:
 
       # Push stable image (main tag) to registries
       - name: Stable Docker Hub
-        if: github.ref == 'refs/heads/dockerbuild-fix'
+        if: github.ref == 'refs/heads/dockerbuild-fix1'
         run: |
-          ./scripts/buildx.docker.sh -t dockerbuild-fix
+          ./scripts/buildx.docker.sh -t dockerbuild-fix1
 
       - name: Stable GHCR
         if: github.ref == 'refs/heads/dockerbuild-fix'
