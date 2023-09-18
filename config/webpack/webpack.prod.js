@@ -19,6 +19,10 @@ module.exports = {
     publicPath: '/',
   },
   optimization: {
-    minimizer: [new TerserPlugin()],
+    minimizer: [
+    new TerserPlugin({
+      chunkFilter: () => false, // <-- set to false
+    }),
+  ],
   },
 };
