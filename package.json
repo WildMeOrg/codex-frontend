@@ -12,7 +12,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "print-unused-keys": "node ./scripts/printUnusedKeys.js",
     "clean": "rm -rf dist",
-    "build": "cross-env NODE_ENV=production npm run clean && webpack --config ./config/webpack/webpack.common.js --progress --profile --bail",
+    "build": "NODE_ENV=production npm run clean && webpack --config ./config/webpack/webpack.common.js --progress --profile --bail",
     "prepare": "husky install"
   },
   "repository": {
