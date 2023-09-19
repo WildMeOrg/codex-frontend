@@ -5,9 +5,9 @@ import SubstringFilter from '../../components/filterFields/SubstringFilter';
 import DateRangeFilter from '../../components/filterFields/DateRangeFilter';
 import useSiteSettings from '../site/useSiteSettings';
 import IntegerFilter from '../../components/filterFields/IntegerFilter';
-import FloatFilter from '../../components/filterFields/FloatFilter';
-import MultiSelectFilter from '../../components/filterFields/MultiSelectFilter';
 import autogenNameFilter from '../../components/filterFields/autogenNameFilter';
+import useBuildFilter from '../../components/filterFields/useBuildFilter';
+import sexOptions from '../../constants/sexOptions';
 
 export default function useSightingSearchSchemas() {
   const {
@@ -15,80 +15,29 @@ export default function useSightingSearchSchemas() {
     speciesOptions,
     pipelineStateOptions,
     stageOptions,
-    booleanChoices,
   } = useOptions();
+
+  const labeledSexOptions = sexOptions.map(o => ({
+    labelId: o?.filterLabelId || o.labelId,
+    value: o.value,
+  }));
+
   const { data: siteSettings } = useSiteSettings();
   const customSightingFields =
     siteSettings['site.custom.customFields.Sighting'].value
       .definitions || [];
-  console.log('custom sightings fields', customSightingFields);
   const customEncounterFields =
     siteSettings['site.custom.customFields.Encounter'].value
       .definitions || [];
-  let customFilter;
-  const excludedFieldTypes = [
-    'individual',
-    'feetmeters',
-    'datepicker',
-    'daterange',
-  ];
 
-  const filterFields = fields =>
-    fields
-      .filter(
-        data => !excludedFieldTypes.includes(data.schema.displayType),
-      )
-      .map(data => {
-        switch (data.schema.displayType) {
-          case 'select':
-            customFilter = OptionTermFilter;
-            break;
-          case 'string':
-            customFilter = SubstringFilter;
-            break;
-          case 'integer':
-            customFilter = IntegerFilter;
-            break;
-          case 'float':
-            customFilter = FloatFilter;
-            break;
-          case 'multiselect':
-            customFilter = MultiSelectFilter;
-            break;
-          case 'daterange':
-            customFilter = DateRangeFilter;
-            break;
-          case 'boolean':
-            customFilter = OptionTermFilter;
-            break;
-          case 'latlong':
-            customFilter = PointDistanceFilter;
-            break;
-          case 'longstring':
-            customFilter = SubstringFilter;
-            break;
-          default:
-            customFilter = SubstringFilter;
-            break;
-        }
-        return {
-          id: data.name,
-          labelId: data.schema.label,
-          FilterComponent: customFilter,
-          filterComponentProps: {
-            filterId: data.name,
-            queryTerm: `encounters.customField.${data.id}`,
-            queryTerms: [`encounters.customField.${data.id}`],
-            choices: data.schema.choices
-              ? data.schema.choices
-              : booleanChoices,
-          },
-        };
-      });
-
-  const sightingsField = filterFields(customSightingFields);
-  console.log(sightingsField);
-  const encountersField = filterFields(customEncounterFields);
+  const sightingsField = useBuildFilter(
+    customSightingFields,
+    'sightings',
+  );
+  const encountersField = useBuildFilter(
+    customEncounterFields,
+    'encounters',
+  );
 
   return [
     {
@@ -209,6 +158,27 @@ export default function useSightingSearchSchemas() {
         queryTerm: 'location_geo_point',
       },
     },
+    {
+      id: 'enounterspecies',
+      labelId: 'ENCOUNTER_SPECIES',
+      FilterComponent: OptionTermFilter,
+      filterComponentProps: {
+        filterId: 'enounterspecies',
+        queryTerm: 'encounters.taxonomy_guid',
+        choices: speciesOptions,
+      },
+    },
+    {
+      id: 'encounterSex',
+      labelId: 'ENCOUNTER_SEX',
+      FilterComponent: OptionTermFilter,
+      filterComponentProps: {
+        queryTerm: 'encounters.sex',
+        filterId: 'encounterSex',
+        choices: labeledSexOptions,
+      },
+    },
+
     ...sightingsField,
     ...encountersField,
   ];
