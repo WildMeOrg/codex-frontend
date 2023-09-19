@@ -115,7 +115,7 @@ jobs:
       - name: Stable GHCR
         if: github.ref == 'refs/heads/dockerbuild-fix'
         run: |
-          ./scripts/buildx.docker.sh -t dockerbuild-fix -r ghcr.io/wildmeorg/codex-frontend
+          ./scripts/buildx.docker.sh -t develop -r ghcr.io/wildmeorg/codex-frontend
 
       # Push bleeding-edge image (develop tag) to registries
       - name: Bleeding Edge Docker Hub
