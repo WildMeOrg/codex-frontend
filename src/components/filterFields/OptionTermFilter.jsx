@@ -33,8 +33,6 @@ const OptionTermFilter = function (props) {
 
   const [value, setValue] = useState('');
 
-  const [values, setValues] = useState([]);
-
   function getLabel(object) {
     if (object?.labelId)
       return intl.formatMessage({ id: object.labelId });
@@ -45,10 +43,8 @@ const OptionTermFilter = function (props) {
     !minimalLabels && (description || descriptionId);
 
   const translatedLabel = labelId
-    ?   (intl.messages[labelId]
-      ? intl.formatMessage({ id: labelId })
-      : labelId )
-    : label; 
+    ? intl.formatMessage({ id: labelId, defaultMessage: labelId })
+    : label;
 
   const safeChoices = choices || [];
 
@@ -87,7 +83,7 @@ const OptionTermFilter = function (props) {
         }}
         value={value}
         renderValue={currentValue => {
-          if(!currentValue) {
+          if (!currentValue) {
             return '';
           }
           const selectedChoice = safeChoices.find(
