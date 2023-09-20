@@ -14,23 +14,24 @@ export default function ElasticsearchSightingsDisplay({
   ...rest
 }) {
   const title = `${dataCount || sightings.length} matching sightings`;
+  console.log('sightings', sightings);
 
   const tableData = sightings.map(sighting => {
-    const encounters = sighting?.encounters || [];
-    const photoCount = encounters.reduce((memo, e) => {
-      memo += e.images.length;
-      return memo;
-    }, 0);
+    // const encounters = sighting?.encounters || [];
+    // const photoCount = encounters.reduce((memo, e) => {
+    //   memo += e.images.length;
+    //   return memo;
+    // }, 0);
 
-    const individuals = encounters.reduce((memo, e) => {
-      const individual = get(e, 'individual.id', null);
-      return individual ? [...memo, individual] : null;
-    }, []);
+    // const individuals = encounters.reduce((memo, e) => {
+    //   const individual = get(e, 'individual.id', null);
+    //   return individual ? [...memo, individual] : null;
+    // }, []);
 
     return {
       ...sighting,
-      photoCount,
-      individuals,
+      // photoCount,
+      // individuals,
     };
   });
 
