@@ -13,10 +13,7 @@ on:
     - cron: '0 16 * * *' # Every day at 16:00 UTC (~09:00 PT)
 
 jobs:
-
-     build:
-        strategy:
-           fail-fast: false
+      build:
         name: Build releasable package
         runs-on: ubuntu-latest
 
@@ -51,7 +48,8 @@ jobs:
       deploy:
         name: Docker image build
         runs-on: ubuntu-latest
-    
+        strategy:
+           fail-fast: false
         steps:
           - uses: actions/checkout@v2
             if: github.event_name == 'schedule'
