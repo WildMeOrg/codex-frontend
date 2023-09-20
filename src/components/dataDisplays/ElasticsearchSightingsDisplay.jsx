@@ -14,8 +14,7 @@ export default function ElasticsearchSightingsDisplay({
   ...rest
 }) {
   const title = `${dataCount || sightings.length} matching sightings`;
-  console.log('sightings', sightings);
-
+  
   const tableData = sightings.map(sighting => {
     // const encounters = sighting?.encounters || [];
     // const photoCount = encounters.reduce((memo, e) => {
