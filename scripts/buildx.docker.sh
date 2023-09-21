@@ -28,7 +28,7 @@ shift $((OPTIND - 1))
 # Assign variables
 TAG=${TAG:-universal}
 REGISTRY=${REGISTRY:-}
-IMAGES=${@:-houston-frontend codex-frontend}
+IMAGES=${@:-codex-frontend}
 # Set the image prefix
 if [ -n "$REGISTRY" ]; then
     IMG_PREFIX="${REGISTRY}/"
