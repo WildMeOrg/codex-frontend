@@ -122,12 +122,12 @@ jobs:
     
           # Push bleeding-edge image (develop tag) to registries
           - name: Bleeding Edge Docker Hub
-            if: github.ref == 'refs/heads/develop'
+            if: github.ref == 'refs/heads/develop' && github.event_name == 'push'
             run: |
               ./scripts/buildx.docker.sh -t develop -i houston-frontend
     
           - name: Bleeding Edge GHCR
-            if: github.ref == 'refs/heads/develop'
+            if: github.ref == 'refs/heads/develop' && github.event_name == 'push'
             run: |
               ./scripts/buildx.docker.sh -t develop -r ghcr.io/wildmeorg/codex-frontend -i houston-frontend
     
