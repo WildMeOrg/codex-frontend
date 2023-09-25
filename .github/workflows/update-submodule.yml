@@ -9,11 +9,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           repository: 'WildMeOrg/houston'
           submodules: true
-          username: holmbergius
           token: ${{ secrets.PAT_TOKEN }}
       - run: |
           bash -xe <<EOF
