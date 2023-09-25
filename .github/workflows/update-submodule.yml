@@ -13,6 +13,7 @@ jobs:
         with:
           repository: 'WildMeOrg/houston'
           submodules: true
+          username: wildmeorg
           token: ${{ secrets.PAT_TOKEN }}
       - run: |
           bash -xe <<EOF
