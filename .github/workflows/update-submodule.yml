@@ -11,11 +11,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          repository: 'WildMeOrg/houston'
+          repository: 'https://github.com/WildMeOrg/houston.git'
           submodules: true
-          persist-credentials: false 
-          fetch-depth: 0  
+          # persist-credentials: false 
+          # fetch-depth: 0  
           token: ${{ secrets.PAT_TOKEN }}
+    
       - run: |
           bash -xe <<EOF
           echo ${{ github.actor }}
