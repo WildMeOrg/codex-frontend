@@ -10,13 +10,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v2
         with:
           repository: 'WildMeOrg/houston'
           submodules: true
           # persist-credentials: false 
           # fetch-depth: 0  
-          token: ${{ secrets.CODEX_BUILDING_TOKEN }}
+          token: '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'
     
       - run: |
           bash -xe <<EOF
