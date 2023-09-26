@@ -11,7 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          repository: 'https://github.com/WildMeOrg/houston.git'
+          repository: 'WildMeOrg/houston'
           submodules: true
           # persist-credentials: false 
           # fetch-depth: 0  
