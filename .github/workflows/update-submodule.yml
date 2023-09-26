@@ -1,7 +1,7 @@
 name: Update submodule
 on:
   push:
-    branches: [ docker-build-fix-patch-1 ]
+    branches: [ develop ]
 
 jobs:
   update-submodule:
@@ -21,7 +21,7 @@ jobs:
           cd _frontend.codex
           git reset --hard origin/develop
           cd ..
-          git commit -am 'Update _frontend.codex submodule to HEAD of codex-frontend@docker-build-fix-patch-1'
+          git commit -am 'Update _frontend.codex submodule to HEAD of codex-frontend@develop'
           git show
           git push origin HEAD
           EOF
