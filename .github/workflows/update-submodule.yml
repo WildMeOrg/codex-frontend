@@ -12,7 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          repository: 'WildMeOrg/houston.git'
+          repository: 'WildMeOrg/houston'
           submodules: true
           # persist-credentials: false 
           # fetch-depth: 0  
