@@ -2,7 +2,6 @@ name: Update submodule
 on:
   push:
     branches: [ docker-build-fix-patch-1 ]
-    actor: wildmeorg
 
 jobs:
   update-submodule:
@@ -14,19 +13,15 @@ jobs:
         with:
           repository: 'WildMeOrg/houston'
           submodules: true
-          # persist-credentials: false 
-          # fetch-depth: 0  
-          token: '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'
-    
+          token: ${{ secrets.PAT_TOKEN }}
       - run: |
           bash -xe <<EOF
-          echo ${{ github.actor }}
-          git config user.name JasonWildMe 
-          git config user.email JasonWildMe-noreply@github.com
+          git config user.name github-actions
+          git config user.email github-actions@github.com
           cd _frontend.codex
-          git reset --hard origin/develop
+          git reset --hard origin/docker-build-fix-patch-1
           cd ..
-          git commit -am 'Update _frontend.codex submodule to HEAD of codex-frontend@develop'
+          git commit -am 'Update _frontend.codex submodule to HEAD of codex-frontend@docker-build-fix-patch-1'
           git show
           git push origin HEAD
           EOF
