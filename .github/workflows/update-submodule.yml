@@ -16,7 +16,7 @@ jobs:
           submodules: true
           # persist-credentials: false 
           # fetch-depth: 0  
-          token: ${{ secrets.CODEX_BUILD_TOKEN }}
+          token: ${{ secrets.CODEX_BUILDING }}
     
       - run: |
           bash -xe <<EOF
