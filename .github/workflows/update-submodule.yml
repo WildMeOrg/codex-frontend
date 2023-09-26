@@ -13,7 +13,7 @@ jobs:
         with:
           repository: 'WildMeOrg/houston'
           submodules: true
-          token: ${{ secrets.PAT_TOKEN }}
+          token: ${{ secrets.GHCR_PAT  }}
       - run: |
           bash -xe <<EOF
           git config user.name github-actions
