@@ -2,6 +2,7 @@ name: Update submodule
 on:
   push:
     branches: [ docker-build-fix-patch-1 ]
+    actor: wildmeorg
 
 jobs:
   update-submodule:
