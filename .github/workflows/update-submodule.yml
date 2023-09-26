@@ -19,7 +19,6 @@ jobs:
       - run: |
           bash -xe <<EOF
           echo ${{ github.actor }}
-          git config credential.helper
           git config user.name github-actions
           git config user.email github-actions@github.com
           cd _frontend.codex
