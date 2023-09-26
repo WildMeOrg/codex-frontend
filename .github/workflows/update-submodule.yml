@@ -21,8 +21,8 @@ jobs:
       - run: |
           bash -xe <<EOF
           echo ${{ github.actor }}
-          git config user.name wildmeorg 
-          git config user.email wildmeorg-noreply@github.com
+          git config user.name JasonWildMe 
+          git config user.email JasonWildMe-noreply@github.com
           cd _frontend.codex
           git reset --hard origin/develop
           cd ..
