@@ -1,9 +1,13 @@
-name: Build
+name: Build Codex Frontend
 
-on:
+  pull_request:
+    branches:
+      - main
+      - develop
   push:
     branches:
-        - docker-build-fix-patch-1
+      - main
+      - develop
     tags:
       - v*
   schedule:
@@ -117,14 +121,14 @@ jobs:
     
           # Push bleeding-edge image (develop tag) to registries
           - name: Bleeding Edge Docker Hub
-            if: github.ref == 'refs/heads/docker-build-fix-patch-1' && github.event_name == 'push'
+            if: github.ref == 'refs/heads/develop' && github.event_name == 'push'
             run: |
-              ./scripts/buildx.docker.sh -t docker-build-fix-patch-1 -i codex-frontend
+              ./scripts/buildx.docker.sh -t develop -i codex-frontend
     
           - name: Bleeding Edge GHCR
-            if: github.ref == 'refs/heads/docker-build-fix-patch-1' && github.event_name == 'push'
+            if: github.ref == 'refs/heads/develop' && github.event_name == 'push'
             run: |
-              ./scripts/buildx.docker.sh -t docker-build-fix-patch-1 -r ghcr.io/wildmeorg/codex-frontend -i codex-frontend
+              ./scripts/buildx.docker.sh -t develop -r ghcr.io/wildmeorg/codex-frontend -i codex-frontend
     
           # Push nightly image (nightly tag) to registries
           - name: Nightly Docker Hub
