@@ -48,7 +48,6 @@ if [ "$TAG" == "universal" ]; then
         .
 else
     docker buildx build \
-        --no-cache \
         -t ${IMG_PREFIX}${IMG}:${TAG} \
         --platform linux/amd64,linux/arm64 \
         --push \

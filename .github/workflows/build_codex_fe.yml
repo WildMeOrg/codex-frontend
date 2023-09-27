@@ -1,14 +1,14 @@
-name: Build
+name: Build Codex Frontend
 
 on:
   pull_request:
     branches:
-        - main
-        - develop
+      - main
+      - develop
   push:
     branches:
-        - main
-        - develop
+      - main
+      - develop
     tags:
       - v*
   schedule:
