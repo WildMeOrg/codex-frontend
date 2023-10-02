@@ -1262,5 +1262,7 @@
   "MANAGE_REQUESTS" : "Manage Requests",
   "NO_SEARCH_RESULT" : "Your search did not match any records.",
   "ENCOUNTER_SEX" : "Encounter sex",
-  "ENCOUNTER_SPECIES" : "Encounter species"
+  "ENCOUNTER_SPECIES" : "Encounter species",
+  "LAST_REGION" : "Last region",
+  "LAST_FREEFORM" : "Last freeform"
 }

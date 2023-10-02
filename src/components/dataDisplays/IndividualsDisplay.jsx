@@ -54,6 +54,18 @@ export default function IndividualsDisplay({
       },
     },
     {
+      name: 'last_seen_location_name',
+      labelId: 'LAST_REGION',
+      sortable: false,
+      align: 'left',
+    },
+    {
+      name: 'last_seen_verbatimLocality',
+      labelId: 'LAST_FREEFORM',
+      sortable: false,
+      align: 'left',
+    },
+    {
       name: 'taxonomy_guid',
       labelId: 'SPECIES',
       align: 'left',
