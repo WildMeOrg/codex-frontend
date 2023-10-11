@@ -17,9 +17,12 @@ import Button from '../../components/Button';
 import UppyDashboard from '../../components/UppyDashboard';
 import ReportSightingsPage from '../../components/report/ReportSightingsPage';
 import BulkReportForm from './BulkReportForm';
+import useSiteSettings from '../../models/site/useSiteSettings';
 
 export default function BulkImport() {
   const intl = useIntl();
+  const { data: siteSettings } = useSiteSettings();
+  const photoGuidelinesUrl = get(siteSettings, ['site.general.photoGuidelinesUrl', 'value']);
   useDocumentTitle('REPORT_SIGHTINGS');
 
   const { data: userData } = useGetMe();
@@ -98,7 +101,9 @@ export default function BulkImport() {
                 <FormattedMessage id="PHOTO_OPTIMIZE_1" />
                 <Link
                   external
-                  href="https://docs.wildme.org/docs/researchers/photography_guidelines"
+                  // href="https://docs.wildme.org/product-docs/en/codex/data/optimizing-photographs/"
+                  href={photoGuidelinesUrl}
+                  target="_blank"
                 >
                   <FormattedMessage id="PHOTO_OPTIMIZE_2" />
                 </Link>

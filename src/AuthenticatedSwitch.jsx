@@ -46,6 +46,9 @@ import Preferences from './pages/preferences/Preferences';
 import ResendVerificationEmail from './pages/auth/ResendVerificationEmail';
 import Footer from './components/Footer';
 import { defaultCrossfadeDuration } from './constants/defaults';
+import Requests from './pages/setup/Requests';
+import SpeciesManagement from './pages/fieldManagement/SpeciesManagement';
+import ChangeLog from './pages/changeLog/ChangeLog';
 
 export default function AuthenticatedSwitch({
   emailNeedsVerification,
@@ -112,6 +115,9 @@ export default function AuthenticatedSwitch({
                       <Route path="/settings/actions">
                         <AdminActions />
                       </Route>
+                      <Route path="/settings/fields/species">
+                        <SpeciesManagement />
+                      </Route>
                       <Route path="/settings/fields/save-custom-field/:type?/:id?">
                         <SaveCustomField />
                       </Route>
@@ -126,6 +132,9 @@ export default function AuthenticatedSwitch({
                       </Route>
                       <Route path="/settings/preferences">
                         <Preferences />
+                      </Route>
+                      <Route path="/settings/changelog">
+                        <ChangeLog />
                       </Route>
                       <Route path="/settings">
                         <ControlPanel />
@@ -183,6 +192,9 @@ export default function AuthenticatedSwitch({
                       </Route>
                       <Route path="/users">
                         <Users />
+                      </Route>
+                      <Route path="/requests">
+                        <Requests />
                       </Route>
                       <Route path="/social-groups/:guid">
                         <SocialGroup />

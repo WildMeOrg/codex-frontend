@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { get, isEmpty } from 'lodash-es';
+import { get, isEmpty, truncate } from 'lodash-es';
 
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -10,6 +10,9 @@ import usePatchAGS from '../../models/assetGroupSighting/usePatchAGS';
 import InputRow from '../../components/fields/edit/InputRow';
 import Button from '../../components/Button';
 import StandardDialog from '../../components/StandardDialog';
+import { useIntl } from 'react-intl';
+import { set } from 'date-fns';
+import CheckDateRangeIntegrity from '../../pages/fieldManagement/settings/saveField/CheckDateRangeIntegrity';
 
 function getInitialFormValues(schema, fieldKey) {
   return schema.reduce((memo, field) => {
@@ -36,6 +39,8 @@ export default function EditSightingMetadata({
     error: sightingError,
     clearError: clearSightingError,
   } = usePatchSighting();
+  
+  const intl = useIntl();
 
   const {
     mutate: updateAgsProperties,
@@ -54,6 +59,8 @@ export default function EditSightingMetadata({
   const [defaultFieldValues, setDefaultFieldValues] = useState({});
 
   const [customFieldValues, setCustomFieldValues] = useState({});
+
+  const [ incompleteDateRangeError, setIncompleteDateRangeError ] = useState(false);
 
   useEffect(() => {
     // Only populate the form with the initial metadata values.
@@ -81,6 +88,7 @@ export default function EditSightingMetadata({
 
   function handleClose() {
     clearError();
+    setIncompleteDateRangeError(false);
     setDefaultFieldValues({});
     setCustomFieldValues({});
     onClose();
@@ -129,8 +137,9 @@ export default function EditSightingMetadata({
           );
         })}
 
-        {error && (
+        {(incompleteDateRangeError ||error) && (
           <CustomAlert severity="error" titleId="SUBMISSION_ERROR">
+            {incompleteDateRangeError && intl.formatMessage({id : 'INCOMPLETE_DATE_RANGE_ERROR'}) }
             {error}
           </CustomAlert>
         )}
@@ -144,12 +153,17 @@ export default function EditSightingMetadata({
             const properties = { ...defaultFieldValues };
             if (!isEmpty(customFieldValues))
               properties.customFields = customFieldValues;
-            const response = await updateProperties({
+              const dateRangeIntegrityError = CheckDateRangeIntegrity(properties['customFields'] || []);
+              if(dateRangeIntegrityError) {
+                setIncompleteDateRangeError(dateRangeIntegrityError);
+                return;
+              }              
+              const response = await updateProperties({
               agsGuid: pending ? sightingId : undefined,
               sightingGuid: pending ? undefined : sightingId,
               properties,
             });
-            if (response.status === 200) onClose();
+            if (response?.status === 200) onClose();
           }}
           id="SAVE"
         />

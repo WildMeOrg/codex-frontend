@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { get } from 'lodash-es';
+import { get, startCase } from 'lodash-es';
 
 import useSiteSettings from '../site/useSiteSettings';
 import fieldTypes from '../../constants/fieldTypesNew';
@@ -14,6 +14,18 @@ import { deriveIndividualName } from '../../utils/nameUtils';
 export default function useIndividualFieldSchemas() {
   const { data, loading, error } = useSiteSettings();
 
+  const species = get(data, ['site.species', 'value'], []);
+  const speciesOptions = species.map(s => {
+    const mainCommonName = startCase(get(s, ['commonNames', 0]));
+    const speciesLabel = mainCommonName
+      ? `${mainCommonName} (${s.scientificName})`
+      : s.scientificName;
+    return {
+      label: speciesLabel,
+      value: s.id,
+    };
+  });  
+  
   const individualFieldSchemas = useMemo(() => {
     if (loading || error) return [];
 
@@ -52,6 +64,15 @@ export default function useIndividualFieldSchemas() {
         category: defaultIndividualCategories.general.name,
         choices: sexOptions,
         requiredForIndividualCreation: true,
+        defaultValue: null,
+      }),
+      createFieldSchema(fieldTypes.select, {
+        name: 'taxonomy',
+        labelId: 'SPECIES',
+        category: defaultIndividualCategories.general.name,
+        choices: speciesOptions,
+        requiredForIndividualCreation: true,
+        required: true,
         defaultValue: null,
       }),
       ...customFieldSchemas,

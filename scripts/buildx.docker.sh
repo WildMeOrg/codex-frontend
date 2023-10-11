@@ -7,7 +7,7 @@ export DOCKER_BUILDKIT=1
 export DOCKER_CLI_EXPERIMENTAL=enabled
 
 usage () {
-    echo "Usage: $0 [-t <tag>] [-r <registry-url>] [<image> ...]";
+    echo "Usage: $0 [-t <tag>] [-r <registry-url>] [-i <image>] ";
 }
 
 if [ ! -d ".git/" ]; then
@@ -16,10 +16,11 @@ if [ ! -d ".git/" ]; then
 fi
 
 # Parse commandline options
-while getopts ":t:r:" option; do
+while getopts ":t:r:i:" option; do
     case ${option} in
         t ) TAG=${OPTARG};;
         r ) REGISTRY=${OPTARG};;
+        i ) IMG=${OPTARG};;
         \? ) usage; exit 1;;
     esac
 done
@@ -28,7 +29,7 @@ shift $((OPTIND - 1))
 # Assign variables
 TAG=${TAG:-universal}
 REGISTRY=${REGISTRY:-}
-IMAGES=${@:-houston-frontend codex-frontend}
+# IMAGES=${@:-codex-frontend}
 # Set the image prefix
 if [ -n "$REGISTRY" ]; then
     IMG_PREFIX="${REGISTRY}/"
@@ -38,20 +39,18 @@ fi
 
 # docker buildx create --name multi-arch-builder --use
 
-for IMG in $IMAGES; do
-    echo "Building and Pushing Multi-platform ${IMG_PREFIX}${IMG}:${TAG}"
-    if [ "$TAG" == "universal" ]; then
-        docker buildx build \
-            --no-cache \
-            -t ${IMG_PREFIX}${IMG}:${TAG} \
-            --platform linux/amd64,linux/arm64 \
-            .
-    else
-        docker buildx build \
-            --no-cache \
-            -t ${IMG_PREFIX}${IMG}:${TAG} \
-            --platform linux/amd64,linux/arm64 \
-            --push \
-            .
-    fi
-done
+echo "Building and Pushing Multi-platform ${IMG_PREFIX}${IMG}:${TAG}"
+if [ "$TAG" == "universal" ]; then
+    docker buildx build \
+        --no-cache \
+        -t ${IMG_PREFIX}${IMG}:${TAG} \
+        --platform linux/amd64,linux/arm64 \
+        .
+else
+    docker buildx build \
+        -t ${IMG_PREFIX}${IMG}:${TAG} \
+        --platform linux/amd64,linux/arm64 \
+        --push \
+        .
+fi
+

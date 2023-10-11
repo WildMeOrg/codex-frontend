@@ -10,26 +10,27 @@ export default function ElasticsearchSightingsDisplay({
   sightings,
   loading,
   dataCount,
+  formFilters,
   ...rest
 }) {
   const title = `${dataCount || sightings.length} matching sightings`;
-
+  
   const tableData = sightings.map(sighting => {
-    const encounters = sighting?.encounters || [];
-    const photoCount = encounters.reduce((memo, e) => {
-      memo += e.images.length;
-      return memo;
-    }, 0);
+    // const encounters = sighting?.encounters || [];
+    // const photoCount = encounters.reduce((memo, e) => {
+    //   memo += e.images.length;
+    //   return memo;
+    // }, 0);
 
-    const individuals = encounters.reduce((memo, e) => {
-      const individual = get(e, 'individual.id', null);
-      return individual ? [...memo, individual] : null;
-    }, []);
+    // const individuals = encounters.reduce((memo, e) => {
+    //   const individual = get(e, 'individual.id', null);
+    //   return individual ? [...memo, individual] : null;
+    // }, []);
 
     return {
       ...sighting,
-      photoCount,
-      individuals,
+      // photoCount,
+      // individuals,
     };
   });
 
@@ -100,6 +101,7 @@ export default function ElasticsearchSightingsDisplay({
       title={title}
       loading={loading}
       showNoResultsBao
+      formFilters={formFilters}
       // renderExpandedRow={expandedSighting => (
       //   <div style={{ display: 'flex' }}>
       //     <img

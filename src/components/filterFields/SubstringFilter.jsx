@@ -30,8 +30,10 @@ export default function SubstringFilter(props) {
 
   const [value, setValue] = useState('');
   const translatedLabel = labelId
-    ? intl.formatMessage({ id: labelId })
-    : label;
+    ?   (intl.messages[labelId]
+      ? intl.formatMessage({ id: labelId })
+      : labelId )
+    : label; 
 
   return (
     <div
@@ -58,13 +60,18 @@ export default function SubstringFilter(props) {
             descriptor: `${translatedLabel}: ${value}`,
             nested,
             clause,
-            query: {
-              query_string: {
-                query: `*${value.toLowerCase()}*`,
-                fields: queryTerms,
-                default_operator,
-              },
-            },
+            // query: {
+            //   query_string: {
+            //     // query: `*${value.toLowerCase()}*`,
+            //     fields: queryTerms,
+            //     default_operator,
+            //   },              
+            // },
+            query : {             
+                    "wildcard": {
+                      [queryTerms]: `*${value}*`     
+                    }
+                  }                  
           })
         }
         size="small"

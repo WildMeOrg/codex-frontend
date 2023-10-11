@@ -3,7 +3,11 @@ import OptionTermFilter from '../../components/filterFields/OptionTermFilter';
 import SubstringFilter from '../../components/filterFields/SubstringFilter';
 import DateRangeFilter from '../../components/filterFields/DateRangeFilter';
 import IntegerFilter from '../../components/filterFields/IntegerFilter';
+import autogenNameFilter from '../../components/filterFields/autogenNameFilter';
 import sexOptions from '../../constants/sexOptions';
+import useSocialGroups from '../socialGroups/useSocialGroups';
+import useSiteSettings from '../site/useSiteSettings';
+import useBuildFilter from '../../components/filterFields/useBuildFilter';
 
 const labeledSexOptions = sexOptions.map(o => ({
   labelId: o?.filterLabelId || o.labelId,
@@ -29,7 +33,26 @@ const hasAnnotationOptions = [
 ];
 
 export default function useIndividualSearchSchemas() {
-  const { speciesOptions } = useOptions();
+  const {
+    speciesOptions,
+    socialGroupRolesOptions,
+    relationshipOptions,
+  } = useOptions();
+  const { data: socialGroups } = useSocialGroups();
+  const { data: siteSettings } = useSiteSettings();
+  const customIndividualFields =
+    siteSettings['site.custom.customFields.Individual'].value
+      .definitions || [];
+  const socialGroupOptions = socialGroups?.map(data => ({
+    label: data.name,
+    value: data.guid,
+  }));
+
+  const customFields = useBuildFilter(
+    customIndividualFields,
+    'individuals',
+  );
+
   return [
     {
       id: 'firstName',
@@ -38,6 +61,15 @@ export default function useIndividualSearchSchemas() {
       filterComponentProps: {
         filterId: 'firstName',
         queryTerms: ['firstName'],
+      },
+    },
+    {
+      id: 'codexId',
+      labelId: 'CODEX_ID',
+      FilterComponent: autogenNameFilter,
+      filterComponentProps: {
+        filterId: 'codexId',
+        queryTerms: ['namesWithContexts'],
       },
     },
     {
@@ -111,5 +143,48 @@ export default function useIndividualSearchSchemas() {
         filterId: 'num_encounters',
       },
     },
+    {
+      id: 'relationship',
+      labelId: 'RELATIONSHIP',
+      FilterComponent: OptionTermFilter,
+      filterComponentProps: {
+        queryTerm: 'relationships.type_guid',
+        filterId: 'relationship',
+        choices: relationshipOptions,
+      },
+    },
+    {
+      id: 'relationshipRoles',
+      labelId: 'RELATIONSHIP_ROLES',
+      dependency: 'relationship',
+      FilterComponent: OptionTermFilter,
+      filterComponentProps: {
+        queryTerm: 'relationships.role_guid',
+        filterId: 'relationshipRoles',
+        choices: [],
+      },
+    },
+    {
+      id: 'socialGroups',
+      labelId: 'SOCIAL_GROUPS',
+      FilterComponent: OptionTermFilter,
+      filterComponentProps: {
+        queryTerm: 'social_groups.guid',
+        filterId: 'socialGroups',
+        choices: socialGroupOptions,
+      },
+    },
+    {
+      id: 'socialGroupsRoles',
+      labelId: 'SOCIAL_GROUP_ROLES',
+      FilterComponent: OptionTermFilter,
+      filterComponentProps: {
+        customField: 'social_group_roles',
+        queryTerm: 'social_groups.role_guids',
+        filterId: 'socialGroupsRoles',
+        choices: socialGroupRolesOptions,
+      },
+    },
+    ...customFields,
   ];
 }

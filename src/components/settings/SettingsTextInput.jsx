@@ -18,7 +18,7 @@ export default function SettingsTextInput({
   const matchingSettingSchema = get(matchingSetting, 'schema', {});
   const valueIsDefined =
     get(currentValues, settingKey, undefined) !== undefined;
-
+  
   return (
     <Grid
       item

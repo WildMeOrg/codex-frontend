@@ -15,7 +15,6 @@ export default function useFilterSightings({ queries, params = {} }) {
   const compositeQuery = {
     bool: { filter: filterQueries, must_not: mustNotQueries },
   };
-
   return useFetch({
     method: 'post',
     queryKey: getSightingFilterQueryKey(queries, params),

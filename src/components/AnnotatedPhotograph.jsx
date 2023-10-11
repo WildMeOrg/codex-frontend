@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { get } from 'lodash-es';
 
 import { useTheme } from '@material-ui/core/styles';
@@ -14,7 +14,10 @@ export default function AnnotatedPhotograph({
   selectable = false,
   selected = false,
   onClick,
+  heatmapon,
+  left
 }) {
+
   const theme = useTheme();
 
   const alt = get(assetMetadata, 'alt');
@@ -75,11 +78,45 @@ export default function AnnotatedPhotograph({
             : undefined,
           display: 'block',
         }}
-        viewBox={`0 0 ${imageWidth} ${imageHeight}`}
+        viewBox= {heatmapon ? undefined : `0 0 ${imageWidth} ${imageHeight}`}
         preserveAspectRatio="xMidYMid meet"
         width={width}
       >
-        <image
+        
+        {
+          heatmapon ? (
+            left ? (
+              <>
+                <image
+                alt={alt}
+                href={src}
+                x={'12.5%'}
+                y={0}
+                height={'100%'}
+                width={'150%'}
+                preserveAspectRatio="xMidYMid meet"
+                />
+                <rect x={'87.5%'} y="0" width="12.5%" height="100%" fill={theme.palette.grey['600']} />
+              </>             
+
+            ) : (
+              <>
+              <image
+                alt={alt}
+                href={src}
+                x={'-62.5%'}
+                y={0}
+                height={'100%'}
+                width={'150%'}
+                preserveAspectRatio="xMidYMid meet"
+                />
+                <rect x={0} y="0" width="12.5%" height="100%" fill={theme.palette.grey['600']} />
+              </>
+            )
+            
+          )
+          : (
+            <image
           alt={alt}
           href={src}
           x={0}
@@ -87,6 +124,8 @@ export default function AnnotatedPhotograph({
           height="100%"
           width="100%"
         />
+          )
+        }
         {annotations.map(annotation => {
           const x = get(annotation, ['bounds', 'rect', '0']);
           const y = get(annotation, ['bounds', 'rect', '1']);

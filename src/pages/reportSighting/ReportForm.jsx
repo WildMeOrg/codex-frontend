@@ -52,6 +52,10 @@ const radioChoices = [
 export default function ReportForm({
   authenticated,
   assetReferences,
+  setCurrentPage,
+  setStartForm,
+  currentIndex,
+  setCurrentIndex,
   // exifData,
 }) {
   const intl = useIntl();
@@ -62,7 +66,7 @@ export default function ReportForm({
     'value',
   ]);
 
-  const [sightingType, setSightingType] = useState(null);
+  const [sightingType, setSightingType] = useState('one');
 
   const { customEncounterCategories, customSightingCategories } =
     useMemo(() => {
@@ -93,11 +97,10 @@ export default function ReportForm({
   } = useMemo(() => {
     const _defaultSightingSchemas = sightingFieldSchemas.filter(
       schema => !schema.customField,
-    );
+    );    
     const _customSightingSchemas = sightingFieldSchemas.filter(
-      schema => schema.customField,
-    );
-
+      schema => schema.customField
+    );    
     const visibleEncounterFieldSchemas = encounterFieldSchemas.filter(
       schema => !schema.hideOnBasicReport,
     );
@@ -117,8 +120,7 @@ export default function ReportForm({
       customEncounterSchemas: _customEncounterSchemas,
     };
   }, [sightingFieldSchemas, encounterFieldSchemas]);
-
-  const [acceptedTerms, setAcceptedTerms] = useState(authenticated);
+  const [acceptedTerms, setAcceptedTerms] = useState(authenticated === "undefined" ? false : authenticated);
   // const [exifButtonClicked, setExifButtonClicked] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [incompleteFields, setIncompleteFields] = useState([]);
@@ -158,125 +160,28 @@ export default function ReportForm({
     encounterFieldSchemas,
   ]);
 
-  // const locationSuggestion = useMemo(
-  //   () => getLocationSuggestion(exifData),
-  //   [exifData],
-  // );
-
-  const {
-    postAssetGroup,
-    loading: postAssetGroupLoading,
-    error: postAssetGroupError,
-  } = usePostAssetGroup();
-
-  const showErrorAlertBox =
-    incompleteFields.length > 0 ||
-    termsError ||
-    postAssetGroupError ||
-    formErrorId;
-
-  const hasSightingTypeAndNotAuthenticated =
-    sightingType && !authenticated;
-
-  return (
-    <>
-      <TermsAndConditionsDialog
-        visible={dialogOpen}
-        onClose={() => setDialogOpen(false)}
-      />
-      <RadioChoice
-        titleId="SIGHTING_RADIO_QUESTION"
-        value={sightingType}
-        onChange={setSightingType}
-        choices={radioChoices}
-      />
-      {sightingType && (
-        <>
-          <FieldCollections
-            formValues={sightingFormValues}
-            setFormValues={setSightingFormValues}
-            categories={defaultSightingCategories}
-            fieldSchema={defaultSightingSchemas}
-          />
-          <FieldCollections
-            formValues={customSightingFormValues}
-            setFormValues={setCustomSightingFormValues}
-            categories={customSightingCategories}
-            fieldSchema={customSightingSchemas}
-          />
-        </>
-      )}
-      {sightingType === 'one' && (
-        <>
-          <FieldCollections
-            formValues={encounterFormValues}
-            setFormValues={setEncounterFormValues}
-            categories={defaultEncounterCategories}
-            fieldSchema={defaultEncounterSchemas}
-          />
-          <FieldCollections
-            formValues={customEncounterFormValues}
-            setFormValues={setCustomEncounterFormValues}
-            categories={customEncounterCategories}
-            fieldSchema={customEncounterSchemas}
-          />
-        </>
-      )}
-      {hasSightingTypeAndNotAuthenticated && (
-        <Grid item style={{ marginBottom: 12 }}>
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={acceptedTerms}
-                onChange={() => setAcceptedTerms(!acceptedTerms)}
-              />
-            }
-            label={
-              <span>
-                <Text component="span" id="TERMS_CHECKBOX_1" />
-                <InlineButton onClick={() => setDialogOpen(true)}>
-                  <Text component="span" id="TERMS_CHECKBOX_2" />
-                </InlineButton>
-                <Text component="span" id="END_OF_SENTENCE" />
-              </span>
-            }
-          />
-        </Grid>
-      )}
-      {showErrorAlertBox && (
-        <Grid item style={{ marginBottom: 12 }}>
-          <CustomAlert severity="error" titleId="SUBMISSION_ERROR">
-            {postAssetGroupError && (
-              <Text variant="body2">{postAssetGroupError}</Text>
-            )}
-            {termsError && <Text variant="body2" id="TERMS_ERROR" />}
-            {formErrorId && <Text variant="body2" id={formErrorId} />}
-            {incompleteFields.map(incompleteField => (
-              <Text
-                key={incompleteField.name}
-                variant="body2"
-                id="INCOMPLETE_FIELD"
-                values={{
-                  fieldName: intl.formatMessage({
-                    id: incompleteField.labelId,
-                  }),
-                }}
-              />
-            ))}
-          </CustomAlert>
-        </Grid>
-      )}
-      {sightingType ? (
-        <Grid
-          item
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            marginTop: 12,
-          }}
-        >
-          <Button
-            onClick={async () => {
+  const requiredDefaultSightingSchemas = defaultSightingSchemas.filter(data => data.required);
+  const optionalDefaultSightingSchemas = defaultSightingSchemas.filter(data => !data.required); 
+  const requiredCustomSightingSchemas = customSightingSchemas.filter(data => data.required);
+  const optionalCustomSightingSchemas = customSightingSchemas.filter(data => !data.required);
+  const requiredDefaultEncounterFieldSchemas = defaultEncounterSchemas.filter(data => data.required);
+  const optionalDefaultEncounterFieldSchemas = defaultEncounterSchemas.filter(data => !data.required);
+  const requiredCustomEncounterFieldSchemas = customEncounterSchemas.filter(data => data.required);
+  const optionalCustomEncounterFieldSchemas = customEncounterSchemas.filter(data => !data.required);
+  const [optional, setOptional] = useState(false);
+  let formValid = false;
+  const checkRequired = () => {
+    const sightingsRequired = sightingFieldSchemas
+    .filter(
+      schema => schema.customField && schema.required && !customSightingFormValues[schema.name],
+      )
+    .map(data => ({ ...data, labelId: data.label }));  
+    const encountersRequired = encounterFieldSchemas
+    .filter(
+      schema => sightingType === 'one' && schema.customField && schema.required && !customEncounterFormValues[schema.name],
+      )
+    .map(data => ({ ...data, labelId: data.label })); 
+    const requiredCustomFields = sightingsRequired.concat(encountersRequired);
               // check that required fields are complete.
               // specifiedTime field is required, but the logic and message
               // are different from the other fields
@@ -287,7 +192,8 @@ export default function ReportForm({
                     field.defaultValue ===
                       sightingFormValues[field.name] &&
                     field.name !== 'specifiedTime',
-                );
+                ).concat(requiredCustomFields);        
+                
               setIncompleteFields(nextIncompleteFields);
 
               // check that specifiedTime fields are complete
@@ -334,12 +240,14 @@ export default function ReportForm({
 
               // check that terms and conditions were accepted
               setTermsError(!acceptedTerms);
-
-              const formValid =
+              formValid =
                 nextIncompleteFields.length === 0 &&
                 acceptedTerms &&
                 !nextFormErrorId;
 
+  }
+  const submitReport = async () => {    
+              checkRequired();
               if (formValid) {
                 const report =
                   sightingType === 'one'
@@ -375,7 +283,6 @@ export default function ReportForm({
                   ]),
                   sightings: [report],
                 };
-
                 if (window.grecaptcha) {
                   const grecaptchaReady = new Promise(resolve => {
                     window.grecaptcha.ready(() => {
@@ -408,14 +315,242 @@ export default function ReportForm({
                   history.push(relativeUrl);
                 }
               }
+          
+  }
+
+  // const locationSuggestion = useMemo(
+  //   () => getLocationSuggestion(exifData),
+  //   [exifData],
+  // );
+
+  const {
+    postAssetGroup,
+    loading: postAssetGroupLoading,
+    error: postAssetGroupError,
+  } = usePostAssetGroup();
+
+  const showErrorAlertBox =
+    incompleteFields.length > 0 ||
+    termsError ||
+    postAssetGroupError ||
+    formErrorId;
+
+  const hasSightingTypeAndNotAuthenticated =
+    sightingType && !authenticated;
+
+  return (
+    <>
+      <TermsAndConditionsDialog
+        visible={dialogOpen}
+        onClose={() => setDialogOpen(false)}
+      />      
+      {
+        !optional && (
+          <RadioChoice
+            titleId="SIGHTING_RADIO_QUESTION"
+            value={sightingType}
+            onChange={setSightingType}
+            choices={radioChoices}
+          />
+        )
+      }
+      {!optional && sightingType && (
+        <>
+          <FieldCollections
+            formValues={sightingFormValues}
+            setFormValues={setSightingFormValues}
+            categories={defaultSightingCategories}
+            fieldSchema={requiredDefaultSightingSchemas}
+          />
+          <FieldCollections
+            formValues={customSightingFormValues}
+            setFormValues={setCustomSightingFormValues}
+            categories={customSightingCategories}
+            fieldSchema={requiredCustomSightingSchemas}
+          />
+        </>
+      )}
+      {
+        !optional && sightingType === 'one' && (
+          <>            
+            <FieldCollections
+              formValues={encounterFormValues}
+              setFormValues={setEncounterFormValues}
+              categories={defaultEncounterCategories}
+              fieldSchema={requiredDefaultEncounterFieldSchemas}
+            />
+            <FieldCollections
+              formValues={customEncounterFormValues}
+              setFormValues={setCustomEncounterFormValues}
+              categories={customEncounterCategories}
+              fieldSchema={requiredCustomEncounterFieldSchemas}
+            />
+          </>
+        )
+      }
+
+      {optional && (
+              <>
+                <FieldCollections
+                  formValues={sightingFormValues}
+                  setFormValues={setSightingFormValues}
+                  categories={defaultSightingCategories}
+                  fieldSchema={optionalDefaultSightingSchemas}
+                />
+                <FieldCollections
+                  formValues={customSightingFormValues}
+                  setFormValues={setCustomSightingFormValues}
+                  categories={customSightingCategories}
+                  fieldSchema={optionalCustomSightingSchemas}
+                />          
+              </>
+            )}
+
+      {optional && sightingType === 'one' && (
+        <>
+          <FieldCollections
+            formValues={encounterFormValues}
+            setFormValues={setEncounterFormValues}
+            categories={defaultEncounterCategories}
+            fieldSchema={optionalDefaultEncounterFieldSchemas}
+          />
+          <FieldCollections
+            formValues={customEncounterFormValues}
+            setFormValues={setCustomEncounterFormValues}
+            categories={customEncounterCategories}
+            fieldSchema={optionalCustomEncounterFieldSchemas}
+          />
+        </>
+      )}  
+      
+      {!optional && hasSightingTypeAndNotAuthenticated && (
+        <Grid item style={{ marginBottom: 12 }}>
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={acceptedTerms}
+                onChange={() => setAcceptedTerms(!acceptedTerms)}
+              />
+            }
+            label={
+              <span>
+                <Text component="span" id="TERMS_CHECKBOX_1" />
+                <InlineButton onClick={() => setDialogOpen(true)}>
+                  <Text component="span" id="TERMS_CHECKBOX_2" />
+                </InlineButton>
+                <Text component="span" id="END_OF_SENTENCE" />
+              </span>
+            }
+          />
+        </Grid>
+      )}
+      {showErrorAlertBox && (
+        <Grid item style={{ marginBottom: 12 }}>
+          <CustomAlert severity="error" titleId="SUBMISSION_ERROR">
+            {postAssetGroupError && (
+              <Text variant="body2">{postAssetGroupError}</Text>
+            )}
+            {termsError && <Text variant="body2" id="TERMS_ERROR" />}
+            {formErrorId && <Text variant="body2" id={formErrorId} />}
+            {incompleteFields.map(incompleteField => (
+              <Text
+                key={incompleteField.name}
+                variant="body2"
+                id="INCOMPLETE_FIELD"
+                values={{
+                  fieldName: intl.messages[incompleteField.labelId] ? intl.formatMessage({ id: incompleteField.labelId }) : incompleteField.labelId,
+                }}
+              />
+            ))}
+          </CustomAlert>
+        </Grid>
+      )}
+
+      {!optional && sightingType ? (
+        <Grid
+          item
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            marginTop: 12,
+          }}
+        >
+          
+          <div style={{
+              width:'100%', 
+              display: 'flex', 
+              flexDirection: "row",
+              justifyContent: "space-between",
+            }}>
+            
+              <Button
+                id={'BACK'}
+                display="basic"
+                onClick={() => {
+                  setStartForm(false);
+                  setCurrentPage('Upload Image');
+                  setCurrentIndex(currentIndex - 1);
+                }}
+              />
+         
+            <div >
+              <Button
+                onClick={async () => {
+                  checkRequired();      
+                  if(formValid) {
+                    setOptional(true);
+                    setCurrentPage('Optional Data');
+                    setCurrentIndex(currentIndex + 1);
+                  };     
+                }}
+                display="primary"
+                id={'CONTINUE'}
+                style={{ marginRight: 8 }}
+              />
+              <Button
+                onClick={async () => {
+                  submitReport();     
+                }}
+                display="primary"
+                id={'SKIP_AND_SUBMIT'}
+              />
+            </div>
+          </div>
+        </Grid>
+      ) : null}
+      
+
+    {optional && sightingType ? (
+        <Grid
+          item
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            marginTop: 12,
+          }}
+        >
+
+          <Button
+            id = {'BACK'}
+            display="basic"
+            onClick={() => {
+              setOptional(false);
+              setCurrentPage("Enter Required Data");
+              setCurrentIndex(currentIndex - 1);
             }}
+
+            />
+          <Button
+            onClick={submitReport}              
             style={{ width: 320, marginBottom: 8 }}
             loading={postAssetGroupLoading}
             display="primary"
             id="REPORT_SIGHTING"
+            
           />
         </Grid>
-      ) : null}
+      ) : null}  
     </>
   );
 }

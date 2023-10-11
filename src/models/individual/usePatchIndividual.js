@@ -2,6 +2,7 @@ import { useState } from 'react';
 import axios from 'axios';
 import { get } from 'lodash-es';
 import { formatError } from '../../utils/formatters';
+import { formatCustomFields } from '../../utils/formatters';
 
 export default function usePatchIndividual() {
   const [loading, setLoading] = useState(false);
@@ -52,9 +53,10 @@ export default function usePatchIndividual() {
   const updateIndividualProperties = async (
     individualId,
     dictionary,
-  ) => {
-    // names must be handled separately because (1) multiple request with the path /names could be
-    // required, and (2) a name may need to be added or replaced.
+  ) => {    
+    const customFields = dictionary['customFields'];
+    const newCustomFields = formatCustomFields(customFields);
+    dictionary['customFields'] = newCustomFields;
     const { names = [], ...dictionaryWithoutNames } = dictionary;
 
     let operations = Object.keys(dictionaryWithoutNames).map(
@@ -64,7 +66,9 @@ export default function usePatchIndividual() {
         value: dictionaryWithoutNames[propertyKey],
       }),
     );
-
+    
+    // names must be handled separately because (1) multiple request with the path /names could be
+    // required, and (2) a name may need to be added or replaced.    
     if (names.length > 0) {
       const nameOperations = names.map(({ op, ...value }) => ({
         op,
@@ -73,7 +77,6 @@ export default function usePatchIndividual() {
       }));
       operations = [...operations, ...nameOperations];
     }
-
     return patchIndividual(individualId, operations);
   };
 

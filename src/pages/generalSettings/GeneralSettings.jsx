@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { get, reduce, zipObject } from 'lodash-es';
 
 import Grid from '@material-ui/core/Grid';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 import useSiteSettings from '../../models/site/useSiteSettings';
 import usePutSiteSetting from '../../models/site/usePutSiteSetting';
@@ -11,13 +12,13 @@ import Button from '../../components/Button';
 import SettingsBreadcrumbs from '../../components/SettingsBreadcrumbs';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import useGetTwitterbotTestResults from '../../models/site/useGetTwitterbotTestResults';
-import MainColumn from '../../components/MainColumn';
-import Text from '../../components/Text';
-import DividerTitle from '../../components/DividerTitle';
 import SettingsFileUpload from '../../components/settings/SettingsFileUpload';
 import SettingsTextInput from '../../components/settings/SettingsTextInput';
 import IntelligentAgentSettings from './IntelligentAgentSettings';
 import { intelligentAgentSchema } from '../../constants/intelligentAgentSchema';
+import { Paper, Link, Typography, Box } from '@material-ui/core';
+import { useTheme } from '@material-ui/core/styles';
+import Text from '../../components/Text';
 
 const generalSettingsFields = [
   'site.name',
@@ -33,6 +34,15 @@ const generalSettingsFields = [
   'site.links.instagramLink',
   'site.links.twitterLink',
   'site.look.logoIncludesSiteName',
+  'site.general.customCardLine1',
+  'site.general.customCardLine2',
+  'site.general.customCardButtonText',
+  'site.general.customCardButtonUrl',
+  'site.general.tagline',
+  'site.general.taglineSubtitle',
+  'site.general.description',
+  'site.general.helpDescription',
+  'site.general.donationButtonUrl',
 ];
 
 const intelligentAgentSettingsFields = reduce(
@@ -57,17 +67,35 @@ const allSettingsFields = [
 ];
 
 export default function GeneralSettings() {
-  const { data: siteSettings } = useSiteSettings();
+  const theme = useTheme();
+  const allSettings = [
+    'Site Configuration',
+    'Hero Area',
+    'Site Theme',
+    'Custom Card Area',
+    'Email Settings',
+    'Social Media Settings',
+    'Twitter Configuration',
+    'Miscellaneous'
+  ];  
 
+  const { data: siteSettings } = useSiteSettings();
   const [currentValues, setCurrentValues] = useState(null);
+
+
+  //Due to page layout change, twitter configuration won't be displayed on page, 
+  //and intelligentAgentFieldsValid won't be true until user clicks on twitter configuration
+  //So we need to set intelligentAgentFieldsValid to true by default, and when user clicks on twitter configuration, 
+  //intelligentAgentFieldsValid will be reset based on user actions, to check if user has filled in all required fields
   const [
     intelligentAgentFieldsValid,
     setIntelligentAgentFieldsValid,
-  ] = useState(false);
+  ] = useState(true);
+
   const isTwitterEnabled = Boolean(
     get(currentValues, 'intelligent_agent_twitterbot_enabled'),
   );
-
+ 
   const {
     mutate: putSiteSetting,
     error: putSiteSettingError,
@@ -101,200 +129,516 @@ export default function GeneralSettings() {
     setCurrentValues(zipObject(allSettingsFields, fieldValues));
   }, [siteSettings]);
 
-  return (
-    <MainColumn>
-      <Text
-        variant="h3"
-        style={{ padding: '16px 0 16px 16px' }}
-        id="GENERAL_SETTINGS"
-      />
-      <SettingsBreadcrumbs currentPageTextId="GENERAL_SETTINGS" />
+  function handleFileChange(settingKey, data) {
+    setCurrentValues(prev => ({ ...prev, [settingKey]: data }));
+  }
+
+  const [ SiteConfiguration, setSiteConfiguration ] = useState(true);
+  const [ HeroArea, setHeroArea ] = useState(false);
+  const [ SiteTheme, setSiteTheme ] = useState(false);
+  const [ CustomCardArea, setCustomCardArea ] = useState(false);
+  const [ EmailSettings, setEmailSettings ] = useState(false);
+  const [ SocialMediaSettings, setSocialMediaSettings ] = useState(false);
+  const [ TwitterConfiguration, setTwitterConfiguration ] = useState(false);
+  const [ Miscellaneous, setMiscellaneous ] = useState(false);
+
+  const [selectedLink, setSelectedLink ] = useState('site_configuration');
+
+  const handleClick = (data) => {
+    setSelectedLink(data);
+    setSiteConfiguration(data === 'site_configuration');
+    setHeroArea(data === 'hero_area');
+    setSiteTheme(data === 'site_theme');
+    setCustomCardArea(data === 'custom_card_area');
+    setEmailSettings(data === 'email_settings');
+    setSocialMediaSettings(data === 'social_media_settings');
+    setTwitterConfiguration(data === 'twitter_configuration');
+    setMiscellaneous(data === 'miscellaneous');
+  }
+
+  let count = 0;
+  const currentIndex = allSettings.findIndex((item) => item.toLocaleLowerCase().replace(/\s/g, '_') === selectedLink);
+
+  function showContent(newIndex) {    
+    eval(`set${allSettings[currentIndex].replace(/\s/g, '')}(false)`);
+    eval(`set${allSettings[newIndex].replace(/\s/g, '')}(true)`);
+    setSelectedLink(allSettings[newIndex].toLocaleLowerCase().replace(/\s/g, '_'));    
+  }
+
+  function goForward() {
+    putSiteSetting({ property: '', data: currentValues });
+    showContent(currentIndex+1);
+  }
+
+  function goBack() {
+    showContent(currentIndex-1);
+  }
+  
+  return (    
       <Grid
-        container
-        direction="column"
-        style={{ marginTop: 20, padding: 20 }}
+      container
+      direction="row"
+      spacing={1}
+      style={{ marginTop: 100, padding: '20px 6vw' }}
       >
-        <CustomAlert
-          severity="info"
-          titleId="URLS_MUST_INCLUDE_HTTPS"
-        />
-
-        <DividerTitle titleId="SITE_CONFIGURATION" />
-        <SettingsTextInput
-          settingKey="site.name"
-          customFieldCategories={[]}
-          currentValues={currentValues}
-          setCurrentValues={setCurrentValues}
-          siteSettings={siteSettings}
-        />
-        <SettingsTextInput
-          settingKey="site.private"
-          customFieldCategories={[]}
-          currentValues={currentValues}
-          setCurrentValues={setCurrentValues}
-          siteSettings={siteSettings}
-        />
-        <SettingsTextInput
-          settingKey="site.general.photoGuidelinesUrl"
-          customFieldCategories={[]}
-          currentValues={currentValues}
-          setCurrentValues={setCurrentValues}
-          siteSettings={siteSettings}
-        />
-        <DividerTitle
-          titleId="SITE_THEME"
-          style={{ marginTop: 32 }}
-        />
-        <SettingsTextInput
-          settingKey="site.look.themeColor"
-          customFieldCategories={[]}
-          currentValues={currentValues}
-          setCurrentValues={setCurrentValues}
-          siteSettings={siteSettings}
-        />
-        <SettingsFileUpload
-          labelId="LOGO"
-          descriptionId="LOGO_DESCRIPTION"
-          changeId="CHANGE_LOGO"
-          allowedFileTypes={['.jpg', '.jpeg', '.png']}
-          settingName="logo"
-          onSetPostData={fileUploadData => {
-            setCurrentValues(prev => ({
-              ...prev,
-              logo: fileUploadData,
-            }));
-          }}
-        />
-        <SettingsTextInput
-          settingKey="site.look.logoIncludesSiteName"
-          customFieldCategories={[]}
-          currentValues={currentValues}
-          setCurrentValues={setCurrentValues}
-          siteSettings={siteSettings}
-        />
-        <DividerTitle
-          titleId="EMAIL_SETTINGS"
-          style={{ marginTop: 32 }}
-        />
-        <SettingsTextInput
-          settingKey="email_service"
-          customFieldCategories={[]}
-          currentValues={currentValues}
-          setCurrentValues={setCurrentValues}
-          siteSettings={siteSettings}
-        />
-        {get(currentValues, 'email_service') !== '' && (
-          <>
-            <SettingsTextInput
-              settingKey="email_service_username"
-              customFieldCategories={[]}
-              currentValues={currentValues}
-              setCurrentValues={setCurrentValues}
-              siteSettings={siteSettings}
-            />
-            <SettingsTextInput
-              settingKey="email_service_password"
-              customFieldCategories={[]}
-              currentValues={currentValues}
-              setCurrentValues={setCurrentValues}
-              siteSettings={siteSettings}
-            />
-          </>
-        )}
-        <DividerTitle
-          titleId="SOCIAL_SETTINGS"
-          style={{ marginTop: 32 }}
-        />
-        <SettingsTextInput
-          settingKey="site.links.facebookLink"
-          customFieldCategories={[]}
-          currentValues={currentValues}
-          setCurrentValues={setCurrentValues}
-          siteSettings={siteSettings}
-        />
-        <SettingsTextInput
-          settingKey="site.links.instagramLink"
-          customFieldCategories={[]}
-          currentValues={currentValues}
-          setCurrentValues={setCurrentValues}
-          siteSettings={siteSettings}
-        />
-        <SettingsTextInput
-          settingKey="site.links.twitterLink"
-          customFieldCategories={[]}
-          currentValues={currentValues}
-          setCurrentValues={setCurrentValues}
-          siteSettings={siteSettings}
-        />
-        <IntelligentAgentSettings
-          intelligentAgentSettingsFields={
-            intelligentAgentSettingsFields
-          }
-          currentValues={currentValues}
-          setCurrentValues={setCurrentValues}
-          siteSettings={siteSettings}
-          setIntelligentAgentFieldsValid={
-            setIntelligentAgentFieldsValid
-          }
-        />
-
-        <Grid
-          item
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            marginTop: 28,
-          }}
-        >
-          {putSiteSettingError && (
-            <CustomAlert
-              severity="error"
-              titleId="SUBMISSION_ERROR"
-              style={{ marginBottom: 16 }}
-            >
-              {putSiteSettingError}
-            </CustomAlert>
-          )}
-          {twitterTestError && isTwitterEnabled && (
-            <CustomAlert
-              severity="warning"
-              titleId="TWITTERBOT_NOT_CONFIGURED"
-              style={{ marginBottom: 16 }}
-            />
-          )}
-          {putSiteSettingSuccess && (
-            <CustomAlert
-              onClose={clearPutSiteSettingSuccess}
-              severity="success"
-              titleId="SUCCESS"
-              descriptionId="CHANGES_SAVED"
-              style={{ marginBottom: 16 }}
-            />
-          )}
-          {showTwitterSuccess && (
-            <CustomAlert
-              onClose={() => {
-                setShowTwitterSuccess(false);
-              }}
-              severity="info"
-              titleId="TWITTERBOT_SETUP_CONFIRMATION"
-            >
-              {twitterTestResults?.message}
-            </CustomAlert>
-          )}
-          <Button
-            onClick={() => {
-              putSiteSetting({ property: '', data: currentValues });
-            }}
-            style={{ marginTop: 12 }}
-            display="primary"
-            loading={putSiteSettingLoading}
-            disabled={!intelligentAgentFieldsValid}
-            id="SAVE_CHANGES"
-          />
-        </Grid>
+      
+      <Grid item xs={12} sm={6} md={3}>
+        <Paper style={{padding:20, minHeight: 700, maxWidth: 335, borderRadius: 16}}>
+            <Typography 
+                style={{
+                  marginBottom: 20,
+                  fontWeight: 'bold',
+                  fontSize: 16,
+                }} 
+                >
+                {'Customization Control Center'}
+            </Typography>  
+                {
+                  allSettings.map(data => {
+                    const setting = data.toLocaleLowerCase().replace(/\s/g, '_');
+                    return (
+                      <div 
+                        key = {count++} 
+                        onClick = { () => {
+                          handleClick(setting);                                                
+                        }}
+                        >
+                        <Link                           
+                          // href = "#" 
+                          style={{ 
+                            display: 'flex', 
+                            marginBottom: '10%',
+                            textDecoration: 'none', 
+                            cursor:'pointer',
+                            }}>                             
+                          <Box style={
+                            {
+                              display: 'flex',
+                              justifyContent: 'center',
+                              alignItems: 'center',                              
+                              width: '30px',
+                              height: '30px',
+                              borderRadius: '50%',
+                              backgroundColor: selectedLink == setting ? theme.palette.primary.main : `${theme.palette.primary.main}36`,
+                              color: selectedLink == setting ?'white' : '#2B2351',
+                              marginBottom: '5px',
+                              marginRight: '10px',
+                              fontSize: '16px',
+                            }
+                          }>{count}</Box>
+                          <Typography variant='body1' style={{color: '#2B2351'}} >{data}</Typography>                          
+                        </Link>
+                        </div>
+                    )
+                    
+                  })
+                }
+      </Paper>
       </Grid>
-    </MainColumn>
+      
+      <Grid item xs={12} sm={6} md={9}>
+      <Paper style={{
+        padding:'20px 120px 20px 20px', 
+        overflow:"auto", 
+        minHeight: 700, 
+        minWidth: 500,
+        maxWidth: 900,
+        borderRadius: 16}}>
+          <Link href="/settings"                   
+            style={{
+              display:'flex',
+              alignItems:'center',
+              color: theme.palette.text.primary,
+              fontSize: 22,
+              fontWeight: 'bold',
+              textDecoration: 'none',
+            }}
+            >  
+              <ArrowBackIcon />
+              {selectedLink.split('_')
+                           .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                           .join(' ')}  
+          </Link>  
+          <div style = {{padding: 25}}>
+          
+            {
+              SiteConfiguration && 
+              <>
+              <SettingsBreadcrumbs currentPageTextId="SITE_CONFIGURATION" />
+              <br/>
+              <CustomAlert
+                severity="info"
+                titleId="URLS_MUST_INCLUDE_HTTPS"
+              /> 
+              <SettingsTextInput
+                settingKey="site.name"
+                customFieldCategories={[]}
+                currentValues={currentValues}
+                setCurrentValues={setCurrentValues}
+                siteSettings={siteSettings}
+              />
+              <SettingsTextInput
+                settingKey="site.general.description"
+                currentValues={currentValues}
+                setCurrentValues={setCurrentValues}
+                siteSettings={siteSettings}
+              />
+              {/* <SettingsTextInput
+                settingKey="site.private"
+                customFieldCategories={[]}
+                currentValues={currentValues}
+                setCurrentValues={setCurrentValues}
+                siteSettings={siteSettings}
+              /> */}
+              <SettingsTextInput
+                settingKey="site.general.photoGuidelinesUrl"
+                customFieldCategories={[]}
+                currentValues={currentValues}
+                setCurrentValues={setCurrentValues}
+                siteSettings={siteSettings}
+              />
+              
+              </>
+             }
+             {
+              HeroArea && <>
+                <SettingsBreadcrumbs currentPageTextId="HERO_AREA" />
+                <br/>
+                <CustomAlert
+                  severity="info"
+                  titleId="URLS_MUST_INCLUDE_HTTPS"
+                />
+                <SettingsTextInput
+                  settingKey="site.general.tagline"
+                  currentValues={currentValues}
+                  setCurrentValues={setCurrentValues}
+                  siteSettings={siteSettings}
+                />
+                <SettingsTextInput
+                  settingKey="site.general.taglineSubtitle"
+                  currentValues={currentValues}
+                  setCurrentValues={setCurrentValues}
+                  siteSettings={siteSettings}
+                />
+                <SettingsFileUpload
+                  labelId="SPLASH_IMAGE"
+                  descriptionId="SPLASH_IMAGE_DESCRIPTION"
+                  changeId="CHANGE_IMAGE"
+                  allowedFileTypes={['.jpg', '.jpeg', '.png']}
+                  settingName="splashImage"
+                  onSetPostData={data =>
+                    handleFileChange('splashImage', data)
+                  }
+                />
+                <SettingsFileUpload
+                  labelId="SPLASH_VIDEO"
+                  descriptionId="SPLASH_VIDEO_DESCRIPTION"
+                  changeId="CHANGE_VIDEO"
+                  allowedFileTypes={['.webm', '.mp4']}
+                  settingName="splashVideo"
+                  onSetPostData={data =>
+                    handleFileChange('splashVideo', data)
+                  }
+                  variant="video"
+                />
+              </>
+             }
+             {
+              SiteTheme && <>
+                <SettingsBreadcrumbs currentPageTextId="SITE_THEME" />
+                <br/>
+                <CustomAlert
+                  severity="info"
+                  titleId="URLS_MUST_INCLUDE_HTTPS"
+                />
+                <SettingsTextInput
+                  settingKey="site.look.themeColor"
+                  customFieldCategories={[]}
+                  currentValues={currentValues}
+                  setCurrentValues={setCurrentValues}
+                  siteSettings={siteSettings}
+                />
+                <SettingsFileUpload
+                  labelId="LOGO"
+                  descriptionId="LOGO_DESCRIPTION"
+                  changeId="CHANGE_LOGO"
+                  allowedFileTypes={['.jpg', '.jpeg', '.png']}
+                  settingName="logo"
+                  onSetPostData={fileUploadData => {
+                    setCurrentValues(prev => ({
+                      ...prev,
+                      logo: fileUploadData,
+                    }));
+                  }}
+                />
+                <SettingsTextInput
+                  settingKey="site.look.logoIncludesSiteName"
+                  customFieldCategories={[]}
+                  currentValues={currentValues}
+                  setCurrentValues={setCurrentValues}
+                  siteSettings={siteSettings}
+                />
+              </>
+             }
+             {
+              CustomCardArea && <> 
+                <SettingsBreadcrumbs currentPageTextId="CUSTOM_CARD_AREA" />
+                <br/>
+                <CustomAlert
+                  severity="info"
+                  titleId="URLS_MUST_INCLUDE_HTTPS"
+                />
+                <SettingsFileUpload
+                  labelId="CUSTOM_CARD_IMAGE"
+                  descriptionId="CUSTOM_CARD_IMAGE_DESCRIPTION"
+                  changeId="CHANGE_IMAGE"
+                  allowedFileTypes={['.jpg', '.jpeg', '.png']}
+                  settingName="customCardImage"
+                  onSetPostData={data =>
+                    handleFileChange('customCardImage', data)
+                  }
+                />
+                <SettingsTextInput
+                  settingKey="site.general.customCardLine1"
+                  currentValues={currentValues}
+                  setCurrentValues={setCurrentValues}
+                  siteSettings={siteSettings}
+                />
+                <SettingsTextInput
+                  settingKey="site.general.customCardLine2"
+                  currentValues={currentValues}
+                  setCurrentValues={setCurrentValues}
+                  siteSettings={siteSettings}
+                />
+                <SettingsTextInput
+                  settingKey="site.general.customCardButtonText"
+                  currentValues={currentValues}
+                  setCurrentValues={setCurrentValues}
+                  siteSettings={siteSettings}
+                />
+                <SettingsTextInput
+                  settingKey="site.general.customCardButtonUrl"
+                  currentValues={currentValues}
+                  setCurrentValues={setCurrentValues}
+                  siteSettings={siteSettings}
+                />
+              </>
+             }
+             {
+              EmailSettings && <>
+                 <SettingsBreadcrumbs currentPageTextId="EMAIL_SETTINGS" />
+                 <br/>
+                  <CustomAlert
+                    severity="info"
+                    titleId="URLS_MUST_INCLUDE_HTTPS"
+                  /> 
+                 <SettingsTextInput
+                    settingKey="email_service"
+                    customFieldCategories={[]}
+                    currentValues={currentValues}
+                    setCurrentValues={setCurrentValues}
+                    siteSettings={siteSettings}
+                  />
+                  {get(currentValues, 'email_service') !== '' && (
+                    <>
+                      <SettingsTextInput
+                        settingKey="email_service_username"
+                        customFieldCategories={[]}
+                        currentValues={currentValues}
+                        setCurrentValues={setCurrentValues}
+                        siteSettings={siteSettings}
+                      />
+                      <SettingsTextInput
+                        settingKey="email_service_password"
+                        customFieldCategories={[]}
+                        currentValues={currentValues}
+                        setCurrentValues={setCurrentValues}
+                        siteSettings={siteSettings}
+                      />
+                    </>
+                  )}
+              </>
+             }
+
+             {
+              SocialMediaSettings && <>
+                <SettingsBreadcrumbs currentPageTextId="SOCIAL_MEDIA_SETTINGS" />
+                <br/>
+                <CustomAlert
+                  severity="info"
+                  titleId="URLS_MUST_INCLUDE_HTTPS"
+                /> 
+                <SettingsTextInput
+                  settingKey="site.links.facebookLink"
+                  customFieldCategories={[]}
+                  currentValues={currentValues}
+                  setCurrentValues={setCurrentValues}
+                  siteSettings={siteSettings}
+                />
+                <SettingsTextInput
+                  settingKey="site.links.instagramLink"
+                  customFieldCategories={[]}
+                  currentValues={currentValues}
+                  setCurrentValues={setCurrentValues}
+                  siteSettings={siteSettings}
+                />
+                <SettingsTextInput
+                  settingKey="site.links.twitterLink"
+                  customFieldCategories={[]}
+                  currentValues={currentValues}
+                  setCurrentValues={setCurrentValues}
+                  siteSettings={siteSettings}
+                />                
+              
+              </>
+             }
+             {
+              TwitterConfiguration && <>
+              <SettingsBreadcrumbs currentPageTextId="TWITTER_CONFIGURATION" />
+              <br/>
+              <CustomAlert
+                severity="info"
+                titleId="URLS_MUST_INCLUDE_HTTPS"
+              />
+               <IntelligentAgentSettings
+                  intelligentAgentSettingsFields={
+                    intelligentAgentSettingsFields
+                  }
+                  currentValues={currentValues}
+                  setCurrentValues={setCurrentValues}
+                  siteSettings={siteSettings}
+                  setIntelligentAgentFieldsValid={
+                    setIntelligentAgentFieldsValid
+                  }
+        />
+              {twitterTestError && isTwitterEnabled && (
+                <CustomAlert
+                  severity="warning"
+                  titleId="TWITTERBOT_NOT_CONFIGURED"
+                  style={{ marginBottom: 16 }}
+                />
+              )}
+             
+              {showTwitterSuccess && (
+                <CustomAlert
+                  onClose={() => {
+                    setShowTwitterSuccess(false);
+                  }}
+                  severity="info"
+                  titleId="TWITTERBOT_SETUP_CONFIRMATION"
+                >
+                  {twitterTestResults?.message}
+                </CustomAlert>
+              )} 
+
+              </>
+             }
+             {
+              Miscellaneous && <>
+              <SettingsBreadcrumbs currentPageTextId="MUSCELLANEOUS" />
+              <br/>
+              <CustomAlert
+                severity="info"
+                titleId="URLS_MUST_INCLUDE_HTTPS"
+              />
+              <SettingsTextInput
+                settingKey="site.general.helpDescription"
+                currentValues={currentValues}
+                setCurrentValues={setCurrentValues}
+                siteSettings={siteSettings}
+              />
+              <SettingsTextInput
+                settingKey="site.general.donationButtonUrl"
+                currentValues={currentValues}
+                setCurrentValues={setCurrentValues}
+                siteSettings={siteSettings}
+              />
+                <Grid item
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    marginTop: 28,
+              }}
+                >              
+              {putSiteSettingError && (
+                <CustomAlert
+                  severity="error"
+                  titleId="SUBMISSION_ERROR"
+                  style={{ marginBottom: 16 }}
+                >
+                  {putSiteSettingError}
+                </CustomAlert>
+              )}
+              
+              {putSiteSettingSuccess && (
+                <CustomAlert
+                  onClose={clearPutSiteSettingSuccess}
+                  severity="success"
+                  titleId="SUCCESS"
+                  descriptionId="CHANGES_SAVED"
+                  style={{ marginBottom: 16 }}
+                />
+              )}
+              {
+                <Grid container alignItems="center" justifyContent="space-between" style={{ marginTop: 28 }}>
+                <Grid item>
+                  {<Button 
+                    style={{ marginTop: 12 }} 
+                    display="primary"
+                    onClick={() => {goBack(selectedLink)}}
+                    >
+                    Previous
+                  </Button>
+                  }
+                </Grid>
+                <Grid item> 
+                  <Button
+                    onClick={() => {
+                      putSiteSetting({ property: '', data: currentValues });
+                    }}
+                    style={{ marginTop: 12 }}
+                    display="primary"
+                    loading={putSiteSettingLoading}
+                    disabled={!intelligentAgentFieldsValid}
+                    id="DONE"
+                  />
+              </Grid>
+                
+              </Grid>  
+              }           
+              
+              
+            </Grid>
+              </>
+             }
+             {!Miscellaneous&&<Grid container alignItems="center" justifyContent="space-between" style={{ marginTop: 28 }}>
+              <Grid item>
+                {!SiteConfiguration&&<Button style={{ marginTop: 12 }} 
+                    display="primary"
+                    onClick = {() => goBack(selectedLink)}
+                    >
+                  Previous
+                </Button>
+                }
+              </Grid>
+              <Grid item>
+                {!Miscellaneous&&<Button style={{ marginTop: 12 }} 
+                    display="primary"
+                    onClick = {() => goForward(selectedLink)}
+                    disabled={!intelligentAgentFieldsValid && TwitterConfiguration}
+                    >
+                  Next
+                </Button>
+                }
+              </Grid>
+              
+            </Grid>  
+             } 
+             </div>
+      </Paper>
+      </Grid>
+      </Grid>
+    
   );
 }

@@ -11,6 +11,8 @@ import SiteStatusIcon from '@material-ui/icons/Speed';
 import UserManagementIcon from '@material-ui/icons/People';
 import AdministrationIcon from '@material-ui/icons/Gavel';
 import GroupWorkIcon from '@material-ui/icons/GroupWork';
+import AssignmentOutlinedIcon from '@material-ui/icons/AssignmentOutlined';
+import ListAltIcon from '@material-ui/icons/ListAlt';
 
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import useGetMe from '../../models/users/useGetMe';
@@ -22,17 +24,17 @@ const adminPages = [
   {
     icon: SiteSettingsIcon,
     name: 'general_settings',
-    labelId: 'GENERAL_SETTINGS',
+    labelId: 'CUSTOMIZATION_CONTROL_CENTER',
     href: '/settings/general',
     roles: ['is_admin'],
   },
-  {
-    icon: SplashSettingsIcon,
-    name: 'front-page-config',
-    labelId: 'FRONT_PAGE',
-    href: '/settings/front-page',
-    roles: ['is_admin'],
-  },
+  // {
+  //   icon: SplashSettingsIcon,
+  //   name: 'front-page-config',
+  //   labelId: 'FRONT_PAGE',
+  //   href: '/settings/front-page',
+  //   roles: ['is_admin'],
+  // },
   {
     icon: CustomFieldsIcon,
     name: 'field-management',
@@ -86,6 +88,15 @@ const adminPages = [
       'is_user_manager',
       'is_researcher',
       'is_contributor',
+    ],
+  },
+  {
+    icon: ListAltIcon,
+    name: 'change-log',
+    labelId: 'CHANGE_LOG',
+    href: '/settings/changelog',
+    roles: [
+      'is_admin',
     ],
   },
 ];

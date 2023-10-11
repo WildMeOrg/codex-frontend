@@ -1,6 +1,17 @@
 import Papa from 'papaparse';
 import { get } from 'lodash-es';
 
+export function downloadFileFromBackend(excelData, filename) {
+  const blob = new Blob([excelData], { type: 'application/vnd.ms-excel' });
+  const url = window.URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.setAttribute('download', `${filename}.xlsx`);
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
 function startDownload(csv, filename) {
   /* copied from https://github.com/gregnb/mui-datatables/blob/ed3b8e38889d061a8cc858637b1d1dfe0fa55556/src/utils.js#L106 */
   const blob = new Blob([csv], { type: 'text/csv' });

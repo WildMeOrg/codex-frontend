@@ -42,7 +42,7 @@ In situations where a lodash utility and a native utility exist, we should use t
 - Data fetching goes in `/src/models`
 - Code specific to a certain page goes in `/src/pages`
 - Components that are reused widely go in `/src/components`
-- Post any questions in Github issues or send an email to ben@wildme.org
+- Post any questions in Github issues or post a question to the [Wild Me Community forums](https://community.wildme.org)
 - Thanks for contributing =)
 
 ## Release procedure

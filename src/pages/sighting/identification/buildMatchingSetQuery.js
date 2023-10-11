@@ -40,30 +40,35 @@ export default function buildMatchingSetQuery(regionSchema, region) {
   );
 
   return {
-    bool: {
-      filter: [
+    "bool": {
+      "minimum_should_match": 1,
+      "should": [
         {
-          bool: {
-            minimum_should_match: 1,
-            should: matchWithChildren.map(r => ({
-              term: {
-                locationId: r?.id,
+          "term": {
+            "git_store_guid": "_MACRO_annotation_git_store_guid"
+          }
+        },
+        {
+          "bool": {
+            "filter": [
+              {
+                "match": {
+                  "locationId": matchWithChildren.find(r => !!r.id).id                  
+                }
               },
-            })),
-          },
-        },
-        {
-          bool: '_MACRO_annotation_neighboring_viewpoints_clause',
-        },
-        {
-          exists: { field: 'encounter_guid' },
-        },
+              {
+                "exists": {
+                  "field": "encounter_guid"
+                }
+              }
+            ]
+          }
+        }
       ],
-      must_not: {
-        match: {
-          encounter_guid: '_MACRO_annotation_encounter_guid',
-        },
-      },
-    },
+      "must": {
+        "bool": "_MACRO_annotation_neighboring_viewpoints_clause"
+      }
+    }
+
   };
 }

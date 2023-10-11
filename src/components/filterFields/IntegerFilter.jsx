@@ -49,21 +49,24 @@ export default function IntegerFilter({
   ...rest
 }) {
   const intl = useIntl();
-  const fieldLabel = labelId
-    ? intl.formatMessage({ id: labelId })
-    : label;
+  const fieldLabel = labelId    
+    ?   (intl.messages[labelId]
+         ? intl.formatMessage({ id: labelId })
+         : labelId )
+    : label; 
 
-  const [integerInput, setIntegerInput] = useState('');
+  const [integerInput, setIntegerInput] = useState('');  
   const [comparator, setComparator] = useState('gt');
 
   const inputId = `${fieldLabel}-number-input`;
 
-  function updateFilter() {
+  function updateFilter() {       
     const integerValue = parseInt(integerInput, 10);
     const comparatorObject = comparators.find(
       c => c.value === comparator,
     );
     const descriptor = comparatorObject.getDescriptor(integerValue);
+
     onChange({
       filterId,
       descriptor,
@@ -116,12 +119,14 @@ export default function IntegerFilter({
           value={integerInput}
           onChange={e => {
             const inputValue = e.target.value;
-            const isPositiveInteger = /^[0-9]*[1-9][0-9]*$/.test(
+            const isPositive = /^[0-9]*[1-9][0-9]*$/.test(
               inputValue,
             );
-            if (isPositiveInteger || inputValue === '') {
+
+            if (isPositive || inputValue === '') {              
               setIntegerInput(e.target.value);
             }
+            
           }}
           style={{
             width: 148,

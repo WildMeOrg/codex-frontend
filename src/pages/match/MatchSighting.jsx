@@ -22,6 +22,8 @@ import Text from '../../components/Text';
 import QueryAnnotationsTable from './QueryAnnotationsTable';
 import MatchCandidatesTable from './MatchCandidatesTable';
 import ImageCard from './ImageCard';
+import { Switch } from '@material-ui/core';
+import { useIntl } from 'react-intl';
 
 const spaceBetweenColumns = 16;
 
@@ -33,7 +35,8 @@ function deriveIndividualGuid(annotation) {
 
 export default function MatchSighting() {
   const { sightingGuid } = useParams();
-
+  const intl = useIntl();
+  const label = intl.formatMessage({ id: 'INSPECT_MATCH_AREA'});
   const {
     data: sightingData,
     loading: sightingDataLoading,
@@ -52,7 +55,12 @@ export default function MatchSighting() {
   const [selectedMatchCandidate, setSelectedMatchCandidate] =
     useState(null);
 
+  const [ checked, setChecked ] = useState(false);
+
   const [reviewDialogOpen, setReviewDialogOpen] = useState(false);
+
+  const [ heatMapUrl, setHeatMapUrl ] = useState(null);
+  const [ urlOK, setUrlOK ] = useState(false);
 
   const queryAnnotations = useMemo(() => {
     const annotationData = get(matchResults, 'annotation_data', {});
@@ -88,7 +96,7 @@ export default function MatchSighting() {
   const matchCandidates = useMemo(() => {
     const hotspotterAnnotationScores = get(
       selectedQueryAnnotation,
-      ['algorithms', 'hotspotter_nosv', 'scores_by_annotation'],
+      ['algorithms', 'hotspotter_nosv', 'scores_by_individual'],
       [],
     );
 
@@ -121,6 +129,27 @@ export default function MatchSighting() {
     );
     const encounterGuid1 = selectedQueryAnnotation?.encounter_guid;
     const encounterGuid2 = selectedMatchCandidate?.encounter_guid;
+
+    const selectedMatchCandidateGuid = selectedMatchCandidate?.guid;  
+    const scoresByIndividual = get(selectedQueryAnnotation,
+      ['algorithms', 'hotspotter_nosv', 'scores_by_individual'], [] );
+    const annotation = scoresByIndividual.find((score) => score.guid === selectedMatchCandidateGuid);    
+    const heatmapUrl = annotation?.heatmap_src;
+    setHeatMapUrl(heatmapUrl);
+    const checkHeatMap = async () => {
+      try {
+        const response = await fetch(heatMapUrl);
+        if (response.ok) {
+          setUrlOK(true);
+          } else {
+            setUrlOK(false);
+        }
+      } catch (error) {
+        setUrlOK(false);
+      }
+    }
+    checkHeatMap();
+  
     if (individualGuid1 && individualGuid2) {
       return `/merge?i=${individualGuid1}&i=${individualGuid2}`;
     } else if (individualGuid1 || individualGuid2) {
@@ -174,6 +203,10 @@ export default function MatchSighting() {
   const sightingIsReviewed = Boolean(sightingData?.review_time);
   const matchPossible =
     selectedMatchCandidate && selectedQueryAnnotation;
+ 
+  const handleChange = () => {
+    setChecked(!checked);    
+  }
 
   return (
     <MainColumn
@@ -206,20 +239,27 @@ export default function MatchSighting() {
             style={{ padding: '2px 0 0 2px' }}
           />
           {sightingIsReviewed && (
-            <Chip
-              icon={<DoneIcon />}
+            <Chip              icon={<DoneIcon />}
               variant="outlined"
               label="Reviewed"
               style={{ marginTop: 8 }}
             />
           )}
         </div>
+        <div style={{display: "flex", flexDirection: 'row', alignItems: 'flex-end'}}>
+          <Switch 
+                      checked={checked} 
+                      onChange = {() => handleChange()}
+                      disabled={!urlOK || !heatMapUrl}
+          />
+          <span style={{marginBottom: 10, marginRight: 10}}> {label} </span>
         <ButtonMenu
           buttonId="match-actions"
           style={{ marginTop: 44 }}
           actions={buttonActions}
           id="ACTIONS"
         />
+        </div>
       </div>
       <div style={{ display: 'flex' }}>
         <div
@@ -231,6 +271,9 @@ export default function MatchSighting() {
           <ImageCard
             titleId="SELECTED_QUERY_ANNOTATION"
             annotation={selectedQueryAnnotation}
+            heatmapon={checked}
+            heatmapurl={heatMapUrl}
+            left={true}
           />
           <QueryAnnotationsTable
             queryAnnotations={queryAnnotations}
@@ -247,6 +290,8 @@ export default function MatchSighting() {
           <ImageCard
             titleId="SELECTED_MATCH_CANDIDATE"
             annotation={selectedMatchCandidate}
+            heatmapon={checked}
+            heatmapurl={heatMapUrl}
           />
           <MatchCandidatesTable
             matchCandidates={matchCandidates}
@@ -262,6 +307,7 @@ export default function MatchSighting() {
             bottom: 16,
             right: 40,
             zIndex: 1,
+            borderRadius: 4,
           }}
           color="primary"
           variant="extended"

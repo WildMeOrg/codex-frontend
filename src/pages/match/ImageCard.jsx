@@ -10,7 +10,7 @@ import Card from '../../components/cards/Card';
 import LocationIdViewer from '../../components/fields/view/LocationIdViewer';
 import DataLineItem from './DataLineItem';
 
-export default function ImageCard({ titleId, annotation }) {
+export default function ImageCard({ titleId, annotation, heatmapon, heatmapurl, left }) {
   const { data: siteSettings, loading } = useSiteSettings();
 
   const regionChoices = useMemo(
@@ -37,16 +37,35 @@ export default function ImageCard({ titleId, annotation }) {
 
   return (
     <Card titleId={titleId}>
-      <AnnotatedPhotograph
-        assetMetadata={{
-          alt: 'Selected query annotation',
-          src: annotation?.image_url,
-          dimensions: annotation?.asset_dimensions,
+      {
+        heatmapon && heatmapurl ? (
+          <AnnotatedPhotograph
+            assetMetadata={{
+              alt: 'Selected query annotation',
+              src: heatmapurl,
+              dimensions: annotation?.asset_dimensions,
+            }}
+            annotations= {[]} 
+            width="100%"
+            height={420}
+            heatmapon={heatmapon && heatmapurl}
+            left={left}
+      />
+        ) 
+        : (
+          <AnnotatedPhotograph
+          assetMetadata={{
+            alt: 'Selected query annotation',
+            src: annotation?.image_url,
+            dimensions: annotation?.asset_dimensions,
         }}
         annotations={[annotation]}
         width="100%"
         height={420}
       />
+        )
+      }
+      
       <div style={{ padding: 16 }}>
         <DataLineItem
           labelId="INDIVIDUAL"

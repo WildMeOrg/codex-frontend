@@ -47,7 +47,6 @@ const Core = function (
   if (
     [
       'primary',
-      'secondary',
       'tertiary',
       'subtle',
       'marketing',
@@ -56,8 +55,8 @@ const Core = function (
     variant = 'contained';
   }
 
-  if (['tertiary', 'subtle', 'panel', 'basic'].includes(display)) {
-    color = 'default';
+  if (['tertiary', 'secondary', 'subtle', 'panel', 'basic'].includes(display)) {
+    color = 'default';    
   } else {
     color = display;
   }
@@ -78,9 +77,23 @@ const Core = function (
 
   if (display === 'secondary') {
     roleStyles = {
-      color: theme.palette.text.primary,
+      color: theme.palette.primary.main,
+      borderColor: theme.palette.primary.main,
+    };
+    variant = 'outlined';    
+  }
+  
+  if (display === 'tertiary') {
+    roleStyles = {
+      color: theme.palette.primary.main,
     };
   }
+
+  // if (display === 'primary') {
+  //   roleStyles = {
+  //     color: theme.palette.common.white,
+  //   };
+  // }
 
   if (display === 'link') {
     roleStyles = {

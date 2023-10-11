@@ -54,6 +54,7 @@ export default function SearchIndividuals() {
         searchParams={searchParams}
         setSearchParams={setSearchParams}
         dataCount={resultCount}
+        formFilters={formFilters}
       />
       <Paginator
         searchParams={searchParams}

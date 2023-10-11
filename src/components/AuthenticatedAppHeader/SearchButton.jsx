@@ -54,6 +54,7 @@ export default function SearchButton({
           backgroundColor: theme.palette.grey.A100,
           color: theme.palette.grey.A400,
           marginLeft: 8,
+          borderRadius:10000
         }}
         startIcon={<SearchIcon />}
         id={buttonLabelId}

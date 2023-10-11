@@ -24,9 +24,9 @@ export default function DateEditor(props) {
   const showDescription = !minimalLabels && description;
 
   const intl = useIntl();
-  const dateValue =
+  let dateValue =   
     typeof value === 'string' ? parseISO(value) : value;
-
+    
   /* Note: the wrapper div is there because MuiPicker creates two child elements,
    * which messes up display if this component is a flex child. */
   return (

@@ -71,7 +71,7 @@ export default function SaveField() {
           displayType: fieldTypeInfo.string.value,
           label: 'Field label',
           description: 'Field description',
-          category: null,
+          category: '',
         },
       });
     } else {
@@ -343,7 +343,7 @@ export default function SaveField() {
                 onChange={nextDefaultValue => {
                   setFormData({
                     ...formData,
-                    default: nextDefaultValue,
+                    schema: {...formData['schema'], defaultValue: nextDefaultValue },
                   });
                 }}
                 disabled={disableForm}

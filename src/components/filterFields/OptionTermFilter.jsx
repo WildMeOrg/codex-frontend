@@ -28,12 +28,13 @@ const OptionTermFilter = function (props) {
     style,
     ...rest
   } = props;
+
   const intl = useIntl();
 
   const [value, setValue] = useState('');
 
   function getLabel(object) {
-    if (object.labelId)
+    if (object?.labelId)
       return intl.formatMessage({ id: object.labelId });
     return get(object, 'label', 'Missing label');
   }
@@ -42,7 +43,7 @@ const OptionTermFilter = function (props) {
     !minimalLabels && (description || descriptionId);
 
   const translatedLabel = labelId
-    ? intl.formatMessage({ id: labelId })
+    ? intl.formatMessage({ id: labelId, defaultMessage: labelId })
     : label;
 
   const safeChoices = choices || [];
@@ -76,15 +77,19 @@ const OptionTermFilter = function (props) {
               query: {
                 [queryType]: { [queryTerm]: choiceValue },
               },
+              selectedChoice,
             });
           }
         }}
         value={value}
         renderValue={currentValue => {
+          if (!currentValue) {
+            return '';
+          }
           const selectedChoice = safeChoices.find(
             c => c.value === currentValue,
           );
-          return getLabel(selectedChoice);
+          return selectedChoice ? getLabel(selectedChoice) : '';
         }}
         {...rest}
       >

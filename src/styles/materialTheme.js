@@ -17,7 +17,7 @@ export const lato = [
   '"Segoe UI Symbol"',
 ].join(',');
 
-const blackColor = '#0E1014';
+const blackColor = '#2B2351';
 const whiteColor = '#ffffff';
 
 export default primaryColor => {
@@ -30,7 +30,7 @@ export default primaryColor => {
       primary: { main: primaryColor },
       secondary: { main: darkPrimaryColor },
       paper: { main: '#eeeeee' },
-      text: { primary: blackColor },
+      text: { primary: blackColor, secondary: '#6D6B7B', tertiary: '#9D9CAC' },
     },
     typography: {
       fontFamily: lato,
@@ -69,7 +69,7 @@ export default primaryColor => {
           fontWeight: 500,
         },
         root: {
-          borderRadius: 10000,
+          // borderRadius: 10000,
           padding: '6px 20px',
           fontWeight: 600,
         },

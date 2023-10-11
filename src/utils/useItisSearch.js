@@ -16,11 +16,15 @@ export default function useItisSearch(searchKey, maxResults = 50) {
         jsonp(
           `https://www.itis.gov/ITISWebService/jsonservice/searchForAnyMatchPaged?srchKey=${searchKey}&pageSize=${maxResults}&pageNum=1&ascend=true`,
           {
-            timeout: 25000,
+            timeout: 60000,
             param: 'jsonp',
           },
           (err, response) => {
-            if (err) setError(err);
+            if (err) {
+              setError(formatError(err));
+              setLoading(false);
+              return;
+            }
 
             const results = get(response, 'anyMatchList');
             const formattedResults = results.map(result => {
@@ -59,5 +63,5 @@ export default function useItisSearch(searchKey, maxResults = 50) {
     if (searchKey) fetchData();
   }, [searchKey, maxResults]);
 
-  return { data, loading, error };
+  return { data, loading, error, setError };
 }

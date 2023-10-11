@@ -4,7 +4,7 @@ import { useIntl } from 'react-intl';
 import Skeleton from '@material-ui/lab/Skeleton';
 import Dashboard from '@uppy/react/lib/Dashboard';
 
-const dashboardWidth = 600;
+const dashboardWidth = 1000;
 const dashboardHeight = 400;
 
 export default function UppyDashboard({

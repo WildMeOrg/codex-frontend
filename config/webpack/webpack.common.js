@@ -91,6 +91,13 @@ module.exports = env => {
               options: {},
             },
           },
+          {
+            test: /\.pdf$/,
+            use: {
+              loader: 'file-loader',
+              options: {},
+            },
+          },
         ],
       },
       resolve: {

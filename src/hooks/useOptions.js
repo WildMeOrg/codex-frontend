@@ -41,6 +41,51 @@ export default function useOptions() {
       }))
       .filter(o => o);
 
-    return { regionOptions, speciesOptions };
+      const pipelineStateOptions = [{label:"preparation", value: "preparation"},
+      {label: "detection", value: "detection"},
+      {label: "curation", value: "curation"},
+      {label: "identification", value: "identification"},
+    ];
+
+    const stageOptions = [{label:"un_reviewed", value: "un_reviewed"},
+      {label: "processed", value: "processed"},
+      {label: "failed", value: "failed"},
+      {label: "identification", value: "identification"},
+    ]; 
+
+    const booleanChoices = [
+      {
+        label: 'Yes',
+        value: 'yes',
+        queryValue: true,
+      },
+      {
+        label: 'No',
+        value: 'no',
+        queryValue: true,
+        clause: 'must_not',
+      },
+      {
+        label: 'Either',
+        value: '',
+      },
+    ];
+
+    const socialGroupRolesOptions = data['social_group_roles'].value.map(o => {
+      return {
+        label: o.label,
+        value: o.guid
+      }
+    });
+
+    const relationshipOptions = Object.values(data['relationship_type_roles'].value).map(o => {
+      return {
+        label: o.label,
+        value: o.guid,
+        roles: o.roles
+      }
+    });
+
+    return { regionOptions, speciesOptions, pipelineStateOptions, stageOptions, booleanChoices, socialGroupRolesOptions, relationshipOptions };  
   }, [loading, error, data]);
 }

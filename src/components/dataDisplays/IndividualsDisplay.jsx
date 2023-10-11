@@ -13,6 +13,7 @@ export default function IndividualsDisplay({
   dataCount,
   addColumns = [],
   removeColumns = [],
+  formFilters,
   ...rest
 }) {
   const title = dataCount
@@ -53,6 +54,18 @@ export default function IndividualsDisplay({
       },
     },
     {
+      name: 'last_seen_location_name',
+      labelId: 'LAST_REGION',
+      sortable: false,
+      align: 'left',
+    },
+    {
+      name: 'last_seen_verbatimLocality',
+      labelId: 'LAST_FREEFORM',
+      sortable: false,
+      align: 'left',
+    },
+    {
       name: 'taxonomy_guid',
       labelId: 'SPECIES',
       align: 'left',
@@ -91,6 +104,7 @@ export default function IndividualsDisplay({
       data={individuals}
       title={title}
       loading={loading}
+      formFilters={formFilters}
       // onPrint={() => {
       //   window.open('/individuals/picturebook', '_blank');
       // }}
