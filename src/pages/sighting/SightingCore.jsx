@@ -19,7 +19,7 @@ import useDeleteAssetGroupSighting from '../../models/assetGroupSighting/useDele
 import useSightingFieldSchemas from '../../models/sighting/useSightingFieldSchemas';
 import SightingEntityHeader from './SightingEntityHeader';
 import Annotations from './Annotations';
-import Photographs from './Photographs';
+// import Photographs from './Photographs';
 import OverviewContent from './OverviewContent';
 // import SightingHistoryDialog from './SightingHistoryDialog';
 import CommitBanner from './CommitBanner';
@@ -202,17 +202,18 @@ export default function SightingCore({
           refreshSightingData={refreshData}
         />
       )}
-      {activeTab === '#photographs' && (
+      {/* {activeTab === '#photographs' && (
         <Photographs
           assets={assets}
           sightingData={data}
           pending={pending}
         />
-      )}
+      )} */}
       {activeTab === '#annotations' && (
         <Annotations
           assets={assets}
           refreshSightingData={refreshData}
+          sightingData={data}
           pending={pending}
         />
       )}
