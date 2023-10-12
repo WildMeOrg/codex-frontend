@@ -22,10 +22,10 @@ const tabItems = [
     labelId: 'OVERVIEW',
     value: 'overview',
   },
-  {
-    labelId: 'PHOTOGRAPHS',
-    value: 'photographs',
-  },
+  // {
+  //   labelId: 'PHOTOGRAPHS',
+  //   value: 'photographs',
+  // },
   {
     labelId: 'ANNOTATIONS',
     value: 'annotations',
