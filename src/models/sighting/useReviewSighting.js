@@ -1,10 +1,10 @@
-import { usePost } from '../../hooks/useMutate';
 import { getSightingQueryKey } from '../../constants/queryKeys';
+import { usePatch } from '../../hooks/useMutate';
 
 export default function useReviewSighting() {
-  return usePost({
-    deriveUrl: ({ sightingGuid }) =>
-      `/sightings/${sightingGuid}/reviewed`,
+  return usePatch({
+    deriveUrl: ({ sightingGuid }) => `/sightings/${sightingGuid}`,
+    deriveData: ({ operations }) => operations,
     deriveFetchKeys: ({ sightingGuid }) => [
       getSightingQueryKey(sightingGuid),
     ],

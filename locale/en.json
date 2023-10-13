@@ -765,8 +765,8 @@
   "SERVER_STATUS_PAGE_TITLE": "Server Status",
   "MATCH_ANNOTATIONS": "Match annotations",
   "MATCH_REVIEW": "Match review",
-  "MARK_SIGHTING_REVIEWED": "Mark sighting reviewed",
-  "MARK_SIGHTING_REVIEWED_CONFIRMATION": "Are you sure you want to mark this sighting reviewed? This action cannot be undone.",
+  "UPDATE_SIGHTING_STATUS": "Update sighting status",
+  "REVIEW_SIGHTING_CONFIRMATION": "Are you sure you want to mark this sighting as {match_status}?",
   "MATCH_COUNT": "{matchCount} {matchCount, plural, =0 {matches} one {match} other {matches}}",
   "PHOTO_COUNT": "{photoCount} {photoCount, plural, =0 {photographs} one {photograph} other {photographs}}",
   "ENCOUNTERS_IMPORTED_COUNT": "{encounterCount} {encounterCount, plural, =0 {encounters} one {encounter} other {encounters}} imported.",
@@ -1264,5 +1264,8 @@
   "ENCOUNTER_SEX" : "Encounter sex",
   "ENCOUNTER_SPECIES" : "Encounter species",
   "LAST_REGION" : "Last region",
-  "LAST_FREEFORM" : "Last freeform"
+  "LAST_FREEFORM" : "Last freeform",
+  "UNREVIEWED" : "Unreviewed",
+  "REVIEWED" : "Reviewed",
+  "IN_PROGRESS" : "In progress"
 }
