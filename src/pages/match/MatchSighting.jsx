@@ -1,29 +1,26 @@
 import React, { useMemo, useEffect, useState } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
 import { get, maxBy } from 'lodash-es';
 
-import Chip from '@material-ui/core/Chip';
 import Fab from '@material-ui/core/Fab';
 import DoneIcon from '@material-ui/icons/Done';
 
+import { Switch } from '@material-ui/core';
 import errorTypes from '../../constants/errorTypes';
 import useSighting from '../../models/sighting/useSighting';
 import useMatchResults from '../../models/matching/useMatchResults';
 import { formatDate } from '../../utils/formatters';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
-import ReviewSightingDialog from '../../components/dialogs/ReviewSightingDialog';
+import ReviewSighting from '../../components/dialogs/ReviewSighting';
 import LoadingScreen from '../../components/LoadingScreen';
 import SadScreen from '../../components/SadScreen';
 import MainColumn from '../../components/MainColumn';
 import ButtonLink from '../../components/ButtonLink';
-import ButtonMenu from '../../components/ButtonMenu';
 import Text from '../../components/Text';
 import QueryAnnotationsTable from './QueryAnnotationsTable';
 import MatchCandidatesTable from './MatchCandidatesTable';
 import ImageCard from './ImageCard';
-import { Switch } from '@material-ui/core';
-import { useIntl } from 'react-intl';
 
 const spaceBetweenColumns = 16;
 
@@ -36,7 +33,7 @@ function deriveIndividualGuid(annotation) {
 export default function MatchSighting() {
   const { sightingGuid } = useParams();
   const intl = useIntl();
-  const label = intl.formatMessage({ id: 'INSPECT_MATCH_AREA'});
+  const label = intl.formatMessage({ id: 'INSPECT_MATCH_AREA' });
   const {
     data: sightingData,
     loading: sightingDataLoading,
@@ -55,12 +52,15 @@ export default function MatchSighting() {
   const [selectedMatchCandidate, setSelectedMatchCandidate] =
     useState(null);
 
-  const [ checked, setChecked ] = useState(false);
+  const [checked, setChecked] = useState(false);
 
-  const [reviewDialogOpen, setReviewDialogOpen] = useState(false);
+  const [heatMapUrl, setHeatMapUrl] = useState(null);
+  const [urlOK, setUrlOK] = useState(false);
 
-  const [ heatMapUrl, setHeatMapUrl ] = useState(null);
-  const [ urlOK, setUrlOK ] = useState(false);
+  const [matchStatus, setMatchStatus] = useState(null);
+  useEffect(() => {
+    setMatchStatus(sightingData?.match_state);
+  }, [sightingData]);
 
   const queryAnnotations = useMemo(() => {
     const annotationData = get(matchResults, 'annotation_data', {});
@@ -130,10 +130,15 @@ export default function MatchSighting() {
     const encounterGuid1 = selectedQueryAnnotation?.encounter_guid;
     const encounterGuid2 = selectedMatchCandidate?.encounter_guid;
 
-    const selectedMatchCandidateGuid = selectedMatchCandidate?.guid;  
-    const scoresByIndividual = get(selectedQueryAnnotation,
-      ['algorithms', 'hotspotter_nosv', 'scores_by_individual'], [] );
-    const annotation = scoresByIndividual.find((score) => score.guid === selectedMatchCandidateGuid);    
+    const selectedMatchCandidateGuid = selectedMatchCandidate?.guid;
+    const scoresByIndividual = get(
+      selectedQueryAnnotation,
+      ['algorithms', 'hotspotter_nosv', 'scores_by_individual'],
+      [],
+    );
+    const annotation = scoresByIndividual.find(
+      score => score.guid === selectedMatchCandidateGuid,
+    );
     const heatmapUrl = annotation?.heatmap_src;
     setHeatMapUrl(heatmapUrl);
     const checkHeatMap = async () => {
@@ -141,15 +146,15 @@ export default function MatchSighting() {
         const response = await fetch(heatMapUrl);
         if (response.ok) {
           setUrlOK(true);
-          } else {
-            setUrlOK(false);
+        } else {
+          setUrlOK(false);
         }
       } catch (error) {
         setUrlOK(false);
       }
-    }
+    };
     checkHeatMap();
-  
+
     if (individualGuid1 && individualGuid2) {
       return `/merge?i=${individualGuid1}&i=${individualGuid2}`;
     } else if (individualGuid1 || individualGuid2) {
@@ -185,14 +190,6 @@ export default function MatchSighting() {
   if (error) return <SadScreen variant={errorTypes.genericError} />;
   if (loading) return <LoadingScreen />;
 
-  const buttonActions = [
-    {
-      id: 'mark-sighting-reviewed',
-      labelId: 'MARK_SIGHTING_REVIEWED',
-      onClick: () => setReviewDialogOpen(true),
-    },
-  ];
-
   const idCompleteTime = sightingData?.unreviewed_start_time;
   const formattedIdTime = formatDate(
     idCompleteTime,
@@ -200,24 +197,18 @@ export default function MatchSighting() {
     'Unknown time',
   );
 
-  const sightingIsReviewed = Boolean(sightingData?.review_time);
   const matchPossible =
     selectedMatchCandidate && selectedQueryAnnotation;
- 
+
   const handleChange = () => {
-    setChecked(!checked);    
-  }
+    setChecked(!checked);
+  };
 
   return (
     <MainColumn
       fullWidth
       style={{ maxWidth: 'unset', padding: '0 16px' }}
     >
-      <ReviewSightingDialog
-        open={reviewDialogOpen}
-        onClose={() => setReviewDialogOpen(false)}
-        sightingGuid={sightingGuid}
-      />
       <div
         style={{
           padding: '16px 0',
@@ -238,27 +229,23 @@ export default function MatchSighting() {
             values={{ time: formattedIdTime }}
             style={{ padding: '2px 0 0 2px' }}
           />
-          {sightingIsReviewed && (
-            <Chip              icon={<DoneIcon />}
-              variant="outlined"
-              label="Reviewed"
-              style={{ marginTop: 8 }}
-            />
-          )}
         </div>
-        <div style={{display: "flex", flexDirection: 'row', alignItems: 'flex-end'}}>
-          <Switch 
-                      checked={checked} 
-                      onChange = {() => handleChange()}
-                      disabled={!urlOK || !heatMapUrl}
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'flex-end',
+          }}
+        >
+          <Switch
+            checked={checked}
+            onChange={() => handleChange()}
+            disabled={!urlOK || !heatMapUrl}
           />
-          <span style={{marginBottom: 10, marginRight: 10}}> {label} </span>
-        <ButtonMenu
-          buttonId="match-actions"
-          style={{ marginTop: 44 }}
-          actions={buttonActions}
-          id="ACTIONS"
-        />
+          <span style={{ marginBottom: 10, marginRight: 10 }}>
+            {' '}
+            {label}{' '}
+          </span>
         </div>
       </div>
       <div style={{ display: 'flex' }}>
@@ -273,7 +260,7 @@ export default function MatchSighting() {
             annotation={selectedQueryAnnotation}
             heatmapon={checked}
             heatmapurl={heatMapUrl}
-            left={true}
+            left
           />
           <QueryAnnotationsTable
             queryAnnotations={queryAnnotations}
@@ -317,6 +304,10 @@ export default function MatchSighting() {
           <FormattedMessage id="CONFIRM_MATCH" />
         </Fab>
       )}
+      <ReviewSighting
+        matchStatus={matchStatus}
+        sightingGuid={sightingGuid}
+      />
     </MainColumn>
   );
 }
