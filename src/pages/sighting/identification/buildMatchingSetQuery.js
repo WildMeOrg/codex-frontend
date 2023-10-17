@@ -30,45 +30,55 @@ function getMatchWithChildren(regions, matchId) {
   return flattenDeep(matchingRegionTree);
 }
 
-export default function buildMatchingSetQuery(regionSchema, region) {
+export default function buildMatchingSetQuery(
+  regionSchema,
+  region,
+  nested = false,
+) {
   if (region === '' || !regionSchema) return {};
-
   const regionChoices = get(regionSchema, 'choices', []);
   const matchWithChildren = getMatchWithChildren(
     regionChoices,
     region,
   );
 
+  const filter = nested
+    ? {
+        terms: {
+          locationId: matchWithChildren.map(r => r.id),
+        },
+      }
+    : {
+        match: {
+          locationId: matchWithChildren.find(r => !!r.id)?.id,
+        },
+      };
+
   return {
-    "bool": {
-      "minimum_should_match": 1,
-      "should": [
+    bool: {
+      minimum_should_match: 1,
+      should: [
         {
-          "term": {
-            "git_store_guid": "_MACRO_annotation_git_store_guid"
-          }
+          term: {
+            git_store_guid: '_MACRO_annotation_git_store_guid',
+          },
         },
         {
-          "bool": {
-            "filter": [
+          bool: {
+            filter: [
+              filter,
               {
-                "match": {
-                  "locationId": matchWithChildren.find(r => !!r.id).id                  
-                }
+                exists: {
+                  field: 'encounter_guid',
+                },
               },
-              {
-                "exists": {
-                  "field": "encounter_guid"
-                }
-              }
-            ]
-          }
-        }
+            ],
+          },
+        },
       ],
-      "must": {
-        "bool": "_MACRO_annotation_neighboring_viewpoints_clause"
-      }
-    }
-
+      must: {
+        bool: '_MACRO_annotation_neighboring_viewpoints_clause',
+      },
+    },
   };
 }
