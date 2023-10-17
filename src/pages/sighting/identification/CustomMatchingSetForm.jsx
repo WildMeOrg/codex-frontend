@@ -9,6 +9,7 @@ import buildMatchingSetQuery from './buildMatchingSetQuery';
 export default function CustomMatchingSetForm({
   // idConfig, // use this to get matching set size!
   setIdConfig,
+  nested,
 }) {
   const idConfigSchemas = useIdConfigSchemas();
 
@@ -29,7 +30,11 @@ export default function CustomMatchingSetForm({
   useEffect(() => {
     setIdConfig({
       algorithms,
-      matching_set: buildMatchingSetQuery(regionSchema, region),
+      matching_set: buildMatchingSetQuery(
+        regionSchema,
+        region,
+        nested,
+      ),
     });
   }, [
     setIdConfig,
