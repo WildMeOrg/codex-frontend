@@ -1265,5 +1265,6 @@
   "LAST_FREEFORM" : "Last freeform",
   "UNREVIEWED" : "Unreviewed",
   "REVIEWED" : "Reviewed",
-  "IN_PROGRESS" : "In progress"
+  "IN_PROGRESS" : "In progress",
+  "UNPROCESSED" : "Unprocessed"
 }

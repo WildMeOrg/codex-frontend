@@ -66,13 +66,14 @@ export default function ReviewSighting({
         buttonId="match-actions"
         style={{ marginLeft: 24 }}
         actions={buttonActions}
-        id={matchStatus?.toUpperCase()}
+        id={matchStatus?.toUpperCase() || 'UNPROCESSED'}
+        disabled={!matchStatus}
       />
       {error && (
         <Alert
           severity="error"
           onClose={clearError}
-          style={{ margin: '16px 0' }}
+          style={{ margin: '16px 16px', maxWidth: 400 }}
         >
           {error}
         </Alert>
