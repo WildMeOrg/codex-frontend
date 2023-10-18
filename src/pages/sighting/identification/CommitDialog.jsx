@@ -76,6 +76,7 @@ export default function CommitDialog({ agsGuid, open, onClose }) {
           <CustomMatchingSetForm
             idConfig={idConfig}
             setIdConfig={setIdConfig}
+            nested
           />
         )}
         {error && (
