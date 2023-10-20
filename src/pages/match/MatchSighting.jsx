@@ -21,6 +21,7 @@ import Text from '../../components/Text';
 import QueryAnnotationsTable from './QueryAnnotationsTable';
 import MatchCandidatesTable from './MatchCandidatesTable';
 import ImageCard from './ImageCard';
+import Button from '../../components/Button';
 
 const spaceBetweenColumns = 16;
 
@@ -56,6 +57,9 @@ export default function MatchSighting() {
 
   const [heatMapUrl, setHeatMapUrl] = useState(null);
   const [urlOK, setUrlOK] = useState(false);
+
+  const [noMatch, setNoMatch] = useState(false);
+  const [individual, setIndividual] = useState(null);
 
   const [matchStatus, setMatchStatus] = useState(null);
   useEffect(() => {
@@ -100,6 +104,8 @@ export default function MatchSighting() {
       [],
     );
 
+    setIndividual(deriveIndividualGuid(selectedQueryAnnotation));
+
     function findMatchingAnnotation(scoreObject) {
       return get(matchResults, [
         'annotation_data',
@@ -120,7 +126,10 @@ export default function MatchSighting() {
       });
   }, [matchResults, selectedQueryAnnotation]);
 
+  console.log(noMatch);
+
   const confirmMatchHref = useMemo(() => {
+    console.log(noMatch);
     const individualGuid1 = deriveIndividualGuid(
       selectedQueryAnnotation,
     );
@@ -164,9 +173,14 @@ export default function MatchSighting() {
         : encounterGuid1;
       return `/assign-annotations?i=${individualGuid}&e=${encounterGuid}`;
     } else {
-      return `/create-individual?e=${encounterGuid1}&e=${encounterGuid2}`;
+      console.log(noMatch);
+      if (noMatch) {
+        return `/create-individual?e=${encounterGuid1}`;
+      } else {
+        return `/create-individual?e=${encounterGuid1}&e=${encounterGuid2}`;
+      }
     }
-  }, [selectedQueryAnnotation, selectedMatchCandidate]);
+  }, [selectedQueryAnnotation, selectedMatchCandidate, noMatch]);
 
   useEffect(() => {
     if (!selectedQueryAnnotation)
@@ -285,6 +299,27 @@ export default function MatchSighting() {
             selectedMatchCandidate={selectedMatchCandidate}
             setSelectedMatchCandidate={setSelectedMatchCandidate}
           />
+          {!individual && (
+            <div
+              style={{
+                width: '100%',
+                display: 'flex',
+                justifyContent: 'space-between',
+              }}
+            >
+              <Text
+                variant="body2"
+                id="Can't find any match for the sighting?"
+                style={{ padding: '16px 0 8px 0' }}
+              />
+              <Button
+                display="tertiary"
+                onClick={() => setNoMatch(true)}
+                id="CONFIRM_NO_MATCH"
+                href={confirmMatchHref}
+              />
+            </div>
+          )}
         </div>
       </div>
       {matchPossible && (
@@ -299,6 +334,7 @@ export default function MatchSighting() {
           color="primary"
           variant="extended"
           href={confirmMatchHref}
+          onClick={() => setNoMatch(false)}
         >
           <DoneIcon style={{ marginRight: 4 }} />
           <FormattedMessage id="CONFIRM_MATCH" />
