@@ -126,10 +126,7 @@ export default function MatchSighting() {
       });
   }, [matchResults, selectedQueryAnnotation]);
 
-  console.log(noMatch);
-
   const confirmMatchHref = useMemo(() => {
-    console.log(noMatch);
     const individualGuid1 = deriveIndividualGuid(
       selectedQueryAnnotation,
     );
@@ -164,21 +161,22 @@ export default function MatchSighting() {
     };
     checkHeatMap();
 
-    if (individualGuid1 && individualGuid2) {
-      return `/merge?i=${individualGuid1}&i=${individualGuid2}`;
-    } else if (individualGuid1 || individualGuid2) {
-      const individualGuid = individualGuid1 || individualGuid2;
-      const encounterGuid = individualGuid1
-        ? encounterGuid2
-        : encounterGuid1;
-      return `/assign-annotations?i=${individualGuid}&e=${encounterGuid}`;
-    } else {
-      console.log(noMatch);
-      if (noMatch) {
-        return `/create-individual?e=${encounterGuid1}`;
+    if (!noMatch) {
+      if (individualGuid1 && individualGuid2) {
+        return `/merge?i=${individualGuid1}&i=${individualGuid2}`;
+      } else if (individualGuid1 || individualGuid2) {
+        const individualGuid = individualGuid1 || individualGuid2;
+        const encounterGuid = individualGuid1
+          ? encounterGuid2
+          : encounterGuid1;
+        return `/assign-annotations?i=${individualGuid}&e=${encounterGuid}`;
       } else {
         return `/create-individual?e=${encounterGuid1}&e=${encounterGuid2}`;
       }
+    } else if (!individualGuid1) {
+      return `/create-individual?e=${encounterGuid1}`;
+    } else {
+      return null;
     }
   }, [selectedQueryAnnotation, selectedMatchCandidate, noMatch]);
 
@@ -309,8 +307,8 @@ export default function MatchSighting() {
             >
               <Text
                 variant="body2"
-                id="Can't find any match for the sighting?"
-                style={{ padding: '16px 0 8px 0' }}
+                id="NO_MATCH_DESCRIPTION"
+                style={{ padding: '16px 20px 8px 20px' }}
               />
               <Button
                 display="tertiary"

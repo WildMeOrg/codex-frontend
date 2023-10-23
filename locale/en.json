@@ -1266,5 +1266,7 @@
   "UNREVIEWED" : "Unreviewed",
   "REVIEWED" : "Reviewed",
   "IN_PROGRESS" : "In progress",
-  "UNPROCESSED" : "Unprocessed"
+  "UNPROCESSED" : "Unprocessed",
+  "NO_MATCH_DESCRIPTION" : "Can't find any match for the sighting?",
+  "CONFIRM_NO_MATCH" : "CONFIRM NO MATCH"
 }
