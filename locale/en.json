@@ -1268,5 +1268,5 @@
   "IN_PROGRESS" : "In progress",
   "UNPROCESSED" : "Unprocessed",
   "NO_MATCH_DESCRIPTION" : "Can't find any match for the sighting?",
-  "CONFIRM_NO_MATCH" : "CONFIRM NO MATCH"
+  "CONFIRM_NO_MATCH" : "Confirm no match"
 }
