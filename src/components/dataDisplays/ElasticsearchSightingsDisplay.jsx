@@ -14,8 +14,8 @@ export default function ElasticsearchSightingsDisplay({
   ...rest
 }) {
   const title = `${dataCount || sightings.length} matching sightings`;
-  
-  const tableData = sightings.map(sighting => {
+
+  const tableData = sightings.map(sighting =>
     // const encounters = sighting?.encounters || [];
     // const photoCount = encounters.reduce((memo, e) => {
     //   memo += e.images.length;
@@ -27,12 +27,12 @@ export default function ElasticsearchSightingsDisplay({
     //   return individual ? [...memo, individual] : null;
     // }, []);
 
-    return {
+    ({
       ...sighting,
       // photoCount,
       // individuals,
-    };
-  });
+    }),
+  );
 
   const columns = [
     {
@@ -51,6 +51,24 @@ export default function ElasticsearchSightingsDisplay({
       align: 'left',
     },
     {
+      name: 'numberIndividuals',
+      labelId: 'NUMBER_OF_INDIVIDUALS',
+      sortable: false,
+      align: 'left',
+    },
+    {
+      name: 'numberEncounters',
+      labelId: 'NUMBER_OF_ENCOUNTERS',
+      sortable: false,
+      align: 'left',
+    },
+    {
+      name: 'verbatimLocality',
+      labelId: 'FREEFORM_LOCATION',
+      sortable: false,
+      align: 'left',
+    },
+    {
       name: 'owners',
       sortName: 'owners.full_name',
       labelId: 'REPORTER',
@@ -58,6 +76,7 @@ export default function ElasticsearchSightingsDisplay({
       align: 'left',
       options: {
         customBodyRender: owners => {
+          // eslint-disable-line
           const ownerName = get(
             owners,
             [0, 'full_name'],
@@ -81,7 +100,9 @@ export default function ElasticsearchSightingsDisplay({
       labelId: 'ACTIONS',
       sortable: false,
       options: {
-        customBodyRender: guid => (
+        customBodyRender: (
+          guid, // eslint-disable-line
+        ) => (
           <ActionIcon
             labelId="VIEW"
             variant="view"
