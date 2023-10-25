@@ -4,8 +4,9 @@ import { get } from 'lodash-es';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
-import AddIcon from '@material-ui/icons/Add';
 import MoreIcon from '@material-ui/icons/MoreVert';
+import { FormattedMessage } from 'react-intl';
+import Button from '../../../components/Button';
 // import Skeleton from '@material-ui/lab/Skeleton';
 
 import Text from '../../../components/Text';
@@ -42,13 +43,9 @@ export default function AnnotationsCard({
       overflowX="hidden"
       maxHeight={400}
       renderActions={
-        <IconButton
-          aria-label="add annotations"
-          size="small"
-          onClick={onAddAnnotations}
-        >
-          <AddIcon />
-        </IconButton>
+        <Button onClick={onAddAnnotations} display="tertiary">
+          <FormattedMessage id="ASSIGN" />
+        </Button>
       }
     >
       <ClusteredAnnotationMenu
