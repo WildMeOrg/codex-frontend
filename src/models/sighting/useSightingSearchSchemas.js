@@ -140,6 +140,15 @@ export default function useSightingSearchSchemas() {
       },
     },
     {
+      id: 'numberIndividuals',
+      labelId: 'NUMBER_OF_INDIVIDUALS',
+      FilterComponent: IntegerFilter,
+      filterComponentProps: {
+        filterId: 'numberIndividuals',
+        queryTerm: 'numberIndividuals',
+      },
+    },
+    {
       id: 'stage',
       labelId: 'SIGHTING_STATE',
       FilterComponent: OptionTermFilter,

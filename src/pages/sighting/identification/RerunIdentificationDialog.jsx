@@ -39,6 +39,7 @@ export default function RerunIdentificationDialog({
         <CustomMatchingSetForm
           idConfig={idConfig}
           setIdConfig={setIdConfig}
+          nested
         />
         {error && (
           <CustomAlert severity="error" titleId="SERVER_ERROR">
