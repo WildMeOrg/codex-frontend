@@ -795,7 +795,7 @@
   "ENCOUNTER_ID": "Encounter ID",
   "RESTORE_DELETED_ENCOUNTER_INSTRUCTIONS": "The restored encounter will include all metadata, including the original date of submission.",
   "RESTORE_ENCOUNTER": "Restore encounter",
-  "COPYRIGHT_LINE": "Copyright 2020 Wild Me for Whale Sharks",
+  "COPYRIGHT_LINE": "Copyright {year} Wild Me",
   "LAST_SEEN_DATE": "Last seen on {date}",
   "SHOW_FILTERS": "Show filters",
   "SUCCESS": "Success",
