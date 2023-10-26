@@ -20,10 +20,6 @@ const tabItems = [
     labelId: 'OVERVIEW',
     value: 'overview',
   },
-  // {
-  //   labelId: 'PHOTOGRAPHS',
-  //   value: 'photographs',
-  // },
   {
     labelId: 'ANNOTATIONS',
     value: 'annotations',
@@ -43,6 +39,7 @@ export default function SightingEntityHeader({
   guid,
   // setHistoryOpen,
   setDeleteDialogOpen,
+  setActiveTab,
 }) {
   const intl = useIntl();
   const [matchStatus, setMatchStatus] = useState(null);
@@ -112,6 +109,8 @@ export default function SightingEntityHeader({
             <Tabs
               value={activeTab.replace('#', '')}
               onChange={(_, newValue) => {
+                console.log('newValue', newValue);
+                setActiveTab(`#${newValue}`);
                 window.location.hash = newValue;
               }}
               items={tabItems}
