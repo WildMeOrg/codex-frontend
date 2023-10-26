@@ -124,7 +124,11 @@ export default function Footer({ authenticated = false }) {
           justifyContent: 'center',
         }}
       >
-        <Text variant="caption" id="COPYRIGHT_LINE" />
+        <Text
+          variant="caption"
+          id="COPYRIGHT_LINE"
+          values={{ year: new Date().getFullYear() }}
+        />
       </div>
     </div>
   );
