@@ -1,12 +1,10 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { get, map } from 'lodash-es';
 
-import Chip from '@material-ui/core/Chip';
-import DoneIcon from '@material-ui/icons/Done';
 import Skeleton from '@material-ui/lab/Skeleton';
 
-import ReviewSightingDialog from '../../components/dialogs/ReviewSightingDialog';
+import ReviewSighting from '../../components/dialogs/ReviewSighting';
 import FormattedReporter from '../../components/formatters/FormattedReporter';
 import Tabs from '../../components/Tabs';
 import MoreMenu from '../../components/MoreMenu';
@@ -22,10 +20,10 @@ const tabItems = [
     labelId: 'OVERVIEW',
     value: 'overview',
   },
-  {
-    labelId: 'PHOTOGRAPHS',
-    value: 'photographs',
-  },
+  // {
+  //   labelId: 'PHOTOGRAPHS',
+  //   value: 'photographs',
+  // },
   {
     labelId: 'ANNOTATIONS',
     value: 'annotations',
@@ -47,11 +45,14 @@ export default function SightingEntityHeader({
   setDeleteDialogOpen,
 }) {
   const intl = useIntl();
+  const [matchStatus, setMatchStatus] = useState(null);
+  useEffect(() => {
+    if (data) {
+      setMatchStatus(data.match_state);
+    }
+  }, [data?.match_state]);
 
-  const [reviewDialogOpen, setReviewDialogOpen] = useState(false);
   const [rerunDialogOpen, setRerunDialogOpen] = useState(false);
-
-  const sightingIsReviewed = Boolean(data?.review_time);
 
   const dataForFeaturedPhoto = useMemo(() => {
     const assets = get(data, ['assets'], []);
@@ -82,11 +83,6 @@ export default function SightingEntityHeader({
 
   return (
     <>
-      <ReviewSightingDialog
-        sightingGuid={guid}
-        open={reviewDialogOpen}
-        onClose={() => setReviewDialogOpen(false)}
-      />
       <RerunIdentificationDialog
         sightingGuid={guid}
         open={rerunDialogOpen}
@@ -133,12 +129,7 @@ export default function SightingEntityHeader({
                 //   onClick: () => setHistoryOpen(true),
                 //   label: 'View history',
                 // },
-                {
-                  id: 'mark-reviewed',
-                  onClick: () => setReviewDialogOpen(true),
-                  disabled: pending || sightingIsReviewed,
-                  label: 'Mark sighting reviewed',
-                },
+                // {
                 {
                   id: 'rerun-identification',
                   onClick: () => setRerunDialogOpen(true),
@@ -164,14 +155,10 @@ export default function SightingEntityHeader({
             }}
           />
         )}
-        {sightingIsReviewed && (
-          <Chip
-            icon={<DoneIcon />}
-            variant="outlined"
-            label="Reviewed"
-            style={{ marginTop: 8 }}
-          />
-        )}
+        <ReviewSighting
+          matchStatus={matchStatus}
+          sightingGuid={guid}
+        />
       </EntityHeader>
     </>
   );

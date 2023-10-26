@@ -20,6 +20,10 @@ const actions = [
   {
     id: 'bulk-import',
     href: '/bulk-import',
+    permissionsTest: userData =>
+      userData?.is_admin ||
+      userData?.is_staff ||
+      userData?.is_researcher,
     messageId: 'BULK_IMPORT',
     icon: BulkImportIcon,
   },
@@ -49,26 +53,26 @@ export default function NotificationsPane({
   const name = get(userData, 'full_name') || 'Unnamed user';
   const profileSrc = get(userData, ['profile_fileupload', 'src']);
 
-  const logout = async (event) => {
+  const logout = async event => {
     event.preventDefault();
     let is_authenticated = true;
     await fetch('/api/v1/users/me')
-    .then(response => {      
-      if(response.status == 401) {
-        is_authenticated = false;
-      }
-    })
-    .catch(error => {
-      console.log(error);
-    });
+      .then(response => {
+        if (response.status === 401) {
+          is_authenticated = false;
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
 
-    if(is_authenticated) {
-      document.getElementById("logoutForm").submit();
-    }else {
-      window.location.href = '/';      
+    if (is_authenticated) {
+      document.getElementById('logoutForm').submit();
+    } else {
+      window.location.href = '/';
     }
     setAnchorEl(null);
-  };  
+  };
 
   return (
     <Popover

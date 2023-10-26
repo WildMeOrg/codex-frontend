@@ -27,6 +27,7 @@ export default function AnnotationDetail({
   onClose,
   refreshSightingData,
 }) {
+  const hasNoAnnotation = Boolean(annotation?.annotations);
   const intl = useIntl();
   const [anchorEl, setAnchorEl] = useState(null);
   const [addingTag, setAddingTag] = useState(false);
@@ -139,77 +140,78 @@ export default function AnnotationDetail({
               deletable
               refreshSightingData={refreshSightingData}
             >
-              {addingTag ? (
-                <div
-                  style={{ display: 'flex', alignItems: 'center' }}
-                >
-                  <Autocomplete
-                    id="tag value"
-                    freeSolo
-                    blurOnSelect
-                    clearOnEscape
-                    disableClearable
-                    handleHomeEndKeys
-                    selectOnFocus
-                    value={newTagSelectValue}
-                    onChange={(_, newValue) => {
-                      setNewTagSelectValue(newValue);
-                    }}
-                    inputValue={newTagInputValue}
-                    onInputChange={(_, newValue) => {
-                      if (newValue) setNewTagInputValue(newValue);
-                    }}
-                    disabled={addKeywordLoading}
-                    options={filteredKeywordOptions}
-                    getOptionLabel={option =>
-                      get(option, 'value', '')
-                    }
-                    renderOption={option => (
-                      <div
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                        }}
-                      >
+              {!hasNoAnnotation &&
+                (addingTag ? (
+                  <div
+                    style={{ display: 'flex', alignItems: 'center' }}
+                  >
+                    <Autocomplete
+                      id="tag value"
+                      freeSolo
+                      blurOnSelect
+                      clearOnEscape
+                      disableClearable
+                      handleHomeEndKeys
+                      selectOnFocus
+                      value={newTagSelectValue}
+                      onChange={(_, newValue) => {
+                        setNewTagSelectValue(newValue);
+                      }}
+                      inputValue={newTagInputValue}
+                      onInputChange={(_, newValue) => {
+                        if (newValue) setNewTagInputValue(newValue);
+                      }}
+                      disabled={addKeywordLoading}
+                      options={filteredKeywordOptions}
+                      getOptionLabel={option =>
+                        get(option, 'value', '')
+                      }
+                      renderOption={option => (
                         <div
                           style={{
-                            width: 12,
-                            height: 12,
-                            marginRight: 8,
-                            borderRadius: 100,
-                            backgroundColor: getKeywordColor(
-                              option.guid,
-                            ),
+                            display: 'flex',
+                            alignItems: 'center',
                           }}
+                        >
+                          <div
+                            style={{
+                              width: 12,
+                              height: 12,
+                              marginRight: 8,
+                              borderRadius: 100,
+                              backgroundColor: getKeywordColor(
+                                option.guid,
+                              ),
+                            }}
+                          />
+                          <span>{option.value}</span>
+                        </div>
+                      )}
+                      renderInput={params => (
+                        <TextField
+                          {...params}
+                          autoFocus
+                          style={{ width: 200, margin: '0 8px' }}
                         />
-                        <span>{option.value}</span>
-                      </div>
-                    )}
-                    renderInput={params => (
-                      <TextField
-                        {...params}
-                        autoFocus
-                        style={{ width: 200, margin: '0 8px' }}
-                      />
-                    )}
-                  />
+                      )}
+                    />
+                    <Button
+                      display="panel"
+                      size="small"
+                      loading={addKeywordLoading}
+                      onClick={onAddTag}
+                      id="ADD_TAG"
+                    />
+                  </div>
+                ) : (
                   <Button
-                    display="panel"
+                    display="basic"
                     size="small"
-                    loading={addKeywordLoading}
-                    onClick={onAddTag}
+                    startIcon={<AddIcon />}
+                    onClick={() => setAddingTag(true)}
                     id="ADD_TAG"
                   />
-                </div>
-              ) : (
-                <Button
-                  display="basic"
-                  size="small"
-                  startIcon={<AddIcon />}
-                  onClick={() => setAddingTag(true)}
-                  id="ADD_TAG"
-                />
-              )}
+                ))}
             </Keywords>
           </div>
           <div

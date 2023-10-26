@@ -119,7 +119,7 @@ export default function CurationStep({ sightingData }) {
             href={
               someAssetsHaveAnnotations
                 ? '#individuals'
-                : '#photographs'
+                : '#annotations'
             }
             display="primary"
             size="small"
