@@ -109,7 +109,6 @@ export default function SightingEntityHeader({
             <Tabs
               value={activeTab.replace('#', '')}
               onChange={(_, newValue) => {
-                console.log('newValue', newValue);
                 setActiveTab(`#${newValue}`);
                 window.location.hash = newValue;
               }}
