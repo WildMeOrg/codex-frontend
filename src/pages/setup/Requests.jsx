@@ -17,6 +17,7 @@ export default function Requests() {
         error,
         statusCode
       } = useGetRequests();
+    console.log("statusCode: ", statusCode);
       
     let requests = data || [];
     requests = requests
