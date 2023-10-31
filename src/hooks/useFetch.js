@@ -36,7 +36,7 @@ export default function useFetch({
   );
 
   const apiUrl = prependHoustonApiUrl
-    ? `${__houston_url__}/api/v1${url}1`
+    ? `${__houston_url__}/api/v1${url}`
     : url;
   const result = useQuery(
     queryKey,
