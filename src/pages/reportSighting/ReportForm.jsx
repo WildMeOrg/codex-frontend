@@ -88,7 +88,7 @@ export default function ReportForm({
 
   const sightingFieldSchemas = useSightingFieldSchemas();
   const encounterFieldSchemas = useEncounterFieldSchemas();
-
+  console.log('sightingFieldSchemas1', sightingFieldSchemas);
   const {
     defaultSightingSchemas,
     customSightingSchemas,
@@ -97,10 +97,10 @@ export default function ReportForm({
   } = useMemo(() => {
     const _defaultSightingSchemas = sightingFieldSchemas.filter(
       schema => !schema.customField,
-    );    
+    );
     const _customSightingSchemas = sightingFieldSchemas.filter(
-      schema => schema.customField
-    );    
+      schema => schema.customField,
+    );
     const visibleEncounterFieldSchemas = encounterFieldSchemas.filter(
       schema => !schema.hideOnBasicReport,
     );
@@ -120,7 +120,9 @@ export default function ReportForm({
       customEncounterSchemas: _customEncounterSchemas,
     };
   }, [sightingFieldSchemas, encounterFieldSchemas]);
-  const [acceptedTerms, setAcceptedTerms] = useState(authenticated === "undefined" ? false : authenticated);
+  const [acceptedTerms, setAcceptedTerms] = useState(
+    authenticated === undefined ? false : authenticated,
+  );
   // const [exifButtonClicked, setExifButtonClicked] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [incompleteFields, setIncompleteFields] = useState([]);
@@ -135,6 +137,7 @@ export default function ReportForm({
     useState({});
 
   useEffect(() => {
+    if (sightingFieldSchemas.length === 0) return;
     const initialDefaultSightingFormValues = getInitialFormValues(
       defaultSightingSchemas,
     );
@@ -160,174 +163,187 @@ export default function ReportForm({
     encounterFieldSchemas,
   ]);
 
-  const requiredDefaultSightingSchemas = defaultSightingSchemas.filter(data => data.required);
-  const optionalDefaultSightingSchemas = defaultSightingSchemas.filter(data => !data.required); 
-  const requiredCustomSightingSchemas = customSightingSchemas.filter(data => data.required);
-  const optionalCustomSightingSchemas = customSightingSchemas.filter(data => !data.required);
-  const requiredDefaultEncounterFieldSchemas = defaultEncounterSchemas.filter(data => data.required);
-  const optionalDefaultEncounterFieldSchemas = defaultEncounterSchemas.filter(data => !data.required);
-  const requiredCustomEncounterFieldSchemas = customEncounterSchemas.filter(data => data.required);
-  const optionalCustomEncounterFieldSchemas = customEncounterSchemas.filter(data => !data.required);
+  const requiredDefaultSightingSchemas =
+    defaultSightingSchemas.filter(data => data.required);
+  const optionalDefaultSightingSchemas =
+    defaultSightingSchemas.filter(data => !data.required);
+  const requiredCustomSightingSchemas = customSightingSchemas.filter(
+    data => data.required,
+  );
+  const optionalCustomSightingSchemas = customSightingSchemas.filter(
+    data => !data.required,
+  );
+  const requiredDefaultEncounterFieldSchemas =
+    defaultEncounterSchemas.filter(data => data.required);
+  const optionalDefaultEncounterFieldSchemas =
+    defaultEncounterSchemas.filter(data => !data.required);
+  const requiredCustomEncounterFieldSchemas =
+    customEncounterSchemas.filter(data => data.required);
+  const optionalCustomEncounterFieldSchemas =
+    customEncounterSchemas.filter(data => !data.required);
   const [optional, setOptional] = useState(false);
   let formValid = false;
   const checkRequired = () => {
     const sightingsRequired = sightingFieldSchemas
-    .filter(
-      schema => schema.customField && schema.required && !customSightingFormValues[schema.name],
+      .filter(
+        schema =>
+          schema.customField &&
+          schema.required &&
+          !customSightingFormValues[schema.name],
       )
-    .map(data => ({ ...data, labelId: data.label }));  
+      .map(data => ({ ...data, labelId: data.label }));
     const encountersRequired = encounterFieldSchemas
-    .filter(
-      schema => sightingType === 'one' && schema.customField && schema.required && !customEncounterFormValues[schema.name],
+      .filter(
+        schema =>
+          sightingType === 'one' &&
+          schema.customField &&
+          schema.required &&
+          !customEncounterFormValues[schema.name],
       )
-    .map(data => ({ ...data, labelId: data.label })); 
-    const requiredCustomFields = sightingsRequired.concat(encountersRequired);
-              // check that required fields are complete.
-              // specifiedTime field is required, but the logic and message
-              // are different from the other fields
-              const nextIncompleteFields =
-                defaultSightingSchemas.filter(
-                  field =>
-                    field.required &&
-                    field.defaultValue ===
-                      sightingFormValues[field.name] &&
-                    field.name !== 'specifiedTime',
-                ).concat(requiredCustomFields);        
-                
-              setIncompleteFields(nextIncompleteFields);
+      .map(data => ({ ...data, labelId: data.label }));
+    const requiredCustomFields = sightingsRequired.concat(
+      encountersRequired,
+    );
+    // check that required fields are complete.
+    // specifiedTime field is required, but the logic and message
+    // are different from the other fields
+    const nextIncompleteFields = defaultSightingSchemas
+      .filter(
+        field =>
+          field.required &&
+          field.defaultValue === sightingFormValues[field.name] &&
+          field.name !== 'specifiedTime',
+      )
+      .concat(requiredCustomFields);
 
-              // check that specifiedTime fields are complete
-              let nextFormErrorId = null;
-              const formTimeSpecificity = get(sightingFormValues, [
-                'specifiedTime',
-                'timeSpecificity',
-              ]);
-              const formTime = get(sightingFormValues, [
-                'specifiedTime',
-                'time',
-              ]);
+    setIncompleteFields(nextIncompleteFields);
 
-              const specifiedTimeField =
-                defaultSightingSchemas.find(
-                  field => field.name === 'specifiedTime',
-                ) || {};
+    // check that specifiedTime fields are complete
+    let nextFormErrorId = null;
+    const formTimeSpecificity = get(sightingFormValues, [
+      'specifiedTime',
+      'timeSpecificity',
+    ]);
+    const formTime = get(sightingFormValues, [
+      'specifiedTime',
+      'time',
+    ]);
 
-              const defaultTimeSpecificity = get(specifiedTimeField, [
-                'defaultValue',
-                'timeSpecificity',
-              ]);
+    const specifiedTimeField =
+      defaultSightingSchemas.find(
+        field => field.name === 'specifiedTime',
+      ) || {};
 
-              const defaultTime = get(specifiedTimeField, [
-                'defaultValue',
-                'time',
-              ]);
+    const defaultTimeSpecificity = get(specifiedTimeField, [
+      'defaultValue',
+      'timeSpecificity',
+    ]);
 
-              const isTimeSpecificityDefault =
-                formTimeSpecificity === defaultTimeSpecificity;
+    const defaultTime = get(specifiedTimeField, [
+      'defaultValue',
+      'time',
+    ]);
 
-              const isTimeDefault = formTime === defaultTime;
+    const isTimeSpecificityDefault =
+      formTimeSpecificity === defaultTimeSpecificity;
 
-              if (
-                !formTimeSpecificity ||
-                isTimeSpecificityDefault ||
-                !formTime ||
-                isTimeDefault
-              ) {
-                nextFormErrorId = 'INCOMPLETE_TIME_SPECIFICITY';
-              }
+    const isTimeDefault = formTime === defaultTime;
 
-              setFormErrorId(nextFormErrorId);
+    if (
+      !formTimeSpecificity ||
+      isTimeSpecificityDefault ||
+      !formTime ||
+      isTimeDefault
+    ) {
+      nextFormErrorId = 'INCOMPLETE_TIME_SPECIFICITY';
+    }
 
-              // check that terms and conditions were accepted
-              setTermsError(!acceptedTerms);
-              formValid =
-                nextIncompleteFields.length === 0 &&
-                acceptedTerms &&
-                !nextFormErrorId;
+    setFormErrorId(nextFormErrorId);
 
-  }
-  const submitReport = async () => {    
-              checkRequired();
-              if (formValid) {
-                const report =
-                  sightingType === 'one'
-                    ? prepareReportWithEncounter(
-                        sightingFormValues,
-                        customSightingFormValues,
-                        customSightingSchemas,
-                        assetReferences,
-                        encounterFormValues,
-                        customEncounterFormValues,
-                        customEncounterSchemas,
-                        true,
-                      )
-                    : prepareBasicReport(
-                        sightingFormValues,
-                        customSightingFormValues,
-                        customSightingSchemas,
-                        assetReferences,
-                        true,
-                      );
-
-                const assetGroup = {
-                  description: 'Form report from user',
-                  uploadType: 'form',
-                  speciesDetectionModel: get(
-                    report,
-                    'speciesDetectionModel',
-                    [],
-                  ),
-                  transactionId: get(assetReferences, [
-                    0,
-                    'transactionId',
-                  ]),
-                  sightings: [report],
-                };
-                if (window.grecaptcha) {
-                  const grecaptchaReady = new Promise(resolve => {
-                    window.grecaptcha.ready(() => {
-                      resolve();
-                    });
-                  });
-
-                  await grecaptchaReady;
-
-                  const token = await window.grecaptcha.execute(
-                    recaptchaPublicKey,
-                    { action: 'submit' },
-                  );
-                  assetGroup.token = token;
-                }
-
-                const assetGroupData = await postAssetGroup(
-                  assetGroup,
-                );
-
-                const assetGroupSightingId = get(assetGroupData, [
-                  'asset_group_sightings',
-                  '0',
-                  'guid',
-                ]);
-                if (assetGroupSightingId) {
-                  const relativeUrl = authenticated
-                    ? `/pending-sightings/${assetGroupSightingId}`
-                    : '/report/success/';
-                  history.push(relativeUrl);
-                }
-              }
-          
-  }
-
-  // const locationSuggestion = useMemo(
-  //   () => getLocationSuggestion(exifData),
-  //   [exifData],
-  // );
+    // check that terms and conditions were accepted
+    setTermsError(!acceptedTerms);
+    formValid =
+      nextIncompleteFields.length === 0 &&
+      acceptedTerms &&
+      !nextFormErrorId;
+  };
 
   const {
     postAssetGroup,
     loading: postAssetGroupLoading,
     error: postAssetGroupError,
   } = usePostAssetGroup();
+
+  const submitReport = async () => {
+    checkRequired();
+    if (formValid) {
+      const report =
+        sightingType === 'one'
+          ? prepareReportWithEncounter(
+              sightingFormValues,
+              customSightingFormValues,
+              customSightingSchemas,
+              assetReferences,
+              encounterFormValues,
+              customEncounterFormValues,
+              customEncounterSchemas,
+              true,
+            )
+          : prepareBasicReport(
+              sightingFormValues,
+              customSightingFormValues,
+              customSightingSchemas,
+              assetReferences,
+              true,
+            );
+
+      const assetGroup = {
+        description: 'Form report from user',
+        uploadType: 'form',
+        speciesDetectionModel: get(
+          report,
+          'speciesDetectionModel',
+          [],
+        ),
+        transactionId: get(assetReferences, [0, 'transactionId']),
+        sightings: [report],
+      };
+      if (window.grecaptcha) {
+        const grecaptchaReady = new Promise(resolve => {
+          window.grecaptcha.ready(() => {
+            resolve();
+          });
+        });
+
+        await grecaptchaReady;
+
+        const token = await window.grecaptcha.execute(
+          recaptchaPublicKey,
+          { action: 'submit' },
+        );
+        assetGroup.token = token;
+      }
+
+      const assetGroupData = await postAssetGroup(assetGroup);
+
+      const assetGroupSightingId = get(assetGroupData, [
+        'asset_group_sightings',
+        '0',
+        'guid',
+      ]);
+      if (assetGroupSightingId) {
+        const relativeUrl = authenticated
+          ? `/pending-sightings/${assetGroupSightingId}`
+          : '/report/success/';
+        history.push(relativeUrl);
+      }
+    }
+  };
+
+  // const locationSuggestion = useMemo(
+  //   () => getLocationSuggestion(exifData),
+  //   [exifData],
+  // );
 
   const showErrorAlertBox =
     incompleteFields.length > 0 ||
@@ -343,17 +359,15 @@ export default function ReportForm({
       <TermsAndConditionsDialog
         visible={dialogOpen}
         onClose={() => setDialogOpen(false)}
-      />      
-      {
-        !optional && (
-          <RadioChoice
-            titleId="SIGHTING_RADIO_QUESTION"
-            value={sightingType}
-            onChange={setSightingType}
-            choices={radioChoices}
-          />
-        )
-      }
+      />
+      {!optional && (
+        <RadioChoice
+          titleId="SIGHTING_RADIO_QUESTION"
+          value={sightingType}
+          onChange={setSightingType}
+          choices={radioChoices}
+        />
+      )}
       {!optional && sightingType && (
         <>
           <FieldCollections
@@ -370,41 +384,39 @@ export default function ReportForm({
           />
         </>
       )}
-      {
-        !optional && sightingType === 'one' && (
-          <>            
-            <FieldCollections
-              formValues={encounterFormValues}
-              setFormValues={setEncounterFormValues}
-              categories={defaultEncounterCategories}
-              fieldSchema={requiredDefaultEncounterFieldSchemas}
-            />
-            <FieldCollections
-              formValues={customEncounterFormValues}
-              setFormValues={setCustomEncounterFormValues}
-              categories={customEncounterCategories}
-              fieldSchema={requiredCustomEncounterFieldSchemas}
-            />
-          </>
-        )
-      }
+      {!optional && sightingType === 'one' && (
+        <>
+          <FieldCollections
+            formValues={encounterFormValues}
+            setFormValues={setEncounterFormValues}
+            categories={defaultEncounterCategories}
+            fieldSchema={requiredDefaultEncounterFieldSchemas}
+          />
+          <FieldCollections
+            formValues={customEncounterFormValues}
+            setFormValues={setCustomEncounterFormValues}
+            categories={customEncounterCategories}
+            fieldSchema={requiredCustomEncounterFieldSchemas}
+          />
+        </>
+      )}
 
       {optional && (
-              <>
-                <FieldCollections
-                  formValues={sightingFormValues}
-                  setFormValues={setSightingFormValues}
-                  categories={defaultSightingCategories}
-                  fieldSchema={optionalDefaultSightingSchemas}
-                />
-                <FieldCollections
-                  formValues={customSightingFormValues}
-                  setFormValues={setCustomSightingFormValues}
-                  categories={customSightingCategories}
-                  fieldSchema={optionalCustomSightingSchemas}
-                />          
-              </>
-            )}
+        <>
+          <FieldCollections
+            formValues={sightingFormValues}
+            setFormValues={setSightingFormValues}
+            categories={defaultSightingCategories}
+            fieldSchema={optionalDefaultSightingSchemas}
+          />
+          <FieldCollections
+            formValues={customSightingFormValues}
+            setFormValues={setCustomSightingFormValues}
+            categories={customSightingCategories}
+            fieldSchema={optionalCustomSightingSchemas}
+          />
+        </>
+      )}
 
       {optional && sightingType === 'one' && (
         <>
@@ -421,8 +433,8 @@ export default function ReportForm({
             fieldSchema={optionalCustomEncounterFieldSchemas}
           />
         </>
-      )}  
-      
+      )}
+
       {!optional && hasSightingTypeAndNotAuthenticated && (
         <Grid item style={{ marginBottom: 12 }}>
           <FormControlLabel
@@ -458,7 +470,11 @@ export default function ReportForm({
                 variant="body2"
                 id="INCOMPLETE_FIELD"
                 values={{
-                  fieldName: intl.messages[incompleteField.labelId] ? intl.formatMessage({ id: incompleteField.labelId }) : incompleteField.labelId,
+                  fieldName: intl.messages[incompleteField.labelId]
+                    ? intl.formatMessage({
+                        id: incompleteField.labelId,
+                      })
+                    : incompleteField.labelId,
                 }}
               />
             ))}
@@ -475,52 +491,51 @@ export default function ReportForm({
             marginTop: 12,
           }}
         >
-          
-          <div style={{
-              width:'100%', 
-              display: 'flex', 
-              flexDirection: "row",
-              justifyContent: "space-between",
-            }}>
-            
-              <Button
-                id={'BACK'}
-                display="basic"
-                onClick={() => {
-                  setStartForm(false);
-                  setCurrentPage('Upload Image');
-                  setCurrentIndex(currentIndex - 1);
-                }}
-              />
-         
-            <div >
+          <div
+            style={{
+              width: '100%',
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+            }}
+          >
+            <Button
+              id="BACK"
+              display="basic"
+              onClick={() => {
+                setStartForm(false);
+                setCurrentPage('Upload Image');
+                setCurrentIndex(currentIndex - 1);
+              }}
+            />
+
+            <div>
               <Button
                 onClick={async () => {
-                  checkRequired();      
-                  if(formValid) {
+                  checkRequired();
+                  if (formValid) {
                     setOptional(true);
                     setCurrentPage('Optional Data');
                     setCurrentIndex(currentIndex + 1);
-                  };     
+                  }
                 }}
                 display="primary"
-                id={'CONTINUE'}
+                id="CONTINUE"
                 style={{ marginRight: 8 }}
               />
               <Button
                 onClick={async () => {
-                  submitReport();     
+                  submitReport();
                 }}
                 display="primary"
-                id={'SKIP_AND_SUBMIT'}
+                id="SKIP_AND_SUBMIT"
               />
             </div>
           </div>
         </Grid>
       ) : null}
-      
 
-    {optional && sightingType ? (
+      {optional && sightingType ? (
         <Grid
           item
           style={{
@@ -530,27 +545,24 @@ export default function ReportForm({
             marginTop: 12,
           }}
         >
-
           <Button
-            id = {'BACK'}
+            id="BACK"
             display="basic"
             onClick={() => {
               setOptional(false);
-              setCurrentPage("Enter Required Data");
+              setCurrentPage('Enter Required Data');
               setCurrentIndex(currentIndex - 1);
             }}
-
-            />
+          />
           <Button
-            onClick={submitReport}              
+            onClick={submitReport}
             style={{ width: 320, marginBottom: 8 }}
             loading={postAssetGroupLoading}
             display="primary"
             id="REPORT_SIGHTING"
-            
           />
         </Grid>
-      ) : null}  
+      ) : null}
     </>
   );
 }
