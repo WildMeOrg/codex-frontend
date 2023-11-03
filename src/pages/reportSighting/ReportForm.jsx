@@ -88,7 +88,6 @@ export default function ReportForm({
 
   const sightingFieldSchemas = useSightingFieldSchemas();
   const encounterFieldSchemas = useEncounterFieldSchemas();
-  console.log('sightingFieldSchemas1', sightingFieldSchemas);
   const {
     defaultSightingSchemas,
     customSightingSchemas,
@@ -137,7 +136,6 @@ export default function ReportForm({
     useState({});
 
   useEffect(() => {
-    console.log('>>>>>>>>>>>>>');
     const initialDefaultSightingFormValues = getInitialFormValues(
       defaultSightingSchemas,
     );
@@ -275,7 +273,7 @@ export default function ReportForm({
   } = usePostAssetGroup();
 
   const submitReport = async () => {
-    // checkRequired();
+    checkRequired();
     if (formValid) {
       const report =
         sightingType === 'one'
