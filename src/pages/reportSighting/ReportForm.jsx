@@ -137,7 +137,7 @@ export default function ReportForm({
     useState({});
 
   useEffect(() => {
-    if (sightingFieldSchemas.length === 0) return;
+    console.log('>>>>>>>>>>>>>');
     const initialDefaultSightingFormValues = getInitialFormValues(
       defaultSightingSchemas,
     );
@@ -155,12 +155,12 @@ export default function ReportForm({
     setEncounterFormValues(initialDefaultEncounterFormValues);
     setCustomEncounterFormValues(initialCustomEncounterFormValues);
   }, [
-    customEncounterSchemas,
-    customSightingSchemas,
-    defaultEncounterSchemas,
-    defaultSightingSchemas,
-    sightingFieldSchemas,
-    encounterFieldSchemas,
+    customEncounterSchemas.join('-'),
+    customSightingSchemas.join('-'),
+    defaultEncounterSchemas.join('-'),
+    defaultSightingSchemas.join('-'),
+    sightingFieldSchemas.join('-'),
+    encounterFieldSchemas.join('-'),
   ]);
 
   const requiredDefaultSightingSchemas =
@@ -275,7 +275,7 @@ export default function ReportForm({
   } = usePostAssetGroup();
 
   const submitReport = async () => {
-    checkRequired();
+    // checkRequired();
     if (formValid) {
       const report =
         sightingType === 'one'

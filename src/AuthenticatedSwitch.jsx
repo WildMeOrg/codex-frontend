@@ -7,7 +7,6 @@ import AuthenticatedAppHeader from './components/AuthenticatedAppHeader';
 import SaveCustomField from './pages/fieldManagement/settings/saveField/SaveField';
 import GeneralSettings from './pages/generalSettings/GeneralSettings';
 import SiteStatus from './pages/siteStatus/SiteStatus';
-import SplashSettings from './pages/splashSettings/SplashSettings';
 import FieldManagement from './pages/fieldManagement/FieldManagement';
 import UserManagement from './pages/userManagement/UserManagement';
 import AdminActions from './pages/adminActions/AdminActions';
@@ -100,9 +99,6 @@ export default function AuthenticatedSwitch({
                     <SiteSetup />
                   ) : (
                     <Switch location={location}>
-                      <Route path="/settings/front-page" exact>
-                        <SplashSettings />
-                      </Route>
                       <Route path="/settings/front-page/preview">
                         <Splash />
                       </Route>
