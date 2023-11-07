@@ -80,6 +80,10 @@ export function getSightingTermQueryKey(searchTerm) {
   return ['sightingQuickSearch', searchTerm];
 }
 
+export function getEncounterTermQueryKey(searchTerm) {
+  return ['animalQuickSearch', searchTerm];
+}
+
 export function getSocialGroupQueryKey(guid) {
   return ['socialGroup', guid];
 }

@@ -5,7 +5,7 @@ import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
 
 import { formatDate } from '../../utils/formatters';
-import useIndividualTermQuery from '../../models/individual/useIndividualTermQuery';
+import useEncounterTermQuery from '../../models/encounter/useEncounterTermQuery';
 import Text from '../Text';
 import SearchButton from './SearchButton';
 import SearchResult from './SearchResult';
@@ -20,7 +20,7 @@ export default function AnimalsButton() {
     data: searchResults,
     loading,
     error,
-  } = useIndividualTermQuery(searchTerm);
+  } = useEncounterTermQuery(searchTerm);
 
   const resultsCurrent = inputContent === searchTerm;
   const noResults = searchResults?.length === 0;
