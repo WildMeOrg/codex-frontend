@@ -41,17 +41,26 @@ export default function useOptions() {
       }))
       .filter(o => o);
 
-      const pipelineStateOptions = [{label:"preparation", value: "preparation"},
-      {label: "detection", value: "detection"},
-      {label: "curation", value: "curation"},
-      {label: "identification", value: "identification"},
+    const pipelineStateOptions = [
+      { label: 'preparation', value: 'preparation' },
+      { label: 'detection', value: 'detection' },
+      { label: 'curation', value: 'curation' },
+      { label: 'identification', value: 'identification' },
     ];
 
-    const stageOptions = [{label:"un_reviewed", value: "un_reviewed"},
-      {label: "processed", value: "processed"},
-      {label: "failed", value: "failed"},
-      {label: "identification", value: "identification"},
-    ]; 
+    const stageOptions = [
+      { label: 'un_reviewed', value: 'un_reviewed' },
+      { label: 'processed', value: 'processed' },
+      { label: 'failed', value: 'failed' },
+      { label: 'identification', value: 'identification' },
+    ];
+
+    const stateOptions = [
+      { label: 'unreviewed', value: 'unreviewed' },
+      { label: 'in progress', value: 'in_progress' },
+      { label: 'reviewed', value: 'reviewed' },
+      { label: 'unidentifiable', value: 'unidentifiable' },
+    ];
 
     const booleanChoices = [
       {
@@ -71,21 +80,30 @@ export default function useOptions() {
       },
     ];
 
-    const socialGroupRolesOptions = data['social_group_roles'].value.map(o => {
-      return {
-        label: o.label,
-        value: o.guid
-      }
-    });
-
-    const relationshipOptions = Object.values(data['relationship_type_roles'].value).map(o => {
-      return {
+    const socialGroupRolesOptions = data.social_group_roles.value.map(
+      o => ({
         label: o.label,
         value: o.guid,
-        roles: o.roles
-      }
-    });
+      }),
+    );
 
-    return { regionOptions, speciesOptions, pipelineStateOptions, stageOptions, booleanChoices, socialGroupRolesOptions, relationshipOptions };  
+    const relationshipOptions = Object.values(
+      data.relationship_type_roles.value,
+    ).map(o => ({
+      label: o.label,
+      value: o.guid,
+      roles: o.roles,
+    }));
+
+    return {
+      regionOptions,
+      speciesOptions,
+      pipelineStateOptions,
+      stageOptions,
+      booleanChoices,
+      socialGroupRolesOptions,
+      relationshipOptions,
+      stateOptions,
+    };
   }, [loading, error, data]);
 }

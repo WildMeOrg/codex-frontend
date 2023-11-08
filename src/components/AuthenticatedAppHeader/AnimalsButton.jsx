@@ -47,7 +47,7 @@ export default function AnimalsButton() {
             <Text
               variant="body2"
               style={{ padding: '16px 0 0 48px' }}
-              id="ANIMALS_SEARCH_NO_RESULTS"
+              id="ENCOUNTER_SEARCH_NO_RESULTS"
               values={{ searchTerm }}
             />
           )}

@@ -988,6 +988,7 @@
   "COMPONENT_COMMIT_HASH": "{component} commit hash: ",
   "INDIVIDUAL_SEARCH_NO_RESULTS": "Your search \"{searchTerm}\" did not match any individuals.",
   "SIGHTING_SEARCH_NO_RESULTS": "Your search \"{searchTerm}\" did not match any sightings.",
+  "ENCOUNTER_SEARCH_NO_RESULTS": "Your search \"{searchTerm}\" did not match any sightings.",
   "POTENTIAL_COLLABORATOR_SEARCH_NO_RESULTS": "Your search \"{searchTerm}\" did not match any potential collaborators.",
   "SEARCH_SERVER_ERROR": "A server error occurred while attempting to search.",
   "CONFIGURATION_SITE_NAME_LABEL": "Site name",
@@ -1273,5 +1274,9 @@
   "CONFIRM_NO_MATCH" : "Confirm no match",
   "NUMBER_OF_INDIVIDUALS" : "Number of individuals",
   "NUMBER_OF_ENCOUNTERS" : "Number of animals",
-  "ASSIGN" : "Assign"
+  "ASSIGN" : "Assign",
+  "STATE" : "State",
+  "ENCOUNTER_TIME" : "Time of encounter",
+  "LATITUDE" : "Latitude",
+  "LONGTITUDE" : "Longtitude"
 }
