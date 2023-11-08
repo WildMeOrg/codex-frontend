@@ -81,7 +81,7 @@ export function getSightingTermQueryKey(searchTerm) {
 }
 
 export function getEncounterTermQueryKey(searchTerm) {
-  return ['animalQuickSearch', searchTerm];
+  return ['encounterQuickSearch', searchTerm];
 }
 
 export function getSocialGroupQueryKey(guid) {
@@ -102,6 +102,14 @@ export function getSightingFilterQueryKey(
   rowsPerPage,
 ) {
   return ['sightingFilterSearch', filters, page, rowsPerPage];
+}
+
+export function getEncounterFilterQueryKey(
+  filters,
+  page,
+  rowsPerPage,
+) {
+  return ['encounterFilterSearch', filters, page, rowsPerPage];
 }
 
 export function getAuditLogQueryKey(filters, page, rowsPerPage) {

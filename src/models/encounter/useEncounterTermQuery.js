@@ -23,7 +23,7 @@ export default function useEncounterTermQuery(searchTerm) {
 
   return useFetch({
     method: 'post',
-    url: '/animals/search',
+    url: '/encounters/search',
     queryKey: getEncounterTermQueryKey(searchTerm),
     data: query,
     queryOptions: {

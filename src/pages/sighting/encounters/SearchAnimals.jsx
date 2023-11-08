@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 
-import useSightingSearchSchemas from '../../../models/sighting/useSightingSearchSchemas';
-import useFilterSightings from '../../../models/sighting/useFilterSightings';
+import useEncounterSearchSchemas from '../../../models/encounter/useEncounterSearchSchemas';
+import useFilterEncounters from '../../../models/encounter/useFilterEncounters';
 import SearchPage from '../../../components/SearchPage';
 import FilterPanel from '../../../components/FilterPanel';
 import SearchFilterList from '../../../components/SearchFilterList';
-import ElasticsearchSightingsDisplay from '../../../components/dataDisplays/ElasticsearchSightingsDisplay';
+import ElasticsearchEncountersDisplay from '../../../components/dataDisplays/ElasticsearchEncountersDisplay';
 import Paginator from '../../../components/dataDisplays/Paginator';
 
 const rowsPerPage = 100;
@@ -19,18 +19,21 @@ export default function SearchAnimals() {
     reverse: true,
   });
 
-  const { data, loading } = useFilterSightings({
+  const { data, loading } = useFilterEncounters({
     queries: formFilters,
     params: searchParams,
   });
 
-  const { results: searchResults, resultCount } = data;
+  console.log('data', data);
 
-  const schemas = useSightingSearchSchemas();
+  const { results: searchResults, resultCount } = data;
+  console.log('searchResults', searchResults);
+
+  const schemas = useEncounterSearchSchemas();
 
   return (
     <SearchPage
-      titleId="EXPLORE_SIGHTINGS"
+      titleId="EXPLORE_ANIMALS"
       filterPanel={
         <FilterPanel
           formFilters={formFilters}
@@ -47,8 +50,8 @@ export default function SearchAnimals() {
         />
       }
     >
-      <ElasticsearchSightingsDisplay
-        sightings={searchResults || []}
+      <ElasticsearchEncountersDisplay
+        encounters={searchResults || []}
         loading={loading}
         sortExternally
         searchParams={searchParams}
