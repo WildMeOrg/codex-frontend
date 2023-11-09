@@ -18,7 +18,11 @@ export default function useBuildFilter(fields, component) {
   const { booleanChoices } = useOptions();
   let queryTerm;
   let queryTerms;
-  if (component === 'sightings' || component === 'individuals') {
+  if (
+    component === 'sightings' ||
+    component === 'individuals' ||
+    !component
+  ) {
     queryTerm = 'customFields';
     queryTerms = 'customFields';
   } else if (component === 'encounters') {

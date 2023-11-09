@@ -200,7 +200,7 @@
   "SEARCH_ITIS_SPECIES": "Search ITIS species",
   "SEARCH_INDIVIDUALS_INSTRUCTION": "Search for an individual by name or guid",
   "SEARCH_SIGHTINGS_INSTRUCTION": "Search for a sighting by location, owner or guid",
-  "SEARCH_ANIMALS_INSTRUCTION": "Search for an animal by location, owner or guid",
+  "SEARCH_ANIMALS_INSTRUCTION": "Search for an animal by location or owner",
   "SEARCH_USER_INSTRUCTION": "Search for a user by name or email",
   "PRAIRIE": "Prairie",
   "EDIT_USER_METADATA": "Edit user metadata",
