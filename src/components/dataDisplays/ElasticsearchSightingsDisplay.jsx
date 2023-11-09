@@ -14,6 +14,7 @@ export default function ElasticsearchSightingsDisplay({
   ...rest
 }) {
   const title = `${dataCount || sightings.length} matching sightings`;
+  console.log('sightings', sightings);
 
   const tableData = sightings.map(sighting =>
     // const encounters = sighting?.encounters || [];
@@ -77,6 +78,7 @@ export default function ElasticsearchSightingsDisplay({
       options: {
         customBodyRender: owners => {
           // eslint-disable-line
+          // eslint-disable-line
           const ownerName = get(
             owners,
             [0, 'full_name'],
@@ -101,6 +103,7 @@ export default function ElasticsearchSightingsDisplay({
       sortable: false,
       options: {
         customBodyRender: (
+          // eslint-disable-line
           guid, // eslint-disable-line
         ) => (
           <ActionIcon

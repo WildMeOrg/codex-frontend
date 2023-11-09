@@ -6,7 +6,6 @@ export default function useEncounterTermQuery(searchTerm) {
     bool: {
       minimum_should_match: 1,
       should: [
-        { term: { guid: searchTerm } },
         {
           query_string: {
             query: `*${searchTerm}*`,

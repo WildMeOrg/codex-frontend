@@ -17,19 +17,16 @@ export default function useSightingSearchSchemas() {
     siteSettings['site.custom.customFields.Encounter'].value
       .definitions || [];
 
-  const encountersField = useBuildFilter(
-    customEncounterFields,
-    'encounters',
-  );
+  const encountersField = useBuildFilter(customEncounterFields);
 
   return [
     {
       id: 'name',
       labelId: 'NAME',
-      FilterComponent: autogenNameFilter,
+      FilterComponent: SubstringFilter,
       filterComponentProps: {
         filterId: 'name',
-        queryTerms: ['individualNamesWithContexts'],
+        queryTerms: ['individualNamesWithContexts.FirstName'],
       },
     },
     {
@@ -42,7 +39,7 @@ export default function useSightingSearchSchemas() {
       },
     },
     {
-      id: 'region',
+      id: 'locationId',
       labelId: 'REGION',
       FilterComponent: OptionTermFilter,
       filterComponentProps: {
@@ -57,7 +54,7 @@ export default function useSightingSearchSchemas() {
       FilterComponent: SubstringFilter,
       filterComponentProps: {
         filterId: 'verbatimLocality',
-        queryTerms: ['verbatimLocality', 'locationId_value'],
+        queryTerms: ['verbatimLocality'],
       },
     },
     {
@@ -77,12 +74,12 @@ export default function useSightingSearchSchemas() {
       },
     },
     {
-      id: 'state',
+      id: 'match_state',
       labelId: 'STATE',
       FilterComponent: OptionTermFilter,
       filterComponentProps: {
-        filterId: 'state',
-        queryTerm: 'state',
+        filterId: 'match_state',
+        queryTerm: 'match_state',
         choices: stateOptions,
       },
     },

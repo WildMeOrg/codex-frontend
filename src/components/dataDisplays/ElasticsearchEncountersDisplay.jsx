@@ -15,16 +15,35 @@ export default function ElasticsearchEncountersDisplay({
 
   const columns = [
     {
-      name: 'individualContext',
+      name: 'individualNamesWithContexts.FirstName',
       labelId: 'NAME',
       sortable: false,
       align: 'left',
     },
     {
-      name: 'autogenName',
+      name: 'individualNamesWithContexts',
       labelId: 'CODEX_ID',
       sortable: false,
       align: 'left',
+      options: {
+        customBodyRender: (
+          // eslint-disable-line
+          objects,
+          encounter, // eslint-disable-line
+        ) => {
+          const autogenKeys = Object.keys(objects).filter(key =>
+            key.startsWith('autogen-'),
+          );
+          const autogenContent = autogenKeys
+            .map(key => objects[key])
+            .join(', ');
+          return (
+            <Link to={`/individuals/${encounter?.individual_guid}`}>
+              {autogenContent}
+            </Link>
+          );
+        },
+      },
     },
     {
       name: 'taxonomy_guid',
@@ -34,16 +53,17 @@ export default function ElasticsearchEncountersDisplay({
       options: { cellRenderer: cellRendererTypes.species },
     },
     {
-      name: 'state',
+      name: 'match_state',
       labelId: 'STATE',
       sortable: false,
       align: 'left',
       options: {
         customBodyRender: (
+          // eslint-disable-line
           match_state,
-          sighting, // eslint-disable-line
+          encounter,
         ) => (
-          <Link to={`/sightings/${sighting}`}>
+          <Link to={`/sightings/${encounter?.sighting_guid}`}>
             {match_state || 'Unprocessed'}
           </Link>
         ),
@@ -53,24 +73,25 @@ export default function ElasticsearchEncountersDisplay({
       name: 'time',
       sortName: 'time.datetime',
       labelId: 'ENCOUNTER_TIME',
+      align: 'left',
       options: {
         cellRenderer: cellRendererTypes.specifiedTime,
       },
     },
     {
-      name: 'locationId_value',
+      name: 'locationId',
       labelId: 'REGION',
       sortable: false,
       align: 'left',
     },
     {
-      name: 'decimalLatitude',
+      name: 'location_geo_point.lat',
       labelId: 'LATITUDE',
       sortable: false,
       align: 'left',
     },
     {
-      name: 'decimalLongitude',
+      name: 'location_geo_point.lon',
       labelId: 'LONGTITUDE',
       sortable: false,
       align: 'left',
