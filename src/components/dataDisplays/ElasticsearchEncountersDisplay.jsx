@@ -29,7 +29,7 @@ export default function ElasticsearchEncountersDisplay({
         customBodyRender: (
           // eslint-disable-line
           objects,
-          encounter, // eslint-disable-line
+          encounter,
         ) => {
           const autogenKeys = Object.keys(objects).filter(key =>
             key.startsWith('autogen-'),
@@ -79,7 +79,7 @@ export default function ElasticsearchEncountersDisplay({
       },
     },
     {
-      name: 'locationId',
+      name: 'locationId_value',
       labelId: 'REGION',
       sortable: false,
       align: 'left',
