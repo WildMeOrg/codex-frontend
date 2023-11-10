@@ -1,18 +1,20 @@
 import React, { useState } from 'react';
-import { useIntl, FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
+import { get } from 'lodash-es';
 
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
 
-import { formatDate } from '../../utils/formatters';
+import {
+  formatDate,
+  formatSpecifiedTime,
+} from '../../utils/formatters';
 import useEncounterTermQuery from '../../models/encounter/useEncounterTermQuery';
 import Text from '../Text';
 import SearchButton from './SearchButton';
 import SearchResult from './SearchResult';
 
 export default function AnimalsButton() {
-  const intl = useIntl();
-
   const [inputContent, setInputContent] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -59,32 +61,41 @@ export default function AnimalsButton() {
             />
           )}
           <List dense style={{ maxHeight: 400, overflow: 'auto' }}>
-            {mappableSearchResults.map(individual => {
-              const individualGuid = individual?.guid;
-              const adoptionName = individual?.adoptionName;
-              const defaultName =
-                individual?.firstName || 'Unnamed individual';
-              const displayString = adoptionName
-                ? `${defaultName} (${adoptionName})`
-                : defaultName;
-              const avatarLetter = defaultName[0].toUpperCase();
-              const createdDate = formatDate(
-                individual?.created,
-                true,
-                intl.formatMessage({ id: 'UNKNOWN_DATE' }),
+            {mappableSearchResults.map(encounter => {
+              const encounterGuid = encounter?.guid;
+              const sightingGuid = encounter?.sighting_guid;
+              const ownerName = get(
+                encounter,
+                ['owners', 0, 'full_name'],
+                'Unknown User',
               );
+              const regionLabel = encounter?.locationId_value;
+              const createdDate = formatDate(encounter?.time, true);
+              const encounterDate = formatSpecifiedTime(
+                encounter?.time,
+                encounter?.timeSpecificity,
+              );
+              const avatarLetter = ownerName[0].toUpperCase();
 
               return (
                 <SearchResult
-                  key={individualGuid}
+                  key={encounterGuid}
                   avatarLetter={avatarLetter}
-                  href={`/individuals/${individualGuid}`}
+                  href={`/sightings/${sightingGuid}`}
                   onClick={closePopover}
-                  primaryText={displayString}
+                  primaryText={
+                    <FormattedMessage
+                      values={{
+                        region: regionLabel,
+                        date: encounterDate,
+                      }}
+                      id="ANIMAL_SEARCH_RESULT_PRIMARY_TEXT"
+                    />
+                  }
                   secondaryText={
                     <FormattedMessage
-                      id="CREATED_ON_DATE"
-                      values={{ createdDate }}
+                      values={{ name: ownerName, date: createdDate }}
+                      id="ANIMAL_SEARCH_RESULT_SECONDARY_TEXT"
                     />
                   }
                 />
