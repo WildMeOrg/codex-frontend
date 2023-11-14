@@ -1,7 +1,7 @@
 import { get, partition } from 'lodash-es';
 
 import useFetch from '../../hooks/useFetch';
-import { getSightingFilterQueryKey } from '../../constants/queryKeys';
+import { getEncounterFilterQueryKey } from '../../constants/queryKeys';
 
 export default function useFilterEncounters({
   queries,
@@ -20,7 +20,7 @@ export default function useFilterEncounters({
   };
   return useFetch({
     method: 'post',
-    queryKey: getSightingFilterQueryKey(queries, params),
+    queryKey: getEncounterFilterQueryKey(queries, params),
     url: '/encounters/search',
     data: compositeQuery,
     params: {
