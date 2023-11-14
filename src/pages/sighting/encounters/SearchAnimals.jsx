@@ -24,10 +24,7 @@ export default function SearchAnimals() {
     params: searchParams,
   });
 
-  console.log('data', data);
-
   const { results: searchResults, resultCount } = data;
-  console.log('searchResults', searchResults);
 
   const schemas = useEncounterSearchSchemas();
 

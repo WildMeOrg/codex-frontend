@@ -66,11 +66,14 @@ export default function AnimalsButton() {
               const sightingGuid = encounter?.sighting_guid;
               const ownerName = get(
                 encounter,
-                ['owners', 0, 'full_name'],
+                ['owner', 'full_name'],
                 'Unknown User',
               );
               const regionLabel = encounter?.locationId_value;
-              const createdDate = formatDate(encounter?.time, true);
+              const createdDate = formatDate(
+                encounter?.created,
+                true,
+              );
               const encounterDate = formatSpecifiedTime(
                 encounter?.time,
                 encounter?.timeSpecificity,

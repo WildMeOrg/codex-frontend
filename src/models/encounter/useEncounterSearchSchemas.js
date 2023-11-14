@@ -22,7 +22,7 @@ export default function useSightingSearchSchemas() {
   return [
     {
       id: 'name',
-      labelId: 'NAME',
+      labelId: 'INDIVIDUAL_NAME',
       FilterComponent: SubstringFilter,
       filterComponentProps: {
         filterId: 'name',
@@ -39,37 +39,12 @@ export default function useSightingSearchSchemas() {
       },
     },
     {
-      id: 'locationId',
-      labelId: 'REGION',
-      FilterComponent: OptionTermFilter,
-      filterComponentProps: {
-        queryTerm: 'locationId',
-        filterId: 'locationId',
-        choices: regionOptions,
-      },
-    },
-    {
-      id: 'verbatimLocality',
-      labelId: 'FREEFORM_LOCATION',
-      FilterComponent: SubstringFilter,
-      filterComponentProps: {
-        filterId: 'verbatimLocality',
-        queryTerms: ['verbatimLocality'],
-      },
-    },
-    {
-      id: 'time',
-      labelId: 'SIGHTING_DATE_RANGE',
-      FilterComponent: DateRangeFilter,
-      filterComponentProps: { queryTerm: 'time', filterId: 'time' },
-    },
-    {
       id: 'species',
       labelId: 'SPECIES',
       FilterComponent: OptionTermFilter,
       filterComponentProps: {
         filterId: 'species',
-        queryTerm: 'taxonomy_guids',
+        queryTerm: 'taxonomy_guid',
         choices: speciesOptions,
       },
     },
@@ -84,12 +59,37 @@ export default function useSightingSearchSchemas() {
       },
     },
     {
+      id: 'time',
+      labelId: 'SIGHTING_DATE_RANGE',
+      FilterComponent: DateRangeFilter,
+      filterComponentProps: { queryTerm: 'time', filterId: 'time' },
+    },
+    {
+      id: 'locationId',
+      labelId: 'REGION',
+      FilterComponent: OptionTermFilter,
+      filterComponentProps: {
+        queryTerm: 'locationId',
+        filterId: 'locationId',
+        choices: regionOptions,
+      },
+    },
+    {
       id: 'latlong',
       labelId: 'EXACT_LOCATION',
       FilterComponent: PointDistanceFilter,
       filterComponentProps: {
         filterId: 'latlong',
         queryTerm: 'location_geo_point',
+      },
+    },
+    {
+      id: 'verbatimLocality',
+      labelId: 'FREEFORM_LOCATION',
+      FilterComponent: SubstringFilter,
+      filterComponentProps: {
+        filterId: 'verbatimLocality',
+        queryTerms: ['verbatimLocality'],
       },
     },
     ...encountersField,
