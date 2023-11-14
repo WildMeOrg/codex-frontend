@@ -11,7 +11,7 @@ export default function useEncounterTermQuery(searchTerm) {
             query: `*${searchTerm}*`,
             fields: [
               'verbatimLocality',
-              'owners.full_name',
+              'owner.full_name',
               'locationId_value',
             ],
           },
