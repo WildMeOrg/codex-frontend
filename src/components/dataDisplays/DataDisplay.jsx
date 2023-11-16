@@ -33,6 +33,7 @@ import sendCsv, { downloadFileFromBackend } from './sendCsv';
 import useGetMe from '../../models/users/useGetMe';
 import buildSightingsQuery from './buildSightingsQuery';
 import buildIndividualsQuery from './buildIndividualsQuery';
+import buildEncountersQuery from './buildEncountersQuery';
 
 function getCellAlignment(cellIndex, columnDefinition) {
   if (columnDefinition.align) return columnDefinition.align;
@@ -248,19 +249,28 @@ export default function DataDisplay({
                 <IconButton
                   onClick={async () => {
                     const formTitle = title.split(' ')[2];
-                    const url = `${__houston_url__}/api/v1/${formTitle}/export`;
+                    const url = `${__houston_url__}/api/v1/${
+                      formTitle === 'animals'
+                        ? 'encounters'
+                        : formTitle
+                    }/export`;
                     if (
                       formTitle === 'sightings' ||
-                      formTitle === 'individuals'
+                      formTitle === 'individuals' ||
+                      formTitle === 'animals'
                     ) {
                       let compositeQuery = {};
 
                       if (formTitle === 'sightings') {
                         compositeQuery =
                           buildSightingsQuery(formFilters);
-                      } else {
+                      } else if (formTitle === 'individuals') {
                         compositeQuery =
                           buildIndividualsQuery(formFilters);
+                      } else if (formTitle === 'animals') {
+                        compositeQuery =
+                          buildEncountersQuery(formFilters);
+                        console.log('compositeQuery', compositeQuery);
                       }
                       try {
                         const response = await axios.request({
