@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import { Autocomplete } from '@material-ui/lab';
 import { TextField } from '@material-ui/core';
@@ -8,6 +8,7 @@ import useDescription from '../../../hooks/useDescription';
 import useEditLabel from '../../../hooks/useEditLabel';
 import FormCore from './FormCore';
 import { collapseChoices } from '../../../utils/formatters';
+import { set } from 'date-fns';
 
 export default function LocationIdEditor(props) {
   const {
@@ -30,10 +31,42 @@ export default function LocationIdEditor(props) {
     [get(schema, 'choices.length')],
   );
 
+  console.log(get(schema, 'choices', []), 0)
+
   const currentRegionArray = value
     ? collapsedChoices.filter(choice => get(choice, 'id') === value)
     : null;
   const currentRegion = get(currentRegionArray, [0], null);
+  console.log("currentRegion", currentRegion);
+
+  const [subRegion, setSubRegion] = React.useState([]);
+
+  useEffect(() => { 
+    if(collapsedChoices?.length && currentRegion) {
+      console.log("======>>>>>>>>>",collapsedChoices);
+      const selectedIndex = collapsedChoices?.findIndex(data => data.id === currentRegion.id);
+      console.log("selectedIndex", selectedIndex);
+      const subRegion1 = [];
+
+      for (let i = selectedIndex + 1; i < collapsedChoices?.length; i++) {
+        const currentOption = collapsedChoices[i];  
+        if (currentOption.depth > currentRegion?.depth) {
+          subRegion1.push(currentOption);
+          
+        } else if (currentOption.depth <= currentRegion.depth) {
+          break;
+        }
+      }
+
+      setSubRegion(subRegion1);
+
+  console.log("subRegion", subRegion);
+    }
+    
+  
+
+  }, [currentRegion]);
+
 
   const filterOptions = (options, { inputValue }) => {
     console.log('options', options);
@@ -68,20 +101,22 @@ export default function LocationIdEditor(props) {
         renderOption={(option, { selected, inputValue }) => {
           const searchResult = option.name
             .toLowerCase()
-            .includes(inputValue.toLowerCase());
+            .includes(inputValue.toLowerCase() || 'A');
+            // console.log("option", option);
+          
 
           return (
             <>
               <Radio
                 style={{
                   paddingLeft: option.depth * 10,
-                  fontSize: 5,
                 }}
-                checked={selected || searchResult}
+                checked={selected}
                 value={option.id}
-                onChange={() => {}}
+                // onChange={() => {}}
                 color="primary"
-                inputProps={{ 'aria-labelledby': option.id }}
+                size="small"
+                // inputProps={{ 'aria-labelledby': option.id }}
               />
               {searchResult ? (
                 <span
