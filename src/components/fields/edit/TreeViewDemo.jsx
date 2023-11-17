@@ -80,78 +80,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-// const renderTree = (nodes, searchText) => {
-//   if (searchText && !nodes.name.toLowerCase().includes(searchText.toLowerCase())) {
-//     return null;
-//   }
-//   const matchesSearch = searchText && nodes.name.toLowerCase().includes(searchText.toLowerCase());
-
-
-//   return (
-//     <TreeItem
-//       key={nodes.id}
-//       nodeId={nodes.id}
-//       label={
-//         <div style={{ display: 'flex', alignItems: 'center' }}>
-//           <Radio />
-//           {nodes.name}
-//         </div>
-//       }
-//     >
-//       {/* {Array.isArray(nodes.locationID)
-//         ? nodes.locationID.map((node) => renderTree(node, searchText))
-//         : null} */}
-
-//       {Array.isArray(nodes.locationID) && matchesSearch
-//         ? nodes.locationID.map((node) => renderTree(node, searchText))
-//         : null}
-//     </TreeItem>
-//   );
-// };
-
-// const TreeViewDemo = (props) => {
-//   const {    
-//     onChange,    
-//   } = props;
-//   const classes = useStyles();
-//   const [searchText, setSearchText] = useState('');
-//   const handleSearchChange = (event) => {
-//     setSearchText(event.target.value);
-//   };
-
-//   const handleNodeSelect = (event, nodeId) => {
-//     console.log('selected', nodeId);
-//     onChange(nodeId);
-//   };
-
-//   return (
-//     <Paper style={{maxHeight:200, width: '100%', overflow:"auto"}}>
-//       <TextField
-//         style={{ width:'100%' }}
-//         label="Search"
-//         value={searchText}
-//         onChange={handleSearchChange}
-//       />
-//       <TreeView
-//         onNodeSelect={handleNodeSelect}
-
-//         className={classes.root}
-//         defaultCollapseIcon={<ExpandMoreIcon />}
-//         defaultExpandIcon={<ChevronRightIcon />}
-//       >
-//         {data.map((node) => renderTree(node, searchText))}
-//       </TreeView>
-//     </Paper>
-//   );
-// };
-
-const renderTree = (nodes, searchText, expandedNodes, onNodeToggle) => {
+const renderTree = (nodes, searchText) => {
   if (searchText && !nodes.name.toLowerCase().includes(searchText.toLowerCase())) {
     return null;
   }
   const matchesSearch = searchText && nodes.name.toLowerCase().includes(searchText.toLowerCase());
 
-  const isExpanded = expandedNodes.includes(nodes.id);
 
   return (
     <TreeItem
@@ -163,50 +97,31 @@ const renderTree = (nodes, searchText, expandedNodes, onNodeToggle) => {
           {nodes.name}
         </div>
       }
-      onIconClick={() => onNodeToggle(nodes.id)}
-      onLabelClick={() => onNodeToggle(nodes.id)}
-      icon={nodes.locationID && nodes.locationID.length > 0 ? (isExpanded ? <ExpandMoreIcon /> : <ChevronRightIcon />) : null}
     >
-      {Array.isArray(nodes.locationID) && matchesSearch && isExpanded
-        ? nodes.locationID.map((node) => renderTree(node, searchText, expandedNodes, onNodeToggle))
+      {Array.isArray(nodes.locationID)
+        ? nodes.locationID.map((node) => renderTree(node, searchText))
         : null}
     </TreeItem>
   );
 };
 
 const TreeViewDemo = (props) => {
-  // ... (unchanged code)
-
   const {    
-        onChange,    
-      } = props;
-      const classes = useStyles();
-      const [searchText, setSearchText] = useState('');
-      const handleSearchChange = (event) => {
-        setSearchText(event.target.value);
-      };
-    
-      const handleNodeSelect = (event, nodeId) => {
-        console.log('selected', nodeId);
-        onChange(nodeId);
-      };
-    
+    onChange,    
+  } = props;
+  const classes = useStyles();
+  const [searchText, setSearchText] = useState('');
+  const handleSearchChange = (event) => {
+    setSearchText(event.target.value);
+  };
 
-  const [expandedNodes, setExpandedNodes] = useState([]);
-
-  const handleNodeToggle = (nodeId) => {
-    setExpandedNodes((prevExpandedNodes) => {
-      if (prevExpandedNodes.includes(nodeId)) {
-        return prevExpandedNodes.filter((id) => id !== nodeId);
-      } else {
-        return [...prevExpandedNodes, nodeId];
-      }
-    });
+  const handleNodeSelect = (event, nodeId) => {
+    console.log('selected', nodeId);
+    onChange(nodeId);
   };
 
   return (
     <Paper style={{maxHeight:200, width: '100%', overflow:"auto"}}>
-      {/* ... (unchanged code) */}
       <TextField
         style={{ width:'100%' }}
         label="Search"
@@ -215,15 +130,96 @@ const TreeViewDemo = (props) => {
       />
       <TreeView
         onNodeSelect={handleNodeSelect}
+
         className={classes.root}
         defaultCollapseIcon={<ExpandMoreIcon />}
         defaultExpandIcon={<ChevronRightIcon />}
       >
-        {data.map((node) => renderTree(node, searchText, expandedNodes, handleNodeToggle))}
+        {data.map((node) => renderTree(node, searchText))}
       </TreeView>
     </Paper>
   );
 };
+
+// const renderTree = (nodes, searchText, expandedNodes, onNodeToggle) => {
+//   if (searchText && !nodes.name.toLowerCase().includes(searchText.toLowerCase())) {
+//     return null;
+//   }
+//   const matchesSearch = searchText && nodes.name.toLowerCase().includes(searchText.toLowerCase());
+
+//   const isExpanded = expandedNodes.includes(nodes.id);
+
+//   return (
+//     <TreeItem
+//       key={nodes.id}
+//       nodeId={nodes.id}
+//       label={
+//         <div style={{ display: 'flex', alignItems: 'center' }}>
+//           <Radio />
+//           {nodes.name}
+//         </div>
+//       }
+//       onIconClick={() => onNodeToggle(nodes.id)}
+//       onLabelClick={() => onNodeToggle(nodes.id)}
+//       icon={nodes.locationID && nodes.locationID.length > 0 ? (isExpanded ? <ExpandMoreIcon /> : <ChevronRightIcon />) : null}
+//     >
+//       {Array.isArray(nodes.locationID) && matchesSearch && isExpanded
+//         ? nodes.locationID.map((node) => renderTree(node, searchText, expandedNodes, onNodeToggle))
+//         : null}
+//     </TreeItem>
+//   );
+// };
+
+// const TreeViewDemo = (props) => {
+//   // ... (unchanged code)
+
+//   const {    
+//         onChange,    
+//       } = props;
+//       const classes = useStyles();
+//       const [searchText, setSearchText] = useState('');
+//       const handleSearchChange = (event) => {
+//         setSearchText(event.target.value);
+//       };
+    
+//       const handleNodeSelect = (event, nodeId) => {
+//         console.log('selected', nodeId);
+//         onChange(nodeId);
+//       };
+    
+
+//   const [expandedNodes, setExpandedNodes] = useState([]);
+
+//   const handleNodeToggle = (nodeId) => {
+//     setExpandedNodes((prevExpandedNodes) => {
+//       if (prevExpandedNodes.includes(nodeId)) {
+//         return prevExpandedNodes.filter((id) => id !== nodeId);
+//       } else {
+//         return [...prevExpandedNodes, nodeId];
+//       }
+//     });
+//   };
+
+//   return (
+//     <Paper style={{maxHeight:200, width: '100%', overflow:"auto"}}>
+//       {/* ... (unchanged code) */}
+//       <TextField
+//         style={{ width:'100%' }}
+//         label="Search"
+//         value={searchText}
+//         onChange={handleSearchChange}
+//       />
+//       <TreeView
+//         onNodeSelect={handleNodeSelect}
+//         className={classes.root}
+//         defaultCollapseIcon={<ExpandMoreIcon />}
+//         defaultExpandIcon={<ChevronRightIcon />}
+//       >
+//         {data.map((node) => renderTree(node, searchText, expandedNodes, handleNodeToggle))}
+//       </TreeView>
+//     </Paper>
+//   );
+// };
 
 
 export default TreeViewDemo;
