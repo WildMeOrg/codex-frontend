@@ -12,8 +12,6 @@ import { flattenDeep } from 'lodash-es';
 import { set, sub } from 'date-fns';
 import { useState } from 'react';
 import TreeViewDemo from './TreeViewDemo';
-import Button from '../../Button';
-import { FormattedMessage } from 'react-intl';
 
 
 export default function LocationIdEditor(props) {
@@ -44,20 +42,7 @@ export default function LocationIdEditor(props) {
 
   const [modalOpen, setModalOpen] = useState(false);
 
-  // function getSubRegion(selectedRegion) {
-  //   const selectedIndex = collapsedChoices?.findIndex(data => data.id === selectedRegion.id);
-  //     const subRegion = [];
-
-  //     for (let i = selectedIndex + 1; i < collapsedChoices?.length; i++) {
-  //       const currentOption = collapsedChoices[i];  
-  //       if (currentOption.depth > selectedRegion?.depth) {
-  //         subRegion.push(currentOption);          
-  //       } else if (currentOption.depth <= selectedRegion.depth) {
-  //         break;
-  //       }
-  //     }
-  //     return subRegion;
-  // }
+  
 
   // const filterOptions = (options, { inputValue }) => {
   //   const subRegion = [];
@@ -159,20 +144,66 @@ export default function LocationIdEditor(props) {
   //   </FormCore>
   // );
 
+  const data = get(schema, 'choices', []);
+
+  const flatternedTree = {};
+  const nameToIdMap = {};
+
+  const flatternTree = (tree) => {
+    if(_.isNil(tree) || !_.isArray(tree) || _.isEmpty(tree)) return;
+    
+    tree.map(node => {
+      flatternedTree[node.id] = node;
+      nameToIdMap[node.name] = node.id;
+      if(!_.isNil(node, 'locationID') && _.isArray(node.locationID) && !_.isEmpty(node.locationID)) {
+        flatternTree(node.locationID);
+      }
+    })
+  }
+
+  flatternTree(data);
+
+  const [searchText, setSearchText] = useState('');
+  const [showData, setShowData] = useState(data);
+  const handleSearchChange = (event) => {
+    const searchText = event.target.value;
+    setSearchText(searchText);
+    const validNodes = filter(data, searchText);
+    setShowData(validNodes);
+  };
+  const filter = (orgData, searchText) => {
+    if (_.isNil(searchText) || _.isEmpty(searchText)) {
+      return orgData;
+    }
+
+    const validNodes = _.keys(nameToIdMap)
+    .filter(name => name.toLowerCase().includes(searchText.toLowerCase()))
+    .map(name => {
+      const id = nameToIdMap[name];
+      const node = flatternedTree[id];
+      return node;
+    })
+    .filter(node => !_.isNil(node) && !_.isEmpty(node))
+    
+    return validNodes;
+  }
 
   return (
     <FormCore schema={schema} width={width}>
-      <Button
-        style={{
-          width:"100%",
-
-          borderBottom: '1px solid #ccc',
-        }}
-        onClick={() => {setModalOpen(!modalOpen)}} 
-        >
-        <FormattedMessage id="SEARCH_REGION" />
-      </Button>
-      {modalOpen && <TreeViewDemo onChange={onChange}/>}
+      <TextField
+        style={{ width:'100%' }}
+        label={editLabel}
+        value={searchText}
+        onFocus={() => {setModalOpen(true)}}
+        onBlur={() => {setModalOpen(false)}}
+        onChange={handleSearchChange}
+      />
+      {modalOpen && 
+        <TreeViewDemo 
+          onChange={onChange} 
+          searchText={searchText}
+          showData={showData}
+        />}
     </FormCore>)
 
 }
