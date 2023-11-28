@@ -1,148 +1,31 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect } from 'react';
 import FormHelperText from '@material-ui/core/FormHelperText';
-import { Autocomplete } from '@material-ui/lab';
 import { TextField } from '@material-ui/core';
-import { filter, get } from 'lodash-es';
-import Radio from '@material-ui/core/Radio';
+import { get } from 'lodash-es';
 import useDescription from '../../../hooks/useDescription';
 import useEditLabel from '../../../hooks/useEditLabel';
 import FormCore from './FormCore';
-import { collapseChoices } from '../../../utils/formatters';
-import { flattenDeep } from 'lodash-es';
-import { set, sub } from 'date-fns';
 import { useState } from 'react';
 import TreeViewDemo from './TreeViewDemo';
-
+import _ from 'lodash-es';
 
 export default function LocationIdEditor(props) {
   const {
     schema,
-    required,
+    // required,
     onChange,
     width,
-    value,
-    multiple,
+    // value,
+    // multiple,
     minimalLabels = false,
-    ...rest
+    // ...rest
   } = props;
 
   const editLabel = useEditLabel(schema);
   const description = useDescription(schema);
   const showDescription = !minimalLabels && description;
-
-  const collapsedChoices = useMemo(
-    () => collapseChoices(get(schema, 'choices', []), 0),
-    [get(schema, 'choices.length')],
-  );
-
-  const currentRegionArray = value
-    ? collapsedChoices.filter(choice => get(choice, 'id') === value)
-    : null;
-  const currentRegion = get(currentRegionArray, [0], null);
-
-  const [modalOpen, setModalOpen] = useState(false);
-
-  
-
-  // const filterOptions = (options, { inputValue }) => {
-  //   const subRegion = [];
-  //   if (inputValue) {
-  //     const filteredOptions = options.filter(option =>
-  //       option.name.toLowerCase().includes(inputValue.toLowerCase())
-  //     );
-      
-  //     if (filteredOptions) {
-  //       filteredOptions.forEach(data => {
-  //         subRegion.push(data);
-  //         subRegion.push(...getSubRegion(data));
-  //         console.log('subRegion', subRegion);
-  //       });
-        
-  //     }    
-  //     const uniqueArray = Array.from(new Set(subRegion.map(obj => obj.id)))
-  //      .map(id => subRegion.find(obj => obj.id === id));
-  //     console.log('uniqueArray', uniqueArray);
-  //     return uniqueArray
-    
-  //   }
-
-  //   return options;
-  // };
-
-  // return (
-  //   <FormCore schema={schema} width={width}>
-  //     <Autocomplete
-  //       value={currentRegion}
-  //       options={collapsedChoices}
-  //       disableCloseOnSelect
-  //       // filterOptions={filterOptions}        
-  //       // renderOption={option => (
-  //       //   <Text
-  //       //     style={{ paddingLeft: option.depth * 10 }}
-  //       //     value={option.id}
-  //       //   >
-  //       //     {option.name}
-  //       //   </Text>
-  //       // )}
-  //       renderOption={(option, { selected, inputValue }) => {
-  //         // const searchResult = option.name
-  //         //   .toLowerCase()
-  //         //   .includes(inputValue.toLowerCase() || 'A');
-          
-
-  //         return (
-  //           <>
-  //             <Radio
-  //               style={{
-  //                 paddingLeft: option.depth * 10,
-  //               }}
-  //               checked={selected}
-  //               value={option.id}
-  //               onChange={() => {}}
-  //               color="primary"
-  //               size="small"
-  //               inputProps={{ 'aria-labelledby': option.id }}
-  //             />
-
-  //               <span                   
-  //                 style={{ paddingLeft: option.depth * 10 }}>
-  //                 {option.name}
-  //               </span>
-
-  //           </>
-  //         );
-  //       }}
-  //       onChange={(_, newValue) => {
-  //         if (multiple) {
-  //           onChange(
-  //             newValue.map(location => get(location, 'id', '')),
-  //           );
-  //         } else {
-  //           onChange(get(newValue, 'id', ''));
-  //         }
-  //       }}
-  //       getOptionLabel={option => get(option, 'name', '')}
-  //       getOptionSelected={option =>
-  //         option.id ? option.id === get(currentRegion, 'id') : false
-  //       }
-  //       renderInput={params => (
-  //         <div>
-  //           <TextField
-  //             {...params}
-  //             style={{ width: 280 }}
-  //             variant="standard"
-  //             label={editLabel}
-  //           />
-  //         </div>
-  //       )}
-  //       multiple={multiple}
-  //       {...rest}
-  //     />
-  //     {showDescription ? (
-  //       <FormHelperText>{description}</FormHelperText>
-  //     ) : null}
-  //   </FormCore>
-  // );
+  const [modalOpen, setModalOpen] = useState(false);  
+  const [selected, setSelected] = useState(null);
 
   const data = get(schema, 'choices', []);
 
@@ -165,14 +48,8 @@ export default function LocationIdEditor(props) {
 
   const [searchText, setSearchText] = useState('');
   const [showData, setShowData] = useState(data);
-  const handleSearchChange = (event) => {
-    const searchText = event.target.value;
-    setSearchText(searchText);
-    const validNodes = filter(data, searchText);
-    setShowData(validNodes);
-  };
-  const filter = (orgData, searchText) => {
-    if (_.isNil(searchText) || _.isEmpty(searchText)) {
+  const filter = (orgData, text) => {
+    if (_.isNil(text) || _.isEmpty(text)) {
       return orgData;
     }
 
@@ -180,30 +57,70 @@ export default function LocationIdEditor(props) {
     .filter(name => name.toLowerCase().includes(searchText.toLowerCase()))
     .map(name => {
       const id = nameToIdMap[name];
-      const node = flatternedTree[id];
-      return node;
+      const node1 = flatternedTree[id];
+      return node1;
     })
     .filter(node => !_.isNil(node) && !_.isEmpty(node))
     
     return validNodes;
   }
+  const handleSearchChange = (event) => {
+    const text = event.target.value;
+    setSearchText(text);
+    const validNodes = filter(data, text);
+    setShowData(validNodes);
+  };
+  
+  const select = (event) => {
+    const dropdown = document.querySelector('#treeViewDemo');
+    if(event.target.classList.contains('MuiSvgIcon-root') || 
+      dropdown.contains(event.target) || 
+      event.target.parentNode.classList.contains('MuiSvgIcon-root')
+      ) {
+      setModalOpen(true);
+    }else {
+      setModalOpen(false);
+    }
+  }
+  useEffect(() => {
+    document.addEventListener('click', select);
+    return () => {
+      document.removeEventListener('click', select);
+    }
+  });  
+
+  useEffect(() => {
+    const selectedLabel = Object.keys(nameToIdMap).find(name => nameToIdMap[name] === selected);
+    setSearchText(selectedLabel);
+  }, [selected]);  
 
   return (
-    <FormCore schema={schema} width={width}>
-      <TextField
-        style={{ width:'100%' }}
-        label={editLabel}
-        value={searchText}
-        onFocus={() => {setModalOpen(true)}}
-        onBlur={() => {setModalOpen(false)}}
-        onChange={handleSearchChange}
-      />
-      {modalOpen && 
-        <TreeViewDemo 
-          onChange={onChange} 
-          searchText={searchText}
-          showData={showData}
-        />}
-    </FormCore>)
+    <div
+      id='treeViewDemo'
+      >
+      <FormCore schema={schema} width={width} >
+        <TextField
+          style={{ width:'100%' }}
+          label={editLabel}
+          value={searchText}
+          onFocus={() => {setModalOpen(true)}}
+          onChange={handleSearchChange}
+        />
+        {modalOpen && 
+          <TreeViewDemo 
+            onChange={onChange} 
+            searchText={searchText}
+            showData={showData}
+            setSearchText={setSearchText}
+            setModalOpen={setModalOpen}
+            selected={selected}
+            setSelected={setSelected}
+          />}
+        {showDescription ? (
+        <FormHelperText>{description}</FormHelperText>
+      ) : null}
+      </FormCore>
+    </div>
+    )
 
 }
