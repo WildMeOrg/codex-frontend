@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const TreeViewDemo = (props) => {
+const TreeViewComponent = (props) => {
   const {    
     onChange,    
     searchText,
@@ -86,4 +86,4 @@ const TreeViewDemo = (props) => {
   );
 };
 
-export default TreeViewDemo;
+export default TreeViewComponent;
