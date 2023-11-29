@@ -6,7 +6,7 @@ import useDescription from '../../../hooks/useDescription';
 import useEditLabel from '../../../hooks/useEditLabel';
 import FormCore from './FormCore';
 import { useState } from 'react';
-import TreeViewDemo from './TreeViewDemo';
+import TreeViewComponent from './TreeViewComponent';
 import _ from 'lodash-es';
 
 export default function LocationIdEditor(props) {
@@ -54,7 +54,7 @@ export default function LocationIdEditor(props) {
     }
 
     const validNodes = _.keys(nameToIdMap)
-    .filter(name => name.toLowerCase().includes(searchText.toLowerCase()))
+    .filter(name => name?.toLowerCase().includes(searchText.toLowerCase()))
     .map(name => {
       const id = nameToIdMap[name];
       const node1 = flatternedTree[id];
@@ -107,7 +107,7 @@ export default function LocationIdEditor(props) {
           onChange={handleSearchChange}
         />
         {modalOpen && 
-          <TreeViewDemo 
+          <TreeViewComponent 
             onChange={onChange} 
             searchText={searchText}
             showData={showData}
