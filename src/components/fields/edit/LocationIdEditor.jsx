@@ -73,9 +73,9 @@ export default function LocationIdEditor(props) {
   
   const select = (event) => {
     const dropdown = document.querySelector('#treeViewDemo');
-    if(event.target.classList.contains('MuiSvgIcon-root') || 
+    if(event.target?.classList?.contains('MuiSvgIcon-root') || 
       dropdown.contains(event.target) || 
-      event.target.parentNode.classList.contains('MuiSvgIcon-root')
+      event.target?.parentNode?.classList?.contains('MuiSvgIcon-root')
       ) {
       setModalOpen(true);
     }else {
