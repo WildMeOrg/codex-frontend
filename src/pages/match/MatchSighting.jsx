@@ -216,6 +216,35 @@ export default function MatchSighting() {
     setChecked(!checked);
   };
 
+  const sameIndividualQuery = queryAnnotations?.filter(
+    data =>
+      data?.individual_guid &&
+      data.individual_guid ===
+        selectedQueryAnnotation?.individual_guid,
+  );
+  const sameEncounterQuery = queryAnnotations?.filter(
+    data =>
+      data?.encounter_guid ===
+      selectedQueryAnnotation?.encounter_guid,
+  );
+  const sameIndividualMatch = matchCandidates?.filter(
+    data =>
+      data?.individual_guid &&
+      data.individual_guid ===
+        selectedMatchCandidate?.individual_guid,
+  );
+  const sameEncounterMatch = matchCandidates?.filter(
+    data =>
+      data?.encounter_guid === selectedMatchCandidate?.encounter_guid,
+  );
+
+  const queryAllData = Array.from(
+    new Set(sameIndividualQuery.concat(sameEncounterQuery)),
+  );
+  const matchAllData = Array.from(
+    new Set(sameIndividualMatch.concat(sameEncounterMatch)),
+  );
+
   return (
     <MainColumn
       fullWidth
@@ -273,6 +302,7 @@ export default function MatchSighting() {
             heatmapon={checked}
             heatmapurl={heatMapUrl}
             left
+            allData={queryAllData}
           />
           <QueryAnnotationsTable
             queryAnnotations={queryAnnotations}
@@ -291,6 +321,7 @@ export default function MatchSighting() {
             annotation={selectedMatchCandidate}
             heatmapon={checked}
             heatmapurl={heatMapUrl}
+            allData={matchAllData}
           />
           <MatchCandidatesTable
             matchCandidates={matchCandidates}
