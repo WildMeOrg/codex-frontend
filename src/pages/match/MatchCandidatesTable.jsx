@@ -62,8 +62,8 @@ export default function MatchCandidatesTable({
 }) {
   const processedCandidates = matchCandidates.map(data => ({
     ...data,
-    individual_first_name : data.individual_first_name || '-'
-  }))
+    individual_first_name: data.individual_first_name || '-',
+  }));
   return (
     <DataDisplay
       idKey="guid"
@@ -77,6 +77,7 @@ export default function MatchCandidatesTable({
       selectionControlled
       selectedRow={selectedMatchCandidate?.guid}
       onSelectRow={nextSelection => {
+        console.log('nextSelection', nextSelection);
         if (nextSelection) {
           setSelectedMatchCandidate(nextSelection);
         }
