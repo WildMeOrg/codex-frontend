@@ -59,6 +59,8 @@ export default function UserProfile({
     intl,
   );
   const dateCreated = formatDate(get(userData, 'created'), true);
+  const location = formatDate(get(userData, 'location'), '');
+  const affiliation = formatDate(get(userData, 'affiliation'), '');
 
   const highestRoleLabelId = getHighestRoleLabelId(userData);
 
@@ -104,6 +106,18 @@ export default function UserProfile({
           domId="selenium-user-since"
           id="USER_SINCE"
           values={{ date: dateCreated }}
+        />
+        <Text
+          variant="body2"
+          domId="selenium-user-since"
+          id="USER_LOCATION"
+          values={{ location }}
+        />
+        <Text
+          variant="body2"
+          domId="selenium-user-since"
+          id="USER_AFFILIATION"
+          values={{ affiliation }}
         />
       </EntityHeader>
       {children}
@@ -170,12 +184,12 @@ export default function UserProfile({
             }
           />
           {!someoneElse && (
-            <Grid item xs={12} id='collab-card'>
+            <Grid item xs={12} id="collab-card">
               <MyCollaborationsCard userData={userData} />
             </Grid>
           )}
           {someoneElse && viewerIsUserManager && (
-            <Grid item xs={12} id='collab-card'>
+            <Grid item xs={12} id="collab-card">
               <UserManagerCollaborationsCard userData={userData} />
             </Grid>
           )}
