@@ -13,6 +13,7 @@ export default function EntityHeader({
   renderAvatar,
   renderTabs,
   codexID,
+  noDivider=false,
 }) {
   const theme = useTheme();
   return (
@@ -81,7 +82,7 @@ export default function EntityHeader({
          
         </Grid>
       </Grid>
-      <Divider style={{ marginBottom: 12 }} />
+      {!noDivider &&<Divider style={{ marginBottom: 12 }} />}
     </>
   );
 }
