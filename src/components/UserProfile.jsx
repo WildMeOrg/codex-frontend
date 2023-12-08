@@ -28,6 +28,8 @@ import Chip from '@material-ui/core/Chip';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import { Typography } from '@material-ui/core';
+import PreferenceModal from './PreferenceModal';
+import Button from './Button';
 
 export default function UserProfile({
   children,
@@ -66,10 +68,12 @@ export default function UserProfile({
     intl,
   );
   const dateCreated = formatDate(get(userData, 'created'), true);
-  const email = get(userData, 'email') || '0';
-  const location = get(userData, 'location') || '1';
-  const affiliation = get(userData, 'affiliation') || '2';
-  const communityUsername = get(userData, 'forum_id') || '3';
+  const email = get(userData, 'email') || ' ';
+  const location = get(userData, 'location') || ' ';
+  const affiliation = get(userData, 'affiliation') || ' ';
+  const communityUsername = get(userData, 'forum_id') || ' ';
+
+  const [ preferenceModalOpen, setPreferenceModalOpen ] = useState(false);
 
   const theme = useTheme();
 
@@ -87,6 +91,10 @@ export default function UserProfile({
         userId={userId}
         metadata={metadata}
         onClose={() => setEditingProfile(false)}
+      />
+      <PreferenceModal 
+        open={preferenceModalOpen}
+        onClose={() => setPreferenceModalOpen(false)}
       />
       <div style={{ display: 'flex', flexWrap: 'wrap', marginTop: 90, marginLeft: 8, marginRight: 8 }}>
       <CardContainer size ='large' style={{padding: 20}}>
@@ -143,38 +151,31 @@ export default function UserProfile({
                   />
               </div >
               <div style={{display: 'flex', flexDirection: 'row'}}>
-                <div style={{
-                  height: 35, 
-                  width: 35, 
-                  backgroundColor: theme.palette.primary.main+'26',
-                  marginRight: 25,
-                  borderRadius: '4px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  }}>
+                <Button
+                    display="primary"
+                    size="small"
+                    style={{marginRight: 10}}                  
+                  >
                   <EditOutlined
-                    fontSize="small"
-                    // style={{marginRight: 10}}
+                    fontSize="small"                    
                     onClick={() => setEditingProfile(true)}
                   />
+                </Button>
+                <Button
+                    display="primary"
+                    size="small"  
+                    style={{marginRight: 10}}                
+                  >
+                    <SettingsOutlined
+                      fontSize="small"
+                      onClick={() => setPreferenceModalOpen(true)}
+                    />
+                  </Button>
                 </div>
-                <div style={{
-                  height: 35, 
-                  width: 35, 
-                  backgroundColor: theme.palette.primary.main+'26',
-                  marginRight: 25,
-                  borderRadius: '4px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  }}>
-                  <SettingsOutlined
-                    fontSize="small"
-                    onClick={() => setEditingProfile(true)}
-                  />
-                 </div>
-              </div>
+                
+                  
+                 {/* </div> */}
+              {/* </div> */}
             </div>
             <Chip
                   label={highestRoleLabelId}     
