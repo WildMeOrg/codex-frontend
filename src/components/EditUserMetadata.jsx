@@ -158,9 +158,7 @@ export default function EditUserMetadata({
           const value = get(fieldValues, field.name, '');
 
           const fieldProps = field.editComponentProps || {};
-          console.log('metadata',metadata);
           const labelId = get(field, 'labelId');
-          console.log('labelId',labelId);
 
           return (
             <div style = {{display: 'flex', flexDirection: 'row'}}>
