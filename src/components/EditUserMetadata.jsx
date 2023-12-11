@@ -12,6 +12,21 @@ import InputRow from './fields/edit/InputRow';
 import Button from './Button';
 import PasswordVerificationAlert from './PasswordVerificationAlert';
 import StandardDialog from './StandardDialog';
+import Typography from '@material-ui/core/Typography';
+import { useTheme } from '@material-ui/core/styles';
+import EntityHeader from './EntityHeader';
+import BigAvatar from './profilePhotos/BigAvatar';
+import RequestCollaborationButton from './RequestCollaborationButton';
+import Text from './Text';
+import Chip from '@material-ui/core/Chip';
+import { MailOutline } from '@material-ui/icons';
+import UserProfileMetadataWrap from './UserProfileMetadataWrap';
+import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined';
+import ForumOutlinedIcon from '@material-ui/icons/ForumOutlined';
+import AccountBalanceOutlined from '@material-ui/icons/AccountBalanceOutlined';
+import PlaceOutlined from '@material-ui/icons/PlaceOutlined';
+
+
 
 function getInitialFormValues(schema) {
   return schema.reduce((memo, field) => {
@@ -31,6 +46,14 @@ const twitterMetadataKey = twitterSchema?.userMetadataKey;
 export default function EditUserMetadata({
   open,
   userId,
+  imageGuid,
+  imageSrc,
+  name,
+  refreshUserData,
+  userDataLoading,
+  communityUsername,
+  dateCreated,
+  highestRoleLabelId,
   metadata,
   onClose,
 }) {
@@ -41,6 +64,8 @@ export default function EditUserMetadata({
     clearError,
   } = useReplaceUserProperties();
 
+  const theme = useTheme();
+
   const [fieldValues, setFieldValues] = useState({});
   const [passwordRequired, setPasswordRequired] = useState(false);
   const [password, setPassword] = useState('');
@@ -49,23 +74,118 @@ export default function EditUserMetadata({
     setFieldValues(getInitialFormValues(metadata));
   }, [metadata]);
 
+
   return (
     <StandardDialog
-      PaperProps={{ style: { width: 800 } }}
+      PaperProps={{ style: { width: 900 } }}
       maxWidth="lg"
       open={open}
       onClose={onClose}
-      titleId="EDIT_USER_METADATA"
     >
       <DialogContent style={{ minWidth: 200 }}>
+
+      <EntityHeader
+                name={name}
+                editable
+                noDivider                
+                renderAvatar={
+                  <BigAvatar
+                    editable
+                    userId={userId}
+                    imageGuid={imageGuid}
+                    imageSrc={imageSrc}
+                    name={name}
+                    refreshUserData={refreshUserData}
+                    userDataLoading={userDataLoading}
+                  />
+                }
+                renderOptions={
+                  
+                    <RequestCollaborationButton
+                      otherUserId={userId}
+                    />
+                 
+                }
+              >
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                  }}
+                >
+                  <div
+                    style={{ display: 'flex', flexDirection: 'row' }}
+                  >
+                    <Typography
+                      variant="body2"
+                      sx={{ textDecoration: 'underline' }}
+                    >
+                      {`@${communityUsername}`}
+                    </Typography>
+                    <div
+                      style={{
+                        height: '20px',
+                        width: '2px',
+                        backgroundColor: 'gray',
+                        margin: '0 10px',
+                      }}
+                    />
+                    <Text
+                      variant="body2"
+                      domId="selenium-user-since"
+                      id="USER_SINCE"
+                      values={{ date: dateCreated }}
+                    />
+                  </div>
+                  
+                </div>
+                <Chip
+                  label={highestRoleLabelId}
+                  style={{
+                    marginTop: 14,
+                    color: theme.palette.common.black,
+                    backgroundColor:
+                      theme.palette.primary.main + '26',
+                  }}
+                />
+              </EntityHeader>
+
+
         {metadata.map(field => {
           if (!field.editable) return null;
           if (!field.editComponent) return null; // temporary stopgap
           const value = get(fieldValues, field.name, '');
 
           const fieldProps = field.editComponentProps || {};
+          console.log('metadata',metadata);
+          const labelId = get(field, 'labelId');
+          console.log('labelId',labelId);
 
           return (
+            <div style = {{display: 'flex', flexDirection: 'row'}}>
+                  {labelId === 'FULL_NAME' && 
+                    <UserProfileMetadataWrap>
+                      <AccountCircleOutlinedIcon fontSize="small" color="inherit" />
+                    </UserProfileMetadataWrap>}
+                  {labelId === 'PROFILE_LABEL_EMAIL' && 
+                    <UserProfileMetadataWrap>
+                      <MailOutline fontSize="small" color="inherit" />
+                    </UserProfileMetadataWrap>}
+                  {labelId === 'PROFILE_LABEL_FORUM_ID' && 
+                    <UserProfileMetadataWrap>
+                      <ForumOutlinedIcon fontSize="small" color="inherit" />
+                    </UserProfileMetadataWrap>}
+                  {labelId === 'PROFILE_LABEL_AFFILIATION' && 
+                    <UserProfileMetadataWrap>
+                      <AccountBalanceOutlined fontSize="small" color="inherit" />
+                    </UserProfileMetadataWrap>}
+                  {labelId === 'PROFILE_LABEL_LOCATION' && 
+                    <UserProfileMetadataWrap>
+                      <PlaceOutlined fontSize="small" color="inherit" />
+                    </UserProfileMetadataWrap>}
+                    
+                  <>
             <InputRow schema={field} key={field.id || field.name}>
               <field.editComponent
                 schema={field}
@@ -81,6 +201,8 @@ export default function EditUserMetadata({
                 }}
               />
             </InputRow>
+            </>
+                  </div>
           );
         })}
 
