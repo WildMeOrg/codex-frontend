@@ -1,9 +1,15 @@
 import React, { useState, useMemo } from 'react';
-import { useIntl, FormattedMessage } from 'react-intl';
+import { useIntl } from 'react-intl';
 import { get } from 'lodash-es';
 
 import Grid from '@material-ui/core/Grid';
 
+import { EditOutlined, SettingsOutlined } from '@material-ui/icons';
+import { useTheme } from '@material-ui/core/styles';
+import Chip from '@material-ui/core/Chip';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import { Typography } from '@material-ui/core';
 import { getHighestRoleLabelId } from '../utils/roleUtils';
 import useUserMetadataSchemas from '../models/users/useUserMetadataSchemas';
 import useGetUserSightings from '../models/users/useGetUserSightings';
@@ -16,20 +22,13 @@ import SadScreen from './SadScreen';
 import EditUserMetadata from './EditUserMetadata';
 import Text from './Text';
 import RequestCollaborationButton from './RequestCollaborationButton';
-import MetadataCard from './cards/MetadataCard';
 import SightingsCard from './cards/SightingsCard';
 import MyCollaborationsCard from './cards/MyCollaborationsCard';
 import UserManagerCollaborationsCard from './cards/UserManagerCollaborationsCard';
 import CardContainer from './cards/CardContainer';
-import Divider from '@material-ui/core/Divider';
-import { MailOutline, PlaceOutlined, AccountBalanceOutlined, Email, EditOutlined, SettingsOutlined } from '@material-ui/icons';
-import { useTheme } from '@material-ui/core/styles';
-import Chip from '@material-ui/core/Chip';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import { Typography } from '@material-ui/core';
 import PreferenceModal from './PreferenceModal';
 import Button from './Button';
+import UserProfileMetaDataDisplay from './UserProfileMetaDataDisplay';
 
 export default function UserProfile({
   children,
@@ -68,12 +67,13 @@ export default function UserProfile({
     intl,
   );
   const dateCreated = formatDate(get(userData, 'created'), true);
-  const email = get(userData, 'email') || ' ';
-  const location = get(userData, 'location') || ' ';
-  const affiliation = get(userData, 'affiliation') || ' ';
-  const communityUsername = get(userData, 'forum_id') || ' ';
+  const email = get(userData, 'email') || '';
+  const location = get(userData, 'location') || '';
+  const affiliation = get(userData, 'affiliation') || '';
+  const communityUsername = get(userData, 'forum_id') || '';
 
-  const [ preferenceModalOpen, setPreferenceModalOpen ] = useState(false);
+  const [preferenceModalOpen, setPreferenceModalOpen] =
+    useState(false);
 
   const theme = useTheme();
 
@@ -92,206 +92,124 @@ export default function UserProfile({
         metadata={metadata}
         onClose={() => setEditingProfile(false)}
       />
-      <PreferenceModal 
+      <PreferenceModal
         open={preferenceModalOpen}
         onClose={() => setPreferenceModalOpen(false)}
       />
-      <div style={{ display: 'flex', flexWrap: 'wrap', marginTop: 90, marginLeft: 8, marginRight: 8 }}>
-      <CardContainer size ='large' style={{padding: 20}}>
-        <Card size="large" style={{width: '100%'}}>
-          <CardContent >
-            <EntityHeader
-              name={name}
-              editable
-              noDivider={true}
-              onSettingsClick={
-                () => setEditingProfile(true) // ???
-              }
-              renderAvatar={
-                <BigAvatar
-                  editable
-                  userId={userId}
-                  imageGuid={imageGuid}
-                  imageSrc={imageSrc}
-                  name={name}
-                  refreshUserData={refreshUserData}
-                  userDataLoading={userDataLoading}
-                />
-              }
-              renderOptions={
-                noCollaborate ? undefined : (
-                  <RequestCollaborationButton otherUserId={userId} />
-                )
-              }
-            >
-            <div style={{display:'flex', flexDirection:'row', justifyContent:'space-between'}}>
-              
-              <div style={{display:'flex', flexDirection:'row'}}>
-                <Typography 
-                  variant="body2"
-                  sx={{textDecoration: 'underline'}}
-                  // values={{ user: "communityUsername" }}
-                >
-                  {`@${communityUsername}`}
-                </Typography>
+      <div
+        style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          marginTop: 90,
+          marginLeft: 8,
+          marginRight: 8,
+        }}
+      >
+        <CardContainer size="large" style={{ padding: 20 }}>
+          <Card size="large" style={{ width: '100%' }}>
+            <CardContent>
+              <EntityHeader
+                name={name}
+                editable
+                noDivider
+                onSettingsClick={
+                  () => setEditingProfile(true) // ???
+                }
+                renderAvatar={
+                  <BigAvatar
+                    editable
+                    userId={userId}
+                    imageGuid={imageGuid}
+                    imageSrc={imageSrc}
+                    name={name}
+                    refreshUserData={refreshUserData}
+                    userDataLoading={userDataLoading}
+                  />
+                }
+                renderOptions={
+                  noCollaborate ? undefined : (
+                    <RequestCollaborationButton
+                      otherUserId={userId}
+                    />
+                  )
+                }
+              >
                 <div
                   style={{
-                    height: '20px',
-                    width: '2px',
-                    backgroundColor: 'gray', 
-                    margin: '0 10px', 
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
                   }}
-                />
-                  <Text
-                    variant="body2"
-                    domId="selenium-user-since"
-                    id="USER_SINCE"
-                    
-                    values={{ date: dateCreated }}
-                  />
-              </div >
-              <div style={{display: 'flex', flexDirection: 'row'}}>
-                <Button
-                    display="primary"
-                    size="small"
-                    style={{marginRight: 10}}                  
+                >
+                  <div
+                    style={{ display: 'flex', flexDirection: 'row' }}
                   >
-                  <EditOutlined
-                    fontSize="small"                    
-                    onClick={() => setEditingProfile(true)}
-                  />
-                </Button>
-                <Button
-                    display="primary"
-                    size="small"  
-                    style={{marginRight: 10}}                
-                  >
-                    <SettingsOutlined
-                      fontSize="small"
-                      onClick={() => setPreferenceModalOpen(true)}
+                    <Typography
+                      variant="body2"
+                      sx={{ textDecoration: 'underline' }}
+                    >
+                      {`@${communityUsername}`}
+                    </Typography>
+                    <div
+                      style={{
+                        height: '20px',
+                        width: '2px',
+                        backgroundColor: 'gray',
+                        margin: '0 10px',
+                      }}
                     />
-                  </Button>
+                    <Text
+                      variant="body2"
+                      domId="selenium-user-since"
+                      id="USER_SINCE"
+                      values={{ date: dateCreated }}
+                    />
+                  </div>
+                  <div
+                    style={{ display: 'flex', flexDirection: 'row' }}
+                  >
+                    <Button
+                      display="primary"
+                      size="small"
+                      style={{ marginRight: 10 }}
+                    >
+                      <EditOutlined
+                        fontSize="small"
+                        onClick={() => setEditingProfile(true)}
+                      />
+                    </Button>
+                    <Button
+                      display="primary"
+                      size="small"
+                      style={{ marginRight: 10 }}
+                    >
+                      <SettingsOutlined
+                        fontSize="small"
+                        onClick={() => setPreferenceModalOpen(true)}
+                      />
+                    </Button>
+                  </div>
                 </div>
-                
-                  
-                 {/* </div> */}
-              {/* </div> */}
-            </div>
-            <Chip
-                  label={highestRoleLabelId}     
+                <Chip
+                  label={highestRoleLabelId}
                   style={{
                     marginTop: 14,
                     color: theme.palette.common.black,
-                    backgroundColor: theme.palette.primary.main+'26',
-                  }}     
-                />        
-          
-            </EntityHeader>
-            <div style={{
-                display:'flex', 
-                flexDirection:'row', 
-                height: '50px',
-                justifyContent: 'space-between',
-                alignContent: 'center',
-                marginTop: '30px',
-                marginLeft: '15px',
-                marginRight: '15px',
-                }}>
-                <div style={{display:'flex', flexDirection:'row', alignItems:'center'}}>
-                  <div style={{
-                    backgroundColor: theme.palette.primary.main+'26',
-                    borderRadius: '50%',
-                    width: '50px',  
-                    height: '50px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    marginRight: '20px',
-                  }}>
-                    <MailOutline fontSize="small" color="inherit"/>
-                  </div>            
-                  <div>
-                    <Text
-                      variant="subtitle1"
-                      domId="selenium-user-since"
-                      id="EMAIL_ADDRESS"                
-                    />
-                    <Text
-                      variant="body2"
-                      domId="selenium-user-since"
-                      id={email}
-                      style={{textDecoration: 'underline'}}
-                    />
-                  </div>
-                  
-                </div>
-                
-                <div style={{display:'flex', flexDirection:'row', alignItems:'center'}}>
-                <div style={{
-                    backgroundColor: theme.palette.primary.main+'26',
-                    borderRadius: '50%',
-                    width: '50px',  
-                    height: '50px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    marginRight: '20px',
-                  }}>
-                    <PlaceOutlined fontSize="small" color="inherit"/>
-                  </div> 
-                  
-                  <div>
-                    <Text
-                      variant="subtitle1"
-                      domId="selenium-user-since"
-                      id="LOCATION"                
-                      />
-                    <Text
-                      variant="body2"
-                      domId="selenium-user-since"
-                      id={ location }
-                      style={{textDecoration: 'underline'}}
-                    />
-                  </div>            
-                </div>
-
-                <div style={{display:'flex', flexDirection:'row', alignItems:'center'}}>
-                <div style={{
-                    backgroundColor: theme.palette.primary.main+'26',
-                    borderRadius: '50%',
-                    width: '50px',  
-                    height: '50px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    marginRight: '20px',
-                  }}>
-                    <AccountBalanceOutlined fontSize="small" color="inherit"/>
-                  </div> 
-                  
-                  <div>
-                    <Text
-                      variant="subtitle1"
-                      domId="selenium-user-since"
-                      id="AFFILIATION"                
-                    />
-                    <Text
-                      variant="body2"
-                      domId="selenium-user-since"
-                      id={ affiliation }
-                      style={{textDecoration: 'underline'}}
-                    />
-                  </div>
-                  
-                </div>
-                
-              </div>
-          </CardContent>
-        </Card>
-      </CardContainer>
+                    backgroundColor:
+                      theme.palette.primary.main + '26',
+                  }}
+                />
+              </EntityHeader>
+              <UserProfileMetaDataDisplay
+                email={email}
+                location={location}
+                affiliation={affiliation}
+              />
+            </CardContent>
+          </Card>
+        </CardContainer>
       </div>
-      
-      
+
       {children}
       <div style={{ display: 'flex', flexWrap: 'wrap' }}>
         <CardContainer size="large">
@@ -311,7 +229,7 @@ export default function UserProfile({
             ]}
           /> */}
         </CardContainer>
-        <CardContainer size ='large'>
+        <CardContainer size="large">
           {!someoneElse && (
             <Grid item xs={12} id="collab-card">
               <MyCollaborationsCard userData={userData} />
@@ -365,7 +283,6 @@ export default function UserProfile({
               someoneElse ? 'NO_SIGHTINGS_NON_SELF' : 'NO_SIGHTINGS'
             }
           />
-          
         </CardContainer>
       </div>
     </MainColumn>
