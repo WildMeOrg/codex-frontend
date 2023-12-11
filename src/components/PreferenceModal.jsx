@@ -198,6 +198,7 @@ export default function Preferences({open, onClose}) {
                 style={{ marginBottom: 12 }}
               />
               <Button
+                display="secondary"
                 id="DEACTIVATE_ACCOUNT"
                 style={{ width: 'fit-content', marginBottom: 30 }}
                 onClick={() => setDeactivating(true)}

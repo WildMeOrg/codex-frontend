@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { FormattedMessage } from 'react-intl';
+// import { FormattedMessage } from 'react-intl';
 import { get } from 'lodash-es';
 
 import { useTheme } from '@material-ui/core/styles';
 import Chip from '@material-ui/core/Chip';
 
-import SvgText from '../SvgText';
+// import SvgText from '../SvgText';
 import EditAvatar from './EditAvatar';
 import defaultProfilePhoto from '../../assets/defaultProfile.jpg';
 import { EditOutlined } from '@material-ui/icons';
@@ -24,7 +24,7 @@ export default function BigAvatar({
   chipLabel,
 }) {
   const theme = useTheme();
-  const [avatarHovered, setAvatarHovered] = useState(false);
+  const [backgroundColor, setBackgroundColor] = useState(theme.palette.primary.main);
   const [editingAvatar, setEditingAvatar] = useState(false);
 
   return (
@@ -204,9 +204,10 @@ export default function BigAvatar({
               flexDirection: 'column',
               justifyContent: 'center',
               alignItems: 'center',
-              backgroundColor: theme.palette.primary.main+'26',
-            }}
- 
+              backgroundColor: backgroundColor,
+            }} 
+            onMouseEnter={() => setBackgroundColor(theme.palette.primary.main)}
+            // onMouseLeave={() => setBackgroundColor(theme.palette.primary.main+'26')}
             onClick={() => setEditingAvatar(true)}         
           >
             <EditOutlined   />
