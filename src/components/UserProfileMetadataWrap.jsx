@@ -25,7 +25,7 @@ export default function UserProfileMetadataWrap({
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          marginRight: '20px',
+          marginRight: '10px',
         }}
       >
         {children}

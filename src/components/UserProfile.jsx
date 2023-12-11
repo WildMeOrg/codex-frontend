@@ -89,7 +89,15 @@ export default function UserProfile({
       <EditUserMetadata
         open={editingProfile}
         userId={userId}
+        imageGuid={imageGuid}
+        imageSrc={imageSrc}
+        name={name}
+        refreshUserData={refreshUserData}
+        userDataLoading={userDataLoading}
         metadata={metadata}
+        communityUsername={communityUsername}
+        dateCreated={dateCreated}
+        highestRoleLabelId={highestRoleLabelId}
         onClose={() => setEditingProfile(false)}
       />
       <PreferenceModal
@@ -117,7 +125,7 @@ export default function UserProfile({
                 }
                 renderAvatar={
                   <BigAvatar
-                    editable
+                    // editable
                     userId={userId}
                     imageGuid={imageGuid}
                     imageSrc={imageSrc}
@@ -170,23 +178,17 @@ export default function UserProfile({
                   >
                     <Button
                       display="primary"
-                      size="small"
                       style={{ marginRight: 10 }}
+                      onClick={() => setEditingProfile(true)}
                     >
-                      <EditOutlined
-                        fontSize="small"
-                        onClick={() => setEditingProfile(true)}
-                      />
+                      <EditOutlined />
                     </Button>
                     <Button
                       display="primary"
-                      size="small"
                       style={{ marginRight: 10 }}
+                      onClick={() => setPreferenceModalOpen(true)}
                     >
-                      <SettingsOutlined
-                        fontSize="small"
-                        onClick={() => setPreferenceModalOpen(true)}
-                      />
+                      <SettingsOutlined />
                     </Button>
                   </div>
                 </div>
