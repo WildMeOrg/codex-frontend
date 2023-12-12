@@ -117,9 +117,9 @@ export default function EditUserMetadata({
                   <div
                     style={{ display: 'flex', flexDirection: 'row' }}
                   >
-                    <Typography
+                    {communityUsername && <>
+                      <Typography
                       variant="body2"
-                      sx={{ textDecoration: 'underline' }}
                     >
                       {`@${communityUsername}`}
                     </Typography>
@@ -131,6 +131,8 @@ export default function EditUserMetadata({
                         margin: '0 10px',
                       }}
                     />
+                    </>}
+                    
                     <Text
                       variant="body2"
                       domId="selenium-user-since"
