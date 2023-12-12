@@ -152,7 +152,8 @@ export default function UserProfile({
                   <div
                     style={{ display: 'flex', flexDirection: 'row' }}
                   >
-                    <Typography
+                    {communityUsername && <>
+                      <Typography
                       variant="body2"
                       sx={{ textDecoration: 'underline' }}
                     >
@@ -166,11 +167,14 @@ export default function UserProfile({
                         margin: '0 10px',
                       }}
                     />
+                    </>}
+                    
                     <Text
                       variant="body2"
                       domId="selenium-user-since"
                       id="USER_SINCE"
                       values={{ date: dateCreated }}
+                      style={{ marginLeft: 5 }}
                     />
                   </div>
                   <div
