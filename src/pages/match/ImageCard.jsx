@@ -86,7 +86,6 @@ export default function ImageCard({
   useEffect(() => {
     const index = getSelectedIndexByAnnotation();
     setSelectedIndex(index);
-    console.log(`use effect with index: ${index}`);
   }, [annotation?.image_url, annotation?.bounds]);
 
   const getDisplayedIndex = index => {
