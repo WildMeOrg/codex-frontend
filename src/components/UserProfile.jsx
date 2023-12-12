@@ -174,7 +174,6 @@ export default function UserProfile({
                       domId="selenium-user-since"
                       id="USER_SINCE"
                       values={{ date: dateCreated }}
-                      style={{ marginLeft: 5 }}
                     />
                   </div>
                   <div

@@ -4,7 +4,6 @@ import { get } from 'lodash-es';
 import { useTheme } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import SiteSettingsIcon from '@material-ui/icons/SettingsApplications';
-import PreferencesIcon from '@material-ui/icons/Settings';
 import CustomFieldsIcon from '@material-ui/icons/Tune';
 import SiteStatusIcon from '@material-ui/icons/Speed';
 import UserManagementIcon from '@material-ui/icons/People';
@@ -65,21 +64,6 @@ const adminPages = [
     labelId: 'ADMINISTRATOR_ACTIONS',
     href: '/settings/actions',
     roles: ['is_admin'],
-  },
-  {
-    icon: PreferencesIcon,
-    name: 'preferences',
-    labelId: 'PREFERENCES',
-    href: '/settings/preferences',
-    roles: [
-      'is_admin',
-      'is_exporter',
-      'is_internal',
-      'is_staff',
-      'is_user_manager',
-      'is_researcher',
-      'is_contributor',
-    ],
   },
   {
     icon: ListAltIcon,

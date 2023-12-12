@@ -190,7 +190,7 @@ export default function Preferences({open, onClose}) {
            
             <Text
               variant="h6"
-              style={{ marginTop: 20, marginLeft: 12 }}
+              style={{ marginTop: 20}}
               id="ACCOUNT_ACTIONS"
             />            
               <Text

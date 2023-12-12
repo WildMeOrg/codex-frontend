@@ -42,7 +42,6 @@ import AuditLog from './pages/devTools/AuditLog';
 import Welcome from './pages/auth/Welcome';
 import EmailVerified from './pages/auth/EmailVerified';
 import Home from './pages/home/Home';
-import Preferences from './pages/preferences/Preferences';
 import ResendVerificationEmail from './pages/auth/ResendVerificationEmail';
 import Footer from './components/Footer';
 import { defaultCrossfadeDuration } from './constants/defaults';
@@ -126,9 +125,6 @@ export default function AuthenticatedSwitch({
                       </Route>
                       <Route path="/settings/social-groups">
                         <SocialGroups />
-                      </Route>
-                      <Route path="/settings/preferences">
-                        <Preferences />
                       </Route>
                       <Route path="/settings/changelog">
                         <ChangeLog />
