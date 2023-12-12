@@ -22,6 +22,8 @@ import QueryAnnotationsTable from './QueryAnnotationsTable';
 import MatchCandidatesTable from './MatchCandidatesTable';
 import ImageCard from './ImageCard';
 import Button from '../../components/Button';
+import useIndividual from '../../models/individual/useIndividual';
+import useEncounter from '../../models/encounter/useEncounter';
 
 const spaceBetweenColumns = 16;
 
@@ -46,6 +48,8 @@ export default function MatchSighting() {
     loading: matchResultsLoading,
     error: matchResultsError,
   } = useMatchResults(sightingGuid);
+
+  console.log('matchResults', matchResults);
 
   const [selectedQueryAnnotation, setSelectedQueryAnnotation] =
     useState(null);
@@ -96,6 +100,27 @@ export default function MatchSighting() {
       };
     });
   }, [matchResults]);
+
+  const queryIndividualId = selectedQueryAnnotation?.individual_guid;
+  const queryEncounterId = selectedQueryAnnotation?.encounter_guid;
+  // console.log(queryIndividualId);
+  // console.log(queryEncounterId);
+  const { data: individualData } = useIndividual(queryIndividualId);
+  console.log('individualData', individualData);
+  const { data: encounterData } = useEncounter(queryEncounterId);
+  console.log('encounterData', encounterData);
+
+  const encounters = [];
+  individualData?.encounters.map(data => {
+    encounters.push(data);
+    return null;
+  });
+  const annotations1 = [];
+  encounters.map(data => {
+    annotations1.push(...data.annotations);
+    return null;
+  });
+  console.log(annotations1);
 
   const matchCandidates = useMemo(() => {
     const hotspotterAnnotationScores = get(
@@ -222,6 +247,7 @@ export default function MatchSighting() {
       data.individual_guid ===
         selectedQueryAnnotation?.individual_guid,
   );
+
   const sameEncounterQuery = queryAnnotations?.filter(
     data =>
       data?.encounter_guid ===
@@ -244,6 +270,8 @@ export default function MatchSighting() {
   const matchAllData = Array.from(
     new Set(sameIndividualMatch.concat(sameEncounterMatch)),
   );
+
+  console.log('queryAllData', queryAllData);
 
   return (
     <MainColumn
@@ -302,7 +330,7 @@ export default function MatchSighting() {
             heatmapon={checked}
             heatmapurl={heatMapUrl}
             left
-            allData={queryAllData}
+            allData={annotations1}
           />
           <QueryAnnotationsTable
             queryAnnotations={queryAnnotations}
