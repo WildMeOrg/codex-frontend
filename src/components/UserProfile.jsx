@@ -218,13 +218,7 @@ export default function UserProfile({
       {children}
       <div style={{ display: 'flex', flexWrap: 'wrap' }}>
         <CardContainer size="large">
-          {/* <MetadataCard
-            editable
-            onEdit={
-              () => setEditingProfile(true) // ?
-            }
-            metadata={metadata}
-          /> */}
+          
           {/* <UserProjectCard
             renderActions={<IconButton><AddIcon /></IconButton>}
             projects={[
