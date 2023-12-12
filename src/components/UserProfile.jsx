@@ -155,7 +155,6 @@ export default function UserProfile({
                     {communityUsername && <>
                       <Typography
                       variant="body2"
-                      sx={{ textDecoration: 'underline' }}
                     >
                       {`@${communityUsername}`}
                     </Typography>
