@@ -48,6 +48,7 @@ import { defaultCrossfadeDuration } from './constants/defaults';
 import Requests from './pages/setup/Requests';
 import SpeciesManagement from './pages/fieldManagement/SpeciesManagement';
 import ChangeLog from './pages/changeLog/ChangeLog';
+import DataPage from './pages/dataPage/DataPage';
 
 export default function AuthenticatedSwitch({
   emailNeedsVerification,
@@ -158,6 +159,9 @@ export default function AuthenticatedSwitch({
                       </Route>
                       <Route path="/merge">
                         <MergeIndividuals />
+                      </Route>
+                      <Route path="/data-page">
+                        <DataPage />
                       </Route>
                       <Route path="/bulk-imports/:id">
                         <AssetGroup />
