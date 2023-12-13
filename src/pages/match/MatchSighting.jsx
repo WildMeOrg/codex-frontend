@@ -33,6 +33,11 @@ function deriveIndividualGuid(annotation) {
   return providedGuid === 'None' ? null : providedGuid;
 }
 
+function getAllSightings(guid) {
+  const { data: sightingData } = useSighting(guid);  
+  return sightingData;
+}
+
 export default function MatchSighting() {
   const { sightingGuid } = useParams();
   const intl = useIntl();
@@ -107,20 +112,32 @@ export default function MatchSighting() {
   // console.log(queryEncounterId);
   const { data: individualData } = useIndividual(queryIndividualId);
   console.log('individualData', individualData);
+  const allSightingIDs = [];
+  individualData?.encounters.map(data => {
+    allSightingIDs.push(data.sighting);
+    return null;
+  })
+  const allSightings = [];
+  // console.log('allSightingIDs', allSightingIDs);
+  // allSightingIDs.map(data => {
+  //   allSightings.push(getAllSightings(data));
+  // });
+  // const { data: sightingData1 } = useSighting('dbc72f2c-8fd7-4615-896a-ed446335ec9f');
+  // console.log('sightingData1', sightingData1);
   const { data: encounterData } = useEncounter(queryEncounterId);
   console.log('encounterData', encounterData);
 
-  const encounters = [];
-  individualData?.encounters.map(data => {
-    encounters.push(data);
-    return null;
-  });
-  const annotations1 = [];
-  encounters.map(data => {
-    annotations1.push(...data.annotations);
-    return null;
-  });
-  console.log(annotations1);
+  // const encounters = [];
+  // individualData?.encounters.map(data => {
+  //   encounters.push(data);
+  //   return null;
+  // });
+  // const annotations1 = [];
+  // encounters.map(data => {
+  //   annotations1.push(...data.annotations);
+  //   return null;
+  // });
+  // console.log(annotations1);
 
   const matchCandidates = useMemo(() => {
     const hotspotterAnnotationScores = get(
@@ -330,7 +347,8 @@ export default function MatchSighting() {
             heatmapon={checked}
             heatmapurl={heatMapUrl}
             left
-            allData={annotations1}
+            // allData={annotations1}
+            allData={queryAllData}
           />
           <QueryAnnotationsTable
             queryAnnotations={queryAnnotations}
@@ -344,13 +362,13 @@ export default function MatchSighting() {
             paddingLeft: 0.5 * spaceBetweenColumns,
           }}
         >
-          <ImageCard
+          {/* <ImageCard
             titleId="SELECTED_MATCH_CANDIDATE"
             annotation={selectedMatchCandidate}
             heatmapon={checked}
             heatmapurl={heatMapUrl}
             allData={matchAllData}
-          />
+          /> */}
           <MatchCandidatesTable
             matchCandidates={matchCandidates}
             selectedMatchCandidate={selectedMatchCandidate}
