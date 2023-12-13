@@ -1,7 +1,7 @@
 import React, { useMemo, useEffect, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
-import { get, maxBy } from 'lodash-es';
+import _, { get, maxBy } from 'lodash-es';
 
 import Fab from '@material-ui/core/Fab';
 import DoneIcon from '@material-ui/icons/Done';
@@ -33,11 +33,6 @@ function deriveIndividualGuid(annotation) {
   return providedGuid === 'None' ? null : providedGuid;
 }
 
-function getAllSightings(guid) {
-  const { data: sightingData } = useSighting(guid);  
-  return sightingData;
-}
-
 export default function MatchSighting() {
   const { sightingGuid } = useParams();
   const intl = useIntl();
@@ -53,8 +48,6 @@ export default function MatchSighting() {
     loading: matchResultsLoading,
     error: matchResultsError,
   } = useMatchResults(sightingGuid);
-
-  console.log('matchResults', matchResults);
 
   const [selectedQueryAnnotation, setSelectedQueryAnnotation] =
     useState(null);
@@ -108,36 +101,56 @@ export default function MatchSighting() {
 
   const queryIndividualId = selectedQueryAnnotation?.individual_guid;
   const queryEncounterId = selectedQueryAnnotation?.encounter_guid;
-  // console.log(queryIndividualId);
-  // console.log(queryEncounterId);
-  const { data: individualData } = useIndividual(queryIndividualId);
-  console.log('individualData', individualData);
-  const allSightingIDs = [];
-  individualData?.encounters.map(data => {
-    allSightingIDs.push(data.sighting);
-    return null;
-  })
-  const allSightings = [];
-  // console.log('allSightingIDs', allSightingIDs);
-  // allSightingIDs.map(data => {
-  //   allSightings.push(getAllSightings(data));
-  // });
-  // const { data: sightingData1 } = useSighting('dbc72f2c-8fd7-4615-896a-ed446335ec9f');
-  // console.log('sightingData1', sightingData1);
-  const { data: encounterData } = useEncounter(queryEncounterId);
-  console.log('encounterData', encounterData);
+  const matchIndividuaId = selectedMatchCandidate?.individual_guid;
+  const matchEncounterId = selectedMatchCandidate?.encounter_guid;
 
-  // const encounters = [];
-  // individualData?.encounters.map(data => {
-  //   encounters.push(data);
-  //   return null;
-  // });
-  // const annotations1 = [];
-  // encounters.map(data => {
-  //   annotations1.push(...data.annotations);
-  //   return null;
-  // });
-  // console.log(annotations1);
+  const { data: individualData_query } =
+    useIndividual(queryIndividualId);
+  const { data: individualData_match } =
+    useIndividual(matchIndividuaId);
+  const { data: encounterData_query } =
+    useEncounter(queryEncounterId);
+  const { data: encounterData_match } =
+    useEncounter(matchEncounterId);
+
+  function getAllAnnotationsFromIndividual(individualData) {
+    const encounters = [];
+    individualData?.encounters.map(data => {
+      encounters.push(data);
+      return null;
+    });
+    const annotations = [];
+    encounters.map(data => {
+      annotations.push(...data.annotations);
+      return null;
+    });
+    return annotations;
+  }
+
+  function getAllAnnotationsFromEncounter(encounterData) {
+    const annotations = encounterData?.annotations;
+    return annotations;
+  }
+
+  const queryAllData_individual =
+    getAllAnnotationsFromIndividual(individualData_query) || [];
+  const queryAllData_encounter =
+    getAllAnnotationsFromEncounter(encounterData_query) || [];
+  const queryAllData =
+    _.uniqWith(
+      [...queryAllData_individual, ...queryAllData_encounter],
+      _.isEqual,
+    ) || [];
+
+  const matchAllData_individual =
+    getAllAnnotationsFromIndividual(individualData_match) || [];
+  const matchAllData_encounter =
+    getAllAnnotationsFromEncounter(encounterData_match) || [];
+  const matchAllData =
+    _.uniqWith(
+      [...matchAllData_individual, ...matchAllData_encounter],
+      _.isEqual,
+    ) || [];
 
   const matchCandidates = useMemo(() => {
     const hotspotterAnnotationScores = get(
@@ -258,38 +271,6 @@ export default function MatchSighting() {
     setChecked(!checked);
   };
 
-  const sameIndividualQuery = queryAnnotations?.filter(
-    data =>
-      data?.individual_guid &&
-      data.individual_guid ===
-        selectedQueryAnnotation?.individual_guid,
-  );
-
-  const sameEncounterQuery = queryAnnotations?.filter(
-    data =>
-      data?.encounter_guid ===
-      selectedQueryAnnotation?.encounter_guid,
-  );
-  const sameIndividualMatch = matchCandidates?.filter(
-    data =>
-      data?.individual_guid &&
-      data.individual_guid ===
-        selectedMatchCandidate?.individual_guid,
-  );
-  const sameEncounterMatch = matchCandidates?.filter(
-    data =>
-      data?.encounter_guid === selectedMatchCandidate?.encounter_guid,
-  );
-
-  const queryAllData = Array.from(
-    new Set(sameIndividualQuery.concat(sameEncounterQuery)),
-  );
-  const matchAllData = Array.from(
-    new Set(sameIndividualMatch.concat(sameEncounterMatch)),
-  );
-
-  console.log('queryAllData', queryAllData);
-
   return (
     <MainColumn
       fullWidth
@@ -347,7 +328,6 @@ export default function MatchSighting() {
             heatmapon={checked}
             heatmapurl={heatMapUrl}
             left
-            // allData={annotations1}
             allData={queryAllData}
           />
           <QueryAnnotationsTable
@@ -362,13 +342,13 @@ export default function MatchSighting() {
             paddingLeft: 0.5 * spaceBetweenColumns,
           }}
         >
-          {/* <ImageCard
+          <ImageCard
             titleId="SELECTED_MATCH_CANDIDATE"
             annotation={selectedMatchCandidate}
             heatmapon={checked}
             heatmapurl={heatMapUrl}
             allData={matchAllData}
-          /> */}
+          />
           <MatchCandidatesTable
             matchCandidates={matchCandidates}
             selectedMatchCandidate={selectedMatchCandidate}
