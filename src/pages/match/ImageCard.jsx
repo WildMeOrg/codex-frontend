@@ -52,7 +52,7 @@ export default function ImageCard({
       return 0;
     }
     const index = allData.findIndex(data => {
-      if (data.guid === annotation.guid) {
+      if (data?.guid === annotation?.guid) {
         return true;
       }
       return false;
@@ -91,8 +91,6 @@ export default function ImageCard({
     return _.slice(arr, index - 1, index + 2);
   };
 
-  console.log('dimensions',getAnnotationByIndex(selectedIndex)?.asset_dimensions);
-
   return (
     <Card titleId={titleId}>
       {heatmapon && heatmapurl ? (
@@ -111,11 +109,12 @@ export default function ImageCard({
       ) : (
         <div>
           <DerivedAnnotatedPhotograph
+            key={getAnnotationByIndex(selectedIndex)?.guid}
             assetMetadata={{
               alt: 'Selected query annotation',
-              src: getAnnotationByIndex(selectedIndex)?.image_url || getAnnotationByIndex(selectedIndex)?.asset_src,
-              dimensions:
-                getAnnotationByIndex(selectedIndex)?.asset_dimensions || {},
+              src: getAnnotationByIndex(selectedIndex)?.asset_src,
+              // dimensions:
+              //   getAnnotationByIndex(selectedIndex)?.asset_dimensions || {},
             }}
             annotations={[getAnnotationByIndex(selectedIndex)]}
             width="100%"
@@ -161,7 +160,10 @@ export default function ImageCard({
                   title={index + 1}
                   width="6rem"
                   height="4rem"
-                  url={getAnnotationByIndex(index).image_url || getAnnotationByIndex(index).asset_src}
+                  url={
+                    getAnnotationByIndex(index).image_url ||
+                    getAnnotationByIndex(index).asset_src
+                  }
                   isSelected={selectedIndex === index}
                   onClick={() => {
                     setSelectedIndex(index);

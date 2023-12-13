@@ -26,13 +26,8 @@ export default function DerivedAnnotatedPhotograph(props) {
     {},
   );
 
-  console.log('DerivedAnnotatedPhotograph props', props);
-
   function handleImageLoad(e) {
-    console.log('handleImageLoad e', e.target);
     const { naturalWidth, naturalHeight } = e.target;
-    console.log('handleImageLoad naturalWidth', naturalWidth);
-    console.log('handleImageLoad naturalHeight', naturalHeight);
 
     if (naturalWidth && naturalHeight) {
       setImageDimensions({
@@ -62,12 +57,10 @@ export default function DerivedAnnotatedPhotograph(props) {
     },
   );
 
-    console.log('imageWidth',imageWidth);
-    console.log('imageHeight',imageHeight);
-
   if (imageWidth && imageHeight && !isClamped) {
     return (
       <AnnotatedPhotograph
+        key={props.assetMetadata.src}
         {...props}
         assetMetadata={{
           ...props.assetMetadata,
