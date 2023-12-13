@@ -13,6 +13,7 @@ import LocationIdViewer from '../../components/fields/view/LocationIdViewer';
 import DataLineItem from './DataLineItem';
 import Button from '../../components/Button';
 import MyImageButton from './ImageButton';
+import DerivedAnnotatedPhotograph from '../individualGallery/components/DerivedAnnotatedPhotograph';
 
 export default function ImageCard({
   titleId,
@@ -51,23 +52,14 @@ export default function ImageCard({
       return 0;
     }
     const index = allData.findIndex(data => {
-      if (
-        data.image_url === annotation.image_url &&
-        !_.isNil(data.bounds)
-      ) {
-        if (
-          JSON.stringify(data.bounds) ===
-          JSON.stringify(annotation.bounds)
-        ) {
-          return true;
-        }
+      if (data.guid === annotation.guid) {
+        return true;
       }
       return false;
     });
     if (index === -1) {
       return 0;
     }
-
     return index;
   };
 
@@ -99,6 +91,8 @@ export default function ImageCard({
     return _.slice(arr, index - 1, index + 2);
   };
 
+  console.log('dimensions',getAnnotationByIndex(selectedIndex)?.asset_dimensions);
+
   return (
     <Card titleId={titleId}>
       {heatmapon && heatmapurl ? (
@@ -116,17 +110,28 @@ export default function ImageCard({
         />
       ) : (
         <div>
-          <AnnotatedPhotograph
+          <DerivedAnnotatedPhotograph
             assetMetadata={{
               alt: 'Selected query annotation',
-              src: getAnnotationByIndex(selectedIndex)?.image_url,
+              src: getAnnotationByIndex(selectedIndex)?.image_url || getAnnotationByIndex(selectedIndex)?.asset_src,
               dimensions:
-                getAnnotationByIndex(selectedIndex)?.asset_dimensions,
+                getAnnotationByIndex(selectedIndex)?.asset_dimensions || {},
             }}
             annotations={[getAnnotationByIndex(selectedIndex)]}
             width="100%"
             height={420}
           />
+          {/* <AnnotatedPhotograph
+            assetMetadata={{
+              alt: 'Selected query annotation',
+              src: getAnnotationByIndex(selectedIndex)?.image_url || getAnnotationByIndex(selectedIndex)?.asset_src,
+              dimensions:
+                getAnnotationByIndex(selectedIndex)?.asset_dimensions || {},
+            }}
+            annotations={[getAnnotationByIndex(selectedIndex)]}
+            width="100%"
+            height={420}
+          /> */}
           {allData.length > 1 && (
             <div
               style={{
@@ -156,7 +161,7 @@ export default function ImageCard({
                   title={index + 1}
                   width="6rem"
                   height="4rem"
-                  url={getAnnotationByIndex(index).image_url}
+                  url={getAnnotationByIndex(index).image_url || getAnnotationByIndex(index).asset_src}
                   isSelected={selectedIndex === index}
                   onClick={() => {
                     setSelectedIndex(index);
