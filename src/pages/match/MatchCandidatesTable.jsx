@@ -77,7 +77,6 @@ export default function MatchCandidatesTable({
       selectionControlled
       selectedRow={selectedMatchCandidate?.guid}
       onSelectRow={nextSelection => {
-        console.log('nextSelection', nextSelection);
         if (nextSelection) {
           setSelectedMatchCandidate(nextSelection);
         }

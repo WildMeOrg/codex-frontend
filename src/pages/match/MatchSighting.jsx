@@ -132,26 +132,6 @@ export default function MatchSighting() {
     return annotations;
   }
 
-  // const queryAllData_individual =
-  //   getAllAnnotationsFromIndividual(individualData_query) || [];
-  // const queryAllData_encounter =
-  //   getAllAnnotationsFromEncounter(encounterData_query) || [];
-  // const queryAllData =
-  //   _.uniqWith(
-  //     [...queryAllData_individual, ...queryAllData_encounter],
-  //     _.isEqual,
-  //   ) || [];
-
-  // const matchAllData_individual =
-  //   getAllAnnotationsFromIndividual(individualData_match) || [];
-  // const matchAllData_encounter =
-  //   getAllAnnotationsFromEncounter(encounterData_match) || [];
-  // const matchAllData =
-  //   _.uniqWith(
-  //     [...matchAllData_individual, ...matchAllData_encounter],
-  //     _.isEqual,
-  //   ) || [];
-
   const getAndDeduplicateAnnotations = (
     individualData,
     encounterData,
