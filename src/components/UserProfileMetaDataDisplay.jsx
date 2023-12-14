@@ -24,15 +24,15 @@ export default function UserProfileMetaDataDisplay({
         marginRight: '15px',
       }}
     >
-      <UserProfileMetadataWrap id="EMAIL_ADDRESS" value={email}>
+      <UserProfileMetadataWrap id="EMAIL_ADDRESS" value={email} key={"EMAIL_ADDRESS"}>
         <MailOutline fontSize="small" color="inherit" />
       </UserProfileMetadataWrap>
 
-      <UserProfileMetadataWrap id="LOCATION" value={location}>
+      <UserProfileMetadataWrap id="LOCATION" value={location} key={"LOCATION"}>
         <PlaceOutlined fontSize="small" color="inherit" />
       </UserProfileMetadataWrap>
 
-      <UserProfileMetadataWrap id="AFFILIATION" value={affiliation}>
+      <UserProfileMetadataWrap id="AFFILIATION" value={affiliation} key={"AFFILIATION"}>
         <AccountBalanceOutlined fontSize="small" color="inherit" />
       </UserProfileMetadataWrap>
     </div>

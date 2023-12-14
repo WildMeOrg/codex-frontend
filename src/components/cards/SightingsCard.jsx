@@ -82,6 +82,21 @@ export default function SightingsCard({
       labelId: 'LOCATION',
     },
     {
+      reference: 'state',
+      name: 'stage',
+      labelId: 'STATE',
+    },
+    {
+      reference: 'numberAnnotations',
+      name: 'numberAnnotations',
+      labelId: 'NUMBER_OF_ANNOTATIONS',
+    },
+    {
+      reference: 'numberEncounters',
+      name: 'numberEncounters',
+      labelId: 'NUMBER_OF_ENCOUNTERS',
+    },
+    {
       reference: 'actions',
       name: 'guid',
       labelId: 'ACTIONS',

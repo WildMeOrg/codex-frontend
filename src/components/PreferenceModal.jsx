@@ -101,21 +101,21 @@ export default function Preferences({open, onClose}) {
                 const labelId = get(notificationField, 'labelId');
 
                 return (
-                  <div style = {{display: 'flex', flexDirection: 'row'}}>
+                  <div key={"input_row"} style = {{display: 'flex', flexDirection: 'row'}}>
                   {labelId === 'ALL_NOTIFICATION_EMAILS' && 
-                    <UserProfileMetadataWrap>
+                    <UserProfileMetadataWrap key={"EMAIL"}>
                       <MailOutline fontSize="small" color="inherit" />
                     </UserProfileMetadataWrap>}
                   {labelId === 'COLLABORATION_REQUESTS' && 
-                    <UserProfileMetadataWrap>
+                    <UserProfileMetadataWrap key={"REQUESTS"}>
                       <GroupAdd fontSize="small" color="inherit" />
                     </UserProfileMetadataWrap>}
                   {labelId === 'COLLABORATION_EDIT_REQUESTS' && 
-                    <UserProfileMetadataWrap>
+                    <UserProfileMetadataWrap key={"EDIT_REQUESTS"}>
                       <EditOutline fontSize="small" color="inherit" />
                     </UserProfileMetadataWrap>}
                   {labelId === 'MERGE_OF_INDIVIDUAL' && 
-                    <UserProfileMetadataWrap>
+                    <UserProfileMetadataWrap key={"MERGE"}>
                       <CallMerge fontSize="small" color="inherit" />
                     </UserProfileMetadataWrap>}
                     
