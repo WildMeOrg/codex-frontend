@@ -163,25 +163,25 @@ export default function EditUserMetadata({
           const labelId = get(field, 'labelId');
 
           return (
-            <div style = {{display: 'flex', flexDirection: 'row'}}>
+            <div key = {"metadata_input_row"} style = {{display: 'flex', flexDirection: 'row'}}>
                   {labelId === 'FULL_NAME' && 
-                    <UserProfileMetadataWrap>
+                    <UserProfileMetadataWrap key={'FULL_NAME'}>
                       <AccountCircleOutlinedIcon fontSize="small" color="inherit" />
                     </UserProfileMetadataWrap>}
                   {labelId === 'PROFILE_LABEL_EMAIL' && 
-                    <UserProfileMetadataWrap>
+                    <UserProfileMetadataWrap key={"EMAIL"}>
                       <MailOutline fontSize="small" color="inherit" />
                     </UserProfileMetadataWrap>}
                   {labelId === 'PROFILE_LABEL_FORUM_ID' && 
-                    <UserProfileMetadataWrap>
+                    <UserProfileMetadataWrap key={"FORUM_ID"}>
                       <ForumOutlinedIcon fontSize="small" color="inherit" />
                     </UserProfileMetadataWrap>}
                   {labelId === 'PROFILE_LABEL_AFFILIATION' && 
-                    <UserProfileMetadataWrap>
+                    <UserProfileMetadataWrap key={"AFFILIATION"}>
                       <AccountBalanceOutlined fontSize="small" color="inherit" />
                     </UserProfileMetadataWrap>}
                   {labelId === 'PROFILE_LABEL_LOCATION' && 
-                    <UserProfileMetadataWrap>
+                    <UserProfileMetadataWrap key={"LOCATION"}>
                       <PlaceOutlined fontSize="small" color="inherit" />
                     </UserProfileMetadataWrap>}
                     
