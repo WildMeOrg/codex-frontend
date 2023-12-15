@@ -22,6 +22,8 @@ export default function IndividualsButton() {
     error,
   } = useIndividualTermQuery(searchTerm);
 
+  console.log('IndividualsButton.jsx: searchTerm: ', searchTerm);
+
   const resultsCurrent = inputContent === searchTerm;
   const noResults = searchResults?.length === 0;
   const mappableSearchResults = resultsCurrent

@@ -238,7 +238,7 @@ export default function UserProfile({
               <UserManagerCollaborationsCard userData={userData} />
             </Grid>
           )}
-          <SightingsCard
+          {/* <SightingsCard
             id="pending-sightings-card"
             title={
               someoneElse
@@ -280,7 +280,7 @@ export default function UserProfile({
             noSightingsMsg={
               someoneElse ? 'NO_SIGHTINGS_NON_SELF' : 'NO_SIGHTINGS'
             }
-          />
+          /> */}
         </CardContainer>
       </div>
     </MainColumn>

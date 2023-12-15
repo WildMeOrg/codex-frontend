@@ -30,6 +30,8 @@ export default function SightingsCard({
   const { regionOptions } = useOptions();
   const intl = useIntl();
 
+  console.log('SightingsCard.jsx: onDelete: ', JSON.stringify(onDelete));
+
   const mapModeClicked = () => setShowMapView(true);
   const listModeClicked = () => setShowMapView(false);
 
@@ -112,6 +114,9 @@ export default function SightingsCard({
                 labelId="REMOVE"
                 variant="delete"
                 onClick={() => onDelete(value)}
+                // onClick={() => {
+                //   setDeleteDialogOpen(true);
+                // }}
               />
             )}
           </div>

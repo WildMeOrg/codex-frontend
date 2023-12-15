@@ -19,6 +19,8 @@ export default function SearchIndividuals() {
     reverse: true,
   });
 
+  console.log('SearchIndividuals.jsx: formFilters: ', formFilters);
+
   const { data, loading } = useFilterIndividuals({
     queries: formFilters,
     params: searchParams,

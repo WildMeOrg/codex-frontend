@@ -4,10 +4,27 @@ import useFetch from '../../hooks/useFetch';
 import { nestQueries } from '../../utils/elasticSearchUtils';
 import { getIndividualFilterQueryKey } from '../../constants/queryKeys';
 
+
 export default function useFilterIndividuals({
   queries,
   params = {},
-}) {
+}) { 
+  
+//   const queries = [
+//     {
+//         "filterId": "firstName",
+//         "descriptor": "Individual Name: 123",
+//         "nested": true,
+//         "clause": "filter",
+//         "query": {
+//             "wildcard": {
+//                 "sighting": "*dbc72f2c-8fd7-4615-896a-ed446335ec9f*"
+//             }
+//         }
+//     }
+// ]
+  // console.log('=======================',queries);
+
   const [filters, mustNots] = partition(
     queries,
     q => q.clause === 'filter',
@@ -41,6 +58,10 @@ export default function useFilterIndividuals({
       must_not: [...normalMustNotQueries, ...nestedMustNotQueries],
     },
   };
+
+  console.log('nestedFilterQueries', nestedFilterQueries);
+
+  console.log('+++++++++++++++++',compositeQuery);
 
   return useFetch({
     method: 'post',
