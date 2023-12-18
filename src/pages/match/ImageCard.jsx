@@ -113,24 +113,11 @@ export default function ImageCard({
             assetMetadata={{
               alt: 'Selected query annotation',
               src: getAnnotationByIndex(selectedIndex)?.asset_src,
-              // dimensions:
-              //   getAnnotationByIndex(selectedIndex)?.asset_dimensions || {},
             }}
             annotations={[getAnnotationByIndex(selectedIndex)]}
             width="100%"
             height={420}
           />
-          {/* <AnnotatedPhotograph
-            assetMetadata={{
-              alt: 'Selected query annotation',
-              src: getAnnotationByIndex(selectedIndex)?.image_url || getAnnotationByIndex(selectedIndex)?.asset_src,
-              dimensions:
-                getAnnotationByIndex(selectedIndex)?.asset_dimensions || {},
-            }}
-            annotations={[getAnnotationByIndex(selectedIndex)]}
-            width="100%"
-            height={420}
-          /> */}
           {allData.length > 1 && (
             <div
               style={{
