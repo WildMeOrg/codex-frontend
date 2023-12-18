@@ -110,13 +110,6 @@ export default function MyImageButton({
         }}
         onClick={onClick}
       >
-        {/* <span
-          className={classes.imageSrc}
-          style={{
-            backgroundImage: `url(${url})`,
-          }}
-        /> */}
-
         <img
           className={classes.imageSrc}
           src={url}
