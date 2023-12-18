@@ -30,8 +30,6 @@ export default function SightingsCard({
   const { regionOptions } = useOptions();
   const intl = useIntl();
 
-  console.log('SightingsCard.jsx: onDelete: ', JSON.stringify(onDelete));
-
   const mapModeClicked = () => setShowMapView(true);
   const listModeClicked = () => setShowMapView(false);
 
@@ -84,8 +82,8 @@ export default function SightingsCard({
       labelId: 'LOCATION',
     },
     {
-      reference: 'state',
-      name: 'stage',
+      reference: 'match_state',
+      name: 'match_state',
       labelId: 'STATE',
     },
     {
@@ -103,7 +101,7 @@ export default function SightingsCard({
       name: 'guid',
       labelId: 'ACTIONS',
       options: {
-        customBodyRender: value => (
+        customBodyRender: value => ( // eslint-disable-line react/display-name
           <div>
             <ActionIcon
               variant="view"
@@ -172,7 +170,7 @@ export default function SightingsCard({
           data={sightings}
           loading={loading}
           noResultsTextId={noSightingsMsg}
-          tableContainerStyles={{ maxHeight: 400 }}
+          tableContainerStyles={{ maxHeight: 800 }}
         />
       )}
       {!noSightings && showMapView && (
