@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import useGetUserSightings from '../../models/users/useGetUserSightings';
-import useGetUserIndividuals from '../../models/users/useGetUserIndividuals';
 import useGetUserUnprocessedAssetGroupSightings from '../../models/users/useGetUserUnproccessedAssetGroupSightings';
 // import { formatUserMessage } from '../../utils/formatters';
 
@@ -14,59 +13,41 @@ import useGetMe from '../../models/users/useGetMe';
 import Text from '../../components/Text';
 import HomeBreadcrumbs from '../home/HomeBreadcrumbs';
 import ButtonLink from '../../components/ButtonLink';
-import { FormControl, InputLabel, MenuItem, Select } from '@material-ui/core';
+import { FormControl,  MenuItem, Select } from '@material-ui/core';
 import LoadingScreen from '../../components/LoadingScreen';
 
-import useFilterIndividuals from '../../models/individual/useFilterIndividuals';
 import useDeleteSighting from '../../models/sighting/useDeleteSighting';
 import useDeleteAssetGroupSighting from '../../models/assetGroupSighting/useDeleteAssetGroupSighting';
 import ConfirmDelete from '../../components/ConfirmDelete';
-import { getAGSQueryKey, getSightingQueryKey } from '../../constants/queryKeys';
 import { useHistory } from 'react-router-dom';
-import { useQueryClient } from 'react-query';
+import { useTheme } from '@material-ui/core/styles';
 
 
 export default function DataPage() {
   const {
     data: userData,
     loading: userDataLoading,
-    isFetching: userDataFetching,
   } = useGetMe();  
 
+  const theme = useTheme();
+
   const history = useHistory();
-  const queryClient = useQueryClient();
 
   const userId = userData?.guid;
   const { data: sightingsData, loading: sightingsLoading } =
-    useGetUserSightings(userId);
+    useGetUserSightings(userId);  
 
-  const filteredSightingsData = sightingsData?.filter((sighting) => {
-    sighting.match_state === "un_reviewed" || sighting.match_state === "in_progress"
-  })
+  const unapprovedSightingsData = sightingsData?.filter((sighting) => 
+    sighting.match_state === "unreviewed" || sighting.match_state === "in_progress"
+  );
 
   const [selected, setSelected] = React.useState('all_data');
 
-  // const { data: individualData, loading: individualDataLoading } =
-  //   useGetUserIndividuals("dbc72f2c-8fd7-4615-896a-ed446335ec9f");
-
-  // const {data: data1 } =  useFilterIndividuals('896a');
-  // console.log('DataPage.jsx: data1: ', data1);
-  
-  // console.log('DataPage.jsx: individualData: ', individualData);
-
-  // console.log('DataPage.jsx: sightingsData: ', sightingsData);
   const intl = useIntl();
 
   const { data: agsData, loading: agsLoading } =
     useGetUserUnprocessedAssetGroupSightings(userId);
-  console.log('DataPage.jsx: agsData: ', agsData);
 
-  function refreshData() {
-    const queryKey = pending
-      ? getAGSQueryKey(id)
-      : getSightingQueryKey(id);
-    queryClient.invalidateQueries(queryKey);
-  }
   const {
     deleteSighting,
     loading: deleteInProgress,
@@ -153,6 +134,45 @@ export default function DataPage() {
               : 'CONFIRM_DELETE_SIGHTING_DESCRIPTION'
           }
       />
+        <div
+              style={{
+                width: '100%',
+                // marginRight: 20,
+                display: "flex",
+                justifyContent: "flex-end",
+              }}
+             >
+              <FormControl 
+                style={{
+                  width: 220,
+                  height: 40,
+                  display: "flex",
+                  padding: 5,
+                  alignItems: "center",
+                  marginTop: 10,
+                  marginBottom: 10,
+                  marginLeft: 10,
+                  marginRight: 30,
+                  borderRadius: 24,
+                  backgroundColor: theme.palette.primary.main,
+                }}
+              >
+                <Select
+                  labelId="demo-select-small-label"
+                  id="demo-select-small"
+                  value={selected}
+                  label="Age"
+                  disableUnderline
+                  onChange={(e) => {
+                    console.log('DataPage.jsx: selected: ', selected);
+                    setSelected(e.target.value)
+                  }}
+                >              
+                  <MenuItem value={'all_data'}><FormattedMessage id="MY_SIGHTINGS"/></MenuItem>
+                  <MenuItem value={'unapproved_data'}><FormattedMessage id="MY_UNAPPROVED_SIGHTINGS"/></MenuItem>
+                </Select>
+              </FormControl>
+            </div>
         <CardContainer size="large" style={{width:200}}>
           <div style={{
             width: "100%",
@@ -164,29 +184,11 @@ export default function DataPage() {
               variant="h6"
               style={{ marginLeft: 8 }}
             />
-            <div style={{width: 200}}>
-              <FormControl fullWidth>
-                {/* <InputLabel id="demo-select-small-label">Age12345</InputLabel> */}
-                <Select
-                  labelId="demo-select-small-label"
-                  id="demo-select-small"
-                  value={selected}
-                  label="Age"
-                  onChange={(e) => {
-                    console.log('DataPage.jsx: selected: ', selected);
-                    setSelected(e.target.value)
-                  }}
-                >              
-                  <MenuItem value={'all_data'}><FormattedMessage id="ALL_DATA"/></MenuItem>
-                  <MenuItem value={'unapproved_data'}><FormattedMessage id="UNAPPROVED_DATA"/></MenuItem>
-                </Select>
-              </FormControl>
-            </div>
+            
           </div>
           
             <SightingsCard
             id="pending-sightings-card"
-            // title={intl.formatMessage({ id: 'PENDING_SIGHTINGS' })}
             columns={[
               'date', 
               'location',
@@ -211,7 +213,7 @@ export default function DataPage() {
               intl.formatMessage({ id: 'MY_SIGHTINGS' }) : 
               intl.formatMessage({ id: 'MY_UNAPPROVED_SIGHTINGS' })}
             variant="h6"
-            style={{ marginLeft: 8 }}
+            style={{ marginLeft: 8, marginBottom: 20, marginTop: 20 }}
           />
           <SightingsCard
             id="sightings-card"
@@ -219,13 +221,13 @@ export default function DataPage() {
               'individual',
               'date',
               'locationIdValue',
-              'state',
+              'match_state',
               'numberAnnotations',
               'numberEncounters',
               'actions',
             ]}
             hideSubmitted
-            sightings={(selected === "all_data" ? sightingsData : filteredSightingsData) || []}
+            sightings={(selected === "all_data" ? sightingsData : unapprovedSightingsData) || []}
             loading={sightingsLoading}
             noSightingsMsg="NO_SIGHTINGS"
             onDelete= {(value) => {
