@@ -1,17 +1,16 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { get } from 'lodash-es';
 import { FormattedMessage } from 'react-intl';
 import { v4 as uuid } from 'uuid';
 import IconButton from '@material-ui/core/IconButton';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import NewChildIcon from '@material-ui/icons/AddCircle';
+import Checkbox from '@material-ui/core/Checkbox';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import TextInput from '../../../../components/inputs/TextInput';
 import DeleteButton from '../../../../components/DeleteButton';
 import Button from '../../../../components/Button';
 import Text from '../../../../components/Text';
-import Checkbox from '@material-ui/core/Checkbox';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-
 
 function getNewLeaf() {
   return {
@@ -48,27 +47,39 @@ function addLeaf(tree, parentId) {
 }
 
 function updateTree(tree, leafId, newLeafName, placeholderOnly) {
+  console.log('placeholderOnly', placeholderOnly);
   return tree.map(leaf => {
     const newLocationID = leaf.locationID
-      ? updateTree(leaf.locationID, leafId, newLeafName)
+      ? updateTree(
+          leaf.locationID,
+          leafId,
+          newLeafName,
+          placeholderOnly,
+        )
       : undefined;
-    const newLeaf = { ...leaf, locationID: newLocationID };
+    const newLeaf = {
+      ...leaf,
+      locationID: newLocationID,
+      placeholderOnly,
+    };
     if (newLeaf.id === leafId) newLeaf.name = newLeafName;
-    newLeaf.placeholderOnly = placeholderOnly;
+    console.log('newLeaf', newLeaf);
     return newLeaf;
   });
 }
 
 const Leaf = function ({ level, data, root, onChange, children }) {
   // console.log('data',data);
-  const [checked, setChecked] = useState(data.placeholderOnly);
+  const [checked, setChecked] = useState(!data.placeholderOnly);
   return (
     <div style={{ marginLeft: level * 32, marginTop: 10 }}>
       <TextInput
         width={240}
         schema={{ name: get(data, 'name') }}
         onChange={newName => {
-          onChange(updateTree(root, data.id, newName, data.placeholderOnly));
+          onChange(
+            updateTree(root, data.id, newName, data.placeholderOnly),
+          );
         }}
         value={get(data, 'name')}
         autoFocus
@@ -96,17 +107,22 @@ const Leaf = function ({ level, data, root, onChange, children }) {
                 control={
                   <Checkbox
                     checked={checked}
-                    onChange={(event) => {
-                      setChecked(!event.target.checked);
+                    onChange={event => {
+                      setChecked(!checked);
                       console.log(event.target.checked);
-                      // Handle checkbox change
-                      onChange(updateTree(root, data.id, data.name, checked));
+                      onChange(
+                        updateTree(
+                          root,
+                          data.id,
+                          data.name,
+                          !checked,
+                        ),
+                      );
                     }}
                     name="startCheckbox"
                     color="primary"
                   />
                 }
-                // label="Start"
               />
             </InputAdornment>
           ),
