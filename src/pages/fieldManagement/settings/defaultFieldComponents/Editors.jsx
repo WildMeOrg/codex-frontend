@@ -20,14 +20,19 @@ export function RegionEditor({
         schema={{ labelId: 'REGIONS' }}
         value={tree}
         onChange={locationID => {
+          console.log('locationID',locationID);
           const newRegions = {
             ...get(formSettings, 'regions', {}),
             locationID,
+            // placeholderOnly:false
           };
           setFormSettings({
             ...formSettings,
             regions: newRegions,
           });
+
+          console.log('new regions',newRegions);
+          
         }}
         {...rest}
       />
