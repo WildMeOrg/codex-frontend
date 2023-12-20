@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { get } from 'lodash-es';
 import { FormattedMessage } from 'react-intl';
 import { v4 as uuid } from 'uuid';
@@ -9,6 +9,9 @@ import TextInput from '../../../../components/inputs/TextInput';
 import DeleteButton from '../../../../components/DeleteButton';
 import Button from '../../../../components/Button';
 import Text from '../../../../components/Text';
+import Checkbox from '@material-ui/core/Checkbox';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+
 
 function getNewLeaf() {
   return {
@@ -44,25 +47,28 @@ function addLeaf(tree, parentId) {
   });
 }
 
-function updateTree(tree, leafId, newLeafName) {
+function updateTree(tree, leafId, newLeafName, placeholderOnly) {
   return tree.map(leaf => {
     const newLocationID = leaf.locationID
       ? updateTree(leaf.locationID, leafId, newLeafName)
       : undefined;
     const newLeaf = { ...leaf, locationID: newLocationID };
     if (newLeaf.id === leafId) newLeaf.name = newLeafName;
+    newLeaf.placeholderOnly = placeholderOnly;
     return newLeaf;
   });
 }
 
 const Leaf = function ({ level, data, root, onChange, children }) {
+  // console.log('data',data);
+  const [checked, setChecked] = useState(data.placeholderOnly);
   return (
     <div style={{ marginLeft: level * 32, marginTop: 10 }}>
       <TextInput
         width={240}
         schema={{ name: get(data, 'name') }}
         onChange={newName => {
-          onChange(updateTree(root, data.id, newName));
+          onChange(updateTree(root, data.id, newName, data.placeholderOnly));
         }}
         value={get(data, 'name')}
         autoFocus
@@ -81,6 +87,26 @@ const Leaf = function ({ level, data, root, onChange, children }) {
                 onClick={() => {
                   onChange(deleteFromTree(root, data.id));
                 }}
+              />
+            </InputAdornment>
+          ),
+          startAdornment: (
+            <InputAdornment position="start">
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={checked}
+                    onChange={(event) => {
+                      setChecked(!event.target.checked);
+                      console.log(event.target.checked);
+                      // Handle checkbox change
+                      onChange(updateTree(root, data.id, data.name, checked));
+                    }}
+                    name="startCheckbox"
+                    color="primary"
+                  />
+                }
+                // label="Start"
               />
             </InputAdornment>
           ),

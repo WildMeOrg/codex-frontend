@@ -137,6 +137,7 @@ export default function DefaultFieldTable({ siteSettings }) {
           }}
           onSubmit={async () => {
             if (editField?.id === 'region') {
+              console.log('formSettings.regions',formSettings.regions);
               const response = await putSiteSetting({
                 property: editField.backendPath,
                 data: formSettings.regions,
