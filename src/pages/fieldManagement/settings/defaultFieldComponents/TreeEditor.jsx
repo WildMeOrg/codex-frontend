@@ -11,6 +11,8 @@ import TextInput from '../../../../components/inputs/TextInput';
 import DeleteButton from '../../../../components/DeleteButton';
 import Button from '../../../../components/Button';
 import Text from '../../../../components/Text';
+import { useTheme } from '@material-ui/core/styles';
+import AddIcon from '@material-ui/icons/Add';
 
 function getNewLeaf() {
   return {
@@ -70,10 +72,11 @@ function updateTree(tree, leafId, newLeafName, placeholderOnly) {
 
 const Leaf = function ({ level, data, root, onChange, children }) {
   const [placeholderOnly, setPlaceholderOnly] = useState(data.placeholderOnly || false);
+  const theme = useTheme();
   return (
     <div style={{ marginLeft: level * 32, marginTop: 10 }}>
       <TextInput
-        width={240}
+        width={'100%'}
         schema={{ name: get(data, 'name') }}
         onChange={newName => {
           onChange(
@@ -86,6 +89,7 @@ const Leaf = function ({ level, data, root, onChange, children }) {
           endAdornment: (
             <InputAdornment position="end">
               <IconButton
+                color={'primary'}
                 size="small"
                 onClick={() => {
                   onChange(addLeaf(root, data.id));
@@ -94,6 +98,7 @@ const Leaf = function ({ level, data, root, onChange, children }) {
                 <NewChildIcon />
               </IconButton>
               <DeleteButton
+                color={'primary'}
                 onClick={() => {
                   onChange(deleteFromTree(root, data.id));
                 }}
@@ -174,11 +179,13 @@ export default function TreeEditor({
       >
         <Text variant="h5" id="REGION_EDITOR" />
         <Button
+          display = "tertiary"
           onClick={() => {
             onChange(addLeaf(value));
           }}
           style={{ width: 200 }}
           size="small"
+          startIcon={<AddIcon color={'primary'}/>}
         >
           <FormattedMessage id="NEW_REGION" />
         </Button>
