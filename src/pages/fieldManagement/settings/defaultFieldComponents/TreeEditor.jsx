@@ -47,7 +47,6 @@ function addLeaf(tree, parentId) {
 }
 
 function updateTree(tree, leafId, newLeafName, placeholderOnly) {
-  console.log('placeholderOnly', placeholderOnly);
   return tree.map(leaf => {
     const newLocationID = leaf.locationID
       ? updateTree(
@@ -60,17 +59,17 @@ function updateTree(tree, leafId, newLeafName, placeholderOnly) {
     const newLeaf = {
       ...leaf,
       locationID: newLocationID,
-      placeholderOnly,
     };
-    if (newLeaf.id === leafId) newLeaf.name = newLeafName;
-    console.log('newLeaf', newLeaf);
+    if (newLeaf.id === leafId) {
+      newLeaf.name = newLeafName;
+      newLeaf.placeholderOnly = placeholderOnly;
+    }
     return newLeaf;
   });
 }
 
 const Leaf = function ({ level, data, root, onChange, children }) {
-  // console.log('data',data);
-  const [checked, setChecked] = useState(!data.placeholderOnly);
+  const [placeholderOnly, setPlaceholderOnly] = useState(data.placeholderOnly || false);
   return (
     <div style={{ marginLeft: level * 32, marginTop: 10 }}>
       <TextInput
@@ -78,7 +77,7 @@ const Leaf = function ({ level, data, root, onChange, children }) {
         schema={{ name: get(data, 'name') }}
         onChange={newName => {
           onChange(
-            updateTree(root, data.id, newName, data.placeholderOnly),
+            updateTree(root, data.id, newName, placeholderOnly),
           );
         }}
         value={get(data, 'name')}
@@ -106,16 +105,16 @@ const Leaf = function ({ level, data, root, onChange, children }) {
               <FormControlLabel
                 control={
                   <Checkbox
-                    checked={checked}
+                    checked={!placeholderOnly}
                     onChange={event => {
-                      setChecked(!checked);
-                      console.log(event.target.checked);
+                      const newPlaceholderOnly = !placeholderOnly;
+                      setPlaceholderOnly(newPlaceholderOnly);
                       onChange(
                         updateTree(
                           root,
                           data.id,
                           data.name,
-                          !checked,
+                          newPlaceholderOnly,
                         ),
                       );
                     }}
