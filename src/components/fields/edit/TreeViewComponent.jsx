@@ -33,11 +33,18 @@ const TreeViewComponent = (props) => {
     showData,
     selected,
     setSelected,
+    flatternedTree,
   } = props;
   const classes = useStyles();
   
 
   const handleNodeSelect = (event, nodeId) => {
+    const node = flatternedTree[nodeId];
+    if(node.placeholderOnly){
+      onChange("");
+      setSelected("");
+      return;
+    }
     onChange(nodeId);
     setSelected(nodeId);
   };
@@ -53,7 +60,10 @@ const TreeViewComponent = (props) => {
             display: 'flex', 
             alignItems: 'center',
             }}>
-            <Radio checked={selected===node.id}/>
+            <Radio 
+              checked={node.placeholderOnly ? false : selected===node.id}
+              disabled={node.placeholderOnly}
+            />
             {node.name}            
           </div>
         }

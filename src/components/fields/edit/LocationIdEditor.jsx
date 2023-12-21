@@ -90,8 +90,16 @@ export default function LocationIdEditor(props) {
   });  
 
   useEffect(() => {
-    const selectedLabel = Object.keys(nameToIdMap).find(name => nameToIdMap[name] === selected);
-    setSearchText(selectedLabel);
+    const selectedLabel = 
+      Object.keys(nameToIdMap)
+            .find(name => nameToIdMap[name] === selected);
+    const selectedNode = flatternedTree[selected];
+    if(!selectedNode){
+      setSearchText('');
+      return;
+    }else {
+      setSearchText(selectedLabel);
+    }    
   }, [selected]);  
 
   return (
@@ -111,10 +119,9 @@ export default function LocationIdEditor(props) {
             onChange={onChange} 
             searchText={searchText}
             showData={showData}
-            setSearchText={setSearchText}
-            setModalOpen={setModalOpen}
             selected={selected}
             setSelected={setSelected}
+            flatternedTree={flatternedTree}
           />}
         {showDescription ? (
         <FormHelperText>{description}</FormHelperText>
