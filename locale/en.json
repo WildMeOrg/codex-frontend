@@ -1285,5 +1285,6 @@
   "LONGTITUDE" : "Longtitude",
   "MY_PENDING_SIGHTINGS" : "My pending sightings",
   "MY_SIGHTINGS" : "My sightings",  
-  "MY_UNAPPROVED_SIGHTINGS" : "My unapproved sightings"
+  "MY_UNAPPROVED_SIGHTINGS" : "My unapproved sightings",
+  "MANAGE_REGIONS" : "Manage Regions"
 }

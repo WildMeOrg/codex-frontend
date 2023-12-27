@@ -4,15 +4,12 @@ import { FormattedMessage } from 'react-intl';
 import { v4 as uuid } from 'uuid';
 import IconButton from '@material-ui/core/IconButton';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import NewChildIcon from '@material-ui/icons/AddCircle';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import AddIcon from '@material-ui/icons/Add';
 import TextInput from '../../../../components/inputs/TextInput';
 import DeleteButton from '../../../../components/DeleteButton';
 import Button from '../../../../components/Button';
-import Text from '../../../../components/Text';
-import { useTheme } from '@material-ui/core/styles';
-import AddIcon from '@material-ui/icons/Add';
 
 function getNewLeaf() {
   return {
@@ -71,12 +68,13 @@ function updateTree(tree, leafId, newLeafName, placeholderOnly) {
 }
 
 const Leaf = function ({ level, data, root, onChange, children }) {
-  const [placeholderOnly, setPlaceholderOnly] = useState(data.placeholderOnly || false);
-  const theme = useTheme();
+  const [placeholderOnly, setPlaceholderOnly] = useState(
+    data.placeholderOnly || false,
+  );
   return (
     <div style={{ marginLeft: level * 32, marginTop: 10 }}>
       <TextInput
-        width={'100%'}
+        width="100%"
         schema={{ name: get(data, 'name') }}
         onChange={newName => {
           onChange(
@@ -84,21 +82,21 @@ const Leaf = function ({ level, data, root, onChange, children }) {
           );
         }}
         value={get(data, 'name')}
-        autoFocus
+        // autoFocus
         InputProps={{
           endAdornment: (
             <InputAdornment position="end">
               <IconButton
-                color={'primary'}
+                color="primary"
                 size="small"
                 onClick={() => {
                   onChange(addLeaf(root, data.id));
                 }}
               >
-                <NewChildIcon />
+                <AddIcon color="primary" />
               </IconButton>
               <DeleteButton
-                color={'primary'}
+                color="primary"
                 onClick={() => {
                   onChange(deleteFromTree(root, data.id));
                 }}
@@ -111,7 +109,7 @@ const Leaf = function ({ level, data, root, onChange, children }) {
                 control={
                   <Checkbox
                     checked={!placeholderOnly}
-                    onChange={event => {
+                    onChange={() => {
                       const newPlaceholderOnly = !placeholderOnly;
                       setPlaceholderOnly(newPlaceholderOnly);
                       onChange(
@@ -173,19 +171,18 @@ export default function TreeEditor({
       <div
         style={{
           display: 'flex',
-          justifyContent: 'space-between',
+          justifyContent: 'flex-end',
           alignItems: 'center',
         }}
       >
-        <Text variant="h5" id="REGION_EDITOR" />
         <Button
-          display = "tertiary"
+          display="tertiary"
           onClick={() => {
             onChange(addLeaf(value));
           }}
           style={{ width: 200 }}
           size="small"
-          startIcon={<AddIcon color={'primary'}/>}
+          startIcon={<AddIcon color="primary" />}
         >
           <FormattedMessage id="NEW_REGION" />
         </Button>
