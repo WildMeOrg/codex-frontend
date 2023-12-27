@@ -1,6 +1,9 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
+import { FormControl, MenuItem, Select } from '@material-ui/core';
+import { useHistory } from 'react-router-dom';
+import { useTheme } from '@material-ui/core/styles';
 import useGetUserSightings from '../../models/users/useGetUserSightings';
 import useGetUserUnprocessedAssetGroupSightings from '../../models/users/useGetUserUnproccessedAssetGroupSightings';
 // import { formatUserMessage } from '../../utils/formatters';
@@ -13,21 +16,14 @@ import useGetMe from '../../models/users/useGetMe';
 import Text from '../../components/Text';
 import HomeBreadcrumbs from '../home/HomeBreadcrumbs';
 import ButtonLink from '../../components/ButtonLink';
-import { FormControl,  MenuItem, Select } from '@material-ui/core';
 import LoadingScreen from '../../components/LoadingScreen';
 
 import useDeleteSighting from '../../models/sighting/useDeleteSighting';
 import useDeleteAssetGroupSighting from '../../models/assetGroupSighting/useDeleteAssetGroupSighting';
 import ConfirmDelete from '../../components/ConfirmDelete';
-import { useHistory } from 'react-router-dom';
-import { useTheme } from '@material-ui/core/styles';
-
 
 export default function DataPage() {
-  const {
-    data: userData,
-    loading: userDataLoading,
-  } = useGetMe();  
+  const { data: userData, loading: userDataLoading } = useGetMe();
 
   const theme = useTheme();
 
@@ -35,10 +31,12 @@ export default function DataPage() {
 
   const userId = userData?.guid;
   const { data: sightingsData, loading: sightingsLoading } =
-    useGetUserSightings(userId);  
+    useGetUserSightings(userId);
 
-  const unapprovedSightingsData = sightingsData?.filter((sighting) => 
-    sighting.match_state === "unreviewed" || sighting.match_state === "in_progress"
+  const unapprovedSightingsData = sightingsData?.filter(
+    sighting =>
+      sighting.match_state === 'unreviewed' ||
+      sighting.match_state === 'in_progress',
   );
 
   const [selected, setSelected] = React.useState('all_data');
@@ -72,21 +70,14 @@ export default function DataPage() {
     ? deleteAsgOnClearError
     : deleteSightingOnClearError;
 
-  if(userDataLoading) 
-  return <LoadingScreen/>
+  if (userDataLoading) return <LoadingScreen />;
 
   return (
     <MainColumn fullWidth>
-      <div style={{ display: 'flex', 
-        flexDirection: 'column',
-        }}>
-        <ButtonLink
-            href={"/"}
-            display="back"
-            id="DATA_PAGE"
-          />
-        <HomeBreadcrumbs 
-          currentPageText={'Data'}
+      <div style={{ display: 'flex', flexDirection: 'column' }}>
+        <ButtonLink href="/" display="back" id="DATA_PAGE" />
+        <HomeBreadcrumbs
+          currentPageText="Data"
           currentPageTextId="DATA_PAGE"
         />
         <ConfirmDelete
@@ -133,85 +124,93 @@ export default function DataPage() {
               ? 'SIGHTING_DELETE_VULNERABLE_INDIVIDUAL_MESSAGE'
               : 'CONFIRM_DELETE_SIGHTING_DESCRIPTION'
           }
-      />
+        />
         <div
-              style={{
-                width: '100%',
-                // marginRight: 20,
-                display: "flex",
-                justifyContent: "flex-end",
+          style={{
+            width: '100%',
+            // marginRight: 20,
+            display: 'flex',
+            justifyContent: 'flex-end',
+          }}
+        >
+          <FormControl
+            style={{
+              width: 220,
+              height: 40,
+              display: 'flex',
+              padding: 5,
+              alignItems: 'center',
+              marginTop: 10,
+              marginBottom: 10,
+              marginLeft: 10,
+              marginRight: 30,
+              borderRadius: 24,
+              backgroundColor: theme.palette.primary.main,
+            }}
+          >
+            <Select
+              labelId="demo-select-small-label"
+              id="demo-select-small"
+              value={selected}
+              label="Age"
+              disableUnderline
+              onChange={e => {
+                setSelected(e.target.value);
               }}
-             >
-              <FormControl 
-                style={{
-                  width: 220,
-                  height: 40,
-                  display: "flex",
-                  padding: 5,
-                  alignItems: "center",
-                  marginTop: 10,
-                  marginBottom: 10,
-                  marginLeft: 10,
-                  marginRight: 30,
-                  borderRadius: 24,
-                  backgroundColor: theme.palette.primary.main,
-                }}
-              >
-                <Select
-                  labelId="demo-select-small-label"
-                  id="demo-select-small"
-                  value={selected}
-                  label="Age"
-                  disableUnderline
-                  onChange={(e) => {
-                    console.log('DataPage.jsx: selected: ', selected);
-                    setSelected(e.target.value)
-                  }}
-                >              
-                  <MenuItem value={'all_data'}><FormattedMessage id="MY_SIGHTINGS"/></MenuItem>
-                  <MenuItem value={'unapproved_data'}><FormattedMessage id="MY_UNAPPROVED_SIGHTINGS"/></MenuItem>
-                </Select>
-              </FormControl>
-            </div>
-        <CardContainer size="large" style={{width:200}}>
-          <div style={{
-            width: "100%",
-            marginBottom: 20, 
-            display: "flex",
-            justifyContent: "space-between"}}>          
+            >
+              <MenuItem value="all_data">
+                <FormattedMessage id="MY_SIGHTINGS" />
+              </MenuItem>
+              <MenuItem value="unapproved_data">
+                <FormattedMessage id="MY_UNAPPROVED_SIGHTINGS" />
+              </MenuItem>
+            </Select>
+          </FormControl>
+        </div>
+        <CardContainer size="large" style={{ width: 200 }}>
+          <div
+            style={{
+              width: '100%',
+              marginBottom: 20,
+              display: 'flex',
+              justifyContent: 'space-between',
+            }}
+          >
             <Text
               id={intl.formatMessage({ id: 'MY_PENDING_SIGHTINGS' })}
               variant="h6"
               style={{ marginLeft: 8 }}
             />
-            
           </div>
-          
-            <SightingsCard
+
+          <SightingsCard
             id="pending-sightings-card"
             columns={[
-              'date', 
+              'date',
               'location',
               'numberAnnotations',
-              'numberEncounters', 
-              'actions' 
+              'numberEncounters',
+              'actions',
             ]}
             sightings={agsData || []}
             linkPath="pending-sightings"
             noSightingsMsg="NO_PENDING_SIGHTINGS"
             loading={agsLoading}
-            onDelete= {(value) => {
-              console.log('DataPage.jsx: value: ', value);
+            onDelete={value => {
               setPending(true);
               setId(value);
               setDeleteDialogOpen(true);
             }}
-          />         
-          
+          />
+
           <Text
-            id= {selected==="all_data" ? 
-              intl.formatMessage({ id: 'MY_SIGHTINGS' }) : 
-              intl.formatMessage({ id: 'MY_UNAPPROVED_SIGHTINGS' })}
+            id={
+              selected === 'all_data'
+                ? intl.formatMessage({ id: 'MY_SIGHTINGS' })
+                : intl.formatMessage({
+                    id: 'MY_UNAPPROVED_SIGHTINGS',
+                  })
+            }
             variant="h6"
             style={{ marginLeft: 8, marginBottom: 20, marginTop: 20 }}
           />
@@ -227,11 +226,14 @@ export default function DataPage() {
               'actions',
             ]}
             hideSubmitted
-            sightings={(selected === "all_data" ? sightingsData : unapprovedSightingsData) || []}
+            sightings={
+              (selected === 'all_data'
+                ? sightingsData
+                : unapprovedSightingsData) || []
+            }
             loading={sightingsLoading}
             noSightingsMsg="NO_SIGHTINGS"
-            onDelete= {(value) => {
-              console.log('DataPage.jsx: value: ', value);
+            onDelete={value => {
               setPending(false);
               setId(value);
               setDeleteDialogOpen(true);
