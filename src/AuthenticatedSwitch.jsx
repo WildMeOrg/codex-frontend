@@ -47,6 +47,7 @@ import Footer from './components/Footer';
 import { defaultCrossfadeDuration } from './constants/defaults';
 import Requests from './pages/setup/Requests';
 import SpeciesManagement from './pages/fieldManagement/SpeciesManagement';
+import RegionManagement from './pages/fieldManagement/RegionManagement';
 import ChangeLog from './pages/changeLog/ChangeLog';
 import DataPage from './pages/dataPage/DataPage';
 
@@ -114,6 +115,9 @@ export default function AuthenticatedSwitch({
                       </Route>
                       <Route path="/settings/fields/species">
                         <SpeciesManagement />
+                      </Route>
+                      <Route path="/settings/fields/regions">
+                        <RegionManagement />
                       </Route>
                       <Route path="/settings/fields/save-custom-field/:type?/:id?">
                         <SaveCustomField />
