@@ -21,7 +21,9 @@ import LoadingScreen from '../../components/LoadingScreen';
 import useDeleteSighting from '../../models/sighting/useDeleteSighting';
 import useDeleteAssetGroupSighting from '../../models/assetGroupSighting/useDeleteAssetGroupSighting';
 import ConfirmDelete from '../../components/ConfirmDelete';
-import Paginator from '../../components/dataDisplays/Paginator';
+import { useHistory } from 'react-router-dom';
+import { useTheme } from '@material-ui/core/styles';
+
 
 export default function DataPage() {
   const { data: userData, loading: userDataLoading } = useGetMe();
@@ -50,12 +52,8 @@ export default function DataPage() {
   });
 
   const userId = userData?.guid;
-  const { data: sightingsDataObject, loading: sightingsLoading } =
-    useGetUserSightings(userId, searchParamsSightings);
-  const {
-    results: sightingsData,
-    resultCount: resultCountSightings,
-  } = sightingsDataObject;
+  const { data: sightingsData, loading: sightingsLoading } =
+    useGetUserSightings(userId);  
 
   const unapprovedSightingsData = sightingsData?.filter(
     sighting =>
@@ -215,121 +213,57 @@ export default function DataPage() {
               style={{ marginLeft: 8 }}
             />
           </div>
-
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
+          
+            <SightingsCard
+            id="pending-sightings-card"
+            columns={[
+              'date', 
+              'location',
+              'numberAnnotations',
+              'numberEncounters', 
+              'actions' 
+            ]}
+            sightings={agsData || []}
+            linkPath="pending-sightings"
+            noSightingsMsg="NO_PENDING_SIGHTINGS"
+            loading={agsLoading}
+            onDelete= {(value) => {
+              console.log('DataPage.jsx: value: ', value);
+              setPending(true);
+              setId(value);
+              setDeleteDialogOpen(true);
             }}
-          >
-            <SightingsCard
-              id="pending-sightings-card"
-              columns={[
-                'date',
-                'location',
-                'numberAnnotations',
-                'numberEncounters',
-                'actions',
-              ]}
-              sightings={agsData || []}
-              linkPath="pending-sightings"
-              noSightingsMsg="NO_PENDING_SIGHTINGS"
-              loading={agsLoading}
-              searchParams={searchParamsPendingSightings}
-              setSearchParams={setSearchParamsPendingSightings}
-              onDelete={value => {
-                setPending(true);
-                setId(value);
-                setDeleteDialogOpen(true);
-              }}
-            />
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'row',
-                marginTop: 20,
-                alignItems: 'center',
-              }}
-            >
-              <Paginator
-                searchParams={searchParamsPendingSightings}
-                setSearchParams={setSearchParamsPendingSightings}
-                count={resultCountPendingSigtings}
-              />
-              <Text>
-                {intl.formatMessage(
-                  { id: 'TotalAccount' },
-                  { totalAccount: resultCountPendingSigtings },
-                )}
-              </Text>
-            </div>
-
-            <Text
-              id={
-                selected === 'all_data'
-                  ? intl.formatMessage({ id: 'MY_SIGHTINGS' })
-                  : intl.formatMessage({
-                      id: 'MY_UNAPPROVED_SIGHTINGS',
-                    })
-              }
-              variant="h6"
-              style={{
-                marginLeft: 8,
-                marginBottom: 20,
-                marginTop: 20,
-              }}
-            />
-            <SightingsCard
-              id="sightings-card"
-              noTitleBar
-              columns={[
-                'individual',
-                'date',
-                'locationIdValue',
-                'match_state',
-                'numberAnnotations',
-                'numberEncounters',
-                'actions',
-              ]}
-              hideSubmitted
-              sightings={
-                (selected === 'all_data'
-                  ? sightingsData
-                  : unapprovedSightingsData) || []
-              }
-              loading={sightingsLoading}
-              noSightingsMsg="NO_SIGHTINGS"
-              searchParams={searchParamsSightings}
-              setSearchParams={setSearchParamsSightings}
-              // dataCount={(selected === "all_data" ? sightingsData?.length : unapprovedSightingsData?.length)}
-              onDelete={value => {
-                setPending(false);
-                setId(value);
-                setDeleteDialogOpen(true);
-              }}
-            />
-
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'row',
-                marginTop: 20,
-                alignItems: 'center',
-              }}
-            >
-              <Paginator
-                searchParams={searchParamsSightings}
-                setSearchParams={setSearchParamsSightings}
-                count={resultCountSightings}
-              />
-              <Text>
-                {intl.formatMessage(
-                  { id: 'TotalAccount' },
-                  { totalAccount: resultCountSightings },
-                )}
-              </Text>
-            </div>
-          </div>
+          />         
+          
+          <Text
+            id= {selected==="all_data" ? 
+              intl.formatMessage({ id: 'MY_SIGHTINGS' }) : 
+              intl.formatMessage({ id: 'MY_UNAPPROVED_SIGHTINGS' })}
+            variant="h6"
+            style={{ marginLeft: 8, marginBottom: 20, marginTop: 20 }}
+          />
+          <SightingsCard
+            id="sightings-card"
+            columns={[
+              'individual',
+              'date',
+              'locationIdValue',
+              'match_state',
+              'numberAnnotations',
+              'numberEncounters',
+              'actions',
+            ]}
+            hideSubmitted
+            sightings={(selected === "all_data" ? sightingsData : unapprovedSightingsData) || []}
+            loading={sightingsLoading}
+            noSightingsMsg="NO_SIGHTINGS"
+            onDelete= {(value) => {
+              console.log('DataPage.jsx: value: ', value);
+              setPending(false);
+              setId(value);
+              setDeleteDialogOpen(true);
+            }}
+          />
         </CardContainer>
       </div>
     </MainColumn>
