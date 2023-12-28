@@ -267,12 +267,9 @@ export default function DataDisplay({
                       } else if (formTitle === 'individuals') {
                         compositeQuery =
                           buildIndividualsQuery(formFilters);
-                        console.log('individual formFilters', formFilters);
-                        console.log('individual compositeQuery', compositeQuery);
                       } else if (formTitle === 'animals') {
                         compositeQuery =
                           buildEncountersQuery(formFilters);
-                        console.log('compositeQuery', compositeQuery);
                       }
                       try {
                         const response = await axios.request({

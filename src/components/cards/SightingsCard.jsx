@@ -24,6 +24,8 @@ export default function SightingsCard({
   linkPath = 'sightings',
   noSightingsMsg = 'NO_SIGHTINGS',
   loading,
+  searchParams,
+  setSearchParams,
 }) {
   const [showMapView, setShowMapView] = useState(false);
   const theme = useTheme();
@@ -33,23 +35,20 @@ export default function SightingsCard({
   const mapModeClicked = () => setShowMapView(true);
   const listModeClicked = () => setShowMapView(false);
 
-  const sightingsWithLocationData = useMemo(
-    () => {
-      // hotfix //
-      if (!sightings) return [];
-      // hotfix //
+  const sightingsWithLocationData = useMemo(() => {
+    // hotfix //
+    if (!sightings) return [];
+    // hotfix //
 
-      return sightings.map(sighting => ({
-        ...sighting,
-        formattedLocation: formatLocationFromSighting(
-          sighting,
-          regionOptions,
-          intl,
-        ),
-      }));
-    },
-    [get(sightings, 'length')],
-  );
+    return sightings.map(sighting => ({
+      ...sighting,
+      formattedLocation: formatLocationFromSighting(
+        sighting,
+        regionOptions,
+        intl,
+      ),
+    }));
+  }, [get(sightings, 'length')]);
 
   const allColumns = [
     {
@@ -101,7 +100,9 @@ export default function SightingsCard({
       name: 'guid',
       labelId: 'ACTIONS',
       options: {
-        customBodyRender: value => ( // eslint-disable-line react/display-name
+        customBodyRender: (
+          value, // eslint-disable-line
+        ) => (
           <div>
             <ActionIcon
               variant="view"
@@ -171,6 +172,9 @@ export default function SightingsCard({
           loading={loading}
           noResultsTextId={noSightingsMsg}
           tableContainerStyles={{ maxHeight: 800 }}
+          searchParams={searchParams}
+          setSearchParams={setSearchParams}
+          dataCount
         />
       )}
       {!noSightings && showMapView && (
