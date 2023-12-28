@@ -52,12 +52,12 @@ export function getUserQueryKey(guid) {
   return ['user', guid];
 }
 
-export function getUserSightingsQueryKey(guid) {
-  return ['userSightings', guid];
+export function getUserSightingsQueryKey(guid, query, params) {
+  return ['userSightings', guid, query, params];
 }
 
-export function getUserAgsQueryKey(guid) {
-  return ['userAgs', guid];
+export function getUserAgsQueryKey(guid, params) {
+  return ['userAgs', guid, params];
 }
 
 export function getAssetGroupQueryKey(guid) {
