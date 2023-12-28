@@ -185,7 +185,8 @@ export default function DataPage() {
               labelId="demo-select-small-label"
               id="demo-select-small"
               value={selected}
-              label="Age"
+              // label="Age"
+              style={{ color: theme.palette.common.white }}
               disableUnderline
               onChange={e => {
                 setSelected(e.target.value);
