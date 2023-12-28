@@ -258,8 +258,8 @@ export default function DataPage() {
               />
               <Text>
                 {intl.formatMessage(
-                  { id: 'TotalAccount' },
-                  { totalAccount: resultCountPendingSigtings },
+                  { id: 'TOTALCOUNT' },
+                  { totalCount: resultCountPendingSigtings },
                 )}
               </Text>
             </div>
@@ -324,8 +324,8 @@ export default function DataPage() {
               />
               <Text>
                 {intl.formatMessage(
-                  { id: 'TotalAccount' },
-                  { totalAccount: resultCountSightings },
+                  { id: 'TOTALCOUNT' },
+                  { totalCount: resultCountSightings },
                 )}
               </Text>
             </div>
