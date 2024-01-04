@@ -16,9 +16,7 @@ export default function IndividualsDisplay({
   formFilters,
   ...rest
 }) {
-  const title = dataCount
-    ? `${dataCount} matching individuals`
-    : 'Matching individuals';
+  const title = `${dataCount || individuals.length} matching individuals`;
 
   const columns = [
     {
