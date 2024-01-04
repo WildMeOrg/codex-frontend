@@ -24,6 +24,8 @@ import FilterList from '@material-ui/icons/FilterList';
 import CloudDownload from '@material-ui/icons/CloudDownload';
 
 import axios from 'axios';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogActions from '@material-ui/core/DialogActions';
 import BaoDetective from '../svg/BaoDetective';
 import FilterBar from '../FilterBar';
 import Text from '../Text';
@@ -34,6 +36,8 @@ import useGetMe from '../../models/users/useGetMe';
 import buildSightingsQuery from './buildSightingsQuery';
 import buildIndividualsQuery from './buildIndividualsQuery';
 import buildEncountersQuery from './buildEncountersQuery';
+import StandardDialog from '../StandardDialog';
+import Button from '../Button';
 
 function getCellAlignment(cellIndex, columnDefinition) {
   if (columnDefinition.align) return columnDefinition.align;
@@ -97,6 +101,7 @@ export default function DataDisplay({
     useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
   const filterPopperOpen = Boolean(anchorEl);
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   const selectedRow = selectionControlled
     ? selectedRowFromProps
@@ -150,6 +155,33 @@ export default function DataDisplay({
 
   return (
     <div {...rest}>
+      <StandardDialog
+        titleId="EXPORT_RESULT"
+        open={dialogOpen}
+        onClose={() => setDialogOpen(false)}
+        fullWidth
+        maxWidth="md"
+      >
+        <DialogContent
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 12,
+          }}
+        >
+          <Text
+            variant="body1"
+            id="EXPORTER_ACCESS_RESTRICTED_WARNING"
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button
+            id="OK"
+            display="primary"
+            onClick={() => setDialogOpen(false)}
+          />
+        </DialogActions>
+      </StandardDialog>
       <Popper
         open={filterPopperOpen}
         anchorEl={anchorEl}
@@ -287,11 +319,12 @@ export default function DataDisplay({
                           );
                         }
                       } catch (e) {
-                        console.log(
-                          'Error in downloading file : ',
-                          e,
-                        );
-                        sendCsv(visibleColumns, visibleData);
+                        if (
+                          e.response.status === 403 ||
+                          e.response.status === 400
+                        ) {
+                          setDialogOpen(true);
+                        }
                       }
                     } else sendCsv(visibleColumns, visibleData);
                   }}
