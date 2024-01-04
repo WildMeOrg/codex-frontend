@@ -1286,5 +1286,6 @@
   "MY_PENDING_SIGHTINGS" : "My pending sightings",
   "MY_SIGHTINGS" : "My sightings",  
   "MY_UNAPPROVED_SIGHTINGS" : "My unapproved sightings",
-  "TotalAccount" : "Total Account: {totalAccount}"
+  "TotalAccount" : "Total Account: {totalAccount}",
+  "MANAGE_REGIONS" : "Manage Regions"
 }

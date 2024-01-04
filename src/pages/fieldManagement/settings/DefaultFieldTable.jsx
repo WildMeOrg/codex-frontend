@@ -11,7 +11,7 @@ import DataDisplay from '../../../components/dataDisplays/DataDisplay';
 import ActionIcon from '../../../components/ActionIcon';
 import Text from '../../../components/Text';
 import categoryTypes from '../../../constants/categoryTypes';
-import { RegionEditor } from './defaultFieldComponents/Editors';
+// import { RegionEditor } from './defaultFieldComponents/Editors';
 import RelationshipEditor from './defaultFieldComponents/RelationshipEditor';
 import SocialGroupsEditor from './defaultFieldComponents/SocialGroupsEditor';
 import { cellRendererTypes } from '../../../components/dataDisplays/cellRenderers';
@@ -22,14 +22,13 @@ const configurableFields = [
     backendPath: 'site.species',
     labelId: 'SPECIES',
     type: categoryTypes.sighting,
-    // Editor: SpeciesEditor,
   },
   {
     id: 'region',
     backendPath: 'site.custom.regions',
     labelId: 'REGION',
     type: categoryTypes.sighting,
-    Editor: RegionEditor,
+    // Editor: RegionEditor,
   },
   {
     id: 'relationship',
@@ -84,14 +83,49 @@ export default function DefaultFieldTable({ siteSettings }) {
     [siteSettings],
   );
 
+  const onCloseEditor = () => {
+    clearError();
+    setEditField(null);
+  };
+
+  const onClose = () => {
+    setFormSettings(getInitialFormState(siteSettings));
+    onCloseEditor();
+  };
+
+  const onSubmit = async () => {
+    if (editField?.id === 'region') {
+      console.log('formSettings.regions', formSettings.regions);
+      const response = await putSiteSetting({
+        property: editField.backendPath,
+        data: formSettings.regions,
+      });
+      if (response?.status === 200) onCloseEditor();
+    }
+    if (editField?.id === 'relationship') {
+      const response = await putSiteSetting({
+        property: editField.backendPath,
+        data: formSettings.relationships,
+      });
+      if (response?.status === 200) onCloseEditor();
+    }
+    if (editField?.id === 'socialGroups') {
+      const response = await putSiteSetting({
+        property: editField.backendPath,
+        data: formSettings.socialGroups,
+      });
+      if (response?.status === 200) onCloseEditor();
+    }
+  };
+
   const tableColumns = [
     {
       name: 'labelId',
       label: intl.formatMessage({ id: 'LABEL' }),
       options: {
-        customBodyRender: labelId => (
-          <FormattedMessage id={labelId} />
-        ),
+        customBodyRender: (
+          labelId, //eslint-disable-line
+        ) => <FormattedMessage id={labelId} />,
       },
     },
     {
@@ -103,26 +137,26 @@ export default function DefaultFieldTable({ siteSettings }) {
       name: 'actions',
       label: intl.formatMessage({ id: 'ACTIONS' }),
       options: {
-        customBodyRender: (_, field) => (
+        customBodyRender: (
+          _,
+          field, //eslint-disable-line
+        ) => (
           <ActionIcon
             variant="edit"
             onClick={() => {
-              if(field.id === 'species'){
+              if (field.id === 'species') {
                 history.push('/settings/fields/species');
-              }else {
+              } else if (field.id === 'region') {
+                history.push('/settings/fields/regions');
+              } else {
                 setEditField(field);
-              }              
+              }
             }}
           />
         ),
       },
     },
   ];
-
-  const onCloseEditor = () => {
-    clearError();
-    setEditField(null);
-  };
 
   return (
     <Grid item>
@@ -131,33 +165,8 @@ export default function DefaultFieldTable({ siteSettings }) {
           siteSettings={siteSettings}
           formSettings={formSettings}
           setFormSettings={setFormSettings}
-          onClose={() => {
-            setFormSettings(getInitialFormState(siteSettings));
-            onCloseEditor();
-          }}
-          onSubmit={async () => {
-            if (editField?.id === 'region') {
-              const response = await putSiteSetting({
-                property: editField.backendPath,
-                data: formSettings.regions,
-              });
-              if (response?.status === 200) onCloseEditor();
-            }
-            if (editField?.id === 'relationship') {
-              const response = await putSiteSetting({
-                property: editField.backendPath,
-                data: formSettings.relationships,
-              });
-              if (response?.status === 200) onCloseEditor();
-            }
-            if (editField?.id === 'socialGroups') {
-              const response = await putSiteSetting({
-                property: editField.backendPath,
-                data: formSettings.socialGroups,
-              });
-              if (response?.status === 200) onCloseEditor();
-            }
-          }}
+          onClose={onClose}
+          onSubmit={onSubmit}
         >
           {error ? (
             <CustomAlert
