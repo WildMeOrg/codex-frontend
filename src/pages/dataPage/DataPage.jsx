@@ -190,6 +190,12 @@ export default function DataPage() {
               onChange={e => {
                 setSelected(e.target.value);
               }}
+              style={{
+                color: theme.palette.common.white,
+                fontSize: 16,
+                fontWeight: 500,
+                paddingLeft: 10,
+              }}
             >
               <MenuItem value="all_data">
                 <FormattedMessage id="MY_SIGHTINGS" />
@@ -325,7 +331,7 @@ export default function DataPage() {
               <Text>
                 {intl.formatMessage(
                   { id: 'TotalAccount' },
-                  { totalAccount: resultCountSightings },
+                  { totalAccount: resultCountSightings || 0 },
                 )}
               </Text>
             </div>
