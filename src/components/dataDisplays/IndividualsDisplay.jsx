@@ -101,6 +101,7 @@ export default function IndividualsDisplay({
       columns={amendedColumns}
       data={individuals}
       title={title}
+      titleId="individuals"
       loading={loading}
       formFilters={formFilters}
       // onPrint={() => {

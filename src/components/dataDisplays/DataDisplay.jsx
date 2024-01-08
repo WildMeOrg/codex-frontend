@@ -32,7 +32,6 @@ import Text from '../Text';
 import CollapsibleRow from './CollapsibleRow';
 import sendCsv, { downloadFileFromBackend } from './sendCsv';
 
-import useGetMe from '../../models/users/useGetMe';
 import buildSightingsQuery from './buildSightingsQuery';
 import buildIndividualsQuery from './buildIndividualsQuery';
 import buildEncountersQuery from './buildEncountersQuery';
@@ -81,11 +80,6 @@ export default function DataDisplay({
   const intl = useIntl();
   const theme = useTheme();
   const themeColor = theme.palette.primary.main;
-
-  const { data: currentUserData } = useGetMe();
-
-  const isAdmin = get(currentUserData, 'is_admin', false);
-  const isExporter = get(currentUserData, 'is_exporter', false);
 
   const initialColumnNames = columns
     .filter(c => get(c, 'options.display', true))
@@ -171,7 +165,7 @@ export default function DataDisplay({
         >
           <Text
             variant="body1"
-            id="EXPORTER_ACCESS_RESTRICTED_WARNING"
+            id="EXPORT_ACCESS_RESTRICTED_WARNING"
           />
         </DialogContent>
         <DialogActions>
@@ -269,70 +263,64 @@ export default function DataDisplay({
                 margin:
                   variant === 'secondary' ? '12px 0 0 12px' : 'unset',
               }}
-              id={titleId}
             >
               {title}
             </Text>
           </Grid>
           <Grid item>
             {variant === 'primary' &&
-              !hideDownloadCsv &&
-              (isAdmin || isExporter) && (
-                <IconButton
-                  onClick={async () => {
-                    const formTitle = title.split(' ')[2];
-                    const url = `${__houston_url__}/api/v1/${
-                      formTitle === 'animals'
-                        ? 'encounters'
-                        : formTitle
-                    }/export`;
-                    if (
-                      formTitle === 'sightings' ||
-                      formTitle === 'individuals' ||
-                      formTitle === 'animals'
-                    ) {
-                      let compositeQuery = {};
+              !hideDownloadCsv &&              
+              <IconButton
+                onClick={async () => {
+                  const url = `${__houston_url__}/api/v1/${titleId}/export`;
+                  console.log('url',url);
+                  if (
+                    titleId === 'sightings' ||
+                    titleId === 'individuals' ||
+                    titleId === 'animals'
+                  ) {
+                    let compositeQuery = {};
 
-                      if (formTitle === 'sightings') {
-                        compositeQuery =
-                          buildSightingsQuery(formFilters);
-                      } else if (formTitle === 'individuals') {
-                        compositeQuery =
-                          buildIndividualsQuery(formFilters);
-                      } else if (formTitle === 'animals') {
-                        compositeQuery =
-                          buildEncountersQuery(formFilters);
+                    if (titleId === 'sightings') {
+                      compositeQuery =
+                        buildSightingsQuery(formFilters);
+                    } else if (titleId === 'individuals') {
+                      compositeQuery =
+                        buildIndividualsQuery(formFilters);
+                    } else if (titleId === 'animals') {
+                      compositeQuery =
+                        buildEncountersQuery(formFilters);
+                    }
+                    try {
+                      const response = await axios.request({
+                        url,
+                        method: 'post',
+                        data: compositeQuery,
+                        params: searchParams,
+                        responseType: 'blob',
+                      });
+                      const status = response?.status;
+                      if (status === 200) {
+                        downloadFileFromBackend(
+                          response.data,
+                          titleId,
+                        );
                       }
-                      try {
-                        const response = await axios.request({
-                          url,
-                          method: 'post',
-                          data: compositeQuery,
-                          params: searchParams,
-                          responseType: 'blob',
-                        });
-                        const status = response?.status;
-                        if (status === 200) {
-                          downloadFileFromBackend(
-                            response.data,
-                            formTitle,
-                          );
-                        }
-                      } catch (e) {
-                        if (
-                          e.response.status === 403 ||
-                          e.response.status === 400
-                        ) {
-                          setDialogOpen(true);
-                        }
+                    } catch (e) {
+                      if (
+                        e.response.status === 403 ||
+                        e.response.status === 400
+                      ) {
+                        setDialogOpen(true);
                       }
-                    } else sendCsv(visibleColumns, visibleData);
-                  }}
-                  size="small"
-                >
+                    }
+                  } else sendCsv(visibleColumns, visibleData);
+                }}
+                size="small"
+              >
                   <CloudDownload style={{ marginRight: 4 }} />
                 </IconButton>
-              )}
+              }
             {onPrint && (
               <IconButton onClick={onPrint} size="small">
                 <Print style={{ marginRight: 4 }} />

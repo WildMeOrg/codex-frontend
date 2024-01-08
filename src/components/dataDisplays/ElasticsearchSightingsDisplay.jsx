@@ -121,6 +121,7 @@ export default function ElasticsearchSightingsDisplay({
       columns={columns}
       data={tableData}
       title={title}
+      titleId="sightings"
       loading={loading}
       showNoResultsBao
       formFilters={formFilters}

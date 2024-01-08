@@ -12,10 +12,6 @@ export default [
     titleId: 'USER_MANAGER',
   },
   {
-    id: 'is_exporter',
-    titleId: 'EXPORTER',
-  },
-  {
     id: 'is_admin',
     titleId: 'ADMINISTRATOR',
   },

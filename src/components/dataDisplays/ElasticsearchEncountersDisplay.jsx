@@ -110,6 +110,7 @@ export default function ElasticsearchEncountersDisplay({
       columns={columns}
       data={encounters}
       title={title}
+      titleId="encounters"
       loading={loading}
       showNoResultsBao
       formFilters={formFilters}
