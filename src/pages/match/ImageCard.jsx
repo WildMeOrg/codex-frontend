@@ -131,6 +131,9 @@ export default function ImageCard({
             >
               <Button
                 display="primary"
+                style={{
+                  paddingLeft: 40,
+                }}
                 disabled={selectedIndex === 0}
                 onClick={() => {
                   if (selectedIndex - 1 < 0) {
@@ -159,6 +162,9 @@ export default function ImageCard({
               ))}
               <Button
                 display="primary"
+                style={{
+                  paddingLeft: 40,
+                }}
                 disabled={selectedIndex === allData.length - 1}
                 onClick={() => {
                   if (selectedIndex + 1 > allData.length - 1) {
@@ -167,7 +173,6 @@ export default function ImageCard({
                     setSelectedIndex(selectedIndex + 1);
                   }
                 }}
-                style={{ padding: 20 }}
                 startIcon={<ArrowForwardIosIcon />}
               />
             </div>
