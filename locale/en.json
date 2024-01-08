@@ -1289,6 +1289,6 @@
   "TotalAccount" : "Total Account: {totalAccount}",
   "MANAGE_REGIONS" : "Manage Regions",
   "EXPORT_RESULT" : "Export result",
-  "EXPORTER_ACCESS_RESTRICTED_WARNING" : "No results meet export criteria. Consider adjusting your search or requesting export collaborations.",
+  "EXPORT_ACCESS_RESTRICTED_WARNING" : "No results meet export criteria. Consider adjusting your search or requesting export collaborations.",
   "OK" : "Ok"
 }
