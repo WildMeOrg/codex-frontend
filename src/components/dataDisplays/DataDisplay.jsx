@@ -272,7 +272,6 @@ export default function DataDisplay({
               <IconButton
                 onClick={async () => {
                   const url = `${__houston_url__}/api/v1/${titleId}/export`;
-                  console.log('url', url);
                   if (
                     titleId === 'sightings' ||
                     titleId === 'individuals' ||
