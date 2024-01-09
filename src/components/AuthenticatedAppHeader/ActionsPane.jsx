@@ -94,7 +94,7 @@ export default function NotificationsPane({
       onClose={closePopover}
     >
       <MenuList style={{ minWidth: 270 }}>
-        <Link href="/" onClick={closePopover} noUnderline>
+        <Link href="/user-profile" onClick={closePopover} noUnderline>
           <MenuItem style={{ minHeight: 'auto' }}>
             <Avatar
               style={{ height: 52, width: 52 }}

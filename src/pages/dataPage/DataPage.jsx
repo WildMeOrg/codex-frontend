@@ -14,8 +14,6 @@ import SightingsCard from '../../components/cards/SightingsCard';
 import CardContainer from '../../components/cards/CardContainer';
 import useGetMe from '../../models/users/useGetMe';
 import Text from '../../components/Text';
-import HomeBreadcrumbs from '../home/HomeBreadcrumbs';
-import ButtonLink from '../../components/ButtonLink';
 import LoadingScreen from '../../components/LoadingScreen';
 
 import useDeleteSighting from '../../models/sighting/useDeleteSighting';
@@ -107,12 +105,13 @@ export default function DataPage() {
 
   return (
     <MainColumn fullWidth>
+      <Text
+        variant="h3"
+        component="h3"
+        style={{ padding: '16px 0 16px 0px' }}
+        id="DATA_PAGE"
+      />
       <div style={{ display: 'flex', flexDirection: 'column' }}>
-        <ButtonLink href="/" display="back" id="DATA_PAGE" />
-        <HomeBreadcrumbs
-          currentPageText="Data"
-          currentPageTextId="DATA_PAGE"
-        />
         <ConfirmDelete
           open={deleteDialogOpen}
           onClose={() => {
@@ -218,7 +217,7 @@ export default function DataPage() {
             <Text
               id={intl.formatMessage({ id: 'MY_PENDING_SIGHTINGS' })}
               variant="h6"
-              style={{ marginLeft: 8 }}
+              // style={{ marginLeft: 8 }}
             />
           </div>
 
