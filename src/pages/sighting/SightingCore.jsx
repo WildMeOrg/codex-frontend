@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { get } from 'lodash-es';
 import { useQueryClient } from 'react-query';
@@ -103,6 +103,13 @@ export default function SightingCore({
           sightingTabs['#overview'],
   );
 
+  useEffect(() => {
+    if (isPreparationComplete) {
+      setActiveTab(sightingTabs[window.location.hash] || sightingTabs['#overview']);
+    }
+  }, [isPreparationComplete]);
+
+  
   if (error) {
     return (
       <SadScreen

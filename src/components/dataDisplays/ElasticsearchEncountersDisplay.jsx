@@ -63,7 +63,7 @@ export default function ElasticsearchEncountersDisplay({
           match_state,
           encounter,
         ) => (
-          <Link to={`/sightings/${encounter?.sighting_guid}`}>
+          <Link to={`/sightings/${encounter?.sighting_guid}#individuals`}>
             {match_state || 'Unprocessed'}
           </Link>
         ),
