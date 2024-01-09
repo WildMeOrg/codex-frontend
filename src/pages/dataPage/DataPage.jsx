@@ -217,7 +217,6 @@ export default function DataPage() {
             <Text
               id={intl.formatMessage({ id: 'MY_PENDING_SIGHTINGS' })}
               variant="h6"
-              // style={{ marginLeft: 8 }}
             />
           </div>
 
