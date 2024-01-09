@@ -218,8 +218,11 @@ export default function AuthenticatedSwitch({
                       <Route path="/welcome">
                         <Welcome />
                       </Route>
-                      <Route path="/" exact>
+                      <Route path="/user-profile" exact>
                         <Home />
+                      </Route>
+                      <Route path="/" exact>
+                        <DataPage />
                       </Route>
                       <Route>
                         <FourOhFour />
