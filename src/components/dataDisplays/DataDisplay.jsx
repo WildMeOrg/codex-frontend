@@ -268,16 +268,15 @@ export default function DataDisplay({
             </Text>
           </Grid>
           <Grid item>
-            {variant === 'primary' &&
-              !hideDownloadCsv &&              
+            {variant === 'primary' && !hideDownloadCsv && (
               <IconButton
                 onClick={async () => {
                   const url = `${__houston_url__}/api/v1/${titleId}/export`;
-                  console.log('url',url);
+                  console.log('url', url);
                   if (
                     titleId === 'sightings' ||
                     titleId === 'individuals' ||
-                    titleId === 'animals'
+                    titleId === 'encounters'
                   ) {
                     let compositeQuery = {};
 
@@ -287,7 +286,7 @@ export default function DataDisplay({
                     } else if (titleId === 'individuals') {
                       compositeQuery =
                         buildIndividualsQuery(formFilters);
-                    } else if (titleId === 'animals') {
+                    } else if (titleId === 'encounters') {
                       compositeQuery =
                         buildEncountersQuery(formFilters);
                     }
@@ -318,9 +317,9 @@ export default function DataDisplay({
                 }}
                 size="small"
               >
-                  <CloudDownload style={{ marginRight: 4 }} />
-                </IconButton>
-              }
+                <CloudDownload style={{ marginRight: 4 }} />
+              </IconButton>
+            )}
             {onPrint && (
               <IconButton onClick={onPrint} size="small">
                 <Print style={{ marginRight: 4 }} />
