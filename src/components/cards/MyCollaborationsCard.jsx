@@ -74,12 +74,19 @@ export default function MyCollaborationsCard({ userData }) {
     const otherUserData = get(otherUserDataArray, '0', {});
 
     let teamViewState = 'No access';
+    let teamExportState = 'No access';
     let teamEditState = 'No access';
     if (
       thisUserData.viewState === 'pending' ||
       otherUserData.viewState === 'pending'
     ) {
       teamViewState = 'Pending';
+    }
+    if (
+      thisUserData.exportState === 'pending' ||
+      otherUserData.exportState === 'pending'
+    ) {
+      teamExportState = 'Pending';
     }
     if (
       thisUserData.editState === 'pending' ||
@@ -94,6 +101,12 @@ export default function MyCollaborationsCard({ userData }) {
       teamViewState = 'Access granted';
     }
     if (
+      thisUserData.exportState === 'approved' &&
+      otherUserData.exportState === 'approved'
+    ) {
+      teamExportState = 'Access granted';
+    }
+    if (
       thisUserData.editState === 'approved' &&
       otherUserData.editState === 'approved'
     ) {
@@ -104,6 +117,7 @@ export default function MyCollaborationsCard({ userData }) {
       created: collaboration.created,
       guid: collaboration.guid,
       teamViewState,
+      teamExportState,
       teamEditState,
       thisUserData,
       otherUserData,
@@ -128,6 +142,10 @@ export default function MyCollaborationsCard({ userData }) {
     {
       name: 'teamViewState',
       label: intl.formatMessage({ id: 'VIEW' }),
+    },
+    {
+      name: 'teamExportState',
+      label: intl.formatMessage({ id: 'EXPORT' }),
     },
     {
       name: 'teamEditState',

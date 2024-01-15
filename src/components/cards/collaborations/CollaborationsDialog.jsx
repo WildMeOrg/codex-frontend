@@ -5,12 +5,14 @@ import DialogActions from '@material-ui/core/DialogActions';
 
 import usePatchCollaboration from '../../../models/collaboration/usePatchCollaboration';
 import useRequestEditAccess from '../../../models/collaboration/useRequestEditAccess';
+import useRequestExportAccess from '../../../models/collaboration/useRequestExportAccess';
 import Alert from '../../Alert';
 import Button from '../../Button';
 import Text from '../../Text';
 import StandardDialog from '../../StandardDialog';
 import PermissionBlock from './PermissionBlock';
 import collaborationStates from './collaborationStates';
+// import { convertRowsPropToState } from '@material-ui/data-grid';
 
 const collaborationSchemas = Object.values(collaborationStates);
 
@@ -22,10 +24,17 @@ export default function CollaborationsDialog({
 }) {
   const {
     mutate: requestEditAccess,
-    loading: requestLoading,
-    error: requestError,
-    clearError: clearRequestError,
+    loading: editRequestLoading,
+    error: editRequestError,
+    clearError: clearEditRequestError,
   } = useRequestEditAccess();
+
+  const {
+    mutate: requestExportAccess,
+    loading: exportRequestLoading,
+    error: exportRequestError,
+    clearError: clearexportRequestError,
+  } = useRequestExportAccess();
 
   const {
     mutate: patchCollaboration,
@@ -33,21 +42,28 @@ export default function CollaborationsDialog({
     error: patchError,
   } = usePatchCollaboration();
 
-  const loading = requestLoading || patchLoading;
-  const error = requestError || patchError;
+  const loading =
+    editRequestLoading || patchLoading || exportRequestLoading;
+  const error = editRequestError || exportRequestError || patchError;
 
   const [request, setRequest] = useState(null);
 
   const viewStateSchema = collaborationSchemas.find(c =>
     c.test('viewState', activeCollaboration),
   );
+
+  const exportStateSchema = collaborationSchemas.find(c =>
+    c.test('exportState', activeCollaboration),
+  );
+
   const editStateSchema = collaborationSchemas.find(c =>
     c.test('editState', activeCollaboration),
   );
 
   function cleanupAndClose() {
     setRequest(null);
-    clearRequestError();
+    clearEditRequestError();
+    clearexportRequestError();
     onClose();
   }
 
@@ -80,13 +96,24 @@ export default function CollaborationsDialog({
               setRequest={setRequest}
             />
             <PermissionBlock
+              title="Export"
+              testKey="exportState"
+              schema={exportStateSchema}
+              setRequest={setRequest}
+              disabled={get(
+                viewStateSchema,
+                'viewDisablesExport',
+                false,
+              )}
+            />
+            <PermissionBlock
               title="Edit"
               testKey="editState"
               schema={editStateSchema}
               setRequest={setRequest}
               disabled={get(
-                viewStateSchema,
-                'viewDisablesEdit',
+                exportStateSchema,
+                'exportDisablesEdit',
                 false,
               )}
             />
@@ -112,6 +139,11 @@ export default function CollaborationsDialog({
               let requestSuccessful;
               if (request.sendEditRequest) {
                 const response = await requestEditAccess({
+                  collaborationGuid: activeCollaboration.guid,
+                });
+                requestSuccessful = response?.status === 200;
+              } else if (request.sendExportRequest) {
+                const response = await requestExportAccess({
                   collaborationGuid: activeCollaboration.guid,
                 });
                 requestSuccessful = response?.status === 200;

@@ -101,7 +101,7 @@ export default function NotificationsPane({
               const defaultButtonPath = get(
                 currentNotificationSchema,
                 'buttonPath',
-                '/#collab-card',
+                '/user-profile/#collab-card',
               );
               const buttonPath = deriveButtonPath
                 ? deriveButtonPath(mergedIndividualGuid)

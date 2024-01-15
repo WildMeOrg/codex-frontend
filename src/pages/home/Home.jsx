@@ -33,11 +33,13 @@ export default function Home() {
   if (!fullName) return <ProfileSetup userData={data} />;
 
   const isUserManager = get(data, ['is_user_manager'], false);
+  const isUserAdmin = get(data, ['is_admin'], false);
 
   return (
     <UserProfile
       someoneElse={false}
       viewerIsUserManager={isUserManager}
+      viewerIsUserAdmin={isUserAdmin}
       userData={data}
       userId={userId}
       userDataLoading={loading}

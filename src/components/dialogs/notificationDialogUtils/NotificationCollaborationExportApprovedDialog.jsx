@@ -6,7 +6,7 @@ import { notificationSchema } from '../../../constants/notificationSchema';
 import NotificationDetailsDialog from '../NotificationDetailsDialog';
 import { useHistory } from 'react-router-dom';
 
-export default function NotificationCollaborationApprovedDialog({
+export default function NotificationCollaborationExportApprovedDialog({
   open,
   onClose,
   notification,
