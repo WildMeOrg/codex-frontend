@@ -1,8 +1,13 @@
 import { get } from 'lodash-es';
 
 function buildCollaborationPatch(testKey, value) {
-  const path =
-    testKey === 'viewState' ? '/view_permission' : '/edit_permission';
+  const permissions = {
+    viewState: '/view_permission',
+    exportState: '/export_permission',
+    editState: '/edit_permission',
+  };
+  const path = permissions[testKey];
+
   return [
     {
       op: 'replace',
@@ -14,14 +19,16 @@ function buildCollaborationPatch(testKey, value) {
 
 export default {
   pending: {
-    viewDisablesEdit: true,
+    viewDisablesExport: true,
+    exportDisablesEdit: true,
     test: (testKey, collaboration) =>
       get(collaboration, ['otherUserData', testKey]) === 'pending',
     currentStateMessage:
       'Access requested. Waiting for your request to be approved.',
   },
   waiting: {
-    viewDisablesEdit: true,
+    viewDisablesExport: true,
+    exportDisablesEdit: true,
     test: (testKey, collaboration) =>
       get(collaboration, ['thisUserData', testKey]) === 'pending',
     currentStateMessage: 'Data access requested.',
@@ -37,7 +44,8 @@ export default {
       buildCollaborationPatch(testKey, 'denied'),
   },
   blocked: {
-    viewDisablesEdit: true,
+    viewDisablesExport: true,
+    exportDisablesEdit: true,
     test: (testKey, collaboration) =>
       ['denied', 'revoked'].includes(
         get(collaboration, ['otherUserData', testKey]),
@@ -46,7 +54,8 @@ export default {
       'Access revoked. Only the collaboration partner or a user manager can restore access.',
   },
   blocking: {
-    viewDisablesEdit: true,
+    viewDisablesExport: true,
+    exportDisablesEdit: true,
     test: (testKey, collaboration) =>
       ['denied', 'revoked'].includes(
         get(collaboration, ['thisUserData', testKey]),
@@ -59,7 +68,8 @@ export default {
       buildCollaborationPatch(testKey, 'approved'),
   },
   granted: {
-    viewDisablesEdit: false,
+    viewDisablesExport: false,
+    exportDisablesEdit: false,
     test: (testKey, collaboration) =>
       get(collaboration, ['otherUserData', testKey]) === 'approved',
     currentStateMessage: 'Access granted.',
@@ -69,17 +79,70 @@ export default {
     getActionPatch: testKey =>
       buildCollaborationPatch(testKey, 'revoked'),
   },
-  untouched: {
-    viewDisablesEdit: true,
+  exportRequest: {
+    viewDisablesExport: false,
+    exportDisablesEdit: true,
     test: (testKey, collaboration) =>
+      testKey === 'exportState' &&
       get(collaboration, ['otherUserData', testKey]) ===
-      'not_initiated',
+        'not_initiated' &&
+      get(collaboration, ['otherUserData', 'viewState']) ===
+        'approved',
+    currentStateMessage: 'Access has not been requested.',
+    actionMessage: 'Request access',
+    actionVerificationMessage:
+      'Are you sure you want to request access? Your data will also become available to your collaboration partner.',
+    getActionPatch: Function.prototype,
+    sendEditRequest: false,
+    sendExportRequest: true,
+  },
+  exportDisabled: {
+    viewDisablesExport: true,
+    exportDisablesEdit: true,
+    test: (testKey, collaboration) =>
+      testKey === 'exportState' &&
+      get(collaboration, ['otherUserData', testKey]) ===
+        'not_initiated' &&
+      get(collaboration, ['otherUserData', 'viewState']) !==
+        'approved',
+    currentStateMessage: 'Access has not been requested.',
+    actionMessage: 'Request access',
+    actionVerificationMessage:
+      'Are you sure you want to request access? Your data will also become available to your collaboration partner.',
+    getActionPatch: Function.prototype,
+    sendEditRequest: false,
+    sendExportRequest: false,
+  },
+  editRequest: {
+    exportDisablesEdit: false,
+    test: (testKey, collaboration) =>
+      testKey === 'editState' &&
+      get(collaboration, ['otherUserData', testKey]) ===
+        'not_initiated' &&
+      get(collaboration, ['otherUserData', 'exportState']) ===
+        'approved',
     currentStateMessage: 'Access has not been requested.',
     actionMessage: 'Request access',
     actionVerificationMessage:
       'Are you sure you want to request access? Your data will also become available to your collaboration partner.',
     getActionPatch: Function.prototype,
     sendEditRequest: true,
+  },
+  editDisabled: {
+    exportDisablesEdit: true,
+    test: (testKey, collaboration) =>
+      testKey === 'editState' &&
+      get(collaboration, ['otherUserData', testKey]) ===
+        'not_initiated' &&
+      get(collaboration, ['otherUserData', 'exportState']) !==
+        'approved',
+    currentStateMessage: 'Access has not been requested.',
+    actionMessage: 'Request access',
+    actionVerificationMessage:
+      'Are you sure you want to request access? Your data will also become available to your collaboration partner.',
+    getActionPatch: Function.prototype,
+    sendEditRequest: false,
+    sendExportRequest: false,
   },
   confused: {
     test: () => true,

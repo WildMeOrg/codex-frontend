@@ -4,6 +4,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { FormControl, MenuItem, Select } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 import { useTheme } from '@material-ui/core/styles';
+import { get } from 'lodash-es';
 import useGetUserSightings from '../../models/users/useGetUserSightings';
 import useGetUserUnprocessedAssetGroupSightings from '../../models/users/useGetUserUnproccessedAssetGroupSightings';
 // import { formatUserMessage } from '../../utils/formatters';
@@ -20,9 +21,15 @@ import useDeleteSighting from '../../models/sighting/useDeleteSighting';
 import useDeleteAssetGroupSighting from '../../models/assetGroupSighting/useDeleteAssetGroupSighting';
 import ConfirmDelete from '../../components/ConfirmDelete';
 import Paginator from '../../components/dataDisplays/Paginator';
+import ProfileSetup from '../home/ProfileSetup';
+import useDocumentTitle from '../../hooks/useDocumentTitle';
 
 export default function DataPage() {
   const { data: userData, loading: userDataLoading } = useGetMe();
+
+  const fullName = get(userData, ['full_name']);
+
+  useDocumentTitle('HOME', { refreshKey: fullName });
 
   const theme = useTheme();
 
@@ -102,6 +109,8 @@ export default function DataPage() {
     : deleteSightingOnClearError;
 
   if (userDataLoading) return <LoadingScreen />;
+  // if (error) handle error
+  if (!fullName) return <ProfileSetup userData={userData} />;
 
   return (
     <MainColumn fullWidth>

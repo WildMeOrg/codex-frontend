@@ -4,12 +4,14 @@ import { get } from 'lodash-es';
 import usePatchCollaboration from '../../../models/collaboration/usePatchCollaboration';
 import { notificationSchema } from '../../../constants/notificationSchema';
 import NotificationDetailsDialog from '../NotificationDetailsDialog';
+import { useHistory } from 'react-router-dom';
 
 export default function NotificationCollaborationEditRequestDialog({
   open,
   onClose,
   notification,
 }) {
+  const history = useHistory();
   const notificationType = notification?.message_type;
   const currentNotificationSchema = get(
     notificationSchema,
@@ -37,6 +39,7 @@ export default function NotificationCollaborationEditRequestDialog({
       ],
     });
     if (response?.status === 200) onClose();
+    history.push(`/user-profile/#collab-card`);    
   };
   const onClickDecline = async () => {
     const response = await patchCollaboration({
@@ -50,6 +53,7 @@ export default function NotificationCollaborationEditRequestDialog({
       ],
     });
     if (response?.status === 200) onClose();
+    history.push(`/user-profile/#collab-card`);
   };
   const availableButtons = [
     {

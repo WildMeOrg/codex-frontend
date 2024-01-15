@@ -4,6 +4,14 @@ import { get, map, omit, find } from 'lodash-es';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 
+import Typography from '@material-ui/core/Typography';
+import { useTheme } from '@material-ui/core/styles';
+import Chip from '@material-ui/core/Chip';
+import { MailOutline } from '@material-ui/icons';
+import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined';
+import ForumOutlinedIcon from '@material-ui/icons/ForumOutlined';
+import AccountBalanceOutlined from '@material-ui/icons/AccountBalanceOutlined';
+import PlaceOutlined from '@material-ui/icons/PlaceOutlined';
 import CustomAlert from './Alert';
 import { useReplaceUserProperties } from '../models/users/usePatchUser';
 import { sanitizeTwitterHandle } from '../utils/formatters';
@@ -12,21 +20,11 @@ import InputRow from './fields/edit/InputRow';
 import Button from './Button';
 import PasswordVerificationAlert from './PasswordVerificationAlert';
 import StandardDialog from './StandardDialog';
-import Typography from '@material-ui/core/Typography';
-import { useTheme } from '@material-ui/core/styles';
 import EntityHeader from './EntityHeader';
 import BigAvatar from './profilePhotos/BigAvatar';
 import RequestCollaborationButton from './RequestCollaborationButton';
 import Text from './Text';
-import Chip from '@material-ui/core/Chip';
-import { MailOutline } from '@material-ui/icons';
 import UserProfileMetadataWrap from './UserProfileMetadataWrap';
-import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined';
-import ForumOutlinedIcon from '@material-ui/icons/ForumOutlined';
-import AccountBalanceOutlined from '@material-ui/icons/AccountBalanceOutlined';
-import PlaceOutlined from '@material-ui/icons/PlaceOutlined';
-
-
 
 function getInitialFormValues(schema) {
   return schema.reduce((memo, field) => {
@@ -74,7 +72,6 @@ export default function EditUserMetadata({
     setFieldValues(getInitialFormValues(metadata));
   }, [metadata]);
 
-
   return (
     <StandardDialog
       PaperProps={{ style: { width: 900 } }}
@@ -83,76 +80,64 @@ export default function EditUserMetadata({
       onClose={onClose}
     >
       <DialogContent style={{ minWidth: 200 }}>
+        <EntityHeader
+          name={name}
+          editable
+          noDivider
+          renderAvatar={
+            <BigAvatar
+              editable
+              userId={userId}
+              imageGuid={imageGuid}
+              imageSrc={imageSrc}
+              name={name}
+              refreshUserData={refreshUserData}
+              userDataLoading={userDataLoading}
+            />
+          }
 
-      <EntityHeader
-                name={name}
-                editable
-                noDivider                
-                renderAvatar={
-                  <BigAvatar
-                    editable
-                    userId={userId}
-                    imageGuid={imageGuid}
-                    imageSrc={imageSrc}
-                    name={name}
-                    refreshUserData={refreshUserData}
-                    userDataLoading={userDataLoading}
-                  />
-                }
-                renderOptions={
-                  
-                    <RequestCollaborationButton
-                      otherUserId={userId}
-                    />
-                 
-                }
-              >
-                <div
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                  }}
-                >
+        >
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+            }}
+          >
+            <div style={{ display: 'flex', flexDirection: 'row' }}>
+              {communityUsername && (
+                <>
+                  <Typography variant="body2">
+                    {`@${communityUsername}`}
+                  </Typography>
                   <div
-                    style={{ display: 'flex', flexDirection: 'row' }}
-                  >
-                    {communityUsername && <>
-                      <Typography
-                      variant="body2"
-                    >
-                      {`@${communityUsername}`}
-                    </Typography>
-                    <div
-                      style={{
-                        height: '20px',
-                        width: '2px',
-                        backgroundColor: 'gray',
-                        margin: '0 10px',
-                      }}
-                    />
-                    </>}
-                    
-                    <Text
-                      variant="body2"
-                      domId="selenium-user-since"
-                      id="USER_SINCE"
-                      values={{ date: dateCreated }}
-                    />
-                  </div>
-                  
-                </div>
-                <Chip
-                  label={highestRoleLabelId}
-                  style={{
-                    marginTop: 14,
-                    color: theme.palette.common.black,
-                    backgroundColor:
-                      theme.palette.primary.main + '26',
-                  }}
-                />
-              </EntityHeader>
+                    style={{
+                      height: '20px',
+                      width: '2px',
+                      backgroundColor: 'gray',
+                      margin: '0 10px',
+                    }}
+                  />
+                </>
+              )}
 
+              <Text
+                variant="body2"
+                domId="selenium-user-since"
+                id="USER_SINCE"
+                values={{ date: dateCreated }}
+              />
+            </div>
+          </div>
+          <Chip
+            label={highestRoleLabelId}
+            style={{
+              marginTop: 14,
+              color: theme.palette.common.black,
+              backgroundColor: theme.palette.primary.main + '26',
+            }}
+          />
+        </EntityHeader>
 
         {metadata.map(field => {
           if (!field.editable) return null;
@@ -163,46 +148,61 @@ export default function EditUserMetadata({
           const labelId = get(field, 'labelId');
 
           return (
-            <div key = {"metadata_input_row"} style = {{display: 'flex', flexDirection: 'row'}}>
-                  {labelId === 'FULL_NAME' && 
-                    <UserProfileMetadataWrap key={'FULL_NAME'}>
-                      <AccountCircleOutlinedIcon fontSize="small" color="inherit" />
-                    </UserProfileMetadataWrap>}
-                  {labelId === 'PROFILE_LABEL_EMAIL' && 
-                    <UserProfileMetadataWrap key={"EMAIL"}>
-                      <MailOutline fontSize="small" color="inherit" />
-                    </UserProfileMetadataWrap>}
-                  {labelId === 'PROFILE_LABEL_FORUM_ID' && 
-                    <UserProfileMetadataWrap key={"FORUM_ID"}>
-                      <ForumOutlinedIcon fontSize="small" color="inherit" />
-                    </UserProfileMetadataWrap>}
-                  {labelId === 'PROFILE_LABEL_AFFILIATION' && 
-                    <UserProfileMetadataWrap key={"AFFILIATION"}>
-                      <AccountBalanceOutlined fontSize="small" color="inherit" />
-                    </UserProfileMetadataWrap>}
-                  {labelId === 'PROFILE_LABEL_LOCATION' && 
-                    <UserProfileMetadataWrap key={"LOCATION"}>
-                      <PlaceOutlined fontSize="small" color="inherit" />
-                    </UserProfileMetadataWrap>}
-                    
-                  <>
-            <InputRow schema={field} key={field.id || field.name}>
-              <field.editComponent
-                schema={field}
-                {...fieldProps}
-                value={value}
-                minimalLabels
-                onChange={newValue => {
-                  const newFormValues = {
-                    ...fieldValues,
-                    [field.name]: newValue,
-                  };
-                  setFieldValues(newFormValues);
-                }}
-              />
-            </InputRow>
-            </>
-                  </div>
+            <div
+              key="metadata_input_row"
+              style={{ display: 'flex', flexDirection: 'row' }}
+            >
+              {labelId === 'FULL_NAME' && (
+                <UserProfileMetadataWrap key="FULL_NAME">
+                  <AccountCircleOutlinedIcon
+                    fontSize="small"
+                    color="inherit"
+                  />
+                </UserProfileMetadataWrap>
+              )}
+              {labelId === 'PROFILE_LABEL_EMAIL' && (
+                <UserProfileMetadataWrap key="EMAIL">
+                  <MailOutline fontSize="small" color="inherit" />
+                </UserProfileMetadataWrap>
+              )}
+              {labelId === 'PROFILE_LABEL_FORUM_ID' && (
+                <UserProfileMetadataWrap key="FORUM_ID">
+                  <ForumOutlinedIcon
+                    fontSize="small"
+                    color="inherit"
+                  />
+                </UserProfileMetadataWrap>
+              )}
+              {labelId === 'PROFILE_LABEL_AFFILIATION' && (
+                <UserProfileMetadataWrap key="AFFILIATION">
+                  <AccountBalanceOutlined
+                    fontSize="small"
+                    color="inherit"
+                  />
+                </UserProfileMetadataWrap>
+              )}
+              {labelId === 'PROFILE_LABEL_LOCATION' && (
+                <UserProfileMetadataWrap key="LOCATION">
+                  <PlaceOutlined fontSize="small" color="inherit" />
+                </UserProfileMetadataWrap>
+              )}
+
+              <InputRow schema={field} key={field.id || field.name}>
+                <field.editComponent
+                  schema={field}
+                  {...fieldProps}
+                  value={value}
+                  minimalLabels
+                  onChange={newValue => {
+                    const newFormValues = {
+                      ...fieldValues,
+                      [field.name]: newValue,
+                    };
+                    setFieldValues(newFormValues);
+                  }}
+                />
+              </InputRow>
+            </div>
           );
         })}
 

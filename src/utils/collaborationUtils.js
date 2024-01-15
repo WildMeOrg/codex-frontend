@@ -8,6 +8,7 @@ export const states = {
 
 export const summaryStates = {
   view: 'view',
+  export: 'export',
   edit: 'edit',
   revoked: 'revoked',
 };
@@ -49,12 +50,20 @@ export function isViewApproved(collaboration) {
   return isApproved(collaboration, 'viewState');
 }
 
+export function isExportApproved(collaboration) {
+  return isApproved(collaboration, 'exportState');
+}
+
 export function isEditApproved(collaboration) {
   return isApproved(collaboration, 'editState');
 }
 
 function isViewPending(collaboration) {
   return isPending(collaboration, 'viewState');
+}
+
+function isExportPending(collaboration) {
+  return isPending(collaboration, 'exportState');
 }
 
 function isEditPending(collaboration) {
@@ -65,10 +74,16 @@ export function isViewRevoked(collaboration) {
   return isRevoked(collaboration, 'viewState');
 }
 
+export function isExportRevoked(collaboration) {
+  return isRevoked(collaboration, 'exportState');
+}
+
 export function getSummaryState(collaboration) {
   if (isViewRevoked(collaboration)) return summaryStates.revoked;
 
   if (isEditApproved(collaboration)) return summaryStates.edit;
+
+  if (isExportApproved(collaboration)) return summaryStates.export;
 
   if (isViewApproved(collaboration)) return summaryStates.view;
 
@@ -78,7 +93,13 @@ export function getSummaryState(collaboration) {
 export function getRequestedState(collaboration) {
   if (isViewPending(collaboration)) return summaryStates.view;
 
-  if (isEditPending(collaboration) && !isViewRevoked(collaboration)) {
+  if (isExportPending(collaboration) && !isViewRevoked(collaboration)) 
+  return summaryStates.export;
+
+  if (
+    isEditPending(collaboration) &&
+    !isExportRevoked(collaboration) && !isViewRevoked(collaboration)
+  ) {
     return summaryStates.edit;
   }
 

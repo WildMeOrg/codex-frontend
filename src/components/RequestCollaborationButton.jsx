@@ -52,12 +52,12 @@ export default function RequestCollaborationButton({ otherUserId }) {
         await requestCollaboration({ userGuid: otherUserId });
       }}
       loading={spinButton}
+      display={matchingCollaborationPending ? 'tertiary' : 'primary'}
       disabled={spinButton || matchingCollaborationPending}
-      display="panel"
       id={
         matchingCollaborationPending
           ? 'COLLABORATION_PENDING'
-          : 'ADD_COLLABORATOR'
+          : 'COLLABORATE'
       }
     />
   );
