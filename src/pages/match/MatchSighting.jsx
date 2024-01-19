@@ -1,7 +1,7 @@
 import React, { useMemo, useEffect, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
-import { get, maxBy } from 'lodash-es';
+import _, { get, maxBy } from 'lodash-es';
 
 import Fab from '@material-ui/core/Fab';
 import DoneIcon from '@material-ui/icons/Done';
@@ -22,6 +22,8 @@ import QueryAnnotationsTable from './QueryAnnotationsTable';
 import MatchCandidatesTable from './MatchCandidatesTable';
 import ImageCard from './ImageCard';
 import Button from '../../components/Button';
+import useIndividual from '../../models/individual/useIndividual';
+import useEncounter from '../../models/encounter/useEncounter';
 
 const spaceBetweenColumns = 16;
 
@@ -96,6 +98,65 @@ export default function MatchSighting() {
       };
     });
   }, [matchResults]);
+
+  const queryIndividualId = selectedQueryAnnotation?.individual_guid;
+  const queryEncounterId = selectedQueryAnnotation?.encounter_guid;
+  const matchIndividuaId = selectedMatchCandidate?.individual_guid;
+  const matchEncounterId = selectedMatchCandidate?.encounter_guid;
+
+  const { data: individualData_query } =
+    useIndividual(queryIndividualId);
+  const { data: individualData_match } =
+    useIndividual(matchIndividuaId);
+  const { data: encounterData_query } =
+    useEncounter(queryEncounterId);
+  const { data: encounterData_match } =
+    useEncounter(matchEncounterId);
+
+  function getAllAnnotationsFromIndividual(individualData) {
+    const encounters = [];
+    individualData?.encounters.map(data => {
+      encounters.push(data);
+      return null;
+    });
+    const annotations = [];
+    encounters.map(data => {
+      annotations.push(...data.annotations);
+      return null;
+    });
+    return annotations;
+  }
+
+  function getAllAnnotationsFromEncounter(encounterData) {
+    const annotations = encounterData?.annotations;
+    return annotations;
+  }
+
+  const getAndDeduplicateAnnotations = (
+    individualData,
+    encounterData,
+  ) => {
+    const annotationsFromIndividual =
+      getAllAnnotationsFromIndividual(individualData) || [];
+    const annotationsFromEncounter =
+      getAllAnnotationsFromEncounter(encounterData) || [];
+
+    return (
+      _.uniqWith(
+        [...annotationsFromIndividual, ...annotationsFromEncounter],
+        _.isEqual,
+      ) || []
+    );
+  };
+
+  const queryAllData = getAndDeduplicateAnnotations(
+    individualData_query,
+    encounterData_query,
+  );
+  const matchAllData = getAndDeduplicateAnnotations(
+    individualData_match,
+    encounterData_match,
+  );
 
   const matchCandidates = useMemo(() => {
     const hotspotterAnnotationScores = get(
@@ -273,6 +334,7 @@ export default function MatchSighting() {
             heatmapon={checked}
             heatmapurl={heatMapUrl}
             left
+            allData={queryAllData}
           />
           <QueryAnnotationsTable
             queryAnnotations={queryAnnotations}
@@ -291,6 +353,7 @@ export default function MatchSighting() {
             annotation={selectedMatchCandidate}
             heatmapon={checked}
             heatmapurl={heatMapUrl}
+            allData={matchAllData}
           />
           <MatchCandidatesTable
             matchCandidates={matchCandidates}

@@ -52,12 +52,12 @@ export function getUserQueryKey(guid) {
   return ['user', guid];
 }
 
-export function getUserSightingsQueryKey(guid) {
-  return ['userSightings', guid];
+export function getUserSightingsQueryKey(guid, query, params) {
+  return ['userSightings', guid, query, params];
 }
 
-export function getUserAgsQueryKey(guid) {
-  return ['userAgs', guid];
+export function getUserAgsQueryKey(guid, params) {
+  return ['userAgs', guid, params];
 }
 
 export function getAssetGroupQueryKey(guid) {
@@ -80,6 +80,10 @@ export function getSightingTermQueryKey(searchTerm) {
   return ['sightingQuickSearch', searchTerm];
 }
 
+export function getEncounterTermQueryKey(searchTerm) {
+  return ['encounterQuickSearch', searchTerm];
+}
+
 export function getSocialGroupQueryKey(guid) {
   return ['socialGroup', guid];
 }
@@ -98,6 +102,14 @@ export function getSightingFilterQueryKey(
   rowsPerPage,
 ) {
   return ['sightingFilterSearch', filters, page, rowsPerPage];
+}
+
+export function getEncounterFilterQueryKey(
+  filters,
+  page,
+  rowsPerPage,
+) {
+  return ['encounterFilterSearch', filters, page, rowsPerPage];
 }
 
 export function getAuditLogQueryKey(filters, page, rowsPerPage) {

@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { get } from 'lodash-es';
 import { useQueryClient } from 'react-query';
@@ -28,7 +28,6 @@ import Encounters from './encounters/Encounters';
 const sightingTabs = {
   '#overview': '#overview',
   '#annotations': '#annotations',
-  '#photographs': '#photographs',
   '#individuals': '#individuals',
 };
 
@@ -97,10 +96,20 @@ export default function SightingCore({
     'pipeline_status.preparation.complete',
   );
 
-  const activeTab = !isPreparationComplete
-    ? sightingTabs['#overview']
-    : sightingTabs[window.location.hash] || sightingTabs['#overview'];
+  const [activeTab, setActiveTab] = useState(
+    !isPreparationComplete
+      ? sightingTabs['#overview']
+      : sightingTabs[window.location.hash] ||
+          sightingTabs['#overview'],
+  );
 
+  useEffect(() => {
+    if (isPreparationComplete) {
+      setActiveTab(sightingTabs[window.location.hash] || sightingTabs['#overview']);
+    }
+  }, [isPreparationComplete]);
+
+  
   if (error) {
     return (
       <SadScreen
@@ -178,6 +187,7 @@ export default function SightingCore({
         guid={id}
         // setHistoryOpen={setHistoryOpen}
         setDeleteDialogOpen={setDeleteDialogOpen}
+        setActiveTab={setActiveTab}
       />
       {!isPreparationComplete ? (
         <CustomAlert
@@ -191,6 +201,7 @@ export default function SightingCore({
           sightingId={id}
           pending={pending}
           sightingData={data}
+          setActiveTab={setActiveTab}
         />
       )}
       {activeTab === '#overview' && (
@@ -202,13 +213,6 @@ export default function SightingCore({
           refreshSightingData={refreshData}
         />
       )}
-      {/* {activeTab === '#photographs' && (
-        <Photographs
-          assets={assets}
-          sightingData={data}
-          pending={pending}
-        />
-      )} */}
       {activeTab === '#annotations' && (
         <Annotations
           assets={assets}

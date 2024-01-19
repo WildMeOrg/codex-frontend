@@ -24,6 +24,7 @@ import NotificationsPane from './NotificationsPane';
 import ActionsPane from './ActionsPane';
 import IndividualsButton from './IndividualsButton';
 import SightingsButton from './SightingsButton';
+import AnimalsButton from './AnimalsButton';
 import queryKeys from '../../constants/queryKeys';
 
 export default function AppHeader() {
@@ -99,6 +100,7 @@ export default function AppHeader() {
             <BannerLogo href="/" onClick={handleClick} />
             <IndividualsButton />
             <SightingsButton />
+            <AnimalsButton />
           </div>
         )}
 

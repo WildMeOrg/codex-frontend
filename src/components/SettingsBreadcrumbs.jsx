@@ -26,11 +26,13 @@ export default function SettingsBreadcrumbs({
       <Link href="/settings" style={linkStyles}>
         <Text id="CONTROL_PANEL" />
       </Link>
-      {currentPageTextId === 'MANAGE_SPECIES' ? (
+      {['MANAGE_SPECIES', 'MANAGE_REGIONS'].includes(
+        currentPageTextId,
+      ) && (
         <Link href="/settings/fields" style={linkStyles}>
-        <Text id="MANAGE_FIELDS" />
-      </Link> 
-      ) : null}
+          <Text id="MANAGE_FIELDS" />
+        </Link>
+      )}
       <Text id={currentPageTextId}>{currentPageText}</Text>
     </Breadcrumbs>
   );

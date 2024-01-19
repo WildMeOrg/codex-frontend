@@ -20,7 +20,7 @@ function Text({ id, values, domId, children, ...rest }, ref) {
     );
   return (
     <CoreForwardRef id={domId} ref={ref} {...rest}>
-      <FormattedMessage id={id} values={values} />
+      <FormattedMessage id={id} values={values} defaultMessage={id}/>
     </CoreForwardRef>
   );
 }

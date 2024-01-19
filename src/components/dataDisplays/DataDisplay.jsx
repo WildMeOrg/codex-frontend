@@ -24,15 +24,19 @@ import FilterList from '@material-ui/icons/FilterList';
 import CloudDownload from '@material-ui/icons/CloudDownload';
 
 import axios from 'axios';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogActions from '@material-ui/core/DialogActions';
 import BaoDetective from '../svg/BaoDetective';
 import FilterBar from '../FilterBar';
 import Text from '../Text';
 import CollapsibleRow from './CollapsibleRow';
 import sendCsv, { downloadFileFromBackend } from './sendCsv';
 
-import useGetMe from '../../models/users/useGetMe';
 import buildSightingsQuery from './buildSightingsQuery';
 import buildIndividualsQuery from './buildIndividualsQuery';
+import buildEncountersQuery from './buildEncountersQuery';
+import StandardDialog from '../StandardDialog';
+import Button from '../Button';
 
 function getCellAlignment(cellIndex, columnDefinition) {
   if (columnDefinition.align) return columnDefinition.align;
@@ -77,11 +81,6 @@ export default function DataDisplay({
   const theme = useTheme();
   const themeColor = theme.palette.primary.main;
 
-  const { data: currentUserData } = useGetMe();
-
-  const isAdmin = get(currentUserData, 'is_admin', false);
-  const isExporter = get(currentUserData, 'is_exporter', false);
-
   const initialColumnNames = columns
     .filter(c => get(c, 'options.display', true))
     .map(c => c.name);
@@ -96,6 +95,7 @@ export default function DataDisplay({
     useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
   const filterPopperOpen = Boolean(anchorEl);
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   const selectedRow = selectionControlled
     ? selectedRowFromProps
@@ -149,6 +149,33 @@ export default function DataDisplay({
 
   return (
     <div {...rest}>
+      <StandardDialog
+        titleId="EXPORT_RESULT"
+        open={dialogOpen}
+        onClose={() => setDialogOpen(false)}
+        fullWidth
+        maxWidth="md"
+      >
+        <DialogContent
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 12,
+          }}
+        >
+          <Text
+            variant="body1"
+            id="EXPORT_ACCESS_RESTRICTED_WARNING"
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button
+            id="OK"
+            display="primary"
+            onClick={() => setDialogOpen(false)}
+          />
+        </DialogActions>
+      </StandardDialog>
       <Popper
         open={filterPopperOpen}
         anchorEl={anchorEl}
@@ -236,61 +263,62 @@ export default function DataDisplay({
                 margin:
                   variant === 'secondary' ? '12px 0 0 12px' : 'unset',
               }}
-              id={titleId}
             >
               {title}
             </Text>
           </Grid>
           <Grid item>
-            {variant === 'primary' &&
-              !hideDownloadCsv &&
-              (isAdmin || isExporter) && (
-                <IconButton
-                  onClick={async () => {
-                    const formTitle = title.split(' ')[2];
-                    const url = `${__houston_url__}/api/v1/${formTitle}/export`;
-                    if (
-                      formTitle === 'sightings' ||
-                      formTitle === 'individuals'
-                    ) {
-                      let compositeQuery = {};
+            {variant === 'primary' && !hideDownloadCsv && (
+              <IconButton
+                onClick={async () => {
+                  const url = `${__houston_url__}/api/v1/${titleId}/export`;
+                  if (
+                    titleId === 'sightings' ||
+                    titleId === 'individuals' ||
+                    titleId === 'encounters'
+                  ) {
+                    let compositeQuery = {};
 
-                      if (formTitle === 'sightings') {
-                        compositeQuery =
-                          buildSightingsQuery(formFilters);
-                      } else {
-                        compositeQuery =
-                          buildIndividualsQuery(formFilters);
-                      }
-                      try {
-                        const response = await axios.request({
-                          url,
-                          method: 'post',
-                          data: compositeQuery,
-                          params: searchParams,
-                          responseType: 'blob',
-                        });
-                        const status = response?.status;
-                        if (status === 200) {
-                          downloadFileFromBackend(
-                            response.data,
-                            formTitle,
-                          );
-                        }
-                      } catch (e) {
-                        console.log(
-                          'Error in downloading file : ',
-                          e,
+                    if (titleId === 'sightings') {
+                      compositeQuery =
+                        buildSightingsQuery(formFilters);
+                    } else if (titleId === 'individuals') {
+                      compositeQuery =
+                        buildIndividualsQuery(formFilters);
+                    } else if (titleId === 'encounters') {
+                      compositeQuery =
+                        buildEncountersQuery(formFilters);
+                    }
+                    try {
+                      const response = await axios.request({
+                        url,
+                        method: 'post',
+                        data: compositeQuery,
+                        params: searchParams,
+                        responseType: 'blob',
+                      });
+                      const status = response?.status;
+                      if (status === 200) {
+                        downloadFileFromBackend(
+                          response.data,
+                          titleId,
                         );
-                        sendCsv(visibleColumns, visibleData);
                       }
-                    } else sendCsv(visibleColumns, visibleData);
-                  }}
-                  size="small"
-                >
-                  <CloudDownload style={{ marginRight: 4 }} />
-                </IconButton>
-              )}
+                    } catch (e) {
+                      if (
+                        e.response.status === 403 ||
+                        e.response.status === 400
+                      ) {
+                        setDialogOpen(true);
+                      }
+                    }
+                  } else sendCsv(visibleColumns, visibleData);
+                }}
+                size="small"
+              >
+                <CloudDownload style={{ marginRight: 4 }} />
+              </IconButton>
+            )}
             {onPrint && (
               <IconButton onClick={onPrint} size="small">
                 <Print style={{ marginRight: 4 }} />

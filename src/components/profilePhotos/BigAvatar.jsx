@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import { FormattedMessage } from 'react-intl';
 import { get } from 'lodash-es';
 
 import { useTheme } from '@material-ui/core/styles';
 import Chip from '@material-ui/core/Chip';
 
-import SvgText from '../SvgText';
 import EditAvatar from './EditAvatar';
 import defaultProfilePhoto from '../../assets/defaultProfile.jpg';
+import { EditOutlined } from '@material-ui/icons';
+
 
 export default function BigAvatar({
   imageSrc,
@@ -22,7 +22,7 @@ export default function BigAvatar({
   chipLabel,
 }) {
   const theme = useTheme();
-  const [avatarHovered, setAvatarHovered] = useState(false);
+  const [backgroundColor, setBackgroundColor] = useState(theme.palette.primary.main);
   const [editingAvatar, setEditingAvatar] = useState(false);
 
   return (
@@ -141,53 +141,30 @@ export default function BigAvatar({
             ))}
           </svg>
         )}
-        {editable && (
-          <svg
+        {editable && (          
+          <div
             style={{
               position: 'absolute',
-              left: 1,
-              top: 1,
-              width: size,
-              height: size,
-              opacity: avatarHovered ? 1 : 0,
-            }}
-            onMouseEnter={() => setAvatarHovered(true)}
-            onMouseLeave={() => setAvatarHovered(false)}
-            onClick={() => setEditingAvatar(true)}
+              right: 1,
+              bottom: 1,
+              width: 40,
+              height: 40,
+              borderRadius: '50%',
+              opacity: 1,
+              zIndex: 2,
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: backgroundColor,
+            }} 
+            // onMouseEnter={() => setBackgroundColor(theme.palette.primary.main)}
+            // onMouseLeave={() => setBackgroundColor(theme.palette.primary.main+'26')}
+            onClick={() => setEditingAvatar(true)}         
           >
-            <defs>
-              <clipPath id="cut-off-top">
-                <rect
-                  x={0}
-                  y={0.5 * size}
-                  width={size}
-                  height={0.5 * size}
-                />
-              </clipPath>
-            </defs>
-            {square ? (
-              <rect
-                x={0}
-                y={75}
-                width={150}
-                height={60}
-                fill="rgba(0, 0, 0, 0.5)"
-                clipPath="url(#cut-off-top)"
-              />
-            ) : (
-              <ellipse
-                cx={0.5 * size}
-                cy={0.5 * size}
-                rx={0.5 * size}
-                ry={0.5 * size}
-                fill="rgba(0, 0, 0, 0.5)"
-                clipPath="url(#cut-off-top)"
-              />
-            )}
-            <SvgText x={75} y={110} fill="white">
-              <FormattedMessage id="CHANGE_PHOTO" />
-            </SvgText>
-          </svg>
+            <EditOutlined   />
+          </div>
+
         )}
       </div>
     </div>
