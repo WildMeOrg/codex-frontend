@@ -20,11 +20,13 @@ export default function User() {
   if (loading || meLoading) return <LoadingScreen />;
 
   const viewerIsUserManager = get(me, ['is_user_manager'], false);
+  const viewerIsUserAdmin = get(me, ['is_admin'], false);
 
   return (
     <UserProfile
       someoneElse
       viewerIsUserManager={viewerIsUserManager}
+      viewerIsUserAdmin={viewerIsUserAdmin}
       userData={data}
       userId={id}
       userDataLoading={loading}

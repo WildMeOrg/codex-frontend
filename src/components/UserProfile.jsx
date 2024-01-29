@@ -35,6 +35,7 @@ export default function UserProfile({
   refreshUserData,
   someoneElse,
   viewerIsUserManager,
+  viewerIsUserAdmin,
   noCollaborate = false,
 }) {
   const intl = useIntl();
@@ -60,10 +61,10 @@ export default function UserProfile({
     intl,
   );
   const dateCreated = formatDate(get(userData, 'created'), true);
-  const email = get(userData, 'email') || '';
-  const location = get(userData, 'location') || '';
-  const affiliation = get(userData, 'affiliation') || '';
-  const communityUsername = get(userData, 'forum_id') || '';
+  const email = get(userData, 'email', '');
+  const location = get(userData, 'location', '');
+  const affiliation = get(userData, 'affiliation', '');
+  const communityUsername = get(userData, 'forum_id', '');
 
   const [preferenceModalOpen, setPreferenceModalOpen] =
     useState(false);
@@ -160,20 +161,25 @@ export default function UserProfile({
                 <div
                   style={{ display: 'flex', flexDirection: 'row' }}
                 >
-                  <Button
-                    display="primary"
-                    style={{ marginRight: 10 }}
-                    onClick={() => setEditingProfile(true)}
-                  >
-                    <EditOutlined />
-                  </Button>
-                  <Button
-                    display="primary"
-                    style={{ marginRight: 10 }}
-                    onClick={() => setPreferenceModalOpen(true)}
-                  >
-                    <SettingsOutlined />
-                  </Button>
+                  {(!someoneElse ||
+                    viewerIsUserManager ||
+                    viewerIsUserAdmin) && (
+                    <Button
+                      display="primary"
+                      onClick={() => setEditingProfile(true)}
+                    >
+                      <EditOutlined />
+                    </Button>
+                  )}
+                  {!someoneElse && (
+                    <Button
+                      display="primary"
+                      style={{ marginRight: 10, marginLeft: 10 }}
+                      onClick={() => setPreferenceModalOpen(true)}
+                    >
+                      <SettingsOutlined />
+                    </Button>
+                  )}
                 </div>
               </div>
               <Chip

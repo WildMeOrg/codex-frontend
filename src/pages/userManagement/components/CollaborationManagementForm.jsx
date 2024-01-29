@@ -104,7 +104,6 @@ export default function CollaborationManagementForm({
             setUser2(get(newValue, 'guid', ''));
           }}
         />
-
         <Button
           display="primary"
           size="small"

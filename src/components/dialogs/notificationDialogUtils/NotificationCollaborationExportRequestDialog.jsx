@@ -6,7 +6,7 @@ import { notificationSchema } from '../../../constants/notificationSchema';
 import NotificationDetailsDialog from '../NotificationDetailsDialog';
 import { useHistory } from 'react-router-dom';
 
-export default function NotificationCollaborationApprovedDialog({
+export default function NotificationCollaborationExportRequestDialog({
   open,
   onClose,
   notification,
@@ -27,14 +27,28 @@ export default function NotificationCollaborationApprovedDialog({
     'message_values',
     'collaboration_guid',
   ]);
-  const onClickRevoke = async () => {
+  const onClickGrant = async () => {
     const response = await patchCollaboration({
       collaborationGuid,
       operations: [
         {
           op: 'replace',
           path,
-          value: 'revoked',
+          value: 'approved',
+        },
+      ],
+    });
+    if (response?.status === 200) onClose();
+    history.push(`/user-profile/#collab-card`);
+  };
+  const onClickDecline = async () => {
+    const response = await patchCollaboration({
+      collaborationGuid,
+      operations: [
+        {
+          op: 'replace',
+          path,
+          value: 'denied',
         },
       ],
     });
@@ -43,9 +57,14 @@ export default function NotificationCollaborationApprovedDialog({
   };
   const availableButtons = [
     {
-      name: 'revoke',
-      buttonId: 'REVOKE_ACCESS',
-      onClick: onClickRevoke,
+      name: 'grant',
+      buttonId: 'GRANT_ACCESS',
+      onClick: onClickGrant,
+    },
+    {
+      name: 'decline',
+      buttonId: 'DECLINE_REQUEST',
+      onClick: onClickDecline,
     },
   ];
   return (
