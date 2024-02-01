@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { get } from 'lodash-es';
 
 import Grid from '@material-ui/core/Grid';
@@ -183,7 +183,7 @@ export default function UserProfile({
                 </div>
               </div>
               <Chip
-                label={highestRoleLabelId}
+                label={<FormattedMessage id={highestRoleLabelId} />}
                 style={{
                   marginTop: 14,
                   color: theme.palette.common.black,

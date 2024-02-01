@@ -12,6 +12,7 @@ import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined'
 import ForumOutlinedIcon from '@material-ui/icons/ForumOutlined';
 import AccountBalanceOutlined from '@material-ui/icons/AccountBalanceOutlined';
 import PlaceOutlined from '@material-ui/icons/PlaceOutlined';
+import { FormattedMessage } from 'react-intl';
 import CustomAlert from './Alert';
 import { useReplaceUserProperties } from '../models/users/usePatchUser';
 import { sanitizeTwitterHandle } from '../utils/formatters';
@@ -22,7 +23,6 @@ import PasswordVerificationAlert from './PasswordVerificationAlert';
 import StandardDialog from './StandardDialog';
 import EntityHeader from './EntityHeader';
 import BigAvatar from './profilePhotos/BigAvatar';
-import RequestCollaborationButton from './RequestCollaborationButton';
 import Text from './Text';
 import UserProfileMetadataWrap from './UserProfileMetadataWrap';
 
@@ -95,7 +95,6 @@ export default function EditUserMetadata({
               userDataLoading={userDataLoading}
             />
           }
-
         >
           <div
             style={{
@@ -130,7 +129,7 @@ export default function EditUserMetadata({
             </div>
           </div>
           <Chip
-            label={highestRoleLabelId}
+            label={<FormattedMessage id={highestRoleLabelId} />}
             style={{
               marginTop: 14,
               color: theme.palette.common.black,
