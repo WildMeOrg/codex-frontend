@@ -101,7 +101,8 @@ export default function ElasticsearchSightingsDisplay({
       sortable: false,
       options: {
         customBodyRender: (
-          guid, // eslint-disable-line
+          // eslint-disable-line
+          guid,
         ) => (
           <ActionIcon
             labelId="VIEW"
@@ -120,6 +121,7 @@ export default function ElasticsearchSightingsDisplay({
       columns={columns}
       data={tableData}
       title={title}
+      titleId="sightings"
       loading={loading}
       showNoResultsBao
       formFilters={formFilters}

@@ -60,6 +60,7 @@ export default function DerivedAnnotatedPhotograph(props) {
   if (imageWidth && imageHeight && !isClamped) {
     return (
       <AnnotatedPhotograph
+        key={props.assetMetadata.src}
         {...props}
         assetMetadata={{
           ...props.assetMetadata,

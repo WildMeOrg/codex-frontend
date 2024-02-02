@@ -34,7 +34,6 @@ export default function useFetch({
     !queryOptions.disabled, // should this use enabled instead of disabled? I couldn't find anything in the react-query documentation about disabled.
     // agreed, I think it should be enabled
   );
-  const [statusCode, setStatusCode] = useState(null);
 
   const apiUrl = prependHoustonApiUrl
     ? `${__houston_url__}/api/v1${url}`
@@ -50,7 +49,6 @@ export default function useFetch({
         responseType,
       });
       const status = response?.status;
-      setStatusCode(status);
       if (status === 200) onSuccess(response);
       return response;
     },
@@ -68,22 +66,15 @@ export default function useFetch({
     if (result?.status === 'loading') {
       setDisplayedLoading(true);
     } else {
-      if (statusCode !== statusCodeFromError)
-        setStatusCode(statusCodeFromError);
       if (displayedError !== error) setDisplayedError(error);
       setDisplayedLoading(false);
     }
-  }, [
-    error,
-    result?.status,
-    statusCodeFromError,
-    statusCode,
-    displayedError,
-  ]);
+  }, [error, result?.status, statusCodeFromError, displayedError]);
 
   return {
     ...result,
-    statusCode,
+    statusCode:
+      result?.data?.status || result?.error?.response?.status,
     data: dataAccessor(result),
     isLoading: displayedLoading,
     loading: displayedLoading,

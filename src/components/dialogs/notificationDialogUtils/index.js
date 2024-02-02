@@ -15,6 +15,13 @@ import NotificationCollaborationManagerEditRevokeDialog from './NotificationColl
 import NotificationCollaborationEditDeniedDialog from './NotificationCollaborationEditDeniedDialog';
 import NotificationCollaborationManagerDeniedDialog from './NotificationCollaborationManagerDeniedDialog';
 import NotificationCollaborationManagerEditDeniedDialog from './NotificationCollaborationManagerEditDeniedDialog';
+import NotificationCollaborationExportRequestDialog from './NotificationCollaborationExportRequestDialog';
+import NotificationCollaborationExportApprovedDialog from './NotificationCollaborationExportApprovedDialog';
+import NotificationCollaborationExportRevokeDialog from './NotificationCollaborationExportRevokeDialog';
+import NotificationCollaborationExportDeniedDialog from './NotificationCollaborationExportDeniedDialog';
+import NotificationCollaborationManagerExportApprovedDialog from './NotificationCollaborationManagerExportApprovedDialog';
+import NotificationCollaborationManagerExportRevokeDialog from './NotificationCollaborationManagerExportRevokeDialog';
+import NotificationCollaborationManagerExportDeniedDialog from './NotificationCollaborationManagerExportDeniedDialog';
 
 import { notificationTypeNames } from '../../../constants/notificationSchema';
 
@@ -35,6 +42,12 @@ export const notificationTypes = {
     NotificationCollaborationEditApprovedDialog,
   [notificationTypeNames.collaboration_edit_revoke]:
     NotificationCollaborationEditRevokeDialog,
+  [notificationTypeNames.collaboration_export_request]:
+    NotificationCollaborationExportRequestDialog,
+  [notificationTypeNames.collaboration_export_approved]:
+    NotificationCollaborationExportApprovedDialog,
+  [notificationTypeNames.collaboration_export_revoke]:
+    NotificationCollaborationExportRevokeDialog,
   [notificationTypeNames.collaboration_manager_revoke]:
     NotificationCollaborationManagerRevokeDialog,
   [notificationTypeNames.individual_merge_request]:
@@ -49,8 +62,16 @@ export const notificationTypes = {
     NotificationCollaborationManagerEditRevokeDialog,
   [notificationTypeNames.collaboration_edit_denied]:
     NotificationCollaborationEditDeniedDialog,
+  [notificationTypeNames.collaboration_manager_export_approved]:
+    NotificationCollaborationManagerExportApprovedDialog,
+  [notificationTypeNames.collaboration_manager_export_revoke]:
+    NotificationCollaborationManagerExportRevokeDialog,
+  [notificationTypeNames.collaboration_export_denied]:
+    NotificationCollaborationExportDeniedDialog,
   [notificationTypeNames.collaboration_manager_denied]:
     NotificationCollaborationManagerDeniedDialog,
   [notificationTypeNames.collaboration_manager_edit_denied]:
     NotificationCollaborationManagerEditDeniedDialog,
+  [notificationTypeNames.collaboration_manager_export_denied]:
+    NotificationCollaborationManagerExportDeniedDialog,
 };

@@ -43,7 +43,7 @@ export default function ChangeLog() {
   const tableColumns = buildTableColumns(intl);
   const [inputValue, setInputValue] = useState('');
 
-  const rowsPerPage = 100;
+  const rowsPerPage = 5;
   const [searchParams, setSearchParams] = useState({
     limit: rowsPerPage,
     offset: 0,

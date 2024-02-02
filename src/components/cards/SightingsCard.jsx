@@ -24,6 +24,8 @@ export default function SightingsCard({
   linkPath = 'sightings',
   noSightingsMsg = 'NO_SIGHTINGS',
   loading,
+  searchParams,
+  setSearchParams,
 }) {
   const [showMapView, setShowMapView] = useState(false);
   const theme = useTheme();
@@ -33,23 +35,20 @@ export default function SightingsCard({
   const mapModeClicked = () => setShowMapView(true);
   const listModeClicked = () => setShowMapView(false);
 
-  const sightingsWithLocationData = useMemo(
-    () => {
-      // hotfix //
-      if (!sightings) return [];
-      // hotfix //
+  const sightingsWithLocationData = useMemo(() => {
+    // hotfix //
+    if (!sightings) return [];
+    // hotfix //
 
-      return sightings.map(sighting => ({
-        ...sighting,
-        formattedLocation: formatLocationFromSighting(
-          sighting,
-          regionOptions,
-          intl,
-        ),
-      }));
-    },
-    [get(sightings, 'length')],
-  );
+    return sightings.map(sighting => ({
+      ...sighting,
+      formattedLocation: formatLocationFromSighting(
+        sighting,
+        regionOptions,
+        intl,
+      ),
+    }));
+  }, [get(sightings, 'length')]);
 
   const allColumns = [
     {
@@ -82,11 +81,28 @@ export default function SightingsCard({
       labelId: 'LOCATION',
     },
     {
+      reference: 'match_state',
+      name: 'match_state',
+      labelId: 'STATE',
+    },
+    {
+      reference: 'numberAnnotations',
+      name: 'numberAnnotations',
+      labelId: 'NUMBER_OF_ANNOTATIONS',
+    },
+    {
+      reference: 'numberEncounters',
+      name: 'numberEncounters',
+      labelId: 'NUMBER_OF_ENCOUNTERS',
+    },
+    {
       reference: 'actions',
       name: 'guid',
       labelId: 'ACTIONS',
       options: {
-        customBodyRender: value => (
+        customBodyRender: (
+          value, // eslint-disable-line
+        ) => (
           <div>
             <ActionIcon
               variant="view"
@@ -97,6 +113,9 @@ export default function SightingsCard({
                 labelId="REMOVE"
                 variant="delete"
                 onClick={() => onDelete(value)}
+                // onClick={() => {
+                //   setDeleteDialogOpen(true);
+                // }}
               />
             )}
           </div>
@@ -152,7 +171,10 @@ export default function SightingsCard({
           data={sightings}
           loading={loading}
           noResultsTextId={noSightingsMsg}
-          tableContainerStyles={{ maxHeight: 400 }}
+          tableContainerStyles={{ maxHeight: 800 }}
+          searchParams={searchParams}
+          setSearchParams={setSearchParams}
+          dataCount
         />
       )}
       {!noSightings && showMapView && (

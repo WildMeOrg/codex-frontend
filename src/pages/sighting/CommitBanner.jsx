@@ -14,6 +14,7 @@ export default function CommitBanner({
   sightingId,
   sightingData,
   pending,
+  setActiveTab,
 }) {
   const [dialogOpen, setDialogOpen] = useState(false);
 
@@ -65,6 +66,14 @@ export default function CommitBanner({
     <Alert
       titleId="NOT_READY_FOR_COMMIT"
       descriptionId="NOT_READY_FOR_COMMIT_DESCRIPTION"
+      action={
+        <Button
+          id="ASSIGN"
+          size="small"
+          onClick={() => setActiveTab('#individuals')}
+          style={{ marginTop: 8, marginRight: 4 }}
+        />
+      }
       {...alertProps}
     />
   );

@@ -4,6 +4,9 @@ export const notificationTypeNames = {
   collaboration_approved: 'collaboration_approved',
   collaboration_revoke: 'collaboration_revoke',
   collaboration_denied: 'collaboration_denied',
+  collaboration_export_request: 'collaboration_export_request',
+  collaboration_export_approved: 'collaboration_export_approved',
+  collaboration_export_revoke: 'collaboration_export_revoke',
   collaboration_edit_request: 'collaboration_edit_request',
   collaboration_edit_approved: 'collaboration_edit_approved',
   collaboration_edit_revoke: 'collaboration_edit_revoke',
@@ -14,12 +17,19 @@ export const notificationTypeNames = {
 
   collaboration_manager_edit_approved:
     'collaboration_manager_edit_approved',
+  collaboration_manager_export_approved:
+  'collaboration_manager_export_approved',
   collaboration_manager_edit_revoke:
     'collaboration_manager_edit_revoke',
+  collaboration_manager_export_revoke:
+  'collaboration_manager_export_revoke',
   collaboration_edit_denied: 'collaboration_edit_denied',
+  collaboration_export_denied: 'collaboration_export_denied',
   collaboration_manager_denied: 'collaboration_manager_denied',
   collaboration_manager_edit_denied:
     'collaboration_manager_edit_denied',
+  collaboration_manager_export_denied:
+  'collaboration_manager_export_denied',
 };
 
 const notificationSchemaPlaceholder = {};
@@ -33,7 +43,19 @@ notificationSchemaPlaceholder[
   moreDetailedDescription:
     'EDIT_COLLABORATION_DENIED_BY_USER_MANAGER_MESSAGE',
   showNotificationDialog: false,
-  buttonPath: '/#collab-card',
+  buttonPath: '/user-profile/#collab-card',
+};
+
+notificationSchemaPlaceholder[
+  notificationTypeNames.collaboration_manager_export_denied
+] = {
+  titleId: 'EXPORT_COLLABORATION_DENIED_BY_USER_MANAGER',
+  notificationMessage:
+    'EXPORT_COLLABORATION_DENIED_BY_USER_MANAGER_MESSAGE',
+  moreDetailedDescription:
+    'EXPORT_COLLABORATION_DENIED_BY_USER_MANAGER_MESSAGE',
+  showNotificationDialog: false,
+  buttonPath: '/user-profile/#collab-card',
 };
 
 notificationSchemaPlaceholder[
@@ -45,8 +67,21 @@ notificationSchemaPlaceholder[
   moreDetailedDescription:
     'EDIT_COLLABORATION_WAS_APPROVED_BY_A_USER_MANAGER',
   showNotificationDialog: false,
-  buttonPath: '/#collab-card',
+  buttonPath: '/user-profile/#collab-card',
 };
+
+notificationSchemaPlaceholder[
+  notificationTypeNames.collaboration_manager_export_approved
+] = {
+  titleId: 'EXPORT_COLLABORATION_APPROVED_BY_USER_MANAGER',
+  notificationMessage:
+    'EXPORT_COLLABORATION_WAS_APPROVED_BY_A_USER_MANAGER',
+  moreDetailedDescription:
+    'EXPORT_COLLABORATION_WAS_APPROVED_BY_A_USER_MANAGER',
+  showNotificationDialog: false,
+  buttonPath: '/user-profile/#collab-card',
+};
+
 notificationSchemaPlaceholder[
   notificationTypeNames.collaboration_manager_denied
 ] = {
@@ -55,7 +90,7 @@ notificationSchemaPlaceholder[
   moreDetailedDescription:
     'COLLABORATION_DENIED_BY_USER_MANAGER_MESSAGE',
   showNotificationDialog: false,
-  buttonPath: '/#collab-card',
+  buttonPath: '/user-profile/#collab-card',
 };
 notificationSchemaPlaceholder[
   notificationTypeNames.collaboration_edit_denied
@@ -64,8 +99,19 @@ notificationSchemaPlaceholder[
   notificationMessage: 'EDIT_COLLABORATION_DENIED_MESSAGE',
   moreDetailedDescription: 'EDIT_COLLABORATION_DENIED_MESSAGE',
   showNotificationDialog: false,
-  buttonPath: '/#collab-card',
+  buttonPath: '/user-profile/#collab-card',
 };
+
+notificationSchemaPlaceholder[
+  notificationTypeNames.collaboration_export_denied
+] = {
+  titleId: 'COLLABORATION_EXPORT_DENIED',
+  notificationMessage: 'EXPORT_COLLABORATION_DENIED_MESSAGE',
+  moreDetailedDescription: 'EXPORT_COLLABORATION_DENIED_MESSAGE',
+  showNotificationDialog: false,
+  buttonPath: '/user-profile/#collab-card',
+};
+
 notificationSchemaPlaceholder[
   notificationTypeNames.collaboration_manager_edit_revoke
 ] = {
@@ -75,8 +121,21 @@ notificationSchemaPlaceholder[
   moreDetailedDescription:
     'EDIT_COLLABORATION_WAS_REVOKED_BY_A_USER_MANAGER',
   showNotificationDialog: false,
-  buttonPath: '/#collab-card',
+  buttonPath: '/user-profile/#collab-card',
 };
+
+notificationSchemaPlaceholder[
+  notificationTypeNames.collaboration_manager_export_revoke
+] = {
+  titleId: 'EXPORT_COLLABORATION_REVOKED_BY_USER_MANAGER',
+  notificationMessage:
+    'EXPORT_COLLABORATION_WAS_REVOKED_BY_A_USER_MANAGER',
+  moreDetailedDescription:
+    'EXPORT_COLLABORATION_WAS_REVOKED_BY_A_USER_MANAGER',
+  showNotificationDialog: false,
+  buttonPath: '/user-profile/#collab-card',
+};
+
 notificationSchemaPlaceholder[
   notificationTypeNames.collaboration_manager_create
 ] = {
@@ -85,7 +144,7 @@ notificationSchemaPlaceholder[
   moreDetailedDescription:
     'A_COLLABORATION_WAS_CREATED_ON_YOUR_BEHALF_MORE_DETAILED',
   showNotificationDialog: false,
-  buttonPath: '/#collab-card',
+  buttonPath: '/user-profile/#collab-card',
 };
 notificationSchemaPlaceholder[
   notificationTypeNames.collaboration_request
@@ -104,7 +163,7 @@ notificationSchemaPlaceholder[
   moreDetailedDescription: 'COLLABORATION_APPROVED',
   showNotificationDialog: false,
   path: '/view_permission',
-  buttonPath: '/#collab-card',
+  buttonPath: '/user-profile/#collab-card',
 };
 notificationSchemaPlaceholder[
   notificationTypeNames.collaboration_revoke
@@ -113,7 +172,7 @@ notificationSchemaPlaceholder[
   notificationMessage: 'COLLABORATION_REVOKE_BRIEF',
   moreDetailedDescription: 'COLLABORATION_REVOKE_BRIEF',
   showNotificationDialog: false,
-  buttonPath: '/#collab-card',
+  buttonPath: '/user-profile/#collab-card',
 };
 notificationSchemaPlaceholder[
   notificationTypeNames.collaboration_denied
@@ -122,7 +181,7 @@ notificationSchemaPlaceholder[
   notificationMessage: 'COLLABORATION_DENIED_BRIEF',
   moreDetailedDescription: 'COLLABORATION_DENIED_BRIEF',
   showNotificationDialog: false,
-  buttonPath: '/#collab-card',
+  buttonPath: '/user-profile/#collab-card',
 };
 notificationSchemaPlaceholder[
   notificationTypeNames.collaboration_edit_request
@@ -133,6 +192,17 @@ notificationSchemaPlaceholder[
   showNotificationDialog: true,
   path: '/edit_permission',
 };
+
+notificationSchemaPlaceholder[
+  notificationTypeNames.collaboration_export_request
+] = {
+  titleId: 'COLLABORATION_EXPORT_REQUEST_TITLE',
+  notificationMessage: 'COLLABORATION_EXPORT_REQUEST_BRIEF',
+  moreDetailedDescription: 'COLLABORATION_EXPORT_REQUEST_DESCRIPTION',
+  showNotificationDialog: true,
+  path: '/export_permission',
+};
+
 notificationSchemaPlaceholder[
   notificationTypeNames.collaboration_edit_approved
 ] = {
@@ -141,8 +211,20 @@ notificationSchemaPlaceholder[
   moreDetailedDescription: 'EDIT_COLLABORATION_APPROVED',
   showNotificationDialog: false,
   path: '/edit_permission',
-  buttonPath: '/#collab-card',
+  buttonPath: '/user-profile/#collab-card',
 };
+
+notificationSchemaPlaceholder[
+  notificationTypeNames.collaboration_export_approved
+] = {
+  titleId: 'COLLABORATION_EXPORT_APPROVED_TITLE',
+  notificationMessage: 'EXPORT_COLLABORATION_APPROVED',
+  moreDetailedDescription: 'EXPORT_COLLABORATION_APPROVED',
+  showNotificationDialog: false,
+  path: '/export_permission',
+  buttonPath: '/user-profile/#collab-card',
+};
+
 notificationSchemaPlaceholder[
   notificationTypeNames.collaboration_edit_revoke
 ] = {
@@ -150,8 +232,19 @@ notificationSchemaPlaceholder[
   notificationMessage: 'EDIT_COLLABORATION_REVOKED',
   moreDetailedDescription: 'EDIT_COLLABORATION_REVOKED',
   showNotificationDialog: false,
-  buttonPath: '/#collab-card',
+  buttonPath: '/user-profile/#collab-card',
 };
+
+notificationSchemaPlaceholder[
+  notificationTypeNames.collaboration_export_revoke
+] = {
+  titleId: 'COLLABORATION_EXPORT_REVOKE_TITLE',
+  notificationMessage: 'EXPORT_COLLABORATION_REVOKED',
+  moreDetailedDescription: 'EXPORT_COLLABORATION_REVOKED',
+  showNotificationDialog: false,
+  buttonPath: '/user-profile/#collab-card',
+};
+
 notificationSchemaPlaceholder[
   notificationTypeNames.collaboration_manager_revoke
 ] = {
@@ -159,7 +252,7 @@ notificationSchemaPlaceholder[
   notificationMessage: 'COLLABORATION_REVOKED_BY_MANAGER',
   moreDetailedDescription: 'COLLABORATION_REVOKED_BY_MANAGER',
   showNotificationDialog: false,
-  buttonPath: '/#collab-card',
+  buttonPath: '/user-profile/#collab-card',
 };
 notificationSchemaPlaceholder[
   notificationTypeNames.individual_merge_request

@@ -7,7 +7,6 @@ import AuthenticatedAppHeader from './components/AuthenticatedAppHeader';
 import SaveCustomField from './pages/fieldManagement/settings/saveField/SaveField';
 import GeneralSettings from './pages/generalSettings/GeneralSettings';
 import SiteStatus from './pages/siteStatus/SiteStatus';
-import SplashSettings from './pages/splashSettings/SplashSettings';
 import FieldManagement from './pages/fieldManagement/FieldManagement';
 import UserManagement from './pages/userManagement/UserManagement';
 import AdminActions from './pages/adminActions/AdminActions';
@@ -36,19 +35,21 @@ import FourOhFour from './pages/fourohfour/FourOhFour';
 import useSiteSettings from './models/site/useSiteSettings';
 import SearchIndividuals from './pages/individual/SearchIndividuals';
 import SearchSightings from './pages/sighting/SearchSightings';
+import SearchAnimals from './pages/sighting/encounters/SearchAnimals';
 import SiteSetup from './pages/setup/SiteSetup';
 import MatchSighting from './pages/match/MatchSighting';
 import AuditLog from './pages/devTools/AuditLog';
 import Welcome from './pages/auth/Welcome';
 import EmailVerified from './pages/auth/EmailVerified';
 import Home from './pages/home/Home';
-import Preferences from './pages/preferences/Preferences';
 import ResendVerificationEmail from './pages/auth/ResendVerificationEmail';
 import Footer from './components/Footer';
 import { defaultCrossfadeDuration } from './constants/defaults';
 import Requests from './pages/setup/Requests';
 import SpeciesManagement from './pages/fieldManagement/SpeciesManagement';
+import RegionManagement from './pages/fieldManagement/RegionManagement';
 import ChangeLog from './pages/changeLog/ChangeLog';
+import DataPage from './pages/dataPage/DataPage';
 
 export default function AuthenticatedSwitch({
   emailNeedsVerification,
@@ -100,9 +101,6 @@ export default function AuthenticatedSwitch({
                     <SiteSetup />
                   ) : (
                     <Switch location={location}>
-                      <Route path="/settings/front-page" exact>
-                        <SplashSettings />
-                      </Route>
                       <Route path="/settings/front-page/preview">
                         <Splash />
                       </Route>
@@ -118,6 +116,9 @@ export default function AuthenticatedSwitch({
                       <Route path="/settings/fields/species">
                         <SpeciesManagement />
                       </Route>
+                      <Route path="/settings/fields/regions">
+                        <RegionManagement />
+                      </Route>
                       <Route path="/settings/fields/save-custom-field/:type?/:id?">
                         <SaveCustomField />
                       </Route>
@@ -129,9 +130,6 @@ export default function AuthenticatedSwitch({
                       </Route>
                       <Route path="/settings/social-groups">
                         <SocialGroups />
-                      </Route>
-                      <Route path="/settings/preferences">
-                        <Preferences />
                       </Route>
                       <Route path="/settings/changelog">
                         <ChangeLog />
@@ -166,6 +164,9 @@ export default function AuthenticatedSwitch({
                       <Route path="/merge">
                         <MergeIndividuals />
                       </Route>
+                      <Route path="/data-page">
+                        <DataPage />
+                      </Route>
                       <Route path="/bulk-imports/:id">
                         <AssetGroup />
                       </Route>
@@ -183,6 +184,9 @@ export default function AuthenticatedSwitch({
                       </Route>
                       <Route path="/sightings">
                         <SearchSightings />
+                      </Route>
+                      <Route path="/animals">
+                        <SearchAnimals />
                       </Route>
                       <Route path="/match-results/:sightingGuid">
                         <MatchSighting />
@@ -214,8 +218,11 @@ export default function AuthenticatedSwitch({
                       <Route path="/welcome">
                         <Welcome />
                       </Route>
-                      <Route path="/" exact>
+                      <Route path="/user-profile" exact>
                         <Home />
+                      </Route>
+                      <Route path="/" exact>
+                        <DataPage />
                       </Route>
                       <Route>
                         <FourOhFour />

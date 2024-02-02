@@ -4,10 +4,11 @@ import useFetch from '../../hooks/useFetch';
 import { nestQueries } from '../../utils/elasticSearchUtils';
 import { getIndividualFilterQueryKey } from '../../constants/queryKeys';
 
+
 export default function useFilterIndividuals({
   queries,
   params = {},
-}) {
+}) { 
   const [filters, mustNots] = partition(
     queries,
     q => q.clause === 'filter',

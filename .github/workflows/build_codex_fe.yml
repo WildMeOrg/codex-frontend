@@ -49,6 +49,7 @@ jobs:
     
       deploy:
         name: Docker image build
+        if: github.event.pull_request.head.repo.full_name == github.repository
         runs-on: ubuntu-latest
         strategy:
            fail-fast: false
@@ -142,47 +143,3 @@ jobs:
             run: |
               ./scripts/buildx.docker.sh -t nightly -r ghcr.io/wildmeorg/codex-frontend -i codex-frontend
     
-          # Notify status in Slack
-          - name: Slack Notification
-            if: ${{ failure() && github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags/v') }}
-            uses: rtCamp/action-slack-notify@master
-            env:
-              SLACK_CHANNEL: dev-houston
-              SLACK_COLOR: '#FF0000'
-              SLACK_ICON: https://avatars.slack-edge.com/2020-03-02/965719891842_db87aa21ccb61076f236_44.png
-              SLACK_MESSAGE: 'Tagged / Latest Docker build of Codex Frontend failed :sob:'
-              SLACK_USERNAME: "GitHub CI"
-              SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-    
-          - name: Slack Notification
-            if: ${{ failure() && github.ref == 'refs/heads/main' }}
-            uses: rtCamp/action-slack-notify@master
-            env:
-              SLACK_CHANNEL: dev-houston
-              SLACK_COLOR: '#FF0000'
-              SLACK_ICON: https://avatars.slack-edge.com/2020-03-02/965719891842_db87aa21ccb61076f236_44.png
-              SLACK_MESSAGE: 'Stable Docker build of Codex Frontend failed :sob:'
-              SLACK_USERNAME: "GitHub CI"
-              SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-    
-          - name: Slack Notification
-            if: ${{ failure() && github.ref == 'refs/heads/develop' }}
-            uses: rtCamp/action-slack-notify@master
-            env:
-              SLACK_CHANNEL: dev-houston
-              SLACK_COLOR: '#FF0000'
-              SLACK_ICON: https://avatars.slack-edge.com/2020-03-02/965719891842_db87aa21ccb61076f236_44.png
-              SLACK_MESSAGE: 'Bleeding Edge Docker build of Codex Frontend failed :sob:'
-              SLACK_USERNAME: "GitHub CI"
-              SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-    
-          - name: Slack Notification
-            if: ${{ failure() && github.event_name == 'schedule' }}
-            uses: rtCamp/action-slack-notify@master
-            env:
-              SLACK_CHANNEL: dev-houston
-              SLACK_COLOR: '#FF0000'
-              SLACK_ICON: https://avatars.slack-edge.com/2020-03-02/965719891842_db87aa21ccb61076f236_44.png
-              SLACK_MESSAGE: 'Nightly Docker build of Codex Frontend failed :sob:'
-              SLACK_USERNAME: "GitHub CI"
-              SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}

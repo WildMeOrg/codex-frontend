@@ -10,6 +10,7 @@ import Divider from '@material-ui/core/Divider';
 import PublicIcon from '@material-ui/icons/SupervisedUserCircle';
 import ControlPanelIcon from '@material-ui/icons/PermDataSetting';
 import BulkImportIcon from '@material-ui/icons/PostAdd';
+import InsertChartOutlinedOutlinedIcon from '@material-ui/icons/InsertChartOutlined';
 import LogoutIcon from '@material-ui/icons/ExitToApp';
 
 import Link from '../Link';
@@ -17,6 +18,12 @@ import Text from '../Text';
 import defaultProfilePhoto from '../../assets/defaultProfile.jpg';
 
 const actions = [
+  {
+    id: 'data-page',
+    href: '/data-page',
+    messageId: 'DATA_PAGE',
+    icon: InsertChartOutlinedOutlinedIcon,
+  },
   {
     id: 'bulk-import',
     href: '/bulk-import',
@@ -87,7 +94,7 @@ export default function NotificationsPane({
       onClose={closePopover}
     >
       <MenuList style={{ minWidth: 270 }}>
-        <Link href="/" onClick={closePopover} noUnderline>
+        <Link href="/user-profile" onClick={closePopover} noUnderline>
           <MenuItem style={{ minHeight: 'auto' }}>
             <Avatar
               style={{ height: 52, width: 52 }}

@@ -3,15 +3,12 @@ import { get } from 'lodash-es';
 
 import { useTheme } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
-import SplashSettingsIcon from '@material-ui/icons/Home';
 import SiteSettingsIcon from '@material-ui/icons/SettingsApplications';
-import PreferencesIcon from '@material-ui/icons/Settings';
 import CustomFieldsIcon from '@material-ui/icons/Tune';
 import SiteStatusIcon from '@material-ui/icons/Speed';
 import UserManagementIcon from '@material-ui/icons/People';
 import AdministrationIcon from '@material-ui/icons/Gavel';
 import GroupWorkIcon from '@material-ui/icons/GroupWork';
-import AssignmentOutlinedIcon from '@material-ui/icons/AssignmentOutlined';
 import ListAltIcon from '@material-ui/icons/ListAlt';
 
 import useDocumentTitle from '../../hooks/useDocumentTitle';
@@ -28,13 +25,6 @@ const adminPages = [
     href: '/settings/general',
     roles: ['is_admin'],
   },
-  // {
-  //   icon: SplashSettingsIcon,
-  //   name: 'front-page-config',
-  //   labelId: 'FRONT_PAGE',
-  //   href: '/settings/front-page',
-  //   roles: ['is_admin'],
-  // },
   {
     icon: CustomFieldsIcon,
     name: 'field-management',
@@ -74,21 +64,6 @@ const adminPages = [
     labelId: 'ADMINISTRATOR_ACTIONS',
     href: '/settings/actions',
     roles: ['is_admin'],
-  },
-  {
-    icon: PreferencesIcon,
-    name: 'preferences',
-    labelId: 'PREFERENCES',
-    href: '/settings/preferences',
-    roles: [
-      'is_admin',
-      'is_exporter',
-      'is_internal',
-      'is_staff',
-      'is_user_manager',
-      'is_researcher',
-      'is_contributor',
-    ],
   },
   {
     icon: ListAltIcon,

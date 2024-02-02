@@ -14,6 +14,7 @@ import usePatchCollaboration from '../../../models/collaboration/usePatchCollabo
 import { formatUserMessage } from '../../../utils/formatters';
 import {
   getSummaryState,
+  isExportApproved,
   isEditApproved,
   isViewApproved,
   isViewRevoked,
@@ -25,6 +26,10 @@ const coreStateChoices = [
   {
     value: 'view',
     labelId: 'COLLABORATION_STATE_VIEW',
+  },
+  {
+    value: 'export',
+    labelId: 'COLLABORATION_STATE_EXPORT',
   },
   {
     value: 'edit',
@@ -68,6 +73,30 @@ function getPatchCollaborationOperations(
     ];
   }
 
+  if (newSummaryState === summaryStates.export) {
+    const operations = [
+      {
+        op: 'replace',
+        path: '/managed_export_permission',
+        value: {
+          permission: collaborationStates.approved,
+        },
+      },
+    ];
+
+    if (isEditApproved(collaboration)) {
+      operations.push({
+        op: 'replace',
+        path: '/managed_edit_permission',
+        value: {
+          permission: collaborationStates.revoked,
+        },
+      });
+    }
+
+    return operations;
+  }
+
   if (newSummaryState === summaryStates.view) {
     const operations = [
       {
@@ -78,6 +107,16 @@ function getPatchCollaborationOperations(
         },
       },
     ];
+
+    if (isExportApproved(collaboration)) {
+      operations.push({
+        op: 'replace',
+        path: '/managed_export_permission',
+        value: {
+          permission: collaborationStates.revoked,
+        },
+      });
+    }
 
     if (isEditApproved(collaboration)) {
       operations.push({
@@ -210,7 +249,6 @@ export default function EditCollaborationDialog({
               collaborationState,
               collaboration,
             );
-
             const result = await patchCollaboration({
               collaborationGuid: collaboration?.guid,
               operations,
