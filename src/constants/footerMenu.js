@@ -47,7 +47,7 @@ const accountAuthenticated = [
 const resources = [
   {
     id: 'DOCUMENTATION',
-    href: 'https://docs.wildme.org/',
+    href: 'https://codex.docs.wildme.org/',
     external: true,
   },
   {
@@ -75,7 +75,7 @@ const contribute = [
   // },
   {
     id: 'DONATE',
-    href: 'https://wildme.org/#/donate',
+    href: 'https://secure.givelively.org/donate/conservation-x-labs-inc/wild-me',
     external: true,
   },
 ];
